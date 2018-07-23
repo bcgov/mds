@@ -1,4 +1,4 @@
-package features
+package spec
 
 import geb.spock.GebReportingSpec
 import spock.lang.*
