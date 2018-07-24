@@ -2,117 +2,69 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-backend",
+    "name": "Python",
     "creationTimestamp": null
   },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    }
+  ],
   "objects": [
     {
-      "kind": "BuildConfig",
+      "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "python-web-api",
+        "name": "rhscl-python-36-rhel7",
         "creationTimestamp": null,
+        "annotations": {
+          "description": "Python Base Image"
+        },
         "labels": {
-          "app": "python-web-api"
+          "shared": "true"
         }
       },
       "spec": {
-        "runPolicy": "Serial",
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "https://github.com/sclorg/s2i-python-container.git",
-            "ref": "master"
-          },
-          "contextDir": "3.6"
+        "lookupPolicy": {
+          "local": false
         },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "namespace": "openshift",
-              "name": "python:3.6"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "python-web-api:latest"
-          }
-        },
-        "resources": {},
-        "postCommit": {},
-        "nodeSelector": null
-      },
-      "status": {
-        "lastVersion": 0
-      }
-    },
-    {
-      "kind": "Build",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "python-web-api-1",
-        "creationTimestamp": null,
-        "labels": {
-          "app": "python-web-api",
-          "buildconfig": "python-web-api",
-          "openshift.io/build-config.name": "python-web-api",
-          "openshift.io/build.start-policy": "Serial"
-        },
-        "ownerReferences": [
+        "tags":[
           {
-            "apiVersion": "build.openshift.io/v1",
-            "kind": "BuildConfig",
-            "name": "python-web-api",
-            "uid": "7c300e4e-8f7f-11e8-8202-0050568348cc",
-            "controller": true
-          }
-        ]
-      },
-      "spec": {
-        "serviceAccount": "builder",
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "https://github.com/sclorg/s2i-python-container.git",
-            "ref": "master"
-          },
-          "contextDir": "3.6"
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
+            "name": "3.6.1-21",
+            "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7@sha256:16f3db0b1408e68cadfdb9bb79191b0062a4eb2461d890d8818531a1b4f63cb6"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "python-web-api:latest"
-          },
-          "pushSecret": {
-            "name": "builder-dockercfg-87vp5"
-          }
-        },
-        "resources": {},
-        "postCommit": {},
-        "nodeSelector": null,
-        "triggeredBy": [
-          {
-            "message": "Image change",
-            "imageChangeBuild": {
-              "imageID": "registry.access.redhat.com/rhscl/python-36-rhel7@sha256:16f3db0b1408e68cadfdb9bb79191b0062a4eb2461d890d8818531a1b4f63cb6",
-              "fromRef": {
-                "kind": "ImageStreamTag",
-                "namespace": "openshift",
-                "name": "python:3.6"
-              }
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-21"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
             }
           }
         ]
@@ -122,34 +74,170 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "python-web-api",
-        "generation": 1,
+        "name": "${NAME}-base",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Python Runtime Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
-          "app": "python-web-api"
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
         }
       },
       "spec": {
         "lookupPolicy": {
           "local": false
         },
-        "tags": [
-          {
-            "name": "latest",
-            "from": {
-              "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api:latest"
-            },
-            "generation": null,
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": ""
-            }
-          }
-        ]
+        "tags":[ ]
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": { },
+        "annotations": { }
       },
-      "status": {
-        "dockerImageRepository": ""
+      "spec": {
+        "completionDeadlineSeconds": 1440,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "contextDir": "docker-images/python-36",
+          "git": {
+            "ref": "${SOURCE_REPOSITORY_REF}",
+            "uri": "${SOURCE_REPOSITORY_URL}"
+          },
+          "type": "Git"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "rhscl-python-36-rhel7:3.6.1-21"
+            },
+            "env": [
+              {
+                "name": "PYTHON_REQUIREMENTS_URL",
+                "value": "https://raw.githubusercontent.com/cvarjao/mds/41fa7f7e5a69a27a285354275c620523719173d0/python-backend/requirements.txt"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "2",
+            "memory": "8Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "4Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Defines how to build the application"
+        }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 600,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "${NAME}-base:${VERSION}"
+            },
+            "env": [
+              {
+                "name": "BUILD_LOGLEVEL",
+                "value": "2"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "2",
+            "memory": "8Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "4Gi"
+          }
+        },
+        "nodeSelector": null
       }
     }
   ]
