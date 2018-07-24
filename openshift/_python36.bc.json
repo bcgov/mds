@@ -109,14 +109,14 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "mds-python-36-rhel7mds${NAME_SUFFIX}:3.6"
+              "name": "${NAME_SUFFIX}:3.6"
             }
           }
         },
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "mds-python-backend${NAME_SUFFIX}:${ENV_NAME}"
+            "name": "${NAME_SUFFIX}:${ENV_NAME}"
           }
         },
         "resources": {},
