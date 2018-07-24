@@ -159,7 +159,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "mds-python-backend${NAME_SUFFIX}:${ENV_NAME}"
+              "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
             }
           }
         },
