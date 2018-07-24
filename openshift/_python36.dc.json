@@ -379,7 +379,6 @@
             "kind": "DeploymentConfig",
             "name": "${NAME}",
             "uid": "7c2c5059-8f7f-11e8-8202-0050568348cc",
-            "controller": true,
             "blockOwnerDeletion": true
           }
         ]
