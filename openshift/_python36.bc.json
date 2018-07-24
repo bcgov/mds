@@ -2,87 +2,18 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-backend-python-bc",
+    "name": "mds-python-backend",
     "creationTimestamp": null
   },
-  "parameters": [
-    {
-      "name": "NAME_SUFFIX",
-      "displayName": "Name Suffix",
-      "description": "A suffix appended to all objects",
-      "required": true
-    },
-    {
-      "name": "SOURCE_REPOSITORY_URL",
-      "required": true
-    },
-    {
-      "name": "ENV_NAME",
-      "required": true
-    }
-  ],
   "objects": [
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "basemds${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Python Base Image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[
-          {
-            "name": "3.6",
-            "annotations": null,
-            "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-21"
-            },
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Source"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "labels": {
-          "base-name":"mds"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[ ]
-      }
-    },
     {
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "basemds${NAME_SUFFIX}",
+        "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
-          "build": "mds-python-backend"
-        },
-        "annotations": {
-
+          "app": "${NAME}"
         }
       },
       "spec": {
@@ -95,91 +26,216 @@
             "type": "ConfigChange"
           }
         ],
-        "runPolicy": "SerialLatestOnly",
-        "source": {
-          "contextDir": "docker-images/mds-python-backend",
-          "git": {
-            "ref": "master",
-            "uri": "${SOURCE_REPOSITORY_URL}"
-          },
-          "type": "Git"
-        },
-        "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "mds${NAME_SUFFIX}:3.6"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
-          }
-        },
-        "resources": {},
-        "postCommit": {},
-        "nodeSelector": null,
-        "successfulBuildsHistoryLimit": 5,
-        "failedBuildsHistoryLimit": 5
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Defines how to build the application"
-        }
-      },
-      "spec": {
-        "triggers": [
-          {
-            "type": "ImageChange"
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "runPolicy": "SerialLatestOnly",
+        "runPolicy": "Serial",
         "source": {
           "type": "Git",
           "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
+            "uri": "https://github.com/sclorg/s2i-python-container.git",
             "ref": "master"
           },
-          "contextDir": "app"
+          "contextDir": "3.6"
         },
         "strategy": {
           "type": "Source",
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
+              "namespace": "openshift",
+              "name": "python:3.6"
             }
           }
         },
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
+            "name": "${NAME}:latest"
           }
         },
-        "resources": {
-          "limits": {
-            "cpu": "1",
-            "memory": "2Gi"
-          },
-          "requests": {
-            "cpu": "1",
-            "memory": "2Gi"
-          }
-        },
+        "resources": {},
+        "postCommit": {},
         "nodeSelector": null
+      },
+      "status": {
+        "lastVersion": 0
+      }
+    },
+    {
+      "kind": "Build",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-1",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "${NAME}",
+          "buildconfig": "${NAME}",
+          "openshift.io/build-config.name": "${NAME}",
+          "openshift.io/build.start-policy": "Serial"
+        },
+        "ownerReferences": [
+          {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "BuildConfig",
+            "name": "${NAME}",
+            "uid": "7c300e4e-8f7f-11e8-8202-0050568348cc",
+            "controller": true
+          }
+        ]
+      },
+      "spec": {
+        "serviceAccount": "builder",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "https://github.com/sclorg/s2i-python-container.git",
+            "ref": "master"
+          },
+          "contextDir": "3.6"
+        },
+        "revision": {
+          "type": "Git",
+          "git": {
+            "commit": "577297aef7b6eef1ef7e7bc3f157ffce927c775d",
+            "author": {
+              "name": "Petr Kubat",
+              "email": "pkubat@redhat.com"
+            },
+            "committer": {
+              "name": "Petr Kubat",
+              "email": "pkubat@redhat.com"
+            },
+            "message": "Generate sources"
+          }
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7@sha256:16f3db0b1408e68cadfdb9bb79191b0062a4eb2461d890d8818531a1b4f63cb6"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:latest"
+          },
+          "pushSecret": {
+            "name": "builder-dockercfg-87vp5"
+          }
+        },
+        "resources": {},
+        "postCommit": {},
+        "nodeSelector": null,
+        "triggeredBy": [
+          {
+            "message": "Image change",
+            "imageChangeBuild": {
+              "imageID": "registry.access.redhat.com/rhscl/python-36-rhel7@sha256:16f3db0b1408e68cadfdb9bb79191b0062a4eb2461d890d8818531a1b4f63cb6",
+              "fromRef": {
+                "kind": "ImageStreamTag",
+                "namespace": "openshift",
+                "name": "python:3.6"
+              }
+            }
+          }
+        ]
+      },
+      "status": {
+        "phase": "New",
+        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest",
+        "config": {
+          "name": "${NAME}"
+        },
+        "output": {
+          "to": {
+            "imageDigest": "sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4"
+          }
+        },
+        "stages": [
+          {
+            "name": "FetchInputs",
+            "startTime": "2018-07-24T20:24:03Z",
+            "durationMilliseconds": 1500,
+            "steps": [
+              {
+                "name": "FetchGitSource",
+                "startTime": "2018-07-24T20:24:03Z",
+                "durationMilliseconds": 1500
+              }
+            ]
+          },
+          {
+            "name": "CommitContainer",
+            "startTime": "2018-07-24T20:24:17Z",
+            "durationMilliseconds": 3649,
+            "steps": [
+              {
+                "name": "CommitContainer",
+                "startTime": "2018-07-24T20:24:17Z",
+                "durationMilliseconds": 3649
+              }
+            ]
+          },
+          {
+            "name": "Assemble",
+            "startTime": "2018-07-24T20:24:14Z",
+            "durationMilliseconds": 6485,
+            "steps": [
+              {
+                "name": "AssembleBuildScripts",
+                "startTime": "2018-07-24T20:24:14Z",
+                "durationMilliseconds": 6485
+              }
+            ]
+          },
+          {
+            "name": "PushImage",
+            "startTime": "2018-07-24T20:24:20Z",
+            "durationMilliseconds": 2859,
+            "steps": [
+              {
+                "name": "PushImage",
+                "startTime": "2018-07-24T20:24:20Z",
+                "durationMilliseconds": 2859
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+          "app": "${NAME}"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "latest",
+            "from": {
+              "kind": "DockerImage",
+              "name": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest"
+            },
+            "generation": null,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": ""
+            }
+          }
+        ]
+      },
+      "status": {
+        "dockerImageRepository": ""
       }
     }
   ]
