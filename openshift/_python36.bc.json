@@ -26,7 +26,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}-base",
+        "name": "base${NAME_SUFFIX}",
         "creationTimestamp": null,
         "annotations": {
           "description": "Python Base Image"
@@ -76,7 +76,7 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}-base",
+        "name": "base${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "build": "mds-python-backend"
