@@ -130,7 +130,7 @@
         }
       },
       "spec": {
-        "lookupPolicy": {//8*8/9
+        "lookupPolicy": {
           "local": false
         },
         "tags": [
