@@ -69,7 +69,7 @@
                 "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
-                    "containerPort": 8080,
+                    "containerPort": 5000,
                     "protocol": "TCP"
                   }
                 ],
@@ -157,7 +157,7 @@
           "weight": 100
         },
         "port": {
-          "targetPort": "8080-tcp"
+          "targetPort": "5000-tcp"
         },
         "wildcardPolicy": "None"
       },
@@ -216,7 +216,7 @@
             "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
             "ports": [
               {
-                "containerPort": 8080,
+                "containerPort": 5000,
                 "protocol": "TCP"
               }
             ],
@@ -331,7 +331,7 @@
                 "image": "172.50.0.2:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
-                    "containerPort": 8080,
+                    "containerPort": 5000,
                     "protocol": "TCP"
                   }
                 ],
@@ -406,7 +406,7 @@
                 "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
-                    "containerPort": 8080,
+                    "containerPort": 5000,
                     "protocol": "TCP"
                   }
                 ],
@@ -450,10 +450,10 @@
       "spec": {
         "ports": [
           {
-            "name": "8080-tcp",
+            "name": "5000-tcp",
             "protocol": "TCP",
-            "port": 8080,
-            "targetPort": 8080
+            "port": 5000,
+            "targetPort": 5000
           }
         ],
         "selector": {

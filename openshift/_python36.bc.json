@@ -17,15 +17,6 @@
         }
       },
       "spec": {
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChange": {}
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
         "runPolicy": "Serial",
         "source": {
           "type": "Git",
@@ -91,21 +82,6 @@
           },
           "contextDir": "3.6"
         },
-        "revision": {
-          "type": "Git",
-          "git": {
-            "commit": "577297aef7b6eef1ef7e7bc3f157ffce927c775d",
-            "author": {
-              "name": "Petr Kubat",
-              "email": "pkubat@redhat.com"
-            },
-            "committer": {
-              "name": "Petr Kubat",
-              "email": "pkubat@redhat.com"
-            },
-            "message": "Generate sources"
-          }
-        },
         "strategy": {
           "type": "Source",
           "sourceStrategy": {
@@ -140,68 +116,6 @@
             }
           }
         ]
-      },
-      "status": {
-        "phase": "New",
-        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api:latest",
-        "config": {
-          "name": "python-web-api"
-        },
-        "output": {
-          "to": {
-            "imageDigest": "sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4"
-          }
-        },
-        "stages": [
-          {
-            "name": "FetchInputs",
-            "startTime": "2018-07-24T20:24:03Z",
-            "durationMilliseconds": 1500,
-            "steps": [
-              {
-                "name": "FetchGitSource",
-                "startTime": "2018-07-24T20:24:03Z",
-                "durationMilliseconds": 1500
-              }
-            ]
-          },
-          {
-            "name": "CommitContainer",
-            "startTime": "2018-07-24T20:24:17Z",
-            "durationMilliseconds": 3649,
-            "steps": [
-              {
-                "name": "CommitContainer",
-                "startTime": "2018-07-24T20:24:17Z",
-                "durationMilliseconds": 3649
-              }
-            ]
-          },
-          {
-            "name": "Assemble",
-            "startTime": "2018-07-24T20:24:14Z",
-            "durationMilliseconds": 6485,
-            "steps": [
-              {
-                "name": "AssembleBuildScripts",
-                "startTime": "2018-07-24T20:24:14Z",
-                "durationMilliseconds": 6485
-              }
-            ]
-          },
-          {
-            "name": "PushImage",
-            "startTime": "2018-07-24T20:24:20Z",
-            "durationMilliseconds": 2859,
-            "steps": [
-              {
-                "name": "PushImage",
-                "startTime": "2018-07-24T20:24:20Z",
-                "durationMilliseconds": 2859
-              }
-            ]
-          }
-        ]
       }
     },
     {
@@ -216,7 +130,7 @@
         }
       },
       "spec": {
-        "lookupPolicy": {
+        "lookupPolicy": {//8*8/9
           "local": false
         },
         "tags": [
