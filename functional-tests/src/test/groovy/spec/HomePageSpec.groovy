@@ -21,7 +21,7 @@ class HomePageTest extends GebReportingSpec {
 
      //   then: "I should see HelloWorld"
         then: "I see toast message"
-        toastMessage == "error"
+        toastMessage == "Error!"
     
     }
 }
