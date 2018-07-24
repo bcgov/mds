@@ -17,7 +17,6 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
-        // Parallelize QA and Deploy to dev for faster feedback
         parallel {
             stage('Quality Control') {
                 agent { label 'master' }
