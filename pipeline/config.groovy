@@ -116,8 +116,7 @@ app {
                             'NAME':"mds-python-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "python-backend",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                            'HOST': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
@@ -151,6 +150,9 @@ vars {
     modules {
         'mds-backend' {
             HOST = "mds-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+        }
+        'mds-python-backend' {
+            HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
         }
     }
 }
