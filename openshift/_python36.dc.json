@@ -10,11 +10,11 @@
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
@@ -36,12 +36,12 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "${NAME}"
+                "python-web-api"
               ],
               "from": {
                 "kind": "ImageStreamTag",
                 "namespace": "empr-mds-dev",
-                "name": "${NAME}:latest"
+                "name": "python-web-api:latest"
               }
             }
           },
@@ -52,21 +52,21 @@
         "replicas": 1,
         "test": false,
         "selector": {
-          "deploymentconfig": "${NAME}"
+          "deploymentconfig": "python-web-api"
         },
         "template": {
           "metadata": {
             "creationTimestamp": null,
             "labels": {
-              "app": "${NAME}",
-              "deploymentconfig": "${NAME}"
+              "app": "python-web-api",
+              "deploymentconfig": "python-web-api"
             }
           },
           "spec": {
             "containers": [
               {
-                "name": "${NAME}",
-                "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+                "name": "python-web-api",
+                "image": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
                     "containerPort": 5000,
@@ -109,11 +109,11 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
@@ -125,7 +125,7 @@
             "name": "latest",
             "from": {
               "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest"
+              "name": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api:latest"
             },
             "generation": null,
             "importPolicy": {},
@@ -143,17 +143,17 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
-        "host": "${NAME}-empr-mds-dev.pathfinder.gov.bc.ca",
+        "host": "python-web-api-empr-mds-dev.pathfinder.gov.bc.ca",
         "to": {
           "kind": "Service",
-          "name": "${NAME}",
+          "name": "python-web-api",
           "weight": 100
         },
         "port": {
@@ -164,7 +164,7 @@
       "status": {
         "ingress": [
           {
-            "host": "${NAME}-empr-mds-dev.pathfinder.gov.bc.ca",
+            "host": "python-web-api-empr-mds-dev.pathfinder.gov.bc.ca",
             "routerName": "router",
             "conditions": [
               {
@@ -182,18 +182,18 @@
       "kind": "Pod",
       "apiVersion": "v1",
       "metadata": {
-        "generateName": "${NAME}-2-",
+        "generateName": "python-web-api-2-",
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}",
-          "deployment": "${NAME}-2",
-          "deploymentconfig": "${NAME}"
+          "app": "python-web-api",
+          "deployment": "python-web-api-2",
+          "deploymentconfig": "python-web-api"
         },
         "ownerReferences": [
           {
             "apiVersion": "v1",
             "kind": "ReplicationController",
-            "name": "${NAME}-2",
+            "name": "python-web-api-2",
             "uid": "8ec8abe0-8f7f-11e8-9dd8-0050568379a2",
             "controller": true,
             "blockOwnerDeletion": true
@@ -212,8 +212,8 @@
         ],
         "containers": [
           {
-            "name": "${NAME}",
-            "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+            "name": "python-web-api",
+            "image": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
             "ports": [
               {
                 "containerPort": 5000,
@@ -291,18 +291,18 @@
       "kind": "ReplicationController",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-1",
+        "name": "python-web-api-1",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}",
-          "openshift.io/deployment-config.name": "${NAME}"
+          "app": "python-web-api",
+          "openshift.io/deployment-config.name": "python-web-api"
         },
         "ownerReferences": [
           {
             "apiVersion": "apps.openshift.io/v1",
             "kind": "DeploymentConfig",
-            "name": "${NAME}",
+            "name": "python-web-api",
             "uid": "7c2c5059-8f7f-11e8-8202-0050568348cc",
             "controller": true,
             "blockOwnerDeletion": true
@@ -312,23 +312,23 @@
       "spec": {
         "replicas": 0,
         "selector": {
-          "deployment": "${NAME}-1",
-          "deploymentconfig": "${NAME}"
+          "deployment": "python-web-api-1",
+          "deploymentconfig": "python-web-api"
         },
         "template": {
           "metadata": {
             "creationTimestamp": null,
             "labels": {
-              "app": "${NAME}",
-              "deployment": "${NAME}-1",
-              "deploymentconfig": "${NAME}"
+              "app": "python-web-api",
+              "deployment": "python-web-api-1",
+              "deploymentconfig": "python-web-api"
             }
           },
           "spec": {
             "containers": [
               {
-                "name": "${NAME}",
-                "image": "172.50.0.2:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+                "name": "python-web-api",
+                "image": "172.50.0.2:5000/empr-mds-dev/python-web-api@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
                     "containerPort": 5000,
@@ -366,18 +366,18 @@
       "kind": "ReplicationController",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-2",
+        "name": "python-web-api-2",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}",
-          "openshift.io/deployment-config.name": "${NAME}"
+          "app": "python-web-api",
+          "openshift.io/deployment-config.name": "python-web-api"
         },
         "ownerReferences": [
           {
             "apiVersion": "apps.openshift.io/v1",
             "kind": "DeploymentConfig",
-            "name": "${NAME}",
+            "name": "python-web-api",
             "uid": "7c2c5059-8f7f-11e8-8202-0050568348cc",
             "blockOwnerDeletion": true
           }
@@ -386,23 +386,23 @@
       "spec": {
         "replicas": 1,
         "selector": {
-          "deployment": "${NAME}-2",
-          "deploymentconfig": "${NAME}"
+          "deployment": "python-web-api-2",
+          "deploymentconfig": "python-web-api"
         },
         "template": {
           "metadata": {
             "creationTimestamp": null,
             "labels": {
-              "app": "${NAME}",
-              "deployment": "${NAME}-2",
-              "deploymentconfig": "${NAME}"
+              "app": "python-web-api",
+              "deployment": "python-web-api-2",
+              "deploymentconfig": "python-web-api"
             }
           },
           "spec": {
             "containers": [
               {
-                "name": "${NAME}",
-                "image": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+                "name": "python-web-api",
+                "image": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
                     "containerPort": 5000,
@@ -440,10 +440,10 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
@@ -456,7 +456,7 @@
           }
         ],
         "selector": {
-          "deploymentconfig": "${NAME}"
+          "deploymentconfig": "python-web-api"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
