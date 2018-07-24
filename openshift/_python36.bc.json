@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "Python",
+    "name": "mds-python-bc",
     "creationTimestamp": null
   },
   "parameters": [
