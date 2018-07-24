@@ -31,7 +31,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "base-name":"mds"
@@ -50,7 +50,7 @@
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": {
@@ -72,11 +72,11 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "mds-backend-python${NAME_SUFFIX}"
+                "mds-backend-pythonmds${NAME_SUFFIX}"
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME_SUFFIX}:${ENV_NAME}"
+                "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
               }
             }
           },
@@ -87,20 +87,20 @@
         "replicas": 1,
         "test": false,
         "selector": {
-          "name": "${NAME_SUFFIX}"
+          "name": "mds${NAME_SUFFIX}"
         },
         "template": {
           "metadata": {
-            "name": "${NAME_SUFFIX}",
+            "name": "mds${NAME_SUFFIX}",
             "creationTimestamp": null,
             "labels": {
-              "name": "${NAME_SUFFIX}"
+              "name": "mds${NAME_SUFFIX}"
             }
           },
           "spec": {
             "containers": [
               {
-                "name": "mds-backend-python${NAME_SUFFIX}",
+                "name": "mds-backend-pythonmds${NAME_SUFFIX}",
                 "image": " ",
                 "ports": [
                   {
@@ -160,7 +160,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": {
@@ -177,7 +177,7 @@
           }
         ],
         "selector": {
-          "name": "${NAME_SUFFIX}"
+          "name": "mds${NAME_SUFFIX}"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -187,7 +187,7 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "frontend": "true"
@@ -199,7 +199,7 @@
         "path": "/gwells",
         "to": {
           "kind": "Service",
-          "name": "${NAME_SUFFIX}",
+          "name": "mds${NAME_SUFFIX}",
           "weight": 100
         },
         "port": {
@@ -215,7 +215,7 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mdsmds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": { }
@@ -225,7 +225,7 @@
         "path": "/mds/",
         "to": {
           "kind": "Service",
-          "name": "mds-${NAME_SUFFIX}",
+          "name": "mds-mds${NAME_SUFFIX}",
           "weight": 100
         },
         "port": {

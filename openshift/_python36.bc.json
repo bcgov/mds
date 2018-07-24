@@ -26,7 +26,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "base${NAME_SUFFIX}",
+        "name": "basemds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "annotations": {
           "description": "Python Base Image"
@@ -56,7 +56,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "base-name":"mds"
@@ -76,7 +76,7 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "base${NAME_SUFFIX}",
+        "name": "basemds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "build": "mds-python-backend"
@@ -109,7 +109,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "mds-python-36-rhel7${NAME_SUFFIX}:3.6"
+              "name": "mds-python-36-rhel7mds${NAME_SUFFIX}:3.6"
             }
           }
         },
@@ -130,7 +130,7 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME_SUFFIX}",
+        "name": "mds${NAME_SUFFIX}",
         "creationTimestamp": null,
         "annotations": {
           "description": "Defines how to build the application"
@@ -166,7 +166,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME_SUFFIX}:${ENV_NAME}"
+            "name": "mds${NAME_SUFFIX}:${ENV_NAME}"
           }
         },
         "resources": {
