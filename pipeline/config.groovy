@@ -114,8 +114,8 @@ app {
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
+                            'SUFFIX': "${app.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
@@ -151,9 +151,6 @@ vars {
         'mds-backend' {
             HOST = "mds-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
         }
-        'mds-python-backend' {
-            HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-        }
     }
 }
 
@@ -177,6 +174,9 @@ environments {
                 }
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'mds-python-backend' {
+                    HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }
