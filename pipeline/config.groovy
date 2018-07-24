@@ -57,7 +57,7 @@ app {
                     ]
                 ],
                 [
-                        'file':'openshift/_python.bc.json',
+                        'file':'openshift/_python36.bc.json',
                         'params':[
                                 'NAME':"mds-python-backend",
                                 'SUFFIX': "${app.build.suffix}",

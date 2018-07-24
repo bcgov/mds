@@ -2,215 +2,30 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-dc",
+    "name": "mds-python-backend",
     "creationTimestamp": null
   },
-  "parameters": [
-    {
-      "name": "NAME_SUFFIX",
-      "displayName": "Name Suffix",
-      "description": "A suffix appended to all objects",
-      "required": true
-    },
-    {
-      "name": "BUILD_ENV_NAME",
-      "required": true
-    },
-    {
-      "name": "ENV_NAME",
-      "required": true
-    },
-    {
-      "name": "HOST",
-      "required": false,
-      "value": ""
-    }
-  ],
   "objects": [
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds",
-        "creationTimestamp": null,
-        "labels": {
-          "base-name":"mds",
-          "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds-static",
-        "creationTimestamp": null,
-        "labels": {
-          "base-name":"mds-static",
-          "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "kind": "Secret",
-      "apiVersion": "v1",
-      "type": "Opaque",
-      "metadata": {
-        "name": "minio-access-parameters${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "annotations": {
-          "as-copy-of": "template.mds-minio-secrets"
-        }
-      },
-      "data": {
-        "MINIO_ACCESS_KEY": null,
-        "MINIO_SECRET_KEY": null,
-        "S3_HOST": null,
-        "S3_ROOT_BUCKET": null
-      }
-    },
-    {
-      "kind": "Secret",
-      "apiVersion": "v1",
-      "type": "Opaque",
-      "metadata": {
-        "creationTimestamp": null,
-        "name": "mds-django${NAME_SUFFIX}",
-        "annotations": {
-          "as-copy-of": "template.mds-django-secrets"
-        }
-      },
-      "data": {
-        "admin_password": null,
-        "admin_url": null,
-        "admin_user": null,
-        "secret_key": null
-      }
-    },
-    {
-      "kind": "Secret",
-      "apiVersion": "v1",
-      "type": "kubernetes.io/basic-auth",
-      "metadata": {
-        "creationTimestamp": null,
-        "name": "mds-database-credentials${NAME_SUFFIX}",
-        "annotations": {
-          "as-copy-of": "template.mds-database-credentials"
-        }
-      },
-      "data": {
-        "password": null,
-        "postgres_admin_password": null,
-        "username": null
-      }
-    },
-    {
-      "apiVersion": "v1",
-      "data": {
-        "DB_REPLICATE": "None",
-        "DJANGO_DEBUG": "False"
-      },
-      "kind": "ConfigMap",
-      "metadata": {
-        "creationTimestamp": null,
-        "name": "mds-global-config${NAME_SUFFIX}",
-        "annotations": {
-          "as-copy-of": "template.mds-global-config"
-        }
-      }
-    },
     {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mds-python-backend",
+        "generation": 1,
         "creationTimestamp": null,
-        "labels": null,
-        "annotations": {
-          "description": "Defines how to deploy the application server"
+        "labels": {
+          "app": "mds-python-backend"
         }
       },
       "spec": {
         "strategy": {
-          "type": "Recreate",
-          "recreateParams": {
-            "timeoutSeconds": 180,
-            "pre": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "command": [
-                  "/bin/bash",
-                  "-c",
-                  "psql -qtAX -c 'select 1'"
-                ],
-                "containerName": "mds-app",
-                "env": [
-                  {
-                    "name": "PGDATABASE",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGUSER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGPASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGHOST",
-                    "value": "mds-pgsql${NAME_SUFFIX}"
-                  },
-                  {
-                    "name": "DISABLE_MIGRATE",
-                    "value": "true"
-                  }
-                ]
-              }
-            },
-            "mid": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "command": [
-                  "/usr/bin/container-entrypoint",
-                  "bash",
-                  "-c",
-                  "/opt/app-root/src/scripts/post-deploy.sh && cd /opt/app-root/src && python manage.py migrate --noinput"
-                ],
-                "containerName": "mds-app"
-              }
-            }
+          "type": "Rolling",
+          "rollingParams": {
+            "updatePeriodSeconds": 1,
+            "intervalSeconds": 1,
+            "timeoutSeconds": 600,
+            "maxUnavailable": "25%",
+            "maxSurge": "25%"
           },
           "resources": {},
           "activeDeadlineSeconds": 21600
@@ -221,24 +36,12 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "mds-app"
+                "mds-python-backend"
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "mds:${ENV_NAME}"
-              }
-            }
-          },
-          {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": [
-                "mds-static"
-              ],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "mds-static:${ENV_NAME}"
+                "namespace": "empr-mds-dev",
+                "name": "mds-python-backend:latest"
               }
             }
           },
@@ -246,330 +49,39 @@
             "type": "ConfigChange"
           }
         ],
-        "replicas": 2,
+        "replicas": 1,
         "test": false,
         "selector": {
-          "name": "mds${NAME_SUFFIX}"
+          "deploymentconfig": "mds-python-backend"
         },
         "template": {
           "metadata": {
-            "name": "mds${NAME_SUFFIX}",
             "creationTimestamp": null,
             "labels": {
-              "name": "mds${NAME_SUFFIX}"
+              "app": "mds-python-backend",
+              "deploymentconfig": "mds-python-backend"
             }
           },
           "spec": {
-            "initContainers": [
-              {
-                "name": "check-db",
-                "image": "registry.access.redhat.com/rhscl/postgresql-95-rhel7@sha256:31d46b178b84cd92e1be5348f02a75f6a39867d5a57eb099b7c864deaaf02a49",
-                "command": [
-                  "/bin/bash",
-                  "-c",
-                  "psql -qtAX -c 'select 1'"
-                ],
-                "env": [
-                  {
-                    "name": "PGDATABASE",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGUSER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGPASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGHOST",
-                    "value": "mds-pgsql${NAME_SUFFIX}"
-                  }
-                ],
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "256Mi"
-                  },
-                  "requests": {
-                    "cpu": "10m",
-                    "memory": "128Mi"
-                  }
-                }
-              }
-            ],
             "containers": [
               {
-                "name": "mds-app",
-                "image": " ",
+                "name": "mds-python-backend",
+                "image": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-backend@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
                 "ports": [
                   {
-                    "containerPort": 8080,
-                    "protocol": "TCP"
-                  }
-                ],
-                "env": [
-                  {
-                    "name": "DATABASE_SERVICE_NAME",
-                    "value": "mds-pgsql${NAME_SUFFIX}"
-                  },
-                  {
-                    "name": "DATABASE_ENGINE",
-                    "value": "postgresql"
-                  },
-                  {
-                    "name": "DATABASE_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DATABASE_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DATABASE_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-pgsql${NAME_SUFFIX}",
-                        "key": "database-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DATABASE_SCHEMA",
-                    "value": "public"
-                  },
-                  {
-                    "name": "POSTGRESQL_ADMIN_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-database-credentials${NAME_SUFFIX}",
-                        "key": "postgres_admin_password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "APP_CONFIG",
-                    "value": "/opt/app-root/src/gunicorn.cfg"
-                  },
-                  {
-                    "name": "DJANGO_SECRET_KEY",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-django${NAME_SUFFIX}",
-                        "key": "secret_key"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DJANGO_ADMIN_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-django${NAME_SUFFIX}",
-                        "key": "admin_url"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DJANGO_ADMIN_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-django${NAME_SUFFIX}",
-                        "key": "admin_user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DJANGO_ADMIN_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "mds-django${NAME_SUFFIX}",
-                        "key": "admin_password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DJANGO_DEBUG",
-                    "valueFrom": {
-                      "configMapKeyRef": {
-                        "key": "DJANGO_DEBUG",
-                        "name": "mds-global-config${NAME_SUFFIX}"
-                      }
-                    }
-                  },
-                  {
-                    "name": "ENABLE_GOOGLE_ANALYTICS",
-                    "value": "False"
-                  },
-                  {
-                    "name": "ENABLE_DATA_ENTRY",
-                    "value": "True"
-                  },
-                  {
-                    "name": "ENABLE_ADDITIONAL_DOCUMENTS",
-                    "value": "True"
-                  },
-                  {
-                    "name": "APP_CONTEXT_ROOT",
-                    "value": "mds"
-                  },
-                  {
-                    "name": "SESSION_COOKIE_SECURE",
-                    "value": "True"
-                  },
-                  {
-                    "name": "CSRF_COOKIE_SECURE",
-                    "value": "True"
-                  },
-                  {
-                    "name": "DB_REPLICATE",
-                    "valueFrom": {
-                      "configMapKeyRef": {
-                        "key": "DB_REPLICATE",
-                        "name": "mds-global-config${NAME_SUFFIX}"
-                      }
-                    }
-                  },
-                  {
-                    "name": "S3_HOST",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "minio-access-parameters${NAME_SUFFIX}",
-                        "key": "S3_HOST"
-                      }
-                    }
-                  },
-                  {
-                    "name": "S3_ROOT_BUCKET",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "minio-access-parameters${NAME_SUFFIX}",
-                        "key": "S3_ROOT_BUCKET"
-                      }
-                    }
-                  },
-                  {
-                    "name": "WEB_CONCURRENCY",
-                    "value": "4"
-                  },
-                  {
-                    "name": "GUNICORN_WORKERS",
-                    "value": "4"
-                  },
-                  {
-                    "name": "ENFORCE_ENV_VARIABLES",
-                    "value": "False"
-                  },
-                  {
-                    "name": "DISABLE_MIGRATE",
-                    "value": "true"
-                  }
-                ],
-                "resources": {
-                  "limits": {
-                    "cpu": "250m",
-                    "memory": "768Mi"
-                  },
-                  "requests": {
-                    "cpu": "200m",
-                    "memory": "512Mi"
-                  }
-                },
-                "livenessProbe": {
-                  "httpGet": {
-                    "path": "/mds/health",
-                    "port": 8080,
-                    "scheme": "HTTP"
-                  },
-                  "initialDelaySeconds": 60,
-                  "timeoutSeconds": 5,
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "failureThreshold": 6
-                },
-                "readinessProbe": {
-                  "httpGet": {
-                    "path": "/mds/health",
-                    "port": 8080,
-                    "scheme": "HTTP"
-                  },
-                  "initialDelaySeconds": 5,
-                  "timeoutSeconds": 2,
-                  "periodSeconds": 5,
-                  "successThreshold": 1,
-                  "failureThreshold": 10
-                },
-                "terminationMessagePath": "/dev/termination-log",
-                "terminationMessagePolicy": "File",
-                "imagePullPolicy": "Always"
-              },
-              {
-                "name": "mds-static",
-                "image": " ",
-                "ports": [
-                  {
-                    "containerPort": 2015,
+                    "containerPort": 5000,
                     "protocol": "TCP"
                   }
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "8m",
-                    "memory": "24Mi"
+                    "cpu": "500m",
+                    "memory": "1Gi"
                   },
                   "requests": {
-                    "cpu": "5m",
-                    "memory": "16Mi"
+                    "cpu": "400m",
+                    "memory": "256Mi"
                   }
-                },
-                "livenessProbe": {
-                  "httpGet": {
-                    "path": "/mds/static/mds/icons/geolocate.png",
-                    "port": 2015,
-                    "scheme": "HTTP"
-                  },
-                  "initialDelaySeconds": 60,
-                  "timeoutSeconds": 5,
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "failureThreshold": 6
-                },
-                "readinessProbe": {
-                  "httpGet": {
-                    "path": "/mds/static/mds/icons/geolocate.png",
-                    "port": 2015,
-                    "scheme": "HTTP"
-                  },
-                  "initialDelaySeconds": 5,
-                  "timeoutSeconds": 2,
-                  "periodSeconds": 5,
-                  "successThreshold": 1,
-                  "failureThreshold": 10
                 },
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
@@ -583,111 +95,374 @@
             "schedulerName": "default-scheduler"
           }
         }
+      },
+      "status": {
+        "latestVersion": 0,
+        "observedGeneration": 0,
+        "replicas": 0,
+        "updatedReplicas": 0,
+        "availableReplicas": 0,
+        "unavailableReplicas": 0
       }
     },
     {
-      "apiVersion": "autoscaling/v1",
-      "kind": "HorizontalPodAutoscaler",
+      "kind": "ImageStream",
+      "apiVersion": "v1",
       "metadata": {
+        "name": "mds-python-backend",
+        "generation": 1,
         "creationTimestamp": null,
-        "labels": { },
-        "name": "mds${NAME_SUFFIX}"
+        "labels": {
+          "app": "mds-python-backend"
+        }
       },
       "spec": {
-        "maxReplicas": 5,
-        "minReplicas": 2,
-        "scaleTargetRef": {
-          "apiVersion": "v1",
-          "kind": "DeploymentConfig",
-          "name": "mds${NAME_SUFFIX}"
+        "lookupPolicy": {
+          "local": false
         },
-        "targetCPUUtilizationPercentage": 90
+        "tags": [
+          {
+            "name": "latest",
+            "from": {
+              "kind": "DockerImage",
+              "name": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-backend:latest"
+            },
+            "generation": null,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": ""
+            }
+          }
+        ]
+      },
+      "status": {
+        "dockerImageRepository": ""
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mds-python-backend",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mds-python-backend"
+        }
+      },
+      "spec": {
+        "host": "mds-python-backend-empr-mds-dev.pathfinder.gov.bc.ca",
+        "to": {
+          "kind": "Service",
+          "name": "mds-python-backend",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "5000-tcp"
+        },
+        "wildcardPolicy": "None"
+      },
+      "status": {
+        "ingress": [
+          {
+            "host": "mds-python-backend-empr-mds-dev.pathfinder.gov.bc.ca",
+            "routerName": "router",
+            "conditions": [
+              {
+                "type": "Admitted",
+                "status": "True",
+                "lastTransitionTime": "2018-07-24T20:23:54Z"
+              }
+            ],
+            "wildcardPolicy": "None"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "generateName": "mds-python-backend-2-",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mds-python-backend",
+          "deployment": "mds-python-backend-2",
+          "deploymentconfig": "mds-python-backend"
+        },
+        "ownerReferences": [
+          {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "name": "mds-python-backend-2",
+            "uid": "8ec8abe0-8f7f-11e8-9dd8-0050568379a2",
+            "controller": true,
+            "blockOwnerDeletion": true
+          }
+        ]
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "default-token-9ct65",
+            "secret": {
+              "secretName": "default-token-9ct65",
+              "defaultMode": 420
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "mds-python-backend",
+            "image": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-backend@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+            "ports": [
+              {
+                "containerPort": 5000,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "400m",
+                "memory": "256Mi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "default-token-9ct65",
+                "readOnly": true,
+                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "Always",
+            "securityContext": {
+              "capabilities": {
+                "drop": [
+                  "KILL",
+                  "MKNOD",
+                  "SETGID",
+                  "SETUID"
+                ]
+              },
+              "runAsUser": 1002510000
+            }
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "nodeSelector": {
+          "region": "app"
+        },
+        "serviceAccountName": "default",
+        "serviceAccount": "default",
+        "nodeName": "ociopf-p-190.dmz",
+        "securityContext": {
+          "seLinuxOptions": {
+            "level": "s0:c50,c30"
+          },
+          "fsGroup": 1002510000
+        },
+        "imagePullSecrets": [
+          {
+            "name": "default-dockercfg-5k9r7"
+          }
+        ],
+        "schedulerName": "default-scheduler",
+        "tolerations": [
+          {
+            "key": "node.kubernetes.io/memory-pressure",
+            "operator": "Exists",
+            "effect": "NoSchedule"
+          }
+        ]
+      },
+      "status": {
+        "phase": "Pending",
+        "qosClass": "Burstable"
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mds-python-backend-1",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mds-python-backend",
+          "openshift.io/deployment-config.name": "mds-python-backend"
+        },
+        "ownerReferences": [
+          {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "name": "mds-python-backend",
+            "uid": "7c2c5059-8f7f-11e8-8202-0050568348cc",
+            "controller": true,
+            "blockOwnerDeletion": true
+          }
+        ]
+      },
+      "spec": {
+        "replicas": 0,
+        "selector": {
+          "deployment": "mds-python-backend-1",
+          "deploymentconfig": "mds-python-backend"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "mds-python-backend",
+              "deployment": "mds-python-backend-1",
+              "deploymentconfig": "mds-python-backend"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "mds-python-backend",
+                "image": "172.50.0.2:5000/empr-mds-dev/mds-python-backend@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+                "ports": [
+                  {
+                    "containerPort": 5000,
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "400m",
+                    "memory": "256Mi"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {},
+            "schedulerName": "default-scheduler"
+          }
+        }
+      },
+      "status": {
+        "replicas": 0
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mds-python-backend-2",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mds-python-backend",
+          "openshift.io/deployment-config.name": "mds-python-backend"
+        },
+        "ownerReferences": [
+          {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "name": "mds-python-backend",
+            "uid": "7c2c5059-8f7f-11e8-8202-0050568348cc",
+            "blockOwnerDeletion": true
+          }
+        ]
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "deployment": "mds-python-backend-2",
+          "deploymentconfig": "mds-python-backend"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "mds-python-backend",
+              "deployment": "mds-python-backend-2",
+              "deploymentconfig": "mds-python-backend"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "mds-python-backend",
+                "image": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-backend@sha256:bec8d3b2e27cacadce049c12f8f83923a4b191ffb925c83ac038b5df9f4832d4",
+                "ports": [
+                  {
+                    "containerPort": 5000,
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "400m",
+                    "memory": "256Mi"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {},
+            "schedulerName": "default-scheduler"
+          }
+        }
+      },
+      "status": {
+        "replicas": 0
       }
     },
     {
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mds-python-backend",
         "creationTimestamp": null,
-        "labels": null,
-        "annotations": {
-          "description": "Exposes and load balances the application pods"
+        "labels": {
+          "app": "mds-python-backend"
         }
       },
       "spec": {
         "ports": [
           {
-            "name": "web",
+            "name": "5000-tcp",
             "protocol": "TCP",
-            "port": 8080,
-            "targetPort": 8080
-          },{
-            "name": "static",
-            "protocol": "TCP",
-            "port": 2015,
-            "targetPort": 2015
+            "port": 5000,
+            "targetPort": 5000
           }
         ],
         "selector": {
-          "name": "mds${NAME_SUFFIX}"
+          "deploymentconfig": "mds-python-backend"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "labels": {
-          "frontend": "true"
-        },
-        "annotations": { }
       },
-      "spec": {
-        "host": "${HOST}",
-        "path": "/mds",
-        "to": {
-          "kind": "Service",
-          "name": "mds${NAME_SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds-static${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "labels": null,
-        "annotations": { }
-      },
-      "spec": {
-        "host": "${HOST}",
-        "path": "/mds/static/",
-        "to": {
-          "kind": "Service",
-          "name": "mds${NAME_SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "static"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
+      "status": {
+        "loadBalancer": {}
       }
     }
   ]
