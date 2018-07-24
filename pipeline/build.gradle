@@ -35,7 +35,7 @@ ext.getScriptArgs = {->
 }
 
 task('cd-build', type: JavaExec) {
-    description 'Run Groovy script'
+    description 'Run Build Groovy script'
  
     // Set main property to name of Groovy script class.
     main = 'Build'
@@ -49,7 +49,7 @@ task('cd-build', type: JavaExec) {
 }
 
 task('cd-deploy', type: JavaExec) {
-    description 'Run Groovy script'
+    description 'Run Deploy Groovy script'
  
     // Set main property to name of Groovy script class.
     main = 'Deploy'
@@ -85,6 +85,20 @@ task('cd-unit-test', type: JavaExec) {
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
  
+    args project.getScriptArgs()
+
+    workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
+}
+
+task('cd-cleanup', type: JavaExec) {
+    description 'Run cleanup Groovy script'
+
+    // Set main property to name of Groovy script class.
+    main = 'Clean'
+
+    // Set classpath for running the Groovy script.
+    classpath = sourceSets.main.runtimeClasspath
+
     args project.getScriptArgs()
 
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
