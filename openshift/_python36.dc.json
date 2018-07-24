@@ -7,7 +7,13 @@
   },
   "parameters": [
     {
-      "name": "NAME_SUFFIX",
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name for all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
       "displayName": "Name Suffix",
       "description": "A suffix appended to all objects",
       "required": true
@@ -89,7 +95,7 @@
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mds${SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": {
@@ -126,14 +132,14 @@
         "replicas": 1,
         "test": false,
         "selector": {
-          "name": "mds${NAME_SUFFIX}"
+          "name": "mds${SUFFIX}"
         },
         "template": {
           "metadata": {
-            "name": "mds${NAME_SUFFIX}",
+            "name": "mds${SUFFIX}",
             "creationTimestamp": null,
             "labels": {
-              "name": "mds${NAME_SUFFIX}"
+              "name": "mds${SUFFIX}"
             }
           },
           "spec": {
@@ -170,7 +176,7 @@
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {},
+            "securityContext": {}
           }
         }
       }
@@ -179,7 +185,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mds${SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": {
@@ -196,7 +202,7 @@
           }
         ],
         "selector": {
-          "name": "mds${NAME_SUFFIX}"
+          "name": "mds${SUFFIX}"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -206,7 +212,7 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds${NAME_SUFFIX}",
+        "name": "mds${SUFFIX}",
         "creationTimestamp": null,
         "labels": {
           "frontend": "true"
@@ -215,10 +221,10 @@
       },
       "spec": {
         "host": "${HOST}",
-        "path": "/mds",
+        "path": "/",
         "to": {
           "kind": "Service",
-          "name": "mds${NAME_SUFFIX}",
+          "name": "mds${SUFFIX}",
           "weight": 100
         },
         "port": {
