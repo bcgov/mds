@@ -82,7 +82,7 @@
                     "template.openshift.io/expose-database_name": "{.data['database-name']}",
                     "template.openshift.io/expose-password": "{.data['database-password']}",
                     "template.openshift.io/expose-username": "{.data['database-user']}",
-                    "as-copy-of": "template.${NAME}-secret"
+                    "as-copy-of": "template.mds-python-api-secret"
                 },
                 "name": "${DATABASE_SERVICE_NAME}"
             },
