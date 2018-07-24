@@ -297,7 +297,7 @@
         "labels": {
           "app": "${NAME}",
           "openshift.io/deployment-config.name": "${NAME}"
-        }
+        },
         "ownerReferences": [
           {
             "apiVersion": "apps.openshift.io/v1",
@@ -372,7 +372,7 @@
         "labels": {
           "app": "${NAME}",
           "openshift.io/deployment-config.name": "${NAME}"
-        }
+        },
         "ownerReferences": [
           {
             "apiVersion": "apps.openshift.io/v1",
