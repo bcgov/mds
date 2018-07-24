@@ -188,7 +188,7 @@
           "app": "${NAME}",
           "deployment": "${NAME}-2",
           "deploymentconfig": "${NAME}"
-        }
+        },
         "ownerReferences": [
           {
             "apiVersion": "v1",

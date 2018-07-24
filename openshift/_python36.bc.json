@@ -10,10 +10,10 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-python-api",
+        "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
-          "app": "mds-python-api"
+          "app": "${NAME}"
         }
       },
       "spec": {
@@ -48,7 +48,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "mds-python-api:latest"
+            "name": "${NAME}:latest"
           }
         },
         "resources": {},
@@ -63,19 +63,19 @@
       "kind": "Build",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-python-api-1",
+        "name": "${NAME}-1",
         "creationTimestamp": null,
         "labels": {
-          "app": "mds-python-api",
-          "buildconfig": "mds-python-api",
-          "openshift.io/build-config.name": "mds-python-api",
+          "app": "${NAME}",
+          "buildconfig": "${NAME}",
+          "openshift.io/build-config.name": "${NAME}",
           "openshift.io/build.start-policy": "Serial"
         },
         "ownerReferences": [
           {
             "apiVersion": "build.openshift.io/v1",
             "kind": "BuildConfig",
-            "name": "mds-python-api",
+            "name": "${NAME}",
             "uid": "7c300e4e-8f7f-11e8-8202-0050568348cc",
             "controller": true
           }
@@ -118,7 +118,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "mds-python-api:latest"
+            "name": "${NAME}:latest"
           },
           "pushSecret": {
             "name": "builder-dockercfg-87vp5"
@@ -143,9 +143,9 @@
       },
       "status": {
         "phase": "New",
-        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-api:latest",
+        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest",
         "config": {
-          "name": "mds-python-api"
+          "name": "${NAME}"
         },
         "output": {
           "to": {
@@ -208,11 +208,11 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-python-api",
+        "name": "${NAME}",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "mds-python-api"
+          "app": "${NAME}"
         }
       },
       "spec": {
@@ -224,7 +224,7 @@
             "name": "latest",
             "from": {
               "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/empr-mds-dev/mds-python-api:latest"
+              "name": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest"
             },
             "generation": null,
             "importPolicy": {},
