@@ -4,3 +4,6 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+python-backend/venv/
+python-backend/__pycache__/
+*.pyc
