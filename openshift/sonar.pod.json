@@ -1,0 +1,75 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "zap",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true,
+            "value": "sonnar-runner"
+        },
+        {
+            "name": "IMAGE",
+            "displayName": "Image Namespace",
+            "description": "Docker registry reference image",
+            "required": true
+        },
+        {
+            "name": "SONAR_HOST_URL",
+            "displayName": "SonarQube host",
+            "description": "SonarQube server",
+            "required": true,
+            "value": "https://sonarqube-empr-mds-tools.pathfinder.gov.bc.ca"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "creationTimestamp": null,
+                "labels": { }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "test",
+                        "image": "${IMAGE}",
+                        "command": [
+                            "container-entrypoint",
+                            "bash",
+                            "/opt/app-root/src/scripts/test.sh"
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "1024Mi"
+                            },
+                            "requests": {
+                                "cpu": "1",
+                                "memory": "1024Mi"
+                            }
+                        },
+                        "env": [
+                            {
+                                "name": "SONAR_HOST_URL",
+                                "value": "${SONAR_HOST_URL}"
+                            }
+                        ],
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "Never",
+                "activeDeadlineSeconds": 240,
+                "dnsPolicy": "ClusterFirst"
+            },
+            "status": {}
+        }
+    ]
+}

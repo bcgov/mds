@@ -1,1 +1,6 @@
 node_modules/
+.DS_Store
+.gradle/
+pipeline/build/
+coverage/
+.idea/

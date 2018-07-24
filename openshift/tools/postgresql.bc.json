@@ -1,0 +1,68 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgresql",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true
+        },
+        {
+            "name": "VERSION",
+            "displayName": "Name",
+            "description": "The output/built ImageStream tag names",
+            "required": true
+        },
+        {
+            "name": "RHSCL_PG_DOCKER_IMAGE",
+            "required": true,
+            "value": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-14"
+        },
+        {
+            "name": "RHSCL_PG_IMAGE_TAG",
+            "required": true,
+            "value": "9.6.1-14"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {
+                    "template.alpha.openshift.io/wait-for-ready": "true"
+                }
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                },
+                "tags":[
+                    {
+                        "name": "${VERSION}",
+                        "annotations": null,
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-14"
+                        },
+                        "generation": 1,
+                        "importPolicy": {},
+                        "referencePolicy": {
+                            "type": "Source"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

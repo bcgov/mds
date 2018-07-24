@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="/Users/cvarjao/Documents/GitHub/mds/backend/src/handleListen.test.js">
+        <testCase name="should call log with Example app..." duration="5"/>
+    </file>
+    <file path="/Users/cvarjao/Documents/GitHub/mds/backend/src/hello.test.js">
+        <testCase name="should call res.send with Hello World!" duration="5"/>
+    </file>
+</testExecutions>

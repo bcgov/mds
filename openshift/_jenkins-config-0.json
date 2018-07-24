@@ -1,0 +1,57 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "Jenkins - Config",
+      "annotations": {
+        "template.openshift.io/bindable": "false"
+      }
+    },
+    "objects": [
+      {
+        "kind": "PersistentVolumeClaim",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "jenkins-jobs-v1",
+            "creationTimestamp": null,
+            "labels": {
+              "app": "jenkins"
+            },
+            "annotations": {
+                "volume.beta.kubernetes.io/storage-class": "gluster-file",
+                "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+            }
+        },
+        "spec": {
+            "accessModes": [
+                "ReadWriteMany"
+            ],
+            "resources": {
+                "requests": {
+                    "storage": "10Gi"
+                }
+            }
+        },
+        "status": {}
+    },    
+    {
+        "kind": "Secret",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "github-credentials",
+            "creationTimestamp": null,
+            "labels": {
+              "app": "jenkins"
+            }
+        },
+        "data": {
+            "password": "",
+            "username": ""
+        },
+        "type": "kubernetes.io/basic-auth"
+    }
+    ],
+    "parameters": [
+    ]
+  }
+  

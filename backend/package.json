@@ -1,0 +1,45 @@
+{
+  "name": "node-echo",
+  "version": "0.0.1",
+  "description": "node-echo",
+  "main": "server.js",
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.7.0",
+    "jest": "^22.1.4",
+    "jest-sonar-reporter": "^2.0.0",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint src/**",
+    "test": "jest src",
+    "coverage": "jest --collectCoverageFrom=src/**.js --collectCoverageFrom=!src/index.js --coverage src"
+  },
+  "jest": {
+    "testResultsProcessor": "jest-sonar-reporter"
+  },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bettiolo/node-echo.git"
+  },
+  "keywords": [
+    "Echo"
+  ],
+  "author": "Marco Bettiolo <marco@bettiolo.it>",
+  "license": "",
+  "bugs": {
+    "url": "http://github.com/bettiolo/node-echo/issues"
+  },
+  "homepage": "http://apilb.com"
+}

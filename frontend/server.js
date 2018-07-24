@@ -16,7 +16,7 @@ var server = http.createServer(function (req, res) {
 	req.on('end', function () {
 		var formattedBody = qs.parse(body);
 
-		res.writeHead(200, {'Content-Type': 'text/plain'});
+		res.writeHead(200, {'Content-Type': 'text/plain', 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'X-Content-Type-Options': 'nosniff'});
 
 		res.write('This is a node.js echo service\n');
 		res.write('Host: ' + req.headers.host + '\n');

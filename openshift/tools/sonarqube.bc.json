@@ -1,0 +1,191 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "sonarqube",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true
+        },
+        {
+            "name": "NAME_SUFFIX",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "VERSION",
+            "displayName": "Name",
+            "description": "The output/built ImageStream tag names",
+            "required": true
+        },
+        {
+            "name": "SONARQUBE_DOCKER_IMAGE",
+            "required": true,
+            "value": "docker-registry.default.svc:5000/openshift/sonarqube:6.7.1"
+        },
+        {
+            "name": "SONARQUBE_IMAGE_TAG",
+            "required": true,
+            "value": "6.7.1"
+        },
+        {
+            "name": "SOURCE_REPOSITORY_URL",
+            "required": true
+        },
+        {
+            "name": "SOURCE_REPOSITORY_REF",
+            "required": false,
+            "value": "master"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {}
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                },
+                "tags":[
+                    {
+                        "name": "${VERSION}",
+                        "annotations": {
+                            "sourve": "openshift/sonarqube:6.7.1"
+                        },
+                        "from": {
+                            "kind": "ImageStreamImage",
+                            "namespace": "openshift",
+                            "name": "sonarqube@sha256:6f42c766e3db030f154f1ebca7188191a3717990537e0c7dc08bf0a680d4b1f1"
+                        },
+                        "generation": 1,
+                        "importPolicy": {},
+                        "referencePolicy": {
+                            "type": "Source"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "rhel",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {}
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                },
+                "tags":[
+                    {
+                        "name": "7.5-409",
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/rhel7:7.5-409"
+                        },
+                        "importPolicy": {},
+                        "referencePolicy": {
+                            "type": "Source"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}-client",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {}
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}${NAME_SUFFIX}-client",
+                "creationTimestamp": null,
+                "labels": { },
+                "annotations": { }
+            },
+            "spec": {
+                "completionDeadlineSeconds": 1440,
+                "successfulBuildsHistoryLimit": 3,
+                "failedBuildsHistoryLimit": 3,
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "runPolicy": "SerialLatestOnly",
+                "source": {
+                    "contextDir": "openshift/tools/image-sonar-scanner",
+                    "git": {
+                        "ref": "${SOURCE_REPOSITORY_REF}",
+                        "uri": "${SOURCE_REPOSITORY_URL}"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "rhel:7.5-409"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "${NAME}${NAME_SUFFIX}-client:${VERSION}"
+                    }
+                },
+                "resources": {
+                    "limits": {
+                        "cpu": "2",
+                        "memory": "1Gi"
+                    },
+                    "requests": {
+                        "cpu": "1",
+                        "memory": "1Gi"
+                    }
+                },
+                "postCommit": {},
+                "nodeSelector": null
+            }
+        }
+    ]
+}
