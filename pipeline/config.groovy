@@ -59,7 +59,7 @@ app {
                 [
                     'file':'openshift/_python36.bc.json',
                     'params':[
-                            'NAME_SUFFIX':"mds-python-backend",
+                            'NAME':"mds-python-backend",
                             'OUTPUT_TAG_NAME':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "python-backend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
@@ -113,7 +113,7 @@ app {
                 [
                     'file':'openshift/_python36.dc.json',
                     'params':[
-                            'NAME_SUFFIX':"mds-python-backend",
+                            'NAME':"mds-python-backend",
                             'BUILD_ENV_NAME':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'ENV_NAME': "DEV"
