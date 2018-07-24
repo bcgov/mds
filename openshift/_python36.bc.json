@@ -10,10 +10,10 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
@@ -48,7 +48,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}:latest"
+            "name": "python-web-api:latest"
           }
         },
         "resources": {},
@@ -63,19 +63,19 @@
       "kind": "Build",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-1",
+        "name": "python-web-api-1",
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}",
-          "buildconfig": "${NAME}",
-          "openshift.io/build-config.name": "${NAME}",
+          "app": "python-web-api",
+          "buildconfig": "python-web-api",
+          "openshift.io/build-config.name": "python-web-api",
           "openshift.io/build.start-policy": "Serial"
         },
         "ownerReferences": [
           {
             "apiVersion": "build.openshift.io/v1",
             "kind": "BuildConfig",
-            "name": "${NAME}",
+            "name": "python-web-api",
             "uid": "7c300e4e-8f7f-11e8-8202-0050568348cc",
             "controller": true
           }
@@ -118,7 +118,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}:latest"
+            "name": "python-web-api:latest"
           },
           "pushSecret": {
             "name": "builder-dockercfg-87vp5"
@@ -143,9 +143,9 @@
       },
       "status": {
         "phase": "New",
-        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest",
+        "outputDockerImageReference": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api:latest",
         "config": {
-          "name": "${NAME}"
+          "name": "python-web-api"
         },
         "output": {
           "to": {
@@ -208,11 +208,11 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "python-web-api",
         "generation": 1,
         "creationTimestamp": null,
         "labels": {
-          "app": "${NAME}"
+          "app": "python-web-api"
         }
       },
       "spec": {
@@ -224,7 +224,7 @@
             "name": "latest",
             "from": {
               "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/empr-mds-dev/${NAME}:latest"
+              "name": "docker-registry.default.svc:5000/empr-mds-dev/python-web-api:latest"
             },
             "generation": null,
             "importPolicy": {},
