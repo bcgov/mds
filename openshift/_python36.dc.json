@@ -19,6 +19,12 @@
       "required": true
     },
     {
+      "name": "DB_CONFIG_NAME",
+      "displayName": "Database Config Name",
+      "description": "Configuration name for the database",
+      "required": true
+    },
+    {
       "name": "VERSION",
       "required": true
     },
@@ -112,8 +118,39 @@
                 ],
                 "env": [
                   {
-                    "name": "SAMPLE_ENV_VAR",
-                    "value": "VALUE"
+                    "name": "DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_HOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "DB_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
                   }
                 ],
                 "resources": {

@@ -6,11 +6,16 @@ from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 
-# DB_URL = 'postgresql://test:test@postgres:5432/testdb'
+DB_HOST = os.environ['DB_HOST']
+DB_USER = os.environ['DB_USER']
+DB_PASS = os.environ['DB_PASS']
+DB_PORT = os.environ['DB_PORT']
+DB_NAME = os.environ['DB_NAME']
+DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 db = SQLAlchemy(app)
 api = Api(app)
 cors = CORS(app)
@@ -19,7 +24,7 @@ cors = CORS(app)
 class Hello(Resource):
     def get(self):
         try:
-            # db.engine.connect()
+            db.engine.connect()
             return {'msg': 'hello world!'}
         except:
             return {'error': 'Cannot establish connection to db'}
