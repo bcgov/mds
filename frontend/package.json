@@ -66,9 +66,9 @@
     "puppeteer": "^1.4.0"
   },
   "scripts": {
-    "start": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --env development",
+    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --env development",
     "build": "webpack --env production",
-    "serve": "node server.js",
+    "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
     "lint": "eslint .",
     "test": "jest --env=jsdom",
