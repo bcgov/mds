@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-web-api",
+    "name": "mds-frontend-bc",
     "annotations": {
       "template.openshift.io/bindable": "false"
     }
