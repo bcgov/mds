@@ -1,8 +1,3 @@
-[garywong@nc070317 ddl (mds-8-sql-mine-record)]$ psql 
-psql: FATAL:  database "garywong" does not exist
-[garywong@nc070317 ddl (mds-8-sql-mine-record)]$ psql -d postgres
-psql (10.4)
-Type "help" for help.
 
 postgres=# CREATE DATABASE mds;
 CREATE DATABASE
@@ -11,12 +6,9 @@ CREATE ROLE
 postgres=# GRANT ALL PRIVILEGES ON DATABASE mds TO mds;
 GRANT
 
-
-
 [garywong@nc070317 ddl (mds-8-sql-mine-record)]$ psql -d mds
 postgres=# CREATE EXTENSION pgcrypto;
 CREATE EXTENSION
-
 
 [garywong@nc070317 ddl (mds-8-sql-mine-record)]$ psql -d mds -U mds
 
@@ -31,7 +23,6 @@ CREATE TABLE mine (
 
 mds=> insert into mine (mine_guid) values (gen_random_uuid());
 INSERT 0 1
-
 
 DROP TABLE IF EXISTS mine_core;
 
@@ -48,8 +39,6 @@ FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED
 CONSTRAINT mine_no_uk  UNIQUE (mine_no)
 );
 
-
 insert into mine_core (mine_guid, mine_no, mine_name)
 select m.mine_guid, 'XXXXXXXXXX', 'Gary''s Fancy Hole in the Ground'
 from mine m;
-
