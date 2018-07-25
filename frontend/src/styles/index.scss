@@ -1,0 +1,19 @@
+// ITCSS file structure, layers include: (Settings, Tools, Generic, Elements, Objects, Components, Utilities)
+// most stying will be found in the Components and Objects folder.
+
+// SETTINGS - Used with preprocessors. Global settings that contain font, colors definitions, etc.
+@import './settings/variables.scss';
+@import './settings/theme.scss';
+// TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
+@import './tools/mixins.scss';
+// GENERIC - Very high level, far-reacing styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
+@import './generic/Normalize.scss';
+// ELEMENTS - Bare, unclassed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
+// OBJECTS - layouts (CSS Grid or flexbox)
+@import './objects/actions.scss';
+// COMPONENTS - specific UI components.
+// UTILITES - utilities and helper classes. This layer has the highest specificity.
+@import './App.scss';
+
+
+

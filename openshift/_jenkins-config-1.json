@@ -1,0 +1,26 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "Jenkins - Config",
+      "annotations": {
+        "template.openshift.io/bindable": "false"
+      }
+    },
+    "objects": [
+      {
+        "kind": "ConfigMap",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "jenkins",
+            "creationTimestamp": null
+        },
+        "data": {
+            "config": "{\n    \"init.url\": [\n        \"https://raw.githubusercontent.com/BCDevOps/openshift-components/jenkins-installer-helper/cicd/jenkins/scripts/init-00.groovy\",\n        \"https://raw.githubusercontent.com/BCDevOps/openshift-components/jenkins-installer-helper/cicd/jenkins/scripts/init-01.groovy\"\n    ],\n    \"projects\":{\n        \"mds\":{\n            \"template\":{\n                \"source\": \"https://raw.githubusercontent.com/BCDevOps/openshift-components/master/cicd/jenkins/templates/workflow-multibranch.template.xml\",\n                \"parameters\":[\n                    {\"name\":\"REPO_OWNER\", \"value\":\"bcgov\"},\n                    {\"name\":\"REPO_NAME\", \"value\":\"mds\"}\n                ]\n            }\n        }\n    },\n    \"github-account.secret.name\": \"github-credentials\",\n    \"globalLibraries\":[\n        {\n            \"name\": \"bcdevops-jenkins-shared-library\",\n            \"scm\": {\n                \"url\": \"https://github.com/BCDevOps/jenkins-pipeline-shared-lib.git\"\n            },\n            \"defaultVersion\": \"bcgov/develop\",\n            \"implicit\": true,\n            \"allowVersionOverride\": true,\n            \"includeInChangesets\": true\n        }\n    ]\n}"
+        }
+      }
+    ],
+    "parameters": [
+    ]
+  }
+  

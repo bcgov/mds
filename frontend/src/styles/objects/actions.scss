@@ -1,0 +1,5 @@
+// actions.scss contains reusable button and link styling
+
+.btn-center {
+  @include center(true, true);
+}

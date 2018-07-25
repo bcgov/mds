@@ -1,0 +1,92 @@
+{
+  "name": "freshworks-react-boilerplate",
+  "version": "0.1.0",
+  "description": "Boilerplate for React.js projects",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.7.0",
+    "axios": "^0.18.0",
+    "axios-mock-adapter": "^1.15.0",
+    "express": "^4.16.3",
+    "less-loader": "^4.1.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.5.3",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "antd-scss-theme-plugin": "^1.0.6",
+    "autoprefixer": "^8.5.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-import": "^1.8.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "compression-webpack-plugin": "^1.1.11",
+    "copy-webpack-plugin": "^4.5.1",
+    "cross-env": "^5.1.5",
+    "css-loader": "^0.28.11",
+    "cssnano": "^3.10.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^21.17.0",
+    "eslint-plugin-react": "^7.8.2",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "3.6.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "node-sass": "^4.9.0",
+    "nodemon": "^1.17.4",
+    "optimize-css-assets-webpack-plugin": "^4.0.1",
+    "postcss-loader": "^2.1.5",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.8.0",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-manifest-plugin": "^2.0.3",
+    "webpack-merge": "^4.1.2"
+  },
+  "optionalDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.4.3",
+    "jest-junit": "^3.7.0",
+    "puppeteer": "^1.4.0"
+  },
+  "scripts": {
+    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --env development",
+    "build": "webpack --env production",
+    "start": "node server.js",
+    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
+    "lint": "eslint .",
+    "test": "jest --env=jsdom",
+    "test:watch": "jest --env=jsdom --watch",
+    "test:coverage": "jest --env=jsdom --coverage --testResultsProcessor=jest-junit"
+  },
+  "jest": {
+    "setupFiles": [
+      "./src/setupTests.js"
+    ],
+    "collectCoverageFrom": [
+      "**/src/**/*.js"
+    ]
+  },
+  "jest-junit": {
+    "output": "./coverage/tests-report.xml"
+  },
+  "browserslist": [
+    "> 0.1%"
+  ]
+}

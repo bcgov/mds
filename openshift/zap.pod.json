@@ -1,0 +1,73 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "zap",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true,
+            "value": "zap"
+        },
+        {
+            "name": "APP",
+            "displayName": "APP",
+            "description": "A name used for all objects",
+            "required": true,
+            "value": "zap"
+        },
+        {
+            "name": "URL",
+            "displayName": "The URL",
+            "description": "A suffix appended to all objects",
+            "required": true,
+            "value": "https://gwells-test.pathfinder.gov.bc.ca/gwells/"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "run": "zap",
+                    "app": "${APP}"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "zap",
+                        "image": "172.50.0.2:5000/openshift/jenkins-slave-zap",
+                        "command": [
+                            "/bin/bash",
+                            "-c",
+                            "export HOME=/home/jenkins; source /usr/local/bin/generate_container_user; source /usr/local/bin/configure-slave; /zap/zap-baseline.py -t ${URL}"
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "1024Mi"
+                            },
+                            "requests": {
+                                "cpu": "1",
+                                "memory": "1024Mi"
+                            }
+                        },
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "restartPolicy": "Never",
+                "activeDeadlineSeconds": 240,
+                "dnsPolicy": "ClusterFirst"
+            },
+            "status": {}
+        }
+    ]
+}

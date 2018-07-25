@@ -1,0 +1,66 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {
+        "annotations": {
+            "description": "Grants 'serviceaccount:jenkins' 'edit' access to all other projects (dev, test, prod)"
+        }
+    },
+    "items": [
+        {
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-dev"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        },{
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-test"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        },{
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-prod"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        }
+    ]
+}
