@@ -1,0 +1,135 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "Jenkins",
+      "annotations": {
+        "template.openshift.io/bindable": "false"
+      }
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true
+        },
+        {
+            "name": "NAME_SUFFIX",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "VERSION",
+            "displayName": "Name",
+            "description": "The output/built ImageStream tag names",
+            "required": true
+        }
+    ],
+    "objects": [
+      {
+        "kind": "ImageStream",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "jenkins-2-rhel7",
+            "generation": 1,
+            "creationTimestamp": null,
+            "annotations": {
+            }
+        },
+        "spec": {
+            "lookupPolicy": {
+                "local": false
+            },
+            "tags": [
+                {
+                    "name": "v3.9.33-3",
+                    "annotations": null,
+                    "from": {
+                        "kind": "DockerImage",
+                        "name": "registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.9.33-3"
+                    },
+                    "generation": 1,
+                    "importPolicy": {},
+                    "referencePolicy": {
+                        "type": "Source"
+                    }
+                }
+            ]
+        }
+    },    
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "${NAME}",
+          "generation": 1,
+          "creationTimestamp": null,
+          "labels": { },
+          "annotations": {
+              "openshift.io/generated-by": "OpenShiftNewBuild"
+          }
+      },
+      "spec": {
+          "lookupPolicy": {
+              "local": false
+          },
+          "tags": [
+          ]
+      }
+    },    
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "${NAME}${NAME_SUFFIX}",
+          "creationTimestamp": null,
+          "labels": { },
+          "annotations": {
+              "openshift.io/generated-by": "OpenShiftNewBuild"
+          }
+      },
+      "spec": {
+          "triggers": [
+              {
+                  "type": "ConfigChange"
+              },
+              {
+                  "type": "ImageChange",
+                  "imageChange": {}
+              }
+          ],
+          "runPolicy": "Serial",
+          "source": {
+              "type": "Git",
+              "git": {
+                  "uri": "https://github.com/BCDevOps/openshift-components.git"
+              },
+              "contextDir": "cicd/jenkins"
+          },
+          "strategy": {
+              "type": "Source",
+              "sourceStrategy": {
+                  "from": {
+                      "kind": "ImageStreamTag",
+                      "name": "jenkins-2-rhel7:v3.9.33-3"
+                  }
+              }
+          },
+          "output": {
+              "to": {
+                  "kind": "ImageStreamTag",
+                  "name": "${NAME}:${VERSION}"
+              }
+          },
+          "resources": {},
+          "postCommit": {},
+          "nodeSelector": null,
+          "successfulBuildsHistoryLimit": 2,
+          "failedBuildsHistoryLimit": 2
+      }
+    }
+    ]
+  }
+  

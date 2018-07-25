@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.gradle/
+pipeline/build/
+coverage/
+.idea/
+python-backend/venv/
+python-backend/__pycache__/
+*.pyc

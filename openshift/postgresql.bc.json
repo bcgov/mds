@@ -1,0 +1,155 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgresql",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": true
+        },
+        {
+            "name": "NAME_SUFFIX",
+            "displayName": "Name Suffix",
+            "description": "A suffix appended to all objects",
+            "required": true
+        },
+        {
+            "name": "SOURCE_REPOSITORY_URL",
+            "required": true
+        },
+        {
+            "name": "SOURCE_REPOSITORY_REF",
+            "required": false,
+            "value": "master"
+        },
+        {
+            "name": "TAG_NAME",
+            "required": true
+        },
+        {
+            "name": "RHSCL_PG_DOCKER_IMAGE",
+            "required": true,
+            "value": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-14"
+        },
+        {
+            "name": "RHSCL_PG_IMAGE_TAG",
+            "required": true,
+            "value": "9.6.1-14"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "rhscl-postgresql",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {}
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                },
+                "tags":[
+                    {
+                        "name": "${RHSCL_PG_IMAGE_TAG}",
+                        "annotations": null,
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "${RHSCL_PG_DOCKER_IMAGE}"
+                        },
+                        "generation": 1,
+                        "importPolicy": {},
+                        "referencePolicy": {
+                            "type": "Source"
+                        }
+                    }
+                ]
+            }
+        },{
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "shared": "true"
+                },
+                "annotations": {}
+            },  
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}${NAME_SUFFIX}",
+                "creationTimestamp": null,
+                "labels": { },
+                "annotations": { }
+            },
+            "spec": {
+                "completionDeadlineSeconds": 1440,
+                "successfulBuildsHistoryLimit": 3,
+                "failedBuildsHistoryLimit": 3,
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "runPolicy": "SerialLatestOnly",
+                "source": {
+                    "contextDir": "database",
+                    "git": {
+                        "ref": "${SOURCE_REPOSITORY_REF}",
+                        "uri": "${SOURCE_REPOSITORY_URL}"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "rhscl-postgresql:${RHSCL_PG_IMAGE_TAG}"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "${NAME}:${TAG_NAME}"
+                    }
+                },
+                "resources": {
+                    "limits": {
+                        "cpu": "2",
+                        "memory": "8Gi"
+                    },
+                    "requests": {
+                        "cpu": "1",
+                        "memory": "4Gi"
+                    }
+                },
+                "postCommit": {},
+                "nodeSelector": null
+            }
+        }
+    ]
+}
