@@ -47,24 +47,14 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/_nodejs.bc.json',
+                    'file':'openshift/_python36.bc.json',
                     'params':[
-                        'NAME':"mds-backend",
-                        'SUFFIX': "${app.build.suffix}",
-                        'OUTPUT_TAG_NAME':"${app.build.version}",
-                        'SOURCE_CONTEXT_DIR': "backend",
-                        'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                            'NAME':"mds-python-backend",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "python-backend",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
-                ],
-                [
-                        'file':'openshift/_python36.bc.json',
-                        'params':[
-                                'NAME':"mds-python-backend",
-                                'SUFFIX': "${app.build.suffix}",
-                                'VERSION':"${app.build.version}",
-                                'SOURCE_CONTEXT_DIR': "python-backend",
-                                'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                        ]
                 ],
                 [
                     'file':'openshift/_nodejs.bc.json',
@@ -101,15 +91,6 @@ app {
         namespace = "${vars.deployment.namespace}"
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
-                [
-                    'file':'openshift/_nodejs.dc.json',
-                    'params':[
-                        'NAME':"mds-backend",
-                        'SUFFIX': "${app.deployment.suffix}",
-                        'TAG_NAME':"${app.deployment.version}",
-                        'APPLICATION_DOMAIN': "${vars.modules.'mds-backend'.HOST}"
-                    ]
-                ],
                 [
                     'file':'openshift/_python36.dc.json',
                     'params':[
@@ -149,9 +130,7 @@ app {
 vars {
     DB_PVC_SIZE = '1Gi'
     modules {
-        'mds-backend' {
-            HOST = "mds-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-        }
+
     }
 }
 
@@ -170,9 +149,6 @@ environments {
                 namespace = 'empr-mds-dev'
             }
             modules {
-                'mds-backend' {
-                    HOST = "mds-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }

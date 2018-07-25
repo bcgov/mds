@@ -38,7 +38,7 @@ if (opt?.h) {
 def config = OpenShiftHelper.loadBuildConfig(opt)
 
 
-def deploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name}",'-l',"component=mds-backend", "--namespace=${config.app.build.namespace}"])
+def deploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name}",'-l',"component=mds-python-backend", "--namespace=${config.app.build.namespace}"])
 
 deploymentConfigs.items.each {Map object ->
     println "Running TEST for ${OpenShiftHelper.guid(object)}"
