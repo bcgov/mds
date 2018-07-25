@@ -150,7 +150,7 @@
             "env": [
               {
                 "name": "PYTHON_REQUIREMENTS_URL",
-                "value": "https://raw.githubusercontent.com/cvarjao/mds/41fa7f7e5a69a27a285354275c620523719173d0/python-backend/requirements.txt"
+                "value": "https://raw.githubusercontent.com/cvarjao/mds/8195e102378fdbd4133294f980d950c85e772014/python-backend/requirements.txt"
               }
             ]
           }

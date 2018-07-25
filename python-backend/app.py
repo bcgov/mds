@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+# app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 db = SQLAlchemy(app)
 api = Api(app)
 cors = CORS(app)
