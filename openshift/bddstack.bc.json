@@ -112,6 +112,16 @@
             "type": "ConfigChange"
           }
         ],
+        "source": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "jenkins-slave-bddstack:latest"
+            }
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
         "runPolicy": "SerialLatestOnly",
         "strategy": {
           "type": "Docker",
