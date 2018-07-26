@@ -100,6 +100,15 @@
         "annotations": { }
       },
       "spec": {
+        "source": {
+          "type": "Image",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "jenkins-slave-bddstack:latest"
+            }
+          }
+        },
         "completionDeadlineSeconds": 1440,
         "successfulBuildsHistoryLimit": 3,
         "failedBuildsHistoryLimit": 3,
@@ -112,16 +121,6 @@
             "type": "ConfigChange"
           }
         ],
-        "source": {
-          "type": "Dockerfile",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack:latest"
-            }
-          },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
-        },
         "runPolicy": "SerialLatestOnly",
         "strategy": {
           "type": "Docker",
