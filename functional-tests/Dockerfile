@@ -1,11 +1,7 @@
 FROM openshift/jenkins-slave-bddstack
 
-USER root
+RUN mkdir bdd-tests
 
-COPY . /var/bdd-tests/
+COPY . ./bdd-tests/
 
-RUN chmod -R 777 /var/bdd-tests/
-
-RUN ls -la
-
-USER 1001
+RUN chmod -R 777 bdd-tests
