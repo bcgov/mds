@@ -90,7 +90,7 @@
         },
         "strategy": {
           "type": "Docker",
-          "sourceStrategy": {
+          "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
               "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack:latest"
