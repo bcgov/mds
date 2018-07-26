@@ -112,15 +112,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/bddstack.dc.json',
-                    'params':[
-                            'NAME':"bdd-stack",
-                            'SUFFIX': "${app.deployment.suffix}",
-                            'VERSION':"${app.deployment.version}",
-                            'HOST': "${vars.modules.'bdd-stack'.HOST}"
-                    ]
-                ],
-                [
                     'file':'openshift/_nodejs.dc.json',
                     'params':[
                         'NAME':"mds-frontend",

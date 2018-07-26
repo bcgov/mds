@@ -1,0 +1,78 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "bdd-stack-dc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name for all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "URL",
+      "description": "URL of the application to run tests against",
+      "required": true
+    }
+  ],
+  "objects": [
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "run": "bdd-test"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "bdd-test",
+            "image": "${NAME}:${VERSION}",
+            "command": [
+              "/bin/bash",
+              "-c",
+              "echo 'Im alive'"
+            ],
+            "env": [
+              {
+                "name": "BASEURL",
+                "value": "${URL}"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "2Gi"
+              },
+              "requests": {
+                "cpu": "1",
+                "memory": "1Gi"
+              }
+            },
+            "imagePullPolicy": "IfNotPresent"
+          }
+        ],
+        "restartPolicy": "Never",
+        "activeDeadlineSeconds": 240,
+        "dnsPolicy": "ClusterFirst"
+      },
+      "status": {}
+    }
+  ]
+}

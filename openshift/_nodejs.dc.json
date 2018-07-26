@@ -48,7 +48,10 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}"
+        "name": "${NAME}${SUFFIX}",
+        "labels": {
+          "component": "${NAME}"
+        }
       },
       "spec": {
         "host": "${APPLICATION_DOMAIN}",
