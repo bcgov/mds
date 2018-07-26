@@ -117,7 +117,7 @@
             "uri": "${SOURCE_REPOSITORY_URL}",
             "ref": "${SOURCE_REPOSITORY_REF}"
           },
-          "contextDir": "docker-images/bdd-stack"
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
           "type": "Docker",
