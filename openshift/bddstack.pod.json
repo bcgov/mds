@@ -65,7 +65,7 @@
                 "memory": "1Gi"
               }
             },
-            "imagePullPolicy": "IfNotPresent"
+            "imagePullPolicy": "Always"
           }
         ],
         "restartPolicy": "Never",

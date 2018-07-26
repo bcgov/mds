@@ -42,7 +42,7 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "URLs found:  ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'APP=${appLabel}' -p 'NAME=${route.metadata.name}' -p 'URL=${routeUrl}' -p 'SUFFIX=${config.app.deployment.suffix}' -p 'VERSION=${config.app.deployment.version}' --namespace=${route.metadata.namespace} |  oc replace -f - --namespace=${route.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='empr-mds-tools' |  oc replace -f - --namespace='empr-mds-tools' --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
