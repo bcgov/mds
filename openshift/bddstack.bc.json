@@ -41,39 +41,6 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "jenkins-slave-bddstack",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "BDD-stack Base Image"
-        },
-        "labels": {
-          "shared": "true"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[
-          {
-            "name": "latest",
-            "annotations": null,
-            "from": {
-              "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack:latest"
-            },
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Source"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -122,11 +89,11 @@
           "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
-          "type": "Source",
+          "type": "Docker",
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}-base:${VERSION}"
+              "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack:latest"
             }
           }
         },
