@@ -23,6 +23,10 @@
       "required": true
     },
     {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
       "name": "SOURCE_REPOSITORY_URL",
       "required": true
     },
