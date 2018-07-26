@@ -56,11 +56,11 @@
         },
         "tags":[
           {
-            "name": "3.6.1-21",
+            "name": "latest",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack"
+              "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -118,7 +118,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack"
+              "name": "jenkins-slave-bddstack:latest"
             }
           }
         },
