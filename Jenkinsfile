@@ -17,28 +17,26 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
-        stage('Test and Deploy to Dev') {
-            parallel {
-                stage('Quality Control') {
-                    agent { label 'master' }
-                    steps {
-                        echo "Quality Control ..."
-                        sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-                    }
-                }
-                stage('Deploy (DEV)') {
-                    agent { label 'master' }
-                    /*input {
-                        message "Should we continue with deployment to DEV?"
-                        ok "Yes!"
-                    }*/
-                    steps {
-                        echo "Deploy (DEV) ..."
-                        sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-                    }
-                }
-             }
+        stage('Deploy (DEV)') {
+            agent { label 'master' }
+            /*input {
+                message "Should we continue with deployment to DEV?"
+                ok "Yes!"
+            }*/
+            steps {
+                echo "Deploy (DEV) ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
         }
+
+        stage('Quality Control') {
+            agent { label 'master' }
+            steps {
+                echo "Quality Control ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
+        }
+
         stage ('ZAP (DEV)'){
             agent { label 'master' }
             steps{

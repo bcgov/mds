@@ -1,0 +1,205 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "bdd-stack-bc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "jenkins-slave-bddstack",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "BDD-stack Base Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags":[
+          {
+            "name": "3.6.1-21",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "docker-registry.default.svc:5000/openshift/jenkins-slave-bddstack"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags":[ ]
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": { },
+        "annotations": { }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 1440,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "jenkins-slave-bddstack"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "2.5Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "2Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Defines how to build the application"
+        }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 600,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "${NAME}-base:${VERSION}"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "2.5Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "2Gi"
+          }
+        },
+        "nodeSelector": null
+      }
+    }
+  ]
+}
