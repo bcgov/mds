@@ -21,6 +21,10 @@
     {
       "name": "VERSION",
       "required": true
+    },
+    {
+      "name": "HOST",
+      "required": false
     }
   ],
   "objects": [

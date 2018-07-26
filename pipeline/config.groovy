@@ -62,7 +62,6 @@ app {
                             'NAME':"bdd-stack",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "functional-tests",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],

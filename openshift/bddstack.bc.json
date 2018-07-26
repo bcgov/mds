@@ -23,10 +23,6 @@
       "required": true
     },
     {
-      "name": "SOURCE_CONTEXT_DIR",
-      "required": true
-    },
-    {
       "name": "SOURCE_REPOSITORY_URL",
       "required": true
     },
@@ -37,6 +33,37 @@
     }
   ],
   "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "jenkins-slave-bddstack",
+        "namespace": "openshift",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Bddstack base image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "tags":[
+          {
+            "name": "latest",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "openshift/jenkins-slave-bddstack"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
@@ -86,16 +113,14 @@
             "uri": "${SOURCE_REPOSITORY_URL}",
             "ref": "${SOURCE_REPOSITORY_REF}"
           },
-          "contextDir": "${SOURCE_CONTEXT_DIR}",
-          "dockerfile": "FROM openshift/jenkins-slave-bddstack"
+          "contextDir": "docker-images/bdd-stack"
         },
         "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
+          "type": "Docker",
+          "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack:latest",
-              "namespace": "openshift"
+              "name": "jenkins-slave-bddstack:latest"
             }
           }
         },
