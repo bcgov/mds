@@ -94,67 +94,6 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-base${SUFFIX}",
-        "creationTimestamp": null,
-        "labels": { },
-        "annotations": { }
-      },
-      "spec": {
-        "source": {
-          "type": "Image",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack:latest"
-            }
-          }
-        },
-        "completionDeadlineSeconds": 1440,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChange": {}
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "runPolicy": "SerialLatestOnly",
-        "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack:latest"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}-base:${VERSION}"
-          }
-        },
-        "resources": {
-          "limits": {
-            "cpu": "1",
-            "memory": "2.5Gi"
-          },
-          "requests": {
-            "cpu": "1",
-            "memory": "2Gi"
-          }
-        },
-        "postCommit": {},
-        "nodeSelector": null
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
         "name": "${NAME}${SUFFIX}",
         "creationTimestamp": null,
         "annotations": {
