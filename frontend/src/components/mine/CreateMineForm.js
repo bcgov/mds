@@ -11,14 +11,16 @@ export class CreateMineForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createMineRecord();
+    const mineName = this.refs.mineName.input.value;
+    this.props.createMineRecord(mineName);
+    // this.refs.createMineForm.reset();
   }
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form ref="createMineForm" onSubmit={this.handleSubmit}>
         <FormItem>
-          <Input></Input>
+          <Input type="text" ref="mineName" placeholder="Mine Name"></Input>
           <Button type="primary" htmlType="submit">
             Create Mine
           </Button>
