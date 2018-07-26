@@ -86,11 +86,12 @@
             "uri": "${SOURCE_REPOSITORY_URL}",
             "ref": "${SOURCE_REPOSITORY_REF}"
           },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
+          "contextDir": "${SOURCE_CONTEXT_DIR}",
+          "dockerfile": "FROM openshift/jenkins-slave-bddstack"
         },
         "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
+          "type": "Source",
+          "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
               "name": "jenkins-slave-bddstack:latest"
