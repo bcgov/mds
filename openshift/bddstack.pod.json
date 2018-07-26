@@ -43,11 +43,11 @@
         "containers": [
           {
             "name": "bdd-test",
-            "image": "${NAME}:${VERSION}",
+            "image": "docker-registry.default.svc:5000/empr-mds-tools/${NAME}:${VERSION}",
             "command": [
               "/bin/bash",
               "-c",
-              "echo 'Im alive'"
+              "tail -f /dev/null"
             ],
             "env": [
               {
@@ -65,7 +65,7 @@
                 "memory": "1Gi"
               }
             },
-            "imagePullPolicy": "Always"
+            "imagePullPolicy": "IfNotPresent"
           }
         ],
         "restartPolicy": "Never",
