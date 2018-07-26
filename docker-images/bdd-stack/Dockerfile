@@ -1,9 +1,9 @@
 FROM openshift/jenkins-slave-bddstack
 
-RUN mkdir -p /var/bdd-tests
+USER root
 
-WORKDIR /var/bdd-tests
+COPY ../functional-tests /var/bdd-tests/
 
-COPY ../functional-tests /
+RUN chown -R 1001 /var/bdd-tests/
 
-ENTRYPOINT bash
+USER 1001

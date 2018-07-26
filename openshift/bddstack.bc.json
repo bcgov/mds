@@ -38,7 +38,6 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "jenkins-slave-bddstack",
-        "namespace": "openshift",
         "creationTimestamp": null,
         "annotations": {
           "description": "Bddstack base image"
@@ -53,8 +52,9 @@
             "name": "latest",
             "annotations": null,
             "from": {
-              "kind": "DockerImage",
-              "name": "openshift/jenkins-slave-bddstack"
+              "kind": "ImageStreamImage",
+              "namespace": "openshift",
+              "name": "jenkins-slave-bddstack@sha256:16af7a0284bc3b6facd39b1722e85bc1447bb073e65bc7a0eac6063c402b669f"
             },
             "importPolicy": {},
             "referencePolicy": {
