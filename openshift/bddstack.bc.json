@@ -94,7 +94,8 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-slave-bddstack:latest"
+              "name": "jenkins-slave-bddstack:latest",
+              "namespace": "openshift"
             }
           }
         },
