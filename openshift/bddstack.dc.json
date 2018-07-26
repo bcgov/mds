@@ -63,7 +63,7 @@
         "strategy": {
           "type": "Recreate",
           "recreateParams": {
-            "timeoutSeconds": 180
+            "timeoutSeconds": 300
           },
           "resources": {},
           "activeDeadlineSeconds": 21600
@@ -130,57 +130,6 @@
             "securityContext": {}
           }
         }
-      }
-    },
-    {
-      "kind": "Service",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null,
-        "labels": null,
-        "annotations": {
-          "description": "Exposes and load balances the application pods"
-        }
-      },
-      "spec": {
-        "ports": [
-          {
-            "name": "web",
-            "protocol": "TCP",
-            "port": 80,
-            "targetPort": 80
-          }
-        ],
-        "selector": {
-          "name": "${NAME}${SUFFIX}"
-        },
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
-      },
-      "spec": {
-        "host": "${HOST}",
-        "path": "/",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
       }
     }
   ]
