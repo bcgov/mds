@@ -39,13 +39,14 @@ EOF
 
 ```
 psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER << EOF
-insert into mine_identifier (mine_guid) values ('2daa4513-201f-4103-83c6-5bd1fae6a962');
-insert into mine_details (mine_guid, mine_no, mine_name)
-values ('2daa4513-201f-4103-83c6-5bd1fae6a962',
-       'XXXYYYZZZZ',
-       'Test Mine #1 with identifying attributes which may change over time.')
+insert into mine_identity (mine_guid) values ('2daa4513-201f-4103-83c6-5bd1fae6a962');
+insert into mine_detail (mine_detail_guid, mine_guid, mine_no, mine_name)
+values ('f0bbc7da-11dd-4a1b-af6d-d280b6c8dfbf',
+        '2daa4513-201f-4103-83c6-5bd1fae6a962',
+        'XXXYYYZZZZ',
+        'Test Mine #1 with core attributes which may change over time.')
 ;
 \x
-select * from mine_details;
+select * from mine_detail;
 EOF
 ```
