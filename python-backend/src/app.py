@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+from resources.mine import Mine, MineList
 
 DB_HOST = os.environ['DB_HOST']
 DB_USER = os.environ['DB_USER']
@@ -20,15 +21,8 @@ db = SQLAlchemy(app)
 api = Api(app)
 cors = CORS(app)
 
-@api.route('/hello')
-class Hello(Resource):
-    def get(self):
-        try:
-            db.engine.connect()
-            return {'msg': 'hello world!'}
-        except:
-            return {'error': 'Cannot establish connection to db'}
-
+api.add_resource(Mine, '/mine')
+api.add_resource(MineList, '/mines')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port='5000')
