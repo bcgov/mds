@@ -47,7 +47,7 @@
             "command": [
               "/bin/bash",
               "-c",
-              "cd /home/jenkins/bdd-tests && ./gradlew chromeHeadlessTest"
+              "cd /home/jenkins/bdd-tests && ./run_tests.sh"
             ],
             "env": [
               {
