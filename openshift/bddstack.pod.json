@@ -47,7 +47,7 @@
             "command": [
               "/bin/bash",
               "-c",
-              "cd /var/bdd-tests && ./gradlew chromeHeadlessTest"
+              "cd /home/jenkins/bdd-tests && ./gradlew chromeHeadlessTest"
             ],
             "env": [
               {
@@ -58,14 +58,14 @@
             "resources": {
               "limits": {
                 "cpu": "1",
-                "memory": "2Gi"
+                "memory": "4Gi"
               },
               "requests": {
                 "cpu": "1",
-                "memory": "1Gi"
+                "memory": "3Gi"
               }
             },
-            "imagePullPolicy": "IfNotPresent"
+            "imagePullPolicy": "Always"
           }
         ],
         "restartPolicy": "Never",
