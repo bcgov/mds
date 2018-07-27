@@ -47,7 +47,7 @@
             "command": [
               "/bin/bash",
               "-c",
-              "tail -f /dev/null"
+              "cd /var/bdd-tests && ./gradlew chromeHeadlessTest"
             ],
             "env": [
               {
@@ -69,7 +69,7 @@
           }
         ],
         "restartPolicy": "Never",
-        "activeDeadlineSeconds": 240,
+        "activeDeadlineSeconds": 3600,
         "dnsPolicy": "ClusterFirst"
       },
       "status": {}

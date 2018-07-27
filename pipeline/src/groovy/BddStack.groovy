@@ -32,8 +32,7 @@ if (opt?.h) {
 }
 
 def config = OpenShiftHelper.loadDeploymentConfig(opt)
-
-println config;
+def toolsNamespace = "empr-mds-tools"
 
 def appLabel="${config.app.deployment.id}"
 def routes = ocGet(['routes','-l', "app=${appLabel}", '-l', "component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
@@ -42,15 +41,15 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "URLs found:  ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='empr-mds-tools' |  oc replace -f - --namespace='empr-mds-tools' --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${toolsNamespace}' |  oc replace -f - --namespace='${toolsNamespace}' --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
 boolean hasFailed=false;
 
-/*
+
 while(inprogress>0){
-    Map pods = ocGet(['pods','-l', "app=${appLabel}", '-l', "zap", "--namespace=${config.app.deployment.namespace}"])
+    Map pods = ocGet(['pods','-l', "app=${appLabel}", '-l', "run=bdd-test", "--namespace=${toolsNamespace}"])
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {
@@ -59,11 +58,9 @@ while(inprogress>0){
         }
         if ('Succeeded' == pod.status.phase) continue
         println "Waiting for '${pod.metadata.name}' (${pod.status.phase})"
-        OpenShiftHelper._exec(["bash", '-c', "oc attach '${pod.metadata.name}' '--namespace=${pod.metadata.namespace}' > /dev/null"], new StringBuffer(), new StringBuffer())
         inprogress++
     }
     Thread.sleep(2000)
 }
-*/
 
 if (hasFailed) System.exit(1)
