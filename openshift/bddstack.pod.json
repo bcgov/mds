@@ -33,7 +33,7 @@
       "kind": "Pod",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "${NAME}-${VERSION}",
         "creationTimestamp": null,
         "labels": {
           "run": "bdd-test"
