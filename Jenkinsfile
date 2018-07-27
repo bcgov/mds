@@ -15,6 +15,13 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
+        stage('Unit Tests') {
+            agent { label 'master' }
+            steps {
+                echo "Unit Tests ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
+        }
         stage('Deploy (DEV)') {
             agent { label 'master' }
             /*input {
@@ -26,15 +33,6 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
-
-        stage('Quality Control') {
-            agent { label 'master' }
-            steps {
-                echo "Quality Control ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
-
         stage ('ZAP (DEV)'){
             agent { label 'master' }
             steps{
@@ -42,10 +40,11 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-zap -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
-        stage('Test (DEV)') {
+        stage('Functional Test (DEV)') {
             agent { label 'master' }
             steps {
-                echo "Test (DEV) ..."
+                echo "Functional Test (DEV) ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
         stage('Deploy (TEST)') {
