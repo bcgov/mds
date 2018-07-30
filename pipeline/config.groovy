@@ -93,7 +93,7 @@ app {
                             'SOURCE_CONTEXT_DIR': "migrations",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
-                ],
+                ]
         ]
     }
 
