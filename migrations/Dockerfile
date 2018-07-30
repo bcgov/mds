@@ -7,12 +7,6 @@ ENV FLYWAY_VERSION=5.1.4
 ENV FLYWAY_HOME=/opt/flyway/$FLYWAY_VERSION  \
     FLYWAY_PKGS="https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}.tar.gz"
 
-
-LABEL com.redhat.component="flyway" \
-      io.k8s.description="Platform for upgrading database using flyway" \
-      io.k8s.display-name="DB Migration with flyway	" \
-      io.openshift.tags="builder,sql-upgrades,flyway,db,migration"
-
 # Install java, wget and bash
 RUN yum install -y --enablerepo=rhel-7-server-extras-rpm,rhel-server-rhscl-7-rpms java-1.8.0-openjdk wget bash
 
