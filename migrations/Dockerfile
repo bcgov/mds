@@ -1,7 +1,5 @@
 FROM registry.access.redhat.com/rhel7:7.5-409
 
-USER 0
-
 ENV FLYWAY_VERSION=5.1.4
 
 ENV FLYWAY_HOME=/opt/flyway/$FLYWAY_VERSION  \
@@ -16,15 +14,7 @@ RUN wget --no-check-certificate  $FLYWAY_PKGS &&\
    mkdir -p /var/flyway/data  && \
    tar -xzf flyway-commandline-$FLYWAY_VERSION.tar.gz -C $FLYWAY_HOME  --strip-components=1
 
-RUN groupadd -r default -f -g 1001 && \
-    useradd -u 1001 -r -g default -d ${HOME} -s /sbin/nologin \
-    -c "Default Application User" default && \
-    chown -R 1001:1001 $FLYWAY_HOME
-
 # Copy over the SQL scripts
 COPY sql/* $FLYWAY_HOME/sql/
 
-USER 1001
-
-#ENTRYPOINT  cp -f /var/flyway/data/*.sql  $FLYWAY_HOME/sql/ && \
-#            $FLYWAY_HOME/flyway  baseline migrate info  -user=${DB_USER} -password=${DB_PASSWORD} -url=${DB_URL}
+RUN chmod -R 777 $FLYWAY_HOME
