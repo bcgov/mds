@@ -89,7 +89,7 @@ app {
                     'params':[
                             'NAME':"mds-flyway-migration",
                             'SUFFIX': "${app.build.suffix}",
-                            'OUTPUT_TAG_NAME':"${app.build.version}",
+                            'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "migrations",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
