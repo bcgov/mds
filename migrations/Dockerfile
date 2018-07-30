@@ -1,5 +1,7 @@
 FROM registry.access.redhat.com/rhel7:7.5-409
 
+USER 0
+
 ENV FLYWAY_VERSION=5.1.4
 
 ENV FLYWAY_HOME=/opt/flyway/$FLYWAY_VERSION  \
@@ -23,7 +25,7 @@ RUN wget --no-check-certificate  $FLYWAY_PKGS &&\
 # Copy over the SQL scripts
 COPY sql/* $FLYWAY_HOME/sql/
 
-ENTRYPOINT echo "HELLO WORLD"
+USER 1001
 
 #ENTRYPOINT  cp -f /var/flyway/data/*.sql  $FLYWAY_HOME/sql/ && \
 #            $FLYWAY_HOME/flyway  baseline migrate info  -user=${DB_USER} -password=${DB_PASSWORD} -url=${DB_URL}
