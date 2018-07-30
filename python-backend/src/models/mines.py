@@ -20,7 +20,10 @@ class MineIdentifier(AuditMixin, db.Model):
     
     def save(self):
         db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def json(self):
         return {'guid': str(self.mine_guid), 'mine_details': [item.json() for item in self.mine_details]}
@@ -36,7 +39,11 @@ class MineDetails(AuditMixin, db.Model):
     
     def save(self):
         db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+
     def json(self):
         return {'mine_name': self.mine_name, 'mine_no': self.mine_no}
 

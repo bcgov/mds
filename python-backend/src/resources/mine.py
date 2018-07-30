@@ -10,6 +10,8 @@ class Mine(Resource):
     
     def post(self):
         data = Mine.parser.parse_args()
+        if len(data['name']) > 100:
+            return {'error': 'Specified name exceeds 100 characters'}, 400
         # Dummy User for now
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
@@ -18,7 +20,8 @@ class Mine(Resource):
 
         mine_details = MineDetails(mine_guid=mine_identifier.mine_guid, mine_no=random_key_gen(), mine_name=data['name'], **dummy_user_kwargs)
         mine_details.save()
+        return { 'mine_guid': str(mine_details.mine_guid), 'mine_no': mine_details.mine_no, 'mine_name': mine_details.mine_name }
 
 class MineList(Resource):
     def get(self):
-        return {'mines': list(map(lambda x: x.json(), MineIdentifier.query.all()))}
+        return { 'mines': list(map(lambda x: x.json(), MineIdentifier.query.all())) }
