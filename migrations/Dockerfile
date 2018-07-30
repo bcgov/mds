@@ -11,11 +11,8 @@ LABEL com.redhat.component="flyway" \
       io.k8s.display-name="DB Migration with flyway	" \
       io.openshift.tags="builder,sql-upgrades,flyway,db,migration"
 
-
-RUN apk add --update \
-       openjdk8-jre \
-        wget \
-        bash
+# Install Java
+RUN yum install -y --enablerepo=rhel-7-server-extras-rpm,rhel-server-rhscl-7-rpms java-1.8.0-openjdk
 
 # Download and flyway
 RUN wget --no-check-certificate  $FLYWAY_PKGS &&\
