@@ -57,6 +57,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/bddstack.bc.json',
+                    'params':[
+                            'NAME':"bdd-stack",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "functional-tests",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'openshift/_nodejs.bc.json',
                     'params':[
                         'NAME':"mds-frontend",
@@ -154,6 +164,9 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'bdd-stack' {
+                    HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

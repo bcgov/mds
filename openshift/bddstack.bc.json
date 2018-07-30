@@ -1,0 +1,151 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "bdd-stack-bc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "jenkins-slave-bddstack",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Bddstack base image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "tags":[
+          {
+            "name": "latest",
+            "annotations": null,
+            "from": {
+              "kind": "ImageStreamImage",
+              "namespace": "openshift",
+              "name": "jenkins-slave-bddstack@sha256:16af7a0284bc3b6facd39b1722e85bc1447bb073e65bc7a0eac6063c402b669f"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags":[ ]
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Defines how to build the application"
+        }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 600,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "jenkins-slave-bddstack:latest"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "4Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "1Gi"
+          }
+        },
+        "nodeSelector": null
+      }
+    }
+  ]
+}
