@@ -91,9 +91,7 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${SUFFIX}-client",
-        "creationTimestamp": null,
-        "labels": { },
-        "annotations": { }
+        "creationTimestamp": null
       },
       "spec": {
         "completionDeadlineSeconds": 1440,
