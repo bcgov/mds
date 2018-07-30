@@ -1,0 +1,27 @@
+version: '2'
+services:
+  postgres:
+    restart: always
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=mds_db
+    volumes:
+      - ../migrations/0000.mds-setup.sql:/docker-entrypoint-initdb.d/0000.mds-setup.sql
+      - ../migrations/0001.mine-record.sql:/docker-entrypoint-initdb.d/0001.mine-record.sql
+      - ./postgres-data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app:
+    restart: always
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env
+    entrypoint: ["python", "src/app.py"]
