@@ -12,4 +12,11 @@ class HomePage extends Page
     
     
     }
+
+    def createMineRecord(mineID,mineName){
+        createMineRecordButton.click()
+        mineIDBox = mineID
+        mineNameBox = mineName
+        submitButton.click()
+    }
 }
