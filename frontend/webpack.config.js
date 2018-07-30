@@ -29,6 +29,7 @@ const BUILD_FILE_NAMES = {
 };
 
 const PATH_ALIASES = {
+  '@': PATHS.src,
   //Put your aliases here
 };
 
