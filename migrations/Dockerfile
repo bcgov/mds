@@ -25,3 +25,5 @@ COPY sql/* $FLYWAY_HOME/sql/
 
 #ENTRYPOINT  cp -f /var/flyway/data/*.sql  $FLYWAY_HOME/sql/ && \
 #            $FLYWAY_HOME/flyway  baseline migrate info  -user=${DB_USER} -password=${DB_PASSWORD} -url=${DB_URL}
+
+USER 1001
