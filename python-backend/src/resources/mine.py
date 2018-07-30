@@ -7,13 +7,6 @@ from utils.random import random_key_gen
 class Mine(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, help='This field cannot be blank.')
-    def get(self):
-        # db.engine.connect()
-        try:
-            db.engine.connect()
-            return {'msg': 'hello world!'}
-        except:
-            return {'error': 'Cannot establish connection to db'}
     
     def post(self):
         data = Mine.parser.parse_args()
