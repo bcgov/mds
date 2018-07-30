@@ -33,14 +33,11 @@ class MineDashboard extends Component {
           {mineIds.map((id) => {
             return (
               <div>
-
-                {/* <div key={id}> */}
                   <Row type="flex" key={id}>
+                    <Col span={8}>{mines[id].mine_details[0] ? mines[id].mine_details[0].mine_no : "-"}</Col>
+                    <Col span={8}>{mines[id].mine_details[0] ? mines[id].mine_details[0].mine_name : "-"}</Col>
                     <Col span={8}>{mines[id].guid}</Col>
-                    <Col span={8}>{mines[id].mine_details[0].mine_name}</Col>
-                    <Col span={8}>{mines[id].mine_details[0].mine_no}</Col>
                   </Row>
-                {/* </div> */}
               </div>
             )
           })
