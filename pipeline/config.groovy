@@ -83,7 +83,17 @@ app {
                         'SUFFIX': "${app.build.suffix}",
                         'TAG_NAME':"${app.build.version}"
                     ]
-                ]
+                ],
+                [
+                    'file':'openshift/flyway.bc.json',
+                    'params':[
+                            'NAME':"mds-flyway-migration",
+                            'SUFFIX': "${app.build.suffix}",
+                            'OUTPUT_TAG_NAME':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "migrations",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
         ]
     }
 
