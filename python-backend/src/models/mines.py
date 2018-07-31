@@ -2,6 +2,7 @@ from datetime import datetime
 from db import db
 from sqlalchemy.dialects.postgresql import UUID
 
+
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False)
     create_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -28,11 +29,12 @@ class MineIdentifier(AuditMixin, db.Model):
     def json(self):
         return {'guid': str(self.mine_guid), 'mine_details': [item.json() for item in self.mine_details]}
 
+
 class MineDetails(AuditMixin, db.Model):
     __tablename__ = "mine_details"
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identifier.mine_guid'), primary_key=True)
     mine_no = db.Column(db.String(10), primary_key=True, unique=True)
-    mine_name = db.Column(db.String(100), nullable=False)
+    mine_name = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
         return '<MineDetails %r>' % self.mine_guid
