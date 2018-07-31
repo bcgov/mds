@@ -91,47 +91,21 @@
         "strategy": {
           "type": "Recreate",
           "recreateParams": {
+            "pre": {
+              "failurePolicy": "Abort",
+              "execNewPod": {
+                "containerName": "flyway-migration",
+                "command": [
+                  "bash",
+                  "-c",
+                  "timeout 30 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432'; echo $?"
+                ]
+              }
+            },
             "mid": {
               "failurePolicy": "Abort",
               "execNewPod": {
                 "containerName": "flyway-migration",
-                "env": [
-                  {
-                    "name": "FLYWAY_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-admin-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-admin-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_DB_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_DB_HOST",
-                    "value": "${DB_CONFIG_NAME}"
-                  },
-                  {
-                    "name": "FLYWAY_URL",
-                    "value": "jdbc:postgresql://$(FLYWAY_DB_HOST)/$(FLYWAY_DB_NAME)"
-                  }
-                ],
                 "command": [
                   "bash",
                   "-c",
@@ -252,7 +226,44 @@
               },
               {
                 "name": "flyway-migration",
-                "image": " "
+                "image": " ",
+                "env": [
+                  {
+                    "name": "FLYWAY_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-admin-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-admin-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_HOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "FLYWAY_URL",
+                    "value": "jdbc:postgresql://$(FLYWAY_DB_HOST)/$(FLYWAY_DB_NAME)"
+                  }
+                ]
               }
             ],
             "restartPolicy": "Always",
