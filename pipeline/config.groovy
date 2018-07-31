@@ -74,7 +74,7 @@ app {
                         'OUTPUT_TAG_NAME':"${app.build.version}",
                         'SOURCE_CONTEXT_DIR': "frontend",
                         'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                        'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
+                        'API_URL': "mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
                     ]
                 ],
                 [
