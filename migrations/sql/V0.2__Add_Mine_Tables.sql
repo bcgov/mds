@@ -1,23 +1,28 @@
-CREATE TABLE mine_identifier (
+CREATE TABLE mine_identity (
   mine_guid        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  create_user      character varying(60) NOT NULL DEFAULT 'DUMMY_USER',
+  create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
-  update_user      character varying(60) NOT NULL DEFAULT 'DUMMY_USER',
+  update_user      character varying(60) NOT NULL,
   update_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp
 );
 
-CREATE TABLE mine_details (
-  mine_guid uuid,
+CREATE TABLE mine_detail (
+  mine_detail_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  mine_guid uuid NOT NULL,
   mine_no   character varying(010) NOT NULL,
   mine_name character varying(100) NOT NULL,
-  create_user      character varying(60) NOT NULL DEFAULT 'DUMMY_USER',
+
+  effective_date date NOT NULL DEFAULT now(),
+  expiry_date    date     NULL DEFAULT NULL,
+  create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
-  update_user      character varying(60) NOT NULL DEFAULT 'DUMMY_USER',
+  update_user      character varying(60) NOT NULL,
   update_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
-PRIMARY KEY (mine_guid, mine_no),
-FOREIGN KEY (mine_guid) REFERENCES mine_identifier(mine_guid) DEFERRABLE INITIALLY DEFERRED,
-CONSTRAINT mine_no_uk  UNIQUE (mine_no)
+FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
-COMMENT ON TABLE mine_identifier IS 'Record of the existence of a BC mine.';
-COMMENT ON TABLE mine_details IS 'Core attribution for a BC mine.';
+COMMENT ON TABLE mine_identity IS 'Unique entry denoting the existence of a mine in British Columbia.';
+
+COMMENT ON TABLE mine_detail IS 'Core attribution of a mine.';
+COMMENT ON COLUMN mine_detail.effective_date IS 'Calendar date upon this attribution is accepted as true (time component implicitly 00:00:00.00).';
+COMMENT ON COLUMN mine_detail.expiry_date IS 'Calendar date after which this attribution is accepted as no longer true (time component implicitly 11:59:59.99).';

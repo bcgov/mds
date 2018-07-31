@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS mine_identifier CASCADE;
-DROP TABLE IF EXISTS mine_details;
+DROP TABLE IF EXISTS mine_detail;
+DROP TABLE IF EXISTS mine_identity;
