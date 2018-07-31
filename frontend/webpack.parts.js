@@ -187,12 +187,13 @@ exports.CSSOptimization = ({ options } = {}) => ({
   ],
 });
 
-exports.setEnvironmentVariable = (env, assetPath) => ({
+exports.setEnvironmentVariable = (env, assetPath, dotenv={}) => ({
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(env),
         ASSET_PATH: JSON.stringify(assetPath),
+        ...dotenv
       },
     }),
   ],
