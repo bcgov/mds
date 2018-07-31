@@ -12,12 +12,13 @@ class Dashboard extends Page {
     def mineRecordExists(mineName){
         def i = 0
         def name = mineName
+
         mineRecord.each{       
             if (it.text() == name){
                 i++
-                println i
+                //println i
             }  
-            println it.text()         
+            //println it.text()         
         }
         println "${i} match(es) found for mine named ${name}" 
         return i

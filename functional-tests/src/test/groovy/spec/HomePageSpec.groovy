@@ -14,9 +14,9 @@ import pages.*
 @Stepwise
 class  HomePageTest extends GebReportingSpec {
     //variables
-  
+    static NAME_NULL = ""
     static NAME_GOOD = "Gibraltar"
-    static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5jaQHna7"
+    static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5GN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMGN945v88asdfasfnTk0"//119 chars
 
  
 
@@ -48,12 +48,12 @@ class  HomePageTest extends GebReportingSpec {
         at Dashboard
 
         and: "I should see the created record on the Dashboard"
-        sleep(5)
+        sleep(5000)
         mineRecordExists(NAME_GOOD) != 0     
     }
 
 
-    def "Scenario: Error displayed when the given mine name is more than 50 char"(){
+    def "Scenario: Error displayed when the given mine name is more than 100 char"(){
         given: "I go to the homepage"
         to HomePage
 
@@ -82,7 +82,7 @@ class  HomePageTest extends GebReportingSpec {
         at CreateAMinePage
 
         when: "I do not give a mine name"
-        createMineRecord(null)
+        createMineRecord(NAME_NULL)
 
         then: "I should see an error message"
         toastMessage == "Error!"
