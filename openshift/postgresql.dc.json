@@ -98,7 +98,8 @@
                     "template.openshift.io/expose-password": "{.data['database-password']}",
                     "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
                     "template.openshift.io/expose-username": "{.data['database-user']}",
-                    "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}"
+                    "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
+                    "as-copy-of": "template.${NAME}-secret"
                 },
                 "name": "${DATABASE_SERVICE_NAME}"
             },
