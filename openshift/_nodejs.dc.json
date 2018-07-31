@@ -141,9 +141,7 @@
                     "limits": {
                         "memory": "${MEMORY_LIMIT}"
                     }
-                },
-                "env": [
-                ]
+                }
               }
             ]
           }

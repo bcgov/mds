@@ -73,7 +73,8 @@ app {
                         'SUFFIX': "${app.build.suffix}",
                         'OUTPUT_TAG_NAME':"${app.build.version}",
                         'SOURCE_CONTEXT_DIR': "frontend",
-                        'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                        'SOURCE_REPOSITORY_URL': "${app.git.uri}",
+                        'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
