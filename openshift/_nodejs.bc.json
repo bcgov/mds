@@ -54,6 +54,10 @@
               {
                   "name": "NPM_MIRROR",
                   "value": "${NPM_MIRROR}"
+              },
+              {
+                "name": "API_URL",
+                "value": "${API_URL}"
               }
             ]
           }
@@ -139,6 +143,12 @@
       "displayName": "Custom NPM Mirror URL",
       "description": "The custom NPM mirror URL",
       "value": ""
+    },
+    {
+      "name": "API_URL",
+      "displayName": "API Url",
+      "description": "URL for the backend API",
+      "value": "http://localhost:3000"
     }
   ]
 }
