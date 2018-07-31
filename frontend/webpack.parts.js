@@ -193,6 +193,7 @@ exports.setEnvironmentVariable = (env, assetPath, dotenv={}) => ({
       "process.env": {
         NODE_ENV: JSON.stringify(env),
         ASSET_PATH: JSON.stringify(assetPath),
+        API_URL: JSON.stringify(process.env.API_URL),
         ...dotenv
       },
     }),
