@@ -101,7 +101,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
+                        "key": "database-admin-user"
                       }
                     }
                   },
@@ -110,7 +110,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
+                        "key": "database-admin-password"
                       }
                     }
                   },
@@ -135,7 +135,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./flyway info"
+                  "cd $FLYWAY_HOME && ./flyway info && ./flyway migrate"
                 ]
               }
             },

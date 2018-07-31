@@ -44,11 +44,26 @@
             "required": true
         },
         {
+            "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
+            "displayName": "PostgreSQL Admin Connection Username",
+            "name": "POSTGRESQL_ADMIN_USER",
+            "required": true,
+            "value": "postgres"
+        },
+        {
             "description": "Password for the PostgreSQL connection user.",
             "displayName": "PostgreSQL Connection Password",
             "from": "[a-zA-Z0-9]{16}",
             "generate": "expression",
             "name": "POSTGRESQL_PASSWORD",
+            "required": true
+        },
+        {
+            "description": "Password for the PostgreSQL admin user.",
+            "displayName": "PostgreSQL Admin Connection Password",
+            "from": "[a-zA-Z0-9]{16}",
+            "generate": "expression",
+            "name": "POSTGRESQL_ADMIN_PASSWORD",
             "required": true
         },
         {
@@ -81,15 +96,18 @@
                 "annotations": {
                     "template.openshift.io/expose-database_name": "{.data['database-name']}",
                     "template.openshift.io/expose-password": "{.data['database-password']}",
+                    "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
                     "template.openshift.io/expose-username": "{.data['database-user']}",
-                    "as-copy-of": "template.${NAME}-secret"
+                    "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}"
                 },
                 "name": "${DATABASE_SERVICE_NAME}"
             },
             "stringData": {
                 "database-name": "${POSTGRESQL_DATABASE}",
                 "database-password": "${POSTGRESQL_PASSWORD}",
-                "database-user": "${POSTGRESQL_USER}"
+                "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                "database-user": "${POSTGRESQL_USER}",
+                "database-admin-user": "${POSTGRESQL_ADMIN_USER}"
             }
         },
         {
@@ -201,6 +219,15 @@
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "key": "database-password",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "POSTGRESQL_ADMIN_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-admin-password",
                                                 "name": "${DATABASE_SERVICE_NAME}"
                                             }
                                         }
