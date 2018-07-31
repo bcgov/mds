@@ -67,7 +67,7 @@ class  HomePageTest extends GebReportingSpec {
         createMineRecord(NAME_LONG)
 
         then: "I should see an error message"
-        toastMessage == "Error!"
+        toastMessage == "Specified name cannot exceed 100 characters."
     }
 
 
@@ -85,7 +85,7 @@ class  HomePageTest extends GebReportingSpec {
         createMineRecord(NAME_NULL)
 
         then: "I should see an error message"
-        toastMessage == "Error!"
+        toastMessage == "Must specify a mine name."
     }
 
 
