@@ -18,8 +18,7 @@ class  HomePageTest extends GebReportingSpec {
     static NAME_GOOD = "Gibraltar"
     static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5jaQHna7"
 
-    
-    static MSG_FAIL = "fail"
+ 
 
     def "Scenario: User is able to create a mine record given a  valid MIND-Name"(){
         given: "I go to the homepage"
@@ -49,12 +48,10 @@ class  HomePageTest extends GebReportingSpec {
         at Dashboard
 
         and: "I should see the created record on the Dashboard"
-        mineRecordExists(NAME_GOOD)
-
-
+        mineRecordExists(NAME_GOOD) != 0     
     }
 
-/*
+
     def "Scenario: Error displayed when the given mine name is more than 50 char"(){
         given: "I go to the homepage"
         to HomePage
@@ -63,7 +60,7 @@ class  HomePageTest extends GebReportingSpec {
         createMineRecord(NAME_LONG)
 
         and: "I should see an error message"
-        toastMessage = MSG_FAIL
+        toastMessage = "Error!"
     }
 
 
@@ -75,9 +72,9 @@ class  HomePageTest extends GebReportingSpec {
         createMineRecord(NAME_NULL)
 
         and: "I should see an error message"
-        toastMessage = MSG_FAIL
+        toastMessage = "Error!"
     }
 
-    */
+
 
 }

@@ -6,10 +6,20 @@ class Dashboard extends Page {
     static at = { header == "Mine Dashboard" }
     static content = {
         header {$("h1", 0).text()}
-        mineName {$("div", class:"ant-row-flex").find(".ant-col-8")[1]}
+        mineRecord {$("div", class:"ant-row-flex").find(".ant-col-8")}
     }
 
     def mineRecordExists(mineName){
-        mineName.each{it.text().contains(mineName)}
+        def i = 0
+        def name = mineName
+        mineRecord.each{       
+            if (it.text() == name){
+                i++
+                //println it.text()
+            }           
+        }
+        println "${i} match(es) found for mine named ${name}" 
+        return i
+        //mineRecord.each{println "${it.text()}"}
     }
 }
