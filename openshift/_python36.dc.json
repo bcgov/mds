@@ -19,6 +19,12 @@
       "required": true
     },
     {
+      "name": "FLYWAY_NAME",
+      "displayName": "Name",
+      "description": "A name for flyway objects",
+      "required": true
+    },
+    {
       "name": "DB_CONFIG_NAME",
       "displayName": "Database Config Name",
       "description": "Configuration name for the database",
@@ -55,6 +61,22 @@
       }
     },
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${FLYWAY_NAME}",
+        "generation": 1,
+        "creationTimestamp": null,
+        "annotations": {
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -69,7 +91,55 @@
         "strategy": {
           "type": "Recreate",
           "recreateParams": {
-            "timeoutSeconds": 180
+            "mid": {
+              "failurePolicy": "Abort",
+              "execNewPod": {
+                "containerName": "flyway-migration",
+                "env": [
+                  {
+                    "name": "FLYWAY_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_HOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "FLYWAY_URL",
+                    "value": "jdbc:postgresql://$(FLYWAY_DB_HOST)/$(FLYWAY_DB_NAME)"
+                  }
+                ],
+                "command": [
+                  "bash",
+                  "-c",
+                  "cd $FLYWAY_HOME && ./flyway info"
+                ]
+              }
+            },
+            "timeoutSeconds": 600
           },
           "resources": {},
           "activeDeadlineSeconds": 21600
@@ -85,6 +155,19 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "flyway-migration"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${FLYWAY_NAME}:${VERSION}"
               }
             }
           },
@@ -166,6 +249,10 @@
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "Always"
+              },
+              {
+                "name": "flyway-migration",
+                "image": " "
               }
             ],
             "restartPolicy": "Always",

@@ -115,6 +115,7 @@ app {
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
+                            'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
                             'SUFFIX': "${app.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
