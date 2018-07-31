@@ -1,21 +1,12 @@
-
 package pages
 
 import geb.Page
 
-class HomePage extends Page{
-    static at = { title == "React App" }
+class HomePage extends Page {
+    static at = { header == "Home"}
     static content = {
-        header (wait:true) {$("h1")}
-        mineNameBox (wait:true) {$("input", placeholder:"Mine Name")}
-        createMineRecordButton (wait: true) {$("button").has("span", text:"Create Mine")}       
-        toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
-        dashboardButton {$("button").has("span",text:"Dashboard")}
-    }
-
-    def createMineRecord(mineName){
-        mineNameBox = mineName
-        createMineRecordButton.click()        
-         
+        header {$("div", class:"ant-card-head-title").text()}
+        createMineButton (wait: true) {$("button").has("span", text:"Create A Mine")}    
+        dashboardButton (wait:true){$("button").has("span",text:"View Mines")}
     }
 }

@@ -6,43 +6,49 @@ import spock.lang.*
 
 import pages.*
 
-//variables
 
-
-NAME_NULL = ""
-NAME_GOOD = "Gibraltar"
-NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5jaQHna7"
-
-MSG_SUCCEED = "Success"
-MSG_FAIL = "fail"
 
 @Title("MDS-createMineRecord")
 @Narrative("At homepage, I can create a mine record given valid mine Name")
-@see("https://bcmines.atlassian.net/browse/MDS-63")
+//@see("https://bcmines.atlassian.net/browse/MDS-63")
 @Stepwise
 class  HomePageTest extends GebReportingSpec {
+    //variables
+    static NAME_NULL = ""
+    static NAME_GOOD = "Gibraltar"
+    static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5jaQHna7"
+
+    
+    static MSG_FAIL = "fail"
+
     def "Scenario: User is able to create a mine record given a  valid MIND-Name"(){
         given: "I go to the homepage"
         to HomePage
 
-        then: "I can see the header'"
-        header.text === "Create A Mine Record"
+        when: "I click the create a mine button"
+        createMineButton.click()
 
+        then: "I go to the mine record form page"
+        at CreateAMinePage
 
         when: "I input valid mine name"
         createMineRecord(NAME_GOOD)
 
         then: "I should see the successful message"
-        toastMessage === MSG_SUCCEED
+        toastMessage == "Successfully created: " + NAME_GOOD
+    }
 
-        when: "I click the Dashboard button"
+    def "Scenario: User can view the created record on Dashboard"(){
+        given: "I go to the homepage"
+        to HomePage
+
+        when: "I click the dashboard button"
         dashboardButton.click()
 
-        then: "I should see the Dashboard"
+        then: "On Dashboard"
         at Dashboard
 
         and: "I should see the created record on the Dashboard"
-        header.text === "Mine Dashboard"
         mineRecordExists(NAME_GOOD)
 
 
