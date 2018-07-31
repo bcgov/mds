@@ -64,7 +64,7 @@
                     {
                         "name": "${VERSION}",
                         "annotations": {
-                            "sourve": "openshift/sonarqube:6.7.1"
+                            "source": "openshift/sonarqube:6.7.1"
                         },
                         "from": {
                             "kind": "ImageStreamImage",

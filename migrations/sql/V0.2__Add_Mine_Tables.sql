@@ -21,7 +21,3 @@ CONSTRAINT mine_no_uk  UNIQUE (mine_no)
 
 COMMENT ON TABLE mine_identifier IS 'Record of the existence of a BC mine.';
 COMMENT ON TABLE mine_details IS 'Core attribution for a BC mine.';
-
-\dt
-\d mine_identifier
-\d mine_details

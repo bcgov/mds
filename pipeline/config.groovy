@@ -73,7 +73,8 @@ app {
                         'SUFFIX': "${app.build.suffix}",
                         'OUTPUT_TAG_NAME':"${app.build.version}",
                         'SOURCE_CONTEXT_DIR': "frontend",
-                        'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                        'SOURCE_REPOSITORY_URL': "${app.git.uri}",
+                        'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
                     ]
                 ],
                 [
@@ -82,6 +83,16 @@ app {
                         'NAME':"mds-postgresql",
                         'SUFFIX': "${app.build.suffix}",
                         'TAG_NAME':"${app.build.version}"
+                    ]
+                ],
+                [
+                    'file':'openshift/flyway.bc.json',
+                    'params':[
+                            'NAME':"mds-flyway-migration",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "migrations",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]
         ]
@@ -105,6 +116,7 @@ app {
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
+                            'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
                             'SUFFIX': "${app.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
@@ -117,7 +129,8 @@ app {
                         'NAME':"mds-frontend",
                         'SUFFIX': "${app.deployment.suffix}",
                         'TAG_NAME':"${app.deployment.version}",
-                        'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}"
+                        'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
+                        'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
                     ]
                 ],
                 [
