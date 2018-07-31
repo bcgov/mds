@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const path = require('path');
+const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
 const parts = require('./webpack.parts');
 
@@ -30,6 +31,13 @@ const BUILD_FILE_NAMES = {
 const PATH_ALIASES = {
   //Put your aliases here
 };
+
+const envFile = {};
+if (dotenv.parsed){
+    Object.keys(dotenv.parsed).map(key => {
+        envFile[key] = JSON.stringify(dotenv.parsed[key]);
+    });
+}
 
 const commonConfig = merge([
   {
@@ -64,7 +72,7 @@ const devConfig = merge([
       filename: 'bundle.js',
     },
   },
-  parts.setEnvironmentVariable(DEVELOPMENT, ASSET_PATH),
+  parts.setEnvironmentVariable(DEVELOPMENT, ASSET_PATH, envFile),
   parts.generateSourceMaps({
     type: "eval-source-map",
   }),
@@ -90,7 +98,7 @@ const prodConfig = merge([
     },
   },
   parts.clean(PATHS.build),
-  parts.setEnvironmentVariable(PRODUCTION, ASSET_PATH),
+  parts.setEnvironmentVariable(PRODUCTION, ASSET_PATH, envFile),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss'),
