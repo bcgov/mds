@@ -9,8 +9,8 @@ CREATE TABLE mine_identity (
 CREATE TABLE mine_detail (
   mine_detail_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   mine_guid uuid NOT NULL,
-  mine_no   character varying(010) NOT NULL,
-  mine_name character varying(100) NOT NULL,
+  mine_no   character varying(10) NOT NULL,
+  mine_name character varying(60) NOT NULL,
 
   effective_date date NOT NULL DEFAULT now(),
   expiry_date    date     NULL DEFAULT NULL,
