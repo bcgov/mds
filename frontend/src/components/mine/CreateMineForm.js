@@ -17,8 +17,8 @@ export class CreateMineForm extends Component {
     const mineName = this.refs.mineName.input.value;
     if (!mineName) {
       notification.error({message: "Must specify a mine name.", duration: 10});
-    } else if (mineName.length > 100) {
-      notification.error({message: "Specified name cannot exceed 100 characters.", duration: 10});
+    } else if (mineName.length > 60) {
+      notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
     } else {
       this.props.createMineRecord(mineName);
     }
