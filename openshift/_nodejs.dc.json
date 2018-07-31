@@ -116,6 +116,12 @@
               {
                 "name": "app",
                 "image": " ",
+                "env": [
+                  {
+                    "name": "API_URL",
+                    "value": "${API_URL}"
+                  }
+                ],
                 "ports": [
                   {
                     "containerPort": 3000
@@ -182,6 +188,12 @@
       "displayName": "Application Hostname",
       "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
       "value": ""
+    },
+    {
+      "name": "API_URL",
+      "displayName": "API Url",
+      "description": "URL for the backend API",
+      "value": "http://localhost:3000"
     }
   ]
 }
