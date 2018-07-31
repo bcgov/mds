@@ -14,7 +14,7 @@ import pages.*
 @Stepwise
 class  HomePageTest extends GebReportingSpec {
     //variables
-    static NAME_NULL = ""
+  
     static NAME_GOOD = "Gibraltar"
     static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5jaQHna7"
 
@@ -48,6 +48,7 @@ class  HomePageTest extends GebReportingSpec {
         at Dashboard
 
         and: "I should see the created record on the Dashboard"
+        sleep(5)
         mineRecordExists(NAME_GOOD) != 0     
     }
 
@@ -56,11 +57,17 @@ class  HomePageTest extends GebReportingSpec {
         given: "I go to the homepage"
         to HomePage
 
+        when: "I click the create a mine button"
+        createMineButton.click()
+
+        then: "I go to the mine record form page"
+        at CreateAMinePage
+
         when: "I input long mine name"
         createMineRecord(NAME_LONG)
 
-        and: "I should see an error message"
-        toastMessage = "Error!"
+        then: "I should see an error message"
+        toastMessage == "Error!"
     }
 
 
@@ -68,11 +75,17 @@ class  HomePageTest extends GebReportingSpec {
         given: "I go to the homepage"
         to HomePage
 
-        when: "I do not give a mine name"
-        createMineRecord(NAME_NULL)
+        when: "I click the create a mine button"
+        createMineButton.click()
 
-        and: "I should see an error message"
-        toastMessage = "Error!"
+        then: "I go to the mine record form page"
+        at CreateAMinePage
+
+        when: "I do not give a mine name"
+        createMineRecord(null)
+
+        then: "I should see an error message"
+        toastMessage == "Error!"
     }
 
 
