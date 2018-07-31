@@ -226,6 +226,10 @@
               },
               {
                 "name": "flyway-migration",
+                "command": [
+                  "cat"
+                ],
+                "stdin": true,
                 "image": " ",
                 "env": [
                   {
