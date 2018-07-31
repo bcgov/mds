@@ -10,8 +10,10 @@ class Mine(Resource):
     
     def post(self):
         data = Mine.parser.parse_args()
+        if not data['name']:
+            return {'error': 'Must specify a name.'}, 400
         if len(data['name']) > 100:
-            return {'error': 'Specified name exceeds 100 characters'}, 400
+            return {'error': 'Specified name exceeds 100 characters.'}, 400
         # Dummy User for now
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
