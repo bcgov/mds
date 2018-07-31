@@ -33,9 +33,11 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
-Object.keys(dotenv.parsed).map(key => {
-	envFile[key] = JSON.stringify(dotenv.parsed[key]);
-});
+if (dotenv.parsed){
+    Object.keys(dotenv.parsed).map(key => {
+        envFile[key] = JSON.stringify(dotenv.parsed[key]);
+    });
+}
 
 const commonConfig = merge([
   {
