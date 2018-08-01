@@ -157,7 +157,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-nodejs-8-rhel7:1-22"
+              "name": "rhscl-nodejs-8-rhel7:8.1-22"
             },
             "env": [
               {
