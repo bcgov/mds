@@ -62,9 +62,6 @@ fi
 echo "Listing directory structure"
 ls -lR /opt/
 
-echo "Listing directory structure 2"
-ls -lR $HOME
-
 if [ "$(ls -A /opt/s2i/destination/artifacts/ 2>/dev/null)" ]; then
     echo "---> Restoring saved artifacts from prior build"
     mv /opt/s2i/destination/artifacts/node_modules $HOME/node_modules
