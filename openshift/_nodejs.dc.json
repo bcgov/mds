@@ -35,6 +35,12 @@
       "value": ""
     },
     {
+      "name": "NODE_ENV",
+      "displayName": "Node Environment",
+      "description": "Environment for running node",
+      "value": "DEV"
+    },
+    {
       "name": "API_URL",
       "displayName": "API Url",
       "description": "URL for the backend API",
