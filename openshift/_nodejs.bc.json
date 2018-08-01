@@ -36,6 +36,12 @@
       "value": "master"
     },
     {
+      "name": "NODE_ENV",
+      "displayName": "Node Environment",
+      "description": "Environment for running node",
+      "value": "DEV"
+    },
+    {
       "name": "API_URL",
       "displayName": "API Url",
       "description": "URL for the backend API",
@@ -62,11 +68,11 @@
         },
         "tags":[
           {
-            "name": "latest",
+            "name": "8.1-22",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7"
+              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:1-22"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -151,7 +157,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-nodejs-8-rhel7:latest"
+              "name": "rhscl-nodejs-8-rhel7:1-22"
             },
             "env": [
               {
@@ -164,7 +170,7 @@
               },
               {
                 "name": "NODE_ENV",
-                "value": "DEV"
+                "value": "${NODE_ENV}"
               }
             ]
           }
@@ -234,7 +240,7 @@
               },
               {
                 "name": "NODE_ENV",
-                "value": "DEV"
+                "value": "${NODE_ENV}"
               }
             ]
           }
