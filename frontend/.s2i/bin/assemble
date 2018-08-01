@@ -60,8 +60,7 @@ if [ -z "$NODE_ENV" ]; then
 fi
 
 echo "Listing directory structure"
-pwd
-ls -lR
+ls -lR /opt/
 
 echo "Listing directory structure 2"
 ls -lR $HOME
