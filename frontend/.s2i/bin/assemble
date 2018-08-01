@@ -2,7 +2,7 @@
 
 set -e
 
-source /usr/libexec/s2i/env
+source ./env
 
 if [ "$DEV_MODE" == true ] ; then
 	set -x
