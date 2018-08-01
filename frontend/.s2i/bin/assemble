@@ -2,7 +2,7 @@
 
 set -e
 
-source ./env
+source $PWD/env
 
 if [ "$DEV_MODE" == true ] ; then
 	set -x
