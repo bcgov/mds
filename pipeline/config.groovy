@@ -67,15 +67,15 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nodejs.bc.json',
-                    'params':[
-                        'NAME':"mds-frontend",
-                        'SUFFIX': "${app.build.suffix}",
-                        'OUTPUT_TAG_NAME':"${app.build.version}",
-                        'SOURCE_CONTEXT_DIR': "frontend",
-                        'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                        'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
-                    ]
+                        'file':'openshift/_nodejs.bc.json',
+                        'params':[
+                                'NAME':"mds-frontend",
+                                'SUFFIX': "${app.build.suffix}",
+                                'VERSION':"${app.build.version}",
+                                'SOURCE_CONTEXT_DIR': "frontend",
+                                'SOURCE_REPOSITORY_URL': "${app.git.uri}",
+                                'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
+                        ]
                 ],
                 [
                     'file':'openshift/postgresql.bc.json',

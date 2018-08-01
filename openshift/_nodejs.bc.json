@@ -2,25 +2,191 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-frontend-bc",
-    "annotations": {
-      "template.openshift.io/bindable": "false"
-    }
+    "name": "mds-nodejs-bc",
+    "creationTimestamp": null
   },
-  "message": "The following service(s) have been created in your project: ${NAME}${SUFFIX}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshift/nodejs-ex/blob/master/README.md.",
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    },
+    {
+      "name": "API_URL",
+      "displayName": "API Url",
+      "description": "URL for the backend API",
+      "value": "http://localhost:3000"
+    }
+  ],
   "objects": [
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "rhscl-nodejs-8-rhel7",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Nodejs Base Image"
+        },
         "labels": {
-          "shared": "true",
-          "component": "${NAME}"
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags":[
+          {
+            "name": "latest",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Nodejs Runtime Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
         },
         "annotations": {
           "description": "Keeps track of changes in the application image"
         }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags":[ ]
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": { },
+        "annotations": { }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 1440,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "contextDir": "docker-images/nodejs-8",
+          "git": {
+            "ref": "${SOURCE_REPOSITORY_REF}",
+            "uri": "${SOURCE_REPOSITORY_URL}"
+          },
+          "type": "Git"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "rhscl-nodejs-8-rhel7:latest"
+            },
+            "env": [
+              {
+                "name": "NODE_REQUIREMENTS_URL",
+                "value": "https://raw.githubusercontent.com/bcgov/mds/Sprint2018.2/frontend/package.json"
+              },
+              {
+                "name": "API_URL",
+                "value": "{API_URL}"
+              },
+              {
+                "name": "NODE_ENV",
+                "value": "DEV"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "2",
+            "memory": "8Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "4Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
       }
     },
     {
@@ -28,12 +194,24 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
         "annotations": {
-          "description": "Defines how to build the application",
-          "template.alpha.openshift.io/wait-for-ready": "true"
+          "description": "Defines how to build the application"
         }
       },
       "spec": {
+        "completionDeadlineSeconds": 600,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
         "source": {
           "type": "Git",
           "git": {
@@ -47,17 +225,16 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "${NODEJS_SOURCE_IMAGESTREAM_NAMESPACE}",
-              "name": "${NODEJS_SOURCE_IMAGESTREAM_NAME}:${NODEJS_VERSION}"
+              "name": "${NAME}-base:${VERSION}"
             },
-            "env":  [
-              {
-                  "name": "NPM_MIRROR",
-                  "value": "${NPM_MIRROR}"
-              },
+            "env": [
               {
                 "name": "API_URL",
-                "value": "${API_URL}"
+                "value": "{API_URL}"
+              },
+              {
+                "name": "NODE_ENV",
+                "value": "DEV"
               }
             ]
           }
@@ -65,90 +242,21 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}:${OUTPUT_TAG_NAME}"
+            "name": "${NAME}:${VERSION}"
           }
         },
-        "postCommit": {
-          "script": "echo 'npm test'"
-        }
+        "resources": {
+          "limits": {
+            "cpu": "2",
+            "memory": "8Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "4Gi"
+          }
+        },
+        "nodeSelector": null
       }
-    }
-  ],
-  "parameters": [
-    {
-      "name": "NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "web-api"
-    },
-    {
-      "name": "SUFFIX",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true
-    },
-    {
-      "name": "OUTPUT_TAG_NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "latest"
-    },
-    {
-      "name": "NODEJS_SOURCE_IMAGESTREAM_NAME",
-      "value": "nodejs",
-      "required": true
-    },
-    {
-      "name": "NODEJS_SOURCE_IMAGESTREAM_NAMESPACE",
-      "value": "openshift",
-      "required": true
-    },
-    {
-      "name": "NODEJS_VERSION",
-      "displayName": "Version of NodeJS Image",
-      "description": "Version of NodeJS image to be used (6, 8, or latest).",
-      "value": "8",
-      "required": true
-    },
-    {
-      "name": "MEMORY_LIMIT",
-      "displayName": "Memory Limit",
-      "description": "Maximum amount of memory the container can use.",
-      "required": true,
-      "value": "512Mi"
-    },
-    {
-      "name": "SOURCE_REPOSITORY_URL",
-      "displayName": "Git Repository URL",
-      "description": "The URL of the repository with your application source code.",
-      "required": true,
-      "value": "https://github.com/bcgov/mds.git"
-    },
-    {
-      "name": "SOURCE_REPOSITORY_REF",
-      "displayName": "Git Reference",
-      "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch.",
-      "value": "master"
-    },
-    {
-      "name": "SOURCE_CONTEXT_DIR",
-      "displayName": "Context Directory",
-      "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-      "value": "web-api"
-    },
-    {
-      "name": "NPM_MIRROR",
-      "displayName": "Custom NPM Mirror URL",
-      "description": "The custom NPM mirror URL",
-      "value": ""
-    },
-    {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
-      "value": "http://localhost:3000"
     }
   ]
 }
