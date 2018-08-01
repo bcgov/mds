@@ -74,7 +74,7 @@ app {
                                 'VERSION':"${app.build.version}",
                                 'SOURCE_CONTEXT_DIR': "frontend",
                                 'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                                'NODE_ENV': "DEV",
+                                'NODE_ENV': "PRODUCTION",
                                 'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
                         ]
                 ],
