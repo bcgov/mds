@@ -5,8 +5,6 @@
 # application folder.
 [ -d "/usr/src/app" ] && exit 0
 
-echo "Running custom assemble script"
-
 set -e
 
 
@@ -62,43 +60,30 @@ if [ -z "$NODE_ENV" ]; then
   fi
 fi
 
-echo "Environment is: $NODE_ENV"
 
-ls -la
+echo "---> Installing all dependencies"
+NODE_ENV=development npm install
 
-if [ "$NODE_ENV" != "production" ]; then
+#do not fail when there is no build script
+echo "---> Building in production mode"
+npm run build --if-present
 
-	echo "---> Building your Node application from source"
-	npm install
+echo "---> Pruning the development dependencies"
+npm prune
 
-else
-
-	echo "---> Installing all dependencies"
-	NODE_ENV=development npm install
-
-	#do not fail when there is no build script
-	echo "---> Building in production mode"
-	npm run build --if-present
-
-	echo "---> Pruning the development dependencies"
-	npm prune
-
-	# Clear the npm's cache and tmp directories only if they are not a docker volumes
-	NPM_CACHE=$(npm config get cache)
-	if ! mountpoint $NPM_CACHE; then
-		echo "---> Cleaning the npm cache $NPM_CACHE"
-		#As of npm@5 even the 'npm cache clean --force' does not fully remove the cache directory
-		rm $NPM_CACHE* -rf
-	fi
-	NPM_TMP=$(npm config get tmp)
-	if ! mountpoint $NPM_TMP; then
-		echo "---> Cleaning the $NPM_TMP/npm-*"
-		rm -rf $NPM_TMP/npm-*
-	fi
-
+# Clear the npm's cache and tmp directories only if they are not a docker volumes
+NPM_CACHE=$(npm config get cache)
+if ! mountpoint $NPM_CACHE; then
+    echo "---> Cleaning the npm cache $NPM_CACHE"
+    #As of npm@5 even the 'npm cache clean --force' does not fully remove the cache directory
+    rm $NPM_CACHE* -rf
+fi
+NPM_TMP=$(npm config get tmp)
+if ! mountpoint $NPM_TMP; then
+    echo "---> Cleaning the $NPM_TMP/npm-*"
+    rm -rf $NPM_TMP/npm-*
 fi
 
-ls -la
 
 # Fix source directory permissions
 fix-permissions ./
