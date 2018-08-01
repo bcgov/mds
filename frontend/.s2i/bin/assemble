@@ -60,7 +60,8 @@ if [ -z "$NODE_ENV" ]; then
 fi
 
 echo "Listing directory structure"
-ls -lR /opt/s2i/destination/artifacts
+pwd
+ls -lR
 
 echo "Listing directory structure 2"
 ls -lR $HOME
