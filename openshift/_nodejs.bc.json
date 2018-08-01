@@ -50,6 +50,7 @@
               "namespace": "${NODEJS_SOURCE_IMAGESTREAM_NAMESPACE}",
               "name": "${NODEJS_SOURCE_IMAGESTREAM_NAME}:${NODEJS_VERSION}"
             },
+            "incremental": true,
             "env":  [
               {
                   "name": "NPM_MIRROR",
