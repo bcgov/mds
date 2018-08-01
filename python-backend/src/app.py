@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+
 from resources.mine import Mine, MineList
 
 DB_HOST = os.environ['DB_HOST']
