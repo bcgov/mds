@@ -1,6 +1,6 @@
 import random, string
 
-from models.mines import MineDetails
+from models.mines import MineDetail
 
 def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
     choices = ''
@@ -12,6 +12,6 @@ def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
 
 def generate_mine_no():
     mine_no=random_key_gen(prefix='BLAH', key_length=4, letters=False)
-    while MineDetails.find_by_mine_no(mine_no):
+    while MineDetail.find_by_mine_no(mine_no):
         mine_no=random_key_gen(prefix='BLAH', key_length=4, letters=False)
     return mine_no

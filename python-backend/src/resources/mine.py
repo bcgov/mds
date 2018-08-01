@@ -2,7 +2,7 @@ import uuid
 
 from db import db
 from flask_restplus import Resource, reqparse
-from models.mines import MineIdentifier, MineDetails
+from models.mines import MineIdentity, MineDetail
 from utils.random import generate_mine_no
 
 
@@ -19,14 +19,14 @@ class Mine(Resource):
         # Dummy User for now
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
-        mine_identifier = MineIdentifier(mine_guid = uuid.uuid4(), **dummy_user_kwargs)
-        mine_identifier.save()
-        mine_details = MineDetails(mine_guid=mine_identifier.mine_guid, mine_no=generate_mine_no(), mine_name=data['name'], **dummy_user_kwargs)
-        mine_details.save()
-        return { 'mine_guid': str(mine_details.mine_guid), 'mine_no': mine_details.mine_no, 'mine_name': mine_details.mine_name }
+        mine_identity= MineIdentity(mine_guid = uuid.uuid4(), **dummy_user_kwargs)
+        mine_identity.save()
+        mine_detail = MineDetail(mine_guid=mine_identity.mine_guid, mine_no=generate_mine_no(), mine_name=data['name'], **dummy_user_kwargs)
+        mine_detail.save()
+        return { 'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name }
 
 
 
 class MineList(Resource):
     def get(self):
-        return { 'mines': list(map(lambda x: x.json(), MineIdentifier.query.all())) }
+        return { 'mines': list(map(lambda x: x.json(), MineIdentity.query.all())) }
