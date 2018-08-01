@@ -32,7 +32,7 @@ class MineIdentity(AuditMixin, db.Model):
 
 class MineDetail(AuditMixin, db.Model):
     __tablename__ = "mine_detail"
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identify.mine_guid'), primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), primary_key=True)
     mine_no = db.Column(db.String(10), primary_key=True, unique=True)
     mine_name = db.Column(db.String(60), nullable=False)
 

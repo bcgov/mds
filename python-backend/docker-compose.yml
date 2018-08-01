@@ -8,8 +8,8 @@ services:
       - POSTGRES_PASSWORD=test
       - POSTGRES_DB=mds_db
     volumes:
-      - ../migrations/0000.mds-setup.sql:/docker-entrypoint-initdb.d/0000.mds-setup.sql
-      - ../migrations/0001.mine-record.sql:/docker-entrypoint-initdb.d/0001.mine-record.sql
+      - ../migrations/sql/V0.1__Extension_Crypto.sql:/docker-entrypoint-initdb.d/V0.1__Extension_Crypto.sql
+      - ../migrations/sql/V0.2__Add_Mine_Tables.sql:/docker-entrypoint-initdb.d/V0.2__Add_Mine_Tables.sql
       - ./postgres-data/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
