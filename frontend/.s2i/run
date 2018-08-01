@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+source /usr/libexec/s2i/env
+
+# Set the environment for this build configuration to production by default.
+if [ "$NODE_ENV" == "production" ]; then
+  export DEV_MODE=false
+else
+  export DEV_MODE=true
+  set -x
+fi
+
+export GIT_COMMITTER_NAME="unknown"
+export and GIT_COMMITTER_EMAIL="unknown@localhost.com"
+git --version
+
+# Runs the nodejs application server.
+run_node() {
+  echo -e "Environment: \n\tDEV_MODE=${DEV_MODE}\n\tNODE_ENV=${NODE_ENV}\n\tDEBUG_PORT=${DEBUG_PORT}"
+  echo -e "Running as user $(id)"
+  if [ "$DEV_MODE" == true ]; then
+    echo "Installing dev dependencies..."
+    npm install
+    echo "Launching via nodemon..."
+    exec npx nodemon --inspect="$DEBUG_PORT"
+  else
+    echo "Launching via npm..."
+    exec npm run -d $NPM_RUN
+  fi
+}
+
+# Allow debugging the builder image itself, by using:
+# $ docker run -it bucharestgold/centos-s2i-nodejs --debug
+#
+[ "$1" == "--debug" ] && exec /bin/bash
+
+run_node
