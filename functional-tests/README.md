@@ -15,3 +15,5 @@ To run with all, you can run:
     ./gradlew test
 
 Replace `./gradlew` with `gradlew.bat` in the above examples if you're on Windows.
+
+Report can be found under `/functional-tests/build/reports/tests`

@@ -97,7 +97,7 @@ println "--------------------------"
  
 //3. tells the test runner where to save the test results.
 reportsDir = new File("target/geb-reports")
-reportOnTestFailureOnly = true
+reportOnTestFailureOnly = false //true
 
 
 
