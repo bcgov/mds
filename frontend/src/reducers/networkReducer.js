@@ -12,7 +12,7 @@ const initialState = {
   requestType: null,
 };
 
-const genericRequest = (state = initialState, action) => {
+const networkReducer = (state = initialState, action) => {
   switch (action.type) {
     case REQUEST:
       return {
@@ -43,4 +43,4 @@ const genericRequest = (state = initialState, action) => {
   }
 };
 
-export default genericRequest;
+export default networkReducer;

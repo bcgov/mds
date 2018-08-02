@@ -1,3 +1,4 @@
+.env
 .venv/
 node_modules/
 .DS_Store
@@ -5,6 +6,8 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+__pycache__
+*.pytest_cache
 python-backend/venv/
 python-backend/__pycache__/
 *.pyc
