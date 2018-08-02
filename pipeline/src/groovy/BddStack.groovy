@@ -35,7 +35,7 @@ def config = OpenShiftHelper.loadDeploymentConfig(opt)
 def toolsNamespace = "empr-mds-tools"
 
 def appLabel="${config.app.deployment.id}"
-def routes = ocGet(['routes','-l', "app=${appLabel}", '-l', "component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
+def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
 
 routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')

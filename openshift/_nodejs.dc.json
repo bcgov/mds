@@ -7,6 +7,46 @@
       "template.openshift.io/bindable": "false"
     }
   },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true,
+      "value": "web-api"
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name",
+      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true
+    },
+    {
+      "name": "TAG_NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true,
+      "value": "latest"
+    },
+    {
+      "name": "APPLICATION_DOMAIN",
+      "displayName": "Application Hostname",
+      "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
+      "value": ""
+    },
+    {
+      "name": "NODE_ENV",
+      "displayName": "Node Environment",
+      "description": "Environment for running node",
+      "value": "DEV"
+    },
+    {
+      "name": "API_URL",
+      "displayName": "API Url",
+      "description": "URL for the backend API",
+      "value": "http://localhost:3000"
+    }
+  ],
   "message": "The following service(s) have been created in your project: ${NAME}${SUFFIX}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshift/nodejs-ex/blob/master/README.md.",
   "objects": [
     {
@@ -120,6 +160,10 @@
                   {
                     "name": "API_URL",
                     "value": "${API_URL}"
+                  },
+                  {
+                    "name": "NODE_ENV",
+                    "value": "${NODE_ENV}"
                   }
                 ],
                 "ports": [
@@ -142,58 +186,12 @@
                         "path": "/",
                         "port": 3000
                     }
-                },
-                "resources": {
-                    "limits": {
-                        "memory": "${MEMORY_LIMIT}"
-                    }
                 }
               }
             ]
           }
         }
       }
-    }
-  ],
-  "parameters": [
-    {
-      "name": "NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "web-api"
-    },
-    {
-      "name": "SUFFIX",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true
-    },
-    {
-      "name": "TAG_NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "latest"
-    },
-    {
-      "name": "MEMORY_LIMIT",
-      "displayName": "Memory Limit",
-      "description": "Maximum amount of memory the container can use.",
-      "required": true,
-      "value": "512Mi"
-    },
-    {
-      "name": "APPLICATION_DOMAIN",
-      "displayName": "Application Hostname",
-      "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
-      "value": ""
-    },
-    {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
-      "value": "http://localhost:3000"
     }
   ]
 }
