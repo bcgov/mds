@@ -52,7 +52,7 @@ app {
                             'NAME':"mds-python-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "python-backend",
+                            'SOURCE_CONTEXT_DIR': "python-backend/src",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
