@@ -34,8 +34,8 @@ class MineDashboard extends Component {
             return (
               <div>
                   <Row type="flex" key={id}>
-                    <Col span={8}>{mines[id].mine_details[0] ? mines[id].mine_details[0].mine_no : "-"}</Col>
-                    <Col span={8}>{mines[id].mine_details[0] ? mines[id].mine_details[0].mine_name : "-"}</Col>
+                    <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                    <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                     <Col span={8}>{mines[id].guid}</Col>
                   </Row>
               </div>
