@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7:7.5-409
+FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 ENV FLYWAY_VERSION=5.1.4
 

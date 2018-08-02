@@ -163,6 +163,10 @@
               {
                 "name": "NODE_REQUIREMENTS_URL",
                 "value": "https://raw.githubusercontent.com/bcgov/mds/Sprint2018.2/frontend/package.json"
+              },
+              {
+                "name": "API_URL",
+                "value": "${API_URL}"
               }
             ]
           }
@@ -226,6 +230,10 @@
               "name": "${NAME}-base:${VERSION}"
             },
             "env": [
+              {
+                "name": "API_URL",
+                "value": "{API_URL}"
+              }
             ]
           }
         },
