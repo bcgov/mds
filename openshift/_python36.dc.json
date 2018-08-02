@@ -265,7 +265,7 @@
                   },
                   {
                     "name": "FLYWAY_URL",
-                    "value": "jdbc:postgresql://$(FLYWAY_DB_HOST)/$(FLYWAY_DB_NAME)"
+                    "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
                   }
                 ]
               }
