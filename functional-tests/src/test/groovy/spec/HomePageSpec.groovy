@@ -15,8 +15,8 @@ import pages.*
 class  HomePageTest extends GebReportingSpec {
     //variables
     static NAME_NULL = ""
-    static NAME_GOOD = "Gibraltar"
-    static NAME_LONG = "RGN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMEOmGobwppXO7QPHflw5GN945v88asdfasfnTk0LOUk5d5WlQgbl5209VjZMGN945v88asdfasfnTk0"//119 chars
+    static NAME_GOOD = "Brucejack"
+    static NAME_LONG = "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"//61 chars
 
  
 
@@ -49,11 +49,13 @@ class  HomePageTest extends GebReportingSpec {
 
         and: "I should see the created record on the Dashboard"
         sleep(5000)
-        mineRecordExists(NAME_GOOD) != 0     
+        validation(NAME_GOOD) == [true,true]
+
+
     }
 
 
-    def "Scenario: Error displayed when the given mine name is more than 100 char"(){
+    def "Scenario: Error displayed when the given mine name is more than 60 char"(){
         given: "I go to the homepage"
         to HomePage
 
@@ -67,7 +69,7 @@ class  HomePageTest extends GebReportingSpec {
         createMineRecord(NAME_LONG)
 
         then: "I should see an error message"
-        toastMessage == "Specified name cannot exceed 100 characters."
+        toastMessage == "Specified name cannot exceed 60 characters."
     }
 
 
