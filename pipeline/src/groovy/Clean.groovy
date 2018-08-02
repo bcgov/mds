@@ -1,9 +1,5 @@
-import groovy.transform.BaseScript
-import ca.bc.gov.devops.OpenShiftHelper
-import java.nio.file.Path
 import java.nio.file.Paths
 import groovy.cli.picocli.CliBuilder
-import groovy.cli.picocli.OptionAccessor
 import static OpenShiftHelper.oc
 import static OpenShiftHelper.ocGet
 
