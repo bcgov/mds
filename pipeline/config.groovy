@@ -52,6 +52,7 @@ app {
                             'NAME':"mds-python-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
+                            'PYTHON_REQUIREMENTS_URL': "https://raw.githubusercontent.com/bcgov/mds/${commit}/python-backend/requirements.txt",
                             'SOURCE_CONTEXT_DIR': "python-backend/src",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
@@ -69,13 +70,14 @@ app {
                 [
                         'file':'openshift/_nodejs.bc.json',
                         'params':[
-                                'NAME':"mds-frontend",
-                                'SUFFIX': "${app.build.suffix}",
-                                'VERSION':"${app.build.version}",
-                                'SOURCE_CONTEXT_DIR': "frontend",
-                                'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                                'NODE_ENV': "production",
-                                'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
+                            'NAME':"mds-frontend",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'NODE_REQUIREMENTS_URL': "https://raw.githubusercontent.com/bcgov/mds/${commit}/frontend/package.json",
+                            'SOURCE_CONTEXT_DIR': "frontend",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
+                            'NODE_ENV': "production",
+                            'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
                         ]
                 ],
                 [

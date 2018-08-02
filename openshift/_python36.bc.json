@@ -31,6 +31,11 @@
       "required": true
     },
     {
+      "name": "PYTHON_REQUIREMENTS_URL",
+      "required": true,
+      "value": "https://raw.githubusercontent.com/bcgov/mds/master/python-backend/requirements.txt"
+    },
+    {
       "name": "SOURCE_REPOSITORY_REF",
       "required": false,
       "value": "master"
@@ -150,7 +155,7 @@
             "env": [
               {
                 "name": "PYTHON_REQUIREMENTS_URL",
-                "value": "https://raw.githubusercontent.com/cvarjao/mds/8195e102378fdbd4133294f980d950c85e772014/python-backend/requirements.txt"
+                "value": "${PYTHON_REQUIREMENTS_URL}"
               }
             ]
           }
