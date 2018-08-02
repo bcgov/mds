@@ -232,7 +232,7 @@
             "env": [
               {
                 "name": "API_URL",
-                "value": "{API_URL}"
+                "value": "${API_URL}"
               }
             ]
           }
