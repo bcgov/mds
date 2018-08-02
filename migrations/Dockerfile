@@ -1,5 +1,7 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
+USER 0
+
 ENV FLYWAY_VERSION=5.1.4
 
 ENV FLYWAY_HOME=/opt/flyway/$FLYWAY_VERSION  \
@@ -15,3 +17,5 @@ RUN curl -sLo ./flyway-commandline-${FLYWAY_VERSION}.tar.gz $FLYWAY_PKGS &&\
 COPY sql/* $FLYWAY_HOME/sql/
 
 RUN chmod -R 777 $FLYWAY_HOME
+
+USER 1001
