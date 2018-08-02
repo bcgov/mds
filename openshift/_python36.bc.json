@@ -31,11 +31,6 @@
       "required": true
     },
     {
-      "name": "PYTHON_REQUIREMENTS_URL",
-      "required": true,
-      "value": "https://raw.githubusercontent.com/bcgov/mds/master/python-backend/requirements.txt"
-    },
-    {
       "name": "SOURCE_REPOSITORY_REF",
       "required": false,
       "value": "master"
@@ -153,10 +148,6 @@
               "name": "rhscl-python-36-rhel7:3.6.1-21"
             },
             "env": [
-              {
-                "name": "PYTHON_REQUIREMENTS_URL",
-                "value": "${PYTHON_REQUIREMENTS_URL}"
-              }
             ]
           }
         },

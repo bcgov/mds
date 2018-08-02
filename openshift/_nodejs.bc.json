@@ -23,11 +23,6 @@
       "required": true
     },
     {
-      "name": "NODE_REQUIREMENTS_URL",
-      "required": true,
-      "value": "https://raw.githubusercontent.com/bcgov/mds/master/frontend/package.json"
-    },
-    {
       "name": "SOURCE_CONTEXT_DIR",
       "required": true
     },
@@ -165,10 +160,6 @@
               "name": "rhscl-nodejs-8-rhel7:8.1-22"
             },
             "env": [
-              {
-                "name": "NODE_REQUIREMENTS_URL",
-                "value": "${NODE_REQUIREMENTS_URL}"
-              },
               {
                 "name": "API_URL",
                 "value": "${API_URL}"
