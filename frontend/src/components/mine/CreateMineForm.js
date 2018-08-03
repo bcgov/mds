@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Card, Form, Input, Button, notification } from 'antd';
 
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
-import * as router from '@/constants/routes';
 
 const FormItem = Form.Item;
 
@@ -28,9 +26,7 @@ export class CreateMineForm extends Component {
     return (
       <div>
         <h1>Create A Mine Record</h1>
-        <Card title="Create Mine Form" extra={<Link to={router.MINE_DASHBOARD}><Button type="primary" size="small" >
-              Dashboard
-            </Button></Link>}>
+        <Card title="Create Mine Form">
         <Form ref="createMineForm" onSubmit={this.handleSubmit}>
           <FormItem>
             <Input type="text" ref="mineName" placeholder="Mine Name"></Input>

@@ -52,6 +52,6 @@ def create_app(test_config=None):
 
     app.add_url_rule('/', endpoint='index')
 
-    api.add_resource(Mine, '/mine')
+    api.add_resource(Mine, '/mine/<string:mine_no>')
     api.add_resource(MineList, '/mines')
     return app
