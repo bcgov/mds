@@ -1,9 +1,9 @@
 import uuid
 
-from db import db
+from app.db import db
 from flask_restplus import Resource, reqparse
-from models.mines import MineIdentity, MineDetail
-from utils.random import generate_mine_no
+from ..models.mines import MineIdentity, MineDetail
+from ..utils.random import generate_mine_no
 
 
 class Mine(Resource):

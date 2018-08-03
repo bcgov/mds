@@ -1,6 +1,6 @@
 import random, string
 
-from models.mines import MineDetail
+from ..models.mines import MineDetail
 
 def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
     choices = ''
