@@ -3,9 +3,9 @@
 CREATE TABLE mineral_tenure_xref (
   mineral_tenure_xref_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   mine_guid uuid NOT NULL,
-  tenure_number_id   character varying(10) NOT NULL,
+  tenure_number_id   numeric(10) NOT NULL,
   effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date     NULL DEFAULT '9999-12-31',
+  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
