@@ -1,8 +1,7 @@
 from datetime import datetime
 
+from app.db import db
 from sqlalchemy.dialects.postgresql import UUID
-
-from db import db
 
 
 class AuditMixin(object):
