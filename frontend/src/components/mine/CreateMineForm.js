@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Card, Form, Input, Button, notification } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
+import * as routes from '@/constants/routes';
 
 const FormItem = Form.Item;
 
-// follow https://ant.design/components/form/
 export class CreateMineForm extends Component {
 
   handleSubmit = (event) => {
@@ -18,7 +19,9 @@ export class CreateMineForm extends Component {
     } else if (mineName.length > 60) {
       notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
     } else {
-      this.props.createMineRecord(mineName);
+      this.props.createMineRecord(mineName).then(() => {
+        return <Redirect to={routes.MINE_DASHBOARD.route} />
+      })
     }
   }
 

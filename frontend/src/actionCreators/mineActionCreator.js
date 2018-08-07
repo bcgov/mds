@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { notification } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import { request, success, error } from '@/actions/genericActions';
 import * as reducerTypes from '@/constants/reducerTypes';
 import * as mineActions from '@/actions/mineActions';
 import * as String from '@/constants/strings';
 import * as API from '@/constants/API';
+import * as routes from '@/constants/routes';
 
 const createRequestHeader = () => ({
   headers: {
@@ -19,11 +21,12 @@ export const createMineRecord = (mineName) => (dispatch) => {
   .then((response) => {
     notification.success({ message: "Successfully created: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
+    return response;
   })
   .catch(() => {
-      notification.error({message: String.ERROR, duration: 10});
-      dispatch(error(reducerTypes.CREATE_MINE_RECORD));
-    });
+    notification.error({message: String.ERROR, duration: 10});
+    dispatch(error(reducerTypes.CREATE_MINE_RECORD));
+  });
 };
 
 export const updateMineRecord = (id, tenureNumber) => (dispatch) => {
