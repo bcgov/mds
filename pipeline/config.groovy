@@ -191,16 +191,44 @@ environments {
     'test' {
         vars {
             deployment {
+                env {
+                    name = "test"
+                }
                 key = 'test'
                 namespace = 'empr-mds-test'
+            }
+            modules {
+                'mds-frontend' {
+                    HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'mds-python-backend' {
+                    HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'bdd-stack' {
+                    HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
     'prod' {
         vars {
             deployment {
+                env {
+                    name = "prod"
+                }
                 key = 'prod'
                 namespace = 'empr-mds-prod'
+            }
+            modules {
+                'mds-frontend' {
+                    HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'mds-python-backend' {
+                    HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'bdd-stack' {
+                    HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
