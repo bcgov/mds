@@ -192,6 +192,10 @@ environments {
 
     'test' {
         vars {
+            DB_PVC_SIZE = '1Gi'
+            git {
+                changeId = "${opt.'pr'}"
+            }
             deployment {
                 env {
                     name = "test"
@@ -214,6 +218,10 @@ environments {
     }
     'prod' {
         vars {
+            DB_PVC_SIZE = '10Gi'
+            git {
+                changeId = "${opt.'pr'}"
+            }
             deployment {
                 env {
                     name = "prod"
