@@ -134,10 +134,6 @@
         "runPolicy": "SerialLatestOnly",
         "source": {
           "contextDir": "docker-images/python-36",
-          "git": {
-            "ref": "${SOURCE_REPOSITORY_REF}",
-            "uri": "${SOURCE_REPOSITORY_URL}"
-          },
           "type": "Binary"
         },
         "strategy": {
