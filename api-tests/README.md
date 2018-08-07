@@ -1,6 +1,6 @@
 ## Usage
 
-- (Pre-requistes) Install `newman`: 
+- (Pre-requistes) Install **newman**: 
 
     `npm install -g newman`
     
