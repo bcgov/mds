@@ -138,7 +138,7 @@
             "ref": "${SOURCE_REPOSITORY_REF}",
             "uri": "${SOURCE_REPOSITORY_URL}"
           },
-          "type": "Git"
+          "type": "Binary"
         },
         "strategy": {
           "type": "Docker",
