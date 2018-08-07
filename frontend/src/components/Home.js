@@ -1,46 +1,39 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Card, Col, Row } from 'antd';
 
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as router from '@/constants/routes';
+import DashboardRoutes from '@/routes/DashboardRoutes';
 
-export class Home extends Component {
 
-  handleButtonClick() {
-    this.props.createMineRecord();
-  }
-
+class Home extends Component {
   render() {
+    const { Header, Content, Footer } = Layout;
     return (
-      <div>
-        <Card title="Home">
-        <Row type="flex">
-        <Col span={12}>
-        <Link to={router.CREATE_MINE_RECORD}>
-          <Button
-            type="primary"
-            size="large"
+      <Layout style={{ height: '100vh' }}>
+        <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={['1']}
+            style={{ lineHeight: '63px' }}
           >
-            Create A Mine
-          </Button>
-        </Link>
-        </Col>
-        <Col span={12}>
-        <Link to={router.MINE_DASHBOARD}>
-          <Button
-            type="primary"
-            size="large"
-          >
-            View Mines
-          </Button>
-        </Link>
-        </Col>
-        </Row>
-        </Card>
-      </div>
+            <Menu.Item key="1"><Link to={router.MINE_DASHBOARD.route}>Home</Link></Menu.Item>
+          </Menu>
+        </Header>
+        <Content style={{ padding: '0 50px', marginTop: 64 }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+          </Breadcrumb>
+          <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
+            <DashboardRoutes />
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+        </Footer>
+      </Layout>
     );
   }
 }
@@ -52,3 +45,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(null, mapDispatchToProps)(Home);
+
