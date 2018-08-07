@@ -41,8 +41,8 @@ class MineDashboard extends Component {
           </Row>
           {mineIds.map((id) => {
             return (
-              <div style={{padding: "10px"}}>
-                <Row type="flex" key={id}>
+              <div style={{padding: "10px"}} key={id}>
+                <Row type="flex">
                   <Col span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
                   <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                   <Col span={8}>{mines[id].guid}</Col>

@@ -3,12 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Card, Form, Input, Button, notification } from 'antd';
 
-import { updateMineRecord } from '@/actionCreators/mineActionCreator';
+import { updateMineRecord, refreshMineRecord } from '@/actionCreators/mineActionCreator';
 
 const FormItem = Form.Item;
 
-// follow https://ant.design/components/form/
 export class UpdateMineForm extends Component {
+  state = {
+    redirectTo: null
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +21,9 @@ export class UpdateMineForm extends Component {
     } else if (tenureNumber.length != 7) {
       notification.error({message: "Specified number must be exactly 7 digits long.", duration: 10});
     } else {
-      this.props.updateMineRecord(id, tenureNumber);
+      this.props.updateMineRecord(id, tenureNumber).then(() => {
+        this.props.refreshMineRecord();
+      })
     }
   }
 
@@ -45,7 +49,8 @@ const WrappedUpdateMineForm = Form.create()(UpdateMineForm);
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    updateMineRecord
+    updateMineRecord,
+    refreshMineRecord
   }, dispatch);
 }
 

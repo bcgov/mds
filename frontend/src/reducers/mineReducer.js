@@ -40,6 +40,10 @@ const mineReducer = (state=initialState, action) => {
           mines: createItemMap([action.payload], 'guid'),
           mineIds: createItemIdsArray([action.payload], 'guid'),
         }
+      case actionTypes.REFRESH:
+        return {
+          ...state,
+        }
       default:
         return state;
     }

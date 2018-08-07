@@ -22,3 +22,4 @@ export const error = (reducer, error) => {
     errorMessage: error,
   }
 }
+

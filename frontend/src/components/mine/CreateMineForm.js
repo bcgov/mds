@@ -10,6 +10,9 @@ import * as routes from '@/constants/routes';
 const FormItem = Form.Item;
 
 export class CreateMineForm extends Component {
+  state = {
+    redirectTo: null
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -20,24 +23,27 @@ export class CreateMineForm extends Component {
       notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
     } else {
       this.props.createMineRecord(mineName).then(() => {
-        return <Redirect to={routes.MINE_DASHBOARD.route} />
+        this.setState({redirectTo: routes.DASHBOARD.route})
       })
     }
   }
 
   render() {
+    if (this.state.redirectTo) {
+      return <Redirect push to={this.state.redirectTo} />
+    }
     return (
       <div>
         <h1>Create A Mine Record</h1>
         <Card title="Create Mine Form">
-        <Form ref="createMineForm" onSubmit={this.handleSubmit}>
-          <FormItem>
-            <Input type="text" ref="mineName" placeholder="Mine Name"></Input>
-            <Button type="primary" htmlType="submit">
-              Create Mine
-            </Button>
-          </FormItem>
-        </Form>
+          <Form ref="createMineForm" onSubmit={this.handleSubmit}>
+            <FormItem>
+              <Input type="text" ref="mineName" placeholder="Mine Name"></Input>
+              <Button type="primary" htmlType="submit">
+                Create Mine
+              </Button>
+            </FormItem>
+          </Form>
         </Card>
       </div>
     );
