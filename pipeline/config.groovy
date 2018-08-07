@@ -134,7 +134,7 @@ app {
                         'TAG_NAME':"${app.deployment.version}",
                         'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                         'NODE_ENV': "production",
-                        'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
+                        'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
