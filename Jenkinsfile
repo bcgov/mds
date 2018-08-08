@@ -79,14 +79,16 @@ pipeline {
                 message "Should we continue with deployment to PROD?"
                 ok "Yes!"
             }
-            script {
-                def IS_APPROVED = input(message: "Deploy to PROD?", ok: "y", parameters: [string(name: 'IS_APPROVED', defaultValue: 'y', description: 'Deploy to PROD?')])
-                if (IS_APPROVED != 'y') {
-                    currentBuild.result = "ABORTED"
-                    error "User cancelled"
+            steps {
+                script {
+                    def IS_APPROVED = input(message: "Deploy to PROD?", ok: "y", parameters: [string(name: 'IS_APPROVED', defaultValue: 'y', description: 'Deploy to PROD?')])
+                    if (IS_APPROVED != 'y') {
+                        currentBuild.result = "ABORTED"
+                        error "User cancelled"
+                    }
+                    echo "Deploy (PROD)"
+                    sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
                 }
-                echo "Deploy (PROD)"
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
             }
         }
         stage('Acceptance') {
