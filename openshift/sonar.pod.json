@@ -43,7 +43,6 @@
                         "image": "${IMAGE}",
                         "command": [
                             "container-entrypoint",
-                            "bash",
                             "npm run test"
                         ],
                         "resources": {
