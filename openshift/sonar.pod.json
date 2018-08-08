@@ -44,7 +44,7 @@
                         "command": [
                             "container-entrypoint",
                             "bash",
-                            "npm install && npm run test"
+                            "npm run test"
                         ],
                         "resources": {
                             "limits": {
