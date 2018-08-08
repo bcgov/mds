@@ -82,7 +82,10 @@
     ],
     "collectCoverageFrom": [
       "**/src/**/*.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "jest-junit": {
     "output": "./coverage/tests-report.xml"
