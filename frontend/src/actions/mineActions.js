@@ -7,9 +7,23 @@ export const addMine = (payload) => {
     }
   }
 
+export const updateMine = (payload) => {
+  return {
+    type: ActionTypes.UPDATE_MINE_RECORD,
+    payload,
+  }
+}
+
 export const storeMines = (payload) => {
   return {
     type: ActionTypes.STORE_MINE_RECORDS,
+    payload,
+  }
+}
+
+export const storeMine = (payload) => {
+  return {
+    type: ActionTypes.STORE_MINE_RECORD,
     payload,
   }
 }
