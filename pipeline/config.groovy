@@ -52,8 +52,7 @@ app {
                             'NAME':"mds-python-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'PYTHON_REQUIREMENTS_URL': "https://raw.githubusercontent.com/bcgov/mds/${app.git.commit}/python-backend/requirements.txt",
-                            'SOURCE_CONTEXT_DIR': "python-backend/src",
+                            'SOURCE_CONTEXT_DIR': "python-backend/app",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
@@ -73,7 +72,6 @@ app {
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'NODE_REQUIREMENTS_URL': "https://raw.githubusercontent.com/bcgov/mds/${app.git.commit}/frontend/package.json",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production",
