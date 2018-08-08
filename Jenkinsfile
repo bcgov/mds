@@ -75,14 +75,10 @@ pipeline {
             when {
               environment name: 'CHANGE_TARGET', value: 'master'
             }
-            input {
-                message "Should we continue with deployment to PROD?"
-                ok "Yes!"
-            }
             steps {
                 script {
-                    def IS_APPROVED = input(message: "Deploy to PROD?", ok: "y", parameters: [string(name: 'IS_APPROVED', defaultValue: 'y', description: 'Deploy to PROD?')])
-                    if (IS_APPROVED != 'y') {
+                    def IS_APPROVED = input(message: "Deploy to PROD?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Deploy to PROD?')])
+                    if (IS_APPROVED != 'yes') {
                         currentBuild.result = "ABORTED"
                         error "User cancelled"
                     }
