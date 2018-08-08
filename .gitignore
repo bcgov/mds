@@ -11,3 +11,4 @@ __pycache__
 python-backend/venv/
 python-backend/__pycache__/
 *.pyc
+*tmp*.tar

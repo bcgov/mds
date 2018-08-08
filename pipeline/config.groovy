@@ -111,7 +111,6 @@ app {
         name = "${app.name}"
         version = "${app.deployment.env.name}-${app.deployment.env.id}"
 
-        suffix = "-pr-${app.git.changeId}"
         namespace = "${vars.deployment.namespace}"
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
@@ -120,28 +119,28 @@ app {
                     'params':[
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
-                            'SUFFIX': "${app.deployment.suffix}",
+                            'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
-                            'DB_CONFIG_NAME': "mds-postgresql${app.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ],
                 [
                     'file':'openshift/_nodejs.dc.json',
                     'params':[
                         'NAME':"mds-frontend",
-                        'SUFFIX': "${app.deployment.suffix}",
+                        'SUFFIX': "${vars.deployment.suffix}",
                         'TAG_NAME':"${app.deployment.version}",
                         'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                         'NODE_ENV': "production",
-                        'API_URL': "https://mds-python-backend-${app.git.changeId}-empr-mds-dev.pathfinder.gov.bc.ca"
+                        'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
                     'file':'openshift/postgresql.dc.json',
                     'params':[
                         'NAME':"mds-postgresql",
-                        'DATABASE_SERVICE_NAME':"mds-postgresql${app.deployment.suffix}",
+                        'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                         'IMAGE_STREAM_NAMESPACE':'',
                         'IMAGE_STREAM_NAME':"mds-postgresql",
                         'IMAGE_STREAM_VERSION':"${app.deployment.version}",
@@ -174,6 +173,7 @@ environments {
                 }
                 key = 'dev'
                 namespace = 'empr-mds-dev'
+                suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -188,19 +188,59 @@ environments {
             }
         }
     }
+
+
     'test' {
         vars {
+            DB_PVC_SIZE = '1Gi'
+            git {
+                changeId = "${opt.'pr'}"
+            }
             deployment {
+                env {
+                    name = "test"
+                }
                 key = 'test'
                 namespace = 'empr-mds-test'
+                suffix = "-test"
+            }
+            modules {
+                'mds-frontend' {
+                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'mds-python-backend' {
+                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'bdd-stack' {
+                    HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
     'prod' {
         vars {
+            DB_PVC_SIZE = '10Gi'
+            git {
+                changeId = "${opt.'pr'}"
+            }
             deployment {
+                env {
+                    name = "prod"
+                }
+                suffix = "-prod"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
+            }
+            modules {
+                'mds-frontend' {
+                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'mds-python-backend' {
+                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'bdd-stack' {
+                    HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }

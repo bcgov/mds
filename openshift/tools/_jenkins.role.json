@@ -1,0 +1,87 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "Jenkins - Role",
+        "annotations": {
+            "template.openshift.io/bindable": "false"
+        }
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "NAME_SUFFIX",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "VERSION",
+            "displayName": "Name",
+            "description": "The output/built ImageStream tag names",
+            "required": false
+        }
+    ],
+    "objects": [
+        {
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-dev"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        },{
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-test"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        },{
+            "apiVersion": "v1",
+            "groupNames": null,
+            "kind": "RoleBinding",
+            "metadata": {
+                "name": "jenkins_edit",
+                "namespace": "empr-mds-prod"
+            },
+            "roleRef": {
+                "name": "edit"
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "jenkins",
+                    "namespace": "empr-mds-tools"
+                }
+            ]
+        }
+    ]
+}
