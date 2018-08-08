@@ -113,6 +113,29 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
+                    'file':'openshift/postgresql.dc.json',
+                    'params':[
+                            'NAME':"mds-postgresql",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAME':"mds-postgresql",
+                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                    ]
+                ],
+                [
+                    'file':'openshift/_nodejs.dc.json',
+                    'params':[
+                            'NAME':"mds-frontend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'TAG_NAME':"${app.deployment.version}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
+                            'NODE_ENV': "production",
+                            'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
+                    ]
+                ],
+                [
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
@@ -121,29 +144,6 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
-                    ]
-                ],
-                [
-                    'file':'openshift/_nodejs.dc.json',
-                    'params':[
-                        'NAME':"mds-frontend",
-                        'SUFFIX': "${vars.deployment.suffix}",
-                        'TAG_NAME':"${app.deployment.version}",
-                        'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
-                        'NODE_ENV': "production",
-                        'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
-                    ]
-                ],
-                [
-                    'file':'openshift/postgresql.dc.json',
-                    'params':[
-                        'NAME':"mds-postgresql",
-                        'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                        'IMAGE_STREAM_NAMESPACE':'',
-                        'IMAGE_STREAM_NAME':"mds-postgresql",
-                        'IMAGE_STREAM_VERSION':"${app.deployment.version}",
-                        'POSTGRESQL_DATABASE':'mds',
-                        'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
                 ]
         ]

@@ -75,14 +75,18 @@ pipeline {
             when {
               environment name: 'CHANGE_TARGET', value: 'master'
             }
-            input {
-                message "Should we continue with deployment to PROD?"
-                ok "Yes!"
+            stage('Deploy (PROD)') {
+                agent { label 'master' }
+                input {
+                    message "Should we continue with deployment to PROD?"
+                    ok "Yes!"
+                }
+                steps {
+                    echo "Deploy (PROD)"
+                    sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
+                }
             }
-            steps {
-                echo "Deploy (PROD)"
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
-            }
+
         }
         stage('Acceptance') {
             agent { label 'master' }
