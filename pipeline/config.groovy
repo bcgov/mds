@@ -122,7 +122,7 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
-                            'DB_CONFIG_NAME': "mds-postgresql${app.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ],
                 [
