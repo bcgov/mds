@@ -70,7 +70,7 @@ pipeline {
                 //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
-        stages('Deploy (PROD)') {
+        stages{
             agent { label 'master' }
             when {
               environment name: 'CHANGE_TARGET', value: 'master'
@@ -86,7 +86,6 @@ pipeline {
                     sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
                 }
             }
-
         }
         stage('Acceptance') {
             agent { label 'master' }
