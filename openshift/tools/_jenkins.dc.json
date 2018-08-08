@@ -199,6 +199,10 @@
                                     "value": "true"
                                 },
                                 {
+                                    "name": "INSTALL_PLUGINS",
+                                    "value": "simple-theme-plugin:0.4"
+                                },
+                                {
                                     "name": "JENKINS_SERVICE_NAME",
                                     "value": "jenkins"
                                 },
