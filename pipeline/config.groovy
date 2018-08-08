@@ -164,7 +164,6 @@ environments {
     'dev' {
         vars {
             DB_PVC_SIZE = '1Gi'
-            suffix = "-pr-${app.git.changeId}"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -174,6 +173,7 @@ environments {
                 }
                 key = 'dev'
                 namespace = 'empr-mds-dev'
+                suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -193,7 +193,6 @@ environments {
     'test' {
         vars {
             DB_PVC_SIZE = '1Gi'
-            suffix = "test"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -203,6 +202,7 @@ environments {
                 }
                 key = 'test'
                 namespace = 'empr-mds-test'
+                suffix = "test"
             }
             modules {
                 'mds-frontend' {
@@ -220,7 +220,6 @@ environments {
     'prod' {
         vars {
             DB_PVC_SIZE = '10Gi'
-            suffix = "prod"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -228,6 +227,7 @@ environments {
                 env {
                     name = "prod"
                 }
+                suffix = "prod"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
             }
