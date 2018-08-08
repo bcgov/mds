@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as router from '@/constants/routes';
 import DashboardRoutes from '@/routes/DashboardRoutes';
+import { AuthGuard } from '../../HOC/AuthGuard';
 
 
 class Dashboard extends Component {
@@ -44,4 +45,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default AuthGuard(connect(null, mapDispatchToProps)(Dashboard));
