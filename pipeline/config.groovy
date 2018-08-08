@@ -122,7 +122,7 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql-${vars.deployment.suffix}"
                     ]
                 ],
                 [
@@ -140,7 +140,7 @@ app {
                     'file':'openshift/postgresql.dc.json',
                     'params':[
                         'NAME':"mds-postgresql",
-                        'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                        'DATABASE_SERVICE_NAME':"mds-postgresql-${vars.deployment.suffix}",
                         'IMAGE_STREAM_NAMESPACE':'',
                         'IMAGE_STREAM_NAME':"mds-postgresql",
                         'IMAGE_STREAM_VERSION':"${app.deployment.version}",
@@ -200,7 +200,7 @@ environments {
                 env {
                     name = "test"
                 }
-                key = 'test'
+                key = '-test'
                 namespace = 'empr-mds-test'
                 suffix = "test"
             }
@@ -227,7 +227,7 @@ environments {
                 env {
                     name = "prod"
                 }
-                suffix = "prod"
+                suffix = "-prod"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
             }
