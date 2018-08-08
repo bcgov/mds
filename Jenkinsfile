@@ -11,69 +11,80 @@ pipeline {
                 script {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
-                //Clear Gradle Cache
-                sh 'rm -rf $HOME/.gradle/caches/'
                 echo "Building ..."
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
-        stage('Test and Deploy to Dev') {
-            parallel {
-                stage('Quality Control') {
-                    agent { label 'master' }
-                    steps {
-                        echo "Quality Control ..."
-                        sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-                    }
-                }
-                stage('Deploy (DEV)') {
-                    agent { label 'master' }
-                    /*input {
-                        message "Should we continue with deployment to DEV?"
-                        ok "Yes!"
-                    }*/
-                    steps {
-                        echo "Deploy (DEV) ..."
-                        sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-                    }
-                }
-             }
+        stage('Unit Tests (DEV)') {
+            agent { label 'master' }
+            steps {
+                echo "Unit Tests ..."
+                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
+        }
+        stage('Deploy (DEV)') {
+            agent { label 'master' }
+            /*input {
+                message "Should we continue with deployment to DEV?"
+                ok "Yes!"
+            }*/
+            steps {
+                echo "Deploy (DEV) ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
         }
         stage ('ZAP (DEV)'){
             agent { label 'master' }
             steps{
                 echo "ZAP (DEV) ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-zap -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
-        stage('Test (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Test (DEV) ..."
+                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-zap -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
         stage('Deploy (TEST)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             steps {
                 echo "Deploy (TEST)"
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
-        stage('Test (TEST)') {
+        stage('Functional Test (TEST)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             steps {
-                echo "Test (TEST) ..."
+                echo "Functional Test (DEV) ..."
+                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
+            }
+        }
+        stage('SonarQube (TEST)') {
+            agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
+            steps {
+                echo "Unit Tests ..."
+                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
         stage('Deploy (PROD)') {
             agent { label 'master' }
-            steps {
-                echo "Deploy (PROD)"
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
             }
-        }
-        stage('Verify (PROD)') {
-            agent { label 'master' }
             steps {
-                echo "Verify (PROD) ..."
+                script {
+                    def IS_APPROVED = input(message: "Deploy to PROD?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Deploy to PROD?')])
+                    if (IS_APPROVED != 'yes') {
+                        currentBuild.result = "ABORTED"
+                        error "User cancelled"
+                    }
+                    echo "Deploy (PROD)"
+                    sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
+                }
             }
         }
         stage('Acceptance') {

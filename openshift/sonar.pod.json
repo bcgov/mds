@@ -44,16 +44,17 @@
                         "command": [
                             "container-entrypoint",
                             "bash",
-                            "/opt/app-root/src/scripts/test.sh"
+                            "-c",
+                            "./run_tests.sh"
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "1",
-                                "memory": "1024Mi"
+                                "cpu": "2",
+                                "memory": "2.5Gi"
                             },
                             "requests": {
-                                "cpu": "1",
-                                "memory": "1024Mi"
+                                "cpu": "1.5",
+                                "memory": "2Gi"
                             }
                         },
                         "env": [

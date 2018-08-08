@@ -1,5 +1,7 @@
 alembic==1.0.0
 aniso8601==3.0.2
+atomicwrites==1.1.5
+attrs==18.1.0
 click==6.7
 Flask==1.0.2
 Flask-Cors==3.0.6
@@ -11,10 +13,15 @@ Jinja2==2.10
 jsonschema==2.6.0
 Mako==1.0.7
 MarkupSafe==1.0
+more-itertools==4.2.0
+pluggy==0.6.0
 psycopg2==2.7.5
+py==1.5.4
+pytest==3.6.3
 python-dateutil==2.7.3
 python-editor==1.0.3
 pytz==2018.5
+requests==2.19.1
 six==1.11.0
 SQLAlchemy==1.2.10
 Werkzeug==0.14.1

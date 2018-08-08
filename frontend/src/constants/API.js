@@ -1,2 +1,3 @@
-export const BASE_URL = 'http://0.0.0.0:5000'
-export const HELLO = '/hello'
+export const BASE_URL = process.env.API_URL
+export const MINE = '/mine'
+export const MINE_LIST = '/mines'

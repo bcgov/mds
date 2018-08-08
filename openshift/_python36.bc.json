@@ -134,11 +134,7 @@
         "runPolicy": "SerialLatestOnly",
         "source": {
           "contextDir": "docker-images/python-36",
-          "git": {
-            "ref": "${SOURCE_REPOSITORY_REF}",
-            "uri": "${SOURCE_REPOSITORY_URL}"
-          },
-          "type": "Git"
+          "type": "Binary"
         },
         "strategy": {
           "type": "Docker",
@@ -148,10 +144,6 @@
               "name": "rhscl-python-36-rhel7:3.6.1-21"
             },
             "env": [
-              {
-                "name": "PYTHON_REQUIREMENTS_URL",
-                "value": "https://raw.githubusercontent.com/cvarjao/mds/8195e102378fdbd4133294f980d950c85e772014/python-backend/requirements.txt"
-              }
             ]
           }
         },

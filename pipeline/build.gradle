@@ -76,6 +76,20 @@ task('cd-zap', type: JavaExec) {
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
 }
 
+task('cd-functional-test', type: JavaExec) {
+    description 'Run BDD Stack script'
+
+    // Set main property to name of Groovy script class.
+    main = 'BddStack'
+
+    // Set classpath for running the Groovy script.
+    classpath = sourceSets.main.runtimeClasspath
+
+    args project.getScriptArgs()
+
+    workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
+}
+
 task('cd-unit-test', type: JavaExec) {
     description 'Run ZAP Groovy script'
  

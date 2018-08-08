@@ -1,12 +1,33 @@
 {
-    "kind": "List",
+    "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
+        "name": "Jenkins - Role",
         "annotations": {
-            "description": "Grants 'serviceaccount:jenkins' 'edit' access to all other projects (dev, test, prod)"
+            "template.openshift.io/bindable": "false"
         }
     },
-    "items": [
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "NAME_SUFFIX",
+            "displayName": "Name",
+            "description": "A name used for all objects",
+            "required": false
+        },
+        {
+            "name": "VERSION",
+            "displayName": "Name",
+            "description": "The output/built ImageStream tag names",
+            "required": false
+        }
+    ],
+    "objects": [
         {
             "apiVersion": "v1",
             "groupNames": null,

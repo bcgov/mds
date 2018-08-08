@@ -52,7 +52,7 @@ int inprogress=1
 boolean hasFailed=false;
 
 while(inprogress>0){
-    Map pods = ocGet(['pods','-l', "app=${appLabel}", '-l', "zap", "--namespace=${config.app.deployment.namespace}"])
+    Map pods = ocGet(['pods','-l', "app=${appLabel},zap", "--namespace=${config.app.deployment.namespace}"])
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {
