@@ -111,7 +111,6 @@ app {
         name = "${app.name}"
         version = "${app.deployment.env.name}-${app.deployment.env.id}"
 
-        suffix = "-pr-${app.git.changeId}"
         namespace = "${vars.deployment.namespace}"
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
@@ -120,7 +119,7 @@ app {
                     'params':[
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
-                            'SUFFIX': "${app.deployment.suffix}",
+                            'SUFFIX': "${vars.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${app.deployment.suffix}"
@@ -130,7 +129,7 @@ app {
                     'file':'openshift/_nodejs.dc.json',
                     'params':[
                         'NAME':"mds-frontend",
-                        'SUFFIX': "${app.deployment.suffix}",
+                        'SUFFIX': "${vars.suffix}",
                         'TAG_NAME':"${app.deployment.version}",
                         'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                         'NODE_ENV': "production",
@@ -141,7 +140,7 @@ app {
                     'file':'openshift/postgresql.dc.json',
                     'params':[
                         'NAME':"mds-postgresql",
-                        'DATABASE_SERVICE_NAME':"mds-postgresql${app.deployment.suffix}",
+                        'DATABASE_SERVICE_NAME':"mds-postgresql${vars.suffix}",
                         'IMAGE_STREAM_NAMESPACE':'',
                         'IMAGE_STREAM_NAME':"mds-postgresql",
                         'IMAGE_STREAM_VERSION':"${app.deployment.version}",
@@ -165,6 +164,7 @@ environments {
     'dev' {
         vars {
             DB_PVC_SIZE = '1Gi'
+            suffix = "-pr-${app.git.changeId}"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -193,6 +193,7 @@ environments {
     'test' {
         vars {
             DB_PVC_SIZE = '1Gi'
+            suffix = "test"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -219,6 +220,7 @@ environments {
     'prod' {
         vars {
             DB_PVC_SIZE = '10Gi'
+            suffix = "prod"
             git {
                 changeId = "${opt.'pr'}"
             }
