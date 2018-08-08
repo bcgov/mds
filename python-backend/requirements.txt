@@ -19,6 +19,7 @@ psycopg2==2.7.5
 py==1.5.4
 pytest==3.6.3
 python-dateutil==2.7.3
+python-dotenv==0.9.1
 python-editor==1.0.3
 pytz==2018.5
 requests==2.19.1
