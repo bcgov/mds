@@ -14,7 +14,7 @@ class Dashboard extends Component {
   render() {
     const { Header, Content, Footer } = Layout;
     return (
-        <Layout style={{ height: '100vh' }}>
+      <Layout style={{ height: '100vh' }}>
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
           <Menu
             theme="dark"
@@ -26,14 +26,10 @@ class Dashboard extends Component {
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px', marginTop: 64 }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-        </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
             <DashboardRoutes />
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-        </Footer>
       </Layout>
     );
   }
