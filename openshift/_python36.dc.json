@@ -113,7 +113,7 @@
                 ]
               }
             },
-            "timeoutSeconds": 600
+            "timeoutSeconds": 1200
           },
           "resources": {},
           "activeDeadlineSeconds": 21600
