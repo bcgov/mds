@@ -44,7 +44,7 @@
                         "command": [
                             "container-entrypoint",
                             "bash",
-                            "/opt/app-root/src/scripts/test.sh"
+                            "npm run test"
                         ],
                         "resources": {
                             "limits": {
