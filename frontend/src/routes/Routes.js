@@ -9,7 +9,6 @@ const Routes = (props) => {
       <Switch>
         <RedirectRoute exact path={routes.DASHBOARD.route} redirectTo={routes.MINE_DASHBOARD.route} />
         <Route path={routes.DASHBOARD.route} component={routes.DASHBOARD.component} />
-        <Route exact path={routes.HOME.route} component={routes.DASHBOARD.component} />
         <Route render={(props) => <div>404 - Not Found</div>} />
       </Switch>
     </div>
