@@ -42,6 +42,9 @@ pipeline {
         }
         stage('Deploy (TEST)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             steps {
                 echo "Deploy (TEST)"
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
@@ -49,13 +52,19 @@ pipeline {
         }
         stage('Functional Test (TEST)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             steps {
                 echo "Functional Test (DEV) ..."
                 //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
-        stage('Unit Tests (TEST)') {
+        stage('SonarQube (TEST)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             steps {
                 echo "Unit Tests ..."
                 //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
@@ -63,6 +72,9 @@ pipeline {
         }
         stage('Deploy (PROD)') {
             agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
             input {
                 message "Should we continue with deployment to PROD?"
                 ok "Yes!"
