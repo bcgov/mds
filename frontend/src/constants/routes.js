@@ -1,31 +1,25 @@
-import Home from '@/components/Home';
 import MineDashboard from '@/components/mine/MineDashboard';
 import CreateMineForm from '@/components/mine/CreateMineForm';
 import MineSummary from '@/components/mine/MineSummary';
 import Dashboard from '@/components/dashboard/Dashboard';
 
-export const HOME = {
-    route: '/',
-    component: Home,
-};
-
 export const DASHBOARD = {
-    route: '/dashboard',
+    route: '/',
     component: Dashboard,
 };
 
 export const MINE_DASHBOARD = {
-  route: '/dashboard/mine',
+  route: '/dashboard',
   component: MineDashboard,
 };
 
 export const CREATE_MINE_RECORD = {
-  route: '/dashboard/mine/create',
+  route: '/dashboard/create-mine',
   component: CreateMineForm,
 };
 
 export const MINE_SUMMARY = {
-  route: '/dashboard/mine/summary/:id',
-  dynamicRoute: (id) => `/dashboard/mine/summary/${id}`,
+  route: '/dashboard/:id/summary',
+  dynamicRoute: (id) => `/dashboard/${id}/summary`,
   component: MineSummary,
 };
