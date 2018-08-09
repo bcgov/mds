@@ -4,10 +4,20 @@ const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
 const app = express();
 const port = 3000;
+const commonHeaders = {
+    'Cache-Control': 'private, no-cache, no-store, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': 0,
+    'X-XSS-Protection': 1,
+    'X-Frame-Options': 'SAMEORIGIN',
+};
 
 const staticServe = express.static(`${__dirname}/build`, {
   immutable: true,
   maxAge: '1y',
+  setHeaders: function (res, path, stat) {
+        res.set(commonHeaders)
+    }
 });
 
 const serveGzipped = (contentType) => (req, res, next) => {
@@ -23,6 +33,8 @@ const serveGzipped = (contentType) => (req, res, next) => {
   // set correct headers
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', contentType);
+  res.set(commonHeaders);
+
 
   // let express.static take care of the updated request
   next();
@@ -39,6 +51,7 @@ app.get('*.js', serveGzipped('text/javascript'));
 app.get('*.css', serveGzipped('text/css'));
 
 app.get('/service-worker.js', (req, res) => {
+  res.set(commonHeaders);
   res.set({ 'Content-Type': 'application/javascript; charset=utf-8' });
   res.send(fs.readFileSync('build/service-worker.js'));
 });
