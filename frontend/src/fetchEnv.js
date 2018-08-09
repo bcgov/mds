@@ -1,14 +1,17 @@
 import { environment } from './constants/API'
 
 export default function fetchEnv() {
-    fetch('/env').then((res) => {
+  return new Promise((resolve, reject) => {
+      fetch('/env').then((res) => {
         if (!res.ok) {
-            return Promise.reject(res);
-        } 
+            reject(res);
+        }
         return res.json();
-    }).then((env) => {
+      }).then((env) => {
         if (env.apiUrl) {
             environment.apiUrl = env.apiUrl
         }
-    });
+        resolve(env);
+      });
+  })
 }
