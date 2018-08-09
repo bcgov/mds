@@ -9,6 +9,7 @@
     "axios-mock-adapter": "^1.15.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "keycloak-js": "^4.2.1",
     "less-loader": "^4.1.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
