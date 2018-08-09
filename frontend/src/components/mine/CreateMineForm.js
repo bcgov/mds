@@ -26,7 +26,7 @@ export class CreateMineForm extends Component {
       notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
     } else {
       this.props.createMineRecord(mineName).then(() => {
-        this.setState({redirectTo: routes.DASHBOARD.route})
+        this.setState({redirectTo: routes.MINE_DASHBOARD.route})
       })
     }
   }
