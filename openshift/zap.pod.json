@@ -25,7 +25,7 @@
             "displayName": "The URL",
             "description": "A suffix appended to all objects",
             "required": true,
-            "value": "https://gwells-test.pathfinder.gov.bc.ca/gwells/"
+            "value": "https://mds-frontend-empr-mds-prod.pathfinder.gov.bc.ca/"
         }
     ],
     "objects": [

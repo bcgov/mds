@@ -292,16 +292,13 @@
         "ports": [
           {
             "name": "web",
-            "protocol": "TCP",
             "port": 5000,
             "targetPort": 5000
           }
         ],
         "selector": {
           "name": "${NAME}${SUFFIX}"
-        },
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
+        }
       }
     },
     {
@@ -309,23 +306,19 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
+        "labels": {
+          "component": "${NAME}"
+        }
       },
       "spec": {
         "host": "${HOST}",
-        "path": "/",
         "to": {
           "kind": "Service",
-          "name": "${NAME}${SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
+          "name": "${NAME}${SUFFIX}"
         },
         "tls": {
           "termination": "edge"
-        },
-        "wildcardPolicy": "None"
+        }
       }
     }
   ]
