@@ -5,7 +5,7 @@ const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const app = express();
 const port = 3000;
 const commonHeaders = {
-    'Cache-Control': 'private, no-cache, no-store, max-age=0',
+    'Cache-Control': 'private, no-cache, no-store',
     'Pragma': 'no-cache',
     'Expires': 0,
     'X-XSS-Protection': 1,
@@ -16,7 +16,7 @@ const staticServe = express.static(`${__dirname}/build`, {
   immutable: true,
   maxAge: '1y',
   setHeaders: function (res, path, stat) {
-        res.set(commonHeaders)
+        res.set(commonHeaders);
     }
 });
 
@@ -31,9 +31,9 @@ const serveGzipped = (contentType) => (req, res, next) => {
   req.url = `${req.url}.gz`;
 
   // set correct headers
+  res.set(commonHeaders);
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', contentType);
-  res.set(commonHeaders);
 
 
   // let express.static take care of the updated request
@@ -41,6 +41,7 @@ const serveGzipped = (contentType) => (req, res, next) => {
 }
 
 app.get("/env", function(req, res) {
+  res.set(commonHeaders);
   res.send({
       backend: 'mds-python-backend',
       apiUrl: process.env.API_URL,
