@@ -7,34 +7,39 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 export const AuthGuard = (WrappedComponent) => {
   class AuthGuard extends Component {
-    state = {
-      keycloak: null,
-      authenticatied: false,
+    constructor(props) {
+      super(props);
+      this.state = {
+        keycloak: null,
+        authenticated: false
+      };
     }
-
     componentDidMount() {
       const keycloak = Keycloak({
         "realm": "mds",
-        "auth-server-url": "https://sso-test.pathfinder.gov.bc.ca/auth",
+        "url": "https://sso-test.pathfinder.gov.bc.ca/auth/",
         "ssl-required": "external",
         "resource": "frontend",
         "public-client": true,
         "confidential-port": 0,
-        "clientId": "mds"
+        "clientId": "frontend"
       });
-      keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-        this.setState({ keycloak: keycloak, authenticated: authenticated })
+      keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
+        this.setState({ keycloak: keycloak, authenticated: authenticated });
       })
     }
 
     render() {
-      if (!this.state.authenticated) {
-        return <div>Unable to login</div>
-      } else {
-        return (
+      if (this.state.keycloak) {
+        if (this.state.authenticated)
+          return (
           <WrappedComponent {...this.props} />
-        )
+        ); 
+        else return (<div>Unable to authenticate!</div>)
       }
+      return (
+        <div>Initializing Keycloak...</div>
+      );
     }
   }
 

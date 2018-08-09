@@ -14,7 +14,7 @@ export const MINE_DASHBOARD = {
 };
 
 export const CREATE_MINE_RECORD = {
-  route: '/dashboard/create-mine',
+  route: '/dashboard/create-mining-mine',
   component: CreateMineForm,
 };
 
