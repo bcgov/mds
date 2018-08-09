@@ -208,7 +208,15 @@
                         "key": "database-name"
                       }
                     }
-                  }
+                  },
+                  {
+                    "name": "FLASK_RUN_PORT",
+                    "value": "5000"
+                  },
+                  {
+                    "name": "FLASK_RUN_HOST",
+                    "value": "0.0.0.0"
+                  },
                 ],
                 "resources": {
                   "limits": {
@@ -292,13 +300,16 @@
         "ports": [
           {
             "name": "web",
+            "protocol": "TCP",
             "port": 5000,
             "targetPort": 5000
           }
         ],
         "selector": {
           "name": "${NAME}${SUFFIX}"
-        }
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
       }
     },
     {
@@ -306,19 +317,23 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${SUFFIX}",
-        "labels": {
-          "component": "${NAME}"
-        }
+        "creationTimestamp": null
       },
       "spec": {
         "host": "${HOST}",
+        "path": "/",
         "to": {
           "kind": "Service",
-          "name": "${NAME}${SUFFIX}"
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
         },
         "tls": {
           "termination": "edge"
-        }
+        },
+        "wildcardPolicy": "None"
       }
     }
   ]
