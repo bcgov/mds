@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
 const app = express();
 const port = 3000;
@@ -27,6 +28,12 @@ const serveGzipped = (contentType) => (req, res, next) => {
   next();
 }
 
+app.get("/env", function(req, res) {
+  res.send({
+      test: 'test',
+      apiUrl: process.env.API_URL,
+  });
+});
 
 app.get('*.js', serveGzipped('text/javascript'));
 app.get('*.css', serveGzipped('text/css'));
