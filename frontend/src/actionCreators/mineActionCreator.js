@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { notification } from 'antd';
 
-import { request, success, error, refresh } from '@/actions/genericActions';
+import { request, success, error } from '@/actions/genericActions';
 import * as reducerTypes from '@/constants/reducerTypes';
 import * as mineActions from '@/actions/mineActions';
 import * as String from '@/constants/strings';
