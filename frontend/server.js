@@ -30,7 +30,7 @@ const serveGzipped = (contentType) => (req, res, next) => {
 
 app.get("/env", function(req, res) {
   res.send({
-      test: 'test',
+      backend: 'mds-python-backend',
       apiUrl: process.env.API_URL,
   });
 });

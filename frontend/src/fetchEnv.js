@@ -1,4 +1,4 @@
-import { environment } from './constants/API'
+import { ENVIRONMENT } from './constants/API'
 
 export default function fetchEnv() {
   return new Promise((resolve, reject) => {
@@ -9,7 +9,7 @@ export default function fetchEnv() {
         return res.json();
       }).then((env) => {
         if (env.apiUrl) {
-            environment.apiUrl = env.apiUrl
+            ENVIRONMENT.apiUrl = env.apiUrl
         }
         resolve(env);
       });
