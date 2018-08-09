@@ -19,10 +19,10 @@ export const AuthGuard = (WrappedComponent) => {
         "realm": "mds",
         "url": "https://sso-test.pathfinder.gov.bc.ca/auth/",
         "ssl-required": "external",
-        "resource": "frontend",
+        "resource": "frontend-local",
         "public-client": true,
         "confidential-port": 0,
-        "clientId": "frontend"
+        "clientId": "frontend-local"
       });
       keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
         this.setState({ keycloak: keycloak, authenticated: authenticated });

@@ -2,36 +2,17 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
-import Keycloak from 'keycloak-js';
 import { Link } from 'react-router-dom';
 
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as router from '@/constants/routes';
 import DashboardRoutes from '@/routes/DashboardRoutes';
-// import { AuthGuard } from '../../HOC/AuthGuard';
+import { AuthGuard } from '../../HOC/AuthGuard';
 
 
 class Dashboard extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { keycloak: null, authenticated: false };
-  // }
-  // componentDidMount() {
-  //   const keycloak = Keycloak({
-  //     "realm": "mds",
-  //     "auth-server-url": "https://sso-test.pathfinder.gov.bc.ca/auth",
-  //     "ssl-required": "external",
-  //     "resource": "frontend",
-  //     "public-client": true,
-  //     "confidential-port": 0,
-  //     "clientId": "frontend"
-  //   });
-  //   keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-  //     this.setState({ keycloak: keycloak, authenticated: authenticated })
-  //   })
-  // }
   render() {
-    const { Header, Content, Footer } = Layout;
+    const { Header, Content } = Layout;
     return (
       <Layout style={{ height: '100vh' }}>
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -60,4 +41,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default AuthGuard(connect(null, mapDispatchToProps)(Dashboard));
