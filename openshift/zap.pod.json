@@ -48,7 +48,7 @@
                         "command": [
                             "/bin/bash",
                             "-c",
-                            "export HOME=/home/jenkins; source /usr/local/bin/generate_container_user; source /usr/local/bin/configure-slave; /zap/zap-baseline.py -t ${URL}"
+                            "export HOME=/home/jenkins; source /usr/local/bin/generate_container_user; source /usr/local/bin/configure-slave; /zap/zap-baseline.py -t ${URL}; if [ $? -le 2 ]; then exit 0; else exit 1; fi"
                         ],
                         "resources": {
                             "limits": {
