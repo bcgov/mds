@@ -45,7 +45,7 @@
                             "container-entrypoint",
                             "bash",
                             "-c",
-                            "./run_tests.sh"
+                            "./run_tests.sh && sonar-scanner"
                         ],
                         "resources": {
                             "limits": {
