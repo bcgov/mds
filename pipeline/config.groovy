@@ -131,11 +131,7 @@ app {
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'NODE_ENV': "production",
-<<<<<<< HEAD
-                            'API_URL': "${vars.modules.'mds-python-backend'.HOST}"
-=======
                             'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
->>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
                     ]
                 ],
                 [

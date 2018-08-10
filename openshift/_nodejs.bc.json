@@ -148,17 +148,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "name": "rhscl-nodejs-8-rhel7:8.1-22"
-<<<<<<< HEAD
-            },
-            "env": [
-              {
-                "name": "API_URL",
-                "value": "${API_URL}"
-              }
-            ]
-=======
             }
->>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
           }
         },
         "output": {
