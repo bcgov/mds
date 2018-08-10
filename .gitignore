@@ -8,8 +8,5 @@ coverage/
 .idea/
 __pycache__
 *.pytest_cache
-python-backend/venv/
-python-backend/__pycache__/
 *.pyc
 *tmp*.tar
-python-backend/postgres-data/

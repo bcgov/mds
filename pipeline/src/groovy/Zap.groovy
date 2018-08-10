@@ -37,9 +37,10 @@ if (opt?.h) {
 
 def config = OpenShiftHelper.loadDeploymentConfig(opt)
 
+def appLabel="${config.app.deployment.id}"
+def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
 
-def appLabel="${config.app.name}-${config.app.deployment.name}"
-def routes = ocGet(['routes','-l', "app=${appLabel}", "--namespace=${config.app.deployment.namespace}"])
+println routes
 
 routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
@@ -52,7 +53,11 @@ int inprogress=1
 boolean hasFailed=false;
 
 while(inprogress>0){
+<<<<<<< HEAD
     Map pods = ocGet(['pods','-l', "app=${appLabel},zap", "--namespace=${config.app.deployment.namespace}"])
+=======
+    Map pods = ocGet(['pods','-l', "app=${appLabel},run=zap", "--namespace=${config.app.deployment.namespace}"])
+>>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {

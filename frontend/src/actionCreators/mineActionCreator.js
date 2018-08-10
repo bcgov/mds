@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { notification } from 'antd';
 
-import { request, success, error, refresh } from '@/actions/genericActions';
+import { request, success, error } from '@/actions/genericActions';
 import * as reducerTypes from '@/constants/reducerTypes';
 import * as mineActions from '@/actions/mineActions';
 import * as String from '@/constants/strings';
 import * as API from '@/constants/API';
+import { ENVIRONMENT } from '@/constants/API'
 
 const createRequestHeader = () => ({
   headers: {
@@ -16,7 +17,7 @@ const createRequestHeader = () => ({
 
 export const createMineRecord = (mineName) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
-  return axios.post(API.BASE_URL + API.MINE + "/some_mine_no" , {"name": mineName}, createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.MINE + "/some_mine_no" , {"name": mineName}, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully created: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
@@ -30,7 +31,7 @@ export const createMineRecord = (mineName) => (dispatch) => {
 
 export const updateMineRecord = (id, tenureNumber) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
-  return axios.put(API.BASE_URL + API.MINE + "/" + id , {"tenure_number_id": tenureNumber}, createRequestHeader())
+  return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , {"tenure_number_id": tenureNumber}, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully updated: " + id, duration: 10 });
     dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
@@ -44,7 +45,8 @@ export const updateMineRecord = (id, tenureNumber) => (dispatch) => {
 
 export const getMineRecords = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
-  return axios.get(API.BASE_URL + API.MINE_LIST, createRequestHeader())
+  console.log(ENVIRONMENT.apiUrl);
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMines(response.data));
@@ -57,7 +59,7 @@ export const getMineRecords = () => (dispatch) => {
 
 export const getMineRecord = (mineNo) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORD));
-  return axios.get(API.BASE_URL + API.MINE + "/" + mineNo, createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORD));
     dispatch(mineActions.storeMine(response.data));

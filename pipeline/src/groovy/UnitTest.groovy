@@ -44,15 +44,23 @@ def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},im
 // Run frontend tests
 frontEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${config.app.build.version}", "--namespace=${config.app.build.namespace}"])
+<<<<<<< HEAD
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${config.app.build.id}' -l 'sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+=======
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${config.app.build.id},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+>>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
 }
 
 // Run backend tests
 backEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${config.app.build.version}", "--namespace=${config.app.build.namespace}"])
+<<<<<<< HEAD
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${config.app.build.id}' -l 'sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+=======
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${config.app.build.id},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+>>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
 }
 
-if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=${config.build.id}", '-l', "sonar", "--namespace=${config.app.build.namespace}"])){
+if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=${config.app.build.id}", "--namespace=${config.app.build.namespace}"])){
     System.exit(1)
 }

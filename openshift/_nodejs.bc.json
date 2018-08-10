@@ -40,12 +40,6 @@
       "displayName": "Node Environment",
       "description": "Environment for running node",
       "value": "DEV"
-    },
-    {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
-      "value": "http://localhost:3000"
     }
   ],
   "objects": [
@@ -154,6 +148,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "name": "rhscl-nodejs-8-rhel7:8.1-22"
+<<<<<<< HEAD
             },
             "env": [
               {
@@ -161,6 +156,9 @@
                 "value": "${API_URL}"
               }
             ]
+=======
+            }
+>>>>>>> 723175950337a685cd1bbd8733eef44c123e8dd3
           }
         },
         "output": {
