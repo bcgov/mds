@@ -8,3 +8,5 @@ __pycache__/
 *tmp*.tar
 instance/
 postgres-data/
+.coverage
+coverage.xml

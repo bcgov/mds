@@ -52,12 +52,12 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "1",
-                                "memory": "1024Mi"
+                                "cpu": "1.5",
+                                "memory": "2.5Gi"
                             },
                             "requests": {
                                 "cpu": "1",
-                                "memory": "1024Mi"
+                                "memory": "2Gi"
                             }
                         },
                         "imagePullPolicy": "IfNotPresent"
