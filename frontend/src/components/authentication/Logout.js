@@ -12,6 +12,7 @@ import { getKeycloak } from '@/selectors/authenticationSelectors';
 class Logout extends Component {
   handleLogout(event) {
     this.props.keycloak.logout();
+    localStorage.removeItem('jwt');
     this.props.logoutUser();
   }
 

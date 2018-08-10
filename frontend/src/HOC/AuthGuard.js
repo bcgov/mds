@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import Keycloak from 'keycloak-js';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
@@ -13,10 +12,11 @@ export const AuthGuard = (WrappedComponent) => {
   class AuthGuard extends Component {
     componentDidMount() {
       const keycloak = Keycloak(KEYCLOAK);
-      keycloak.init({ onLoad: 'login-required' }).then(() => {
+      keycloak.init({ onLoad: 'login-required'}).then(() => {
         keycloak.loadUserInfo().then((userInfo) => {
           this.props.authenticateUser(userInfo);
           this.props.storeKeycloakData(keycloak);
+          localStorage.setItem('jwt', keycloak.token);
         })
       })
     }
