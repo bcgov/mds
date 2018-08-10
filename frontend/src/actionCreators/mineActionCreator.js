@@ -10,7 +10,8 @@ import { ENVIRONMENT } from '@/constants/API'
 
 const createRequestHeader = () => ({
   headers: {
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'Authorization': localStorage.getItem('jwt')
   }
 });
 
@@ -60,7 +61,6 @@ export const getMineRecord = (mineNo) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORD));
   return axios.get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
   .then((response) => {
-    console.log(response.data)
     dispatch(success(reducerTypes.GET_MINE_RECORD));
     dispatch(mineActions.storeMine(response.data));
   })

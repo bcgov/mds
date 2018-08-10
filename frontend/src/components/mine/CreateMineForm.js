@@ -10,8 +10,11 @@ import * as routes from '@/constants/routes';
 const FormItem = Form.Item;
 
 export class CreateMineForm extends Component {
-  state = {
-    redirectTo: null
+  constructor(props) {
+    super(props);
+    this.state = {  
+      redirectTo: null
+    };
   }
 
   handleSubmit = (event) => {
@@ -23,7 +26,7 @@ export class CreateMineForm extends Component {
       notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
     } else {
       this.props.createMineRecord(mineName).then(() => {
-        this.setState({redirectTo: routes.DASHBOARD.route})
+        this.setState({redirectTo: routes.MINE_DASHBOARD.route})
       })
     }
   }
