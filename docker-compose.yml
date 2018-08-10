@@ -1,0 +1,27 @@
+version: '2'
+services:
+  postgres:
+    restart: always
+    build:
+      context: python-backend
+      dockerfile: Dockerfile.database
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=mds_db
+    volumes:
+      - ./migrations/sql/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+  app:
+    restart: always
+    build:
+      context: python-backend
+    ports:
+      - 5000:5000
+    volumes:
+      - ./python-backend:/app
+    env_file: ./python-backend/.env
+    depends_on:
+      - postgres
+    entrypoint: ["flask", "run"]
