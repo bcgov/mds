@@ -17,7 +17,7 @@ const createRequestHeader = () => ({
 
 export const createMineRecord = (mineName) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
-  return axios.post(ENVIRONMENT.apiUrl + API.MINE + "/some_mine_no" , {"name": mineName}, createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.MINE, {"name": mineName}, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully created: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
