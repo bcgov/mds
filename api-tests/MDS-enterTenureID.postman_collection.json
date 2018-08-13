@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "691903b7-6f55-41a7-bb6d-a5d8abf1293e",
+		"name": "MDS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "eff8e31e-7712-4ab8-a520-d151964b1298",
+			"name": "Dashboard Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7236b846-fb93-4dac-8129-877e787aace6",
+						"type": "text/javascript",
+						"exec": [
+							"//- set up variables:",
+							"",
+							"//parse response into JSON",
+							"var responseJson = pm.response.json();",
+							"",
+							"//set env variable /mine_no/, which will be used in the subsequent API calls.",
+							"var limit = responseJson.mines.length;",
+							"var randMine = Math.floor((Math.random() * limit) + 1);",
+							"var mineNum= responseJson.mines[randMine].mine_detail[0].mine_no;",
+							"if ( mineNum !== null ) {",
+							"    pm.environment.unset(\"mine_no\");",
+							"    pm.environment.set(\"mine_no\", mineNum);",
+							"}",
+							"",
+							"//schema",
+							"let schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"      \"mines\": {",
+							"        \"type\": \"array\",",
+							"        \"items\": [",
+							"          {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"              \"guid\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"mine_detail\": {",
+							"                \"type\": \"array\",",
+							"                \"items\": [",
+							"                  {",
+							"                    \"type\": \"object\",",
+							"                    \"properties\": {",
+							"                      \"mine_name\": {",
+							"                        \"type\": \"string\"",
+							"                      },",
+							"                      \"mine_no\": {",
+							"                        \"type\": \"string\",",
+							"                        \"pattern\": /^BLAH\\d{4,4}/",
+							"                      },",
+							"                      \"mineral_tenure_xref\": {",
+							"                        \"type\": \"array\",",
+							"                        \"items\": [",
+							"                          {",
+							"                            \"type\": \"object\",",
+							"                            \"properties\": {",
+							"                              \"tenure_number_id\": {",
+							"                                \"type\": \"string\",",
+							"                                \"pattern\":/\\d{7}/",
+							"                              }",
+							"                            },",
+							"                            \"required\": [",
+							"                              \"tenure_number_id\"",
+							"                            ]",
+							"                          }",
+							"                        ]",
+							"                      }",
+							"                    },",
+							"                    \"required\": [",
+							"                      \"mine_name\",",
+							"                      \"mine_no\",",
+							"                      \"mineral_tenure_xref\"",
+							"                    ]",
+							"                  }",
+							"                ]",
+							"              }",
+							"            },",
+							"            \"required\": [",
+							"              \"guid\",",
+							"              \"mine_detail\"",
+							"            ]",
+							"          }",
+							"        ]",
+							"      }",
+							"    },",
+							"    \"required\": [",
+							"      \"mines\"",
+							"    ]",
+							"  }",
+							"",
+							"",
+							"//- test:",
+							"pm.test(\"Response is OK (200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response should be okay to process\", function () { ",
+							"    pm.response.to.not.be.error; ",
+							"    pm.response.to.have.jsonBody(\"\"); ",
+							"    pm.response.to.not.have.jsonBody(\"error\"); ",
+							"});",
+							"",
+							" ",
+							"pm.test('Dashboard displays guid, mine ID (in BLAHXXXX format) and mine name', function() {",
+							"    var valid = tv4.validate(responseJson, schema, false, true);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error);",
+							"    } ",
+							"    pm.expect(valid).to.be.true;",
+							"});",
+							"",
+							" ",
+							"",
+							" ",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bc6f1300-4391-4f7f-9c7d-c6887fa4c3db",
+						"type": "text/javascript",
+						"exec": [
+							" "
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://0.0.0.0:5000/mines",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"mines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "60d04bdc-1259-46d3-af7f-f87cea2c33d1",
+			"name": "Create a mine record",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "362007b5-6424-409d-b0b2-77674010a01a",
+						"type": "text/javascript",
+						"exec": [
+							"//- set up variables:",
+							"",
+							"//parse response into JSON",
+							"var responseJson = pm.response.json();",
+							"",
+							"//schema",
+							"let schema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"mine_guid\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"mine_no\": {",
+							"      \"type\": \"string\",",
+							"      \"pattern\": /^BLAH\\d{4,4}/",
+							"    },",
+							"    \"mine_name\": {",
+							"      \"type\": \"string\",",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"mine_guid\",",
+							"    \"mine_no\",",
+							"    \"mine_name\"",
+							"  ]",
+							"}",
+							"",
+							"",
+							"// -  tests:",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is in JSON format and ok to proceed\", function () { ",
+							"    pm.response.to.not.be.error; ",
+							"    pm.response.to.have.jsonBody(\"\"); ",
+							"    pm.response.to.not.have.jsonBody(\"error\"); ",
+							"});",
+							"",
+							"pm.test(\"Mine Record Created with given mineName\", function () {",
+							"    pm.expect(responseJson.mine_name).to.eql(pm.environment.get(\"mine_name\"));",
+							"});",
+							" ",
+							"pm.test('Created mine record is given mine_id in BLAHxxxx format', ",
+							"    function() {",
+							"        var valid = tv4.validate(responseJson, schema, false, true);",
+							"        if (valid !== true) {",
+							"            console.log(tv4.error);",
+							"        } ",
+							"    pm.expect(valid).to.be.true;",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d875fddf-6a9b-42c7-920c-bae4e65e8e4f",
+						"type": "text/javascript",
+						"exec": [
+							"//return a random number between 1 and 52",
+							"//as \"TestMine\" is 8-char long",
+							"var namelength = Math.floor((Math.random() * 52) + 1);",
+							"",
+							"function makeName() {",
+							"  var text = \"TestMine\";",
+							"  var possible = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";",
+							"",
+							"  for (var i = 0; i < namelength; i++)",
+							"    text += possible.charAt(Math.floor(Math.random() * possible.length));",
+							"",
+							"  return text;",
+							"}",
+							"",
+							"//generate random mineName to create a mine record",
+							"pm.environment.unset(\"mine_name\");",
+							"pm.environment.set(\"mine_name\", makeName());",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{mine_name}}",
+							"sessionValue": "testAPI",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/mine/{{mine_no}}",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"mine",
+						"{{mine_no}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "ebe15492-0261-4a60-b27b-14c427bd1811",
+			"name": "Put tenure_id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "287972b6-5d09-4eef-aec1-b1740679d912",
+						"type": "text/javascript",
+						"exec": [
+							"function makeid() {",
+							"  var id = \"\";",
+							"  var possible = \"0123456789\";",
+							"",
+							"  for (var i = 0; i < 7; i++)",
+							"    id += possible.charAt(Math.floor(Math.random() * possible.length));",
+							"  return id;",
+							"}",
+							"",
+							"//generate random tenure id to update a mine record",
+							"pm.environment.unset(\"tenure_number_id\");",
+							"pm.environment.set(\"tenure_number_id\", makeid());",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "67117ad0-cfec-4f95-ba5c-57339619f399",
+						"type": "text/javascript",
+						"exec": [
+							"//- set up variables:",
+							"",
+							"//parse response into JSON",
+							"var responseJson = pm.response.json();",
+							"",
+							"",
+							"",
+							"//-tests:",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Mine Record Updated with given tenure ID\", function () {",
+							"    var lastID = responseJson.mine_detail[0].mineral_tenure_xref.length -1;",
+							"    console.log(\"response added tenure id:\")",
+							"    console.log(responseJson.mine_detail[0].mineral_tenure_xref[lastID][\"tenure_number_id\"])",
+							"    console.log(\"given id\" + pm.environment.get(\"tenure_number_id\"))",
+							"    ",
+							"    pm.expect(responseJson.mine_detail[0].mineral_tenure_xref[lastID][\"tenure_number_id\"]).to.eql(pm.environment.get(\"tenure_number_id\"));",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"  "
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "tenure_number_id",
+							"value": "{{tenure_number_id}}",
+							"sessionValue": "tenure_number_id",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/mine/{{mine_no}}",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"mine",
+						"{{mine_no}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "698e3a3d-d523-467e-afe5-8fecd51abb84",
+			"name": "Mine info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04dc91b7-557f-453e-bd27-de3e410a56b2",
+						"type": "text/javascript",
+						"exec": [
+							"//- set up variables:",
+							"",
+							"//parse response into JSON",
+							"var responseJson = pm.response.json();",
+							"//schema",
+							"let schema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"guid\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"mine_detail\": {",
+							"      \"type\": \"array\",",
+							"      \"items\": [",
+							"        {",
+							"          \"type\": \"object\",",
+							"          \"properties\": {",
+							"            \"mine_name\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"mine_no\": {",
+							"              \"type\": \"string\",",
+							"              \"pattern\": /^BLAH\\d{4,4}/",
+							"            },",
+							"            \"mineral_tenure_xref\": {",
+							"              \"type\": \"array\",",
+							"              \"items\": [",
+							"                {",
+							"                  \"type\": \"object\",",
+							"                  \"properties\": {",
+							"                    \"tenure_number_id\": {",
+							"                      \"type\": \"string\"",
+							"                    }",
+							"                  },",
+							"                  \"required\": [",
+							"                    \"tenure_number_id\"",
+							"                  ]",
+							"                }",
+							"              ]",
+							"            }",
+							"          },",
+							"          \"required\": [",
+							"            \"mine_name\",",
+							"            \"mine_no\",",
+							"            \"mineral_tenure_xref\"",
+							"          ]",
+							"        }",
+							"      ]",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"guid\",",
+							"    \"mine_detail\"",
+							"  ]",
+							"}",
+							"",
+							"//- test:",
+							"pm.test(\"Response is OK (200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response should be okay to process\", function () { ",
+							"    pm.response.to.not.be.error; ",
+							"    pm.response.to.have.jsonBody(\"\"); ",
+							"    pm.response.to.not.have.jsonBody(\"error\"); ",
+							"});",
+							"",
+							" ",
+							"pm.test('Dashboard displays guid, mine ID (in BLAHXXXX format) and mine name', function() {",
+							"    var valid = tv4.validate(responseJson, schema, false, true);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error);",
+							"    } ",
+							"    pm.expect(valid).to.be.true;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://0.0.0.0:5000/mine/{{mine_no}}",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"mine",
+						"{{mine_no}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
