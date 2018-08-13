@@ -12,6 +12,7 @@
 // OBJECTS - layouts (CSS Grid or flexbox)
 @import './objects/actions.scss';
 // COMPONENTS - specific UI components.
+@import './components/loading.scss';
 // UTILITES - utilities and helper classes. This layer has the highest specificity.
 @import './App.scss';
 

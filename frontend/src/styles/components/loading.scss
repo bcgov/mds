@@ -1,0 +1,16 @@
+.loading-screen {
+  z-index: 999999;
+  position: fixed;
+  background-color: rgba(66,66,66,0.6);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  @include animation(fadein, 1s);
+  
+  #loader {
+    width: 150px;
+    height: 150px;
+    @include center(true, true);
+  }
+}

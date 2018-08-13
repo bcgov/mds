@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import RedirectRoute from './routeWrappers/RedirectRoute';
 import * as routes from '@/constants/routes';
 
 const DashboardRoutes = () => {

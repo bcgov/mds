@@ -6,7 +6,12 @@ export default function fetchEnv() {
         if (!res.ok) {
             reject(res);
         }
-        return res.json();
+        try {
+          JSON.stringify(res.body());
+          return res.json();
+        } catch(err) {
+          return {apiUrl: "http://localhost:5000"};
+        }
       }).then((env) => {
         if (env.apiUrl) {
             ENVIRONMENT.apiUrl = env.apiUrl

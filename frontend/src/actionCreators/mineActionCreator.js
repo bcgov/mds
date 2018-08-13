@@ -45,7 +45,6 @@ export const updateMineRecord = (id, tenureNumber) => (dispatch) => {
 
 export const getMineRecords = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
-  console.log(ENVIRONMENT.apiUrl);
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
@@ -62,7 +61,7 @@ export const getMineRecord = (mineNo) => (dispatch) => {
   return axios.get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORD));
-    dispatch(mineActions.storeMine(response.data));
+    dispatch(mineActions.storeMine(response.data, mineNo));
   })
   .catch(() => {
       notification.error({message: String.ERROR, duration: 10});

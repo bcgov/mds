@@ -1,6 +1,11 @@
 import * as actionTypes from '@/constants/actionTypes';
 import { MINES } from '@/constants/reducerTypes';
 
+/**
+ * @file mineReducer.js
+ * all data associated with new mine/existing mine records is handled witnin this reducer.
+ */
+
 const initialState = {
   mines: {},
   mineIds: [],
@@ -39,10 +44,6 @@ const mineReducer = (state=initialState, action) => {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
           mineIds: createItemIdsArray([action.payload], 'guid'),
-        }
-      case actionTypes.REFRESH:
-        return {
-          ...state,
         }
       default:
         return state;

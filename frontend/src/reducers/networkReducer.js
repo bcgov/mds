@@ -1,6 +1,6 @@
 /**
 * @file networkReducer.js
-* Data is no associated with this reducer, only the network
+* Data is not associated with this reducer, only the network
 * request status.
 */
 import { REQUEST, SUCCESS, ERROR } from '../constants/actionTypes';
