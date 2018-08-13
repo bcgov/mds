@@ -9,7 +9,7 @@ from ..utils.random import generate_mine_no
 class Mine(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str)
-    parser.add_argument('tenure_number_id', type=int)
+    parser.add_argument('tenure_number_id', type=str)
 
     def get(self, mine_no):
         mine = MineIdentity.find_by_mine_no(mine_no)
@@ -42,8 +42,10 @@ class Mine(Resource):
         if not mine:
             return {'message': 'Mine not found'}, 404
         tenure = data['tenure_number_id']
-        if len(str(tenure)) != 7:
-            return {'error': 'Field tenure_id must be exactly 7 digits long'}, 400
+        if not tenure.isdigit():
+            return {'error': 'Field tenure_id must contain only digits.'}, 400
+        if len(tenure) != 7:
+            return {'error': 'Field tenure_id must be exactly 7 digits long.'}, 400
         tenure_exists = MineralTenureXref.find_by_tenure(tenure)
         if tenure_exists:
             return {'error': 'Field tenure_id already exists for this mine'}, 400
