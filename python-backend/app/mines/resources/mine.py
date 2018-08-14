@@ -17,7 +17,9 @@ class Mine(Resource):
             return mine.json()
         return {'message': 'Mine not found'}, 404
 
-    def post(self, mine_no):
+    def post(self, mine_no=None):
+        if mine_no:
+            return {'error': 'Unexpected mine number in Url.'}, 400
         data = Mine.parser.parse_args()
         if not data['name']:
             return {'error': 'Must specify a name.'}, 400
@@ -40,6 +42,13 @@ class Mine(Resource):
         if not mine:
             return {'message': 'Mine not found'}, 404
         tenure = data['tenure_number_id']
+        if not tenure.isdigit():
+            return {'error': 'Field tenure_id must contain only digits.'}, 400
+        if len(tenure) != 7:
+            return {'error': 'Field tenure_id must be exactly 7 digits long.'}, 400
+        tenure_exists = MineralTenureXref.find_by_tenure(tenure)
+        if tenure_exists:
+            return {'error': 'Field tenure_id already exists for this mine'}, 400
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
         tenure = MineralTenureXref(mine_guid=mine.mine_guid, tenure_number_id=tenure, **dummy_user_kwargs)
