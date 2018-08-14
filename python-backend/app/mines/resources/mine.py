@@ -18,6 +18,7 @@ class Mine(Resource):
             return mine.json()
         return {'message': 'Mine not found'}, 404
 
+    @jwt.requires_roles(["mds-mine-edit"])
     def post(self, mine_no=None):
         if mine_no:
             return {'error': 'Unexpected mine number in Url.'}, 400
