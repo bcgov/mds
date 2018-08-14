@@ -13,7 +13,7 @@ export const AuthGuard = (WrappedComponent) => {
   class AuthGuard extends Component {
     componentDidMount() {
       const keycloak = Keycloak(KEYCLOAK);
-      keycloak.init({ onLoad: 'login-required'}).then(() => {
+      keycloak.init({ onLoad: 'login-required', flow: 'implicit'}).then(() => {
         keycloak.loadUserInfo().then((userInfo) => {
           this.props.authenticateUser(userInfo);
           this.props.storeKeycloakData(keycloak);
@@ -27,10 +27,10 @@ export const AuthGuard = (WrappedComponent) => {
         if (this.props.isAuthenticated) {
           return (
             <WrappedComponent {...this.props} />
-          ); 
+          );
         } else {
           return (<Loading />)
-        } 
+        }
       }
       return (<Loading />)
     }

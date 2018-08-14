@@ -1,9 +1,9 @@
 import uuid
 
-from app.db import db
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..utils.random import generate_mine_no
+from app.extensions import jwt
 
 
 class Mine(Resource):
@@ -55,6 +55,8 @@ class Mine(Resource):
         tenure.save()
         return mine.json()
 
+
 class MineList(Resource):
+    @jwt.requires_auth
     def get(self):
         return { 'mines': list(map(lambda x: x.json(), MineIdentity.query.all())) }
