@@ -14,7 +14,6 @@ export const AuthGuard = (WrappedComponent) => {
     componentDidMount() {
       const keycloak = Keycloak(KEYCLOAK);
       keycloak.init({ onLoad: 'login-required', flow: 'implicit'}).then(() => {
-      console.log(keycloak);
         keycloak.loadUserInfo().then((userInfo) => {
           this.props.authenticateUser(userInfo);
           this.props.storeKeycloakData(keycloak);
