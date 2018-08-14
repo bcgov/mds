@@ -1,4 +1,4 @@
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT } from './constants/API'
+import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from '@/constants/environment';
 
 export default function fetchEnv() {
   return new Promise((resolve, reject) => {
@@ -13,9 +13,9 @@ export default function fetchEnv() {
           return DEFAULT_ENVIRONMENT;
         }
       }).then((env) => {
-        if (env.apiUrl) {
-            ENVIRONMENT.apiUrl = env.apiUrl
-        }
+        ENVIRONMENT.apiUrl = env.apiUrl;
+        KEYCLOAK.clientId = env.keycloak_clientId;
+        KEYCLOAK.resource = env.keycloak_resource;
         resolve(env);
       });
   })

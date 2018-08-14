@@ -7,7 +7,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import { isAuthenticated, getKeycloak } from '@/selectors/authenticationSelectors';
 import { authenticateUser, storeKeycloakData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/reusables/Loading';
-import { KEYCLOAK } from '@/constants/keycloak';
+import { KEYCLOAK } from '@/constants/environment';
 
 export const AuthGuard = (WrappedComponent) => {
   class AuthGuard extends Component {

@@ -131,6 +131,8 @@ app {
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'NODE_ENV': "production",
+                            'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
@@ -164,6 +166,10 @@ environments {
             git {
                 changeId = "${opt.'pr'}"
             }
+            keycloak {
+                clientId = "mines-application-dev"
+                resouce = "mines-application-dev"
+            }
             deployment {
                 env {
                     name = "dev"
@@ -193,6 +199,10 @@ environments {
             git {
                 changeId = "${opt.'pr'}"
             }
+            keycloak {
+                clientId = "mines-application-test"
+                resouce = "mines-application-test"
+            }
             deployment {
                 env {
                     name = "test"
@@ -219,6 +229,10 @@ environments {
             DB_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
+            }
+            keycloak {
+                clientId = "mines-application-prod"
+                resouce = "mines-application-prod"
             }
             deployment {
                 env {
