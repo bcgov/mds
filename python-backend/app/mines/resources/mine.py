@@ -11,6 +11,7 @@ class Mine(Resource):
     parser.add_argument('name', type=str)
     parser.add_argument('tenure_number_id', type=str)
 
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
         mine = MineIdentity.find_by_mine_no(mine_no)
         if mine:
@@ -20,6 +21,7 @@ class Mine(Resource):
     def post(self, mine_no=None):
         if mine_no:
             return {'error': 'Unexpected mine number in Url.'}, 400
+
         data = Mine.parser.parse_args()
         if not data['name']:
             return {'error': 'Must specify a name.'}, 400
@@ -34,6 +36,7 @@ class Mine(Resource):
         mine_detail.save()
         return { 'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name }
 
+    @jwt.requires_roles(["mds-mine-edit"])
     def put(self, mine_no):
         data = Mine.parser.parse_args()
         if not data['tenure_number_id']:
@@ -57,6 +60,6 @@ class Mine(Resource):
 
 
 class MineList(Resource):
-    @jwt.requires_auth
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         return { 'mines': list(map(lambda x: x.json(), MineIdentity.query.all())) }
