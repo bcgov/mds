@@ -18,7 +18,7 @@ class Mine(Resource):
             return mine.json()
         return {'message': 'Mine not found'}, 404
 
-    @jwt.requires_roles(["mds-mine-edit"])
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no=None):
         if mine_no:
             return {'error': 'Unexpected mine number in Url.'}, 400
@@ -37,7 +37,7 @@ class Mine(Resource):
         mine_detail.save()
         return { 'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name }
 
-    @jwt.requires_roles(["mds-mine-edit"])
+    @jwt.requires_roles(["mds-mine-create"])
     def put(self, mine_no):
         data = Mine.parser.parse_args()
         if not data['tenure_number_id']:

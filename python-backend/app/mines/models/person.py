@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
-from app.db import db
+from app.extensions import db
 from .mixins import AuditMixin
 
 class Person(AuditMixin, db.Model):

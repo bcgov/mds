@@ -11,7 +11,7 @@ import { ENVIRONMENT } from '@/constants/environment'
 const createRequestHeader = () => ({
   headers: {
     'Access-Control-Allow-Origin': '*',
-    'Authorization': localStorage.getItem('jwt')
+    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
   }
 });
 
