@@ -2,7 +2,7 @@
  * @class MineDashboard.js is an individual mines dashboard, contains all relevant information/data and passes it down to children.
  */
 import React, { Component } from 'react';
-import { Card, Col, Row, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 
 import { UpdateMineForm } from './UpdateMineForm';
@@ -15,34 +15,39 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   getMineRecord: PropTypes.func,
   updateMineRecord: PropTypes.func,
-  mine: PropTypes.object,
+  mine: PropTypes.object.isRequired,
   mines: PropTypes.object,
-  mineIds: PropTypes.object,
+  mineIds: PropTypes.array,
+  mineId: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
   mine: {},
   mines: {},
-  mineIds: {},
+  mineIds: [],
+  mineId: ''
 };
 
 class MineDashboard extends Component {
   render() {
       return (
         <div>
-          <MineHeader {...this.props}/>
+          <MineHeader mine={this.props.mine}/>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Summary" key="1">
-              <MineSummary {...this.props} />
+              <MineSummary mine={this.props.mine} />
               <UpdateMineForm {...this.props} />
             </TabPane>
             <TabPane tab="Contact Information" key="2">
-              <MineContactInfo />
+              <MineContactInfo mine={this.props.mine}/>
             </TabPane>
           </Tabs>
         </div>
       );
     } 
   }
+
+MineDashboard.propTypes = propTypes;
+MineDashboard.defaultProps = defaultProps;
 
 export default MineDashboard;

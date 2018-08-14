@@ -1,22 +1,28 @@
 /**
- * @class MineContainer.js is the connected container which gets the single mine and passed that mine into Dashboard relevant information/data.
+ * @class MineContainer.js is the connected container which gets a single mine record and passes it down to  MineDashboard.js..
  */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Card, Col, Row, Tabs } from 'antd';
+import PropTypes from 'prop-types';
 
 import { getMineRecord, updateMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
-import { UpdateMineForm } from './UpdateMineForm';
 import Loading from '@/components/reusables/Loading';
-import MineSummary from '@/components/mine/MineSummary';
-import MineHeader from '@/components/mine/MineHeader';
 import MineDashboard from '@/components/mine/MineDashboard';
-const staticMap = require('../../assets/images/staticMap.png');
 
-const TabPane = Tabs.TabPane;
-// let { id } = null;
+
+const propTypes = {
+  getMineRecord: PropTypes.func,
+  updateMineRecord: PropTypes.func,
+  mines: PropTypes.object,
+  mineIds: PropTypes.array,
+};
+
+const defaultProps = {
+  mines: {},
+  mineIds: [],
+};
 
 class MineContainer extends Component {
   constructor(props) {
@@ -38,7 +44,7 @@ class MineContainer extends Component {
         this.props.mineIds.map((id) => {
           return (
             <div key={id}>
-              <MineDashboard mine={this.props.mines[id]} {...this.props} />
+              <MineDashboard mine={this.props.mines[id]} {...this.props} {...this.state}/>
             </div>
           );
         })
@@ -63,5 +69,8 @@ const mapDispatchToProps = (dispatch) => {
     updateMineRecord
   }, dispatch);
 };
+
+MineContainer.propTypes = propTypes;
+MineContainer.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineContainer);

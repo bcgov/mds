@@ -1,5 +1,17 @@
+/**
+ * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
+ */
 import React, { Component } from 'react';
 import { STATIC_MAP } from '@/constants/assets';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  mine: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
+};
 
 class MineHeader extends Component {
   render() {
@@ -12,5 +24,8 @@ class MineHeader extends Component {
     );
   }
 }
+
+MineHeader.propTypes = propTypes;
+MineHeader.defaultProps = defaultProps;
 
 export default MineHeader;

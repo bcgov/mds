@@ -5,11 +5,23 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Avatar, Badge, Button, Col, Card, Row } from 'antd';
 
 import { getMineRecords } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 import * as router from '@/constants/routes';
+
+const propTypes = {
+  getMineRecords: PropTypes.func.isRequired,
+  mines: PropTypes.object.isRequired,
+  mineIds: PropTypes.array.isRequired,
+};
+
+const defaultProps = {
+  mines: {},
+  mineIds: [],
+};
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -79,5 +91,8 @@ const mapDispatchToProps = (dispatch) => {
     getMineRecords
   }, dispatch);
 };
+
+Dashboard.propTypes = propTypes;
+Dashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

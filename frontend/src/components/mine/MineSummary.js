@@ -1,11 +1,19 @@
+/**
+ * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
+ */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, Col, Row } from 'antd';
 
-// import { getMineRecord, updateMineRecord } from '@/actionCreators/mineActionCreator';
-// import { getMines, getMineIds } from '@/selectors/mineSelectors';
-// import { UpdateMineForm } from './UpdateMineForm';
+const propTypes = {
+  mine: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
+};
 
 class MineSummary extends Component {
   render() {
@@ -39,5 +47,8 @@ class MineSummary extends Component {
     );
   }
 }
+
+MineSummary.propTypes = propTypes;
+MineSummary.defaultProps = defaultProps;
 
 export default MineSummary;

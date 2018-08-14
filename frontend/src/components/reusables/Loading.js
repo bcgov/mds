@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Spin } from 'antd';
 
-const Loading = (props) => {
+const Loading = () => {
   return (
     <div className="loading-screen">
       <Spin id="loader" tip="Loading..." size="large" />

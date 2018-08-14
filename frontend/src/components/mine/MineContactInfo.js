@@ -1,4 +1,18 @@
+
+/**
+ * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard (including all Mine Manager information);
+ */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  mine: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
+};
+
 
 class MineContactInfo extends Component {
   render() {
@@ -9,5 +23,8 @@ class MineContactInfo extends Component {
     );
   }
 }
+
+MineContactInfo.propTypes = propTypes;
+MineContactInfo.defaultProps = defaultProps;
 
 export default MineContactInfo;

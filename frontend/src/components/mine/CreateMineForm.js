@@ -3,11 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Card, Form, Input, Button, notification } from 'antd';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as routes from '@/constants/routes';
 
 const FormItem = Form.Item;
+
+const propTypes = {
+  createMineRecord: PropTypes.func.isRequired,
+};
 
 export class CreateMineForm extends Component {
   constructor(props) {
@@ -19,7 +24,7 @@ export class CreateMineForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const mineName = this.refs.mineName.input.value;
+    const mineName = this.mineName.input.value;
     if (!mineName) {
       notification.error({message: "Must specify a mine name.", duration: 10});
     } else if (mineName.length > 60) {
@@ -39,9 +44,9 @@ export class CreateMineForm extends Component {
       <div>
         <h1>Create A Mine Record</h1>
         <Card title="Create Mine Form">
-          <Form ref="createMineForm" onSubmit={this.handleSubmit}>
+          <Form ref={ref => this.createMineForm = ref} onSubmit={this.handleSubmit}>
             <FormItem>
-              <Input type="text" ref="mineName" placeholder="Mine Name"></Input>
+              <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name"></Input>
               <Button type="primary" htmlType="submit">
                 Create Mine
               </Button>
@@ -52,6 +57,8 @@ export class CreateMineForm extends Component {
     );
   }
 }
+
+CreateMineForm.propTypes = propTypes;
 
 const WrappedCreateMineForm = Form.create()(CreateMineForm);
 
