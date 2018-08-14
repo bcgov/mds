@@ -25,5 +25,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
-// export default AuthGuard(Home);
+export default AuthGuard(Home);
