@@ -33,7 +33,7 @@ class MineSummary extends Component {
             <Col span={6}>{mine.mine_detail[0] ? mine.mine_detail[0].mine_name : "-"}</Col>
             <Col span={6}>{mine.guid}</Col>
             <Col span={6}>
-              {mine.mine_detail[0].mineral_tenure_xref.map((tenure) => {
+              {mine.mineral_tenure_xref.map((tenure) => {
                 return (
                   <div key={tenure.tenure_number_id}>
                     {tenure.tenure_number_id}

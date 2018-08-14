@@ -65,6 +65,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^22.4.3",
     "jest-junit": "^3.7.0",
+    "jest-sonar-reporter": "^2.0.0",
     "puppeteer": "^1.4.0"
   },
   "scripts": {
@@ -76,18 +77,26 @@
     "lint": "eslint .",
     "test": "jest --env=jsdom",
     "test:watch": "jest --env=jsdom --watch",
-    "test:coverage": "jest --env=jsdom --coverage --testResultsProcessor=jest-junit"
+    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit"
   },
   "jest": {
     "setupFiles": [
       "./src/setupTests.js"
     ],
     "collectCoverageFrom": [
-      "**/src/**/*.js"
+      "**/src/**/*.js",
+      "!src/index.js",
+      "!src/App.js",
+      "!src/fetchEnv.js",
+      "!src/registerServiceWorker.js"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "tests-report.xml"
   },
   "jest-junit": {
     "output": "./coverage/tests-report.xml"
