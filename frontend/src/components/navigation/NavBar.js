@@ -2,10 +2,19 @@ import React, { Component } from 'react';
 import {  Layout, Menu } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { getUserInfo } from '@/selectors/authenticationSelectors';
 import * as router from '@/constants/routes';
 import Logout from '../authentication/Logout';
+
+const propTypes = {
+  userInfo: PropTypes.object,
+};
+
+const defaultProps = {
+  userInfo: {},
+};
 
 
 class NavBar extends Component {
@@ -32,5 +41,7 @@ const mapStateToProps = (state) => {
   };
 };
 
+NavBar.propTypes = propTypes;
+NavBar.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, null)(NavBar);

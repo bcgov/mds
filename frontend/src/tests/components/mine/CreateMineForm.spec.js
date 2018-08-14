@@ -2,19 +2,19 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { CreateMineForm } from '../../../components/mine/CreateMineForm';
 
-/* TODO: FIX TEST
-describe( 'CreateMineForm', () => {
-  const component = shallow(<CreateMineForm />);
+const dispatchProps = {};
 
-  it('renders properly', () => {
-    expect(component).toMatchSnapshot();
-  });
+const setupDispatchProps = () => {
+  dispatchProps.createMineRecord = jest.fn();
+};
 
+beforeEach(() => {
+  setupDispatchProps();
 });
-*/
 
-describe('Dummy Test', () => {
-  it('Passes always', () => {
-    expect(true).toBe(true);
+describe( 'CreateMineForm', () => {
+  it('renders properly', () => {
+    const component = shallow(<CreateMineForm {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

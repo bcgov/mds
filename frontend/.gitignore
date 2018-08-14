@@ -12,3 +12,5 @@
 # misc
 .DS_Store
 .env
+
+*/_snapshots_/*
