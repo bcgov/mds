@@ -17,6 +17,7 @@ const propTypes = {
   updateMineRecord: PropTypes.func,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
+  match: PropTypes.object
 };
 
 const defaultProps = {
