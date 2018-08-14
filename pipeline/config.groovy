@@ -171,7 +171,7 @@ environments {
             }
             keycloak {
                 clientId = "mines-application-dev"
-                resouce = "mines-application-dev"
+                resource = "mines-application-dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
@@ -206,7 +206,7 @@ environments {
             }
             keycloak {
                 clientId = "mines-application-test"
-                resouce = "mines-application-test"
+                resource = "mines-application-test"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
@@ -239,7 +239,7 @@ environments {
             }
             keycloak {
                 clientId = "mines-application-prod"
-                resouce = "mines-application-prod"
+                resource = "mines-application-prod"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
