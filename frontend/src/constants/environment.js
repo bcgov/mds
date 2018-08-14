@@ -1,7 +1,8 @@
 export const DEFAULT_ENVIRONMENT = {
     apiUrl: 'http://localhost:5000',
     keycloak_resource: 'mines-application-local',
-    keycloak_clientId: 'mines-application-local'
+    keycloak_clientId: 'mines-application-local',
+    keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
 };
 
 export const ENVIRONMENT = {
@@ -10,7 +11,7 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   "realm": "mds",
-  "url": "https://sso-test.pathfinder.gov.bc.ca/auth",
+  "url": '<URL>',
   "ssl-required": "external",
   "resource": '<RESOURCE>',
   "public-client": true,

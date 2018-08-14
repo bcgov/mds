@@ -46,7 +46,8 @@ app.get("/env", function(req, res) {
       backend: 'mds-python-backend',
       apiUrl: process.env.API_URL,
       keycloak_resource: process.env.KEYCLOAK_RESOURCE,
-      keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID
+      keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
+      keycloak_url: process.env.KEYCLOAK_URL,
   });
 });
 

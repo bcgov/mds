@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
@@ -34,16 +36,24 @@ def register_extensions(app):
     app.config['JWT_ROLE_CALLBACK'] = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
     jwt.init_app(app)
 
-    cors = CORS(app)
+    CORS(app)
 
     return None
 
 
 def register_routes(app, api):
+    # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
+    # Set Routes for each resource
     api.add_resource(Mine, '/mine', '/mine/<string:mine_no>')
     api.add_resource(MineList, '/mines')
     api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
     api.add_resource(PersonList, '/persons')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+
+    # Default error handler to propogate lower level errors up to the API level
+    @api.errorhandler
+    def default_error_handler(error):
+        _, value, traceback = sys.exc_info()
+        raise value(None).with_traceback(traceback)
