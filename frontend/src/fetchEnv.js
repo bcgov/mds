@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from './constants/API'
+import { ENVIRONMENT, DEFAULT_ENVIRONMENT } from './constants/API'
 
 export default function fetchEnv() {
   return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ export default function fetchEnv() {
           JSON.stringify(res.body());
           return res.json();
         } catch(err) {
-          return {apiUrl: "http://localhost:5000"};
+          return DEFAULT_ENVIRONMENT;
         }
       }).then((env) => {
         if (env.apiUrl) {
