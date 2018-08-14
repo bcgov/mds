@@ -1,6 +1,6 @@
 export const KEYCLOAK = {
   "realm": "mds",
-  "url": "https://sso-test.pathfinder.gov.bc.ca/auth/",
+  "url": "https://sso-test.pathfinder.gov.bc.ca/auth",
   "ssl-required": "external",
   // "resource": "frontend-local",
   "resource": "frontend",

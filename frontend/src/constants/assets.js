@@ -1,0 +1,1 @@
+export { default as STATIC_MAP } from '../assets/images/staticMap.png';

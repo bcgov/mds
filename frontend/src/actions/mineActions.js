@@ -21,9 +21,10 @@ export const storeMines = (payload) => {
   }
 }
 
-export const storeMine = (payload) => {
+export const storeMine = (payload, id) => {
   return {
     type: ActionTypes.STORE_MINE_RECORD,
     payload,
+    id,
   }
 }
