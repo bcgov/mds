@@ -1,9 +1,9 @@
 import uuid
 
-from app.db import db
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..utils.random import generate_mine_no
+from app.extensions import jwt
 
 
 class Mine(Resource):
@@ -11,15 +11,18 @@ class Mine(Resource):
     parser.add_argument('name', type=str)
     parser.add_argument('tenure_number_id', type=str)
 
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
         mine = MineIdentity.find_by_mine_no(mine_no)
         if mine:
             return mine.json()
         return {'message': 'Mine not found'}, 404
 
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no=None):
         if mine_no:
             return {'error': 'Unexpected mine number in Url.'}, 400
+
         data = Mine.parser.parse_args()
         if not data['name']:
             return {'error': 'Must specify a name.'}, 400
@@ -34,6 +37,7 @@ class Mine(Resource):
         mine_detail.save()
         return { 'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name }
 
+    @jwt.requires_roles(["mds-mine-create"])
     def put(self, mine_no):
         data = Mine.parser.parse_args()
         if not data['tenure_number_id']:
@@ -55,6 +59,8 @@ class Mine(Resource):
         tenure.save()
         return mine.json()
 
+
 class MineList(Resource):
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         return { 'mines': list(map(lambda x: x.json(), MineIdentity.query.all())) }

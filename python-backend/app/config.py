@@ -15,3 +15,6 @@ class Config(object):
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG', 'https://URL/auth/realms/mds/.well-known/openid-configuration')
+    JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
+    JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')

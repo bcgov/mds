@@ -6,12 +6,12 @@ import * as reducerTypes from '@/constants/reducerTypes';
 import * as mineActions from '@/actions/mineActions';
 import * as String from '@/constants/strings';
 import * as API from '@/constants/API';
-import { ENVIRONMENT } from '@/constants/API'
+import { ENVIRONMENT } from '@/constants/environment'
 
 const createRequestHeader = () => ({
   headers: {
     'Access-Control-Allow-Origin': '*',
-    'Authorization': localStorage.getItem('jwt')
+    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
   }
 });
 

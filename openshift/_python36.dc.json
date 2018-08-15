@@ -35,6 +35,16 @@
       "required": true
     },
     {
+      "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+      "displayName": "Keycloak config URL",
+      "required": true
+    },
+    {
+      "name": "JWT_OIDC_AUDIENCE",
+      "displayName": "Keycloak clientId",
+      "required": true
+    },
+    {
       "name": "HOST",
       "required": false
     }
@@ -216,6 +226,18 @@
                   {
                     "name": "FLASK_RUN_HOST",
                     "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+                    "value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
+                  },
+                  {
+                    "name": "JWT_OIDC_AUDIENCE",
+                    "value": "${JWT_OIDC_AUDIENCE}"
+                  },
+                  {
+                    "name": "JWT_OIDC_ALGORITHMS",
+                    "value": "RS256"
                   }
                 ],
                 "resources": {

@@ -17,4 +17,4 @@ stop:
 
 clean:
 	@echo "+\n++ Cleaning ...\n+"
-	@docker rm -f $(docker ps -aq)
+	@docker-compose rm -f -v -s

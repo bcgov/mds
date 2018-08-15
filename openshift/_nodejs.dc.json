@@ -41,6 +41,24 @@
       "value": "DEV"
     },
     {
+      "name": "KEYCLOAK_RESOURCE",
+      "displayName": "Resource ID",
+      "description": "Resource ID for keycloak",
+      "value": "mines-application-dev"
+    },
+    {
+      "name": "KEYCLOAK_CLIENT_ID",
+      "displayName": "Client ID",
+      "description": "Client ID for keycloak",
+      "value": "mines-application-dev"
+    },
+    {
+      "name": "KEYCLOAK_URL",
+      "displayName": "Keycloak URL",
+      "description": "URL of the keycloak server",
+      "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
+    },
+    {
       "name": "API_URL",
       "displayName": "API Url",
       "description": "URL for the backend API",
@@ -164,6 +182,18 @@
                   {
                     "name": "NODE_ENV",
                     "value": "${NODE_ENV}"
+                  },
+                  {
+                    "name": "KEYCLOAK_RESOURCE",
+                    "value": "${KEYCLOAK_RESOURCE}"
+                  },
+                  {
+                    "name": "KEYCLOAK_CLIENT_ID",
+                    "value": "${KEYCLOAK_CLIENT_ID}"
+                  },
+                  {
+                    "name": "KEYCLOAK_URL",
+                    "value": "${KEYCLOAK_URL}"
                   }
                 ],
                 "ports": [

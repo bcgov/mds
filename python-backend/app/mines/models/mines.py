@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
-from app.db import db
 from .mixins import AuditMixin
+from app.extensions import db
+
 
 class MineIdentity(AuditMixin, db.Model):
     __tablename__ = 'mine_identity'

@@ -7,7 +7,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import { isAuthenticated, getKeycloak } from '@/selectors/authenticationSelectors';
 import { authenticateUser, storeKeycloakData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/reusables/Loading';
-import { KEYCLOAK } from '@/constants/keycloak';
+import { KEYCLOAK } from '@/constants/environment';
 
 export const AuthGuard = (WrappedComponent) => {
   class AuthGuard extends Component {
@@ -15,9 +15,9 @@ export const AuthGuard = (WrappedComponent) => {
       const keycloak = Keycloak(KEYCLOAK);
       keycloak.init({ onLoad: 'login-required'}).then(() => {
         keycloak.loadUserInfo().then((userInfo) => {
+          localStorage.setItem('jwt', keycloak.token);
           this.props.authenticateUser(userInfo);
           this.props.storeKeycloakData(keycloak);
-          localStorage.setItem('jwt', keycloak.token);
         })
       })
     }
@@ -27,10 +27,10 @@ export const AuthGuard = (WrappedComponent) => {
         if (this.props.isAuthenticated) {
           return (
             <WrappedComponent {...this.props} />
-          ); 
+          );
         } else {
           return (<Loading />)
-        } 
+        }
       }
       return (<Loading />)
     }

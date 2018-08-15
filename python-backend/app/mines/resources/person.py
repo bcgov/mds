@@ -1,22 +1,25 @@
 import uuid
 from datetime import datetime
-from app.db import db
 from flask_restplus import Resource, reqparse
-from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
+from ..models.mines import MineIdentity
 from ..models.person import Person, MgrAppointment
-from ..utils.random import generate_mine_no
+
+from app.extensions import jwt
 
 
 class PersonResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str)
     parser.add_argument('surname', type=str)
+
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, person_guid):
         person = Person.find_by_person_guid(person_guid)
         if person:
             return person.json()
         return {'message': 'Person not found'}, 404
 
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, person_guid=None):
         if person_guid:
             return {'error': 'Unexpected person id in Url.'}, 400
@@ -38,6 +41,7 @@ class PersonResource(Resource):
         person.save()
         return { 'person_guid': str(person.person_guid), 'first_name': person.first_name, 'surname': person.surname }
 
+    @jwt.requires_roles(["mds-mine-create"])
     def put(self, person_guid):
         data = PersonResource.parser.parse_args()
         person_exists = Person.find_by_person_guid(person_guid)
@@ -62,12 +66,14 @@ class ManagerResource(Resource):
     parser.add_argument('effective_date', type=lambda x: datetime.strptime(x,'%Y-%m-%d'))
     parser.add_argument('expiry_date', type=lambda x: datetime.strptime(x,'%Y-%m-%d'))
 
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, mgr_appointment_guid):
         manager = MgrAppointment.find_by_mgr_appointment_guid(mgr_appointment_guid)
         if manager:
             return manager.json()
         return {'message': 'Manager not found'}, 404
 
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
             return {'error': 'Unexpected manager id in Url.'}, 400
@@ -102,5 +108,6 @@ class ManagerResource(Resource):
 
 
 class PersonList(Resource):
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         return { 'persons': list(map(lambda x: x.json(), Person.query.all())) }

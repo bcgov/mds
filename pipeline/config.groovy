@@ -131,6 +131,9 @@ app {
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'NODE_ENV': "production",
+                            'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
@@ -141,6 +144,8 @@ app {
                             'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
@@ -163,6 +168,12 @@ environments {
             DB_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
+            }
+            keycloak {
+                clientId = "mines-application-dev"
+                resource = "mines-application-dev"
+                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
+                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
             deployment {
                 env {
@@ -193,6 +204,12 @@ environments {
             git {
                 changeId = "${opt.'pr'}"
             }
+            keycloak {
+                clientId = "mines-application-test"
+                resource = "mines-application-test"
+                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
+                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+            }
             deployment {
                 env {
                     name = "test"
@@ -219,6 +236,12 @@ environments {
             DB_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
+            }
+            keycloak {
+                clientId = "mines-application-prod"
+                resource = "mines-application-prod"
+                url = "https://sso.pathfinder.gov.bc.ca/auth"
+                known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
             deployment {
                 env {

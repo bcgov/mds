@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.db import db
+from app.extensions import db
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False)
