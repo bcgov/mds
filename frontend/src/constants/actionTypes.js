@@ -4,6 +4,7 @@ export const ERROR = 'ERROR';
 
 export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
 export const STORE_KEYCLOAK_DATA = 'STORE_KEYCLOAK_DATA';
+export const STORE_USER_ACCESS_DATA = 'STORE_USER_ACCESS_DATA';
 export const LOGOUT = 'LOGOUT';
 
 export const ADD_MINE_RECORD = 'ADD_MINE';

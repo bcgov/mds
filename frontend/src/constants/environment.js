@@ -2,7 +2,10 @@ export const DEFAULT_ENVIRONMENT = {
     "apiUrl": "http://localhost:5000",
     "keycloak_resource": "mines-application-local",
     "keycloak_clientId": "mines-application-local",
-    "keycloak_url": "https://sso-test.pathfinder.gov.bc.ca/auth"
+    "keycloak_url": "https://sso-test.pathfinder.gov.bc.ca/auth",
+    "keycloak_role_admin": "mds-mine-admin",
+    "keycloak_role_create": "mds-mine-create",
+    "keycloak_role_view": "mds-mine-view"
 };
 
 export const ENVIRONMENT = {
@@ -17,4 +20,10 @@ export const KEYCLOAK = {
   "public-client": true,
   "confidential-port": 0,
   "clientId": "<CLIENT_ID>"
+}
+
+export const USER_ROLES = {
+  "role_admin": "",
+  "role_create": "",
+  "role_view": ""
 }

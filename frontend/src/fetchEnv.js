@@ -1,4 +1,4 @@
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from '@/constants/environment';
+import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK, USER_ROLES } from '@/constants/environment';
 import axios from 'axios';
 
 export default function fetchEnv() {
@@ -20,5 +20,8 @@ export default function fetchEnv() {
         KEYCLOAK.clientId = env.keycloak_clientId;
         KEYCLOAK.resource = env.keycloak_resource;
         KEYCLOAK.url = env.keycloak_url;
+        USER_ROLES.role_admin = env.keycloak_role_admin;
+        USER_ROLES.role_create = env.keycloak_role_create;
+        USER_ROLES.role_view = env.keycloak_role_view;
   });
 }

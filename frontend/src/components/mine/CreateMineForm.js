@@ -17,7 +17,7 @@ const propTypes = {
 export class CreateMineForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {  
+    this.state = {
       redirectTo: null
     };
   }
