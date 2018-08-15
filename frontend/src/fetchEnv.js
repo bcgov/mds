@@ -5,7 +5,6 @@ export default function fetchEnv() {
   return axios.get('/env')
     .then(function (res) {
       try {
-      console.log(res);
           JSON.stringify(res.data);
           return res.data;
         } catch(err) {
