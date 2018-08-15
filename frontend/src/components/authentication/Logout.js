@@ -19,7 +19,7 @@ const defaultProps = {
   keycloak: {},
 };
 
-class Logout extends Component {
+export class Logout extends Component {
   handleLogout = (event) => {
     this.props.keycloak.logout();
     localStorage.removeItem('jwt');
