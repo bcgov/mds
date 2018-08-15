@@ -59,8 +59,6 @@ export class CreateMineForm extends Component {
           </Card>
         </div>
       );
-    } else {
-      return(<div></div>);
     }
   }
 }
