@@ -42,7 +42,7 @@ const serveGzipped = (contentType) => (req, res, next) => {
 
 app.get("/env", function(req, res) {
   res.set(commonHeaders);
-  res.send({
+  res.json({
       backend: 'mds-python-backend',
       apiUrl: `${process.env.API_URL}`,
       keycloak_resource: `${process.env.KEYCLOAK_RESOURCE}`,
