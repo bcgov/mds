@@ -2,8 +2,12 @@
  * @class MineDashboard.js is an individual mines dashboard, contains all relevant information/data and passes it down to children.
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
+
+import { getUserAccessData } from '@/selectors/authenticationSelectors';
+import { USER_ROLES } from '@/constants/environment';
 
 import { UpdateMineForm } from './UpdateMineForm';
 import MineSummary from '@/components/mine/MineSummary';
@@ -19,16 +23,25 @@ const propTypes = {
   mines: PropTypes.object,
   mineIds: PropTypes.array,
   mineId: PropTypes.string.isRequired,
+  userRoles: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mine: {},
   mines: {},
   mineIds: [],
-  mineId: ''
+  mineId: '',
+  userRoles: [],
 };
 
 class MineDashboard extends Component {
+
+  renderUpdateMineForm() {
+    if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
+      return(<UpdateMineForm {...this.props} />);
+    }
+  }
+
   render() {
       return (
         <div>
@@ -36,7 +49,7 @@ class MineDashboard extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab="Summary" key="1">
               <MineSummary mine={this.props.mine} />
-              <UpdateMineForm {...this.props} />
+              {this.renderUpdateMineForm()}
             </TabPane>
             <TabPane tab="Contact Information" key="2">
               <MineContactInfo mine={this.props.mine}/>
@@ -44,10 +57,17 @@ class MineDashboard extends Component {
           </Tabs>
         </div>
       );
-    } 
+    }
   }
+
+const mapStateToProps = (state) => {
+  return {
+    userRoles: getUserAccessData(state),
+  };
+};
+
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;
 
-export default MineDashboard;
+export default connect(mapStateToProps, null)(MineDashboard);

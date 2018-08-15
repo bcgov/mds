@@ -11,8 +11,9 @@ import { Avatar, Badge, Button, Col, Card, Row } from 'antd';
 import { getMineRecords } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
-import * as router from '@/constants/routes';
 import { USER_ROLES } from '@/constants/environment';
+import * as router from '@/constants/routes';
+
 
 const propTypes = {
   getMineRecords: PropTypes.func,
