@@ -20,7 +20,7 @@ def create_app(test_config=None):
         app.config.from_object(Config)
     else:
         # load the test config if passed in
-        app.config.update(test_config)
+        app.config.from_object(test_config)
 
     register_extensions(app)
     register_routes(app, api)
