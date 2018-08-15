@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineDashboard from '../../../components/mine/MineDashboard';
+import { MineDashboard } from '../../../components/mine/MineDashboard';
 import * as MOCK from '../../mocks/dataMocks';
 
 const dispatchProps = {};
@@ -16,6 +16,7 @@ const setupReducerProps = () => {
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.mineId = 'Blah123';
+  reducerProps.userRoles = []
 };
 
 beforeEach(() => {

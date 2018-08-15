@@ -17,6 +17,11 @@ const propTypes = {
   userRoles: PropTypes.array.isRequired,
 };
 
+const defaultProps = {
+  createMineRecord: {},
+  userRoles: [],
+};
+
 export class CreateMineForm extends Component {
   constructor(props) {
     super(props);
@@ -64,6 +69,7 @@ export class CreateMineForm extends Component {
 }
 
 CreateMineForm.propTypes = propTypes;
+CreateMineForm.defaultProps = defaultProps;
 
 const WrappedCreateMineForm = Form.create()(CreateMineForm);
 

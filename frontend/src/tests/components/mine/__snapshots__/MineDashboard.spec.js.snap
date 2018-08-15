@@ -2,7 +2,6 @@
 
 exports[`MineDashboard renders properly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
     getMineRecord={[MockFunction]}
@@ -49,6 +48,7 @@ ShallowWrapper {
       }
     }
     updateMineRecord={[MockFunction]}
+    userRoles={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -77,52 +77,6 @@ ShallowWrapper {
           >
             <MineSummary
               mine={Object {}}
-            />
-            <UpdateMineForm
-              getMineRecord={[MockFunction]}
-              mine={Object {}}
-              mineId="Blah123"
-              mineIds={
-                Array [
-                  "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "18145c75-49ad-0101-85f3-a43e45ae989a",
-                ]
-              }
-              mines={
-                Object {
-                  "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                  "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                    "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                }
-              }
-              updateMineRecord={[MockFunction]}
             />
           </TabPane>
           <TabPane
@@ -162,52 +116,6 @@ ShallowWrapper {
               <MineSummary
                 mine={Object {}}
               />
-              <UpdateMineForm
-                getMineRecord={[MockFunction]}
-                mine={Object {}}
-                mineId="Blah123"
-                mineIds={
-                  Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ]
-                }
-                mines={
-                  Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  }
-                }
-                updateMineRecord={[MockFunction]}
-              />
             </TabPane>,
             <TabPane
               placeholder={null}
@@ -233,52 +141,7 @@ ShallowWrapper {
                 <MineSummary
                   mine={Object {}}
                 />,
-                <UpdateMineForm
-                  getMineRecord={[MockFunction]}
-                  mine={Object {}}
-                  mineId="Blah123"
-                  mineIds={
-                    Array [
-                      "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ]
-                  }
-                  mines={
-                    Object {
-                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                    }
-                  }
-                  updateMineRecord={[MockFunction]}
-                />,
+                undefined,
               ],
               "placeholder": null,
               "tab": "Summary",
@@ -296,56 +159,7 @@ ShallowWrapper {
                 "rendered": null,
                 "type": [Function],
               },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "getMineRecord": [MockFunction],
-                  "mine": Object {},
-                  "mineId": "Blah123",
-                  "mineIds": Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ],
-                  "mines": Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  },
-                  "updateMineRecord": [MockFunction],
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
+              undefined,
             ],
             "type": [Function],
           },
@@ -402,52 +216,6 @@ ShallowWrapper {
               <MineSummary
                 mine={Object {}}
               />
-              <UpdateMineForm
-                getMineRecord={[MockFunction]}
-                mine={Object {}}
-                mineId="Blah123"
-                mineIds={
-                  Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ]
-                }
-                mines={
-                  Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  }
-                }
-                updateMineRecord={[MockFunction]}
-              />
             </TabPane>
             <TabPane
               placeholder={null}
@@ -486,52 +254,6 @@ ShallowWrapper {
                 <MineSummary
                   mine={Object {}}
                 />
-                <UpdateMineForm
-                  getMineRecord={[MockFunction]}
-                  mine={Object {}}
-                  mineId="Blah123"
-                  mineIds={
-                    Array [
-                      "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ]
-                  }
-                  mines={
-                    Object {
-                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                    }
-                  }
-                  updateMineRecord={[MockFunction]}
-                />
               </TabPane>,
               <TabPane
                 placeholder={null}
@@ -557,52 +279,7 @@ ShallowWrapper {
                   <MineSummary
                     mine={Object {}}
                   />,
-                  <UpdateMineForm
-                    getMineRecord={[MockFunction]}
-                    mine={Object {}}
-                    mineId="Blah123"
-                    mineIds={
-                      Array [
-                        "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      ]
-                    }
-                    mines={
-                      Object {
-                        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                          "mgr_appointment": Array [],
-                          "mine_detail": Array [
-                            Object {
-                              "mine_name": "mine1",
-                              "mine_no": "BLAH9091",
-                            },
-                          ],
-                          "mineral_tenure_xref": Array [
-                            Object {
-                              "tenure_number_id": "1234567",
-                            },
-                          ],
-                        },
-                        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                          "mgr_appointment": Array [],
-                          "mine_detail": Array [
-                            Object {
-                              "mine_name": "mine1",
-                              "mine_no": "BLAH9091",
-                            },
-                          ],
-                          "mineral_tenure_xref": Array [
-                            Object {
-                              "tenure_number_id": "1234567",
-                            },
-                          ],
-                        },
-                      }
-                    }
-                    updateMineRecord={[MockFunction]}
-                  />,
+                  undefined,
                 ],
                 "placeholder": null,
                 "tab": "Summary",
@@ -620,56 +297,7 @@ ShallowWrapper {
                   "rendered": null,
                   "type": [Function],
                 },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "getMineRecord": [MockFunction],
-                    "mine": Object {},
-                    "mineId": "Blah123",
-                    "mineIds": Array [
-                      "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ],
-                    "mines": Object {
-                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                    },
-                    "updateMineRecord": [MockFunction],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
+                undefined,
               ],
               "type": [Function],
             },
@@ -709,8 +337,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

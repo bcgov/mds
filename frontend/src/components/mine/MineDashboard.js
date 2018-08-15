@@ -34,7 +34,7 @@ const defaultProps = {
   userRoles: [],
 };
 
-class MineDashboard extends Component {
+export class MineDashboard extends Component {
 
   renderUpdateMineForm() {
     if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
