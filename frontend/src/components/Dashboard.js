@@ -13,7 +13,7 @@ import { getMines, getMineIds } from '@/selectors/mineSelectors';
 import * as router from '@/constants/routes';
 
 const propTypes = {
-  getMineRecords: PropTypes.func.isRequired,
+  getMineRecords: PropTypes.func,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
 };
@@ -23,7 +23,7 @@ const defaultProps = {
   mineIds: [],
 };
 
-class Dashboard extends Component {
+export class Dashboard extends Component {
   componentDidMount() {
     this.props.getMineRecords();
   }
@@ -71,8 +71,7 @@ class Dashboard extends Component {
                 </Row>
               </div>
             )
-          })
-          }
+          })}
         </Card>
       </div>
     );

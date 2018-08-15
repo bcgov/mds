@@ -2,9 +2,7 @@
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Card, Col, Row } from 'antd';
 
 const propTypes = {

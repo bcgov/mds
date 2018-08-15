@@ -16,7 +16,7 @@ const defaultProps = {
 export class UpdateMineForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
-    const tenureNumber = this.refs.tenureNumber.input.value;
+    const tenureNumber = this.tenureNumber.input.value;
     if (!tenureNumber) {
       notification.error({message: "Must specify a Tenure Number.", duration: 10});
     } else if (tenureNumber.length != 7) {
@@ -30,9 +30,9 @@ export class UpdateMineForm extends Component {
     return (
       <div>
         <Card title="Tenure Number Form">
-          <Form ref="updateMineForm" onSubmit={this.handleSubmit}>
+          <Form ref={ref => this.updateMineForm = ref} onSubmit={this.handleSubmit}>
             <FormItem>
-              <Input type="text" ref="tenureNumber" placeholder="Tenure #"></Input>
+              <Input type="text" ref={ref => this.tenureNumber = ref} placeholder="Tenure #"></Input>
               <Button type="primary" htmlType="submit">
                 Add Tenure Number
               </Button>

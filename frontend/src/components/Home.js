@@ -11,7 +11,7 @@ import { AuthGuard } from '../HOC/AuthGuard';
 import NavBar from './navigation/NavBar';
 
 
-class Home extends Component {
+export class Home extends Component {
   render() {
     const { Content } = Layout;
     return (

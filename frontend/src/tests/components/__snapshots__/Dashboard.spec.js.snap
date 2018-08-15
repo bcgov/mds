@@ -1,0 +1,2207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard renders properly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dashboard
+    getMineRecords={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    mineIds={
+      Array [
+        "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "18145c75-49ad-0101-85f3-a43e45ae989a",
+      ]
+    }
+    mines={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mgr_appointment": Array [],
+          "mine_detail": Array [
+            Object {
+              "mine_name": "mine1",
+              "mine_no": "BLAH9091",
+            },
+          ],
+          "mineral_tenure_xref": Array [
+            Object {
+              "tenure_number_id": "1234567",
+            },
+          ],
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mgr_appointment": Array [],
+          "mine_detail": Array [
+            Object {
+              "mine_name": "mine1",
+              "mine_no": "BLAH9091",
+            },
+          ],
+          "mineral_tenure_xref": Array [
+            Object {
+              "tenure_number_id": "1234567",
+            },
+          ],
+        },
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <h1>
+           Mine Dashboard 
+        </h1>,
+        <Card
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          <Link
+            replace={false}
+            to="/dashboard/create-mine"
+          >
+            <div>
+              <Badge
+                count="+"
+                dot={false}
+                overflowCount={99}
+                prefixCls="ant-badge"
+                scrollNumberPrefixCls="ant-scroll-number"
+                showZero={false}
+              >
+                <Avatar
+                  icon="database"
+                  prefixCls="ant-avatar"
+                  shape="square"
+                  size="large"
+                />
+              </Badge>
+            </div>
+            <div
+              style={
+                Object {
+                  "padding": "10px",
+                }
+              }
+            >
+              <Button
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                size="small"
+                type="primary"
+              >
+                Create Mine Record
+              </Button>
+            </div>
+          </Link>
+        </Card>,
+        <Card
+          title="Mines"
+        >
+          <Row
+            gutter={0}
+            type="flex"
+          >
+            <Col
+              span={4}
+            >
+              <strong>
+                MINE_NO
+              </strong>
+            </Col>
+            <Col
+              span={8}
+            >
+              <strong>
+                NAME
+              </strong>
+            </Col>
+            <Col
+              span={8}
+            >
+              <strong>
+                GUID
+              </strong>
+            </Col>
+            <Col
+              span={4}
+            >
+              <strong>
+                ACTION
+              </strong>
+            </Col>
+          </Row>
+          <div
+            style={
+              Object {
+                "padding": "10px",
+              }
+            }
+          >
+            <Row
+              gutter={0}
+              type="flex"
+            >
+              <Col
+                span={4}
+              >
+                BLAH9091
+              </Col>
+              <Col
+                span={8}
+              >
+                mine1
+              </Col>
+              <Col
+                span={8}
+              >
+                18133c75-49ad-4101-85f3-a43e35ae989a
+              </Col>
+              <Col
+                span={4}
+              >
+                <Link
+                  replace={false}
+                  to="/dashboard/BLAH9091/summary"
+                >
+                  <Button
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    size="small"
+                    type="primary"
+                  >
+                    View
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </div>
+          <div
+            style={
+              Object {
+                "padding": "10px",
+              }
+            }
+          >
+            <Row
+              gutter={0}
+              type="flex"
+            >
+              <Col
+                span={4}
+              >
+                BLAH9091
+              </Col>
+              <Col
+                span={8}
+              >
+                mine1
+              </Col>
+              <Col
+                span={8}
+              >
+                18145c75-49ad-0101-85f3-a43e45ae989a
+              </Col>
+              <Col
+                span={4}
+              >
+                <Link
+                  replace={false}
+                  to="/dashboard/BLAH9091/summary"
+                >
+                  <Button
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    size="small"
+                    type="primary"
+                  >
+                    View
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </div>
+        </Card>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": " Mine Dashboard ",
+        },
+        "ref": null,
+        "rendered": " Mine Dashboard ",
+        "type": "h1",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Link
+            replace={false}
+            to="/dashboard/create-mine"
+          >
+            <div>
+              <Badge
+                count="+"
+                dot={false}
+                overflowCount={99}
+                prefixCls="ant-badge"
+                scrollNumberPrefixCls="ant-scroll-number"
+                showZero={false}
+              >
+                <Avatar
+                  icon="database"
+                  prefixCls="ant-avatar"
+                  shape="square"
+                  size="large"
+                />
+              </Badge>
+            </div>
+            <div
+              style={
+                Object {
+                  "padding": "10px",
+                }
+              }
+            >
+              <Button
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                size="small"
+                type="primary"
+              >
+                Create Mine Record
+              </Button>
+            </div>
+          </Link>,
+          "style": Object {
+            "textAlign": "center",
+          },
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <div>
+                <Badge
+                  count="+"
+                  dot={false}
+                  overflowCount={99}
+                  prefixCls="ant-badge"
+                  scrollNumberPrefixCls="ant-scroll-number"
+                  showZero={false}
+                >
+                  <Avatar
+                    icon="database"
+                    prefixCls="ant-avatar"
+                    shape="square"
+                    size="large"
+                  />
+                </Badge>
+              </div>,
+              <div
+                style={
+                  Object {
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Button
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  size="small"
+                  type="primary"
+                >
+                  Create Mine Record
+                </Button>
+              </div>,
+            ],
+            "replace": false,
+            "to": "/dashboard/create-mine",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Badge
+                  count="+"
+                  dot={false}
+                  overflowCount={99}
+                  prefixCls="ant-badge"
+                  scrollNumberPrefixCls="ant-scroll-number"
+                  showZero={false}
+                >
+                  <Avatar
+                    icon="database"
+                    prefixCls="ant-avatar"
+                    shape="square"
+                    size="large"
+                  />
+                </Badge>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Avatar
+                    icon="database"
+                    prefixCls="ant-avatar"
+                    shape="square"
+                    size="large"
+                  />,
+                  "count": "+",
+                  "dot": false,
+                  "overflowCount": 99,
+                  "prefixCls": "ant-badge",
+                  "scrollNumberPrefixCls": "ant-scroll-number",
+                  "showZero": false,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "icon": "database",
+                    "prefixCls": "ant-avatar",
+                    "shape": "square",
+                    "size": "large",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Button
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  size="small"
+                  type="primary"
+                >
+                  Create Mine Record
+                </Button>,
+                "style": Object {
+                  "padding": "10px",
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Create Mine Record",
+                  "ghost": false,
+                  "loading": false,
+                  "prefixCls": "ant-btn",
+                  "size": "small",
+                  "type": "primary",
+                },
+                "ref": null,
+                "rendered": "Create Mine Record",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+          ],
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Row
+              gutter={0}
+              type="flex"
+            >
+              <Col
+                span={4}
+              >
+                <strong>
+                  MINE_NO
+                </strong>
+              </Col>
+              <Col
+                span={8}
+              >
+                <strong>
+                  NAME
+                </strong>
+              </Col>
+              <Col
+                span={8}
+              >
+                <strong>
+                  GUID
+                </strong>
+              </Col>
+              <Col
+                span={4}
+              >
+                <strong>
+                  ACTION
+                </strong>
+              </Col>
+            </Row>,
+            Array [
+              <div
+                style={
+                  Object {
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Row
+                  gutter={0}
+                  type="flex"
+                >
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    18133c75-49ad-4101-85f3-a43e35ae989a
+                  </Col>
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
+              </div>,
+              <div
+                style={
+                  Object {
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Row
+                  gutter={0}
+                  type="flex"
+                >
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    18145c75-49ad-0101-85f3-a43e45ae989a
+                  </Col>
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
+              </div>,
+            ],
+          ],
+          "title": "Mines",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <Col
+                  span={4}
+                >
+                  <strong>
+                    MINE_NO
+                  </strong>
+                </Col>,
+                <Col
+                  span={8}
+                >
+                  <strong>
+                    NAME
+                  </strong>
+                </Col>,
+                <Col
+                  span={8}
+                >
+                  <strong>
+                    GUID
+                  </strong>
+                </Col>,
+                <Col
+                  span={4}
+                >
+                  <strong>
+                    ACTION
+                  </strong>
+                </Col>,
+              ],
+              "gutter": 0,
+              "type": "flex",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <strong>
+                    MINE_NO
+                  </strong>,
+                  "span": 4,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "MINE_NO",
+                  },
+                  "ref": null,
+                  "rendered": "MINE_NO",
+                  "type": "strong",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <strong>
+                    NAME
+                  </strong>,
+                  "span": 8,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "NAME",
+                  },
+                  "ref": null,
+                  "rendered": "NAME",
+                  "type": "strong",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <strong>
+                    GUID
+                  </strong>,
+                  "span": 8,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "GUID",
+                  },
+                  "ref": null,
+                  "rendered": "GUID",
+                  "type": "strong",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <strong>
+                    ACTION
+                  </strong>,
+                  "span": 4,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "ACTION",
+                  },
+                  "ref": null,
+                  "rendered": "ACTION",
+                  "type": "strong",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
+            "nodeType": "host",
+            "props": Object {
+              "children": <Row
+                gutter={0}
+                type="flex"
+              >
+                <Col
+                  span={4}
+                >
+                  BLAH9091
+                </Col>
+                <Col
+                  span={8}
+                >
+                  mine1
+                </Col>
+                <Col
+                  span={8}
+                >
+                  18133c75-49ad-4101-85f3-a43e35ae989a
+                </Col>
+                <Col
+                  span={4}
+                >
+                  <Link
+                    replace={false}
+                    to="/dashboard/BLAH9091/summary"
+                  >
+                    <Button
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      size="small"
+                      type="primary"
+                    >
+                      View
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>,
+              "style": Object {
+                "padding": "10px",
+              },
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    18133c75-49ad-4101-85f3-a43e35ae989a
+                  </Col>,
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>,
+                ],
+                "gutter": 0,
+                "type": "flex",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "BLAH9091",
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": "BLAH9091",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "mine1",
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": "mine1",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>,
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>,
+                      "replace": false,
+                      "to": "/dashboard/BLAH9091/summary",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "View",
+                        "ghost": false,
+                        "loading": false,
+                        "prefixCls": "ant-btn",
+                        "size": "small",
+                        "type": "primary",
+                      },
+                      "ref": null,
+                      "rendered": "View",
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "nodeType": "host",
+            "props": Object {
+              "children": <Row
+                gutter={0}
+                type="flex"
+              >
+                <Col
+                  span={4}
+                >
+                  BLAH9091
+                </Col>
+                <Col
+                  span={8}
+                >
+                  mine1
+                </Col>
+                <Col
+                  span={8}
+                >
+                  18145c75-49ad-0101-85f3-a43e45ae989a
+                </Col>
+                <Col
+                  span={4}
+                >
+                  <Link
+                    replace={false}
+                    to="/dashboard/BLAH9091/summary"
+                  >
+                    <Button
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      size="small"
+                      type="primary"
+                    >
+                      View
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>,
+              "style": Object {
+                "padding": "10px",
+              },
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    18145c75-49ad-0101-85f3-a43e45ae989a
+                  </Col>,
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>,
+                ],
+                "gutter": 0,
+                "type": "flex",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "BLAH9091",
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": "BLAH9091",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "mine1",
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": "mine1",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>,
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>,
+                      "replace": false,
+                      "to": "/dashboard/BLAH9091/summary",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "View",
+                        "ghost": false,
+                        "loading": false,
+                        "prefixCls": "ant-btn",
+                        "size": "small",
+                        "type": "primary",
+                      },
+                      "ref": null,
+                      "rendered": "View",
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": "div",
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <h1>
+             Mine Dashboard 
+          </h1>,
+          <Card
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            <Link
+              replace={false}
+              to="/dashboard/create-mine"
+            >
+              <div>
+                <Badge
+                  count="+"
+                  dot={false}
+                  overflowCount={99}
+                  prefixCls="ant-badge"
+                  scrollNumberPrefixCls="ant-scroll-number"
+                  showZero={false}
+                >
+                  <Avatar
+                    icon="database"
+                    prefixCls="ant-avatar"
+                    shape="square"
+                    size="large"
+                  />
+                </Badge>
+              </div>
+              <div
+                style={
+                  Object {
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Button
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  size="small"
+                  type="primary"
+                >
+                  Create Mine Record
+                </Button>
+              </div>
+            </Link>
+          </Card>,
+          <Card
+            title="Mines"
+          >
+            <Row
+              gutter={0}
+              type="flex"
+            >
+              <Col
+                span={4}
+              >
+                <strong>
+                  MINE_NO
+                </strong>
+              </Col>
+              <Col
+                span={8}
+              >
+                <strong>
+                  NAME
+                </strong>
+              </Col>
+              <Col
+                span={8}
+              >
+                <strong>
+                  GUID
+                </strong>
+              </Col>
+              <Col
+                span={4}
+              >
+                <strong>
+                  ACTION
+                </strong>
+              </Col>
+            </Row>
+            <div
+              style={
+                Object {
+                  "padding": "10px",
+                }
+              }
+            >
+              <Row
+                gutter={0}
+                type="flex"
+              >
+                <Col
+                  span={4}
+                >
+                  BLAH9091
+                </Col>
+                <Col
+                  span={8}
+                >
+                  mine1
+                </Col>
+                <Col
+                  span={8}
+                >
+                  18133c75-49ad-4101-85f3-a43e35ae989a
+                </Col>
+                <Col
+                  span={4}
+                >
+                  <Link
+                    replace={false}
+                    to="/dashboard/BLAH9091/summary"
+                  >
+                    <Button
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      size="small"
+                      type="primary"
+                    >
+                      View
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </div>
+            <div
+              style={
+                Object {
+                  "padding": "10px",
+                }
+              }
+            >
+              <Row
+                gutter={0}
+                type="flex"
+              >
+                <Col
+                  span={4}
+                >
+                  BLAH9091
+                </Col>
+                <Col
+                  span={8}
+                >
+                  mine1
+                </Col>
+                <Col
+                  span={8}
+                >
+                  18145c75-49ad-0101-85f3-a43e45ae989a
+                </Col>
+                <Col
+                  span={4}
+                >
+                  <Link
+                    replace={false}
+                    to="/dashboard/BLAH9091/summary"
+                  >
+                    <Button
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      size="small"
+                      type="primary"
+                    >
+                      View
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </div>
+          </Card>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": " Mine Dashboard ",
+          },
+          "ref": null,
+          "rendered": " Mine Dashboard ",
+          "type": "h1",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Link
+              replace={false}
+              to="/dashboard/create-mine"
+            >
+              <div>
+                <Badge
+                  count="+"
+                  dot={false}
+                  overflowCount={99}
+                  prefixCls="ant-badge"
+                  scrollNumberPrefixCls="ant-scroll-number"
+                  showZero={false}
+                >
+                  <Avatar
+                    icon="database"
+                    prefixCls="ant-avatar"
+                    shape="square"
+                    size="large"
+                  />
+                </Badge>
+              </div>
+              <div
+                style={
+                  Object {
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Button
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  size="small"
+                  type="primary"
+                >
+                  Create Mine Record
+                </Button>
+              </div>
+            </Link>,
+            "style": Object {
+              "textAlign": "center",
+            },
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <div>
+                  <Badge
+                    count="+"
+                    dot={false}
+                    overflowCount={99}
+                    prefixCls="ant-badge"
+                    scrollNumberPrefixCls="ant-scroll-number"
+                    showZero={false}
+                  >
+                    <Avatar
+                      icon="database"
+                      prefixCls="ant-avatar"
+                      shape="square"
+                      size="large"
+                    />
+                  </Badge>
+                </div>,
+                <div
+                  style={
+                    Object {
+                      "padding": "10px",
+                    }
+                  }
+                >
+                  <Button
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    size="small"
+                    type="primary"
+                  >
+                    Create Mine Record
+                  </Button>
+                </div>,
+              ],
+              "replace": false,
+              "to": "/dashboard/create-mine",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Badge
+                    count="+"
+                    dot={false}
+                    overflowCount={99}
+                    prefixCls="ant-badge"
+                    scrollNumberPrefixCls="ant-scroll-number"
+                    showZero={false}
+                  >
+                    <Avatar
+                      icon="database"
+                      prefixCls="ant-avatar"
+                      shape="square"
+                      size="large"
+                    />
+                  </Badge>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Avatar
+                      icon="database"
+                      prefixCls="ant-avatar"
+                      shape="square"
+                      size="large"
+                    />,
+                    "count": "+",
+                    "dot": false,
+                    "overflowCount": 99,
+                    "prefixCls": "ant-badge",
+                    "scrollNumberPrefixCls": "ant-scroll-number",
+                    "showZero": false,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "icon": "database",
+                      "prefixCls": "ant-avatar",
+                      "shape": "square",
+                      "size": "large",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Button
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    size="small"
+                    type="primary"
+                  >
+                    Create Mine Record
+                  </Button>,
+                  "style": Object {
+                    "padding": "10px",
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Create Mine Record",
+                    "ghost": false,
+                    "loading": false,
+                    "prefixCls": "ant-btn",
+                    "size": "small",
+                    "type": "primary",
+                  },
+                  "ref": null,
+                  "rendered": "Create Mine Record",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+            ],
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Row
+                gutter={0}
+                type="flex"
+              >
+                <Col
+                  span={4}
+                >
+                  <strong>
+                    MINE_NO
+                  </strong>
+                </Col>
+                <Col
+                  span={8}
+                >
+                  <strong>
+                    NAME
+                  </strong>
+                </Col>
+                <Col
+                  span={8}
+                >
+                  <strong>
+                    GUID
+                  </strong>
+                </Col>
+                <Col
+                  span={4}
+                >
+                  <strong>
+                    ACTION
+                  </strong>
+                </Col>
+              </Row>,
+              Array [
+                <div
+                  style={
+                    Object {
+                      "padding": "10px",
+                    }
+                  }
+                >
+                  <Row
+                    gutter={0}
+                    type="flex"
+                  >
+                    <Col
+                      span={4}
+                    >
+                      BLAH9091
+                    </Col>
+                    <Col
+                      span={8}
+                    >
+                      mine1
+                    </Col>
+                    <Col
+                      span={8}
+                    >
+                      18133c75-49ad-4101-85f3-a43e35ae989a
+                    </Col>
+                    <Col
+                      span={4}
+                    >
+                      <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                </div>,
+                <div
+                  style={
+                    Object {
+                      "padding": "10px",
+                    }
+                  }
+                >
+                  <Row
+                    gutter={0}
+                    type="flex"
+                  >
+                    <Col
+                      span={4}
+                    >
+                      BLAH9091
+                    </Col>
+                    <Col
+                      span={8}
+                    >
+                      mine1
+                    </Col>
+                    <Col
+                      span={8}
+                    >
+                      18145c75-49ad-0101-85f3-a43e45ae989a
+                    </Col>
+                    <Col
+                      span={4}
+                    >
+                      <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                </div>,
+              ],
+            ],
+            "title": "Mines",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Col
+                    span={4}
+                  >
+                    <strong>
+                      MINE_NO
+                    </strong>
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    <strong>
+                      NAME
+                    </strong>
+                  </Col>,
+                  <Col
+                    span={8}
+                  >
+                    <strong>
+                      GUID
+                    </strong>
+                  </Col>,
+                  <Col
+                    span={4}
+                  >
+                    <strong>
+                      ACTION
+                    </strong>
+                  </Col>,
+                ],
+                "gutter": 0,
+                "type": "flex",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <strong>
+                      MINE_NO
+                    </strong>,
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "MINE_NO",
+                    },
+                    "ref": null,
+                    "rendered": "MINE_NO",
+                    "type": "strong",
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <strong>
+                      NAME
+                    </strong>,
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "NAME",
+                    },
+                    "ref": null,
+                    "rendered": "NAME",
+                    "type": "strong",
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <strong>
+                      GUID
+                    </strong>,
+                    "span": 8,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "GUID",
+                    },
+                    "ref": null,
+                    "rendered": "GUID",
+                    "type": "strong",
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <strong>
+                      ACTION
+                    </strong>,
+                    "span": 4,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "ACTION",
+                    },
+                    "ref": null,
+                    "rendered": "ACTION",
+                    "type": "strong",
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "nodeType": "host",
+              "props": Object {
+                "children": <Row
+                  gutter={0}
+                  type="flex"
+                >
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    18133c75-49ad-4101-85f3-a43e35ae989a
+                  </Col>
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>,
+                "style": Object {
+                  "padding": "10px",
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      span={4}
+                    >
+                      BLAH9091
+                    </Col>,
+                    <Col
+                      span={8}
+                    >
+                      mine1
+                    </Col>,
+                    <Col
+                      span={8}
+                    >
+                      18133c75-49ad-4101-85f3-a43e35ae989a
+                    </Col>,
+                    <Col
+                      span={4}
+                    >
+                      <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    </Col>,
+                  ],
+                  "gutter": 0,
+                  "type": "flex",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "BLAH9091",
+                      "span": 4,
+                    },
+                    "ref": null,
+                    "rendered": "BLAH9091",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "mine1",
+                      "span": 8,
+                    },
+                    "ref": null,
+                    "rendered": "mine1",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "span": 8,
+                    },
+                    "ref": null,
+                    "rendered": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>,
+                      "span": 4,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>,
+                        "replace": false,
+                        "to": "/dashboard/BLAH9091/summary",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "View",
+                          "ghost": false,
+                          "loading": false,
+                          "prefixCls": "ant-btn",
+                          "size": "small",
+                          "type": "primary",
+                        },
+                        "ref": null,
+                        "rendered": "View",
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "nodeType": "host",
+              "props": Object {
+                "children": <Row
+                  gutter={0}
+                  type="flex"
+                >
+                  <Col
+                    span={4}
+                  >
+                    BLAH9091
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    mine1
+                  </Col>
+                  <Col
+                    span={8}
+                  >
+                    18145c75-49ad-0101-85f3-a43e45ae989a
+                  </Col>
+                  <Col
+                    span={4}
+                  >
+                    <Link
+                      replace={false}
+                      to="/dashboard/BLAH9091/summary"
+                    >
+                      <Button
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        size="small"
+                        type="primary"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>,
+                "style": Object {
+                  "padding": "10px",
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      span={4}
+                    >
+                      BLAH9091
+                    </Col>,
+                    <Col
+                      span={8}
+                    >
+                      mine1
+                    </Col>,
+                    <Col
+                      span={8}
+                    >
+                      18145c75-49ad-0101-85f3-a43e45ae989a
+                    </Col>,
+                    <Col
+                      span={4}
+                    >
+                      <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    </Col>,
+                  ],
+                  "gutter": 0,
+                  "type": "flex",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "BLAH9091",
+                      "span": 4,
+                    },
+                    "ref": null,
+                    "rendered": "BLAH9091",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "mine1",
+                      "span": 8,
+                    },
+                    "ref": null,
+                    "rendered": "mine1",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      "span": 8,
+                    },
+                    "ref": null,
+                    "rendered": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Link
+                        replace={false}
+                        to="/dashboard/BLAH9091/summary"
+                      >
+                        <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>
+                      </Link>,
+                      "span": 4,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Button
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          size="small"
+                          type="primary"
+                        >
+                          View
+                        </Button>,
+                        "replace": false,
+                        "to": "/dashboard/BLAH9091/summary",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "View",
+                          "ghost": false,
+                          "loading": false,
+                          "prefixCls": "ant-btn",
+                          "size": "small",
+                          "type": "primary",
+                        },
+                        "ref": null,
+                        "rendered": "View",
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              "type": "div",
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
