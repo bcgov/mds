@@ -17,7 +17,7 @@ class MineHeader extends Component {
   render() {
     return (
       <div>
-        <img src={STATIC_MAP} />
+        <img className="mine__dashboard__header__img" src={STATIC_MAP} />
         <h1>{this.props.mine.mine_detail[0].mine_name} - Major Mine</h1>
         <h2>Mine #: {this.props.mine.mine_detail[0].mine_no} </h2>
       </div>

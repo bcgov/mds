@@ -4,6 +4,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Drawer, Form, Button, Col, Row, Select, Input } from 'antd';
+import UpdateMineManager from '@/components/mine/UpdateMineManager';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -15,10 +17,35 @@ const defaultProps = {
 
 
 class MineContactInfo extends Component {
+  state = { visible: false };
+
+  showDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
   render() {
     return (
       <div>
-        <h1>contact information</h1>
+        <Button type="primary" onClick={this.showDrawer}>
+          Update
+        </Button>
+        <Drawer
+          title="Update Mine Manager"
+          width={720}
+          placement="right"
+          onClose={this.onClose}
+          maskClosable={false}
+          visible={this.state.visible}
+          style={{
+            height: 'calc(100% - 55px)',
+            overflow: 'auto',
+            paddingBottom: 53,
+          }}
+        >
+         <UpdateMineManager {...this.props}/>
+        </Drawer>
       </div>
     );
   }
