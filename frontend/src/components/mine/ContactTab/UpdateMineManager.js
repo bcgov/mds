@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Drawer, Form, Button, Col, Row, Select, Input, Card, DatePicker } from 'antd';
+import { Form, Button, Col, Row, Select, Input, Card, DatePicker } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager } from '@/actionCreators/personnelActionCreator';
+import { getMineRecord } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
 
 const propTypes = {
@@ -44,7 +45,9 @@ class UpdateMineManager extends Component {
   handleManagerSubmit = (event) => {
     event.preventDefault();
     this.props.addMineManager(this.props.mine.guid, this.state.managerId, this.props.mine.mine_detail[0].mine_name, this.state.date).then(() => {
-      this.props.handleManagerUpdate();
+      this.props.getMineRecord(this.props.mine.guid).then(() => {
+        this.props.handleManagerUpdate();
+      });
     })
   }
 
@@ -124,7 +127,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getPersonnelList,
     createPersonnel,
-    addMineManager
+    addMineManager,
+    getMineRecord,
   }, dispatch);
 }
 
