@@ -2,7 +2,6 @@
 
 exports[`Dashboard renders properly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dashboard
     getMineRecords={
@@ -52,6 +51,7 @@ ShallowWrapper {
         },
       }
     }
+    userRoles={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -69,53 +69,7 @@ ShallowWrapper {
         <h1>
            Mine Dashboard 
         </h1>,
-        <Card
-          style={
-            Object {
-              "textAlign": "center",
-            }
-          }
-        >
-          <Link
-            replace={false}
-            to="/dashboard/create-mine"
-          >
-            <div>
-              <Badge
-                count="+"
-                dot={false}
-                overflowCount={99}
-                prefixCls="ant-badge"
-                scrollNumberPrefixCls="ant-scroll-number"
-                showZero={false}
-              >
-                <Avatar
-                  icon="database"
-                  prefixCls="ant-avatar"
-                  shape="square"
-                  size="large"
-                />
-              </Badge>
-            </div>
-            <div
-              style={
-                Object {
-                  "padding": "10px",
-                }
-              }
-            >
-              <Button
-                ghost={false}
-                loading={false}
-                prefixCls="ant-btn"
-                size="small"
-                type="primary"
-              >
-                Create Mine Record
-              </Button>
-            </div>
-          </Link>
-        </Card>,
+        undefined,
         <Card
           title="Mines"
         >
@@ -186,6 +140,7 @@ ShallowWrapper {
                   to="/dashboard/BLAH9091/summary"
                 >
                   <Button
+                    block={false}
                     ghost={false}
                     loading={false}
                     prefixCls="ant-btn"
@@ -232,6 +187,7 @@ ShallowWrapper {
                   to="/dashboard/BLAH9091/summary"
                 >
                   <Button
+                    block={false}
                     ghost={false}
                     loading={false}
                     prefixCls="ant-btn"
@@ -260,202 +216,7 @@ ShallowWrapper {
         "rendered": " Mine Dashboard ",
         "type": "h1",
       },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <Link
-            replace={false}
-            to="/dashboard/create-mine"
-          >
-            <div>
-              <Badge
-                count="+"
-                dot={false}
-                overflowCount={99}
-                prefixCls="ant-badge"
-                scrollNumberPrefixCls="ant-scroll-number"
-                showZero={false}
-              >
-                <Avatar
-                  icon="database"
-                  prefixCls="ant-avatar"
-                  shape="square"
-                  size="large"
-                />
-              </Badge>
-            </div>
-            <div
-              style={
-                Object {
-                  "padding": "10px",
-                }
-              }
-            >
-              <Button
-                ghost={false}
-                loading={false}
-                prefixCls="ant-btn"
-                size="small"
-                type="primary"
-              >
-                Create Mine Record
-              </Button>
-            </div>
-          </Link>,
-          "style": Object {
-            "textAlign": "center",
-          },
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <div>
-                <Badge
-                  count="+"
-                  dot={false}
-                  overflowCount={99}
-                  prefixCls="ant-badge"
-                  scrollNumberPrefixCls="ant-scroll-number"
-                  showZero={false}
-                >
-                  <Avatar
-                    icon="database"
-                    prefixCls="ant-avatar"
-                    shape="square"
-                    size="large"
-                  />
-                </Badge>
-              </div>,
-              <div
-                style={
-                  Object {
-                    "padding": "10px",
-                  }
-                }
-              >
-                <Button
-                  ghost={false}
-                  loading={false}
-                  prefixCls="ant-btn"
-                  size="small"
-                  type="primary"
-                >
-                  Create Mine Record
-                </Button>
-              </div>,
-            ],
-            "replace": false,
-            "to": "/dashboard/create-mine",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": <Badge
-                  count="+"
-                  dot={false}
-                  overflowCount={99}
-                  prefixCls="ant-badge"
-                  scrollNumberPrefixCls="ant-scroll-number"
-                  showZero={false}
-                >
-                  <Avatar
-                    icon="database"
-                    prefixCls="ant-avatar"
-                    shape="square"
-                    size="large"
-                  />
-                </Badge>,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Avatar
-                    icon="database"
-                    prefixCls="ant-avatar"
-                    shape="square"
-                    size="large"
-                  />,
-                  "count": "+",
-                  "dot": false,
-                  "overflowCount": 99,
-                  "prefixCls": "ant-badge",
-                  "scrollNumberPrefixCls": "ant-scroll-number",
-                  "showZero": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "icon": "database",
-                    "prefixCls": "ant-avatar",
-                    "shape": "square",
-                    "size": "large",
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": <Button
-                  ghost={false}
-                  loading={false}
-                  prefixCls="ant-btn"
-                  size="small"
-                  type="primary"
-                >
-                  Create Mine Record
-                </Button>,
-                "style": Object {
-                  "padding": "10px",
-                },
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "Create Mine Record",
-                  "ghost": false,
-                  "loading": false,
-                  "prefixCls": "ant-btn",
-                  "size": "small",
-                  "type": "primary",
-                },
-                "ref": null,
-                "rendered": "Create Mine Record",
-                "type": [Function],
-              },
-              "type": "div",
-            },
-          ],
-          "type": [Function],
-        },
-        "type": [Function],
-      },
+      undefined,
       Object {
         "instance": null,
         "key": undefined,
@@ -530,6 +291,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -576,6 +338,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -765,6 +528,7 @@ ShallowWrapper {
                     to="/dashboard/BLAH9091/summary"
                   >
                     <Button
+                      block={false}
                       ghost={false}
                       loading={false}
                       prefixCls="ant-btn"
@@ -810,6 +574,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -872,6 +637,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -890,6 +656,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -907,6 +674,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
+                        "block": false,
                         "children": "View",
                         "ghost": false,
                         "loading": false,
@@ -959,6 +727,7 @@ ShallowWrapper {
                     to="/dashboard/BLAH9091/summary"
                   >
                     <Button
+                      block={false}
                       ghost={false}
                       loading={false}
                       prefixCls="ant-btn"
@@ -1004,6 +773,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -1066,6 +836,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -1084,6 +855,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -1101,6 +873,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
+                        "block": false,
                         "children": "View",
                         "ghost": false,
                         "loading": false,
@@ -1137,53 +910,7 @@ ShallowWrapper {
           <h1>
              Mine Dashboard 
           </h1>,
-          <Card
-            style={
-              Object {
-                "textAlign": "center",
-              }
-            }
-          >
-            <Link
-              replace={false}
-              to="/dashboard/create-mine"
-            >
-              <div>
-                <Badge
-                  count="+"
-                  dot={false}
-                  overflowCount={99}
-                  prefixCls="ant-badge"
-                  scrollNumberPrefixCls="ant-scroll-number"
-                  showZero={false}
-                >
-                  <Avatar
-                    icon="database"
-                    prefixCls="ant-avatar"
-                    shape="square"
-                    size="large"
-                  />
-                </Badge>
-              </div>
-              <div
-                style={
-                  Object {
-                    "padding": "10px",
-                  }
-                }
-              >
-                <Button
-                  ghost={false}
-                  loading={false}
-                  prefixCls="ant-btn"
-                  size="small"
-                  type="primary"
-                >
-                  Create Mine Record
-                </Button>
-              </div>
-            </Link>
-          </Card>,
+          undefined,
           <Card
             title="Mines"
           >
@@ -1254,6 +981,7 @@ ShallowWrapper {
                     to="/dashboard/BLAH9091/summary"
                   >
                     <Button
+                      block={false}
                       ghost={false}
                       loading={false}
                       prefixCls="ant-btn"
@@ -1300,6 +1028,7 @@ ShallowWrapper {
                     to="/dashboard/BLAH9091/summary"
                   >
                     <Button
+                      block={false}
                       ghost={false}
                       loading={false}
                       prefixCls="ant-btn"
@@ -1328,202 +1057,7 @@ ShallowWrapper {
           "rendered": " Mine Dashboard ",
           "type": "h1",
         },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Link
-              replace={false}
-              to="/dashboard/create-mine"
-            >
-              <div>
-                <Badge
-                  count="+"
-                  dot={false}
-                  overflowCount={99}
-                  prefixCls="ant-badge"
-                  scrollNumberPrefixCls="ant-scroll-number"
-                  showZero={false}
-                >
-                  <Avatar
-                    icon="database"
-                    prefixCls="ant-avatar"
-                    shape="square"
-                    size="large"
-                  />
-                </Badge>
-              </div>
-              <div
-                style={
-                  Object {
-                    "padding": "10px",
-                  }
-                }
-              >
-                <Button
-                  ghost={false}
-                  loading={false}
-                  prefixCls="ant-btn"
-                  size="small"
-                  type="primary"
-                >
-                  Create Mine Record
-                </Button>
-              </div>
-            </Link>,
-            "style": Object {
-              "textAlign": "center",
-            },
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [
-                <div>
-                  <Badge
-                    count="+"
-                    dot={false}
-                    overflowCount={99}
-                    prefixCls="ant-badge"
-                    scrollNumberPrefixCls="ant-scroll-number"
-                    showZero={false}
-                  >
-                    <Avatar
-                      icon="database"
-                      prefixCls="ant-avatar"
-                      shape="square"
-                      size="large"
-                    />
-                  </Badge>
-                </div>,
-                <div
-                  style={
-                    Object {
-                      "padding": "10px",
-                    }
-                  }
-                >
-                  <Button
-                    ghost={false}
-                    loading={false}
-                    prefixCls="ant-btn"
-                    size="small"
-                    type="primary"
-                  >
-                    Create Mine Record
-                  </Button>
-                </div>,
-              ],
-              "replace": false,
-              "to": "/dashboard/create-mine",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": <Badge
-                    count="+"
-                    dot={false}
-                    overflowCount={99}
-                    prefixCls="ant-badge"
-                    scrollNumberPrefixCls="ant-scroll-number"
-                    showZero={false}
-                  >
-                    <Avatar
-                      icon="database"
-                      prefixCls="ant-avatar"
-                      shape="square"
-                      size="large"
-                    />
-                  </Badge>,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Avatar
-                      icon="database"
-                      prefixCls="ant-avatar"
-                      shape="square"
-                      size="large"
-                    />,
-                    "count": "+",
-                    "dot": false,
-                    "overflowCount": 99,
-                    "prefixCls": "ant-badge",
-                    "scrollNumberPrefixCls": "ant-scroll-number",
-                    "showZero": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "icon": "database",
-                      "prefixCls": "ant-avatar",
-                      "shape": "square",
-                      "size": "large",
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                "type": "div",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": <Button
-                    ghost={false}
-                    loading={false}
-                    prefixCls="ant-btn"
-                    size="small"
-                    type="primary"
-                  >
-                    Create Mine Record
-                  </Button>,
-                  "style": Object {
-                    "padding": "10px",
-                  },
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Create Mine Record",
-                    "ghost": false,
-                    "loading": false,
-                    "prefixCls": "ant-btn",
-                    "size": "small",
-                    "type": "primary",
-                  },
-                  "ref": null,
-                  "rendered": "Create Mine Record",
-                  "type": [Function],
-                },
-                "type": "div",
-              },
-            ],
-            "type": [Function],
-          },
-          "type": [Function],
-        },
+        undefined,
         Object {
           "instance": null,
           "key": undefined,
@@ -1598,6 +1132,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -1644,6 +1179,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -1833,6 +1369,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -1878,6 +1415,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -1940,6 +1478,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -1958,6 +1497,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -1975,6 +1515,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "class",
                         "props": Object {
+                          "block": false,
                           "children": "View",
                           "ghost": false,
                           "loading": false,
@@ -2027,6 +1568,7 @@ ShallowWrapper {
                       to="/dashboard/BLAH9091/summary"
                     >
                       <Button
+                        block={false}
                         ghost={false}
                         loading={false}
                         prefixCls="ant-btn"
@@ -2072,6 +1614,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -2134,6 +1677,7 @@ ShallowWrapper {
                         to="/dashboard/BLAH9091/summary"
                       >
                         <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -2152,6 +1696,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Button
+                          block={false}
                           ghost={false}
                           loading={false}
                           prefixCls="ant-btn"
@@ -2169,6 +1714,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "class",
                         "props": Object {
+                          "block": false,
                           "children": "View",
                           "ghost": false,
                           "loading": false,
@@ -2200,8 +1746,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

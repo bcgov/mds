@@ -23,3 +23,12 @@ export const storeKeycloakData = (data= {}) => {
     },
   };
 };
+
+export const storeUserAccessData = (roles= {}) => {
+  return {
+    type: ActionTypes.STORE_USER_ACCESS_DATA,
+    payload: {
+      roles,
+    },
+  };
+};

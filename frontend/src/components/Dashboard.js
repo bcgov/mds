@@ -10,17 +10,22 @@ import { Avatar, Badge, Button, Col, Card, Row } from 'antd';
 
 import { getMineRecords } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
+import { getUserAccessData } from '@/selectors/authenticationSelectors';
+import { USER_ROLES } from '@/constants/environment';
 import * as router from '@/constants/routes';
+
 
 const propTypes = {
   getMineRecords: PropTypes.func,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
+  userRoles: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
+  userRoles: [],
 };
 
 export class Dashboard extends Component {
@@ -28,11 +33,9 @@ export class Dashboard extends Component {
     this.props.getMineRecords();
   }
 
-  render() {
-    const { mines, mineIds } = this.props;
-    return (
-      <div>
-        <h1> Mine Dashboard </h1>
+  renderCreateMine() {
+    if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
+      return (
         <Card style={{ textAlign: "center" }}>
           <Link to={router.CREATE_MINE_RECORD.route}>
             <div>
@@ -47,6 +50,16 @@ export class Dashboard extends Component {
             </div>
           </Link>
         </Card>
+      );
+    }
+  }
+
+  render() {
+    const { mines, mineIds } = this.props;
+    return (
+      <div>
+        <h1> Mine Dashboard </h1>
+        {this.renderCreateMine()}
         <Card title="Mines">
           <Row type="flex">
             <Col span={4}><strong>MINE_NO</strong></Col>
@@ -82,6 +95,7 @@ const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
     mineIds: getMineIds(state),
+    userRoles: getUserAccessData(state),
   };
 };
 

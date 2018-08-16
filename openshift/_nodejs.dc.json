@@ -59,6 +59,18 @@
       "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
     },
     {
+      "name": "KEYCLOAK_ROLE_ADMIN",
+      "value": "mds-mine-admin"
+    },
+    {
+      "name": "KEYCLOAK_ROLE_CREATE",
+      "value": "mds-mine-create"
+    },
+    {
+      "name": "KEYCLOAK_ROLE_VIEW",
+      "value": "mds-mine-view"
+    },
+    {
       "name": "API_URL",
       "displayName": "API Url",
       "description": "URL for the backend API",
@@ -194,6 +206,18 @@
                   {
                     "name": "KEYCLOAK_URL",
                     "value": "${KEYCLOAK_URL}"
+                  },
+                  {
+                    "name": "KEYCLOAK_ROLE_ADMIN",
+                    "value": "${KEYCLOAK_ROLE_ADMIN}"
+                  },
+                  {
+                    "name": "KEYCLOAK_ROLE_CREATE",
+                    "value": "${KEYCLOAK_ROLE_CREATE}"
+                  },
+                  {
+                    "name": "KEYCLOAK_ROLE_VIEW",
+                    "value": "${KEYCLOAK_ROLE_VIEW}"
                   }
                 ],
                 "ports": [

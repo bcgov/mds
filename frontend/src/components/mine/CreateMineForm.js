@@ -5,6 +5,9 @@ import { Card, Form, Input, Button, notification } from 'antd';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { getUserAccessData } from '@/selectors/authenticationSelectors';
+import { USER_ROLES } from '@/constants/environment';
+import { CreateGuard } from '@/HOC/CreateGuard';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as routes from '@/constants/routes';
 
@@ -12,12 +15,18 @@ const FormItem = Form.Item;
 
 const propTypes = {
   createMineRecord: PropTypes.func.isRequired,
+  userRoles: PropTypes.array.isRequired,
+};
+
+const defaultProps = {
+  createMineRecord: {},
+  userRoles: [],
 };
 
 export class CreateMineForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {  
+    this.state = {
       redirectTo: null
     };
   }
@@ -59,8 +68,15 @@ export class CreateMineForm extends Component {
 }
 
 CreateMineForm.propTypes = propTypes;
+CreateMineForm.defaultProps = defaultProps;
 
 const WrappedCreateMineForm = Form.create()(CreateMineForm);
+
+const mapStateToProps = (state) => {
+  return {
+    userRoles: getUserAccessData(state),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
@@ -68,4 +84,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(WrappedCreateMineForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGuard(WrappedCreateMineForm));
