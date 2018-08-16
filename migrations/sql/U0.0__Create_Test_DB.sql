@@ -1,0 +1,1 @@
+DROP DATABASE mds_db_test;
