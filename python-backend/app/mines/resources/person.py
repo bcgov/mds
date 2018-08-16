@@ -39,7 +39,7 @@ class PersonResource(Resource):
             **dummy_user_kwargs
             )
         person.save()
-        return { 'person_guid': str(person.person_guid), 'first_name': person.first_name, 'surname': person.surname }
+        return person.json()
 
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, person_guid):
