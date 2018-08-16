@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
 import { USER_ROLES } from '@/constants/environment';
+import { CreateGuard } from '@/HOC/CreateGuard';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as routes from '@/constants/routes';
 
@@ -48,23 +49,21 @@ export class CreateMineForm extends Component {
     if (this.state.redirectTo) {
       return <Redirect push to={this.state.redirectTo} />
     }
-    if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
-      return (
-        <div>
-          <h1>Create A Mine Record</h1>
-          <Card title="Create Mine Form">
-            <Form ref={ref => this.createMineForm = ref} onSubmit={this.handleSubmit}>
-              <FormItem>
-                <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name"></Input>
-                <Button type="primary" htmlType="submit">
-                  Create Mine
-                </Button>
-              </FormItem>
-            </Form>
-          </Card>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <h1>Create A Mine Record</h1>
+        <Card title="Create Mine Form">
+          <Form ref={ref => this.createMineForm = ref} onSubmit={this.handleSubmit}>
+            <FormItem>
+              <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name"></Input>
+              <Button type="primary" htmlType="submit">
+                Create Mine
+              </Button>
+            </FormItem>
+          </Form>
+        </Card>
+      </div>
+    );
   }
 }
 
@@ -85,4 +84,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedCreateMineForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGuard(WrappedCreateMineForm));
