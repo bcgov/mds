@@ -25,6 +25,12 @@
             "description": "SonarQube server",
             "required": true,
             "value": "https://sonarqube-empr-mds-tools.pathfinder.gov.bc.ca"
+        },
+        {
+            "name": "DB_CONFIG_NAME",
+            "displayName": "Database Config Name",
+            "description": "Configuration name for the database",
+            "required": true
         }
     ],
     "objects": [
@@ -61,7 +67,37 @@
                             {
                                 "name": "SONAR_HOST_URL",
                                 "value": "${SONAR_HOST_URL}"
-                            }
+                            },
+                            {
+                                "name": "DB_USER",
+                                "valueFrom": {
+                                  "secretKeyRef": {
+                                    "name": "${DB_CONFIG_NAME}",
+                                    "key": "database-admin-user"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "DB_HOST",
+                                "value": "${DB_CONFIG_NAME}"
+                              },
+                              {
+                                "name": "DB_PASS",
+                                "valueFrom": {
+                                  "secretKeyRef": {
+                                    "name": "${DB_CONFIG_NAME}",
+                                    "key": "database-admin-password"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "DB_PORT",
+                                "value": "5432"
+                              },
+                              {
+                                "name": "DB_NAME_TEST",
+                                "value": "mds_db_test"
+                              }
                         ],
                         "imagePullPolicy": "Always"
                     }

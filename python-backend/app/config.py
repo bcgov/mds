@@ -20,8 +20,8 @@ class Config(object):
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
 
 class TestConfig(Config):
-    DB_NAME = os.environ.get('DB_NAME_TEST', 'db_name_test')
-    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS, Config.DB_HOST, Config.DB_PORT, DB_NAME)
+    DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
+    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS, Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = "test_audience"
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
