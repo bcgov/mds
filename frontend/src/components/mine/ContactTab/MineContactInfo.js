@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Form, Button, Col, Row, Select, Input } from 'antd';
-import UpdateMineManager from '@/components/mine/UpdateMineManager';
+import UpdateMineManager from './UpdateMineManager';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,

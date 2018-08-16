@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { UpdateMineForm } from './UpdateMineForm';
 import MineSummary from '@/components/mine/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
-import MineContactInfo from '@/components/mine/MineContactInfo';
+import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
 
 const TabPane = Tabs.TabPane;
 

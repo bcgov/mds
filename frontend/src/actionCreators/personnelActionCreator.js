@@ -55,3 +55,17 @@ export const getPersonnel = (id) => (dispatch) => {
       dispatch(error(reducerTypes.GET_PERSONNEL));
     });
 };
+
+export const addMineManager = (mineId, personnelId, mineName, date) => (dispatch) => {
+  dispatch(request(reducerTypes.ADD_MINE_MANAGER));
+  return axios.post(ENVIRONMENT.apiUrl + API.MANAGER, { "mine_guid": mineId, "person_guid": personnelId, "effective_date": date }, createRequestHeader())
+    .then((response) => {
+      notification.success({ message: "Successfully updated the manager for:" + mineName, duration: 10 });
+      dispatch(success(reducerTypes.ADD_MINE_MANAGER));
+      return response;
+    })
+    .catch(() => {
+      notification.error({ message: String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.ADD_MINE_MANAGER));
+    });
+};
