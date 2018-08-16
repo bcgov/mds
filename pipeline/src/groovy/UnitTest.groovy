@@ -45,15 +45,15 @@ def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},im
 // Run frontend tests
 frontEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 // Run backend tests
 backEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
-if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=${appLabel}", "--namespace=${namespace}"])){
+if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=mds-${appLabel}", "--namespace=${namespace}"])){
     System.exit(1)
 }
