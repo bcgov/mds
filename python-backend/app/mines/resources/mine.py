@@ -15,7 +15,7 @@ class Mine(Resource):
     def get(self, mine_no):
         mine_by_no = MineIdentity.find_by_mine_no(mine_no)
         if mine_by_no:
-            return mine.json()
+            return mine_by_no.json()
         mine_by_guid = MineIdentity.find_by_mine_guid(mine_no)
         if mine_by_guid:
             return mine_by_guid.json()
