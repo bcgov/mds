@@ -37,7 +37,7 @@ if (opt?.h) {
 
 def config = OpenShiftHelper.loadBuildConfig(opt)
 def namespace = config.app.namespaces.dev.namespace
-def appLabel = dev-${config.app.build.env.id}
+def appLabel = "dev-${config.app.build.env.id}"
 
 def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-frontend", "--namespace=${namespace}"])
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
@@ -54,6 +54,6 @@ backEndDeploymentConfigs.items.each {Map object ->
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
-if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=${config.app.build.id}", "--namespace=${namespace}"])){
+if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=${appLabel}", "--namespace=${namespace}"])){
     System.exit(1)
 }
