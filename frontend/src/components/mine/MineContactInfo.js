@@ -17,31 +17,6 @@ const defaultProps = {
 
 
 class MineContactInfo extends Component {
-  state = { visible: false };
-
-  showDrawer = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-        // <Button type="primary" onClick={this.showDrawer}>
-        //   Update
-        // </Button>
-        // <Drawer
-        //   title="Update Mine Manager"
-        //   width={720}
-        //   placement="right"
-        //   onClose={this.onClose}
-        //   maskClosable={false}
-        //   visible={this.state.visible}
-        //   style={{
-        //     height: 'calc(100% - 55px)',
-        //     overflow: 'auto',
-        //     paddingBottom: 53,
-        //   }}
-        // >
-        // </Drawer>
   render() {
     return (
       <div>
