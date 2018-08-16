@@ -225,11 +225,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "700m",
+            "cpu": "1",
             "memory": "8Gi"
           },
           "requests": {
-            "cpu": "500m",
+            "cpu": "750m",
             "memory": "4Gi"
           }
         },
