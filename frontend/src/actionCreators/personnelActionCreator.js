@@ -19,7 +19,7 @@ export const createPersonnel = (firstName, surname) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERSONNEL));
   return axios.post(ENVIRONMENT.apiUrl + API.PERSON, { "first_name": firstName, "surname": surname }, createRequestHeader())
     .then((response) => {
-      notification.success({ message: "Successfully created: " + firstName + surname, duration: 10 });
+      notification.success({ message: "Successfully created: " + firstName + " " + surname, duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERSONNEL));
       console.log(response);
       return response;
@@ -43,9 +43,9 @@ export const getPersonnelList = () => (dispatch) => {
     });
 };
 
-export const getPersonnel = (id) => (dispatch) => {
+export const getPersonnelInfo = (id) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERSONNEL));
-  return axios.get(ENVIRONMENT.apiUrl + API.PERSONS + "/" + id, createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.PERSON + "/" + id, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERSONNEL));
       dispatch(personnelActions.storePersonnel(response.data, id));
@@ -60,7 +60,7 @@ export const addMineManager = (mineId, personnelId, mineName, date) => (dispatch
   dispatch(request(reducerTypes.ADD_MINE_MANAGER));
   return axios.post(ENVIRONMENT.apiUrl + API.MANAGER, { "mine_guid": mineId, "person_guid": personnelId, "effective_date": date }, createRequestHeader())
     .then((response) => {
-      notification.success({ message: "Successfully updated the manager for:" + mineName, duration: 10 });
+      notification.success({ message: "Successfully updated the manager of " + mineName, duration: 10 });
       dispatch(success(reducerTypes.ADD_MINE_MANAGER));
       return response;
     })
