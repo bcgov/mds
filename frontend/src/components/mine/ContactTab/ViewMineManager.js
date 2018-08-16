@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { Button, Col, Row, Card } from 'antd';
 import { getPersonnelInfo } from '@/actionCreators/personnelActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
+import { CreateGuard } from '../../../HOC/CreateGuard';
+import ConditionalButton from '@/components/reusables/ConditionalButton';
+import Loading from '@/components/reusables/Loading';
 
 
 const propTypes = {
@@ -27,27 +30,32 @@ class ViewMineManager extends Component {
   }
 
   render() {
-    return (
-    this.props.personnelIds.map((id) => {
+    if (this.props.personnelIds.length === 1) {
       return (
-        <div key={id}>
-            <Card>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <label>Mine Manager</label>
-                    <div>{this.props.personnel[id].full_name}</div>
-                  </Col>
-                  <Col span={12}>
-                  <label>Effective date</label>
-                    <div>{this.props.personnel[id].effective_date}</div>
-                  </Col>
-                </Row>
-              <Button type="primary" onClick={this.props.handleManagerUpdate}>Update</Button>
-            </Card>
-        </div>
-        );
-      })
-    );
+      this.props.personnelIds.map((id) => {
+        return (
+          <div key={id}>
+              <Card>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <label>Mine Manager</label>
+                      <div>{this.props.personnel[id].full_name}</div>
+                    </Col>
+                    <Col span={12}>
+                      <label>Effective date</label>
+                      <div>{this.props.personnel[id].effective_date}</div>
+                    </Col>
+                  </Row>
+                  <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
+              </Card>
+          </div>
+          );
+        })
+      );
+
+    } else {
+      return <Loading />
+    }
   }
 }
 
