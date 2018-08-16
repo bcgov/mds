@@ -44,10 +44,13 @@ app.get("/env", function(req, res) {
   res.set(commonHeaders);
   res.json({
       backend: 'mds-python-backend',
-      apiUrl: `${process.env.API_URL}`,
-      keycloak_resource: `${process.env.KEYCLOAK_RESOURCE}`,
-      keycloak_clientId: `${process.env.KEYCLOAK_CLIENT_ID}`,
-      keycloak_url: `${process.env.KEYCLOAK_URL}`
+      apiUrl: process.env.API_URL,
+      keycloak_resource: process.env.KEYCLOAK_RESOURCE,
+      keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
+      keycloak_url: process.env.KEYCLOAK_URL,
+      keycloak_role_admin: process.env.KEYCLOAK_ROLE_ADMIN,
+      keycloak_role_create: process.env.KEYCLOAK_ROLE_CREATE,
+      keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW
   });
 });
 

@@ -36,7 +36,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.11",
     "copy-webpack-plugin": "^4.5.1",
-    "cross-env": "^5.1.5",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
     "eslint": "^4.19.1",
@@ -76,9 +76,9 @@
     "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
     "lint": "eslint .",
-    "test": "jest --env=jsdom",
-    "test:watch": "jest --env=jsdom --watch",
-    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit"
+    "test": "jest --env=jsdom -u",
+    "test:watch": "jest --env=jsdom --watch -u",
+    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u"
   },
   "jest": {
     "setupFiles": [

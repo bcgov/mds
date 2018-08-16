@@ -5,7 +5,7 @@ import Keycloak from 'keycloak-js';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { isAuthenticated, getKeycloak } from '@/selectors/authenticationSelectors';
-import { authenticateUser, storeKeycloakData } from '@/actions/authenticationActions';
+import { authenticateUser, storeKeycloakData, storeUserAccessData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/reusables/Loading';
 import { KEYCLOAK } from '@/constants/environment';
 
@@ -17,6 +17,7 @@ export const AuthGuard = (WrappedComponent) => {
         keycloak.loadUserInfo().then((userInfo) => {
           localStorage.setItem('jwt', keycloak.token);
           this.props.authenticateUser(userInfo);
+          this.props.storeUserAccessData(keycloak.realmAccess.roles);
           this.props.storeKeycloakData(keycloak);
         })
       })
@@ -48,6 +49,7 @@ export const AuthGuard = (WrappedComponent) => {
   const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       authenticateUser,
+      storeUserAccessData,
       storeKeycloakData
     }, dispatch);
   };

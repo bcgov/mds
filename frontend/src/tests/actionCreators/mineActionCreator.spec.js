@@ -3,7 +3,7 @@ import axios from 'axios';
 import { createMineRecord, updateMineRecord, getMineRecords, getMineRecord } from '../../actionCreators/mineActionCreator';
 import * as genericActions from '../../actions/genericActions';
 import * as API from '../../constants/API';
-import { ENVIRONMENT } from '../../constants/API'
+import { ENVIRONMENT } from '../../constants/environment'
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, 'request');
