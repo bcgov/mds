@@ -8,8 +8,8 @@ from app.extensions import db
 class MineIdentity(AuditMixin, db.Model):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_detail = db.relationship('MineDetail', backref='mine_identity', lazy=True)
-    mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', lazy=True)
+    mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy=True)
+    mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy=True)
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy=True)
 
     # might have to add UUID(as_uuid=True) if we want to pass as UUID obj and not string
