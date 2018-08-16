@@ -1,1 +1,1 @@
-CREATE DATABASE mds_db_test WITH TEMPLATE mds_db;
+CREATE DATABASE mds_test WITH TEMPLATE mds;
