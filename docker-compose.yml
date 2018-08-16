@@ -11,7 +11,6 @@ services:
       - POSTGRES_DB=mds_db
     volumes:
       - ./migrations/sql/:/docker-entrypoint-initdb.d/
-      - ./python-backend/X__Create_Test_Db.sql:/docker-entrypoint-initdb.d/X__Create_Test_Db.sql
     ports:
       - "5432:5432"
   app:
