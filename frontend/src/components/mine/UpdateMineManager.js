@@ -24,6 +24,10 @@ class UpdateMineManager extends Component {
       this.onClose();
     })
   }
+
+  handleSelect = (input, option) => {
+    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   
   render() {
     return (
@@ -35,11 +39,13 @@ class UpdateMineManager extends Component {
                 <Select
                   showSearch
                   placeholder="Select a person"
-                  onChange={() => this.handleChange()}
+                  optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                {this.props.personnelIds.map((id) => {
-                  <Select.Option key={id} value={id}>{this.props.personnel[id].first_name}</Select.Option>
+                  {this.props.personnelIds.map((id) => {
+                    return (<Select.Option key={id} value={id}>
+                      {this.props.personnel[id].first_name}
+                    </Select.Option>)
                 })}
                 </Select>
               </Form.Item>
@@ -57,19 +63,7 @@ class UpdateMineManager extends Component {
               </Form.Item>
             </Col>
           </Row>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            borderTop: '1px solid #e8e8e8',
-            padding: '10px 16px',
-            textAlign: 'right',
-            left: 0,
-            background: '#fff',
-            borderRadius: '0 0 4px 4px',
-          }}
-        >
+        <div>
           <Button
             style={{
               marginRight: 8,
