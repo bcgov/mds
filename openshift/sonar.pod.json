@@ -96,7 +96,7 @@
                               },
                               {
                                 "name": "DB_NAME_TEST",
-                                "value": "mds_db_test"
+                                "value": "mds_test"
                               }
                         ],
                         "imagePullPolicy": "Always"
