@@ -55,6 +55,6 @@ backEndDeploymentConfigs.items.each {Map object ->
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
-if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=mds-${appLabel}", "--namespace=${namespace}"])){
+if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=mds-${appLabel},sonar", "--namespace=${namespace}"])){
     System.exit(1)
 }
