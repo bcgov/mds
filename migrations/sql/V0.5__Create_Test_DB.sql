@@ -1,0 +1,1 @@
+CREATE DATABASE mds_test WITH TEMPLATE mds;

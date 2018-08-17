@@ -62,7 +62,7 @@
               },
               "requests": {
                 "cpu": "1",
-                "memory": "3Gi"
+                "memory": "4Gi"
               }
             },
             "imagePullPolicy": "Always"

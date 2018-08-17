@@ -15,22 +15,18 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
-        stage('Unit Tests (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Unit Tests ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
         stage('Deploy (DEV)') {
             agent { label 'master' }
-            /*input {
-                message "Should we continue with deployment to DEV?"
-                ok "Yes!"
-            }*/
             steps {
                 echo "Deploy (DEV) ..."
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
+        }
+        stage('Unit Tests and SonarQube Reporting (DEV)') {
+            agent { label 'master' }
+            steps {
+                echo "Running unit tests and reporting them to SonarQube ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
         stage ('ZAP (DEV)'){
@@ -58,16 +54,6 @@ pipeline {
             steps {
                 echo "Functional Test (DEV) ..."
                 //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
-            }
-        }
-        stage('SonarQube (TEST)') {
-            agent { label 'master' }
-            when {
-              environment name: 'CHANGE_TARGET', value: 'master'
-            }
-            steps {
-                echo "Unit Tests ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
         stage('Deploy (PROD)') {

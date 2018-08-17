@@ -242,11 +242,11 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "1.5",
+                    "cpu": "1",
                     "memory": "2.5Gi"
                   },
                   "requests": {
-                    "cpu": "1",
+                    "cpu": "500m",
                     "memory": "2Gi"
                   }
                 },
@@ -297,7 +297,17 @@
                     "name": "FLYWAY_URL",
                     "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
                   }
-                ]
+                ],
+                "resources": {
+                    "limits": {
+                      "cpu": "250m",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "200m",
+                      "memory": "1Gi"
+                    }
+                  }
               }
             ],
             "restartPolicy": "Always",
