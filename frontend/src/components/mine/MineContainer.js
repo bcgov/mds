@@ -45,7 +45,7 @@ class MineContainer extends Component {
         this.props.mineIds.map((id) => {
           return (
             <div key={id}>
-              <MineDashboard mine={this.props.mines[id]} {...this.props} {...this.state}/>
+              <MineDashboard mine={this.props.mines[id]} {...this.props} />
             </div>
           );
         })

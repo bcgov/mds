@@ -4,13 +4,9 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, Form, Button, Col, Row, Select, Input } from 'antd';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { getPersonnelInfo } from '@/actionCreators/personnelActionCreator';
 import UpdateMineManager from './UpdateMineManager';
 import ViewMineManager from './ViewMineManager';
-import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
+
 
 const propTypes = {
   mine: PropTypes.object.isRequired,

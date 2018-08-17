@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import * as reducerTypes from '@/constants/reducerTypes';
 import networkReducer from './networkReducer';
 import mineReducer from '@/reducers/mineReducer';
@@ -13,6 +14,7 @@ const createReducer = (reducer, name) => (state, action) => {
 }
 
 const rootReducer = combineReducers({
+  form: formReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PERSONNEL]: personnelReducer,

@@ -1,27 +1,20 @@
 import axios from 'axios';
 import { notification } from 'antd';
-
 import { request, success, error } from '@/actions/genericActions';
 import * as reducerTypes from '@/constants/reducerTypes';
 import * as personnelActions from '@/actions/personnelActions';
 import * as String from '@/constants/strings';
 import * as API from '@/constants/API';
 import { ENVIRONMENT } from '@/constants/environment'
+import { createRequestHeader } from '@/utils/RequestHeaders';
 
-const createRequestHeader = () => ({
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-  }
-});
 
-export const createPersonnel = (firstName, surname) => (dispatch) => {
+export const createPersonnel = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERSONNEL));
-  return axios.post(ENVIRONMENT.apiUrl + API.PERSON, { "first_name": firstName, "surname": surname }, createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.PERSON, payload, createRequestHeader())
     .then((response) => {
-      notification.success({ message: "Successfully created: " + firstName + " " + surname, duration: 10 });
+      notification.success({ message: "Successfully created: " + payload.first_name + " " + payload.surname, duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERSONNEL));
-      console.log(response);
       return response;
     })
     .catch(() => {
