@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import RenderSearchSelect from '../../reusables/RenderSearchSelect';
+import RenderSelect from '../../reusables/RenderSearchSelect';
 import RenderDate from '../../reusables/RenderDate';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
@@ -28,7 +28,7 @@ const UpdateMineManagerForm = (props) => {
               id="mineManager"
               name="mineManager"
               label='Mine Manager'
-              component={RenderSearchSelect}
+              component={RenderSelect}
               data={props.personnelIds}
               option={props.personnel}
               validate={[required]}
@@ -55,7 +55,7 @@ const UpdateMineManagerForm = (props) => {
 UpdateMineManagerForm.propTypes = propTypes;
 UpdateMineManagerForm.defaultProps = defaultProps;
 
-export default ((reduxForm({
-  form: FORM.UPDATE_MINE_MANAGER
-})(UpdateMineManagerForm)
-));
+export default (reduxForm({
+    form: FORM.UPDATE_MINE_MANAGER
+  })(UpdateMineManagerForm)
+);

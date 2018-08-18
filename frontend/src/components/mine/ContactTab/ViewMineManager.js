@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Col, Row, Card } from 'antd';
+import { Col, Row, Card } from 'antd';
 import { getPersonnelInfo } from '@/actionCreators/personnelActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
-import { CreateGuard } from '../../../HOC/CreateGuard';
 import ConditionalButton from '@/components/reusables/ConditionalButton';
 import Loading from '@/components/reusables/Loading';
 

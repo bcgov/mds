@@ -44,7 +44,7 @@ const AddPersonnelForm = (props) => {
 
 AddPersonnelForm.propTypes = propTypes;
 
-export default ((reduxForm({
+export default (reduxForm({
     form: FORM.ADD_PERSONNEL
   })(AddPersonnelForm)
-));
+);

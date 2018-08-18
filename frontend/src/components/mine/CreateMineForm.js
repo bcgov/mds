@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
-import { USER_ROLES } from '@/constants/environment';
 import { CreateGuard } from '@/HOC/CreateGuard';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as routes from '@/constants/routes';
