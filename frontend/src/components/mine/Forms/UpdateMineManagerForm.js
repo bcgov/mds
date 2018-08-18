@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import RenderSelect from '../../reusables/RenderSearchSelect';
+import RenderSelect from '../../reusables/RenderSelect';
 import RenderDate from '../../reusables/RenderDate';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
