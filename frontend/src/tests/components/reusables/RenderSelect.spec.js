@@ -8,7 +8,7 @@ let props = {};
 
 const setupProps = () => {
   props = {
-    id: 1,
+    id: '1',
     input: '',
     label: '',
     type: '',

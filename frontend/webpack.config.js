@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const merge = require('webpack-merge');
 const path = require('path');
 const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
@@ -49,6 +50,13 @@ const commonConfig = merge([
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
+      // Adding timestamp to builds
+      function() {
+        this.plugin('watch-run', function(watching, callback) {
+            console.log('Begin compile at ' + new Date());
+            callback();
+        })
+      }
     ],
     resolve: {
       alias: PATH_ALIASES,
