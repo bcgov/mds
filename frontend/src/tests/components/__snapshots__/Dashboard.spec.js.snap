@@ -27,6 +27,10 @@ ShallowWrapper {
               "mine_name": "mine1",
               "mine_no": "BLAH9091",
             },
+            Object {
+              "mine_name": "mine3",
+              "mine_no": "BLAH9091",
+            },
           ],
           "mineral_tenure_xref": Array [
             Object {
@@ -40,6 +44,10 @@ ShallowWrapper {
           "mine_detail": Array [
             Object {
               "mine_name": "mine1",
+              "mine_no": "BLAH9091",
+            },
+            Object {
+              "mine_name": "mine2",
               "mine_no": "BLAH9091",
             },
           ],

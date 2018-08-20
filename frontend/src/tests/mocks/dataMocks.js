@@ -16,6 +16,10 @@ export const MINES = {
         {
           mine_name: "mine1",
           mine_no: "BLAH9091"
+        },
+        {
+          mine_name: "mine3",
+          mine_no: "BLAH9091"
         }
       ]
     },
@@ -30,6 +34,10 @@ export const MINES = {
       mine_detail: [
         {
           mine_name: "mine1",
+          mine_no: "BLAH9091"
+        },
+        {
+          mine_name: "mine2",
           mine_no: "BLAH9091"
         }
       ]
