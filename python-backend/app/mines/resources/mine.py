@@ -13,9 +13,12 @@ class Mine(Resource):
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
-        mine = MineIdentity.find_by_mine_no(mine_no)
-        if mine:
-            return mine.json()
+        mine_by_no = MineIdentity.find_by_mine_no(mine_no)
+        if mine_by_no:
+            return mine_by_no.json()
+        mine_by_guid = MineIdentity.find_by_mine_guid(mine_no)
+        if mine_by_guid:
+            return mine_by_guid.json()
         return {'message': 'Mine not found'}, 404
 
     @jwt.requires_roles(["mds-mine-create"])

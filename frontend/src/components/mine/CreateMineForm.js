@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
-import { USER_ROLES } from '@/constants/environment';
 import { CreateGuard } from '@/HOC/CreateGuard';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
 import * as routes from '@/constants/routes';
@@ -55,7 +54,7 @@ export class CreateMineForm extends Component {
         <Card title="Create Mine Form">
           <Form ref={ref => this.createMineForm = ref} onSubmit={this.handleSubmit}>
             <FormItem>
-              <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name"></Input>
+              <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name" />
               <Button type="primary" htmlType="submit">
                 Create Mine
               </Button>

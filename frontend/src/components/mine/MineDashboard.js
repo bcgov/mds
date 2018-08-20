@@ -1,5 +1,5 @@
 /**
- * @class MineDashboard.js is an individual mines dashboard, contains all relevant information/data and passes it down to children.
+ * @class MineDashboard.js is an individual mines dashboard, contains all relevant information/data from the MineConatiner.js and passes it down to children.
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
 import { USER_ROLES } from '@/constants/environment';
 
-import { UpdateMineForm } from './UpdateMineForm';
-import MineSummary from '@/components/mine/MineSummary';
+import { UpdateMineForm } from './SummaryTab/UpdateMineForm';
+import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
-import MineContactInfo from '@/components/mine/MineContactInfo';
+import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
 
 const TabPane = Tabs.TabPane;
 
@@ -22,7 +22,6 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
-  mineId: PropTypes.string.isRequired,
   userRoles: PropTypes.array.isRequired,
 };
 
@@ -30,7 +29,6 @@ const defaultProps = {
   mine: {},
   mines: {},
   mineIds: [],
-  mineId: '',
   userRoles: [],
 };
 

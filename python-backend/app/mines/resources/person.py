@@ -39,7 +39,7 @@ class PersonResource(Resource):
             **dummy_user_kwargs
             )
         person.save()
-        return { 'person_guid': str(person.person_guid), 'first_name': person.first_name, 'surname': person.surname }
+        return person.json()
 
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, person_guid):
@@ -64,7 +64,6 @@ class ManagerResource(Resource):
     parser.add_argument('person_guid', type=str)
     parser.add_argument('mine_guid', type=str)
     parser.add_argument('effective_date', type=lambda x: datetime.strptime(x,'%Y-%m-%d'))
-    parser.add_argument('expiry_date', type=lambda x: datetime.strptime(x,'%Y-%m-%d'))
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mgr_appointment_guid):
@@ -84,8 +83,6 @@ class ManagerResource(Resource):
             return {'error': 'Must specify a mine guid.'}, 400
         if not data['effective_date']:
             return {'error': 'Must specify a effective_date.'}, 400
-        if not data['expiry_date']:
-            return {'error': 'Must specify a expiry_date.'}, 400
         # Validation for mine and person exists
         person_exists = Person.find_by_person_guid(data['person_guid'])
         if not person_exists:
@@ -100,7 +97,6 @@ class ManagerResource(Resource):
             person_guid=data['person_guid'], 
             mine_guid=data['mine_guid'], 
             effective_date=data['effective_date'],
-            expiry_date=data['expiry_date'],
             **dummy_user_kwargs
             )
         manager.save()

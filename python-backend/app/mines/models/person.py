@@ -30,6 +30,7 @@ class Person(AuditMixin, db.Model):
             'person_guid': str(self.person_guid),
             'first_name': str(self.first_name),
             'surname': str(self.surname),
+            'full_name': str(self.first_name) + ' ' + str(self.surname),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
