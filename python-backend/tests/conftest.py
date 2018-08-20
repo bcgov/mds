@@ -114,6 +114,12 @@ def setup_data():
         )
     manager.save()
 
+def clear_data_sqlalchemy():
+    MineDetail.query.delete()
+    MineralTenureXref.query.delete()
+    Person.query.delete()
+    MgrAppointment.query.delete()
+    MineIdentity.query.delete()
 
 def clear_data(session):
     meta = db.metadata
