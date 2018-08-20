@@ -17,7 +17,7 @@ const defaultProps = {
 };
 
 
-class NavBar extends Component {
+export class NavBar extends Component {
   render() {
     const { Header } = Layout;
     return (

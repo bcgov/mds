@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Logout } from '../../../components/authentication/Logout';
+import { Logout } from '@/components/authentication/Logout';
 
 const dispatchProps = {};
 const reducerProps = {}

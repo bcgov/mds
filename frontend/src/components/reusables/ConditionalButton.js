@@ -20,7 +20,7 @@ const defaultProps = {
  type: 'primary'
 };
 
-const ConditionalButton = (props) => {
+export const ConditionalButton = (props) => {
   return (
     <Button 
       type={props.type} 

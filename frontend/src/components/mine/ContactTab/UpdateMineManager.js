@@ -35,12 +35,18 @@ class UpdateMineManager extends Component {
     this.props.getPersonnelList();
   }
   
+  /**
+   * add new personnel (firstName, surname) to db.
+   */
   handlePersonnelSubmit = (values) => {
     this.props.createPersonnel(values).then(() => {
       this.props.getPersonnelList();
     });
   }
   
+  /**
+   * change mine manager on record.
+   */
   handleSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.props.getMineRecord(this.props.mine.guid).then(() => {
