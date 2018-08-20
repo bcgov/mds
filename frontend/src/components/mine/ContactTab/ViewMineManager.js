@@ -25,33 +25,41 @@ const defaultProps = {
 
 class ViewMineManager extends Component {
   componentDidMount() {
-    this.props.getPersonnelInfo(this.props.mine.mgr_appointment[0].person_guid);
+    if (this.props.mine.mgr_appointment[0]) {
+      this.props.getPersonnelInfo(this.props.mine.mgr_appointment[0].person_guid);
+    }
   }
 
   render() {
-    if (this.props.personnelIds.length === 1) {
+    if (this.props.mine.mgr_appointment[0]) {
       return (
       this.props.personnelIds.map((id) => {
         return (
           <div key={id}>
               <Card>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <label>Mine Manager</label>
-                      <div>{this.props.personnel[id].full_name}</div>
-                    </Col>
-                    <Col span={12}>
-                      <label>Effective date</label>
-                      <div>{this.props.personnel[id].effective_date}</div>
-                    </Col>
-                  </Row>
-                  <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <label>Mine Manager</label>
+                    <div>{this.props.personnel[id].full_name}</div>
+                  </Col>
+                  <Col span={12}>
+                    <label>Effective date</label>
+                    <div>{this.props.personnel[id].effective_date}</div>
+                  </Col>
+                </Row>
+                <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
               </Card>
           </div>
           );
         })
       );
-
+    } else if (!this.props.mine.mgr_appointment[0]) {
+        return (
+        <div>
+          <div>The mine does not currently have a mine Manager</div>
+          <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
+        </div>
+      )
     } else {
       return <Loading />
     }
