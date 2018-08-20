@@ -1,27 +1,56 @@
 version: '2'
+
 services:
+####################### Postgres Definition #######################
   postgres:
     restart: always
     build:
-      context: python-backend
-      dockerfile: Dockerfile.database
+      context: migrations
+      dockerfile: Dockerfile.dev
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
       - POSTGRES_DB=mds
-    volumes:
-      - ./migrations/sql/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
-  app:
+    networks:
+      - postgres
+
+####################### Backend Definition #######################
+  backend:
     restart: always
     build:
       context: python-backend
     ports:
       - 5000:5000
-    volumes:
-      - ./python-backend:/app
-    env_file: ./python-backend/.env
     depends_on:
       - postgres
-    entrypoint: ["flask", "run"]
+    # Export environment variables from .env into the container environment
+    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
+    networks:
+      - postgres
+      - backend
+
+####################### Frontend Definition #######################
+  frontend:
+    restart: always
+    build:
+      context: frontend
+    ports:
+      - 3000:3000
+    env_file: ./frontend/.env
+    depends_on:
+      - backend
+    entrypoint: ["npm", "run", "start"]
+    networks:
+      - backend
+      - frontend
+
+####################### Networks Definition #######################
+networks:
+  postgres:
+    driver: "bridge"
+  frontend:
+    driver: "bridge"
+  backend:
+    driver: "bridge"
