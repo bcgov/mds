@@ -30,7 +30,7 @@ class PersonResource(Resource):
             return {'error': 'Must specify a surname.'}, 400
         person_exists=Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
-            return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}
+            return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         person=Person(person_guid=uuid.uuid4(),
@@ -52,7 +52,7 @@ class PersonResource(Resource):
         surname = data['surname'] if data['surname'] else person_exists.surname
         person_name_exists=Person.find_by_name(first_name, surname)
         if person_name_exists:
-            return {'error': 'Person with the name: {} {} already exists'.format(first_name, surname)}
+            return {'error': 'Person with the name: {} {} already exists'.format(first_name, surname)}, 400
         person_exists.first_name=first_name
         person_exists.surname=surname
         person_exists.save()
@@ -86,10 +86,10 @@ class ManagerResource(Resource):
         # Validation for mine and person exists
         person_exists = Person.find_by_person_guid(data['person_guid'])
         if not person_exists:
-            return {'error': 'Person with guid: {}, does not exist.'.format(data['person_guid'])}
+            return {'error': 'Person with guid: {}, does not exist.'.format(data['person_guid'])}, 400
         mine_exists = MineIdentity.find_by_mine_guid(data['mine_guid'])
         if not mine_exists:
-            return {'error': 'Mine with guid: {}, does not exist.'.format(data['mine_guid'])}
+            return {'error': 'Mine with guid: {}, does not exist.'.format(data['mine_guid'])}, 400
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         manager=MgrAppointment(

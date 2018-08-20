@@ -54,7 +54,7 @@ class ViewMineManager extends Component {
         })
       );
     } else if (!this.props.mine.mgr_appointment[0]) {
-        return (
+      return (
         <div>
           <div>The mine does not currently have a mine Manager</div>
           <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
