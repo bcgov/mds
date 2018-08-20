@@ -55,15 +55,24 @@ class UpdateMineManager extends Component {
     })
   }
 
+  // temporary check - in the future this table will be seeded with data
+  renderMineManagerForm() {
+    if (this.props.personnelIds.length === 0) {
+      return (<div>There are no managers to select, create a new record below</div>)
+    } else {
+      return (<UpdateMineManagerForm
+        onSubmit={this.handleSubmit}
+        personnel={this.props.personnel}
+        personnelIds={this.props.personnelIds}
+      />)
+    }
+  }
+
   render() {
     return (
       <div>
         <Card>
-          <UpdateMineManagerForm 
-            onSubmit={this.handleSubmit} 
-            personnel={this.props.personnel}
-            personnelIds={this.props.personnelIds}
-          />
+          {this.renderMineManagerForm()}
           <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
           <Button 
             type="primary" 
