@@ -1,0 +1,6 @@
+FROM postgres:9.6
+
+# Copy only migration scripts for creation
+COPY ./sql/V*.sql /docker-entrypoint-initdb.d/
+
+VOLUME ["/var/lib/postgresql/data"]
