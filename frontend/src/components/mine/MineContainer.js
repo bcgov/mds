@@ -25,13 +25,8 @@ const defaultProps = {
   mineIds: [],
 };
 
-class MineContainer extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      mineId: ''
-    }
-  }
+export class MineContainer extends Component {
+  state = { mineId: ''}
 
   componentDidMount() {
     const { id } = this.props.match.params;

@@ -23,7 +23,7 @@ const defaultProps = {
   personnelIds: []
 };
 
-class ViewMineManager extends Component {
+export class ViewMineManager extends Component {
   componentDidMount() {
     if (this.props.mine.mgr_appointment[0]) {
       this.props.getPersonnelInfo(this.props.mine.mgr_appointment[0].person_guid);

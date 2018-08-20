@@ -30,7 +30,7 @@ const defaultProps = {
   personnelIds: []
 };
 
-class UpdateMineManager extends Component {
+export class UpdateMineManager extends Component {
   componentDidMount() {
     this.props.getPersonnelList();
   }

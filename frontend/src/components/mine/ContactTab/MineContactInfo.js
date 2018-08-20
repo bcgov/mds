@@ -18,7 +18,7 @@ const defaultProps = {
 };
 
 
-class MineContactInfo extends Component {
+export class MineContactInfo extends Component {
   state = {
     updateManager: false,
   }

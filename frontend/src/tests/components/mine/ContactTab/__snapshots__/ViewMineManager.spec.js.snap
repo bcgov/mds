@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewMineManager renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ViewMineManager
+    getPersonnelInfo={[MockFunction]}
+    handleManagerUpdate={[MockFunction]}
+    mine={
+      Object {
+        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mgr_appointment": Array [],
+        "mine_detail": Array [
+          Object {
+            "mine_name": "mine1",
+            "mine_no": "BLAH9091",
+          },
+          Object {
+            "mine_name": "mine3",
+            "mine_no": "BLAH9091",
+          },
+        ],
+        "mineral_tenure_xref": Array [
+          Object {
+            "tenure_number_id": "1234567",
+          },
+        ],
+      }
+    }
+    personnel={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "full_name": "mock name",
+          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "full_name": "mock Two",
+          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+        },
+      }
+    }
+    personnelIds={
+      Array [
+        "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "18145c75-49ad-0101-85f3-a43e45ae989a",
+      ]
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div>
+          The mine does not currently have a mine Manager
+        </div>,
+        <Connect(CreateGuard)
+          handleAction={[MockFunction]}
+          string="Update"
+          type="primary"
+        />,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "The mine does not currently have a mine Manager",
+        },
+        "ref": null,
+        "rendered": "The mine does not currently have a mine Manager",
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "handleAction": [MockFunction],
+          "string": "Update",
+          "type": "primary",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div>
+            The mine does not currently have a mine Manager
+          </div>,
+          <Connect(CreateGuard)
+            handleAction={[MockFunction]}
+            string="Update"
+            type="primary"
+          />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "The mine does not currently have a mine Manager",
+          },
+          "ref": null,
+          "rendered": "The mine does not currently have a mine Manager",
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "handleAction": [MockFunction],
+            "string": "Update",
+            "type": "primary",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

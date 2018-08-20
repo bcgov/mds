@@ -10,7 +10,7 @@ ShallowWrapper {
         "18145c75-49ad-0101-85f3-a43e45ae989a",
       ]
     }
-    id={1}
+    id="1"
     input=""
     label=""
     meta={
@@ -49,7 +49,7 @@ ShallowWrapper {
       "children": <Select
         choiceTransitionName="zoom"
         filterOption={[Function]}
-        id={1}
+        id="1"
         optionFilterProp="children"
         placeholder="Select a person"
         prefixCls="ant-select"
@@ -94,7 +94,7 @@ ShallowWrapper {
         ],
         "choiceTransitionName": "zoom",
         "filterOption": [Function],
-        "id": 1,
+        "id": "1",
         "optionFilterProp": "children",
         "placeholder": "Select a person",
         "prefixCls": "ant-select",
@@ -141,7 +141,7 @@ ShallowWrapper {
         "children": <Select
           choiceTransitionName="zoom"
           filterOption={[Function]}
-          id={1}
+          id="1"
           optionFilterProp="children"
           placeholder="Select a person"
           prefixCls="ant-select"
@@ -186,7 +186,7 @@ ShallowWrapper {
           ],
           "choiceTransitionName": "zoom",
           "filterOption": [Function],
-          "id": 1,
+          "id": "1",
           "optionFilterProp": "children",
           "placeholder": "Select a person",
           "prefixCls": "ant-select",
