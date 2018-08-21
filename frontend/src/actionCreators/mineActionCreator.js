@@ -23,11 +23,11 @@ export const createMineRecord = (mineName) => (dispatch) => {
   });
 };
 
-export const updateMineRecord = (id, tenureNumber) => (dispatch) => {
+export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , {"tenure_number_id": tenureNumber}, createRequestHeader())
   .then((response) => {
-    notification.success({ message: "Successfully updated: " + id, duration: 10 });
+    notification.success({ message: "Successfully updated: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
     return response;
   })
