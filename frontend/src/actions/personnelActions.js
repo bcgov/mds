@@ -14,7 +14,7 @@ export const storePersonnelList = (payload) => {
   }
 }
 
-export const storePersonnel= (payload, id) => {
+export const storePersonnel = (payload, id) => {
   return {
     type: ActionTypes.STORE_PERSONNEL,
     payload,
