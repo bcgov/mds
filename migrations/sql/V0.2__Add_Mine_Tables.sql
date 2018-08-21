@@ -13,7 +13,7 @@ CREATE TABLE mine_detail (
   mine_name character varying(60) NOT NULL,
 
   effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date     NULL DEFAULT '9999-12-31',
+  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,

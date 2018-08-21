@@ -141,7 +141,7 @@
           },
           "requests": {
             "cpu": "1",
-            "memory": "1Gi"
+            "memory": "4Gi"
           }
         },
         "nodeSelector": null

@@ -9,12 +9,17 @@
     "axios-mock-adapter": "^1.15.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "jest-localstorage-mock": "^2.2.0",
+    "keycloak-js": "^4.2.1",
     "less-loader": "^4.1.0",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.0",
+    "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.2.0"
@@ -34,7 +39,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.11",
     "copy-webpack-plugin": "^4.5.1",
-    "cross-env": "^5.1.5",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
     "eslint": "^4.19.1",
@@ -64,25 +69,41 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^22.4.3",
     "jest-junit": "^3.7.0",
+    "jest-sonar-reporter": "^2.0.0",
     "puppeteer": "^1.4.0"
   },
   "scripts": {
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --env development",
     "build": "webpack --env production",
+    "build-serve": "npm run build && npm run start",
     "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
     "lint": "eslint .",
-    "test": "jest --env=jsdom",
-    "test:watch": "jest --env=jsdom --watch",
-    "test:coverage": "jest --env=jsdom --coverage --testResultsProcessor=jest-junit"
+    "test": "jest --env=jsdom -u",
+    "test:watch": "jest --env=jsdom --watch -u",
+    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u"
   },
   "jest": {
     "setupFiles": [
-      "./src/setupTests.js"
+      "./src/setupTests.js",
+      "jest-localstorage-mock"
     ],
     "collectCoverageFrom": [
-      "**/src/**/*.js"
-    ]
+      "**/src/**/*.js",
+      "!src/index.js",
+      "!src/App.js",
+      "!src/fetchEnv.js",
+      "!src/registerServiceWorker.js"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js"
+    }
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "tests-report.xml"
   },
   "jest-junit": {
     "output": "./coverage/tests-report.xml"

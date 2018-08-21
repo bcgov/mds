@@ -8,6 +8,6 @@
 
     `newman run <collection_name>.json`
     
-- To run with all collections, you can use: 
+- To run all collections, use: 
 
     `newman run *.json`

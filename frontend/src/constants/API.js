@@ -1,3 +1,6 @@
-export const BASE_URL = process.env.API_URL
-export const MINE = '/mine'
-export const MINE_LIST = '/mines'
+//Network URL's
+export const MINE = '/mine';
+export const MINE_LIST = '/mines';
+export const PERSON = '/person';
+export const PERSONS  = '/persons';
+export const MANAGER = '/manager';

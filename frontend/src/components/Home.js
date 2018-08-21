@@ -1,54 +1,28 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Button, Card, Col, Row } from 'antd';
+/**
+ * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state. 
+ * Home is wrapped in AuthGuard which checks keycloak authorization.
+ */
 
-import { createMineRecord } from '@/actionCreators/mineActionCreator';
-import * as router from '@/constants/routes';
+import React, { Component } from 'react';
+import { Layout } from 'antd';
+
+import DashboardRoutes from '@/routes/DashboardRoutes';
+import { AuthGuard } from '../HOC/AuthGuard';
+import NavBar from './navigation/NavBar';
+
 
 export class Home extends Component {
-
-  handleButtonClick() {
-    this.props.createMineRecord();
-  }
-
   render() {
+    const { Content } = Layout;
     return (
-      <div>
-        <Card title="Home">
-        <Row type="flex">
-        <Col span={12}>
-        <Link to={router.CREATE_MINE_RECORD}>
-          <Button
-            type="primary"
-            size="large"
-          >
-            Create A Mine
-          </Button>
-        </Link>
-        </Col>
-        <Col span={12}>
-        <Link to={router.MINE_DASHBOARD}>
-          <Button
-            type="primary"
-            size="large"
-          >
-            View Mines
-          </Button>
-        </Link>
-        </Col>
-        </Row>
-        </Card>
-      </div>
+      <Layout>
+        <NavBar />
+        <Content>
+          <DashboardRoutes />
+        </Content>
+      </Layout>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    createMineRecord
-  }, dispatch);
-}
-
-export default connect(null, mapDispatchToProps)(Home);
+export default AuthGuard(Home);

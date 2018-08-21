@@ -40,12 +40,6 @@
       "displayName": "Node Environment",
       "description": "Environment for running node",
       "value": "DEV"
-    },
-    {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
-      "value": "http://localhost:3000"
     }
   ],
   "objects": [
@@ -154,13 +148,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "name": "rhscl-nodejs-8-rhel7:8.1-22"
-            },
-            "env": [
-              {
-                "name": "API_URL",
-                "value": "${API_URL}"
-              }
-            ]
+            }
           }
         },
         "output": {
@@ -171,11 +159,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
-            "memory": "8Gi"
+            "cpu": "1",
+            "memory": "6Gi"
           },
           "requests": {
-            "cpu": "1",
+            "cpu": "500m",
             "memory": "4Gi"
           }
         },
@@ -237,11 +225,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
+            "cpu": "1",
             "memory": "8Gi"
           },
           "requests": {
-            "cpu": "1",
+            "cpu": "750m",
             "memory": "4Gi"
           }
         },

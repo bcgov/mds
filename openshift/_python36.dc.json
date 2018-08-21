@@ -35,6 +35,16 @@
       "required": true
     },
     {
+      "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+      "displayName": "Keycloak config URL",
+      "required": true
+    },
+    {
+      "name": "JWT_OIDC_AUDIENCE",
+      "displayName": "Keycloak clientId",
+      "required": true
+    },
+    {
       "name": "HOST",
       "required": false
     }
@@ -208,16 +218,36 @@
                         "key": "database-name"
                       }
                     }
+                  },
+                  {
+                    "name": "FLASK_RUN_PORT",
+                    "value": "5000"
+                  },
+                  {
+                    "name": "FLASK_RUN_HOST",
+                    "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+                    "value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
+                  },
+                  {
+                    "name": "JWT_OIDC_AUDIENCE",
+                    "value": "${JWT_OIDC_AUDIENCE}"
+                  },
+                  {
+                    "name": "JWT_OIDC_ALGORITHMS",
+                    "value": "RS256"
                   }
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "250m",
-                    "memory": "768Mi"
+                    "cpu": "1",
+                    "memory": "2.5Gi"
                   },
                   "requests": {
-                    "cpu": "200m",
-                    "memory": "512Mi"
+                    "cpu": "500m",
+                    "memory": "2Gi"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -267,7 +297,17 @@
                     "name": "FLYWAY_URL",
                     "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
                   }
-                ]
+                ],
+                "resources": {
+                    "limits": {
+                      "cpu": "250m",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "200m",
+                      "memory": "1Gi"
+                    }
+                  }
               }
             ],
             "restartPolicy": "Always",

@@ -1,57 +1,59 @@
-import os
+import sys
 
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from flask_restplus import Api
 from .mines.resources.mine import Mine, MineList
+from .mines.resources.person import ManagerResource, PersonResource, PersonList
+from .config import Config
 
-DB_HOST = os.environ['DB_HOST']
-DB_USER = os.environ['DB_USER']
-DB_PASS = os.environ['DB_PASS']
-DB_PORT = os.environ['DB_PORT']
-DB_NAME = os.environ['DB_NAME']
-DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
+from .extensions import db, jwt
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        # a default secret that should be overridden by instance config
-        SECRET_KEY='dev',
-        # store the database in the instance folder
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
+    app = Flask(__name__)
+    api = Api(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_object(Config)
     else:
         # load the test config if passed in
-        app.config.update(test_config)
+        app.config.from_object(test_config)
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    register_extensions(app)
+    register_routes(app, api)
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    return app
 
-    # register the database commands
-    from .db import db
+
+def register_extensions(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
     db.init_app(app)
 
-    api = Api(app)
-    cors = CORS(app)
+    app.config['JWT_ROLE_CALLBACK'] = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
+    jwt.init_app(app)
 
+    CORS(app)
+
+    return None
+
+
+def register_routes(app, api):
+    # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
-    api.add_resource(Mine, '/mine/<string:mine_no>')
+    # Set Routes for each resource
+    api.add_resource(Mine, '/mine', '/mine/<string:mine_no>')
     api.add_resource(MineList, '/mines')
-    return app
+    api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
+    api.add_resource(PersonList, '/persons')
+    api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+
+    # Default error handler to propogate lower level errors up to the API level
+    @api.errorhandler
+    def default_error_handler(error):
+        _, value, traceback = sys.exc_info()
+        raise value(None).with_traceback(traceback)

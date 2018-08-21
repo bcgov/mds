@@ -1,6 +1,11 @@
 import * as actionTypes from '@/constants/actionTypes';
 import { MINES } from '@/constants/reducerTypes';
 
+/**
+ * @file mineReducer.js
+ * all data associated with new mine/existing mine records is handled witnin this reducer.
+ */
+
 const initialState = {
   mines: {},
   mineIds: [],
@@ -17,18 +22,15 @@ const createItemIdsArray = (array, idField) => {
   return array.map(item => item[idField]);
 };
 
-const mineReducer = (state=initialState, action) => {
+const mineReducer = (state = initialState, action) => {
     switch (action.type) {
-      case actionTypes.ADD_MINE_RECORD:
-        //TODO: implement behaviour for adding individual mines
-        return state;
-      case actionTypes.STORE_MINE_RECORDS:
+      case actionTypes.STORE_MINE_LIST:
         return {
           ...state,
           mines: createItemMap(action.payload.mines, 'guid'),
           mineIds: createItemIdsArray(action.payload.mines, 'guid'),
         }
-      case actionTypes.STORE_MINE_RECORD:
+      case actionTypes.STORE_MINE:
         return {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
@@ -39,10 +41,6 @@ const mineReducer = (state=initialState, action) => {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
           mineIds: createItemIdsArray([action.payload], 'guid'),
-        }
-      case actionTypes.REFRESH:
-        return {
-          ...state,
         }
       default:
         return state;
