@@ -21,7 +21,7 @@ export const AuthGuard = (WrappedComponent) => {
    *
    */
     class AuthGuard extends Component {
-      async keycloakInit () {
+      async keycloakInit() {
         // Initialize client
         const keycloak = Keycloak(KEYCLOAK);
         await keycloak.init();

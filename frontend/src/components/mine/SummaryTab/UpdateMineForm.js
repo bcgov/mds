@@ -5,12 +5,12 @@ import { Card, Form, Input, Button, notification } from 'antd';
 const FormItem = Form.Item;
 
 const propTypes = {
-  mineId: PropTypes.string.isRequired,
+  mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  // mineId: '',
+  mine: {},
 };
 
 export class UpdateMineForm extends Component {
