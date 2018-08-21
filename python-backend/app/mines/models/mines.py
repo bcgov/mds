@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import UUID as uuid_python
 
 from sqlalchemy.dialects.postgresql import UUID
 from .mixins import AuditMixin
@@ -30,8 +31,9 @@ class MineIdentity(AuditMixin, db.Model):
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
+            valid_uuid = uuid_python(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).first()
-        except:
+        except ValueError:
             return None
 
     @classmethod

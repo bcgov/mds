@@ -1,4 +1,6 @@
 from datetime import datetime
+import uuid
+
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity
 from ..models.person import Person, MgrAppointment
@@ -33,6 +35,7 @@ class PersonResource(Resource):
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         person=Person(
+            person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
             **dummy_user_kwargs
@@ -92,6 +95,7 @@ class ManagerResource(Resource):
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         manager=MgrAppointment(
+            mgr_appointment_guid=uuid.uuid4(),
             person_guid=data['person_guid'], 
             mine_guid=data['mine_guid'], 
             effective_date=data['effective_date'],

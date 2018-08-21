@@ -1,3 +1,5 @@
+import uuid
+
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..utils.random import generate_mine_no
@@ -11,12 +13,9 @@ class Mine(Resource):
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
-        mine_by_no = MineIdentity.find_by_mine_no(mine_no)
-        if mine_by_no:
-            return mine_by_no.json()
-        mine_by_guid = MineIdentity.find_by_mine_guid(mine_no)
-        if mine_by_guid:
-            return mine_by_guid.json()
+        mine = MineIdentity.find_by_mine_no(mine_no) or MineIdentity.find_by_mine_guid(mine_no)
+        if mine:
+            return mine.json()
         return {'message': 'Mine not found'}, 404
 
     @jwt.requires_roles(["mds-mine-create"])
@@ -32,7 +31,7 @@ class Mine(Resource):
         # Dummy User for now
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
-        mine_identity= MineIdentity(**dummy_user_kwargs)
+        mine_identity= MineIdentity(mine_guid=uuid.uuid4(), **dummy_user_kwargs)
         mine_identity.save()
         mine_detail = MineDetail(mine_guid=mine_identity.mine_guid, mine_no=generate_mine_no(), mine_name=data['name'], **dummy_user_kwargs)
         mine_detail.save()
@@ -43,7 +42,7 @@ class Mine(Resource):
         data = Mine.parser.parse_args()
         if not data['tenure_number_id']:
             return {'error': 'Must specify tenure_id.'}, 400
-        mine = MineIdentity.find_by_mine_no(mine_no)
+        mine = MineIdentity.find_by_mine_no(mine_no) or MineIdentity.find_by_mine_guid(mine_no)
         if not mine:
             return {'message': 'Mine not found'}, 404
         tenure = data['tenure_number_id']

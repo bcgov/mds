@@ -10,10 +10,17 @@ def test_get_mine_not_found(test_client, auth_headers):
     assert get_resp.status_code == 404
 
 
-def test_get_mine_success(test_client, auth_headers):
+def test_get_mine_by_mine_no(test_client, auth_headers):
     get_resp = test_client.get('/mine/' +  TEST_MINE_NO, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_data['mine_detail'][0]['mine_no'] == TEST_MINE_NO
+    assert get_resp.status_code == 200
+
+
+def test_get_mine_by_mine_guid(test_client, auth_headers):
+    get_resp = test_client.get('/mine/' +  TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+    assert get_data['guid'] == TEST_MINE_GUID
     assert get_resp.status_code == 200
 
 
@@ -91,9 +98,17 @@ def test_put_mine_tenure_already_exists(test_client, auth_headers):
     assert put_resp.status_code == 400
 
 
-def test_put_mine_tenure_success(test_client, auth_headers):
+def test_put_mine_tenure_by_mine_no(test_client, auth_headers):
     test_tenure_data = {'tenure_number_id': '1234567'}
     put_resp = test_client.put('/mine/' +  TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert test_tenure_data in put_data['mineral_tenure_xref']
+    assert put_resp.status_code == 200
+
+
+def test_put_mine_tenure_guid(test_client, auth_headers):
+    test_tenure_data = {'tenure_number_id': '1234599'}
+    put_resp = test_client.put('/mine/' +  TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert test_tenure_data in put_data['mineral_tenure_xref']
     assert put_resp.status_code == 200
