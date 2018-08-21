@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineHeader renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MineHeader
+    mine={
+      Object {
+        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mgr_appointment": Array [],
+        "mine_detail": Array [
+          Object {
+            "mine_name": "mine1",
+            "mine_no": "BLAH9091",
+          },
+          Object {
+            "mine_name": "mine3",
+            "mine_no": "BLAH9091",
+          },
+        ],
+        "mineral_tenure_xref": Array [
+          Object {
+            "tenure_number_id": "1234567",
+          },
+        ],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <img
+          className="mine__dashboard__header__img"
+          src={
+            Object {
+              "process": [Function],
+            }
+          }
+        />,
+        <h1>
+          mine1
+           - Major Mine
+        </h1>,
+        <h2>
+          Mine #: 
+          BLAH9091
+           
+        </h2>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "mine__dashboard__header__img",
+          "src": Object {
+            "process": [Function],
+          },
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "img",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            "mine1",
+            " - Major Mine",
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          "mine1",
+          " - Major Mine",
+        ],
+        "type": "h1",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            "Mine #: ",
+            "BLAH9091",
+            " ",
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          "Mine #: ",
+          "BLAH9091",
+          " ",
+        ],
+        "type": "h2",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <img
+            className="mine__dashboard__header__img"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />,
+          <h1>
+            mine1
+             - Major Mine
+          </h1>,
+          <h2>
+            Mine #: 
+            BLAH9091
+             
+          </h2>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "mine__dashboard__header__img",
+            "src": Object {
+              "process": [Function],
+            },
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "img",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              "mine1",
+              " - Major Mine",
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            "mine1",
+            " - Major Mine",
+          ],
+          "type": "h1",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              "Mine #: ",
+              "BLAH9091",
+              " ",
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            "Mine #: ",
+            "BLAH9091",
+            " ",
+          ],
+          "type": "h2",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { UpdateMineForm } from '@/components/mine/SummaryTab/UpdateMineForm';
+import * as MOCK from '../../../mocks/dataMocks';
 
 const props = {}
 const dispatchProps = {}
@@ -9,7 +10,7 @@ const setupDispatchprops = () => {
   dispatchProps.updateMineRecord = jest.fn();
 }
 const setupProps = () => {
-  props.mineId = 'Blah123';
+  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 };
 
 beforeEach(() => {
