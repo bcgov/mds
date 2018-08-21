@@ -24,8 +24,6 @@ const createItemIdsArray = (array, idField) => {
 
 const personnelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_PERSONNEL:
-      return state;
     case actionTypes.STORE_PERSONNEL_LIST:
       return {
         ...state,
