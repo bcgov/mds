@@ -1,5 +1,5 @@
 import mineReducer from "../../reducers/mineReducer";
-import {updateMine, storeMine, storeMines} from "../../actions/mineActions";
+import {updateMine, storeMine, storeMineList} from "../../actions/mineActions";
 
 describe('mineReducer', () => {
 
@@ -17,7 +17,7 @@ describe('mineReducer', () => {
       mines: {"test123": {"guid": "test123"}, "test456": {"guid": "test456"}},
       mineIds: ["test123", "test456"],
     };
-    const result = mineReducer(undefined, storeMines({"mines": [{"guid": "test123"}, {"guid": "test456"}]}));
+    const result = mineReducer(undefined, storeMineList({"mines": [{"guid": "test123"}, {"guid": "test456"}]}));
     expect(result).toEqual(expectedValue);
   });
 
