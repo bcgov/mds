@@ -1,2 +1,5 @@
+// Redux Forms
 export const UPDATE_MINE_MANAGER = 'UPDATE_MINE_MANAGER';
 export const ADD_PERSONNEL = 'ADD_PERSONNEL';
+export const ADD_TENURE_NUMBER = 'ADD_TENURE_NUMBER';
+export const ADD_MINE_RECORD = 'ADD_MINE_RECORD';

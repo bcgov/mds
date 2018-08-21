@@ -7,9 +7,8 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
-import { USER_ROLES } from '@/constants/environment';
 
-import { UpdateMineForm } from './SummaryTab/UpdateMineForm';
+import UpdateMine from './SummaryTab/UpdateMine';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
@@ -33,13 +32,6 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
-
-  renderUpdateMineForm() {
-    if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
-      return(<UpdateMineForm {...this.props} />);
-    }
-  }
-
   render() {
       return (
         <div>
@@ -47,7 +39,7 @@ export class MineDashboard extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab="Summary" key="1">
               <MineSummary mine={this.props.mine} />
-              {this.renderUpdateMineForm()}
+              <UpdateMine {...this.props} />
             </TabPane>
             <TabPane tab="Contact Information" key="2">
               <MineContactInfo mine={this.props.mine}/>

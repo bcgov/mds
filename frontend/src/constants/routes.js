@@ -1,8 +1,8 @@
+// internal URL's
 import Home from '@/components/Home';
 import Dashboard from '@/components/Dashboard';
 import MineContainer from '@/components/mine/MineContainer';
-import CreateMineForm from '@/components/mine/CreateMineForm';
-// import MineSummary from '@/components/mine/MineSummary';
+import CreateMine from '@/components/mine/CreateMine';
 
 export const DASHBOARD = {
     route: '/',
@@ -22,5 +22,5 @@ export const MINE_SUMMARY = {
 
 export const CREATE_MINE_RECORD = {
   route: '/dashboard/create-mine',
-  component: CreateMineForm,
+  component: CreateMine,
 };

@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CreateMine } from '@/components/mine/CreateMine';
+import { AddTenureNumberForm } from '@/components/mine/Forms/AddTenureNumberForm';
 
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.createMineRecord = jest.fn();
+  dispatchProps.handleSubmit = jest.fn();
 };
 
 beforeEach(() => {
   setupDispatchProps();
 });
 
-describe( 'CreateMine', () => {
+describe('AddPersonnelFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<CreateMine{...dispatchProps} />);
+    const component = shallow(<AddTenureNumberForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -8,9 +8,8 @@ import PropTypes from 'prop-types';
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
 import { CreateGuard } from '@/HOC/CreateGuard';
 import { createMineRecord } from '@/actionCreators/mineActionCreator';
+import AddMineRecordForm from './Forms/AddMineRecordForm';
 import * as routes from '@/constants/routes';
-
-const FormItem = Form.Item;
 
 const propTypes = {
   createMineRecord: PropTypes.func.isRequired,
@@ -22,7 +21,7 @@ const defaultProps = {
   userRoles: [],
 };
 
-export class CreateMineForm extends Component {
+export class CreateMine extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,18 +29,10 @@ export class CreateMineForm extends Component {
     };
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const mineName = this.mineName.input.value;
-    if (!mineName) {
-      notification.error({message: "Must specify a mine name.", duration: 10});
-    } else if (mineName.length > 60) {
-      notification.error({message: "Specified name cannot exceed 60 characters.", duration: 10});
-    } else {
-      this.props.createMineRecord(mineName).then(() => {
-        this.setState({redirectTo: routes.MINE_DASHBOARD.route})
-      })
-    }
+  handleSubmit = (value) => {
+    this.props.createMineRecord(value.mineName).then(() => {
+      this.setState({redirectTo: routes.MINE_DASHBOARD.route})
+    })
   }
 
   render() {
@@ -52,24 +43,15 @@ export class CreateMineForm extends Component {
       <div>
         <h1>Create A Mine Record</h1>
         <Card title="Create Mine Form">
-          <Form ref={ref => this.createMineForm = ref} onSubmit={this.handleSubmit}>
-            <FormItem>
-              <Input type="text" ref={ref => this.mineName = ref} placeholder="Mine Name" />
-              <Button type="primary" htmlType="submit">
-                Create Mine
-              </Button>
-            </FormItem>
-          </Form>
+          <AddMineRecordForm onSubmit={this.handleSubmit} />
         </Card>
       </div>
     );
   }
 }
 
-CreateMineForm.propTypes = propTypes;
-CreateMineForm.defaultProps = defaultProps;
-
-const WrappedCreateMineForm = Form.create()(CreateMineForm);
+CreateMine.propTypes = propTypes;
+CreateMine.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
@@ -83,4 +65,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateGuard(WrappedCreateMineForm));
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGuard(CreateMine));
