@@ -6,14 +6,14 @@ import mineReducer from '@/reducers/mineReducer';
 import personnelReducer from '@/reducers/personnelReducer';
 import authenticationReducer from '@/reducers/authenticationReducer';
 
-const createReducer = (reducer, name) => (state, action) => {
+export const createReducer = (reducer, name) => (state, action) => {
   if (name !== action.name && state !== undefined) {
     return state;
   }
   return reducer(state, action);
 }
 
-const rootReducer = combineReducers({
+export const reducerObject = {
   form: formReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
@@ -26,6 +26,6 @@ const rootReducer = combineReducers({
   [reducerTypes.GET_MINE_RECORD]: createReducer(networkReducer, reducerTypes.GET_MINE_RECORD),
   [reducerTypes.UPDATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.UPDATE_MINE_RECORD),
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
-});
+};
 
-export default rootReducer;
+export const rootReducer = combineReducers(reducerObject);
