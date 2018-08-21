@@ -1,3 +1,10 @@
+export const createMockHeader = () => ({
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Authorization': 'mockToken'
+  }
+});
+
 export const MINES = {
   mineIds: [
     "18133c75-49ad-4101-85f3-a43e35ae989a",

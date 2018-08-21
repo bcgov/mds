@@ -17,7 +17,7 @@ import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  getMineRecord: PropTypes.func,
+  getMineRecordById: PropTypes.func,
   updateMineRecord: PropTypes.func,
   mine: PropTypes.object.isRequired,
   mines: PropTypes.object,

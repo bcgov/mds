@@ -7,7 +7,7 @@ const dispatchProps = {};
 const reducerProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getPersonnelInfo = jest.fn();
+  dispatchProps.getPersonnelById = jest.fn();
 };
 
 const setupReducerProps = () => {

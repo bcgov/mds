@@ -27,13 +27,13 @@ const mineReducer = (state=initialState, action) => {
       case actionTypes.ADD_MINE_RECORD:
         //TODO: implement behaviour for adding individual mines
         return state;
-      case actionTypes.STORE_MINE_RECORDS:
+      case actionTypes.STORE_MINE_LIST:
         return {
           ...state,
           mines: createItemMap(action.payload.mines, 'guid'),
           mineIds: createItemIdsArray(action.payload.mines, 'guid'),
         }
-      case actionTypes.STORE_MINE_RECORD:
+      case actionTypes.STORE_MINE:
         return {
           ...state,
           mines: createItemMap([action.payload], 'guid'),

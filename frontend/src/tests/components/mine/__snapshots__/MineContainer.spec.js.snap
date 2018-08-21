@@ -4,7 +4,7 @@ exports[`MineContainer renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineContainer
-    getMineRecord={
+    getMineRecordById={
       [MockFunction] {
         "calls": Array [
           Array [
@@ -109,7 +109,7 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <Connect(MineDashboard)
-        getMineRecord={
+        getMineRecordById={
           [MockFunction] {
             "calls": Array [
               Array [
@@ -208,7 +208,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "getMineRecord": [MockFunction] {
+        "getMineRecordById": [MockFunction] {
           "calls": Array [
             Array [
               1,
@@ -303,7 +303,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Connect(MineDashboard)
-          getMineRecord={
+          getMineRecordById={
             [MockFunction] {
               "calls": Array [
                 Array [
@@ -402,7 +402,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "getMineRecord": [MockFunction] {
+          "getMineRecordById": [MockFunction] {
             "calls": Array [
               Array [
                 1,
@@ -496,7 +496,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Connect(MineDashboard)
-          getMineRecord={
+          getMineRecordById={
             [MockFunction] {
               "calls": Array [
                 Array [
@@ -595,7 +595,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "getMineRecord": [MockFunction] {
+          "getMineRecordById": [MockFunction] {
             "calls": Array [
               Array [
                 1,

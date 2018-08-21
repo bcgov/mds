@@ -36,7 +36,7 @@ export const getPersonnelList = () => (dispatch) => {
     });
 };
 
-export const getPersonnelInfo = (id) => (dispatch) => {
+export const getPersonnelById = (id) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERSONNEL));
   return axios.get(ENVIRONMENT.apiUrl + API.PERSON + "/" + id, createRequestHeader())
     .then((response) => {

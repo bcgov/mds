@@ -10,7 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.getPersonnelList = jest.fn();
   dispatchProps.createPersonnel = jest.fn();
   dispatchProps.addMineManager = jest.fn();
-  dispatchProps.getMineRecord = jest.fn();
+  dispatchProps.getMineRecordById = jest.fn();
   dispatchProps.handleManagerUpdate = jest.fn();
 };
 

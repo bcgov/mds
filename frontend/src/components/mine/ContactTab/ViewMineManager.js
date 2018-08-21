@@ -3,14 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Col, Row, Card } from 'antd';
-import { getPersonnelInfo } from '@/actionCreators/personnelActionCreator';
+import { getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
 import ConditionalButton from '@/components/reusables/ConditionalButton';
 import Loading from '@/components/reusables/Loading';
 
 
 const propTypes = {
-  getPersonnelInfo: PropTypes.func.isRequired,
+  getPersonnelById: PropTypes.func.isRequired,
   handleManagerUpdate: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
   personnel: PropTypes.object.isRequired,
@@ -26,7 +26,7 @@ const defaultProps = {
 export class ViewMineManager extends Component {
   componentDidMount() {
     if (this.props.mine.mgr_appointment[0]) {
-      this.props.getPersonnelInfo(this.props.mine.mgr_appointment[0].person_guid);
+      this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
     }
   }
 
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getPersonnelInfo
+    getPersonnelById
   }, dispatch);
 }
 

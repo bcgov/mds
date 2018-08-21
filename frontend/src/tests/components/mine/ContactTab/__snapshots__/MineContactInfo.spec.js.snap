@@ -4,7 +4,7 @@ exports[`MineContactInfo renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineContactInfo
-    getPersonnelInfo={[MockFunction]}
+    getPersonnelById={[MockFunction]}
     mine={
       Object {
         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",

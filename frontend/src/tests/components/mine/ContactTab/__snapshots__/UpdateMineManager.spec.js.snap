@@ -6,7 +6,7 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <UpdateMineManager
     addMineManager={[MockFunction]}
     createPersonnel={[MockFunction]}
-    getMineRecord={[MockFunction]}
+    getMineRecordById={[MockFunction]}
     getPersonnelList={
       [MockFunction] {
         "calls": Array [

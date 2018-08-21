@@ -10,7 +10,7 @@ import ViewMineManager from './ViewMineManager';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  getPersonnelInfo: PropTypes.func,
+  getPersonnelById: PropTypes.func,
 };
 
 const defaultProps = {

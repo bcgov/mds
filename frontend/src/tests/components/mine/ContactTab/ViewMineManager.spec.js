@@ -7,7 +7,7 @@ const dispatchProps = {};
 const props = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getPersonnelInfo = jest.fn();
+  dispatchProps.getPersonnelById = jest.fn();
   dispatchProps.handleManagerUpdate = jest.fn();
 };
 

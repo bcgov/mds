@@ -42,7 +42,7 @@ export const getMineRecords = () => (dispatch) => {
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
-    dispatch(mineActions.storeMines(response.data));
+    dispatch(mineActions.storeMineList(response.data));
   })
   .catch(() => {
       notification.error({message: String.ERROR, duration: 10});
@@ -50,7 +50,7 @@ export const getMineRecords = () => (dispatch) => {
     });
 };
 
-export const getMineRecord = (mineNo) => (dispatch) => {
+export const getMineRecordById = (mineNo) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORD));
   return axios.get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
   .then((response) => {

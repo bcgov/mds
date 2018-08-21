@@ -14,16 +14,16 @@ export const updateMine = (payload) => {
   }
 }
 
-export const storeMines = (payload) => {
+export const storeMineList = (payload) => {
   return {
-    type: ActionTypes.STORE_MINE_RECORDS,
+    type: ActionTypes.STORE_MINE_LIST,
     payload,
   }
 }
 
 export const storeMine = (payload, id) => {
   return {
-    type: ActionTypes.STORE_MINE_RECORD,
+    type: ActionTypes.STORE_MINE,
     payload,
     id,
   }
