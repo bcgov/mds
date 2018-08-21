@@ -1,5 +1,3 @@
-import uuid
-
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..utils.random import generate_mine_no
@@ -34,7 +32,7 @@ class Mine(Resource):
         # Dummy User for now
         dummy_user = 'DummyUser'
         dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
-        mine_identity= MineIdentity(mine_guid = uuid.uuid4(), **dummy_user_kwargs)
+        mine_identity= MineIdentity(**dummy_user_kwargs)
         mine_identity.save()
         mine_detail = MineDetail(mine_guid=mine_identity.mine_guid, mine_no=generate_mine_no(), mine_name=data['name'], **dummy_user_kwargs)
         mine_detail.save()

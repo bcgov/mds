@@ -10,17 +10,38 @@ import  Loading  from '@/components/reusables/Loading';
 import { KEYCLOAK } from '@/constants/environment';
 
 export const AuthGuard = (WrappedComponent) => {
-  class AuthGuard extends Component {
+
+  /**
+   * Initializes the KeyCloak client and enables
+   * redirects directly to IDIR login page.
+   *
+   * The method uses async/awaits instead of promises
+   * because we were facing troubles with promise resolving
+   * and changing state.
+   *
+   */
+    class AuthGuard extends Component {
+      async keycloakInit () {
+        // Initialize client
+        const keycloak = Keycloak(KEYCLOAK);
+        await keycloak.init();
+
+        // Prompt for login using IDIR if not authenticated
+        if (!keycloak.authenticated) {
+          await keycloak.login({idpHint: 'idir'});
+        }
+
+        // Fetch user info and roles and store them in local storage
+        const userInfo = await keycloak.loadUserInfo();
+        localStorage.setItem('jwt', keycloak.token);
+        this.props.storeUserAccessData(keycloak.realmAccess.roles);
+        this.props.storeKeycloakData(keycloak);
+        this.props.authenticateUser(userInfo);
+        return;
+    }
+
     componentDidMount() {
-      const keycloak = Keycloak(KEYCLOAK);
-      keycloak.init({ onLoad: 'login-required'}).then(() => {
-        keycloak.loadUserInfo().then((userInfo) => {
-          localStorage.setItem('jwt', keycloak.token);
-          this.props.authenticateUser(userInfo);
-          this.props.storeUserAccessData(keycloak.realmAccess.roles);
-          this.props.storeKeycloakData(keycloak);
-        })
-      })
+      this.keycloakInit();
     }
 
     render() {
@@ -30,10 +51,10 @@ export const AuthGuard = (WrappedComponent) => {
             <WrappedComponent {...this.props} />
           );
         } else {
-          return (<Loading />)
+          return (< Loading />)
         }
       }
-      return (<Loading />)
+      return (< Loading />)
     }
   }
 

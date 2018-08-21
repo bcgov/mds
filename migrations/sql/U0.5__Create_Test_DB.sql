@@ -1,1 +1,1 @@
-DROP DATABASE mds_test;
+DROP DATABASE IF EXISTS mds_test;

@@ -29,7 +29,10 @@ class MineIdentity(AuditMixin, db.Model):
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).first()
+        try:
+            return cls.query.filter_by(mine_guid=_id).first()
+        except:
+            return None
 
     @classmethod
     def find_by_mine_no(cls, _id):
@@ -49,8 +52,10 @@ class MineDetail(AuditMixin, db.Model):
         db.session.add(self)
         try:
             db.session.commit()
+            return True
         except:
             db.session.rollback()
+            return False
 
     def json(self):
         return {'mine_name': self.mine_name, 'mine_no': self.mine_no}
