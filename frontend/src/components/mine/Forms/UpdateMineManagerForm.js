@@ -18,7 +18,7 @@ const defaultProps = {
   personnelIds: []
 };
 
-const UpdateMineManagerForm = (props) => {
+export const UpdateMineManagerForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>

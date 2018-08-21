@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Card } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager } from '@/actionCreators/personnelActionCreator';
-import { getMineRecord } from '@/actionCreators/mineActionCreator';
+import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
 import AddPersonnelForm from '../Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
@@ -17,7 +17,7 @@ const propTypes = {
   getPersonnelList: PropTypes.func.isRequired,
   createPersonnel: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
-  getMineRecord: PropTypes.func.isRequired,
+  getMineRecordById: PropTypes.func.isRequired,
   handleManagerUpdate: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
   personnel: PropTypes.object.isRequired,
@@ -30,7 +30,7 @@ const defaultProps = {
   personnelIds: []
 };
 
-class UpdateMineManager extends Component {
+export class UpdateMineManager extends Component {
   componentDidMount() {
     this.props.getPersonnelList();
   }
@@ -49,7 +49,7 @@ class UpdateMineManager extends Component {
    */
   handleSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.props.getMineRecord(this.props.mine.guid).then(() => {
+      this.props.getMineRecordById(this.props.mine.guid).then(() => {
         this.props.handleManagerUpdate();
       });
     })
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch) => {
     getPersonnelList,
     createPersonnel,
     addMineManager,
-    getMineRecord,
+    getMineRecordById,
   }, dispatch);
 }
 

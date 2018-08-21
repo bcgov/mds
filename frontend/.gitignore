@@ -13,4 +13,4 @@
 .DS_Store
 .env
 
-*/_snapshots_/*
+*/__snapshots__/*

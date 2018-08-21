@@ -6,14 +6,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getMineRecord, updateMineRecord } from '@/actionCreators/mineActionCreator';
+import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 import Loading from '@/components/reusables/Loading';
 import MineDashboard from '@/components/mine/MineDashboard';
 
 
 const propTypes = {
-  getMineRecord: PropTypes.func,
+  getMineRecordById: PropTypes.func,
   updateMineRecord: PropTypes.func,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
@@ -25,18 +25,13 @@ const defaultProps = {
   mineIds: [],
 };
 
-class MineContainer extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      mineId: ''
-    }
-  }
+export class MineContainer extends Component {
+  state = { mineId: ''}
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.setState({ mineId: id })
-    this.props.getMineRecord(id);
+    this.props.getMineRecordById(id);
   }
 
   render() {
@@ -66,7 +61,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getMineRecord,
+    getMineRecordById,
     updateMineRecord
   }, dispatch);
 };

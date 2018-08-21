@@ -9,8 +9,8 @@ export const LOGOUT = 'LOGOUT';
 
 export const ADD_MINE_RECORD = 'ADD_MINE';
 export const UPDATE_MINE_RECORD = 'UPDATE_MINE_RECORD';
-export const STORE_MINE_RECORDS = 'STORE_MINE_RECORDS';
-export const STORE_MINE_RECORD = 'STORE_MINE_RECORD';
+export const STORE_MINE_LIST = 'STORE_MINE_LIST';
+export const STORE_MINE = 'STORE_MINE';
 
 export const ADD_PERSONNEL = 'ADD_PERSONNEL';
 export const STORE_PERSONNEL = 'STORE_PERSONNEL';

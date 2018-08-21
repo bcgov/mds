@@ -10,7 +10,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mineId: '',
+  // mineId: '',
 };
 
 export class UpdateMineForm extends Component {
@@ -22,7 +22,7 @@ export class UpdateMineForm extends Component {
     } else if (tenureNumber.length != 7) {
       notification.error({message: "Specified number must be exactly 7 digits long.", duration: 10});
     } else {
-      this.props.updateMineRecord(this.props.mineId, tenureNumber);
+      this.props.updateMineRecord(this.props.mine.mine_detail[0].mine_no, tenureNumber);
     }
   }
 

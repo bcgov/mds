@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineHeader from '@/components/mine/MineHeader';
-import * as MOCK from '../../mocks/dataMocks';
+import MineSummary from '@/components/mine/SummaryTab/MineSummary';
+import * as MOCK from '../../../mocks/dataMocks';
 
 const props = {}
 
@@ -13,9 +13,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('MineHeader', () => {
+describe('MineSummary', () => {
   it('renders properly', () => {
-    const component = shallow(<MineHeader {...props} />);
+    const component = shallow(<MineSummary {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

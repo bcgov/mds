@@ -10,7 +10,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired
 };
 
-const AddPersonnelForm = (props) => {
+export const AddPersonnelForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
