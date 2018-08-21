@@ -4,7 +4,7 @@ package pages
 import geb.Page
 
 class CreateAMinePage extends Page {
-    static at = { title == "React App" }
+    static at = { header == "Create Mine Form" }
     static content = {
         header {$("div", class:"ant-card-head-title").text()}
         mineNameBox (wait:true) {$("input", placeholder:"Mine Name")}
@@ -15,7 +15,6 @@ class CreateAMinePage extends Page {
 
     def createMineRecord(mineName){
         mineNameBox = mineName
-        createMineButton.click()        
-         
+        createMineButton.click()             
     }
 } 
