@@ -18,16 +18,9 @@ export const Validate = new Validator();
 
 export const required = (value) => (value ? undefined : 'This is a required field');
 
-
 export const maxLength = memoize((max) => (value) => value && value.length > max ? `Must be ${max} characters or less` : undefined);
 
 export const minLength = memoize((min) => (value) => value && value.length < min ? `Must be ${min} characters or more` : undefined);
 
-export const exactLength = memoize((min) => (value) =>
-  value && value.length !== min ? `Must be ${min} characters long` : undefined)
-
-
-
-
-
+export const exactLength = memoize((min) => (value) => value && value.length !== min ? `Must be ${min} characters long` : undefined);
 
