@@ -23,6 +23,7 @@ TOKEN_HEADER = {
                 "typ": "JWT",
                 "kid": "flask-jwt-oidc-test-client"
                }
+
 BASE_AUTH_CLAIMS = {
             "iss": "test_issuer",
             "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",

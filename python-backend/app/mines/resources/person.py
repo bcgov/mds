@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity
@@ -33,7 +32,7 @@ class PersonResource(Resource):
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
-        person=Person(person_guid=uuid.uuid4(),
+        person=Person(
             first_name=data['first_name'],
             surname=data['surname'],
             **dummy_user_kwargs
@@ -93,7 +92,6 @@ class ManagerResource(Resource):
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         manager=MgrAppointment(
-            mgr_appointment_guid=uuid.uuid4(), 
             person_guid=data['person_guid'], 
             mine_guid=data['mine_guid'], 
             effective_date=data['effective_date'],

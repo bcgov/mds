@@ -36,21 +36,6 @@ def auth_headers(app):
 
 @pytest.fixture(scope='module')
 def test_client():
-    # Test Setup
-    app = create_app(TestConfig)
-    client = app.test_client()
-    ctx = app.app_context()
-    ctx.push()
-
-    yield client
-
-    # Teardown
-    clear_data(db.session)
-    ctx.pop()
-
-
-@pytest.fixture(scope='module')
-def test_client_with_data():
     # Test Setup with data
     app = create_app(TestConfig)
     client = app.test_client()
