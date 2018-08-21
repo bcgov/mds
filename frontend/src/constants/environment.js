@@ -1,3 +1,4 @@
+// environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
     "apiUrl": "http://localhost:5000",
     "keycloak_resource": "mines-application-local",

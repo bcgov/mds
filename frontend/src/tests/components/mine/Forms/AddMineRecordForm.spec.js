@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CreateMine } from '@/components/mine/CreateMine';
+import AddMineRecordForm from '@/components/mine/Forms/AddMineRecordForm';
 
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.createMineRecord = jest.fn();
+  dispatchProps.handleSubmit = jest.fn();
 };
 
 beforeEach(() => {
   setupDispatchProps();
 });
 
-describe( 'CreateMine', () => {
+describe('AddMineRecordForm', () => {
   it('renders properly', () => {
-    const component = shallow(<CreateMine{...dispatchProps} />);
+    const component = shallow(<AddMineRecordForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

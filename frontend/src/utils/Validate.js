@@ -1,8 +1,8 @@
+import { memoize } from 'lodash';
 /**
- * Utility class for validating inputs.
+ * Utility class for validating inputs using redux forms
  */
 class Validator {
-
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
   USA_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -12,43 +12,22 @@ class Validator {
   FLOATS_REGEX = /^-?\d*(\.{1}\d+)?$/;
   NUMBERS_OR_EMPTY_STRING_REGEX = /^-?\d*\.?\d*$/;
   URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
-
-  checkASCII(str) {
-    return this.ASCII_REGEX.test(str);
-  }
-
-  checkPostalCode(code) {
-    return this.USA_POSTAL_CODE_REGEX.test(code) || this.CAN_POSTAL_CODE_REGEX.test(code);
-  }
-
-  checkEmail(email) {
-    return this.EMAIL_REGEX.test(email);
-  }
-
-  checkPhone(phone) {
-    return this.PHONE_REGEX.test(phone);
-  }
-
-  checkName(name) {
-    return this.NAME_REGEX.test(name);
-  }
-
-  checkNumber(number) {
-    return this.FLOATS_REGEX.test(number);
-  }
-
-  checkNumberOrEmptyString(number) {
-    return this.NUMBERS_OR_EMPTY_STRING_REGEX.test(number);
-  }
-
-  checkURL(url) {
-    return this.URL_REGEX.test(url);
-  }
-
 }
 
 export const Validate = new Validator();
 
-export const required = (value) => (value ? null : 'This is a required field');
+export const required = (value) => (value ? undefined : 'This is a required field');
+
+
+export const maxLength = memoize((max) => (value) => value && value.length > max ? `Must be ${max} characters or less` : undefined);
+
+export const minLength = memoize((min) => (value) => value && value.length < min ? `Must be ${min} characters or more` : undefined);
+
+export const exactLength = memoize((min) => (value) =>
+  value && value.length !== min ? `Must be ${min} characters long` : undefined)
+
+
+
+
 
 

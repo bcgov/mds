@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { UpdateMineForm } from '@/components/mine/SummaryTab/UpdateMineForm';
+import { UpdateMine } from '@/components/mine/SummaryTab/UpdateMine';
 import * as MOCK from '../../../mocks/dataMocks';
 
 const props = {}
@@ -18,9 +18,9 @@ beforeEach(() => {
   setupDispatchprops();
 });
 
-describe('UpdateMineForm', () => {
+describe('UpdateMine', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdateMineForm {...props} {...dispatchProps}/>);
+    const component = shallow(<UpdateMine {...props} {...dispatchProps}/>);
     expect(component).toMatchSnapshot();
   });
 });

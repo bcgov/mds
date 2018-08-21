@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateMineForm renders properly 1`] = `
+exports[`CreateMine renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <CreateMineForm
+  Symbol(enzyme.__unrendered__): <CreateMine
     createMineRecord={[MockFunction]}
     userRoles={Array []}
   />,
@@ -26,35 +26,9 @@ ShallowWrapper {
         <Card
           title="Create Mine Form"
         >
-          <Form
-            hideRequiredMark={false}
-            layout="horizontal"
+          <ReduxForm
             onSubmit={[Function]}
-            prefixCls="ant-form"
-          >
-            <FormItem
-              colon={true}
-              hasFeedback={false}
-              prefixCls="ant-form"
-            >
-              <Input
-                disabled={false}
-                placeholder="Mine Name"
-                prefixCls="ant-input"
-                type="text"
-              />
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
-              >
-                Create Mine
-              </Button>
-            </FormItem>
-          </Form>
+          />
         </Card>,
       ],
     },
@@ -76,35 +50,9 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <Form
-            hideRequiredMark={false}
-            layout="horizontal"
+          "children": <ReduxForm
             onSubmit={[Function]}
-            prefixCls="ant-form"
-          >
-            <FormItem
-              colon={true}
-              hasFeedback={false}
-              prefixCls="ant-form"
-            >
-              <Input
-                disabled={false}
-                placeholder="Mine Name"
-                prefixCls="ant-input"
-                type="text"
-              />
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
-              >
-                Create Mine
-              </Button>
-            </FormItem>
-          </Form>,
+          />,
           "title": "Create Mine Form",
         },
         "ref": null,
@@ -113,97 +61,10 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <FormItem
-              colon={true}
-              hasFeedback={false}
-              prefixCls="ant-form"
-            >
-              <Input
-                disabled={false}
-                placeholder="Mine Name"
-                prefixCls="ant-input"
-                type="text"
-              />
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
-              >
-                Create Mine
-              </Button>
-            </FormItem>,
-            "hideRequiredMark": false,
-            "layout": "horizontal",
             "onSubmit": [Function],
-            "prefixCls": "ant-form",
           },
-          "ref": [Function],
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [
-                <Input
-                  disabled={false}
-                  placeholder="Mine Name"
-                  prefixCls="ant-input"
-                  type="text"
-                />,
-                <Button
-                  block={false}
-                  ghost={false}
-                  htmlType="submit"
-                  loading={false}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  Create Mine
-                </Button>,
-              ],
-              "colon": true,
-              "hasFeedback": false,
-              "prefixCls": "ant-form",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "disabled": false,
-                  "placeholder": "Mine Name",
-                  "prefixCls": "ant-input",
-                  "type": "text",
-                },
-                "ref": [Function],
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "block": false,
-                  "children": "Create Mine",
-                  "ghost": false,
-                  "htmlType": "submit",
-                  "loading": false,
-                  "prefixCls": "ant-btn",
-                  "type": "primary",
-                },
-                "ref": null,
-                "rendered": "Create Mine",
-                "type": [Function],
-              },
-            ],
-            "type": [Function],
-          },
+          "ref": null,
+          "rendered": null,
           "type": [Function],
         },
         "type": [Function],
@@ -224,35 +85,9 @@ ShallowWrapper {
           <Card
             title="Create Mine Form"
           >
-            <Form
-              hideRequiredMark={false}
-              layout="horizontal"
+            <ReduxForm
               onSubmit={[Function]}
-              prefixCls="ant-form"
-            >
-              <FormItem
-                colon={true}
-                hasFeedback={false}
-                prefixCls="ant-form"
-              >
-                <Input
-                  disabled={false}
-                  placeholder="Mine Name"
-                  prefixCls="ant-input"
-                  type="text"
-                />
-                <Button
-                  block={false}
-                  ghost={false}
-                  htmlType="submit"
-                  loading={false}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  Create Mine
-                </Button>
-              </FormItem>
-            </Form>
+            />
           </Card>,
         ],
       },
@@ -274,35 +109,9 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <Form
-              hideRequiredMark={false}
-              layout="horizontal"
+            "children": <ReduxForm
               onSubmit={[Function]}
-              prefixCls="ant-form"
-            >
-              <FormItem
-                colon={true}
-                hasFeedback={false}
-                prefixCls="ant-form"
-              >
-                <Input
-                  disabled={false}
-                  placeholder="Mine Name"
-                  prefixCls="ant-input"
-                  type="text"
-                />
-                <Button
-                  block={false}
-                  ghost={false}
-                  htmlType="submit"
-                  loading={false}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  Create Mine
-                </Button>
-              </FormItem>
-            </Form>,
+            />,
             "title": "Create Mine Form",
           },
           "ref": null,
@@ -311,97 +120,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <FormItem
-                colon={true}
-                hasFeedback={false}
-                prefixCls="ant-form"
-              >
-                <Input
-                  disabled={false}
-                  placeholder="Mine Name"
-                  prefixCls="ant-input"
-                  type="text"
-                />
-                <Button
-                  block={false}
-                  ghost={false}
-                  htmlType="submit"
-                  loading={false}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  Create Mine
-                </Button>
-              </FormItem>,
-              "hideRequiredMark": false,
-              "layout": "horizontal",
               "onSubmit": [Function],
-              "prefixCls": "ant-form",
             },
-            "ref": [Function],
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <Input
-                    disabled={false}
-                    placeholder="Mine Name"
-                    prefixCls="ant-input"
-                    type="text"
-                  />,
-                  <Button
-                    block={false}
-                    ghost={false}
-                    htmlType="submit"
-                    loading={false}
-                    prefixCls="ant-btn"
-                    type="primary"
-                  >
-                    Create Mine
-                  </Button>,
-                ],
-                "colon": true,
-                "hasFeedback": false,
-                "prefixCls": "ant-form",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "disabled": false,
-                    "placeholder": "Mine Name",
-                    "prefixCls": "ant-input",
-                    "type": "text",
-                  },
-                  "ref": [Function],
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "block": false,
-                    "children": "Create Mine",
-                    "ghost": false,
-                    "htmlType": "submit",
-                    "loading": false,
-                    "prefixCls": "ant-btn",
-                    "type": "primary",
-                  },
-                  "ref": null,
-                  "rendered": "Create Mine",
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
-            },
+            "ref": null,
+            "rendered": null,
             "type": [Function],
           },
           "type": [Function],
