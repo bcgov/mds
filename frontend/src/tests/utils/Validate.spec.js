@@ -12,7 +12,7 @@ describe('Validate class', () => {
       expect(required(value)).toEqual(undefined);
     });
 
-    it('returns `Required` validation message', () => {
+    it('returns `This is a required field` validation message', () => {
       const value = '';
       expect(required(value)).toEqual('This is a required field');
     });
