@@ -24,10 +24,7 @@ const createItemIdsArray = (array, idField) => {
 
 const mineReducer = (state=initialState, action) => {
     switch (action.type) {
-      case actionTypes.ADD_MINE_RECORD:
-        //TODO: implement behaviour for adding individual mines
-        return state;
-      case actionTypes.STORE_MINE_LIST:
+      case actionTypes.STORE_MINE_RECORDS:
         return {
           ...state,
           mines: createItemMap(action.payload.mines, 'guid'),

@@ -1,12 +1,5 @@
 import * as ActionTypes from '../constants/actionTypes';
 
-export const addMine = (payload) => {
-    return {
-      type: ActionTypes.ADD_MINE_RECORD,
-      payload,
-    }
-  }
-
 export const updateMine = (payload) => {
   return {
     type: ActionTypes.UPDATE_MINE_RECORD,
