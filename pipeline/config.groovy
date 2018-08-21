@@ -141,7 +141,7 @@ app {
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
-                            'FLYWAY_NAME':"mds-flyway-migration-${app.git.changeId}-client",
+                            'FLYWAY_NAME':"mds-flyway-migration-client",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",

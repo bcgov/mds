@@ -79,9 +79,9 @@
     "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
     "lint": "eslint .",
-    "test": "jest --env=jsdom -u",
-    "test:watch": "jest --env=jsdom --watch -u",
-    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u"
+    "test": "jest --env=jsdom -u --runInBand",
+    "test:watch": "jest --env=jsdom --watch -u --runInBand",
+    "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u --runInBand"
   },
   "jest": {
     "setupFiles": [
