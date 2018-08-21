@@ -15,7 +15,7 @@ const defaultProps = {
 
 export class UpdateMine extends Component {
   handleSubmit = (value) => {
-    this.props.updateMineRecord(this.props.mine.mine_detail[0].mine_no, value.tenureNumber);
+    this.props.updateMineRecord(this.props.mine.guid, value.tenureNumber, this.props.mine.mine_detail[0].mine_name);
   }
 
   render() {

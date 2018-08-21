@@ -48,12 +48,13 @@ describe('`createMineRecord` action creator', () => {
 describe('`updateMineRecord` action creator', () => {
   const mineId = "1"
   const tenureNumber = "0293847"
+  const mineName = "MockMine"
   const url = ENVIRONMENT.apiUrl + API.MINE + "/" + mineId;
   const mockPayLoad = { "tenure_number_id": tenureNumber }
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayLoad).reply(200, mockResponse);
-    return (updateMineRecord(mineId, tenureNumber)(dispatch)).then(() => {
+    return (updateMineRecord(mineId, tenureNumber, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
