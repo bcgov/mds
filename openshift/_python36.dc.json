@@ -353,7 +353,7 @@
       },
       "spec": {
         "host": "${HOST}",
-        "path": "/",
+        "path": "/${SUFFIX}/",
         "to": {
           "kind": "Service",
           "name": "${NAME}${SUFFIX}",
