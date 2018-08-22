@@ -8,19 +8,17 @@ import pages.*
 
 
 
-@Title("MDS-createMineRecord")
-@Narrative("At homepage, I can create a mine record given valid mine Name")
-//@see("https://bcmines.atlassian.net/browse/MDS-63")
+@Title("MDS-HomePage")
+@Narrative("At homepage, I can view mine records and create a new one")
 @Stepwise
 class  HomePageTest extends GebReportingSpec {
     //variables
     static NAME_NULL = ""
-    static NAME_GOOD = "Brucejack"
+    static NAME_GOOD = "MineTest2"
     static NAME_LONG = "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"//61 chars
+    def selectedMine = ["",""]
 
- 
-
-    def "Scenario: User is able to create a mine record given a  valid MIND-Name"(){
+    def "Scenario: User is able to create a mine record given a valid MIND-Name"(){
         given: "I go to the homepage"
         to HomePage
 
@@ -35,23 +33,6 @@ class  HomePageTest extends GebReportingSpec {
 
         then: "I should see the successful message"
         toastMessage == "Successfully created: " + NAME_GOOD
-    }
-
-    def "Scenario: User can view the created record on Dashboard"(){
-        given: "I go to the homepage"
-        to HomePage
-
-        when: "I click the dashboard button"
-        dashboardButton.click()
-
-        then: "On Dashboard"
-        at Dashboard
-
-        and: "I should see the created record on the Dashboard"
-        sleep(5000)
-        validation(NAME_GOOD) == [true,true]
-
-
     }
 
 
@@ -90,6 +71,14 @@ class  HomePageTest extends GebReportingSpec {
         toastMessage == "Must specify a mine name."
     }
 
+    def "Scenario: User can view the created record on Dashboard"(){
+        when: "I go to the homepage"
+        to HomePage
 
+        then: "I should see the created record on the Dashboard"
+        sleep(1000)
+        assert validation(NAME_GOOD) == true
+    }
 
+    
 }

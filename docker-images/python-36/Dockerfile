@@ -1,7 +1,16 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-COPY requirements.txt ${APP_ROOT}/src
+# Install sonar-scanner
+RUN curl -sLo /tmp/sonar-scanner-cli.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip && \
+    mkdir ${APP_ROOT}/sonar-scanner-cli && unzip -q /tmp/sonar-scanner-cli.zip -d ${APP_ROOT}/sonar-scanner-cli && \
+    mv ${APP_ROOT}/sonar-scanner-cli ${APP_ROOT}/_sonar-scanner-cli && mv ${APP_ROOT}/_sonar-scanner-cli/sonar-scanner-3.2.0.1227-linux ${APP_ROOT}/sonar-scanner-cli && \
+    rm -rf ${APP_ROOT}/_sonar-scanner-cli \
+    rm /tmp/sonar-scanner-cli.zip && \
+    chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
 
+
+# Install project dependencies
+COPY requirements.txt ${APP_ROOT}/src
 RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \

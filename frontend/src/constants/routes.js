@@ -1,31 +1,26 @@
+// internal URL's
 import Home from '@/components/Home';
-import MineDashboard from '@/components/mine/MineDashboard';
-import CreateMineForm from '@/components/mine/CreateMineForm';
-import MineSummary from '@/components/mine/MineSummary';
-import Dashboard from '@/components/dashboard/Dashboard';
+import Dashboard from '@/components/Dashboard';
+import MineContainer from '@/components/mine/MineContainer';
+import CreateMine from '@/components/mine/CreateMine';
 
-export const HOME = {
+export const DASHBOARD = {
     route: '/',
     component: Home,
 };
 
-export const DASHBOARD = {
-    route: '/dashboard',
-    component: Dashboard,
-};
-
 export const MINE_DASHBOARD = {
-  route: '/dashboard/mine',
-  component: MineDashboard,
-};
-
-export const CREATE_MINE_RECORD = {
-  route: '/dashboard/mine/create',
-  component: CreateMineForm,
+  route: '/dashboard',
+  component: Dashboard,
 };
 
 export const MINE_SUMMARY = {
-  route: '/dashboard/mine/summary/:id',
-  dynamicRoute: (id) => `/dashboard/mine/summary/${id}`,
-  component: MineSummary,
+  route: '/dashboard/:id/summary',
+  dynamicRoute: (id) => `/dashboard/${id}/summary`,
+  component: MineContainer,
+};
+
+export const CREATE_MINE_RECORD = {
+  route: '/dashboard/create-mine',
+  component: CreateMine,
 };

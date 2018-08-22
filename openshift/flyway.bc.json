@@ -73,7 +73,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}-client",
+        "name": "${NAME}-client",
         "creationTimestamp": null,
         "labels": {
           "shared": "true"
@@ -127,17 +127,17 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}${SUFFIX}-client:${VERSION}"
+            "name": "${NAME}-client:${VERSION}"
           }
         },
         "resources": {
           "limits": {
-            "cpu": "2",
-            "memory": "2Gi"
+            "cpu": "500m",
+            "memory": "1Gi"
           },
           "requests": {
-            "cpu": "1",
-            "memory": "2Gi"
+            "cpu": "250m",
+            "memory": "1Gi"
           }
         }
       }

@@ -2,7 +2,6 @@
 
 exports[`Home renders properly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Home />,
   Symbol(enzyme.__renderer__): Object {
@@ -15,87 +14,165 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "host",
+    "nodeType": "class",
     "props": Object {
-      "children": <Button
-        className="btn-center"
-        ghost={false}
-        loading={false}
-        onClick={[Function]}
-        prefixCls="ant-btn"
-        size="large"
-        type="primary"
-      >
-        Say Hello!
-      </Button>,
+      "children": Array [
+        <Connect(NavBar) />,
+        <Connect(LoadingBar)
+          style={
+            Object {
+              "backgroundColor": "blue",
+              "position": "fixed",
+              "top": 64,
+              "width": "100%",
+              "zIndex": 100,
+            }
+          }
+        />,
+        <Adapter>
+          <DashboardRoutes />
+        </Adapter>,
+      ],
     },
     "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": "Say Hello!",
-        "className": "btn-center",
-        "ghost": false,
-        "loading": false,
-        "onClick": [Function],
-        "prefixCls": "ant-btn",
-        "size": "large",
-        "type": "primary",
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
       },
-      "ref": null,
-      "rendered": "Say Hello!",
-      "type": [Function],
-    },
-    "type": "div",
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "style": Object {
+            "backgroundColor": "blue",
+            "position": "fixed",
+            "top": 64,
+            "width": "100%",
+            "zIndex": 100,
+          },
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <DashboardRoutes />,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "host",
+      "nodeType": "class",
       "props": Object {
-        "children": <Button
-          className="btn-center"
-          ghost={false}
-          loading={false}
-          onClick={[Function]}
-          prefixCls="ant-btn"
-          size="large"
-          type="primary"
-        >
-          Say Hello!
-        </Button>,
+        "children": Array [
+          <Connect(NavBar) />,
+          <Connect(LoadingBar)
+            style={
+              Object {
+                "backgroundColor": "blue",
+                "position": "fixed",
+                "top": 64,
+                "width": "100%",
+                "zIndex": 100,
+              }
+            }
+          />,
+          <Adapter>
+            <DashboardRoutes />
+          </Adapter>,
+        ],
       },
       "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": "Say Hello!",
-          "className": "btn-center",
-          "ghost": false,
-          "loading": false,
-          "onClick": [Function],
-          "prefixCls": "ant-btn",
-          "size": "large",
-          "type": "primary",
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
         },
-        "ref": null,
-        "rendered": "Say Hello!",
-        "type": [Function],
-      },
-      "type": "div",
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "style": Object {
+              "backgroundColor": "blue",
+              "position": "fixed",
+              "top": 64,
+              "width": "100%",
+              "zIndex": 100,
+            },
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <DashboardRoutes />,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

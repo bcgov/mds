@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 
 import App from './App';
 import 'antd/dist/antd.less';
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
-
-render(<App />, document.getElementById('root'));
+import fetchEnv from './fetchEnv';
 
 registerServiceWorker();
+
+export class Index extends Component {
+  constructor() {
+      super();
+      this.state = {environment: false};
+      fetchEnv().then(() => {
+        this.setState({environment: true});
+      });
+  }
+  render() {
+    if (this.state.environment) {
+      return (
+        <App />
+      )
+    }else {
+      return(<div></div>)
+    }
+  }
+}
+
+render(<Index />, document.getElementById('root'));
