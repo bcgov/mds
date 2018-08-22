@@ -213,6 +213,10 @@
               {
                 "name": "API_URL",
                 "value": "${API_URL}"
+              },
+              {
+                "name": "ASSET_PATH",
+                "value": "${VERSION}"
               }
             ]
           }

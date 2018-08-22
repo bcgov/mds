@@ -353,7 +353,7 @@
       },
       "spec": {
         "host": "${HOST}",
-        "path": "/${VERSION}",
+        "path": "/dev-pr-62/",
         "to": {
           "kind": "Service",
           "name": "${NAME}${SUFFIX}",

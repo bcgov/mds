@@ -125,7 +125,7 @@
       },
       "spec": {
         "host": "${APPLICATION_DOMAIN}",
-        "path": "/${SUFFIX}/",
+        "path": "/${VERSION}/",
         "tls": {
           "termination": "edge",
           "insecureEdgeTerminationPolicy": "Redirect"
