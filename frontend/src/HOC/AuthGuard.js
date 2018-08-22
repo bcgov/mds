@@ -51,10 +51,10 @@ export const AuthGuard = (WrappedComponent) => {
             <WrappedComponent {...this.props} />
           );
         } else {
-          return (< Loading />)
+          return (<Loading />)
         }
       }
-      return (< Loading />)
+      return (<Loading />)
     }
   }
 
