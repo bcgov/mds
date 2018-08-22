@@ -125,7 +125,7 @@
       },
       "spec": {
         "host": "${APPLICATION_DOMAIN}",
-        "path": "/${VERSION}/",
+        "path": "/dev-pr-62/",
         "tls": {
           "termination": "edge",
           "insecureEdgeTerminationPolicy": "Redirect"

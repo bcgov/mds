@@ -216,7 +216,7 @@
               },
               {
                 "name": "ASSET_PATH",
-                "value": "${VERSION}"
+                "value": "dev-pr-62"
               }
             ]
           }
