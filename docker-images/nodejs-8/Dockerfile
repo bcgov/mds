@@ -3,8 +3,10 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 # Install OS dependencies for NPM build success
 USER 0
 RUN yum install -y nasm libtool autoconf automake cairo-devel \
-    cairo libpng giflib libX11 libX11-devel libXt libXt-devel \
-    giflib-devel cairomm-devel
+cairo libpng giflib libX11 libX11-devel libXt libXt-devel libgif-dev \
+libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel \
+libxml2-devel libpng-devel freetype freetype-devel libart_lgpl-devel \
+libcairo2-dev libjpeg8-dev libpango1.0-dev build-essential g++
 
 USER 1001
 
