@@ -88,6 +88,7 @@ const devConfig = merge([
   parts.devServer({
     host: HOST,
     port: PORT,
+    historyApiFallback: true,
   }),
   parts.loadCSS({
     theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss')
