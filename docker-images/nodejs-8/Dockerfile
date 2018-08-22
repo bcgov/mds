@@ -21,4 +21,4 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://sonarsource.bintray.com/Distrib
 # Install project dependencies
 COPY package.json ${APP_ROOT}/src
 COPY package-lock.json ${APP_ROOT}/src
-RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm install
+RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && env CC=/opt/rh/devtoolset-2/root/usr/bin/gcc CXX=/opt/rh/devtoolset-2/root/usr/bin/g++ npm install canvas && npm install
