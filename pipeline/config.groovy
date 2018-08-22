@@ -185,13 +185,13 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'bdd-stack' {
-                    HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }
