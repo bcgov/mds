@@ -93,7 +93,9 @@
       "!src/index.js",
       "!src/App.js",
       "!src/fetchEnv.js",
-      "!src/registerServiceWorker.js"
+      "!src/registerServiceWorker.js",
+      "!src/assetsTransformer.js",
+      "!src/setupTests.js"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
