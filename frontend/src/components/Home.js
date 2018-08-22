@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import { Layout } from 'antd';
+import LoadingBar from 'react-redux-loading-bar'
 
 import DashboardRoutes from '@/routes/DashboardRoutes';
 import { AuthGuard } from '../HOC/AuthGuard';
@@ -17,8 +18,10 @@ export class Home extends Component {
     return (
       <Layout>
         <NavBar />
+        <LoadingBar style={{ backgroundColor: 'blue', position: 'fixed', top: 64, zIndex: 100, width: '100%' }} />
         <Content>
-          <DashboardRoutes />
+          <DashboardRoutes
+           />
         </Content>
       </Layout>
     );

@@ -9,8 +9,8 @@
   @include animation(fadein, 1s);
   
   #loader {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     @include center(true, true);
   }
 }

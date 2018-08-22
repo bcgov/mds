@@ -18,6 +18,17 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <Connect(NavBar) />,
+        <Connect(LoadingBar)
+          style={
+            Object {
+              "backgroundColor": "blue",
+              "position": "fixed",
+              "top": 64,
+              "width": "100%",
+              "zIndex": 100,
+            }
+          }
+        />,
         <Adapter>
           <DashboardRoutes />
         </Adapter>,
@@ -30,6 +41,23 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "style": Object {
+            "backgroundColor": "blue",
+            "position": "fixed",
+            "top": 64,
+            "width": "100%",
+            "zIndex": 100,
+          },
+        },
         "ref": null,
         "rendered": null,
         "type": [Function],
@@ -64,6 +92,17 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <Connect(NavBar) />,
+          <Connect(LoadingBar)
+            style={
+              Object {
+                "backgroundColor": "blue",
+                "position": "fixed",
+                "top": 64,
+                "width": "100%",
+                "zIndex": 100,
+              }
+            }
+          />,
           <Adapter>
             <DashboardRoutes />
           </Adapter>,
@@ -76,6 +115,23 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "style": Object {
+              "backgroundColor": "blue",
+              "position": "fixed",
+              "top": 64,
+              "width": "100%",
+              "zIndex": 100,
+            },
+          },
           "ref": null,
           "rendered": null,
           "type": [Function],
