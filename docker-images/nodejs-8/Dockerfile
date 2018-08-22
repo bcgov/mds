@@ -2,11 +2,9 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 # Install OS dependencies for NPM build success
 USER 0
-RUN yum install -y nasm libtool autoconf automake cairo-devel \
-cairo libpng giflib libX11 libX11-devel libXt libXt-devel libgif-dev \
-libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel \
-libxml2-devel libpng-devel freetype freetype-devel libart_lgpl-devel \
-libcairo2-dev libjpeg8-dev libpango1.0-dev build-essential g++
+RUN yum install -y nasm build-base libtool libpng-dev autoconf \
+automake libcairo2-dev libjpeg-dev libgif-dev \
+gcc-c++ cairo-devel libjpeg-turbo-devel pango-devel giflib-devel
 USER 1001
 
 # Install sonar-scanner
