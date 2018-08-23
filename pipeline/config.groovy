@@ -164,7 +164,7 @@ app {
                     'file':'openshift/tools/schemaspy.dc.json',
                     'params':[
                             'NAME':"schemaspy",
-                            'IMAGE_NAMESPACE':'empr-mds-tools',
+                            'IMAGE_NAMESPACE':"${app.build.namespace}",
                             'TAG_NAME':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
