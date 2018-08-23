@@ -167,8 +167,7 @@ app {
                             'IMAGE_NAMESPACE':'empr-mds-tools',
                             'TAG_NAME':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
-                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'APPLICATION_DOMAIN': "https://${vars.modules.'schemaspy'.HOST}"
                     ]
                 ]
