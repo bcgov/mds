@@ -6,6 +6,37 @@
         "creationTimestamp": null
     },
     "objects": [
+    {
+        "kind": "ImageStream",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "openjdk",
+            "creationTimestamp": null,
+            "annotations": {
+            "description": "Python Base Image"
+            },
+            "labels": {
+            "shared": "true"
+            }
+        },
+        "spec": {
+            "lookupPolicy": {
+            "local": false
+            },
+            "tags":[
+            {
+                "name": "jre-alpine",
+                "from": {
+                "kind": "DockerImage",
+                "name": "openjdk:jre-alpine"
+                },
+                "referencePolicy": {
+                "type": "Source"
+                }
+            }
+            ]
+        }
+        },
       {
           "kind": "ImageStream",
           "apiVersion": "v1",
@@ -33,7 +64,13 @@
             "contextDir": "${SOURCE_CONTEXT_DIR}"
           },
           "strategy": {
-            "type": "Docker"
+            "type": "Docker",
+            "dockerStrategy": {
+                "from": {
+                  "kind": "ImageStreamTag",
+                  "name": "openjdk:jre-alpine"
+                }
+              }
           },
           "output": {
             "to": {
