@@ -94,6 +94,16 @@ app {
                             'SOURCE_CONTEXT_DIR': "migrations",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/schemaspy.bc.json',
+                    'params':[
+                            'NAME':"schemaspy",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
                 ]
         ]
     }
@@ -149,6 +159,18 @@ app {
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/schemaspy.dc.json',
+                    'params':[
+                            'NAME':"schemaspy",
+                            'IMAGE_NAMESPACE':'empr-mds-tools',
+                            'TAG_NAME':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}",
+                            'APPLICATION_DOMAIN': "https://${vars.modules.'schemaspy'.HOST}"
+                    ]
                 ]
         ]
     }
@@ -193,6 +215,9 @@ environments {
                 'bdd-stack' {
                     HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'schemaspy' {
+                    HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -228,6 +253,9 @@ environments {
                 'bdd-stack' {
                     HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'schemaspy' {
+                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -260,6 +288,9 @@ environments {
                 }
                 'bdd-stack' {
                     HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'schemaspy' {
+                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

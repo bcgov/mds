@@ -30,7 +30,7 @@
           "source": {
             "type": "Git",
             "git": {
-              "uri": "${GIT_REPO_URL}",
+              "uri": "${SOURCE_REPOSITORY_URL}",
               "ref": "${GIT_REF}"
             },
             "contextDir": "${SOURCE_CONTEXT_DIR}"
@@ -41,7 +41,7 @@
           "output": {
             "to": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}:${OUTPUT_IMAGE_TAG}"
+              "name": "${NAME}:${SUFFIX}"
             }
           },
           "triggers": [
@@ -64,7 +64,7 @@
         "value": "schema-spy"
       },
       {
-        "name": "GIT_REPO_URL",
+        "name": "SOURCE_REPOSITORY_URL",
         "displayName": "Git Repo URL",
         "description": "The URL to the Git repository.",
         "required": true,
@@ -86,7 +86,7 @@
         "value": ""
       },
       {
-        "name": "OUTPUT_IMAGE_TAG",
+        "name": "SUFFIX",
         "displayName": "Output Image Tag",
         "description": "The tag given to the built image.",
         "required": true,

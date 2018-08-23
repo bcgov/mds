@@ -184,11 +184,17 @@
         "value": "devex-von-tools"
       },
       {
+        "name": "DB_CONFIG_NAME",
+        "displayName": "Database Config Name",
+        "description": "Configuration name for the database",
+        "required": true
+      },
+      {
         "name": "CPU_LIMIT",
         "displayName": "CPU Limit",
         "required": true,
         "description": "Maximum amount of CPU the container can use.",
-        "value": "1"
+        "value": "500m"
       },
       {
         "name": "MEMORY_LIMIT",
@@ -204,31 +210,11 @@
         "value": ""
       },
       {
-        "name": "DATABASE_HOST",
-        "displayName": "The host name (or ip address) for the database server; override to match your environment.  In the case of Oracle databases this must be a <hostname|ipaddress>:<port> pair even if using the default Oracle port; a requirement of the Oracle Thin SchemaSpy process.",
-        "required": true,
-        "value": "postgresql"
-      },
-      {
-        "name": "DATABASE_NAME",
-        "displayName": "Database Name",
-        "required": true,
-        "description": "Name of the deployed database (see environment variables in deployed database).",
-        "value": "TheOrgBook_Database"
-      },
-      {
         "name": "TAG_NAME",
         "displayName": "Environment TAG name",
         "description": "The TAG name for this environment, e.g., dev, test, prod",
         "value": "dev",
         "required": true
-      },
-      {
-        "name": "DATABASE_DEPLOYMENT_NAME",
-        "displayName": "Database Deployment Name",
-        "description": "The name associated to the database deployment resources.  In particular, this is used to wrie up the credentials associated to the database.",
-        "required": true,
-        "value": "postgresql"
       }
     ]
   }
