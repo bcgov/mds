@@ -1,13 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Dashboard } from '../../components/Dashboard';
-import * as MOCK from '../mocks/dataMocks';
+import { Dashboard } from '@/components/dashboard/Dashboard';
+import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.getMineRecords = jest.fn();
+  dispatchProps.getMineNameList = jest.fn();
 };
 
 const setupReducerProps = () => {

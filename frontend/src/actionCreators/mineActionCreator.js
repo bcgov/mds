@@ -75,3 +75,19 @@ export const getMineRecordById = (mineNo) => (dispatch) => {
     dispatch(hideLoading());
   });
 };
+
+export const getMineNameList = () => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
+      dispatch(mineActions.storeMineNameList(response.data));
+      dispatch(hideLoading());
+    })
+    .catch(() => {
+      notification.error({ message: String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.GET_MINE_NAME_LIST));
+      dispatch(hideLoading());
+    });
+};

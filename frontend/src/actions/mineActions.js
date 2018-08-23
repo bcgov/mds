@@ -21,3 +21,10 @@ export const storeMine = (payload, id) => {
     id,
   }
 }
+
+export const storeMineNameList = (payload) => {
+  return {
+    type: ActionTypes.STORE_MINE_NAME_LIST,
+    payload,
+  }
+}

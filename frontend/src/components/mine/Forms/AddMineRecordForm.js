@@ -7,7 +7,8 @@ import * as FORM from '@/constants/forms';
 import { required, maxLength, minLength } from '@/utils/Validate';
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired
 };
 
 export const AddMineRecordform = (props) => {
@@ -27,6 +28,7 @@ export const AddMineRecordform = (props) => {
         </Col>
       </Row>
       <Button type="primary" htmlType="submit">Create Mine</Button>
+      <Button onClick={props.handleCancel}>Cancel</Button>
     </Form>
   );
 };
