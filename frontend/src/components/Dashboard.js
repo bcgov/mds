@@ -12,6 +12,7 @@ import { getMineRecords } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
 import { USER_ROLES } from '@/constants/environment';
+import RenderSearch from '@/components/reusables/RenderSearch';
 import * as router from '@/constants/routes';
 
 
@@ -31,6 +32,13 @@ const defaultProps = {
 export class Dashboard extends Component {
   componentDidMount() {
     this.props.getMineRecords();
+  }
+
+  handleSearch = (value) => {
+    console.log(value);
+    return (
+      <Link to={router.MINE_SUMMARY.dynamicRoute(value)}/>
+    )
   }
 
   renderCreateMine() {
@@ -53,13 +61,14 @@ export class Dashboard extends Component {
       );
     }
   }
-
+  
   render() {
     const { mines, mineIds } = this.props;
     return (
       <div>
         <h1> Mine Dashboard </h1>
         {this.renderCreateMine()}
+        <RenderSearch data={this.props.mineIds} handleSearch={this.handleSearch}/>
         <Card title="Mines">
           <Row type="flex">
             <Col span={4}><strong>MINE_NO</strong></Col>

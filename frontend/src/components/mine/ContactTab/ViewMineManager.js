@@ -44,7 +44,7 @@ export class ViewMineManager extends Component {
                   </Col>
                   <Col span={12}>
                     <label>Effective date</label>
-                    <div>{this.props.personnel[id].effective_date}</div>
+                    <div>{this.props.mine.mgr_appointment[0].effective_date}</div>
                   </Col>
                 </Row>
                 <ConditionalButton handleAction={this.props.handleManagerUpdate} string="Update" type="primary"/>
