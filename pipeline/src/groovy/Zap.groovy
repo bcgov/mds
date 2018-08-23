@@ -36,6 +36,7 @@ if (opt?.h) {
 }
 
 def config = OpenShiftHelper.loadDeploymentConfig(opt)
+def toolsNamespace = 'empr-mds-tools'
 
 def appLabel="${config.app.deployment.id}"
 def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
@@ -46,14 +47,14 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "Running ZAP for ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/zap.pod.json -l 'zap=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'APP=${appLabel}' -p 'NAME=zap-${route.metadata.name}' -p 'URL=${routeUrl}' --namespace=${route.metadata.namespace} |  oc replace -f - --namespace=${route.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/zap.pod.json -l 'zap=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'APP=${appLabel}' -p 'NAME=zap-${route.metadata.name}' -p 'URL=${routeUrl}' --namespace=${toolsNamespace} |  oc replace -f - --namespace=${route.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
 boolean hasFailed=false;
 
 while(inprogress>0){
-    Map pods = ocGet(['pods','-l', "app=${appLabel},run=zap", "--namespace=${config.app.deployment.namespace}"])
+    Map pods = ocGet(['pods','-l', "app=${appLabel},run=zap", "--namespace=${toolsNamespace}"])
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {
@@ -62,7 +63,7 @@ while(inprogress>0){
         }
         if ('Succeeded' == pod.status.phase) continue
         println "Waiting for '${pod.metadata.name}' (${pod.status.phase})"
-        OpenShiftHelper._exec(["bash", '-c', "oc attach '${pod.metadata.name}' '--namespace=${pod.metadata.namespace}' > /dev/null"], new StringBuffer(), new StringBuffer())
+        OpenShiftHelper._exec(["bash", '-c', "oc attach '${pod.metadata.name}' '--namespace=${toolsNamespace}' > /dev/null"], new StringBuffer(), new StringBuffer())
         inprogress++
     }
     Thread.sleep(2000)
