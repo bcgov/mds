@@ -1,0 +1,234 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "${NAME}-dc",
+      "annotations": {
+        "description": "SchemaSpy deployment template.",
+        "tags": "schema-spy"
+      }
+    },
+    "objects": [
+      {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "description": "Exposes and load balances the application pods"
+          }
+        },
+        "spec": {
+          "ports": [
+            {
+              "name": "8080-tcp",
+              "protocol": "TCP",
+              "port": 8080,
+              "targetPort": 8080
+            }
+          ],
+          "selector": {
+            "name": "${NAME}"
+          }
+        }
+      },
+      {
+        "kind": "Route",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}"
+        },
+        "spec": {
+          "host": "${APPLICATION_DOMAIN}",
+          "tls": {
+            "insecureEdgeTerminationPolicy": "Redirect",
+            "termination": "edge"
+          },
+          "to": {
+            "kind": "Service",
+            "name": "${NAME}"
+          }
+        }
+      },
+      {
+        "kind": "DeploymentConfig",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "description": "Defines how to deploy the container."
+          }
+        },
+        "spec": {
+          "strategy": {
+            "type": "Rolling",
+            "rollingParams": {
+              "updatePeriodSeconds": 1,
+              "intervalSeconds": 1,
+              "timeoutSeconds": 600,
+              "maxUnavailable": "25%",
+              "maxSurge": "25%"
+            }
+          },
+          "triggers": [
+            {
+              "type": "ConfigChange"
+            },
+            {
+              "type": "ImageChange",
+              "imageChangeParams": {
+                "automatic": true,
+                "containerNames": [
+                  "${NAME}"
+                ],
+                "from": {
+                  "kind": "ImageStreamTag",
+                  "namespace": "${IMAGE_NAMESPACE}",
+                  "name": "${NAME}:${TAG_NAME}"
+                }
+              }
+            }
+          ],
+          "replicas": 1,
+          "selector": {
+            "name": "${NAME}"
+          },
+          "template": {
+            "metadata": {
+              "name": "${NAME}",
+              "labels": {
+                "name": "${NAME}"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "name": "${NAME}",
+                  "image": " ",
+                  "ports": [
+                    {
+                      "containerPort": 8080,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "env": [
+                    {
+                      "name": "DATABASE_HOST",
+                      "value": "${DATABASE_HOST}"
+                    },
+                    {
+                      "name": "DATABASE_NAME",
+                      "value": "${DATABASE_NAME}"
+                    },
+                    {
+                      "name": "DATABASE_USER",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DATABASE_DEPLOYMENT_NAME}",
+                          "key": "database-user"
+                        }
+                      }
+                    },
+                    {
+                      "name": "DATABASE_PASSWORD",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DATABASE_DEPLOYMENT_NAME}",
+                          "key": "database-password"
+                        }
+                      }
+                    }
+                  ],
+                  "readinessProbe": {
+                    "timeoutSeconds": 300,
+                    "initialDelaySeconds": 60,
+                    "httpGet": {
+                      "path": "/",
+                      "port": 8080
+                    }
+                  },
+                  "livenessProbe": {
+                    "timeoutSeconds": 300,
+                    "initialDelaySeconds": 300,
+                    "httpGet": {
+                      "path": "/",
+                      "port": 8080
+                    }
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "${CPU_LIMIT}",
+                      "memory": "${MEMORY_LIMIT}"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": [
+      {
+        "name": "NAME",
+        "displayName": "Name",
+        "description": "The name assigned to all objects defined in this template.",
+        "required": true,
+        "value": "schema-spy"
+      },
+      {
+        "name": "IMAGE_NAMESPACE",
+        "displayName": "Image Namespace",
+        "required": true,
+        "description": "The namespace of the OpenShift project containing the imagestream for the application.",
+        "value": "devex-von-tools"
+      },
+      {
+        "name": "CPU_LIMIT",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "1"
+      },
+      {
+        "name": "MEMORY_LIMIT",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "1Gi"
+      },
+      {
+        "name": "APPLICATION_DOMAIN",
+        "displayName": "Application Hostname",
+        "description": "The exposed hostname that will route to the service, if left blank a value will be defaulted.",
+        "value": ""
+      },
+      {
+        "name": "DATABASE_HOST",
+        "displayName": "The host name (or ip address) for the database server; override to match your environment.  In the case of Oracle databases this must be a <hostname|ipaddress>:<port> pair even if using the default Oracle port; a requirement of the Oracle Thin SchemaSpy process.",
+        "required": true,
+        "value": "postgresql"
+      },
+      {
+        "name": "DATABASE_NAME",
+        "displayName": "Database Name",
+        "required": true,
+        "description": "Name of the deployed database (see environment variables in deployed database).",
+        "value": "TheOrgBook_Database"
+      },
+      {
+        "name": "TAG_NAME",
+        "displayName": "Environment TAG name",
+        "description": "The TAG name for this environment, e.g., dev, test, prod",
+        "value": "dev",
+        "required": true
+      },
+      {
+        "name": "DATABASE_DEPLOYMENT_NAME",
+        "displayName": "Database Deployment Name",
+        "description": "The name associated to the database deployment resources.  In particular, this is used to wrie up the credentials associated to the database.",
+        "required": true,
+        "value": "postgresql"
+      }
+    ]
+  }
