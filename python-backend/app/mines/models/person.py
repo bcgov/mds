@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 from .mixins import AuditMixin
 
+
 class Person(AuditMixin, db.Model):
     __tablename__ = 'person'
     person_guid = db.Column(UUID(as_uuid=True), primary_key=True)
@@ -51,6 +52,7 @@ class Person(AuditMixin, db.Model):
     @classmethod
     def find_by_name(cls, first_name, surname):
         return cls.query.filter(func.lower(cls.first_name)==func.lower(first_name), func.lower(cls.surname)==func.lower(surname)).first()
+
 
 class MgrAppointment(AuditMixin, db.Model):
     __tablename__ = "mgr_appointment"

@@ -18,6 +18,7 @@ class Config(object):
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG', 'https://URL/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
+    ITEMS_PER_PAGE = 50
 
 class TestConfig(Config):
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
