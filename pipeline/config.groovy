@@ -94,16 +94,6 @@ app {
                             'SOURCE_CONTEXT_DIR': "migrations",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
-                ],
-                [
-                    'file':'openshift/tools/schemaspy.bc.json',
-                    'params':[
-                            'NAME':"schemaspy",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
                 ]
         ]
     }
@@ -158,17 +148,6 @@ app {
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
-                    ]
-                ],
-                [
-                    'file':'openshift/tools/schemaspy.dc.json',
-                    'params':[
-                            'NAME':"schemaspy",
-                            'IMAGE_NAMESPACE':"${app.build.namespace}",
-                            'TAG_NAME':"${app.deployment.version}",
-                            'POSTGRESQL_DATABASE':'mds',
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'APPLICATION_DOMAIN': "https://${vars.modules.'schemaspy'.HOST}"
                     ]
                 ]
         ]
