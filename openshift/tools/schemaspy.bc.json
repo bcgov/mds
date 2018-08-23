@@ -2,11 +2,8 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-      "annotations": {
-        "description": "SchemaSpy build template.",
-        "tags": "schema-spy"
-      },
-      "name": "${NAME}-bc"
+        "name": "mds-schemaspy-bc",
+        "creationTimestamp": null
     },
     "objects": [
       {

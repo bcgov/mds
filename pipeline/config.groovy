@@ -94,6 +94,16 @@ app {
                             'SOURCE_CONTEXT_DIR': "migrations",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/schemaspy.bc.json',
+                    'params':[
+                            'NAME':"schemaspy",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
                 ]
         ]
     }
