@@ -45,7 +45,7 @@ export class Dashboard extends Component {
             </div>
             <div style={{ padding: "10px" }}>
               <Button type="primary" size="small" >
-                Create Mine Record
+                Create Record
             </Button>
             </div>
           </Link>
