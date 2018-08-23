@@ -28,6 +28,10 @@ class MineIdentity(AuditMixin, db.Model):
     def json(self):
         return {'guid': str(self.mine_guid), 'mgr_appointment': [item.json() for item in self.mgr_appointment], 'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref], 'mine_detail': [item.json() for item in self.mine_detail]}
 
+    def json_by_name(self):
+        mine_detail = self.mine_detail[0]
+        return {'guid': str(self.mine_guid), 'mine_name': mine_detail.mine_name if mine_detail else '', 'mine_no': mine_detail.mine_no if mine_detail else '' }
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:

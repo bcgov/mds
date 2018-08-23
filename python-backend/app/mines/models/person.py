@@ -85,8 +85,8 @@ class MgrAppointment(AuditMixin, db.Model):
     
     @classmethod
     def find_by_person_guid(cls, _id):
-        return cls.query.filter_by(person_guid=_id).first()
+        return cls.query.filter_by(person_guid=_id)
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).first()
+        return cls.query.filter_by(mine_guid=_id)
