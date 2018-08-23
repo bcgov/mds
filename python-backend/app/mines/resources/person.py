@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import uuid
 
 from flask_restplus import Resource, reqparse
@@ -92,6 +92,15 @@ class ManagerResource(Resource):
         mine_exists = MineIdentity.find_by_mine_guid(data['mine_guid'])
         if not mine_exists:
             return {'error': 'Mine with guid: {}, does not exist.'.format(data['mine_guid'])}, 400
+        # Check if there is a previous manager, set expiry the day before new manager
+        previous_mgr_expiry_date = data['effective_date'] - timedelta(days=1)
+        previous_mgrs = mine_exists.mgr_appointment
+        if previous_mgrs:
+            previous_mgr_info = previous_mgrs[0]
+            previous_mgr = MgrAppointment.find_by_mgr_appointment_guid(previous_mgr_info.mgr_appointment_guid)
+            previous_mgr.expiry_date = previous_mgr_expiry_date
+            previous_mgr.save()
+
         # Dummy User for now
         dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
         manager=MgrAppointment(

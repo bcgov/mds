@@ -1,5 +1,7 @@
 import uuid
 
+from flask import request
+
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..utils.random import generate_mine_no
@@ -64,3 +66,9 @@ class MineList(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         return { 'mines': list(map(lambda x: x.json(), MineIdentity.query.all())) }
+
+
+class MineListByName(Resource):
+    @jwt.requires_roles(["mds-mine-view"])
+    def get(self):
+        return { 'mines': list(map(lambda x: x.json_by_name(), MineIdentity.query.all())) }

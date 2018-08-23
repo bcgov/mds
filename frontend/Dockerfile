@@ -1,10 +1,9 @@
-FROM node:8-alpine
+FROM node:8
 
 MAINTAINER FreshWorks <web@freshworks.io>
 
-RUN echo "@edge http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-RUN apk update
-RUN apk add --no-cache nasm build-base libtool libpng-dev autoconf automake
+RUN apt-get update
+RUN apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 # Create working directory
 RUN mkdir /app
