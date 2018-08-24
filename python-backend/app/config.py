@@ -7,6 +7,7 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     DB_HOST = os.environ.get('DB_HOST', 'localhost')
@@ -18,6 +19,7 @@ class Config(object):
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG', 'https://URL/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
+
 
 class TestConfig(Config):
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
