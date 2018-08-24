@@ -45,6 +45,7 @@ export const AddPersonnelForm = (props) => {
 AddPersonnelForm.propTypes = propTypes;
 
 export default (reduxForm({
-    form: FORM.ADD_PERSONNEL
+    form: FORM.ADD_PERSONNEL,
+    destroyOnUnmount: true
   })(AddPersonnelForm)
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CreateMine } from '@/components/mine/CreateMine';
+import { CreateMine } from '@/components/dashboard/CreateMine';
 
 const dispatchProps = {};
 
