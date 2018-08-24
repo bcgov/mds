@@ -41,7 +41,7 @@
           "kind": "ImageStream",
           "apiVersion": "v1",
           "metadata": {
-              "name": "${NAME}"
+              "name": "${NAME}${SUFFIX}"
           }
       },
       {
@@ -75,7 +75,7 @@
           "output": {
             "to": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}:${SUFFIX}"
+              "name": "${NAME}${SUFFIX}:${VERSION}"
             }
           },
           "triggers": [
