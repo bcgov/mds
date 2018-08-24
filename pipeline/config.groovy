@@ -167,7 +167,7 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ]
