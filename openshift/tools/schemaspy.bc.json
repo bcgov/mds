@@ -75,7 +75,7 @@
           "output": {
             "to": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}${SUFFIX}:${VERSION}"
+              "name": "${NAME}${SUFFIX}:${VEwRSION}"
             }
           },
           "triggers": [
@@ -104,6 +104,10 @@
         "required": true,
         "value": "https://github.com/bcgov/SchemaSpy.git"
 
+      },
+      {
+        "name": "VERSION",
+        "required": true
       },
       {
         "name": "GIT_REF",
