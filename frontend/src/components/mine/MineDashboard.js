@@ -12,6 +12,7 @@ import UpdateMine from './SummaryTab/UpdateMine';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
+import Loading from '@/components/reusables/Loading';
 
 const TabPane = Tabs.TabPane;
 
@@ -33,20 +34,24 @@ const defaultProps = {
 
 export class MineDashboard extends Component {
   render() {
-      return (
-        <div>
-          <MineHeader mine={this.props.mine}/>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Summary" key="1">
-              <MineSummary mine={this.props.mine} />
-              <UpdateMine {...this.props} />
-            </TabPane>
-            <TabPane tab="Contact Information" key="2">
-              <MineContactInfo mine={this.props.mine}/>
-            </TabPane>
-          </Tabs>
-        </div>
-      );
+    if (!this.props.mine) {
+      return(<Loading />)
+    } else {
+        return (
+          <div>
+            <MineHeader mine={this.props.mine}/>
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="Summary" key="1">
+                <MineSummary mine={this.props.mine} />
+                <UpdateMine {...this.props} />
+              </TabPane>
+              <TabPane tab="Contact Information" key="2">
+                <MineContactInfo mine={this.props.mine}/>
+              </TabPane>
+            </Tabs>
+          </div>
+        );
+      }
     }
   }
 

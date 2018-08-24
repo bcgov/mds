@@ -36,6 +36,7 @@ export const AddMineRecordform = (props) => {
 AddMineRecordform.propTypes = propTypes;
 
 export default (reduxForm({
-    form: FORM.ADD_MINE_RECORD
+    form: FORM.ADD_MINE_RECORD,
+    destroyOnUnmount: true
   })(AddMineRecordform)
 );

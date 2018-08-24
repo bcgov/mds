@@ -36,7 +36,7 @@ class MineList extends Component {
                   <Link to={router.MINE_SUMMARY.dynamicRoute(mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "")}>
                     <Button type="primary" size="small" >
                       View
-                      </Button>
+                    </Button>
                   </Link>
                 </Col>
               </Row>

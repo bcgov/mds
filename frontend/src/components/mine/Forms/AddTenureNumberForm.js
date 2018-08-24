@@ -34,6 +34,7 @@ export const AddTenureNumberForm = (props) => {
 AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
-  form: FORM.ADD_TENURE_NUMBER
+  form: FORM.ADD_TENURE_NUMBER,
+  destroyOnUnmount: true
 })(AddTenureNumberForm)
 );

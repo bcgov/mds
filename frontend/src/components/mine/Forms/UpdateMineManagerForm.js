@@ -56,6 +56,7 @@ UpdateMineManagerForm.propTypes = propTypes;
 UpdateMineManagerForm.defaultProps = defaultProps;
 
 export default (reduxForm({
-    form: FORM.UPDATE_MINE_MANAGER
+    form: FORM.UPDATE_MINE_MANAGER,
+    destroyOnUnmount: true
   })(UpdateMineManagerForm)
 );
