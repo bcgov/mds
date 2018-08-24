@@ -50,6 +50,7 @@ export const getMineRecords = () => (dispatch) => {
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST, createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
+    console.log(response);
     dispatch(mineActions.storeMineList(response.data));
     dispatch(hideLoading());
   })

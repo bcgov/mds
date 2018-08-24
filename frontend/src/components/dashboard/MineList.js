@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Col, Card, Row } from 'antd';
+import { Button, Col, Card, Row, Pagination } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
@@ -15,9 +15,14 @@ const defaultProps = {
 };
 
 class MineList extends Component {
+  onShowSizeChange(current, pageSize) {
+    console.log(current, pageSize);
+    console.log(this.props.mine);
+  }
   render() {
     const { mines, mineIds } = this.props;
     return (
+      <div>
       <Card title="Mines">
         <Row type="flex">
           <Col span={4}><strong>MINE_NO</strong></Col>
@@ -33,7 +38,7 @@ class MineList extends Component {
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                 <Col span={8}>{mines[id].guid}</Col>
                 <Col span={4}>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "")}>
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary" size="small" >
                       View
                     </Button>
@@ -44,6 +49,8 @@ class MineList extends Component {
           )
         })}
       </Card>
+        <Pagination showSizeChanger onShowSizeChange={this.onShowSizeChange} defaultCurrent={1} total={500} pageSizeOptions={['25', '50', '75', '100']}/>
+      </div>
     );
   }
 }
