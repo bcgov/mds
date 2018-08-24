@@ -159,6 +159,17 @@ app {
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/schemaspy.dc.json',
+                    'params':[
+                            'NAME':"schemaspy",
+                            'VERSION':"${app.deployment.version}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                    ]
                 ]
         ]
     }

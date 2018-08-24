@@ -75,7 +75,7 @@
           "output": {
             "to": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}${SUFFIX}:${VERSION}"
+              "name": "${NAME}:${VERSION}"
             }
           },
           "triggers": [

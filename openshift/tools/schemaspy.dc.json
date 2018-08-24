@@ -5,7 +5,7 @@
       "name": "${NAME}-dc",
       "annotations": {
         "description": "SchemaSpy deployment template.",
-        "tags": "schema-spy"
+        "tags": "schemaspy"
       }
     },
     "objects": [
@@ -51,6 +51,26 @@
         }
       },
       {
+        "kind": "ImageStream",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "creationTimestamp": null,
+          "labels": {
+            "shared": "true"
+          },
+          "annotations": {
+            "description": "Keeps track of changes in the application image"
+          }
+        },
+        "spec": {
+          "lookupPolicy": {
+            "local": false
+          },
+          "tags":[ ]
+        }
+      },
+      {
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
@@ -65,9 +85,7 @@
             "rollingParams": {
               "updatePeriodSeconds": 1,
               "intervalSeconds": 1,
-              "timeoutSeconds": 600,
-              "maxUnavailable": "25%",
-              "maxSurge": "25%"
+              "timeoutSeconds": 600
             }
           },
           "triggers": [
@@ -83,8 +101,7 @@
                 ],
                 "from": {
                   "kind": "ImageStreamTag",
-                  "namespace": "${IMAGE_NAMESPACE}",
-                  "name": "${NAME}:${TAG_NAME}"
+                  "name": "${NAME}:${VERSION}"
                 }
               }
             }
@@ -114,18 +131,23 @@
                   "env": [
                     {
                       "name": "DATABASE_HOST",
-                      "value": "${DATABASE_HOST}"
+                      "value": "${DB_CONFIG_NAME}"
                     },
                     {
                       "name": "DATABASE_NAME",
-                      "value": "${DATABASE_NAME}"
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-name"
+                        }
+                      }
                     },
                     {
                       "name": "DATABASE_USER",
                       "valueFrom": {
                         "secretKeyRef": {
-                          "name": "${DATABASE_DEPLOYMENT_NAME}",
-                          "key": "database-user"
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-admin-user"
                         }
                       }
                     },
@@ -133,8 +155,8 @@
                       "name": "DATABASE_PASSWORD",
                       "valueFrom": {
                         "secretKeyRef": {
-                          "name": "${DATABASE_DEPLOYMENT_NAME}",
-                          "key": "database-password"
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-admin-password"
                         }
                       }
                     }
@@ -177,11 +199,8 @@
         "value": "schema-spy"
       },
       {
-        "name": "IMAGE_NAMESPACE",
-        "displayName": "Image Namespace",
-        "required": true,
-        "description": "The namespace of the OpenShift project containing the imagestream for the application.",
-        "value": "devex-von-tools"
+        "name": "VERSION",
+        "required": true
       },
       {
         "name": "DB_CONFIG_NAME",
@@ -208,13 +227,6 @@
         "displayName": "Application Hostname",
         "description": "The exposed hostname that will route to the service, if left blank a value will be defaulted.",
         "value": ""
-      },
-      {
-        "name": "TAG_NAME",
-        "displayName": "Environment TAG name",
-        "description": "The TAG name for this environment, e.g., dev, test, prod",
-        "value": "dev",
-        "required": true
       }
     ]
   }
