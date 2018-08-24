@@ -3,7 +3,7 @@ import sys
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
-from .mines.resources.mine import Mine, MineList
+from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList
 from .config import Config
 
@@ -48,6 +48,7 @@ def register_routes(app, api):
     # Set Routes for each resource
     api.add_resource(Mine, '/mine', '/mine/<string:mine_no>')
     api.add_resource(MineList, '/mines')
+    api.add_resource(MineListByName, '/mines/names')
     api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
     api.add_resource(PersonList, '/persons')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
