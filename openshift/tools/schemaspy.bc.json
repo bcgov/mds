@@ -41,7 +41,7 @@
           "kind": "ImageStream",
           "apiVersion": "v1",
           "metadata": {
-              "name": "${NAME}${SUFFIX}"
+              "name": "${NAME}"
           }
       },
       {
@@ -122,13 +122,6 @@
         "description": "The source context directory.",
         "required": false,
         "value": ""
-      },
-      {
-        "name": "SUFFIX",
-        "displayName": "Output Image Tag",
-        "description": "The tag given to the built image.",
-        "required": true,
-        "value": "latest"
       }
     ]
   }
