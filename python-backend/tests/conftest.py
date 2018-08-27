@@ -7,8 +7,30 @@ from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from app.mines.models.person import Person, MgrAppointment
-
-from .constants import *
+from app.mines.models.location import MineLocation
+from .constants import (TEST_MINE_NAME,
+                        TEST_MINE_NO,
+                        TEST_FIRST_NAME,
+                        TEST_SURNAME,
+                        TEST_FIRST_NAME_2,
+                        TEST_SURNAME_2,
+                        TEST_FIRST_NAME_3,
+                        TEST_SURNAME_3,
+                        TEST_MINE_GUID,
+                        TEST_PERSON_GUID,
+                        TEST_PERSON_2_GUID,
+                        TEST_PERSON_3_GUID,
+                        TEST_MANAGER_GUID,
+                        TEST_TENURE_ID,
+                        DUMMY_USER_KWARGS,
+                        TEST_LOCATION_GUID,
+                        TEST_LAT_1,
+                        TEST_LONG_1,
+                        BASE_AUTH_CLAIMS,
+                        FULL_AUTH_CLAIMS,
+                        VIEW_ONLY_AUTH_CLAIMS,
+                        TOKEN_HEADER
+                        )
 
 
 @pytest.fixture(scope="session")
@@ -31,7 +53,7 @@ def auth_headers(app):
         'base_auth_header': {'Authorization': 'Bearer ' + base_auth_token},
         'full_auth_header': {'Authorization': 'Bearer ' + full_auth_token},
         'view_only_auth_header': {'Authorization': 'Bearer ' + view_only_auth_token},
-        }
+    }
 
 
 @pytest.fixture(scope='module')
@@ -65,27 +87,39 @@ def setup_data():
     tenure = MineralTenureXref(mine_guid=uuid.UUID(TEST_MINE_GUID), tenure_number_id=TEST_TENURE_ID, **DUMMY_USER_KWARGS)
     tenure.save()
 
+    # Test Location Data
+    mine_location = MineLocation(
+        mine_location_guid=TEST_LOCATION_GUID,
+        mine_guid=TEST_MINE_GUID,
+        latitude=TEST_LAT_1,
+        longitude=TEST_LONG_1,
+        effective_date=datetime.today(),
+        expiry_date=datetime.today(),
+        **DUMMY_USER_KWARGS,
+    )
+    mine_location.save()
+
     # Test Person Data
     person = Person(
         person_guid=uuid.UUID(TEST_PERSON_GUID),
         first_name=TEST_FIRST_NAME,
         surname=TEST_SURNAME,
         **DUMMY_USER_KWARGS
-        )
+    )
     person.save()
     person2 = Person(
         person_guid=uuid.UUID(TEST_PERSON_2_GUID),
         first_name=TEST_FIRST_NAME_2,
         surname=TEST_SURNAME_2,
         **DUMMY_USER_KWARGS
-        )
+    )
     person2.save()
     person3 = Person(
         person_guid=uuid.UUID(TEST_PERSON_3_GUID),
         first_name=TEST_FIRST_NAME_3,
         surname=TEST_SURNAME_3,
         **DUMMY_USER_KWARGS
-        )
+    )
     person3.save()
 
     # Test Manager Data
@@ -96,7 +130,7 @@ def setup_data():
         effective_date=datetime.today(),
         expiry_date=datetime.today(),
         **DUMMY_USER_KWARGS
-        )
+    )
     manager.save()
 
 

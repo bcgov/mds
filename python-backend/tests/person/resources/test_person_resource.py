@@ -1,5 +1,5 @@
 import json
-from ..constants import *
+from tests.constants import TEST_MINE_GUID, TEST_PERSON_GUID, TEST_FIRST_NAME, TEST_SURNAME
 
 
 # GET
@@ -65,7 +65,6 @@ def test_put_person_not_found(test_client, auth_headers):
     test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME}
     put_resp = test_client.put('/person/' + TEST_MINE_GUID, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    
     assert put_data == {'message': 'Person not found'}
     assert put_resp.status_code == 404
 
@@ -74,9 +73,9 @@ def test_put_person_name_exists(test_client, auth_headers):
     test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME}
     put_resp = test_client.put('/person/' + TEST_PERSON_GUID, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    
     assert put_data == {'error': 'Person with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['surname'])}
     assert put_resp.status_code == 400
+
 
 def test_put_person_success(test_client, auth_headers):
     test_person_data = {"first_name": "Changedfirst", "surname": "Changedlast"}

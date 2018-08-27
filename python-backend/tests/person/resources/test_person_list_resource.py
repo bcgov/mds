@@ -1,5 +1,5 @@
 import json
-from ..constants import *
+from tests.constants import TEST_PERSON_GUID
 
 
 # GET

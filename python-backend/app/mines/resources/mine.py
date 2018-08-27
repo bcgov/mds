@@ -32,12 +32,12 @@ class Mine(Resource):
             return {'error': 'Specified name exceeds 60 characters.'}, 400
         # Dummy User for now
         dummy_user = 'DummyUser'
-        dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
-        mine_identity= MineIdentity(mine_guid=uuid.uuid4(), **dummy_user_kwargs)
+        dummy_user_kwargs = {'create_user': dummy_user, 'update_user': dummy_user}
+        mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **dummy_user_kwargs)
         mine_identity.save()
         mine_detail = MineDetail(mine_guid=mine_identity.mine_guid, mine_no=generate_mine_no(), mine_name=data['name'], **dummy_user_kwargs)
         mine_detail.save()
-        return { 'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name }
+        return {'mine_guid': str(mine_detail.mine_guid), 'mine_no': mine_detail.mine_no, 'mine_name': mine_detail.mine_name}
 
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, mine_no):
@@ -56,7 +56,7 @@ class Mine(Resource):
         if tenure_exists:
             return {'error': 'Field tenure_id already exists for this mine'}, 400
         dummy_user = 'DummyUser'
-        dummy_user_kwargs = { 'create_user': dummy_user, 'update_user': dummy_user }
+        dummy_user_kwargs = {'create_user': dummy_user, 'update_user': dummy_user}
         tenure = MineralTenureXref(mine_guid=mine.mine_guid, tenure_number_id=tenure, **dummy_user_kwargs)
         tenure.save()
         return mine.json()
@@ -67,7 +67,7 @@ class MineList(Resource):
     def get(self):
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
-        mines = MineIdentity.query.paginate(page,items_per_page,False)
+        mines = MineIdentity.query.paginate(page, items_per_page, False)
         return {
             'mines': list(map(lambda x: x.json(), mines.items)),
             'has_next': mines.has_next,
@@ -78,10 +78,10 @@ class MineList(Resource):
             'total_pages': mines.pages,
             'items_per_page': mines.per_page,
             'total': mines.total,
-            }
+        }
 
 
 class MineListByName(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
-        return { 'mines': list(map(lambda x: x.json_by_name(), MineIdentity.query.all())) }
+        return {'mines': list(map(lambda x: x.json_by_name(), MineIdentity.query.all()))}

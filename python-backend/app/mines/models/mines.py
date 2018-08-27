@@ -17,7 +17,7 @@ class MineIdentity(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
-    
+
     def save(self):
         db.session.add(self)
         try:
@@ -26,16 +26,25 @@ class MineIdentity(AuditMixin, db.Model):
             db.session.rollback()
 
     def json(self):
-        return {'guid': str(self.mine_guid), 'mgr_appointment': [item.json() for item in self.mgr_appointment], 'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref], 'mine_detail': [item.json() for item in self.mine_detail]}
+        return {
+            'guid': str(self.mine_guid),
+            'mgr_appointment': [item.json() for item in self.mgr_appointment],
+            'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
+            'mine_detail': [item.json() for item in self.mine_detail]
+        }
 
     def json_by_name(self):
         mine_detail = self.mine_detail[0]
-        return {'guid': str(self.mine_guid), 'mine_name': mine_detail.mine_name if mine_detail else '', 'mine_no': mine_detail.mine_no if mine_detail else '' }
+        return {
+            'guid': str(self.mine_guid),
+            'mine_name': mine_detail.mine_name if mine_detail else '',
+            'mine_no': mine_detail.mine_no if mine_detail else ''
+        }
 
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
-            valid_uuid = uuid_python(_id, version=4)
+            uuid_python(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).first()
         except ValueError:
             return None
@@ -53,7 +62,7 @@ class MineDetail(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
-    
+
     def save(self):
         db.session.add(self)
         try:

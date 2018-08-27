@@ -18,7 +18,7 @@ class Person(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid
-    
+
     def save(self):
         db.session.add(self)
         try:
@@ -35,7 +35,7 @@ class Person(AuditMixin, db.Model):
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
-            }
+        }
 
     @classmethod
     def find_by_person_guid(cls, _id):
@@ -44,14 +44,14 @@ class Person(AuditMixin, db.Model):
     @classmethod
     def find_by_mgr_appointment(cls, _id):
         return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mgr_appointment_guid=_id).first()
-    
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mine_guid=_id).first()
-    
+
     @classmethod
     def find_by_name(cls, first_name, surname):
-        return cls.query.filter(func.lower(cls.first_name)==func.lower(first_name), func.lower(cls.surname)==func.lower(surname)).first()
+        return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.surname) == func.lower(surname)).first()
 
 
 class MgrAppointment(AuditMixin, db.Model):
@@ -64,7 +64,7 @@ class MgrAppointment(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
-    
+
     def save(self):
         db.session.add(self)
         try:
@@ -79,12 +79,12 @@ class MgrAppointment(AuditMixin, db.Model):
             'person_guid': str(self.person_guid),
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
-            }
+        }
 
     @classmethod
     def find_by_mgr_appointment_guid(cls, _id):
         return cls.query.filter_by(mgr_appointment_guid=_id).first()
-    
+
     @classmethod
     def find_by_person_guid(cls, _id):
         return cls.query.filter_by(person_guid=_id)
