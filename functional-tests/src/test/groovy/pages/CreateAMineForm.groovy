@@ -3,8 +3,7 @@ package pages
 
 import geb.Page
 
-class CreateAMinePage extends Page {
-    static at = { header == "Create Mine Form" }
+class CreateAMineForm extends Module {
     static content = {
         header {$("div", class:"ant-card-head-title").text()}
         mineNameBox (wait:true) {$("input", placeholder:"Mine Name")}
