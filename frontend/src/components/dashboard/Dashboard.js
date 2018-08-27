@@ -35,12 +35,14 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = { redirectTo: null, page: null, per_page: null }
-
+ 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
-    this.setState({ page: params.page, per_page: params.per_page })
-    this.props.getMineRecords(params.page, params.per_page);
+    if (params.page && params.per_page) {
+      this.props.getMineRecords(params.page, params.per_page);
+    } else {
+      this.props.getMineRecords('1', '5');
+    }
     this.props.getMineNameList();
   }
   
@@ -50,7 +52,6 @@ export class Dashboard extends Component {
     if (locationChanged) {
       const params = queryString.parse(nextProps.location.search);
       this.props.getMineRecords(params.page, params.per_page);
-      this.setState({ page: params.page, per_page: params.per_page})
     }
   }
   
@@ -59,8 +60,9 @@ export class Dashboard extends Component {
   }
 
   render() {
-    const pageNumber = Number(this.state.page);
-    const perPageNumber = Number(this.state.per_page);
+    const params = queryString.parse(this.props.location.search);
+    const pageNumber = params.page ? Number(params.page) : 1;
+    const perPageNumber = params.per_page ? Number(params.per_page) : 5;
     return (
       <div>
         <CreateMine createMineRecord={this.props.createMineRecord}/>
