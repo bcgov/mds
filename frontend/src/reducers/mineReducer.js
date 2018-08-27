@@ -10,6 +10,7 @@ const initialState = {
   mines: {},
   mineIds: [],
   mineNameList: [],
+  minesPageData: {}
 };
 
 const createItemMap = (array, idField) => {
@@ -30,6 +31,7 @@ const mineReducer = (state = initialState, action) => {
           ...state,
           mines: createItemMap(action.payload.mines, 'guid'),
           mineIds: createItemIdsArray(action.payload.mines, 'guid'),
+          minesPageData: action.payload
         }
       case actionTypes.STORE_MINE:
         return {
@@ -56,5 +58,6 @@ const mineReducer = (state = initialState, action) => {
 export const getMines = (state) => state[MINES].mines;
 export const getMineIds = (state) => state[MINES].mineIds;
 export const getMineNames = (state) => state[MINES].mineNameList;
+export const getMinesPageData = (state) => state[MINES].minesPageData;
 
 export default mineReducer;

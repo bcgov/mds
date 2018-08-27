@@ -33,7 +33,7 @@ ShallowWrapper {
         <MenuItem>
           <Link
             replace={false}
-            to="/dashboard"
+            to="/dashboard?page=1&per_page=5"
           >
             Home
           </Link>
@@ -61,7 +61,7 @@ ShallowWrapper {
           <MenuItem>
             <Link
               replace={false}
-              to="/dashboard"
+              to="/dashboard?page=1&per_page=5"
             >
               Home
             </Link>
@@ -91,7 +91,7 @@ ShallowWrapper {
           "props": Object {
             "children": <Link
               replace={false}
-              to="/dashboard"
+              to="/dashboard?page=1&per_page=5"
             >
               Home
             </Link>,
@@ -104,7 +104,7 @@ ShallowWrapper {
             "props": Object {
               "children": "Home",
               "replace": false,
-              "to": "/dashboard",
+              "to": "/dashboard?page=1&per_page=5",
             },
             "ref": null,
             "rendered": "Home",
@@ -174,7 +174,7 @@ ShallowWrapper {
           <MenuItem>
             <Link
               replace={false}
-              to="/dashboard"
+              to="/dashboard?page=1&per_page=5"
             >
               Home
             </Link>
@@ -202,7 +202,7 @@ ShallowWrapper {
             <MenuItem>
               <Link
                 replace={false}
-                to="/dashboard"
+                to="/dashboard?page=1&per_page=5"
               >
                 Home
               </Link>
@@ -232,7 +232,7 @@ ShallowWrapper {
             "props": Object {
               "children": <Link
                 replace={false}
-                to="/dashboard"
+                to="/dashboard?page=1&per_page=5"
               >
                 Home
               </Link>,
@@ -245,7 +245,7 @@ ShallowWrapper {
               "props": Object {
                 "children": "Home",
                 "replace": false,
-                "to": "/dashboard",
+                "to": "/dashboard?page=1&per_page=5",
               },
               "ref": null,
               "rendered": "Home",

@@ -7,17 +7,20 @@ import * as router from '@/constants/routes';
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
+  pageData: PropTypes.object.isRequired
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
+  pageData: {}
 };
 
 class MineList extends Component {
   render() {
     const { mines, mineIds } = this.props;
     return (
+      <div>
       <Card title="Mines">
         <Row type="flex">
           <Col span={4}><strong>MINE_NO</strong></Col>
@@ -33,7 +36,7 @@ class MineList extends Component {
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                 <Col span={8}>{mines[id].guid}</Col>
                 <Col span={4}>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "")}>
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary" size="small" >
                       View
                     </Button>
@@ -44,6 +47,7 @@ class MineList extends Component {
           )
         })}
       </Card>
+      </div>
     );
   }
 }

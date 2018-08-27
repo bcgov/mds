@@ -10,6 +10,7 @@ export const DASHBOARD = {
 
 export const MINE_DASHBOARD = {
   route: '/dashboard',
+  dynamicRoute: (page, per_page) => `/dashboard?page=${page}&per_page=${per_page}`,
   component: Dashboard,
 };
 
