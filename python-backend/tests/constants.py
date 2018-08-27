@@ -14,8 +14,8 @@ TEST_PERSON_3_GUID = 'df4939f0-04c9-49dc-bf04-2a3c3b8b0e23'
 TEST_MANAGER_GUID = 'bf24fa6b-d6ad-4e20-8ce8-9bf92ad4d910'
 TEST_TENURE_ID = '1231231'
 TEST_LOCATION_GUID = 'bd933449-c6a0-4b91-8b54-4f854d0315eb'
-TEST_LAT_1 = '48.4284'
-TEST_LONG_1 = '123.3656'
+TEST_LAT_1 = '48.4284000'
+TEST_LONG_1 = '123.3656000'
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
 # Auth Constants

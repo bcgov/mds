@@ -89,8 +89,8 @@ def setup_data():
 
     # Test Location Data
     mine_location = MineLocation(
-        mine_location_guid=TEST_LOCATION_GUID,
-        mine_guid=TEST_MINE_GUID,
+        mine_location_guid=uuid.UUID(TEST_LOCATION_GUID),
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
         latitude=TEST_LAT_1,
         longitude=TEST_LONG_1,
         effective_date=datetime.today(),

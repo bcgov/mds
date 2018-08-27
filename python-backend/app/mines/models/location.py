@@ -28,10 +28,10 @@ class MineLocation(AuditMixin, db.Model):
 
     def json(self):
         return {
-            'mine_location_guid': self.mine_location_guid,
-            'mine_guid': self.mine_guid,
-            'latitude': self.latitude,
-            'longitude': self.longitude
+            'mine_location_guid': str(self.mine_location_guid),
+            'mine_guid': str(self.mine_guid),
+            'latitude': str(self.latitude),
+            'longitude': str(self.longitude)
         }
 
     @classmethod

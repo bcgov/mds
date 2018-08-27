@@ -12,7 +12,7 @@ class MineIdentity(AuditMixin, db.Model):
     mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy=True)
     mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy=True)
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy=True)
-
+    mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy=True)
     # might have to add UUID(as_uuid=True) if we want to pass as UUID obj and not string
 
     def __repr__(self):
@@ -34,11 +34,19 @@ class MineIdentity(AuditMixin, db.Model):
         }
 
     def json_by_name(self):
-        mine_detail = self.mine_detail[0]
+        mine_detail = self.mine_detail[0] if self.mine_detail else None
         return {
             'guid': str(self.mine_guid),
             'mine_name': mine_detail.mine_name if mine_detail else '',
             'mine_no': mine_detail.mine_no if mine_detail else ''
+        }
+
+    def json_by_location(self):
+        mine_location = self.mine_location[0] if self.mine_location else None
+        return {
+            'guid': str(self.mine_guid),
+            'latitude': str(mine_location.latitude),
+            'longitude': str(mine_location.longitude)
         }
 
     @classmethod
