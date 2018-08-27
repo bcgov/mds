@@ -10,7 +10,7 @@ import pages.*
 @Title("MDS-MineProfilePage")
 @Narrative("At mine profile page, I can add tenure number")
 @Stepwise
-class  MineProfilePageTest extends GebReportingSpec {
+class  C_MineProfileSpec extends GebReportingSpec {
     //variables
     //static tempTenure = ""
     def selectedMine = ["",""]

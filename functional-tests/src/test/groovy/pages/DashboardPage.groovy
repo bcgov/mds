@@ -2,7 +2,7 @@ package pages
 
 import geb.Page
 
-class HomePage extends Page {
+class DashboardPage extends Page {
     static at = { header == "Mines"}
     static content = {
         header {$("div.ant-card-head-title").text()}

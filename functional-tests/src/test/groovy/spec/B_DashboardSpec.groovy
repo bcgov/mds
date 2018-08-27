@@ -8,25 +8,25 @@ import pages.*
 
 
 
-@Title("MDS-HomePage")
-@Narrative("At homepage, I can view mine records and create a new one")
+@Title("MDS-DashboardPage")
+@Narrative("At DashboardPage, I can view mine records and create a new one")
 @Stepwise
-class  HomePageTest extends GebReportingSpec {
+class  B_DashboardSpec extends GebReportingSpec {
     //variables
     static NAME_NULL = ""
-    static NAME_GOOD = "MineTest2"
+    static NAME_GOOD = "Trend-Roman"
     static NAME_LONG = "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"//61 chars
     def selectedMine = ["",""]
 
     def "Scenario: User is able to create a mine record given a valid MIND-Name"(){
-        given: "I go to the homepage"
-        to HomePage
+        given: "I go to the DashboardPage"
+        to DashboardPage
 
         when: "I click the create a mine button"
         createMineButton.click()
 
         then: "I go to the mine record form page"
-        at CreateAMinePage
+        at CreateAMineForm
 
         when: "I input valid mine name"
         createMineRecord(NAME_GOOD)
@@ -37,8 +37,8 @@ class  HomePageTest extends GebReportingSpec {
 
 
     def "Scenario: Error displayed when the given mine name is more than 60 char"(){
-        given: "I go to the homepage"
-        to HomePage
+        given: "I go to the DashboardPage"
+        to DashboardPage
 
         when: "I click the create a mine button"
         createMineButton.click()
@@ -55,8 +55,8 @@ class  HomePageTest extends GebReportingSpec {
 
 
     def "Scenario: Error displayed if mine name is null"(){
-        given: "I go to the homepage"
-        to HomePage
+        given: "I go to the DashboardPage"
+        to DashboardPage
 
         when: "I click the create a mine button"
         createMineButton.click()
@@ -72,8 +72,8 @@ class  HomePageTest extends GebReportingSpec {
     }
 
     def "Scenario: User can view the created record on Dashboard"(){
-        when: "I go to the homepage"
-        to HomePage
+        when: "I go to the DashboardPage"
+        to DashboardPage
 
         then: "I should see the created record on the Dashboard"
         sleep(1000)
