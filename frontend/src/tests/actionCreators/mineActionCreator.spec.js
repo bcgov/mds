@@ -73,11 +73,11 @@ describe('`updateMineRecord` action creator', () => {
 });
 
 describe('`getMineRecords` action creator', () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_LIST;
+  const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY('1', '5');
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return (getMineRecords()(dispatch)).then(() => {
+    return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -87,7 +87,7 @@ describe('`getMineRecords` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
-    return (getMineRecords()(dispatch)).then(() => {
+    return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

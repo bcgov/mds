@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Col, Card, Row, Pagination } from 'antd';
+import { Button, Col, Card, Row } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
+  pageData: PropTypes.object.isRequired
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
+  pageData: {}
 };
 
 class MineList extends Component {
-  onShowSizeChange(current, pageSize) {
-    console.log(current, pageSize);
-    console.log(this.props.mine);
-  }
   render() {
     const { mines, mineIds } = this.props;
     return (
@@ -49,7 +47,6 @@ class MineList extends Component {
           )
         })}
       </Card>
-        <Pagination showSizeChanger onShowSizeChange={this.onShowSizeChange} defaultCurrent={1} total={500} pageSizeOptions={['25', '50', '75', '100']}/>
       </div>
     );
   }

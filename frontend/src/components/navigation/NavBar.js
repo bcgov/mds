@@ -16,7 +16,6 @@ const defaultProps = {
   userInfo: {},
 };
 
-
 export class NavBar extends Component {
   render() {
     const { Header } = Layout;
@@ -27,7 +26,7 @@ export class NavBar extends Component {
           mode="horizontal"
           defaultSelectedKeys={['1']}
         >
-          <Menu.Item key="1"><Link to={router.MINE_DASHBOARD.route}>Home</Link></Menu.Item>
+          <Menu.Item key="1"><Link to={router.MINE_DASHBOARD.dynamicRoute('1', '5')}>Home</Link></Menu.Item>
           <Menu.Item key="2">Logged in as: {this.props.userInfo.preferred_username}</Menu.Item>
           <Menu.Item key="3"><Logout /></Menu.Item>
         </Menu>

@@ -14,6 +14,8 @@ const setupDispatchProps = () => {
 const setupReducerProps = () => {
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.mines = MOCK.MINES.mines;
+  reducerProps.location = {search:""}
+  reducerProps.history = {}
 };
 
 beforeEach(() => {
