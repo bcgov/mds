@@ -1,15 +1,20 @@
 package pages
 
 import geb.Page
+import modules.*
 
-class DashboardPage extends Page {
-    static at = { header == "Mines"}
+class Dashboard extends Page {
+    static at = { title == "MDS"}
+    static url = "dashboard"
     static content = {
-        header {$("div.ant-card-head-title").text()}
-        createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
+        createMineForm { module CreateMineForm}
         mineName (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
         mineID (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
+        toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
+        //button
         viewButton (wait:true) {$("button").has("span", text:"View")}
+        createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
+        
     }
 
 
