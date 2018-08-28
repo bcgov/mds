@@ -26,6 +26,10 @@ class  A_LoginPageSpec extends GebReportingSpec {
         IDIRloginButton.click()
 
         then: "I am on the Dashboard page"
+<<<<<<< HEAD
         at Dashboard
+=======
+        at DashboardPage
+>>>>>>> e09e1a0d164b3b18f839fd8eaf803f78dcd92b8f
     }
 }
