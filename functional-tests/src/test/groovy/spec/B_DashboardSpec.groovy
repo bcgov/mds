@@ -13,10 +13,7 @@ import pages.*
 @Stepwise
 class  B_DashboardSpec extends GebReportingSpec {
     //variables
-    static NAME_NULL = ""
     static NAME_GOOD = "Trend-Roman"
-    static NAME_LONG = "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"//61 chars
-    def selectedMine = ["",""]
 
     def "Scenario: User is able to create a mine record given a valid MIND-Name"(){
         given: "I go to the DashboardPage"
@@ -26,7 +23,7 @@ class  B_DashboardSpec extends GebReportingSpec {
         createMineButton.click()
 
         then: "I go to the mine record form page"
-        at CreateAMineForm
+        at CreateMineForm
 
         when: "I input valid mine name"
         createMineRecord(NAME_GOOD)
@@ -44,32 +41,23 @@ class  B_DashboardSpec extends GebReportingSpec {
         createMineButton.click()
 
         then: "I go to the mine record form page"
-        at CreateAMinePage
+        createMineForm.header == "Create A Mine Record"
 
-        when: "I input long mine name"
-        createMineRecord(NAME_LONG)
+        when: "I input invalid mine name"
+        createMineForm.createMineRecord(badName)
+        println scenario
 
-        then: "I should see an error message"
-        toastMessage == "Specified name cannot exceed 60 characters."
+        then: "I should see a warning"
+        createMineForm.errorMessage == errorMessage
+
+        where: 
+        scenario    |badName    ||errorMessage
+        "long name" |"r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR" || "Must be 60 characters or less"
+        "short name"|"ab"       ||"Must be 3 characters or more"
+        "null"      |""         ||"This is a required field"
+
     }
 
-
-    def "Scenario: Error displayed if mine name is null"(){
-        given: "I go to the DashboardPage"
-        to DashboardPage
-
-        when: "I click the create a mine button"
-        createMineButton.click()
-
-        then: "I go to the mine record form page"
-        at CreateAMinePage
-
-        when: "I do not give a mine name"
-        createMineRecord(NAME_NULL)
-
-        then: "I should see an error message"
-        toastMessage == "Must specify a mine name."
-    }
 
     def "Scenario: User can view the created record on Dashboard"(){
         when: "I go to the DashboardPage"
