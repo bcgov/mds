@@ -3,8 +3,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import MineMap from './MineMap';
+
 const propTypes = {
   mine: PropTypes.object.isRequired,
 };
