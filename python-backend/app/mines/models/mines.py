@@ -1,5 +1,5 @@
 from datetime import datetime
-from uuid import UUID as uuid_python
+import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from .mixins import AuditMixin
@@ -30,7 +30,8 @@ class MineIdentity(AuditMixin, db.Model):
             'guid': str(self.mine_guid),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
-            'mine_detail': [item.json() for item in self.mine_detail]
+            'mine_detail': [item.json() for item in self.mine_detail],
+            'mine_location': [item.json() for item in self.mine_location]
         }
 
     def json_by_name(self):
@@ -52,7 +53,7 @@ class MineIdentity(AuditMixin, db.Model):
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
-            uuid_python(_id, version=4)
+            uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).first()
         except ValueError:
             return None
@@ -64,8 +65,9 @@ class MineIdentity(AuditMixin, db.Model):
 
 class MineDetail(AuditMixin, db.Model):
     __tablename__ = "mine_detail"
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), primary_key=True)
-    mine_no = db.Column(db.String(10), primary_key=True, unique=True)
+    mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_no = db.Column(db.String(10), unique=True)
     mine_name = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
@@ -90,8 +92,9 @@ class MineDetail(AuditMixin, db.Model):
 
 class MineralTenureXref(AuditMixin, db.Model):
     __tablename__ = "mineral_tenure_xref"
+    mineral_tenure_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    tenure_number_id = db.Column(db.Numeric(10), primary_key=True, unique=True)
+    tenure_number_id = db.Column(db.Numeric(10), unique=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 

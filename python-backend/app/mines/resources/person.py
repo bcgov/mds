@@ -114,7 +114,10 @@ class ManagerResource(Resource):
         return {
             'person_guid': str(manager.person_guid),
             'mgr_appointment_guid': str(manager.mgr_appointment_guid),
-            'mine_guid': str(manager.mine_guid)
+            'mine_guid': str(manager.mine_guid),
+            'first_name': person_exists.first_name,
+            'surname': person_exists.surname,
+            'full_name': person_exists.first_name + ' ' + person_exists.surname
         }
 
 

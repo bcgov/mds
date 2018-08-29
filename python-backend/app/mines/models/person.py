@@ -73,10 +73,14 @@ class MgrAppointment(AuditMixin, db.Model):
             db.session.rollback()
 
     def json(self):
+        person = Person.find_by_person_guid(str(self.person_guid))
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
             'person_guid': str(self.person_guid),
+            'first_name': person.first_name,
+            'surname': person.surname,
+            'full_name': person.first_name + ' ' + person.surname,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }

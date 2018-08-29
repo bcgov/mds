@@ -29,7 +29,9 @@ from .constants import (TEST_MINE_NAME,
                         BASE_AUTH_CLAIMS,
                         FULL_AUTH_CLAIMS,
                         VIEW_ONLY_AUTH_CLAIMS,
-                        TOKEN_HEADER
+                        TOKEN_HEADER,
+                        TEST_MINE_DETAIL_GUID,
+                        TEST_TENURE_GUID
                         )
 
 
@@ -73,18 +75,27 @@ def test_client():
 
 
 def setup_data():
+    # Clear data
+    clear_data(db.session)
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
     mine_detail = MineDetail(
+        mine_detail_guid=uuid.UUID(TEST_MINE_DETAIL_GUID),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_no=TEST_MINE_NO,
         mine_name=TEST_MINE_NAME,
-        **DUMMY_USER_KWARGS)
+        **DUMMY_USER_KWARGS
+    )
     mine_identity.save()
     mine_detail.save()
 
     # Test Tenure Data
-    tenure = MineralTenureXref(mine_guid=uuid.UUID(TEST_MINE_GUID), tenure_number_id=TEST_TENURE_ID, **DUMMY_USER_KWARGS)
+    tenure = MineralTenureXref(
+        mineral_tenure_xref_guid=uuid.UUID(TEST_TENURE_GUID),
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        tenure_number_id=TEST_TENURE_ID,
+        **DUMMY_USER_KWARGS
+    )
     tenure.save()
 
     # Test Location Data
