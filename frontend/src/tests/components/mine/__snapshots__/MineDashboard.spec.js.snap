@@ -92,6 +92,7 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <MineHeader
+          mapData={undefined}
           mine={
             Object {
               "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -260,6 +261,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
+          "mapData": undefined,
           "mine": Object {
             "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mgr_appointment": Array [],
@@ -724,6 +726,7 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <MineHeader
+            mapData={undefined}
             mine={
               Object {
                 "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -892,6 +895,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "mapData": undefined,
             "mine": Object {
               "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
               "mgr_appointment": Array [],

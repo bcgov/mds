@@ -39,14 +39,7 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <img
-          className="mine__dashboard__header__img"
-          src={
-            Object {
-              "process": [Function],
-            }
-          }
-        />,
+        <MineMap />,
         <h1>
           mine1
            - Major Mine
@@ -63,16 +56,11 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "className": "mine__dashboard__header__img",
-          "src": Object {
-            "process": [Function],
-          },
-        },
+        "nodeType": "class",
+        "props": Object {},
         "ref": null,
         "rendered": null,
-        "type": "img",
+        "type": [Function],
       },
       Object {
         "instance": null,
@@ -120,14 +108,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <img
-            className="mine__dashboard__header__img"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />,
+          <MineMap />,
           <h1>
             mine1
              - Major Mine
@@ -144,16 +125,11 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "className": "mine__dashboard__header__img",
-            "src": Object {
-              "process": [Function],
-            },
-          },
+          "nodeType": "class",
+          "props": Object {},
           "ref": null,
           "rendered": null,
-          "type": "img",
+          "type": [Function],
         },
         Object {
           "instance": null,

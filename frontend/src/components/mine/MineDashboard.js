@@ -39,7 +39,7 @@ export class MineDashboard extends Component {
     } else {
         return (
           <div>
-            <MineHeader mine={this.props.mine}/>
+            <MineHeader mine={this.props.mine} mapData={this.props.mapData}/>
             <Tabs defaultActiveKey="1">
               <TabPane tab="Summary" key="1">
                 <MineSummary mine={this.props.mine} />

@@ -3,14 +3,14 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MineMap from './MineMap';
+import MineMap from '@/components/maps/MineMap';
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: PropTypes.object.isRequired
 };
 
 const defaultProps = {
-  mine: {},
+  mine: {}
 };
 
 class MineHeader extends Component {
