@@ -8,6 +8,7 @@ import pages.*
 
 
 
+
 @Title("MDS-DashboardPage")
 @Narrative("At DashboardPage, I can view mine records and create a new one")
 @Stepwise
@@ -23,10 +24,10 @@ class  B_DashboardSpec extends GebReportingSpec {
         createMineButton.click()
 
         then: "I go to the mine record form page"
-        at CreateMineForm
+        createMineForm.header == "Create A Mine Record"
 
         when: "I input valid mine name"
-        createMineRecord(NAME_GOOD)
+        createMineForm.createMineRecord(NAME_GOOD)
 
         then: "I should see the successful message"
         toastMessage == "Successfully created: " + NAME_GOOD

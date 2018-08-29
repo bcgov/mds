@@ -3,7 +3,7 @@ package pages
 import geb.Page
 import modules.*
 
-class Dashboard extends Page {
+class DashboardPage extends Page {
     static at = { title == "MDS"}
     static url = "dashboard"
     static content = {
@@ -19,8 +19,8 @@ class Dashboard extends Page {
 
 
     def selectRandomMine(){
-        def totalMineNum = viewButton.size()  
-        def mineToView = Math.abs(new Random().nextInt() % totalMineNum + 1) //return 1-totalMineNum (inclusive)
+        int totalMineNum = viewButton.size()  
+        def mineToView = new Random().nextInt(totalMineNum)+1
         def viewMineName = ""
         def viewMineID = ""
         if (totalMineNum != 0 ){
@@ -31,16 +31,12 @@ class Dashboard extends Page {
             viewMineID = mineID[mineToView*2].text()
             viewButton[mineToView-1].click(); 
         } 
-        println "return viewMineID " + viewMineID
-        println "return mineName " + viewMineName
         return[viewMineID,viewMineName]  
     }
 
     def validation(mineToCheck){
         def mineCreated = false
         //if the last created record has a matched mineName
-        println "mineToCheck"+mineToCheck
-        println "mineName: "+mineName[mineName.size()-2].text()
         if (mineName[mineName.size()-2].text() == mineToCheck){
             mineCreated = true
         }                               
