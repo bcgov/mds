@@ -1,5 +1,5 @@
 import json
-from ..constants import *
+from tests.constants import TEST_MINE_GUID
 
 
 def test_get_mines_by_list(test_client, auth_headers):

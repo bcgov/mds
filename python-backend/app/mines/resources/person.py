@@ -29,17 +29,17 @@ class PersonResource(Resource):
             return {'error': 'Must specify a first name.'}, 400
         if not data['surname']:
             return {'error': 'Must specify a surname.'}, 400
-        person_exists=Person.find_by_name(data['first_name'], data['surname'])
+        person_exists = Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
         # Dummy User for now
-        dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
-        person=Person(
+        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        person = Person(
             person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
             **dummy_user_kwargs
-            )
+        )
         person.save()
         return person.json()
 
@@ -52,11 +52,11 @@ class PersonResource(Resource):
 
         first_name = data['first_name'] if data['first_name'] else person_exists.first_name
         surname = data['surname'] if data['surname'] else person_exists.surname
-        person_name_exists=Person.find_by_name(first_name, surname)
+        person_name_exists = Person.find_by_name(first_name, surname)
         if person_name_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(first_name, surname)}, 400
-        person_exists.first_name=first_name
-        person_exists.surname=surname
+        person_exists.first_name = first_name
+        person_exists.surname = surname
         person_exists.save()
         return person_exists.json()
 
@@ -65,7 +65,7 @@ class ManagerResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('person_guid', type=str)
     parser.add_argument('mine_guid', type=str)
-    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x,'%Y-%m-%d'))
+    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mgr_appointment_guid):
@@ -102,19 +102,26 @@ class ManagerResource(Resource):
             previous_mgr.save()
 
         # Dummy User for now
-        dummy_user_kwargs = { 'create_user': 'DummyUser', 'update_user': 'DummyUser' }
-        manager=MgrAppointment(
+        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        manager = MgrAppointment(
             mgr_appointment_guid=uuid.uuid4(),
-            person_guid=data['person_guid'], 
-            mine_guid=data['mine_guid'], 
+            person_guid=data['person_guid'],
+            mine_guid=data['mine_guid'],
             effective_date=data['effective_date'],
             **dummy_user_kwargs
-            )
+        )
         manager.save()
-        return { 'person_guid': str(manager.person_guid), 'mgr_appointment_guid': str(manager.mgr_appointment_guid), 'mine_guid': str(manager.mine_guid) }
+        return {
+            'person_guid': str(manager.person_guid),
+            'mgr_appointment_guid': str(manager.mgr_appointment_guid),
+            'mine_guid': str(manager.mine_guid),
+            'first_name': person_exists.first_name,
+            'surname': person_exists.surname,
+            'full_name': person_exists.first_name + ' ' + person_exists.surname
+        }
 
 
 class PersonList(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
-        return { 'persons': list(map(lambda x: x.json(), Person.query.all())) }
+        return {'persons': list(map(lambda x: x.json(), Person.query.all()))}

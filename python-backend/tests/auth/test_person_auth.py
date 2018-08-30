@@ -1,6 +1,5 @@
 from datetime import datetime
-import json
-from ..constants import *
+from tests.constants import TEST_PERSON_GUID, TEST_PERSON_2_GUID, TEST_MANAGER_GUID, TEST_PERSON_3_GUID, TEST_MINE_GUID
 
 
 # GET Person
@@ -83,6 +82,7 @@ def test_get_manager_view_only(test_client, auth_headers):
 def test_get_manager_full_auth(test_client, auth_headers):
     get_resp = test_client.get('/manager/' + TEST_MANAGER_GUID, headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
+
 
 # POST Manager Auth
 def test_post_manager_no_auth(test_client, auth_headers):
