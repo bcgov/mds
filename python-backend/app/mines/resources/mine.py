@@ -33,6 +33,7 @@ class Mine(Resource):
         name = data['name']
         lat = data['latitude']
         lon = data['longitude']
+        location = None
         if not name:
             return {'error': 'Must specify a name.'}, 400
         if len(name) > 60:

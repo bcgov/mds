@@ -53,6 +53,16 @@ def test_post_mine_guid(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
+def test_post_mine_name_only_success(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine2",
+    }
+    post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_resp.status_code == 200
+
+
 def test_post_mine_success(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine",
