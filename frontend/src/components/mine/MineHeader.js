@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Icon } from 'antd';
+import { Row, Col } from 'antd';
 import MineMap from '@/components/maps/MineMap';
 import { ELLIPSE } from '@/constants/assets';
 
@@ -17,19 +17,20 @@ const defaultProps = {
 
 class MineHeader extends Component {
   render() {
+    const { mine } = this.props;
     return (
       <div>
-        <MineMap />
+        <MineMap mine={mine}/>
         <div className="dashboard__header__content">
-          <h1>{this.props.mine.mine_detail[0].mine_name} - Major Mine</h1>
-          <p>Mine #: {this.props.mine.mine_detail[0].mine_no} </p>
+          <h1>{mine.mine_detail[0].mine_name}</h1>
+          <p>Mine #: {mine.mine_detail[0].mine_no} </p>
           <Row gutter={16}>
             <Col span={12}>
-              <p>Lat: 48.474752</p>
-              <p>Long: -123.657985</p>
+              <p>Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p>
+              <p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude: 'N/A'}</p>
             </Col>
             <Col span={12}>
-              <p><Icon type="smile" style={{ color: '#47C744'}}/>Status Active </p>
+              <h4><img src={ELLIPSE} />Status: Active </h4>
             </Col>
           </Row>
         </div>

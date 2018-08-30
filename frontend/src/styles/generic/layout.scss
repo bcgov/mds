@@ -31,26 +31,24 @@ body {
       border-radius: 30px 30px 0 0;
       top: -100px;
     }
-
   } 
 }
 
+.ant-tabs-nav-scroll {
+  margin: auto;
+  text-align: center;
+}
+
 .ant-tabs-nav .ant-tabs-tab-active {
-  color: $default-dark-green !important;
   font-weight: $bold !important;
 }
 
 .ant-tabs-nav .ant-tabs-tab {
   font-family: $default-font;
   font-weight: $light;
-  font-size: $default-h4;;
-  color: $font-black;
-  &:hover {
-    color: $default-dark-green;
-  }
+  font-size: 20px;
 }
 
 .ant-tabs-ink-bar {
   height: 4px;
-  background-color: $default-dark-green;
 }

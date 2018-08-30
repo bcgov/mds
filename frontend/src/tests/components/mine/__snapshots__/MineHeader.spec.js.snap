@@ -42,15 +42,48 @@ ShallowWrapper {
         <MineMap
           mine={Object {}}
         />,
-        <h1>
-          mine1
-           - Major Mine
-        </h1>,
-        <h2>
-          Mine #: 
-          BLAH9091
-           
-        </h2>,
+        <div
+          className="dashboard__header__content"
+        >
+          <h1>
+            mine1
+             - Major Mine
+          </h1>
+          <p>
+            Mine #: 
+            BLAH9091
+             
+          </p>
+          <Row
+            gutter={16}
+          >
+            <Col
+              span={12}
+            >
+              <p>
+                Lat: 48.474752
+              </p>
+              <p>
+                Long: -123.657985
+              </p>
+            </Col>
+            <Col
+              span={12}
+            >
+              <p>
+                <Icon
+                  style={
+                    Object {
+                      "color": "#47C744",
+                    }
+                  }
+                  type="smile"
+                />
+                Status Active 
+              </p>
+            </Col>
+          </Row>
+        </div>,
       ],
     },
     "ref": null,
@@ -72,35 +105,226 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            "mine1",
-            " - Major Mine",
+            <h1>
+              mine1
+               - Major Mine
+            </h1>,
+            <p>
+              Mine #: 
+              BLAH9091
+               
+            </p>,
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={12}
+              >
+                <p>
+                  Lat: 48.474752
+                </p>
+                <p>
+                  Long: -123.657985
+                </p>
+              </Col>
+              <Col
+                span={12}
+              >
+                <p>
+                  <Icon
+                    style={
+                      Object {
+                        "color": "#47C744",
+                      }
+                    }
+                    type="smile"
+                  />
+                  Status Active 
+                </p>
+              </Col>
+            </Row>,
           ],
+          "className": "dashboard__header__content",
         },
         "ref": null,
         "rendered": Array [
-          "mine1",
-          " - Major Mine",
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                "mine1",
+                " - Major Mine",
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              "mine1",
+              " - Major Mine",
+            ],
+            "type": "h1",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                "Mine #: ",
+                "BLAH9091",
+                " ",
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              "Mine #: ",
+              "BLAH9091",
+              " ",
+            ],
+            "type": "p",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <Col
+                  span={12}
+                >
+                  <p>
+                    Lat: 48.474752
+                  </p>
+                  <p>
+                    Long: -123.657985
+                  </p>
+                </Col>,
+                <Col
+                  span={12}
+                >
+                  <p>
+                    <Icon
+                      style={
+                        Object {
+                          "color": "#47C744",
+                        }
+                      }
+                      type="smile"
+                    />
+                    Status Active 
+                  </p>
+                </Col>,
+              ],
+              "gutter": 16,
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <p>
+                      Lat: 48.474752
+                    </p>,
+                    <p>
+                      Long: -123.657985
+                    </p>,
+                  ],
+                  "span": 12,
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Lat: 48.474752",
+                    },
+                    "ref": null,
+                    "rendered": "Lat: 48.474752",
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Long: -123.657985",
+                    },
+                    "ref": null,
+                    "rendered": "Long: -123.657985",
+                    "type": "p",
+                  },
+                ],
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <p>
+                    <Icon
+                      style={
+                        Object {
+                          "color": "#47C744",
+                        }
+                      }
+                      type="smile"
+                    />
+                    Status Active 
+                  </p>,
+                  "span": 12,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <Icon
+                        style={
+                          Object {
+                            "color": "#47C744",
+                          }
+                        }
+                        type="smile"
+                      />,
+                      "Status Active ",
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "style": Object {
+                          "color": "#47C744",
+                        },
+                        "type": "smile",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "Status Active ",
+                  ],
+                  "type": "p",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
         ],
-        "type": "h1",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            "Mine #: ",
-            "BLAH9091",
-            " ",
-          ],
-        },
-        "ref": null,
-        "rendered": Array [
-          "Mine #: ",
-          "BLAH9091",
-          " ",
-        ],
-        "type": "h2",
+        "type": "div",
       },
     ],
     "type": "div",
@@ -115,15 +339,48 @@ ShallowWrapper {
           <MineMap
             mine={Object {}}
           />,
-          <h1>
-            mine1
-             - Major Mine
-          </h1>,
-          <h2>
-            Mine #: 
-            BLAH9091
-             
-          </h2>,
+          <div
+            className="dashboard__header__content"
+          >
+            <h1>
+              mine1
+               - Major Mine
+            </h1>
+            <p>
+              Mine #: 
+              BLAH9091
+               
+            </p>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={12}
+              >
+                <p>
+                  Lat: 48.474752
+                </p>
+                <p>
+                  Long: -123.657985
+                </p>
+              </Col>
+              <Col
+                span={12}
+              >
+                <p>
+                  <Icon
+                    style={
+                      Object {
+                        "color": "#47C744",
+                      }
+                    }
+                    type="smile"
+                  />
+                  Status Active 
+                </p>
+              </Col>
+            </Row>
+          </div>,
         ],
       },
       "ref": null,
@@ -145,35 +402,226 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              "mine1",
-              " - Major Mine",
+              <h1>
+                mine1
+                 - Major Mine
+              </h1>,
+              <p>
+                Mine #: 
+                BLAH9091
+                 
+              </p>,
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={12}
+                >
+                  <p>
+                    Lat: 48.474752
+                  </p>
+                  <p>
+                    Long: -123.657985
+                  </p>
+                </Col>
+                <Col
+                  span={12}
+                >
+                  <p>
+                    <Icon
+                      style={
+                        Object {
+                          "color": "#47C744",
+                        }
+                      }
+                      type="smile"
+                    />
+                    Status Active 
+                  </p>
+                </Col>
+              </Row>,
             ],
+            "className": "dashboard__header__content",
           },
           "ref": null,
           "rendered": Array [
-            "mine1",
-            " - Major Mine",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  "mine1",
+                  " - Major Mine",
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                "mine1",
+                " - Major Mine",
+              ],
+              "type": "h1",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  "Mine #: ",
+                  "BLAH9091",
+                  " ",
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                "Mine #: ",
+                "BLAH9091",
+                " ",
+              ],
+              "type": "p",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Col
+                    span={12}
+                  >
+                    <p>
+                      Lat: 48.474752
+                    </p>
+                    <p>
+                      Long: -123.657985
+                    </p>
+                  </Col>,
+                  <Col
+                    span={12}
+                  >
+                    <p>
+                      <Icon
+                        style={
+                          Object {
+                            "color": "#47C744",
+                          }
+                        }
+                        type="smile"
+                      />
+                      Status Active 
+                    </p>
+                  </Col>,
+                ],
+                "gutter": 16,
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <p>
+                        Lat: 48.474752
+                      </p>,
+                      <p>
+                        Long: -123.657985
+                      </p>,
+                    ],
+                    "span": 12,
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Lat: 48.474752",
+                      },
+                      "ref": null,
+                      "rendered": "Lat: 48.474752",
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Long: -123.657985",
+                      },
+                      "ref": null,
+                      "rendered": "Long: -123.657985",
+                      "type": "p",
+                    },
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <p>
+                      <Icon
+                        style={
+                          Object {
+                            "color": "#47C744",
+                          }
+                        }
+                        type="smile"
+                      />
+                      Status Active 
+                    </p>,
+                    "span": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <Icon
+                          style={
+                            Object {
+                              "color": "#47C744",
+                            }
+                          }
+                          type="smile"
+                        />,
+                        "Status Active ",
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "style": Object {
+                            "color": "#47C744",
+                          },
+                          "type": "smile",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "Status Active ",
+                    ],
+                    "type": "p",
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
           ],
-          "type": "h1",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              "Mine #: ",
-              "BLAH9091",
-              " ",
-            ],
-          },
-          "ref": null,
-          "rendered": Array [
-            "Mine #: ",
-            "BLAH9091",
-            " ",
-          ],
-          "type": "h2",
+          "type": "div",
         },
       ],
       "type": "div",

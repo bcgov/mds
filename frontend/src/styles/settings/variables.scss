@@ -8,12 +8,14 @@ $default-white: #F1F1F2;
 $background-white: #FFFFFF;
 $default-yellow: #FCBA18;
 $font-black: #383838;
+$default-brown: #B9ADA2;
 
 // font size
 $default-h1: 36px;
-$default-h2: 32px;
-$default-h3: 28px;
-$default-h4: 24px;
+$default-h2: 24px;
+$default-h3: 20px;
+$default-h4: 16px;
+$default-h5: 20px;
 $default-p: 16px;
 
 // font
@@ -24,8 +26,10 @@ $semi-bold: 600;
 $bold: 700;
 
 // margins
-$margin-sm: 5px;
-$margin-md: 10px;
+$default-margin-sm: 5px;
+$default-margin-md: 10px;
+$default-margin-lg: 20px;
+$default-margin-xxl: 60px;
 
 // padding
 $default-padding-sm: 5px;

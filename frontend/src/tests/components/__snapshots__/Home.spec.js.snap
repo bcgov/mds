@@ -17,50 +17,86 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <Connect(NavBar) />,
-        <Connect(LoadingBar)
-          style={
-            Object {
-              "backgroundColor": "blue",
-              "position": "fixed",
-              "top": 64,
-              "width": "100%",
-              "zIndex": 100,
+        <div
+          className="header"
+        >
+          <Connect(NavBar) />
+          <Connect(LoadingBar)
+            style={
+              Object {
+                "backgroundColor": "#47C744",
+                "position": "fixed",
+                "top": 55,
+                "width": "100%",
+                "zIndex": 100,
+              }
             }
-          }
-        />,
-        <Adapter>
+          />
+        </div>,
+        <Adapter
+          className="content"
+        >
           <DashboardRoutes />
         </Adapter>,
+        <div
+          className="footer"
+        />,
       ],
+      "className": "layout",
     },
     "ref": null,
     "rendered": Array [
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "class",
-        "props": Object {},
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
+        "nodeType": "host",
         "props": Object {
-          "style": Object {
-            "backgroundColor": "blue",
-            "position": "fixed",
-            "top": 64,
-            "width": "100%",
-            "zIndex": 100,
-          },
+          "children": Array [
+            <Connect(NavBar) />,
+            <Connect(LoadingBar)
+              style={
+                Object {
+                  "backgroundColor": "#47C744",
+                  "position": "fixed",
+                  "top": 55,
+                  "width": "100%",
+                  "zIndex": 100,
+                }
+              }
+            />,
+          ],
+          "className": "header",
         },
         "ref": null,
-        "rendered": null,
-        "type": [Function],
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "style": Object {
+                "backgroundColor": "#47C744",
+                "position": "fixed",
+                "top": 55,
+                "width": "100%",
+                "zIndex": 100,
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": "div",
       },
       Object {
         "instance": null,
@@ -68,6 +104,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <DashboardRoutes />,
+          "className": "content",
         },
         "ref": null,
         "rendered": Object {
@@ -81,6 +118,17 @@ ShallowWrapper {
         },
         "type": [Function],
       },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "footer",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
     ],
     "type": [Function],
   },
@@ -91,50 +139,86 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <Connect(NavBar) />,
-          <Connect(LoadingBar)
-            style={
-              Object {
-                "backgroundColor": "blue",
-                "position": "fixed",
-                "top": 64,
-                "width": "100%",
-                "zIndex": 100,
+          <div
+            className="header"
+          >
+            <Connect(NavBar) />
+            <Connect(LoadingBar)
+              style={
+                Object {
+                  "backgroundColor": "#47C744",
+                  "position": "fixed",
+                  "top": 55,
+                  "width": "100%",
+                  "zIndex": 100,
+                }
               }
-            }
-          />,
-          <Adapter>
+            />
+          </div>,
+          <Adapter
+            className="content"
+          >
             <DashboardRoutes />
           </Adapter>,
+          <div
+            className="footer"
+          />,
         ],
+        "className": "layout",
       },
       "ref": null,
       "rendered": Array [
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "class",
-          "props": Object {},
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
+          "nodeType": "host",
           "props": Object {
-            "style": Object {
-              "backgroundColor": "blue",
-              "position": "fixed",
-              "top": 64,
-              "width": "100%",
-              "zIndex": 100,
-            },
+            "children": Array [
+              <Connect(NavBar) />,
+              <Connect(LoadingBar)
+                style={
+                  Object {
+                    "backgroundColor": "#47C744",
+                    "position": "fixed",
+                    "top": 55,
+                    "width": "100%",
+                    "zIndex": 100,
+                  }
+                }
+              />,
+            ],
+            "className": "header",
           },
           "ref": null,
-          "rendered": null,
-          "type": [Function],
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "style": Object {
+                  "backgroundColor": "#47C744",
+                  "position": "fixed",
+                  "top": 55,
+                  "width": "100%",
+                  "zIndex": 100,
+                },
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": "div",
         },
         Object {
           "instance": null,
@@ -142,6 +226,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <DashboardRoutes />,
+            "className": "content",
           },
           "ref": null,
           "rendered": Object {
@@ -154,6 +239,17 @@ ShallowWrapper {
             "type": [Function],
           },
           "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "footer",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
         },
       ],
       "type": [Function],

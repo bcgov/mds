@@ -10,6 +10,8 @@ import ConditionalButton from '@/components/reusables/ConditionalButton';
 import Loading from '@/components/reusables/Loading';
 import AddPersonnelForm from '../Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
+import { MINER, MINER_TWO } from '@/constants/assets';
+import NullScreen from '@/components/reusables/NullScreen';
 
 const propTypes = {
   getPersonnelById: PropTypes.func.isRequired,
@@ -56,7 +58,7 @@ export class ViewMineManager extends Component {
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
     if (this.props.personnelIds.length === 0) {
-      return (<div>There are no managers to select, create a new record below</div>)
+      return (<NullScreen primaryMessage="" secondaryMessage="Please update below" img={MINER_TWO}/>)
     } else {
       return (<UpdateMineManagerForm
         onSubmit={this.handleSubmit}
@@ -110,8 +112,8 @@ export class ViewMineManager extends Component {
     } else if (!this.props.mine.mgr_appointment[0]) {
       return (
         <div>
-          <div>The mine does not currently have a mine Manager</div>
-          <ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/>
+          <NullScreen primaryMessage="No Assigned Mine manager" secondaryMessage="Please add Mine Manger below" img={MINER} />
+          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine manager" type="primary"/></div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}

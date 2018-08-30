@@ -38,12 +38,396 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": Array [
-        <h1>
-           Mine Summary 
-        </h1>,
-        <Card
-          title="Mine"
+      "children": <Card
+        loading={false}
+      >
+        <Row
+          gutter={0}
+          type="flex"
+        >
+          <Col
+            span={6}
+          >
+            <strong>
+              MINE_NO
+            </strong>
+          </Col>
+          <Col
+            span={6}
+          >
+            <strong>
+              NAME
+            </strong>
+          </Col>
+          <Col
+            span={6}
+          >
+            <strong>
+              GUID
+            </strong>
+          </Col>
+          <Col
+            span={6}
+          >
+            <strong>
+              TENURE
+            </strong>
+          </Col>
+        </Row>
+        <Row
+          gutter={0}
+          type="flex"
+        >
+          <Col
+            span={6}
+          >
+            BLAH9091
+          </Col>
+          <Col
+            span={6}
+          >
+            mine1
+          </Col>
+          <Col
+            span={6}
+          >
+            18133c75-49ad-4101-85f3-a43e35ae989a
+          </Col>
+          <Col
+            span={6}
+          >
+            <div>
+              1234567
+            </div>
+          </Col>
+        </Row>
+      </Card>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Row
+            gutter={0}
+            type="flex"
+          >
+            <Col
+              span={6}
+            >
+              <strong>
+                MINE_NO
+              </strong>
+            </Col>
+            <Col
+              span={6}
+            >
+              <strong>
+                NAME
+              </strong>
+            </Col>
+            <Col
+              span={6}
+            >
+              <strong>
+                GUID
+              </strong>
+            </Col>
+            <Col
+              span={6}
+            >
+              <strong>
+                TENURE
+              </strong>
+            </Col>
+          </Row>,
+          <Row
+            gutter={0}
+            type="flex"
+          >
+            <Col
+              span={6}
+            >
+              BLAH9091
+            </Col>
+            <Col
+              span={6}
+            >
+              mine1
+            </Col>
+            <Col
+              span={6}
+            >
+              18133c75-49ad-4101-85f3-a43e35ae989a
+            </Col>
+            <Col
+              span={6}
+            >
+              <div>
+                1234567
+              </div>
+            </Col>
+          </Row>,
+        ],
+        "loading": false,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Col
+                span={6}
+              >
+                <strong>
+                  MINE_NO
+                </strong>
+              </Col>,
+              <Col
+                span={6}
+              >
+                <strong>
+                  NAME
+                </strong>
+              </Col>,
+              <Col
+                span={6}
+              >
+                <strong>
+                  GUID
+                </strong>
+              </Col>,
+              <Col
+                span={6}
+              >
+                <strong>
+                  TENURE
+                </strong>
+              </Col>,
+            ],
+            "gutter": 0,
+            "type": "flex",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <strong>
+                  MINE_NO
+                </strong>,
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "MINE_NO",
+                },
+                "ref": null,
+                "rendered": "MINE_NO",
+                "type": "strong",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <strong>
+                  NAME
+                </strong>,
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "NAME",
+                },
+                "ref": null,
+                "rendered": "NAME",
+                "type": "strong",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <strong>
+                  GUID
+                </strong>,
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "GUID",
+                },
+                "ref": null,
+                "rendered": "GUID",
+                "type": "strong",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <strong>
+                  TENURE
+                </strong>,
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "TENURE",
+                },
+                "ref": null,
+                "rendered": "TENURE",
+                "type": "strong",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Col
+                span={6}
+              >
+                BLAH9091
+              </Col>,
+              <Col
+                span={6}
+              >
+                mine1
+              </Col>,
+              <Col
+                span={6}
+              >
+                18133c75-49ad-4101-85f3-a43e35ae989a
+              </Col>,
+              <Col
+                span={6}
+              >
+                <div>
+                  1234567
+                </div>
+              </Col>,
+            ],
+            "gutter": 0,
+            "type": "flex",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "BLAH9091",
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": "BLAH9091",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "mine1",
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": "mine1",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <div>
+                    1234567
+                  </div>,
+                ],
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": "1234567",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "1234567",
+                  },
+                  "ref": null,
+                  "rendered": "1234567",
+                  "type": "div",
+                },
+              ],
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <Card
+          loading={false}
         >
           <Row
             gutter={0}
@@ -106,22 +490,9 @@ ShallowWrapper {
             </Col>
           </Row>
         </Card>,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": " Mine Summary ",
-        },
-        "ref": null,
-        "rendered": " Mine Summary ",
-        "type": "h1",
       },
-      Object {
+      "ref": null,
+      "rendered": Object {
         "instance": null,
         "key": undefined,
         "nodeType": "class",
@@ -188,7 +559,7 @@ ShallowWrapper {
               </Col>
             </Row>,
           ],
-          "title": "Mine",
+          "loading": false,
         },
         "ref": null,
         "rendered": Array [
@@ -435,413 +806,6 @@ ShallowWrapper {
         ],
         "type": [Function],
       },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <h1>
-             Mine Summary 
-          </h1>,
-          <Card
-            title="Mine"
-          >
-            <Row
-              gutter={0}
-              type="flex"
-            >
-              <Col
-                span={6}
-              >
-                <strong>
-                  MINE_NO
-                </strong>
-              </Col>
-              <Col
-                span={6}
-              >
-                <strong>
-                  NAME
-                </strong>
-              </Col>
-              <Col
-                span={6}
-              >
-                <strong>
-                  GUID
-                </strong>
-              </Col>
-              <Col
-                span={6}
-              >
-                <strong>
-                  TENURE
-                </strong>
-              </Col>
-            </Row>
-            <Row
-              gutter={0}
-              type="flex"
-            >
-              <Col
-                span={6}
-              >
-                BLAH9091
-              </Col>
-              <Col
-                span={6}
-              >
-                mine1
-              </Col>
-              <Col
-                span={6}
-              >
-                18133c75-49ad-4101-85f3-a43e35ae989a
-              </Col>
-              <Col
-                span={6}
-              >
-                <div>
-                  1234567
-                </div>
-              </Col>
-            </Row>
-          </Card>,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": " Mine Summary ",
-          },
-          "ref": null,
-          "rendered": " Mine Summary ",
-          "type": "h1",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <Row
-                gutter={0}
-                type="flex"
-              >
-                <Col
-                  span={6}
-                >
-                  <strong>
-                    MINE_NO
-                  </strong>
-                </Col>
-                <Col
-                  span={6}
-                >
-                  <strong>
-                    NAME
-                  </strong>
-                </Col>
-                <Col
-                  span={6}
-                >
-                  <strong>
-                    GUID
-                  </strong>
-                </Col>
-                <Col
-                  span={6}
-                >
-                  <strong>
-                    TENURE
-                  </strong>
-                </Col>
-              </Row>,
-              <Row
-                gutter={0}
-                type="flex"
-              >
-                <Col
-                  span={6}
-                >
-                  BLAH9091
-                </Col>
-                <Col
-                  span={6}
-                >
-                  mine1
-                </Col>
-                <Col
-                  span={6}
-                >
-                  18133c75-49ad-4101-85f3-a43e35ae989a
-                </Col>
-                <Col
-                  span={6}
-                >
-                  <div>
-                    1234567
-                  </div>
-                </Col>
-              </Row>,
-            ],
-            "title": "Mine",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <Col
-                    span={6}
-                  >
-                    <strong>
-                      MINE_NO
-                    </strong>
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    <strong>
-                      NAME
-                    </strong>
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    <strong>
-                      GUID
-                    </strong>
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    <strong>
-                      TENURE
-                    </strong>
-                  </Col>,
-                ],
-                "gutter": 0,
-                "type": "flex",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <strong>
-                      MINE_NO
-                    </strong>,
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "MINE_NO",
-                    },
-                    "ref": null,
-                    "rendered": "MINE_NO",
-                    "type": "strong",
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <strong>
-                      NAME
-                    </strong>,
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "NAME",
-                    },
-                    "ref": null,
-                    "rendered": "NAME",
-                    "type": "strong",
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <strong>
-                      GUID
-                    </strong>,
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "GUID",
-                    },
-                    "ref": null,
-                    "rendered": "GUID",
-                    "type": "strong",
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <strong>
-                      TENURE
-                    </strong>,
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "TENURE",
-                    },
-                    "ref": null,
-                    "rendered": "TENURE",
-                    "type": "strong",
-                  },
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <Col
-                    span={6}
-                  >
-                    BLAH9091
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    mine1
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    18133c75-49ad-4101-85f3-a43e35ae989a
-                  </Col>,
-                  <Col
-                    span={6}
-                  >
-                    <div>
-                      1234567
-                    </div>
-                  </Col>,
-                ],
-                "gutter": 0,
-                "type": "flex",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "BLAH9091",
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": "BLAH9091",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "mine1",
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": "mine1",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": Array [
-                      <div>
-                        1234567
-                      </div>,
-                    ],
-                    "span": 6,
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": "1234567",
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "1234567",
-                      },
-                      "ref": null,
-                      "rendered": "1234567",
-                      "type": "div",
-                    },
-                  ],
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-      ],
       "type": "div",
     },
   ],

@@ -16,7 +16,9 @@
 @import './objects/actions.scss';
 // COMPONENTS - specific UI components.
 @import './components/loading.scss';
-@import './components/mine.scss';
+@import './components/MineDashboard.scss';
 @import './components/navBar.scss';
+@import './components/NullScreen.scss';
+
 // UTILITES - utilities and helper classes. This layer has the highest specificity.
 @import './App.scss';

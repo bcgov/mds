@@ -1,27 +1,48 @@
+h1, h2, h3, h4, h5, p {
+  padding: 0;
+  margin: 0;
+}
+
 h1 {
   font-size: $default-h1;
-  font-weight: $semi-bold;
+  font-weight: $bold;
   color: $font-black;
 }
 h2 {
   font-size: $default-h2;
-  font-weight: $semi-bold;
-  color: $font-black;
+  font-weight: $bold;
+  text-transform: capitalize;
+  color: $default-brown;
 }
 h3 {
   font-size: $default-h3;
-  font-weight: $semi-bold;
-  color: $font-black;
+  font-weight: $bold;
+  color: $default-dark-green;
 }
 h4 {
   font-size: $default-h4;
   font-weight: $bold;
+  color: $default-dark-green;
+  text-transform: capitalize;
+}
+
+h5 {
+  font-size: $default-h5;
+  font-weight: $light;
   color: $font-black;
 }
+
 p {
   font-size: $default-p;
   color: $font-black;
 }
+
+.p-large {
+  font-size: $default-h2;
+  color: $font-black;
+  font-weight: $bold;
+}
+
 
 a, Link {
   &:hover {

@@ -47,7 +47,7 @@ export class MineDashboard extends Component {
                 defaultActiveKey="1"
                 size='large' 
                 className="dashboard__content__tabs"
-                animated={false}
+                animated={{ inkBar: true, tabPane: false }}
               >
                 <TabPane tab="Summary" key="1">
                   <MineSummary mine={this.props.mine} />

@@ -33,8 +33,9 @@ export class MapPin extends Component {
  state = { graphic: null };
 
   popupTemplate(id) {
+    const { mine_name } = this.props.mines[id].mine_detail[0];
     return {
-      title: this.props.mines[id].mine_detail[0].mine_name,
+      title: mine_name,
       content: 
       `<div>
         <div>
@@ -47,10 +48,14 @@ export class MapPin extends Component {
   }
 
   points = (id) => {
-    return {
-    type: "point",
-    longitude: -123.657985,
-    latitude: 48.474752
+    if (this.props.mines[id].mine_location[0]) {
+      return {
+      type: "point",
+      longitude: this.props.mines[id].mine_location[0].longitude,
+      latitude: this.props.mines[id].mine_location[0].latitude,
+      }
+    } else {
+      return null;
     }
   }
 
