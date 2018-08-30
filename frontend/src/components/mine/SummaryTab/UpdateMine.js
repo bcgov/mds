@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'antd';
 import AddTenureNumberForm from '../Forms/AddTenureNumberForm';
 import { CreateGuard } from '@/HOC/CreateGuard';
 
@@ -21,9 +20,7 @@ export class UpdateMine extends Component {
   render() {
     return (
       <div>
-        <Card title="Tenure Number Form">
-          <AddTenureNumberForm onSubmit={this.handleSubmit} />
-        </Card>
+        <AddTenureNumberForm onSubmit={this.handleSubmit} />
       </div>
     );
   }

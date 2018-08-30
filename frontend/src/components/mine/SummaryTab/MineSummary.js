@@ -18,8 +18,7 @@ class MineSummary extends Component {
     const { mine } = this.props;
     return (
       <div>
-        <h1> Mine Summary </h1>
-        <Card title="Mine">
+        <Card loading={false}>
           <Row type="flex">
             <Col span={6}><strong>MINE_NO</strong></Col>
             <Col span={6}><strong>NAME</strong></Col>

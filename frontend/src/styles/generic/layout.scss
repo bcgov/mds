@@ -1,0 +1,56 @@
+body {
+  font-family: $default-font;
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  height: 55px;
+}
+
+.content {
+  overflow: initial;
+  background-color: $background-white;
+}
+
+.footer {
+  height: 60px;
+  background-color: $default-blue;
+}
+
+.dashboard {
+  &__header {
+    z-index: 10;
+
+    &__content{
+      z-index: 100;
+      background-color: $background-white;
+      position: relative;
+      border-radius: 30px 30px 0 0;
+      top: -100px;
+    }
+
+  } 
+}
+
+.ant-tabs-nav .ant-tabs-tab-active {
+  color: $default-dark-green !important;
+  font-weight: $bold !important;
+}
+
+.ant-tabs-nav .ant-tabs-tab {
+  font-family: $default-font;
+  font-weight: $light;
+  font-size: $default-h4;;
+  color: $font-black;
+  &:hover {
+    color: $default-dark-green;
+  }
+}
+
+.ant-tabs-ink-bar {
+  height: 4px;
+  background-color: $default-dark-green;
+}

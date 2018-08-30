@@ -4,8 +4,17 @@ exports[`ViewMineManager renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <ViewMineManager
+    addMineManager={[MockFunction]}
+    createPersonnel={[MockFunction]}
+    getMineRecordById={[MockFunction]}
     getPersonnelById={[MockFunction]}
-    handleManagerUpdate={[MockFunction]}
+    getPersonnelList={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     mine={
       Object {
         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -63,10 +72,51 @@ ShallowWrapper {
           The mine does not currently have a mine Manager
         </div>,
         <Connect(CreateGuard)
-          handleAction={[MockFunction]}
+          handleAction={[Function]}
           string="Update"
           type="primary"
         />,
+        <Modal
+          cancelButtonDisabled={false}
+          confirmLoading={false}
+          footer={null}
+          maskTransitionName="fade"
+          okButtonDisabled={false}
+          okType="primary"
+          onCancel={[Function]}
+          prefixCls="ant-modal"
+          title="Update Mine Manager"
+          transitionName="zoom"
+          visible={false}
+          width={520}
+        >
+          <div>
+            <ReduxForm
+              onSubmit={[Function]}
+              personnel={
+                Object {
+                  "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                    "full_name": "mock name",
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  },
+                  "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                    "full_name": "mock Two",
+                    "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  },
+                }
+              }
+              personnelIds={
+                Array [
+                  "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "18145c75-49ad-0101-85f3-a43e45ae989a",
+                ]
+              }
+            />
+            <ReduxForm
+              onSubmit={[Function]}
+            />
+          </div>
+        </Modal>,
       ],
     },
     "ref": null,
@@ -87,12 +137,132 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "handleAction": [MockFunction],
+          "handleAction": [Function],
           "string": "Update",
           "type": "primary",
         },
         "ref": null,
         "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "cancelButtonDisabled": false,
+          "children": <div>
+            <ReduxForm
+              onSubmit={[Function]}
+              personnel={
+                Object {
+                  "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                    "full_name": "mock name",
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  },
+                  "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                    "full_name": "mock Two",
+                    "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  },
+                }
+              }
+              personnelIds={
+                Array [
+                  "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "18145c75-49ad-0101-85f3-a43e45ae989a",
+                ]
+              }
+            />
+            <ReduxForm
+              onSubmit={[Function]}
+            />
+          </div>,
+          "confirmLoading": false,
+          "footer": null,
+          "maskTransitionName": "fade",
+          "okButtonDisabled": false,
+          "okType": "primary",
+          "onCancel": [Function],
+          "prefixCls": "ant-modal",
+          "title": "Update Mine Manager",
+          "transitionName": "zoom",
+          "visible": false,
+          "width": 520,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <ReduxForm
+                onSubmit={[Function]}
+                personnel={
+                  Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "full_name": "mock name",
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "full_name": "mock Two",
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    },
+                  }
+                }
+                personnelIds={
+                  Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ]
+                }
+              />,
+              <ReduxForm
+                onSubmit={[Function]}
+              />,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onSubmit": [Function],
+                "personnel": Object {
+                  "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                    "full_name": "mock name",
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  },
+                  "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                    "full_name": "mock Two",
+                    "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  },
+                },
+                "personnelIds": Array [
+                  "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "18145c75-49ad-0101-85f3-a43e45ae989a",
+                ],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onSubmit": [Function],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
         "type": [Function],
       },
     ],
@@ -109,10 +279,51 @@ ShallowWrapper {
             The mine does not currently have a mine Manager
           </div>,
           <Connect(CreateGuard)
-            handleAction={[MockFunction]}
+            handleAction={[Function]}
             string="Update"
             type="primary"
           />,
+          <Modal
+            cancelButtonDisabled={false}
+            confirmLoading={false}
+            footer={null}
+            maskTransitionName="fade"
+            okButtonDisabled={false}
+            okType="primary"
+            onCancel={[Function]}
+            prefixCls="ant-modal"
+            title="Update Mine Manager"
+            transitionName="zoom"
+            visible={false}
+            width={520}
+          >
+            <div>
+              <ReduxForm
+                onSubmit={[Function]}
+                personnel={
+                  Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "full_name": "mock name",
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "full_name": "mock Two",
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    },
+                  }
+                }
+                personnelIds={
+                  Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ]
+                }
+              />
+              <ReduxForm
+                onSubmit={[Function]}
+              />
+            </div>
+          </Modal>,
         ],
       },
       "ref": null,
@@ -133,12 +344,132 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "handleAction": [MockFunction],
+            "handleAction": [Function],
             "string": "Update",
             "type": "primary",
           },
           "ref": null,
           "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "cancelButtonDisabled": false,
+            "children": <div>
+              <ReduxForm
+                onSubmit={[Function]}
+                personnel={
+                  Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "full_name": "mock name",
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "full_name": "mock Two",
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    },
+                  }
+                }
+                personnelIds={
+                  Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ]
+                }
+              />
+              <ReduxForm
+                onSubmit={[Function]}
+              />
+            </div>,
+            "confirmLoading": false,
+            "footer": null,
+            "maskTransitionName": "fade",
+            "okButtonDisabled": false,
+            "okType": "primary",
+            "onCancel": [Function],
+            "prefixCls": "ant-modal",
+            "title": "Update Mine Manager",
+            "transitionName": "zoom",
+            "visible": false,
+            "width": 520,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <ReduxForm
+                  onSubmit={[Function]}
+                  personnel={
+                    Object {
+                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                        "full_name": "mock name",
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      },
+                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                        "full_name": "mock Two",
+                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      },
+                    }
+                  }
+                  personnelIds={
+                    Array [
+                      "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    ]
+                  }
+                />,
+                <ReduxForm
+                  onSubmit={[Function]}
+                />,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "onSubmit": [Function],
+                  "personnel": Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "full_name": "mock name",
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "full_name": "mock Two",
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    },
+                  },
+                  "personnelIds": Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "onSubmit": [Function],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
           "type": [Function],
         },
       ],

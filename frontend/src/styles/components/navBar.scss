@@ -1,0 +1,17 @@
+.menu {
+  @include flex;
+  position: fixed;
+  z-index: 1000;
+  width: 100vw;
+  justify-content: space-between;
+  background-color: $default-blue;
+  padding: 0 $default-padding-lg 0 $default-padding-md;
+
+  &__img {
+    margin: $margin-sm;
+  }
+  
+  &__dropdown-link {
+    color: $default-white;
+  }
+}

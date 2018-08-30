@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Col, Card, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
@@ -21,7 +21,6 @@ class MineList extends Component {
     const { mines, mineIds } = this.props;
     return (
       <div>
-      <Card title="Mines">
         <Row type="flex">
           <Col span={4}><strong>MINE_NO</strong></Col>
           <Col span={8}><strong>NAME</strong></Col>
@@ -46,7 +45,6 @@ class MineList extends Component {
             </div>
           )
         })}
-      </Card>
       </div>
     );
   }

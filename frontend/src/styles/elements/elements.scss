@@ -1,0 +1,30 @@
+h1 {
+  font-size: $default-h1;
+  font-weight: $semi-bold;
+  color: $font-black;
+}
+h2 {
+  font-size: $default-h2;
+  font-weight: $semi-bold;
+  color: $font-black;
+}
+h3 {
+  font-size: $default-h3;
+  font-weight: $semi-bold;
+  color: $font-black;
+}
+h4 {
+  font-size: $default-h4;
+  font-weight: $bold;
+  color: $font-black;
+}
+p {
+  font-size: $default-p;
+  color: $font-black;
+}
+
+a, Link {
+  &:hover {
+    color: $default-light-blue
+  }
+}

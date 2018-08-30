@@ -16,13 +16,15 @@ export class Home extends Component {
   render() {
     const { Content } = Layout;
     return (
-      <Layout>
-        <NavBar />
-        <LoadingBar style={{ backgroundColor: 'blue', position: 'fixed', top: 64, zIndex: 100, width: '100%' }} />
-        <Content>
-          <DashboardRoutes
-           />
+      <Layout className="layout">
+        <div className="header">
+          <NavBar />
+          <LoadingBar style={{ backgroundColor: '#47C744', position: 'fixed', top: 55, zIndex: 100, width: '100%' }} />
+        </div>
+        <Content className="content">
+          <DashboardRoutes />
         </Content>
+        <div className="footer" ></div>
       </Layout>
     );
   }

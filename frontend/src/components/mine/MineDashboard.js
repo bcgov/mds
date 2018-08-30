@@ -38,17 +38,32 @@ export class MineDashboard extends Component {
       return(<Loading />)
     } else {
         return (
-          <div>
-            <MineHeader mine={this.props.mine} mapData={this.props.mapData}/>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="Summary" key="1">
-                <MineSummary mine={this.props.mine} />
-                <UpdateMine {...this.props} />
-              </TabPane>
-              <TabPane tab="Contact Information" key="2">
-                <MineContactInfo mine={this.props.mine}/>
-              </TabPane>
-            </Tabs>
+          <div className="dashboard">
+            <div className="dashboard__header">
+              <MineHeader mine={this.props.mine} mapData={this.props.mapData}/>
+            </div>
+            <div className="dashboard__content">
+              <Tabs 
+                defaultActiveKey="1"
+                size='large' 
+                className="dashboard__content__tabs"
+                animated={false}
+              >
+                <TabPane tab="Summary" key="1">
+                  <MineSummary mine={this.props.mine} />
+                  <UpdateMine {...this.props} />
+                </TabPane>
+                <TabPane tab="Permit" key="2">
+                </TabPane>
+                <TabPane tab="Contact Information" key="3">
+                  <MineContactInfo mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Compliance" key="4">
+                </TabPane>
+                <TabPane tab="Tenure" key="5">
+                </TabPane>
+              </Tabs>
+            </div>
           </div>
         );
       }

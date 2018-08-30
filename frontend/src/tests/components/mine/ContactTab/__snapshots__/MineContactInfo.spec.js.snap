@@ -40,7 +40,6 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <Connect(ViewMineManager)
-        handleManagerUpdate={[Function]}
         mine={
           Object {
             "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -70,7 +69,6 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "handleManagerUpdate": [Function],
         "mine": Object {
           "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mgr_appointment": Array [],
@@ -104,7 +102,6 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Connect(ViewMineManager)
-          handleManagerUpdate={[Function]}
           mine={
             Object {
               "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -134,7 +131,6 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "handleManagerUpdate": [Function],
           "mine": Object {
             "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mgr_appointment": Array [],

@@ -24,3 +24,6 @@ export const minLength = memoize((min) => (value) => value && value.length < min
 
 export const exactLength = memoize((min) => (value) => value && value.length !== min ? `Must be ${min} characters long` : undefined);
 
+export const number = (value) => (value && isNaN(Number(value)) ? 'Coordinates must be a number' : undefined);
+
+

@@ -8,7 +8,7 @@ function options(data) {
       data.map((opt) => {
       const search = opt.mine_name.concat(" - ", opt.mine_no);
       return (
-        <AutoComplete.Option key={opt.guid} value={opt.mine_no}>
+        <AutoComplete.Option key={opt.guid} value={opt.guid}>
           {search}
         </AutoComplete.Option>
       )})

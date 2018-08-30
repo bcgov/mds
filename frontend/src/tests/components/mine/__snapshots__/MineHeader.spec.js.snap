@@ -39,7 +39,9 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <MineMap />,
+        <MineMap
+          mine={Object {}}
+        />,
         <h1>
           mine1
            - Major Mine
@@ -57,7 +59,9 @@ ShallowWrapper {
         "instance": null,
         "key": undefined,
         "nodeType": "class",
-        "props": Object {},
+        "props": Object {
+          "mine": Object {},
+        },
         "ref": null,
         "rendered": null,
         "type": [Function],
@@ -108,7 +112,9 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <MineMap />,
+          <MineMap
+            mine={Object {}}
+          />,
           <h1>
             mine1
              - Major Mine
@@ -126,7 +132,9 @@ ShallowWrapper {
           "instance": null,
           "key": undefined,
           "nodeType": "class",
-          "props": Object {},
+          "props": Object {
+            "mine": Object {},
+          },
           "ref": null,
           "rendered": null,
           "type": [Function],

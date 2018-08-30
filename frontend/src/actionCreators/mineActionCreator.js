@@ -10,12 +10,12 @@ import * as API from '@/constants/API';
 import { ENVIRONMENT } from '@/constants/environment'
 import { createRequestHeader } from '@/utils/RequestHeaders';
 
-export const createMineRecord = (mineName) => (dispatch) => {
+export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading());
-  return axios.post(ENVIRONMENT.apiUrl + API.MINE, {"name": mineName}, createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
   .then((response) => {
-    notification.success({ message: "Successfully created: " + mineName, duration: 10 });
+    notification.success({ message: "Successfully created: " + payload.name, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
     dispatch(hideLoading());
     return response;
