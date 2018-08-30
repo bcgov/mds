@@ -1,11 +1,10 @@
 import json
-from ..constants import *
+from tests.constants import TEST_MINE_GUID
 
 
 def test_get_mines(test_client, auth_headers):
     get_resp = test_client.get('/mines', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-
     assert get_resp.status_code == 200
     assert get_data['mines'][0]['guid'] == TEST_MINE_GUID
 
@@ -23,12 +22,12 @@ def test_get_mines_empty(test_client, auth_headers):
         'total_pages': 1,
         'items_per_page': 50,
         'total': 1
-        }
+    }
     assert get_resp.status_code == 200
     assert get_data == context
 
 
-def test_get_mines_empty(test_client, auth_headers):
+def test_get_mines_empty_with_per_page(test_client, auth_headers):
     get_resp = test_client.get('/mines?page=2&per_page=10', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     context = {
@@ -41,6 +40,6 @@ def test_get_mines_empty(test_client, auth_headers):
         'total_pages': 1,
         'items_per_page': 10,
         'total': 1
-        }
+    }
     assert get_resp.status_code == 200
     assert get_data == context
