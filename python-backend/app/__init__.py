@@ -11,7 +11,7 @@ from .mines.models.location import MineLocation
 from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList
 from .mines.resources.location import MineLocationResource, MineLocationListResource
-from .mines.utils.random import generate_mine_no, random_key_gen, generate_name, random_geo
+from .mines.utils.random import generate_mine_no, generate_name, random_geo
 from .config import Config
 
 from .extensions import db, jwt
@@ -97,7 +97,6 @@ def register_commands(app):
             mine_identity.save()
             mine_detail.save()
             mine_location.save()
-
 
     @app.cli.command()
     def delete_data():

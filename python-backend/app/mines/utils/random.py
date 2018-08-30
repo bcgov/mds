@@ -13,6 +13,7 @@ RANDOM_CENTERS = [
     {'latitude': 57.810546, 'longitude': -123.891873, 'radius_in_m': 221000}
 ]
 
+
 def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
     choices = ''
     if numbers:
@@ -31,9 +32,9 @@ def generate_mine_no():
 
 def generate_name():
     names = []
-    for i in range(random.randint(1,2)):
+    for i in range(random.randint(1, 2)):
         word = ""
-        for j in range(random.randint(3,11)):
+        for j in range(random.randint(3, 11)):
             if j % 2 == 0:
                 word += random.choice(CONSONANTS)
             else:

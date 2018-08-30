@@ -1,10 +1,9 @@
-from tests.constants import TEST_MINE_GUID, TEST_LOCATION_GUID
 from app.mines.utils.random import random_key_gen, generate_mine_no, generate_name, random_geo
 
 
 def test_utils_random_key_gen():
     random_key = random_key_gen(prefix='BLAH', key_length=4)
-    assert 'BLAH' in random_key 
+    assert 'BLAH' in random_key
     assert len(random_key) == 8
 
 
