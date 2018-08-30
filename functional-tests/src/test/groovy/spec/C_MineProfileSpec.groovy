@@ -8,7 +8,6 @@ import pages.*
 
  
 @Title("MDS-MineProfilePage")
-@Narrative("At mine profile page, I can add tenure number and update mine manager")
 @Stepwise
 class  C_MineProfileSpec extends GebReportingSpec {
     @Shared selectedMine = ["",""]
@@ -109,7 +108,7 @@ class  C_MineProfileSpec extends GebReportingSpec {
  
     }
 
-    def "Scenario: User can create new mine manager"(){
+    def "Scenario: User can create new mine manager and update mine manager information"(){
         
         given: "I go to mine profile"
         go urlTemp
@@ -120,7 +119,6 @@ class  C_MineProfileSpec extends GebReportingSpec {
         when: "I go to contact tab"
         contactInfoTab.click()
         sleep(100)
-        
 
         and: "I create a new mine manager"
         createMineManager(FirstName,LastName)
