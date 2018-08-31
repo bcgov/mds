@@ -28,6 +28,6 @@ export const exactLength = memoize((min) => (value) => value && value.length !==
 
 export const number = (value) => (value && isNaN(Number(value)) ? 'Coordinates must be a number' : undefined);
 
-export const lat = (value) => (Validate.LAT_REGEX.test(value) ? undefined: 'Invalid latitude coordinate e.g. 53.7267');
+export const lat = (value) => value && Validate.LAT_REGEX.test(value) ? undefined: 'Invalid latitude coordinate e.g. 53.7267';
 
-export const lon = (value) => (Validate.LON_REGEX.test(value) ? undefined: 'Invalid longitude coordinate e.g. -127.6476000');
+export const lon = (value) => value && Validate.LON_REGEX.test(value) ? undefined: 'Invalid longitude coordinate e.g. -127.6476000';

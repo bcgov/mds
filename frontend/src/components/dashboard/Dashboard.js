@@ -65,7 +65,7 @@ export class Dashboard extends Component {
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
     return (
       <div>
-        <CreateMine createMineRecord={this.props.createMineRecord}/>
+        <CreateMine createMineRecord={this.props.createMineRecord} getMineRecords={this.props.getMineRecords} getMineNameList={this.props.getMineNameList} location={this.props.location}/>
         <MineSearch mineNameList={this.props.mineNameList} />
         <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData}/>
         <Pagination 
