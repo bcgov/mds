@@ -18,6 +18,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",

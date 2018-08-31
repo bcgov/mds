@@ -19,6 +19,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",
@@ -48,6 +54,12 @@ ShallowWrapper {
               "mine_no": "BLAH9091",
             },
           ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
+            },
+          ],
           "mineral_tenure_xref": Array [
             Object {
               "tenure_number_id": "1234567",
@@ -65,6 +77,12 @@ ShallowWrapper {
             Object {
               "mine_name": "mine2",
               "mine_no": "BLAH9091",
+            },
+          ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
             },
           ],
           "mineral_tenure_xref": Array [
@@ -110,6 +128,12 @@ ShallowWrapper {
                     "mine_no": "BLAH9091",
                   },
                 ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
                 "mineral_tenure_xref": Array [
                   Object {
                     "tenure_number_id": "1234567",
@@ -123,7 +147,12 @@ ShallowWrapper {
           className="dashboard__content"
         >
           <Tabs
-            animated={false}
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
+              }
+            }
             className="dashboard__content__tabs"
             defaultActiveKey="1"
             hideAdd={false}
@@ -149,6 +178,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -171,6 +206,12 @@ ShallowWrapper {
                       Object {
                         "mine_name": "mine3",
                         "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
                       },
                     ],
                     "mineral_tenure_xref": Array [
@@ -202,6 +243,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -219,6 +266,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine2",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -254,6 +307,12 @@ ShallowWrapper {
                       Object {
                         "mine_name": "mine3",
                         "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
                       },
                     ],
                     "mineral_tenure_xref": Array [
@@ -301,6 +360,12 @@ ShallowWrapper {
                     "mine_no": "BLAH9091",
                   },
                 ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
                 "mineral_tenure_xref": Array [
                   Object {
                     "tenure_number_id": "1234567",
@@ -331,6 +396,12 @@ ShallowWrapper {
                   "mine_no": "BLAH9091",
                 },
               ],
+              "mine_location": Array [
+                Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+              ],
               "mineral_tenure_xref": Array [
                 Object {
                   "tenure_number_id": "1234567",
@@ -350,7 +421,12 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <Tabs
-            animated={false}
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
+              }
+            }
             className="dashboard__content__tabs"
             defaultActiveKey="1"
             hideAdd={false}
@@ -376,6 +452,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -398,6 +480,12 @@ ShallowWrapper {
                       Object {
                         "mine_name": "mine3",
                         "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
                       },
                     ],
                     "mineral_tenure_xref": Array [
@@ -429,6 +517,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -446,6 +540,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine2",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -483,6 +583,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -509,7 +615,10 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "animated": false,
+            "animated": Object {
+              "inkBar": true,
+              "tabPane": false,
+            },
             "children": Array [
               <TabPane
                 placeholder={null}
@@ -528,6 +637,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -552,6 +667,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -583,6 +704,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -600,6 +727,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine2",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -635,6 +768,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -684,6 +823,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -706,6 +851,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine3",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -737,6 +888,12 @@ ShallowWrapper {
                               "mine_no": "BLAH9091",
                             },
                           ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
                           "mineral_tenure_xref": Array [
                             Object {
                               "tenure_number_id": "1234567",
@@ -754,6 +911,12 @@ ShallowWrapper {
                             Object {
                               "mine_name": "mine2",
                               "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
                             },
                           ],
                           "mineral_tenure_xref": Array [
@@ -791,6 +954,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -821,6 +990,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -846,6 +1021,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -863,6 +1044,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine2",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -914,6 +1101,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -942,6 +1135,12 @@ ShallowWrapper {
                       Object {
                         "mine_name": "mine3",
                         "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
                       },
                     ],
                     "mineral_tenure_xref": Array [
@@ -1015,6 +1214,12 @@ ShallowWrapper {
                       "mine_no": "BLAH9091",
                     },
                   ],
+                  "mine_location": Array [
+                    Object {
+                      "latitude": null,
+                      "longitude": null,
+                    },
+                  ],
                   "mineral_tenure_xref": Array [
                     Object {
                       "tenure_number_id": "1234567",
@@ -1028,7 +1233,12 @@ ShallowWrapper {
             className="dashboard__content"
           >
             <Tabs
-              animated={false}
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
+                }
+              }
               className="dashboard__content__tabs"
               defaultActiveKey="1"
               hideAdd={false}
@@ -1054,6 +1264,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -1076,6 +1292,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -1107,6 +1329,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -1124,6 +1352,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine2",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1159,6 +1393,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -1206,6 +1446,12 @@ ShallowWrapper {
                       "mine_no": "BLAH9091",
                     },
                   ],
+                  "mine_location": Array [
+                    Object {
+                      "latitude": null,
+                      "longitude": null,
+                    },
+                  ],
                   "mineral_tenure_xref": Array [
                     Object {
                       "tenure_number_id": "1234567",
@@ -1236,6 +1482,12 @@ ShallowWrapper {
                     "mine_no": "BLAH9091",
                   },
                 ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
                 "mineral_tenure_xref": Array [
                   Object {
                     "tenure_number_id": "1234567",
@@ -1255,7 +1507,12 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Tabs
-              animated={false}
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
+                }
+              }
               className="dashboard__content__tabs"
               defaultActiveKey="1"
               hideAdd={false}
@@ -1281,6 +1538,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -1303,6 +1566,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -1334,6 +1603,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -1351,6 +1626,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine2",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1388,6 +1669,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -1414,7 +1701,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "animated": false,
+              "animated": Object {
+                "inkBar": true,
+                "tabPane": false,
+              },
               "children": Array [
                 <TabPane
                   placeholder={null}
@@ -1433,6 +1723,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine3",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1457,6 +1753,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine3",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1488,6 +1790,12 @@ ShallowWrapper {
                               "mine_no": "BLAH9091",
                             },
                           ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
                           "mineral_tenure_xref": Array [
                             Object {
                               "tenure_number_id": "1234567",
@@ -1505,6 +1813,12 @@ ShallowWrapper {
                             Object {
                               "mine_name": "mine2",
                               "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
                             },
                           ],
                           "mineral_tenure_xref": Array [
@@ -1540,6 +1854,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine3",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1589,6 +1909,12 @@ ShallowWrapper {
                               "mine_no": "BLAH9091",
                             },
                           ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
                           "mineral_tenure_xref": Array [
                             Object {
                               "tenure_number_id": "1234567",
@@ -1611,6 +1937,12 @@ ShallowWrapper {
                             Object {
                               "mine_name": "mine3",
                               "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
                             },
                           ],
                           "mineral_tenure_xref": Array [
@@ -1642,6 +1974,12 @@ ShallowWrapper {
                                 "mine_no": "BLAH9091",
                               },
                             ],
+                            "mine_location": Array [
+                              Object {
+                                "latitude": null,
+                                "longitude": null,
+                              },
+                            ],
                             "mineral_tenure_xref": Array [
                               Object {
                                 "tenure_number_id": "1234567",
@@ -1659,6 +1997,12 @@ ShallowWrapper {
                               Object {
                                 "mine_name": "mine2",
                                 "mine_no": "BLAH9091",
+                              },
+                            ],
+                            "mine_location": Array [
+                              Object {
+                                "latitude": null,
+                                "longitude": null,
                               },
                             ],
                             "mineral_tenure_xref": Array [
@@ -1696,6 +2040,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -1726,6 +2076,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -1751,6 +2107,12 @@ ShallowWrapper {
                               "mine_no": "BLAH9091",
                             },
                           ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
                           "mineral_tenure_xref": Array [
                             Object {
                               "tenure_number_id": "1234567",
@@ -1768,6 +2130,12 @@ ShallowWrapper {
                             Object {
                               "mine_name": "mine2",
                               "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
                             },
                           ],
                           "mineral_tenure_xref": Array [
@@ -1819,6 +2187,12 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
@@ -1847,6 +2221,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [

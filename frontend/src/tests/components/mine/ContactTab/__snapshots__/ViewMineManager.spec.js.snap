@@ -29,6 +29,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",
@@ -68,14 +74,24 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <div>
-          The mine does not currently have a mine Manager
-        </div>,
-        <Connect(CreateGuard)
-          handleAction={[Function]}
-          string="Update"
-          type="primary"
+        <NullScreen
+          img={
+            Object {
+              "process": [Function],
+            }
+          }
+          primaryMessage="No Assigned Mine manager"
+          secondaryMessage="Please add Mine Manger below"
         />,
+        <div
+          className="btn-center"
+        >
+          <Connect(CreateGuard)
+            handleAction={[Function]}
+            string="Add Mine Manager"
+            type="primary"
+          />
+        </div>,
         <Modal
           cancelButtonDisabled={false}
           confirmLoading={false}
@@ -124,26 +140,45 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "host",
+        "nodeType": "function",
         "props": Object {
-          "children": "The mine does not currently have a mine Manager",
-        },
-        "ref": null,
-        "rendered": "The mine does not currently have a mine Manager",
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "handleAction": [Function],
-          "string": "Update",
-          "type": "primary",
+          "img": Object {
+            "process": [Function],
+          },
+          "primaryMessage": "No Assigned Mine manager",
+          "secondaryMessage": "Please add Mine Manger below",
         },
         "ref": null,
         "rendered": null,
         "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <Connect(CreateGuard)
+            handleAction={[Function]}
+            string="Add Mine Manager"
+            type="primary"
+          />,
+          "className": "btn-center",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "handleAction": [Function],
+            "string": "Add Mine Manager",
+            "type": "primary",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": "div",
       },
       Object {
         "instance": null,
@@ -275,14 +310,24 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <div>
-            The mine does not currently have a mine Manager
-          </div>,
-          <Connect(CreateGuard)
-            handleAction={[Function]}
-            string="Update"
-            type="primary"
+          <NullScreen
+            img={
+              Object {
+                "process": [Function],
+              }
+            }
+            primaryMessage="No Assigned Mine manager"
+            secondaryMessage="Please add Mine Manger below"
           />,
+          <div
+            className="btn-center"
+          >
+            <Connect(CreateGuard)
+              handleAction={[Function]}
+              string="Add Mine Manager"
+              type="primary"
+            />
+          </div>,
           <Modal
             cancelButtonDisabled={false}
             confirmLoading={false}
@@ -331,26 +376,45 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "host",
+          "nodeType": "function",
           "props": Object {
-            "children": "The mine does not currently have a mine Manager",
-          },
-          "ref": null,
-          "rendered": "The mine does not currently have a mine Manager",
-          "type": "div",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "handleAction": [Function],
-            "string": "Update",
-            "type": "primary",
+            "img": Object {
+              "process": [Function],
+            },
+            "primaryMessage": "No Assigned Mine manager",
+            "secondaryMessage": "Please add Mine Manger below",
           },
           "ref": null,
           "rendered": null,
           "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Connect(CreateGuard)
+              handleAction={[Function]}
+              string="Add Mine Manager"
+              type="primary"
+            />,
+            "className": "btn-center",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "handleAction": [Function],
+              "string": "Add Mine Manager",
+              "type": "primary",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "div",
         },
         Object {
           "instance": null,

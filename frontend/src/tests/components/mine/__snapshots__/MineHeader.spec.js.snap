@@ -18,6 +18,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",
@@ -40,14 +46,39 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <MineMap
-          mine={Object {}}
+          mine={
+            Object {
+              "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mgr_appointment": Array [],
+              "mine_detail": Array [
+                Object {
+                  "mine_name": "mine1",
+                  "mine_no": "BLAH9091",
+                },
+                Object {
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                },
+              ],
+              "mine_location": Array [
+                Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+              ],
+              "mineral_tenure_xref": Array [
+                Object {
+                  "tenure_number_id": "1234567",
+                },
+              ],
+            }
+          }
         />,
         <div
           className="dashboard__header__content"
         >
           <h1>
             mine1
-             - Major Mine
           </h1>
           <p>
             Mine #: 
@@ -61,26 +92,25 @@ ShallowWrapper {
               span={12}
             >
               <p>
-                Lat: 48.474752
+                Lat: 
               </p>
               <p>
-                Long: -123.657985
+                Long:
               </p>
             </Col>
             <Col
               span={12}
             >
-              <p>
-                <Icon
-                  style={
+              <h4>
+                <img
+                  src={
                     Object {
-                      "color": "#47C744",
+                      "process": [Function],
                     }
                   }
-                  type="smile"
                 />
-                Status Active 
-              </p>
+                Status: Active 
+              </h4>
             </Col>
           </Row>
         </div>,
@@ -93,7 +123,31 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "mine": Object {},
+          "mine": Object {
+            "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+            "mgr_appointment": Array [],
+            "mine_detail": Array [
+              Object {
+                "mine_name": "mine1",
+                "mine_no": "BLAH9091",
+              },
+              Object {
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+              },
+            ],
+            "mine_location": Array [
+              Object {
+                "latitude": null,
+                "longitude": null,
+              },
+            ],
+            "mineral_tenure_xref": Array [
+              Object {
+                "tenure_number_id": "1234567",
+              },
+            ],
+          },
         },
         "ref": null,
         "rendered": null,
@@ -107,7 +161,6 @@ ShallowWrapper {
           "children": Array [
             <h1>
               mine1
-               - Major Mine
             </h1>,
             <p>
               Mine #: 
@@ -121,26 +174,25 @@ ShallowWrapper {
                 span={12}
               >
                 <p>
-                  Lat: 48.474752
+                  Lat: 
                 </p>
                 <p>
-                  Long: -123.657985
+                  Long:
                 </p>
               </Col>
               <Col
                 span={12}
               >
-                <p>
-                  <Icon
-                    style={
+                <h4>
+                  <img
+                    src={
                       Object {
-                        "color": "#47C744",
+                        "process": [Function],
                       }
                     }
-                    type="smile"
                   />
-                  Status Active 
-                </p>
+                  Status: Active 
+                </h4>
               </Col>
             </Row>,
           ],
@@ -153,16 +205,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": Array [
-                "mine1",
-                " - Major Mine",
-              ],
+              "children": "mine1",
             },
             "ref": null,
-            "rendered": Array [
-              "mine1",
-              " - Major Mine",
-            ],
+            "rendered": "mine1",
             "type": "h1",
           },
           Object {
@@ -194,26 +240,25 @@ ShallowWrapper {
                   span={12}
                 >
                   <p>
-                    Lat: 48.474752
+                    Lat: 
                   </p>
                   <p>
-                    Long: -123.657985
+                    Long:
                   </p>
                 </Col>,
                 <Col
                   span={12}
                 >
-                  <p>
-                    <Icon
-                      style={
+                  <h4>
+                    <img
+                      src={
                         Object {
-                          "color": "#47C744",
+                          "process": [Function],
                         }
                       }
-                      type="smile"
                     />
-                    Status Active 
-                  </p>
+                    Status: Active 
+                  </h4>
                 </Col>,
               ],
               "gutter": 16,
@@ -227,10 +272,10 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <p>
-                      Lat: 48.474752
+                      Lat: 
                     </p>,
                     <p>
-                      Long: -123.657985
+                      Long:
                     </p>,
                   ],
                   "span": 12,
@@ -242,10 +287,16 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "host",
                     "props": Object {
-                      "children": "Lat: 48.474752",
+                      "children": Array [
+                        "Lat: ",
+                        null,
+                      ],
                     },
                     "ref": null,
-                    "rendered": "Lat: 48.474752",
+                    "rendered": Array [
+                      "Lat: ",
+                      null,
+                    ],
                     "type": "p",
                   },
                   Object {
@@ -253,10 +304,16 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "host",
                     "props": Object {
-                      "children": "Long: -123.657985",
+                      "children": Array [
+                        "Long:",
+                        null,
+                      ],
                     },
                     "ref": null,
-                    "rendered": "Long: -123.657985",
+                    "rendered": Array [
+                      "Long:",
+                      null,
+                    ],
                     "type": "p",
                   },
                 ],
@@ -267,17 +324,16 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <p>
-                    <Icon
-                      style={
+                  "children": <h4>
+                    <img
+                      src={
                         Object {
-                          "color": "#47C744",
+                          "process": [Function],
                         }
                       }
-                      type="smile"
                     />
-                    Status Active 
-                  </p>,
+                    Status: Active 
+                  </h4>,
                   "span": 12,
                 },
                 "ref": null,
@@ -287,15 +343,14 @@ ShallowWrapper {
                   "nodeType": "host",
                   "props": Object {
                     "children": Array [
-                      <Icon
-                        style={
+                      <img
+                        src={
                           Object {
-                            "color": "#47C744",
+                            "process": [Function],
                           }
                         }
-                        type="smile"
                       />,
-                      "Status Active ",
+                      "Status: Active ",
                     ],
                   },
                   "ref": null,
@@ -303,20 +358,19 @@ ShallowWrapper {
                     Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "function",
+                      "nodeType": "host",
                       "props": Object {
-                        "style": Object {
-                          "color": "#47C744",
+                        "src": Object {
+                          "process": [Function],
                         },
-                        "type": "smile",
                       },
                       "ref": null,
                       "rendered": null,
-                      "type": [Function],
+                      "type": "img",
                     },
-                    "Status Active ",
+                    "Status: Active ",
                   ],
-                  "type": "p",
+                  "type": "h4",
                 },
                 "type": [Function],
               },
@@ -337,14 +391,39 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <MineMap
-            mine={Object {}}
+            mine={
+              Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mgr_appointment": Array [],
+                "mine_detail": Array [
+                  Object {
+                    "mine_name": "mine1",
+                    "mine_no": "BLAH9091",
+                  },
+                  Object {
+                    "mine_name": "mine3",
+                    "mine_no": "BLAH9091",
+                  },
+                ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
+                "mineral_tenure_xref": Array [
+                  Object {
+                    "tenure_number_id": "1234567",
+                  },
+                ],
+              }
+            }
           />,
           <div
             className="dashboard__header__content"
           >
             <h1>
               mine1
-               - Major Mine
             </h1>
             <p>
               Mine #: 
@@ -358,26 +437,25 @@ ShallowWrapper {
                 span={12}
               >
                 <p>
-                  Lat: 48.474752
+                  Lat: 
                 </p>
                 <p>
-                  Long: -123.657985
+                  Long:
                 </p>
               </Col>
               <Col
                 span={12}
               >
-                <p>
-                  <Icon
-                    style={
+                <h4>
+                  <img
+                    src={
                       Object {
-                        "color": "#47C744",
+                        "process": [Function],
                       }
                     }
-                    type="smile"
                   />
-                  Status Active 
-                </p>
+                  Status: Active 
+                </h4>
               </Col>
             </Row>
           </div>,
@@ -390,7 +468,31 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "mine": Object {},
+            "mine": Object {
+              "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mgr_appointment": Array [],
+              "mine_detail": Array [
+                Object {
+                  "mine_name": "mine1",
+                  "mine_no": "BLAH9091",
+                },
+                Object {
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                },
+              ],
+              "mine_location": Array [
+                Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+              ],
+              "mineral_tenure_xref": Array [
+                Object {
+                  "tenure_number_id": "1234567",
+                },
+              ],
+            },
           },
           "ref": null,
           "rendered": null,
@@ -404,7 +506,6 @@ ShallowWrapper {
             "children": Array [
               <h1>
                 mine1
-                 - Major Mine
               </h1>,
               <p>
                 Mine #: 
@@ -418,26 +519,25 @@ ShallowWrapper {
                   span={12}
                 >
                   <p>
-                    Lat: 48.474752
+                    Lat: 
                   </p>
                   <p>
-                    Long: -123.657985
+                    Long:
                   </p>
                 </Col>
                 <Col
                   span={12}
                 >
-                  <p>
-                    <Icon
-                      style={
+                  <h4>
+                    <img
+                      src={
                         Object {
-                          "color": "#47C744",
+                          "process": [Function],
                         }
                       }
-                      type="smile"
                     />
-                    Status Active 
-                  </p>
+                    Status: Active 
+                  </h4>
                 </Col>
               </Row>,
             ],
@@ -450,16 +550,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": Array [
-                  "mine1",
-                  " - Major Mine",
-                ],
+                "children": "mine1",
               },
               "ref": null,
-              "rendered": Array [
-                "mine1",
-                " - Major Mine",
-              ],
+              "rendered": "mine1",
               "type": "h1",
             },
             Object {
@@ -491,26 +585,25 @@ ShallowWrapper {
                     span={12}
                   >
                     <p>
-                      Lat: 48.474752
+                      Lat: 
                     </p>
                     <p>
-                      Long: -123.657985
+                      Long:
                     </p>
                   </Col>,
                   <Col
                     span={12}
                   >
-                    <p>
-                      <Icon
-                        style={
+                    <h4>
+                      <img
+                        src={
                           Object {
-                            "color": "#47C744",
+                            "process": [Function],
                           }
                         }
-                        type="smile"
                       />
-                      Status Active 
-                    </p>
+                      Status: Active 
+                    </h4>
                   </Col>,
                 ],
                 "gutter": 16,
@@ -524,10 +617,10 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <p>
-                        Lat: 48.474752
+                        Lat: 
                       </p>,
                       <p>
-                        Long: -123.657985
+                        Long:
                       </p>,
                     ],
                     "span": 12,
@@ -539,10 +632,16 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
-                        "children": "Lat: 48.474752",
+                        "children": Array [
+                          "Lat: ",
+                          null,
+                        ],
                       },
                       "ref": null,
-                      "rendered": "Lat: 48.474752",
+                      "rendered": Array [
+                        "Lat: ",
+                        null,
+                      ],
                       "type": "p",
                     },
                     Object {
@@ -550,10 +649,16 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
-                        "children": "Long: -123.657985",
+                        "children": Array [
+                          "Long:",
+                          null,
+                        ],
                       },
                       "ref": null,
-                      "rendered": "Long: -123.657985",
+                      "rendered": Array [
+                        "Long:",
+                        null,
+                      ],
                       "type": "p",
                     },
                   ],
@@ -564,17 +669,16 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <p>
-                      <Icon
-                        style={
+                    "children": <h4>
+                      <img
+                        src={
                           Object {
-                            "color": "#47C744",
+                            "process": [Function],
                           }
                         }
-                        type="smile"
                       />
-                      Status Active 
-                    </p>,
+                      Status: Active 
+                    </h4>,
                     "span": 12,
                   },
                   "ref": null,
@@ -584,15 +688,14 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": Array [
-                        <Icon
-                          style={
+                        <img
+                          src={
                             Object {
-                              "color": "#47C744",
+                              "process": [Function],
                             }
                           }
-                          type="smile"
                         />,
-                        "Status Active ",
+                        "Status: Active ",
                       ],
                     },
                     "ref": null,
@@ -600,20 +703,19 @@ ShallowWrapper {
                       Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "function",
+                        "nodeType": "host",
                         "props": Object {
-                          "style": Object {
-                            "color": "#47C744",
+                          "src": Object {
+                            "process": [Function],
                           },
-                          "type": "smile",
                         },
                         "ref": null,
                         "rendered": null,
-                        "type": [Function],
+                        "type": "img",
                       },
-                      "Status Active ",
+                      "Status: Active ",
                     ],
-                    "type": "p",
+                    "type": "h4",
                   },
                   "type": [Function],
                 },

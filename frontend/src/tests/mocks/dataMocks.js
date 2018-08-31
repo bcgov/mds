@@ -28,6 +28,11 @@ export const MINES = {
           mine_name: "mine3",
           mine_no: "BLAH9091"
         }
+      ], 
+      mine_location: [
+        { longitude: null,
+          latitude: null
+        }
       ]
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
@@ -46,6 +51,12 @@ export const MINES = {
         {
           mine_name: "mine2",
           mine_no: "BLAH9091"
+        }
+      ],
+      mine_location: [
+        {
+          longitude: null,
+          latitude: null
         }
       ]
     }
