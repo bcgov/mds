@@ -51,7 +51,7 @@ export const AddMineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="btn-right"><Button type="primary" htmlType="submit">Create Mine</Button></div>
+      <div className="right"><Button type="primary" htmlType="submit">Create Mine</Button></div>
     </Form>
   );
 };

@@ -23,7 +23,7 @@ class MineSearch extends Component {
       return <Redirect push to={this.state.redirectTo} />
     }
     return (
-      <div>
+      <div className="center">
         <RenderAutoComplete handleSearch={this.handleSearch} data={this.props.mineNameList} />
       </div>
     );

@@ -22,18 +22,18 @@ class MineList extends Component {
     return (
       <div>
         <Row type="flex">
-          <Col span={4}><strong>MINE_NO</strong></Col>
-          <Col span={4}><strong>NAME</strong></Col>
-          <Col span={4}><strong>ACTION</strong></Col>
+          <Col span={8}><h2>Mine Number</h2></Col>
+          <Col span={8}><h2>Name</h2></Col>
+          <Col span={8}><h2>Action</h2></Col>
         </Row>
-        <Divider style={{ height: '5px', backgroundColor: '003366'}}/>
+        <Divider style={{ height: '2px', backgroundColor: '#013366'}}/>
         {mineIds.map((id) => {
           return (
-            <div style={{ padding: "10px" }} key={id}>
+            <div key={id}>
               <Row type="flex">
-                <Col span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
-                <Col span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col span={4}>
+                <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
+                <Col span={8}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary">
                       View Mine
@@ -41,7 +41,6 @@ class MineList extends Component {
                   </Link>
                 </Col>
               </Row>
-              <Divider />
             </div>
           )
         })}

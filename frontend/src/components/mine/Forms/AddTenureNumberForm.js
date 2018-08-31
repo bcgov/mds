@@ -26,7 +26,7 @@ export const AddTenureNumberForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="btn-right"><Button type="primary" htmlType="submit">Add Tenure Number</Button></div>
+      <div className="right"><Button type="primary" htmlType="submit">Add Tenure Number</Button></div>
     </Form>
   );
 };

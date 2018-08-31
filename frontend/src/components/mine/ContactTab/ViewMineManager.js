@@ -97,7 +97,7 @@ export class ViewMineManager extends Component {
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
             </Row>
-            <div className="btn-right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/></div>
+            <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/></div>
           </Card>
           <Modal
             title="Update Mine Manager"
@@ -116,7 +116,7 @@ export class ViewMineManager extends Component {
       return (
         <div>
           <NullScreen primaryMessage="No Assigned Mine Manager" secondaryMessage="Please add mine manger below" img={MINER} />
-          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine Manager" type="primary"/></div>
+          <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine Manager" type="primary"/></div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}

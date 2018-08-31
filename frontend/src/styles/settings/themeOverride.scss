@@ -31,15 +31,24 @@
 }
 
 // CARDS
-
 .ant-card {
   margin: auto;
   text-align: left;
   border-radius: 25px;
   width: 60vw;
-
 }
 
 .ant-card-bordered {
   border: 1px solid $default-dark-green;
+}
+
+// ROW 
+.ant-row-flex {
+  text-align: center;
+  padding: $default-padding-md;
+}
+
+// PAGINATION
+.ant-pagination {
+  margin: $default-margin-lg;
 }

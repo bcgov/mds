@@ -45,7 +45,7 @@ class MineTenureInfo extends Component {
             primaryMessage="No data at this time" secondaryMessage="Please add tenure number below" 
             img={TENURE} 
           />
-          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
+          <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}
@@ -74,7 +74,7 @@ class MineTenureInfo extends Component {
             })}
             </p></Col>
           </Row>
-          <div className="btn-right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary" /></div>
+          <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary" /></div>
         </Card>
         <Modal
           title="Update Mine Manager"

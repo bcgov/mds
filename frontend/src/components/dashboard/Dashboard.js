@@ -64,21 +64,32 @@ export class Dashboard extends Component {
     const pageNumber = params.page ? Number(params.page) : 1;
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
     return (
-      <div>
-        <CreateMine createMineRecord={this.props.createMineRecord} getMineRecords={this.props.getMineRecords} getMineNameList={this.props.getMineNameList} location={this.props.location}/>
-        <MineSearch mineNameList={this.props.mineNameList} />
-        <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData}/>
-        <Pagination 
-          showSizeChanger 
-          onShowSizeChange={this.onPageChange} 
-          onChange={this.onPageChange} 
-          defaultCurrent={pageNumber} 
-          current={pageNumber}
-          total={this.props.pageData.total} 
-          pageSizeOptions={['25', '50', '75', '100']} 
-          pageSize={perPageNumber}
-          showTotal={total => `${total} Results`}
-        />
+      <div className="landing-page">
+        <div className="landing-page__header">
+          <CreateMine 
+            createMineRecord={this.props.createMineRecord} 
+            getMineRecords={this.props.getMineRecords} 
+            getMineNameList={this.props.getMineNameList} 
+            location={this.props.location}
+          />
+        </div>
+        <div className="landing-page__content">
+          <MineSearch mineNameList={this.props.mineNameList} />
+          <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData}/>
+          <div className="center">
+            <Pagination 
+              showSizeChanger 
+              onShowSizeChange={this.onPageChange} 
+              onChange={this.onPageChange} 
+              defaultCurrent={pageNumber} 
+              current={pageNumber}
+              total={this.props.pageData.total} 
+              pageSizeOptions={['25', '50', '75', '100']} 
+              pageSize={perPageNumber}
+              showTotal={total => `${total} Results`}
+            />
+          </div>
+        </div>
       </div>
     );
   }
