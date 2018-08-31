@@ -80,6 +80,11 @@ describe('Validate class', () => {
   });
 
   describe('`lat` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(lat(value)).toEqual(undefined);
+    });
+
     it('returns `undefined` if within range of -90 to +90', () => {
       const value = '-90.0';
       const valueTwo = "90.0";
@@ -103,6 +108,11 @@ describe('Validate class', () => {
   });
 
   describe('`lon` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(lon(value)).toEqual(undefined);
+    });
+
     it('returns `undefined` if within range of -180 to +180', () => {
       const value = '-180.0';
       const valueTwo = "180.0";
