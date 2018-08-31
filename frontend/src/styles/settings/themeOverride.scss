@@ -1,0 +1,30 @@
+// stylying overrides for Ant components
+
+// TABS 
+.ant-tabs-nav-scroll {
+  margin: auto;
+  text-align: center;
+}
+
+.ant-tabs-nav {
+
+  .ant-tabs-tab-active {
+    font-weight: $bold !important;
+  }
+
+  .ant-tabs-tab {
+    font-family: $default-font;
+    font-weight: $light;
+    font-size: 20px;
+  }
+}
+
+.ant-tabs-ink-bar {
+  height: 4px;
+}
+
+// DIVIDER 
+.ant-divider-horizontal {
+  margin: 0;
+  width: 80%;
+}
