@@ -3,9 +3,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'antd';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN } from '@/constants/assets';
 
 const propTypes = {
   mine: PropTypes.object.isRequired
@@ -23,16 +22,19 @@ class MineHeader extends Component {
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
           <h1>{mine.mine_detail[0].mine_name}</h1>
-          <p>Mine #: {mine.mine_detail[0].mine_no} </p>
-          <Row gutter={16}>
-            <Col span={12}>
-              <p>Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p>
-              <p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude: 'N/A'}</p>
-            </Col>
-            <Col span={12}>
-              <h4><img src={ELLIPSE} />Status: Active </h4>
-            </Col>
-          </Row>
+          <h5>Mine #: {mine.mine_detail[0].mine_no} </h5>
+          <div className="dashboard__header__content--inline">
+            <div className="inline-flex">
+              <img src={SMALL_PIN} />
+              <div><p>Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
+              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
+            </div>
+            <div className="inline-flex">
+              <img src={ELLIPSE} />
+              <div><h5>Status: </h5></div>
+              <div><h3>Active</h3></div>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -27,7 +27,7 @@ export const createMineRecord = (payload) => (dispatch) => {
   });
 };
 
-export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
+export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => { 
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading());
   return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , {"tenure_number_id": tenureNumber}, createRequestHeader())
@@ -38,6 +38,7 @@ export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
     return response;
   })
   .catch(() => {
+    console.log("errrrrrrror");
     notification.error({message: String.ERROR, duration: 10});
     dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
     dispatch(hideLoading());

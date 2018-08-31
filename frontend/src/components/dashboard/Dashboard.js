@@ -41,7 +41,7 @@ export class Dashboard extends Component {
     if (params.page && params.per_page) {
       this.props.getMineRecords(params.page, params.per_page);
     } else {
-      this.props.getMineRecords('1', '5');
+      this.props.getMineRecords('1', '25');
     }
     this.props.getMineNameList();
   }
@@ -62,7 +62,7 @@ export class Dashboard extends Component {
   render() {
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
-    const perPageNumber = params.per_page ? Number(params.per_page) : 5;
+    const perPageNumber = params.per_page ? Number(params.per_page) : 25;
     return (
       <div>
         <CreateMine createMineRecord={this.props.createMineRecord}/>
@@ -75,7 +75,7 @@ export class Dashboard extends Component {
           defaultCurrent={pageNumber} 
           current={pageNumber}
           total={this.props.pageData.total} 
-          pageSizeOptions={['5', '15', '25', '50']} 
+          pageSizeOptions={['25', '50', '75', '100']} 
           pageSize={perPageNumber}
           showTotal={total => `${total} Results`}
         />

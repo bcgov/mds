@@ -11,7 +11,7 @@ h1 {
 h2 {
   font-size: $default-h2;
   font-weight: $bold;
-  text-transform: capitalize;
+  text-transform: uppercase;
   color: $default-brown;
 }
 h3 {
@@ -23,7 +23,7 @@ h4 {
   font-size: $default-h4;
   font-weight: $bold;
   color: $default-dark-green;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 h5 {

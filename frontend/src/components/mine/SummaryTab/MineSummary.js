@@ -20,24 +20,22 @@ class MineSummary extends Component {
       <div>
         <Card loading={false}>
           <Row type="flex">
-            <Col span={6}><strong>MINE_NO</strong></Col>
-            <Col span={6}><strong>NAME</strong></Col>
-            <Col span={6}><strong>GUID</strong></Col>
-            <Col span={6}><strong>TENURE</strong></Col>
+            <Col span={12}><h4>Mine Manager</h4></Col>
+            <Col span={12}><h4>Manager Since</h4></Col>
           </Row>
           <Row type="flex">
-            <Col span={6}>{mine.mine_detail[0] ? mine.mine_detail[0].mine_no : "-"}</Col>
-            <Col span={6}>{mine.mine_detail[0] ? mine.mine_detail[0].mine_name : "-"}</Col>
-            <Col span={6}>{mine.guid}</Col>
-            <Col span={6}>
-              {mine.mineral_tenure_xref.map((tenure) => {
-                return (
-                  <div key={tenure.tenure_number_id}>
-                    {tenure.tenure_number_id}
-                  </div>
-                )
-              })}
-            </Col>
+            <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
+            <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
+          </Row>
+        </Card>
+        <Card loading={false}>
+          <Row type="flex">
+            <Col span={12}><h4>Permittee</h4></Col>
+            <Col span={12}><h4>Permittee Since</h4></Col>
+          </Row>
+          <Row type="flex">
+            <Col span={12}><p className="p-large">N/A</p></Col>
+            <Col span={12}><p className="p-large">N/A</p></Col>
           </Row>
         </Card>
       </div>

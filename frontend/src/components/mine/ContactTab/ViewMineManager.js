@@ -58,13 +58,15 @@ export class ViewMineManager extends Component {
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
     if (this.props.personnelIds.length === 0) {
-      return (<NullScreen primaryMessage="" secondaryMessage="Please update below" img={MINER_TWO}/>)
+      return (<NullScreen primaryMessage="" secondaryMessage="Please add below" img={MINER_TWO}/>)
     } else {
-      return (<UpdateMineManagerForm
-        onSubmit={this.handleSubmit}
-        personnel={this.props.personnel}
-        personnelIds={this.props.personnelIds}
-      />)
+      return (
+        <UpdateMineManagerForm
+          onSubmit={this.handleSubmit}
+          personnel={this.props.personnel}
+          personnelIds={this.props.personnelIds}
+        />
+      )
     }
   }
 
@@ -112,7 +114,7 @@ export class ViewMineManager extends Component {
     } else if (!this.props.mine.mgr_appointment[0]) {
       return (
         <div>
-          <NullScreen primaryMessage="No Assigned Mine manager" secondaryMessage="Please add Mine Manger below" img={MINER} />
+          <NullScreen primaryMessage="No Assigned Mine Manager" secondaryMessage="Please add mine manger below" img={MINER} />
           <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine Manager" type="primary"/></div>
           <Modal
             title="Update Mine Manager"

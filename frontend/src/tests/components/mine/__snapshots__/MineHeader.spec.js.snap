@@ -80,39 +80,57 @@ ShallowWrapper {
           <h1>
             mine1
           </h1>
-          <p>
+          <h5>
             Mine #: 
             BLAH9091
              
-          </p>
-          <Row
-            gutter={16}
+          </h5>
+          <div
+            className="dashboard__header__content--inline"
           >
-            <Col
-              span={12}
+            <div
+              className="inline-flex"
             >
-              <p>
-                Lat: 
-              </p>
-              <p>
-                Long:
-              </p>
-            </Col>
-            <Col
-              span={12}
-            >
-              <h4>
-                <img
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
+              <img
+                src={
+                  Object {
+                    "process": [Function],
                   }
-                />
-                Status: Active 
-              </h4>
-            </Col>
-          </Row>
+                }
+              />
+              <div>
+                <p>
+                  Lat: 
+                </p>
+              </div>
+              <div>
+                <p>
+                  Long:
+                </p>
+              </div>
+            </div>
+            <div
+              className="inline-flex"
+            >
+              <img
+                src={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+              />
+              <div>
+                <h5>
+                  Status: 
+                </h5>
+              </div>
+              <div>
+                <h3>
+                  Active
+                </h3>
+              </div>
+            </div>
+          </div>
         </div>,
       ],
     },
@@ -162,39 +180,57 @@ ShallowWrapper {
             <h1>
               mine1
             </h1>,
-            <p>
+            <h5>
               Mine #: 
               BLAH9091
                
-            </p>,
-            <Row
-              gutter={16}
+            </h5>,
+            <div
+              className="dashboard__header__content--inline"
             >
-              <Col
-                span={12}
+              <div
+                className="inline-flex"
               >
-                <p>
-                  Lat: 
-                </p>
-                <p>
-                  Long:
-                </p>
-              </Col>
-              <Col
-                span={12}
-              >
-                <h4>
-                  <img
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
+                <img
+                  src={
+                    Object {
+                      "process": [Function],
                     }
-                  />
-                  Status: Active 
-                </h4>
-              </Col>
-            </Row>,
+                  }
+                />
+                <div>
+                  <p>
+                    Lat: 
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Long:
+                  </p>
+                </div>
+              </div>
+              <div
+                className="inline-flex"
+              >
+                <img
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />
+                <div>
+                  <h5>
+                    Status: 
+                  </h5>
+                </div>
+                <div>
+                  <h3>
+                    Active
+                  </h3>
+                </div>
+              </div>
+            </div>,
           ],
           "className": "dashboard__header__content",
         },
@@ -228,57 +264,86 @@ ShallowWrapper {
               "BLAH9091",
               " ",
             ],
-            "type": "p",
+            "type": "h5",
           },
           Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "class",
+            "nodeType": "host",
             "props": Object {
               "children": Array [
-                <Col
-                  span={12}
+                <div
+                  className="inline-flex"
                 >
-                  <p>
-                    Lat: 
-                  </p>
-                  <p>
-                    Long:
-                  </p>
-                </Col>,
-                <Col
-                  span={12}
-                >
-                  <h4>
-                    <img
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
+                  <img
+                    src={
+                      Object {
+                        "process": [Function],
                       }
-                    />
-                    Status: Active 
-                  </h4>
-                </Col>,
+                    }
+                  />
+                  <div>
+                    <p>
+                      Lat: 
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Long:
+                    </p>
+                  </div>
+                </div>,
+                <div
+                  className="inline-flex"
+                >
+                  <img
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                  />
+                  <div>
+                    <h5>
+                      Status: 
+                    </h5>
+                  </div>
+                  <div>
+                    <h3>
+                      Active
+                    </h3>
+                  </div>
+                </div>,
               ],
-              "gutter": 16,
+              "className": "dashboard__header__content--inline",
             },
             "ref": null,
             "rendered": Array [
               Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "class",
+                "nodeType": "host",
                 "props": Object {
                   "children": Array [
-                    <p>
-                      Lat: 
-                    </p>,
-                    <p>
-                      Long:
-                    </p>,
+                    <img
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />,
+                    <div>
+                      <p>
+                        Lat: 
+                      </p>
+                    </div>,
+                    <div>
+                      <p>
+                        Long:
+                      </p>
+                    </div>,
                   ],
-                  "span": 12,
+                  "className": "inline-flex",
                 },
                 "ref": null,
                 "rendered": Array [
@@ -287,95 +352,167 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "host",
                     "props": Object {
-                      "children": Array [
-                        "Lat: ",
-                        null,
-                      ],
+                      "src": Object {
+                        "process": [Function],
+                      },
                     },
                     "ref": null,
-                    "rendered": Array [
-                      "Lat: ",
-                      null,
-                    ],
-                    "type": "p",
+                    "rendered": null,
+                    "type": "img",
                   },
                   Object {
                     "instance": null,
                     "key": undefined,
                     "nodeType": "host",
                     "props": Object {
-                      "children": Array [
+                      "children": <p>
+                        Lat: 
+                      </p>,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Lat: ",
+                          null,
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Lat: ",
+                        null,
+                      ],
+                      "type": "p",
+                    },
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <p>
+                        Long:
+                      </p>,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Long:",
+                          null,
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
                         "Long:",
                         null,
                       ],
+                      "type": "p",
                     },
-                    "ref": null,
-                    "rendered": Array [
-                      "Long:",
-                      null,
-                    ],
-                    "type": "p",
+                    "type": "div",
                   },
                 ],
-                "type": [Function],
+                "type": "div",
               },
               Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "class",
+                "nodeType": "host",
                 "props": Object {
-                  "children": <h4>
+                  "children": Array [
                     <img
                       src={
                         Object {
                           "process": [Function],
                         }
                       }
-                    />
-                    Status: Active 
-                  </h4>,
-                  "span": 12,
+                    />,
+                    <div>
+                      <h5>
+                        Status: 
+                      </h5>
+                    </div>,
+                    <div>
+                      <h3>
+                        Active
+                      </h3>
+                    </div>,
+                  ],
+                  "className": "inline-flex",
                 },
                 "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      <img
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />,
-                      "Status: Active ",
-                    ],
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "src": Object {
+                        "process": [Function],
+                      },
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": "img",
                   },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <h5>
+                        Status: 
+                      </h5>,
+                    },
+                    "ref": null,
+                    "rendered": Object {
                       "instance": null,
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
-                        "src": Object {
-                          "process": [Function],
-                        },
+                        "children": "Status: ",
                       },
                       "ref": null,
-                      "rendered": null,
-                      "type": "img",
+                      "rendered": "Status: ",
+                      "type": "h5",
                     },
-                    "Status: Active ",
-                  ],
-                  "type": "h4",
-                },
-                "type": [Function],
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <h3>
+                        Active
+                      </h3>,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Active",
+                      },
+                      "ref": null,
+                      "rendered": "Active",
+                      "type": "h3",
+                    },
+                    "type": "div",
+                  },
+                ],
+                "type": "div",
               },
             ],
-            "type": [Function],
+            "type": "div",
           },
         ],
         "type": "div",
@@ -425,39 +562,57 @@ ShallowWrapper {
             <h1>
               mine1
             </h1>
-            <p>
+            <h5>
               Mine #: 
               BLAH9091
                
-            </p>
-            <Row
-              gutter={16}
+            </h5>
+            <div
+              className="dashboard__header__content--inline"
             >
-              <Col
-                span={12}
+              <div
+                className="inline-flex"
               >
-                <p>
-                  Lat: 
-                </p>
-                <p>
-                  Long:
-                </p>
-              </Col>
-              <Col
-                span={12}
-              >
-                <h4>
-                  <img
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
+                <img
+                  src={
+                    Object {
+                      "process": [Function],
                     }
-                  />
-                  Status: Active 
-                </h4>
-              </Col>
-            </Row>
+                  }
+                />
+                <div>
+                  <p>
+                    Lat: 
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Long:
+                  </p>
+                </div>
+              </div>
+              <div
+                className="inline-flex"
+              >
+                <img
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />
+                <div>
+                  <h5>
+                    Status: 
+                  </h5>
+                </div>
+                <div>
+                  <h3>
+                    Active
+                  </h3>
+                </div>
+              </div>
+            </div>
           </div>,
         ],
       },
@@ -507,39 +662,57 @@ ShallowWrapper {
               <h1>
                 mine1
               </h1>,
-              <p>
+              <h5>
                 Mine #: 
                 BLAH9091
                  
-              </p>,
-              <Row
-                gutter={16}
+              </h5>,
+              <div
+                className="dashboard__header__content--inline"
               >
-                <Col
-                  span={12}
+                <div
+                  className="inline-flex"
                 >
-                  <p>
-                    Lat: 
-                  </p>
-                  <p>
-                    Long:
-                  </p>
-                </Col>
-                <Col
-                  span={12}
-                >
-                  <h4>
-                    <img
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
+                  <img
+                    src={
+                      Object {
+                        "process": [Function],
                       }
-                    />
-                    Status: Active 
-                  </h4>
-                </Col>
-              </Row>,
+                    }
+                  />
+                  <div>
+                    <p>
+                      Lat: 
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Long:
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className="inline-flex"
+                >
+                  <img
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                  />
+                  <div>
+                    <h5>
+                      Status: 
+                    </h5>
+                  </div>
+                  <div>
+                    <h3>
+                      Active
+                    </h3>
+                  </div>
+                </div>
+              </div>,
             ],
             "className": "dashboard__header__content",
           },
@@ -573,57 +746,86 @@ ShallowWrapper {
                 "BLAH9091",
                 " ",
               ],
-              "type": "p",
+              "type": "h5",
             },
             Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "class",
+              "nodeType": "host",
               "props": Object {
                 "children": Array [
-                  <Col
-                    span={12}
+                  <div
+                    className="inline-flex"
                   >
-                    <p>
-                      Lat: 
-                    </p>
-                    <p>
-                      Long:
-                    </p>
-                  </Col>,
-                  <Col
-                    span={12}
-                  >
-                    <h4>
-                      <img
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
+                    <img
+                      src={
+                        Object {
+                          "process": [Function],
                         }
-                      />
-                      Status: Active 
-                    </h4>
-                  </Col>,
+                      }
+                    />
+                    <div>
+                      <p>
+                        Lat: 
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        Long:
+                      </p>
+                    </div>
+                  </div>,
+                  <div
+                    className="inline-flex"
+                  >
+                    <img
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    <div>
+                      <h5>
+                        Status: 
+                      </h5>
+                    </div>
+                    <div>
+                      <h3>
+                        Active
+                      </h3>
+                    </div>
+                  </div>,
                 ],
-                "gutter": 16,
+                "className": "dashboard__header__content--inline",
               },
               "ref": null,
               "rendered": Array [
                 Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "class",
+                  "nodeType": "host",
                   "props": Object {
                     "children": Array [
-                      <p>
-                        Lat: 
-                      </p>,
-                      <p>
-                        Long:
-                      </p>,
+                      <img
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />,
+                      <div>
+                        <p>
+                          Lat: 
+                        </p>
+                      </div>,
+                      <div>
+                        <p>
+                          Long:
+                        </p>
+                      </div>,
                     ],
-                    "span": 12,
+                    "className": "inline-flex",
                   },
                   "ref": null,
                   "rendered": Array [
@@ -632,95 +834,167 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
-                        "children": Array [
-                          "Lat: ",
-                          null,
-                        ],
+                        "src": Object {
+                          "process": [Function],
+                        },
                       },
                       "ref": null,
-                      "rendered": Array [
-                        "Lat: ",
-                        null,
-                      ],
-                      "type": "p",
+                      "rendered": null,
+                      "type": "img",
                     },
                     Object {
                       "instance": null,
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
-                        "children": Array [
+                        "children": <p>
+                          Lat: 
+                        </p>,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            "Lat: ",
+                            null,
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          "Lat: ",
+                          null,
+                        ],
+                        "type": "p",
+                      },
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <p>
+                          Long:
+                        </p>,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            "Long:",
+                            null,
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": Array [
                           "Long:",
                           null,
                         ],
+                        "type": "p",
                       },
-                      "ref": null,
-                      "rendered": Array [
-                        "Long:",
-                        null,
-                      ],
-                      "type": "p",
+                      "type": "div",
                     },
                   ],
-                  "type": [Function],
+                  "type": "div",
                 },
                 Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "class",
+                  "nodeType": "host",
                   "props": Object {
-                    "children": <h4>
+                    "children": Array [
                       <img
                         src={
                           Object {
                             "process": [Function],
                           }
                         }
-                      />
-                      Status: Active 
-                    </h4>,
-                    "span": 12,
+                      />,
+                      <div>
+                        <h5>
+                          Status: 
+                        </h5>
+                      </div>,
+                      <div>
+                        <h3>
+                          Active
+                        </h3>
+                      </div>,
+                    ],
+                    "className": "inline-flex",
                   },
                   "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": Array [
-                        <img
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />,
-                        "Status: Active ",
-                      ],
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "src": Object {
+                          "process": [Function],
+                        },
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": "img",
                     },
-                    "ref": null,
-                    "rendered": Array [
-                      Object {
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <h5>
+                          Status: 
+                        </h5>,
+                      },
+                      "ref": null,
+                      "rendered": Object {
                         "instance": null,
                         "key": undefined,
                         "nodeType": "host",
                         "props": Object {
-                          "src": Object {
-                            "process": [Function],
-                          },
+                          "children": "Status: ",
                         },
                         "ref": null,
-                        "rendered": null,
-                        "type": "img",
+                        "rendered": "Status: ",
+                        "type": "h5",
                       },
-                      "Status: Active ",
-                    ],
-                    "type": "h4",
-                  },
-                  "type": [Function],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <h3>
+                          Active
+                        </h3>,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "Active",
+                        },
+                        "ref": null,
+                        "rendered": "Active",
+                        "type": "h3",
+                      },
+                      "type": "div",
+                    },
+                  ],
+                  "type": "div",
                 },
               ],
-              "type": [Function],
+              "type": "div",
             },
           ],
           "type": "div",

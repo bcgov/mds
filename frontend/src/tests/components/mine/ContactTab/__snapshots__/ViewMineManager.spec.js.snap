@@ -80,8 +80,8 @@ ShallowWrapper {
               "process": [Function],
             }
           }
-          primaryMessage="No Assigned Mine manager"
-          secondaryMessage="Please add Mine Manger below"
+          primaryMessage="No Assigned Mine Manager"
+          secondaryMessage="Please add mine manger below"
         />,
         <div
           className="btn-center"
@@ -145,8 +145,8 @@ ShallowWrapper {
           "img": Object {
             "process": [Function],
           },
-          "primaryMessage": "No Assigned Mine manager",
-          "secondaryMessage": "Please add Mine Manger below",
+          "primaryMessage": "No Assigned Mine Manager",
+          "secondaryMessage": "Please add mine manger below",
         },
         "ref": null,
         "rendered": null,
@@ -316,8 +316,8 @@ ShallowWrapper {
                 "process": [Function],
               }
             }
-            primaryMessage="No Assigned Mine manager"
-            secondaryMessage="Please add Mine Manger below"
+            primaryMessage="No Assigned Mine Manager"
+            secondaryMessage="Please add mine manger below"
           />,
           <div
             className="btn-center"
@@ -381,8 +381,8 @@ ShallowWrapper {
             "img": Object {
               "process": [Function],
             },
-            "primaryMessage": "No Assigned Mine manager",
-            "secondaryMessage": "Please add Mine Manger below",
+            "primaryMessage": "No Assigned Mine Manager",
+            "secondaryMessage": "Please add mine manger below",
           },
           "ref": null,
           "rendered": null,

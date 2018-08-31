@@ -21,7 +21,7 @@ export class NavBar extends Component {
   render() {
     return (
       <div className="menu">
-        <Link to={router.MINE_DASHBOARD.dynamicRoute('1', '5')}>
+        <Link to={router.MINE_DASHBOARD.dynamicRoute('1', '25')}>
           <img className="menu__img" src={HOME} />
         </Link>
         <Dropdown overlay={<Logout />}>

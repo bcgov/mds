@@ -21,7 +21,7 @@ ShallowWrapper {
       "children": Array [
         <Link
           replace={false}
-          to="/dashboard?page=1&per_page=5"
+          to="/dashboard?page=1&per_page=25"
         >
           <img
             className="menu__img"
@@ -75,7 +75,7 @@ ShallowWrapper {
             }
           />,
           "replace": false,
-          "to": "/dashboard?page=1&per_page=5",
+          "to": "/dashboard?page=1&per_page=25",
         },
         "ref": null,
         "rendered": Object {
@@ -189,7 +189,7 @@ ShallowWrapper {
         "children": Array [
           <Link
             replace={false}
-            to="/dashboard?page=1&per_page=5"
+            to="/dashboard?page=1&per_page=25"
           >
             <img
               className="menu__img"
@@ -243,7 +243,7 @@ ShallowWrapper {
               }
             />,
             "replace": false,
-            "to": "/dashboard?page=1&per_page=5",
+            "to": "/dashboard?page=1&per_page=25",
           },
           "ref": null,
           "rendered": Object {
