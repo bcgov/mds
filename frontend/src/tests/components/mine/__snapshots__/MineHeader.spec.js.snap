@@ -133,6 +133,7 @@ ShallowWrapper {
           </div>
         </div>,
       ],
+      "className": "dashboard__header",
     },
     "ref": null,
     "rendered": Array [
@@ -615,6 +616,7 @@ ShallowWrapper {
             </div>
           </div>,
         ],
+        "className": "dashboard__header",
       },
       "ref": null,
       "rendered": Array [
