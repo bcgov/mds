@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row, Modal, Button } from 'antd';
+import { Col, Row, Modal, Card } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
@@ -84,20 +84,21 @@ export class ViewMineManager extends Component {
   }
 
   render() {
+    const { mine } = this.props;
     if (this.props.mine.mgr_appointment[0]) {
       return (
         <div>
-          <Row gutter={16}>
-            <Col span={12}>
-              <label>Mine Manager</label>
-            <div>{this.props.mine.mgr_appointment[0].full_name}</div>
-            </Col>
-            <Col span={12}>
-              <label>Effective date</label>
-              <div>{this.props.mine.mgr_appointment[0].effective_date}</div>
-            </Col>
-          </Row>
-          <ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/>
+          <Card>
+            <Row type="flex">
+              <Col span={12}><h4>Mine Manager</h4></Col>
+              <Col span={12}><h4>Manager Since</h4></Col>
+            </Row>
+            <Row type="flex">
+              <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
+              <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
+            </Row>
+            <div className="btn-right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/></div>
+          </Card>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}

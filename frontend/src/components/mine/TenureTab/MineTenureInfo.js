@@ -4,11 +4,12 @@ import AddTenureNumberForm from '../Forms/AddTenureNumberForm';
 import ConditionalButton from '@/components/reusables/ConditionalButton';
 import NullScreen from '@/components/reusables/NullScreen'; 
 import { TENURE } from '@/constants/assets';
-import { Modal } from 'antd';
+import { Modal, Card, Row, Col } from 'antd';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  getMineRecordById: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -19,9 +20,13 @@ class MineTenureInfo extends Component {
   state = { visible: false }
 
   handleSubmit = (value) => {
-    console.log(value);
-    console.log(this.props.mine.guid, value.tenureNumber, this.props.mine.mine_detail[0].mine_name);
-    this.props.updateMineRecord(this.props.mine.guid, value.tenureNumber, this.props.mine.mine_detail[0].mine_name);
+    const { id } = this.props.match.params;
+    this.props.updateMineRecord(this.props.mine.guid, value.tenureNumber, this.props.mine.mine_detail[0].mine_name).then(() => {
+      this.props.getMineRecordById(id);
+      this.setState({
+        visible: !this.state.visible,
+      });
+    })
   }
 
   toggleModal = () => {
@@ -40,7 +45,7 @@ class MineTenureInfo extends Component {
             primaryMessage="No data at this time" secondaryMessage="Please add tenure number below" 
             img={TENURE} 
           />
-          <ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" />
+          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}
@@ -54,15 +59,23 @@ class MineTenureInfo extends Component {
     }
     return (
       <div>
-        <h1>Tenure</h1>
-        {mine.mineral_tenure_xref.map((tenure) => {
-          return (
-            <div key={tenure.tenure_number_id}>
-              {tenure.tenure_number_id}
-            </div>
-          )
-        })}
-        <ConditionalButton handleAction={this.toggleModal} string="Update" type="primary"/>
+        <Card>
+          <Row type="flex">
+            <Col span={12}><h4>Tenure Numbers</h4></Col>
+          </Row>
+          <Row type="flex">
+          <Col span={12}><p className="p-large">
+            {mine.mineral_tenure_xref.map((tenure) => {
+              return (
+                <div key={tenure.tenure_number_id}>
+                  {tenure.tenure_number_id}
+                </div>
+              )
+            })}
+            </p></Col>
+          </Row>
+          <div className="btn-right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary" /></div>
+        </Card>
         <Modal
           title="Update Mine Manager"
           visible={this.state.visible}

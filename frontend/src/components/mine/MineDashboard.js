@@ -51,7 +51,6 @@ export class MineDashboard extends Component {
               >
                 <TabPane tab="Summary" key="1">
                   <MineSummary mine={this.props.mine} />
-                  {/* <NullScreen primaryMessage="No data at this time" img={NO_MINE} /> */}
                 </TabPane>
                 <TabPane tab="Permit" key="2">
                   <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
@@ -63,7 +62,6 @@ export class MineDashboard extends Component {
                   <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
                 </TabPane>
                 <TabPane tab="Tenure" key="5">
-                  {/* <NullScreen primaryMessage="No data at this time" secondaryMessage="Please add tenure number below" img={TENURE} /> */}
                   <MineTenureInfo {...this.props}/>
                 </TabPane>
               </Tabs>

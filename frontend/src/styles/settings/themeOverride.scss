@@ -25,6 +25,21 @@
 
 // DIVIDER 
 .ant-divider-horizontal {
-  margin: 0;
-  width: 80%;
+  margin: 5px;
+  height: 1px;
+  background-color:  $default-dark-green;
+}
+
+// CARDS
+
+.ant-card {
+  margin: auto;
+  text-align: left;
+  border-radius: 25px;
+  width: 60vw;
+
+}
+
+.ant-card-bordered {
+  border: 1px solid $default-dark-green;
 }

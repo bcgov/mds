@@ -18,7 +18,7 @@ class MineHeader extends Component {
   render() {
     const { mine } = this.props;
     return (
-      <div>
+      <div className="dashboard__header">
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
           <h1>{mine.mine_detail[0].mine_name}</h1>
