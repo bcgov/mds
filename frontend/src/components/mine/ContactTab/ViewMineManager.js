@@ -113,7 +113,7 @@ export class ViewMineManager extends Component {
       return (
         <div>
           <NullScreen primaryMessage="No Assigned Mine manager" secondaryMessage="Please add Mine Manger below" img={MINER} />
-          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine manager" type="primary"/></div>
+          <div className="btn-center"><ConditionalButton handleAction={this.toggleModal} string="Add Mine Manager" type="primary"/></div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.visible}
