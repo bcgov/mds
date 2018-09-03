@@ -9,28 +9,23 @@ class DashboardPage extends Page {
     static content = {
         //general 
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
+        
         //create mine form 
         createMineForm { module CreateMineForm}
         createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
+        
         //Dashboard
         mineName (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
         mineID (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
         viewButton (wait:true) {$("button").has("span", text:"View")}
+        
         //search
-        //resultList (required:false, wait: true) {$("div.slide-up-leave").find("div").find("ul", role: "listbox").find("li")}
         searchBox (wait:true){$("input", class:"ant-input")}
         resultList (required:false, wait: false) {$("ul", role: "listbox").find("li")}
+        
         //pagination
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
         recordPerPage (wait:true) {$()}
-        
-
-        // //single result
-        // ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft slide-up-leave
-        // //multiple result
-        // ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft slide-up-leave slide-up-leave-active
-        // //none
-        // ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft  ant-select-dropdown-hidden
     }
 
     def selectRandomMine(){
