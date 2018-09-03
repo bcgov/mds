@@ -25,7 +25,8 @@ class  B_DashboardSpec extends GebReportingSpec {
     //     createMineForm.createMineRecord(NAME_GOOD)
 
     //     then: "I should see the successful message"
-    //     toastMessage == "Successfully created: " + NAME_GOOD
+    //     //toastMessage == "Successfully created: " + NAME_GOOD
+    //     println "created"
     // }
 
 
@@ -62,33 +63,39 @@ class  B_DashboardSpec extends GebReportingSpec {
     //     assert dashboardValidation(NAME_GOOD) == true
     // }
 
-    def "Scenario: User can search for a specific mine "(){
-        given: "I am on the Dashboard Page"
-        to DashboardPage
+    // def "Scenario: User can search for a specific mine "(){
+    //     given: "I am on the Dashboard Page"
+    //     to DashboardPage
 
-        when: "I can search for a mine using mine name"
-        searchBox = keyword
-        println scenario
+    //     when: "I search for a mine using mine name"
+    //     searchBox = keyword
+    //     println scenario
 
 
-        then: "I should see a list of mine record whose names contain the keyword"
-        searchResultValidation(keyword) == true
-
-        where:
-        scenario                | keyword
-        "regular search"        |"Trend"
-        "not case sensitive"    |"trend"
-        "search by ID"          |"blah9"   
-    }
+    //     then: "I should see a list of mine record whose names contain the keyword"
+    //     assert searchResultValidation(keyword) == true
+         
+    //     where:
+    //     scenario                | keyword
+    //     "regular search"        |"Trend"
+    //     "not case sensitive"    |"LKK"
+    //     "search by ID"          |"blah6"   
+    //     "not found"             |"sdkfj"
+    // }
 
     def "Scenario: Redirect to Mine Summary page once search result is selected"(){
         given: "I am on the Dashboard Page"
         to DashboardPage
 
-        when: "I can search for a mine using mine name"
+        when: "I search for a mine using mine name"
         searchBox = "trend"
 
+        and: "I select a mine from the result list"
+        searchResultSelection()
         
+        
+        then: "I am redirected to the mine summary page"
+        println "hah"
 
     }
     

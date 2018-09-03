@@ -52,7 +52,6 @@ class  C_MineProfileSpec extends GebReportingSpec {
     def "Scenario: User should be able to add tenure number"(){
         given: "I go to mine profile"
         go urlTemp
-        println currentUrl
 
         when: "User can update mine record with a new tenure number"
         def tempTenure = generateTenure()
@@ -71,7 +70,6 @@ class  C_MineProfileSpec extends GebReportingSpec {
     def "Scenario: User should not be able to add tenure number if the length is invalid"(){
         given: "I go to mine profile"
         go urlTemp
-        println currentUrl
 
         when: "Tenure number is not all numerical but not meet length requirement"
         addTenure(bad_tenure)
