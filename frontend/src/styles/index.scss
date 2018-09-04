@@ -1,21 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 // ITCSS file structure, layers include: (Settings, Tools, Generic, Elements, Objects, Components, Utilities)
 // most stying will be found in the Components and Objects folder.
 
 // SETTINGS - Used with preprocessors. Global settings that contain font, colors definitions, etc.
 @import './settings/variables.scss';
 @import './settings/theme.scss';
+@import './settings/themeOverride.scss';
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import './tools/mixins.scss';
 // GENERIC - Very high level, far-reacing styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import './generic/Normalize.scss';
+@import './generic/layout.scss';
 // ELEMENTS - Bare, unclassed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
+@import './elements/elements.scss';
 // OBJECTS - layouts (CSS Grid or flexbox)
 @import './objects/actions.scss';
 // COMPONENTS - specific UI components.
 @import './components/loading.scss';
-@import './components/mine.scss';
+@import './components/MineDashboard.scss';
+@import './components/navBar.scss';
+@import './components/NullScreen.scss';
+@import './components/Dashboard.scss';
+
 // UTILITES - utilities and helper classes. This layer has the highest specificity.
 @import './App.scss';
-
-
-

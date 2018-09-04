@@ -45,7 +45,7 @@ export class MineContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    mines: getMines(state)
+    mines: getMines(state),
   };
 };
 

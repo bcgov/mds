@@ -16,6 +16,7 @@
     "moment": "^2.22.2",
     "query-string": "^6.1.0",
     "react": "^16.3.2",
+    "react-arcgis": "^3.3.2",
     "react-dom": "^16.3.2",
     "react-lottie": "^1.2.3",
     "react-redux": "^5.0.7",

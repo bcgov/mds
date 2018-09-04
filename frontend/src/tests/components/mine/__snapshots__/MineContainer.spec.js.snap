@@ -37,6 +37,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",
@@ -66,6 +72,12 @@ ShallowWrapper {
               "mine_no": "BLAH9091",
             },
           ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
+            },
+          ],
           "mineral_tenure_xref": Array [
             Object {
               "tenure_number_id": "1234567",
@@ -83,6 +95,12 @@ ShallowWrapper {
             Object {
               "mine_name": "mine2",
               "mine_no": "BLAH9091",
+            },
+          ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
             },
           ],
           "mineral_tenure_xref": Array [

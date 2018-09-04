@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Col, Card, Row } from 'antd';
+import { Button, Col, Row, Divider } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
@@ -21,24 +21,22 @@ class MineList extends Component {
     const { mines, mineIds } = this.props;
     return (
       <div>
-      <Card title="Mines">
         <Row type="flex">
-          <Col span={4}><strong>MINE_NO</strong></Col>
-          <Col span={8}><strong>NAME</strong></Col>
-          <Col span={8}><strong>GUID</strong></Col>
-          <Col span={4}><strong>ACTION</strong></Col>
+          <Col span={8}><h2>Mine Number</h2></Col>
+          <Col span={8}><h2>Name</h2></Col>
+          <Col span={8}><h2>Action</h2></Col>
         </Row>
+        <Divider style={{ height: '2px', backgroundColor: '#013366'}}/>
         {mineIds.map((id) => {
           return (
-            <div style={{ padding: "10px" }} key={id}>
+            <div key={id}>
               <Row type="flex">
-                <Col span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col span={8}>{mines[id].guid}</Col>
-                <Col span={4}>
+                <Col span={8}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-                    <Button type="primary" size="small" >
-                      View
+                    <Button type="primary">
+                      View Mine
                     </Button>
                   </Link>
                 </Col>
@@ -46,7 +44,6 @@ class MineList extends Component {
             </div>
           )
         })}
-      </Card>
       </div>
     );
   }

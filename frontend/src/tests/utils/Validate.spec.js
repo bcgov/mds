@@ -2,7 +2,10 @@ import {
   required,
   maxLength,
   minLength,
-  exactLength
+  exactLength, 
+  number,
+  lat,
+  lon
 } from '@/utils/Validate';
 
 describe('Validate class', () => {
@@ -62,4 +65,73 @@ describe('Validate class', () => {
     });
   });
 
+  describe('`number` function', () => {
+    it('returns `undefined` if `value` is a number', () => {
+      const value = 10;
+      expect(number(value)).toEqual(undefined);
+    });
+
+    it('returns `Coordinates must be a number` if `value` is not a number', () => {
+      const value = 'number';
+      const valueTwo = "385192451257";
+      expect(number(value)).toEqual(`Coordinates must be a number`);
+      expect(number(valueTwo)).toEqual(undefined);
+    });
+  });
+
+  describe('`lat` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(lat(value)).toEqual(undefined);
+    });
+
+    it('returns `undefined` if within range of -90 to +90', () => {
+      const value = '-90.0';
+      const valueTwo = "90.0";
+      const valueThree = '-91.0';
+      const valueFour = "91.0";
+      expect(lat(value)).toEqual(undefined);
+      expect(lat(valueTwo)).toEqual(undefined);
+      expect(lat(valueThree)).toEqual('Invalid latitude coordinate e.g. 53.7267');
+      expect(lat(valueFour)).toEqual('Invalid latitude coordinate e.g. 53.7267');
+    });
+
+    it('returns `Invalid latitude coordinate e.g. 53.7267` if `value` does not have any digits after decimal', () => {
+      const value = "10.";
+      expect(lat(value)).toEqual('Invalid latitude coordinate e.g. 53.7267');
+    });
+
+    it('returns `Invalid latitude coordinate e.g. 53.7267` if `value` exceed 7 digits past decimal.', () => {
+      const value = 10.12345678;
+      expect(lat(value)).toEqual('Invalid latitude coordinate e.g. 53.7267');
+    });
+  });
+
+  describe('`lon` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(lon(value)).toEqual(undefined);
+    });
+
+    it('returns `undefined` if within range of -180 to +180', () => {
+      const value = '-180.0';
+      const valueTwo = "180.0";
+      const valueThree = '-181.0';
+      const valueFour = "181.0";
+      expect(lon(value)).toEqual(undefined);
+      expect(lon(valueTwo)).toEqual(undefined);
+      expect(lon(valueThree)).toEqual('Invalid longitude coordinate e.g. -127.6476000');
+      expect(lon(valueFour)).toEqual('Invalid longitude coordinate e.g. -127.6476000');
+    });
+
+    it('returns `Invalid longitude coordinate e.g. -127.6476000` if `value` does not have any digits after decimal', () => {
+      const value = "100.";
+      expect(lon(value)).toEqual('Invalid longitude coordinate e.g. -127.6476000');
+    });
+
+    it('returns `Invalid longitude coordinate e.g. -127.6476000` if `value` exceed 7 digits past decimal.', () => {
+      const value = 100.12345678;
+      expect(lon(value)).toEqual('Invalid longitude coordinate e.g. -127.6476000');
+    });
+  });
 });

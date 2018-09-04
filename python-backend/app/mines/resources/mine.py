@@ -75,7 +75,7 @@ class Mine(Resource):
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        if not tenure or not (lat and lon):
+        if not tenure and not (lat and lon):
             return {'error': 'No fields filled.'}, 400
         mine = MineIdentity.find_by_mine_no(mine_no) or MineIdentity.find_by_mine_guid(mine_no)
         if not mine:

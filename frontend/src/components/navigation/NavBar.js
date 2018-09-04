@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {  Layout, Menu } from 'antd';
+import {  Layout, Menu, Icon, Dropdown } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { getUserInfo } from '@/selectors/authenticationSelectors';
 import * as router from '@/constants/routes';
+import { HOME, PROFILE } from '@/constants/assets';
 import Logout from '../authentication/Logout';
 
 const propTypes = {
@@ -18,19 +19,19 @@ const defaultProps = {
 
 export class NavBar extends Component {
   render() {
-    const { Header } = Layout;
     return (
-      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['1']}
-        >
-          <Menu.Item key="1"><Link to={router.MINE_DASHBOARD.dynamicRoute('1', '5')}>Home</Link></Menu.Item>
-          <Menu.Item key="2">Logged in as: {this.props.userInfo.preferred_username}</Menu.Item>
-          <Menu.Item key="3"><Logout /></Menu.Item>
-        </Menu>
-      </Header>
+      <div className="menu">
+        <Link to={router.MINE_DASHBOARD.dynamicRoute('1', '25')}>
+          <img className="menu__img" src={HOME} />
+        </Link>
+        <Dropdown overlay={<Logout />}>
+          <a className="menu__dropdown-link" href="#">
+            <img className="menu__img" src={PROFILE} />
+            {this.props.userInfo.preferred_username}
+            <Icon type="down" />
+          </a>
+        </Dropdown>
+      </div>
     );
   }
 }
