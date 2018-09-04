@@ -44,11 +44,25 @@
 
 // ROW 
 .ant-row-flex {
-  text-align: center;
   padding: $default-padding-md;
 }
 
 // PAGINATION
 .ant-pagination {
   margin: $default-margin-lg;
+}
+
+
+// FORMS
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+// DATE PICKER
+.ant-calendar-picker {
+  width: 100%;
 }
