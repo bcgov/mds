@@ -58,6 +58,12 @@ def auth_headers(app):
     }
 
 
+@pytest.fixture(scope="session")
+def cli_runner(app):
+    runner = app.test_cli_runner()
+    return runner
+
+
 @pytest.fixture(scope='module')
 def test_client():
     # Test Setup with data
