@@ -13,7 +13,7 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}${VERSION}",
+          "name": "${NAME}-${VERSION}",
           "annotations": {
             "description": "Exposes and load balances the application pods"
           }
@@ -36,7 +36,7 @@
         "kind": "Route",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}${VERSION}"
+          "name": "${NAME}-${VERSION}"
         },
         "spec": {
           "host": "${APPLICATION_DOMAIN}",
@@ -46,7 +46,7 @@
           },
           "to": {
             "kind": "Service",
-            "name": "${NAME}${VERSION}"
+            "name": "${NAME}-${VERSION}"
           }
         }
       },
