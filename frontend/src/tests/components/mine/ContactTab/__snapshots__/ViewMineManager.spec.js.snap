@@ -84,7 +84,7 @@ ShallowWrapper {
           secondaryMessage="Please add mine manger below"
         />,
         <div
-          className="btn-center"
+          className="center"
         >
           <Connect(CreateGuard)
             handleAction={[Function]}
@@ -162,7 +162,7 @@ ShallowWrapper {
             string="Add Mine Manager"
             type="primary"
           />,
-          "className": "btn-center",
+          "className": "center",
         },
         "ref": null,
         "rendered": Object {
@@ -320,7 +320,7 @@ ShallowWrapper {
             secondaryMessage="Please add mine manger below"
           />,
           <div
-            className="btn-center"
+            className="center"
           >
             <Connect(CreateGuard)
               handleAction={[Function]}
@@ -398,7 +398,7 @@ ShallowWrapper {
               string="Add Mine Manager"
               type="primary"
             />,
-            "className": "btn-center",
+            "className": "center",
           },
           "ref": null,
           "rendered": Object {

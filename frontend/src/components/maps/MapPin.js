@@ -1,11 +1,12 @@
 /**
- * @class MapPin.js must be the child of arcGIS <Map /> or <Sceen />, 
- * MapPin is connected to redux to access/display all mines information - reusalble on any view will display the 
- * 
+ * @class MapPin.js must be the child of arcGIS <Map /> or <Sceen />,
+ * MapPin is connected to redux to access/display all mines information - reusalble on any view will display the
+ *
  */
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
@@ -36,7 +37,7 @@ export class MapPin extends Component {
     const { mine_name } = this.props.mines[id].mine_detail[0];
     return {
       title: mine_name,
-      content: 
+      content:
       `<div>
         <div>
           <a href={router.MINE_SUMMARY.dynamicRoute(id)}>
@@ -61,9 +62,18 @@ export class MapPin extends Component {
 
   componentWillMount() {
     loadModules(['esri/Graphic']).then(([Graphic]) => {
-      // create a new Grpahic for every mine in the array,
+      // create a new Graphic for every mine in the array or fetch the ID from the URL for a single mine.
       // data must be passed into this.points() and this.popupTemplate to associate the correct information with the correct lat/long.
-      const graphicArray = this.props.mineIds.map((id) => {
+      const mineId = this.props.match.params.id;
+      let mineIds = [];
+      if (mineId) {
+        mineIds = [mineId];
+      }
+      else {
+        mineIds = this.props.mineIds;
+      }
+
+      const graphicArray = mineIds.map((id) => {
         return (
           new Graphic({
             geometry: this.points(id),
@@ -72,8 +82,9 @@ export class MapPin extends Component {
           })
         )
       })
-  
+
       this.setState({ graphic: graphicArray });
+      this.props.view.graphics.removeAll();
       this.props.view.graphics.addMany(graphicArray);
     });
   }
@@ -98,4 +109,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(MapPin);
+export default withRouter(connect(mapStateToProps, null)(MapPin));
