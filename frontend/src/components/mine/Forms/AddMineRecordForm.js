@@ -4,29 +4,54 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required, maxLength, minLength } from '@/utils/Validate';
+import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired
 };
 
 export const AddMineRecordform = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col>
           <Form.Item>
             <Field
-              id="mineName"
-              name="mineName"
-              label='Mine Name'
+              id="name"
+              name="name"
+              label='Mine Name *'
               component={RenderField}
               validate={[required, maxLength(60), minLength(3)]}
             />
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit">Create Mine</Button>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item>
+            <Field
+              id="latitude"
+              name="latitude"
+              label='Lat'
+              component={RenderField}
+              validate={[number, maxLength(10), lat]}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item>
+            <Field
+              id="longitude"
+              name="longitude"
+              label='Long'
+              component={RenderField}
+              validate={[number, maxLength(12), lon]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <div className="right"><Button type="primary" htmlType="submit">Create Mine</Button></div>
     </Form>
   );
 };
@@ -34,6 +59,7 @@ export const AddMineRecordform = (props) => {
 AddMineRecordform.propTypes = propTypes;
 
 export default (reduxForm({
-    form: FORM.ADD_MINE_RECORD
+    form: FORM.ADD_MINE_RECORD,
+    destroyOnUnmount: true
   })(AddMineRecordform)
 );

@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { createMineRecord, updateMineRecord, getMineRecords, getMineRecordById } from '../../actionCreators/mineActionCreator';
+import { createMineRecord, updateMineRecord, getMineRecords, getMineRecordById, getMineNameList } from '../../actionCreators/mineActionCreator';
 import * as genericActions from '../../actions/genericActions';
 import * as API from '../../constants/API';
 import * as MOCK from '../mocks/dataMocks';
@@ -27,7 +27,7 @@ describe('`createMineRecord` action creator', () => {
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayLoad).reply(200, mockResponse);
-    return (createMineRecord(mineName)(dispatch)).then(() => {
+    return (createMineRecord(mockPayLoad)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -73,11 +73,11 @@ describe('`updateMineRecord` action creator', () => {
 });
 
 describe('`getMineRecords` action creator', () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_LIST;
+  const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY('1', '5');
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return (getMineRecords()(dispatch)).then(() => {
+    return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -87,7 +87,7 @@ describe('`getMineRecords` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
-    return (getMineRecords()(dispatch)).then(() => {
+    return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -112,6 +112,29 @@ describe('`getMineRecordById` action creator', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
     return (getMineRecordById(mineId)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe('`getMineNameList` action creator', () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_NAME_LIST;
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return (getMineNameList()(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    const mockError = { errors: [], message: 'Error' };
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
+    return (getMineNameList()(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

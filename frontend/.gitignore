@@ -13,4 +13,6 @@
 .DS_Store
 .env
 
+# Test snap
 *__snapshots__*
+*.snap

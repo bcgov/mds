@@ -1,0 +1,232 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "${NAME}-dc",
+      "annotations": {
+        "description": "SchemaSpy deployment template.",
+        "tags": "schemaspy"
+      }
+    },
+    "objects": [
+      {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}${VERSION}",
+          "annotations": {
+            "description": "Exposes and load balances the application pods"
+          }
+        },
+        "spec": {
+          "ports": [
+            {
+              "name": "8080-tcp",
+              "protocol": "TCP",
+              "port": 8080,
+              "targetPort": 8080
+            }
+          ],
+          "selector": {
+            "name": "${NAME}"
+          }
+        }
+      },
+      {
+        "kind": "Route",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}${VERSION}"
+        },
+        "spec": {
+          "host": "${APPLICATION_DOMAIN}",
+          "tls": {
+            "insecureEdgeTerminationPolicy": "Redirect",
+            "termination": "edge"
+          },
+          "to": {
+            "kind": "Service",
+            "name": "${NAME}${VERSION}"
+          }
+        }
+      },
+      {
+        "kind": "ImageStream",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "creationTimestamp": null,
+          "labels": {
+            "shared": "true"
+          },
+          "annotations": {
+            "description": "Keeps track of changes in the application image"
+          }
+        },
+        "spec": {
+          "lookupPolicy": {
+            "local": false
+          },
+          "tags":[ ]
+        }
+      },
+      {
+        "kind": "DeploymentConfig",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "description": "Defines how to deploy the container."
+          }
+        },
+        "spec": {
+          "strategy": {
+            "type": "Rolling",
+            "rollingParams": {
+              "updatePeriodSeconds": 1,
+              "intervalSeconds": 1,
+              "timeoutSeconds": 600
+            }
+          },
+          "triggers": [
+            {
+              "type": "ConfigChange"
+            },
+            {
+              "type": "ImageChange",
+              "imageChangeParams": {
+                "automatic": true,
+                "containerNames": [
+                  "${NAME}"
+                ],
+                "from": {
+                  "kind": "ImageStreamTag",
+                  "name": "${NAME}:${VERSION}"
+                }
+              }
+            }
+          ],
+          "replicas": 1,
+          "selector": {
+            "name": "${NAME}"
+          },
+          "template": {
+            "metadata": {
+              "name": "${NAME}",
+              "labels": {
+                "name": "${NAME}"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "name": "${NAME}",
+                  "image": " ",
+                  "ports": [
+                    {
+                      "containerPort": 8080,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "env": [
+                    {
+                      "name": "DATABASE_HOST",
+                      "value": "${DB_CONFIG_NAME}"
+                    },
+                    {
+                      "name": "DATABASE_NAME",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-name"
+                        }
+                      }
+                    },
+                    {
+                      "name": "DATABASE_USER",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-admin-user"
+                        }
+                      }
+                    },
+                    {
+                      "name": "DATABASE_PASSWORD",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "${DB_CONFIG_NAME}",
+                          "key": "database-admin-password"
+                        }
+                      }
+                    }
+                  ],
+                  "readinessProbe": {
+                    "timeoutSeconds": 300,
+                    "initialDelaySeconds": 60,
+                    "httpGet": {
+                      "path": "/",
+                      "port": 8080
+                    }
+                  },
+                  "livenessProbe": {
+                    "timeoutSeconds": 300,
+                    "initialDelaySeconds": 300,
+                    "httpGet": {
+                      "path": "/",
+                      "port": 8080
+                    }
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "${CPU_LIMIT}",
+                      "memory": "${MEMORY_LIMIT}"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": [
+      {
+        "name": "NAME",
+        "displayName": "Name",
+        "description": "The name assigned to all objects defined in this template.",
+        "required": true,
+        "value": "schema-spy"
+      },
+      {
+        "name": "VERSION",
+        "required": true
+      },
+      {
+        "name": "DB_CONFIG_NAME",
+        "displayName": "Database Config Name",
+        "description": "Configuration name for the database",
+        "required": true
+      },
+      {
+        "name": "CPU_LIMIT",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "500m"
+      },
+      {
+        "name": "MEMORY_LIMIT",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "1Gi"
+      },
+      {
+        "name": "APPLICATION_DOMAIN",
+        "displayName": "Application Hostname",
+        "description": "The exposed hostname that will route to the service, if left blank a value will be defaulted.",
+        "value": ""
+      }
+    ]
+  }

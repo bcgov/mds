@@ -1,0 +1,45 @@
+.dashboard {
+  &__header {
+    z-index: 10;
+    height: 500px;
+
+    &__content {
+      padding: 20px 60px;
+      z-index: 100;
+      background-color: $background-white;
+      position: relative;
+      border-radius: 60px 60px 0 0;
+      top: -100px;
+
+      @include mobile {
+          padding: 5px 10px;
+        }
+      
+      &--inline {
+        @include flex;
+        justify-content: space-between;
+
+        @include mobile {
+          display: block
+        }
+      }
+    }
+  } 
+  
+  &__content {
+    margin: 50px;
+  }
+}
+
+.inline-flex {
+  @include flex;
+
+  &--img {
+    margin-top: 5px;
+    height: 40%;
+  }
+
+  div {
+    padding: $default-padding-sm;
+  }
+}

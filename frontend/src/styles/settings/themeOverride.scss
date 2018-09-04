@@ -1,0 +1,68 @@
+// stylying overrides for Ant components
+
+// TABS 
+.ant-tabs-nav-scroll {
+  margin: auto;
+  text-align: center;
+}
+
+.ant-tabs-nav {
+
+  .ant-tabs-tab-active {
+    font-weight: $bold !important;
+  }
+
+  .ant-tabs-tab {
+    font-family: $default-font;
+    font-weight: $light;
+    font-size: 20px;
+  }
+}
+
+.ant-tabs-ink-bar {
+  height: 4px;
+}
+
+// DIVIDER 
+.ant-divider-horizontal {
+  margin: 5px;
+  height: 1px;
+  background-color:  $default-dark-green;
+}
+
+// CARDS
+.ant-card {
+  margin: auto;
+  text-align: left;
+  border-radius: 25px;
+  width: 60vw;
+}
+
+.ant-card-bordered {
+  border: 1px solid $default-dark-green;
+}
+
+// ROW 
+.ant-row-flex {
+  padding: $default-padding-md;
+}
+
+// PAGINATION
+.ant-pagination {
+  margin: $default-margin-lg;
+}
+
+
+// FORMS
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+// DATE PICKER
+.ant-calendar-picker {
+  width: 100%;
+}
