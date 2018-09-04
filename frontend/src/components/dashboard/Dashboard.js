@@ -14,6 +14,8 @@ import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
+import { NO_MINE } from '@/constants/assets';
+import NullScreen from '@/components/reusables/NullScreen';
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
@@ -59,10 +61,38 @@ export class Dashboard extends Component {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
 
-  render() {
+  renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
+    if (this.props.mineIds.length === 0) {
+      return (
+        <NullScreen primaryMessage="No data found at this time" secondaryMessage="Please try again later" img={NO_MINE} />
+      )
+    } else {
+      return (
+        <div>
+          <MineSearch mineNameList={this.props.mineNameList} />
+          <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
+          <div className="center">
+            <Pagination
+              showSizeChanger
+              onShowSizeChange={this.onPageChange}
+              onChange={this.onPageChange}
+              defaultCurrent={pageNumber}
+              current={pageNumber}
+              total={this.props.pageData.total}
+              pageSizeOptions={['25', '50', '75', '100']}
+              pageSize={perPageNumber}
+              showTotal={total => `${total} Results`}
+            />
+          </div>
+        </div>
+      )
+    }
+  }
+
+  render() {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -74,21 +104,7 @@ export class Dashboard extends Component {
           />
         </div>
         <div className="landing-page__content">
-          <MineSearch mineNameList={this.props.mineNameList} />
-          <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData}/>
-          <div className="center">
-            <Pagination 
-              showSizeChanger 
-              onShowSizeChange={this.onPageChange} 
-              onChange={this.onPageChange} 
-              defaultCurrent={pageNumber} 
-              current={pageNumber}
-              total={this.props.pageData.total} 
-              pageSizeOptions={['25', '50', '75', '100']} 
-              pageSize={perPageNumber}
-              showTotal={total => `${total} Results`}
-            />
-          </div>
+          {this.renderCorrectView()}
         </div>
       </div>
     );
