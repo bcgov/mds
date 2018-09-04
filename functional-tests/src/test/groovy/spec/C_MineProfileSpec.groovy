@@ -14,14 +14,12 @@ class  C_MineProfileSpec extends GebReportingSpec {
     @Shared selectedMine_NO 
     @Shared selectedMine_NAME
     @Shared urlTemp =""
-
-    static TENURE_SHORT = "123456"      
-    static TENURE_LONG =  "123456677998"   
+ 
     static TENURE_BAD =  "1234cha"  
 
 
     static FirstName = "Vivián"
-    static LastName = "Zándeús"
+    static LastName = "Iányús"
     static Date = "2017-08-04"
 
 
@@ -39,13 +37,13 @@ class  C_MineProfileSpec extends GebReportingSpec {
         at MineProfilePage
        
         when:
-        urlTemp = currentUrl
+        urlTemp = driver.currentUrl
 
         then: "I should see profile of selected Mine"
         sleep(100)
-        assert activeTab == "Mine Summary"       
-        assert mineProfile_NO== "Mine #: " +selectedMine_NO
-        assert mineName.startsWith(selectedMine_NAME)
+        assert activeTab == "Summary"       
+        assert mineNumber == selectedMine_NO
+        assert mineName == selectedMine_NAME
 
     }
 
@@ -61,8 +59,7 @@ class  C_MineProfileSpec extends GebReportingSpec {
         toastMessage == "Successfully updated: ${selectedMine_NAME}"
 
 
-        then: "Refresh the page, user can see the updated tenure number list"
-        driver.navigate().refresh()
+        then: "User can see the updated tenure number list"
         tenureUpdated(tempTenure) == true
 
     }
@@ -76,7 +73,7 @@ class  C_MineProfileSpec extends GebReportingSpec {
         println scenario
 
         and:"User see warning message"
-        warningMessage == warning
+        updateTenureForm.warningMessage == warning
 
         then: "Refresh the page, tenure number list stays the same"
         driver.navigate().refresh()
@@ -100,14 +97,12 @@ class  C_MineProfileSpec extends GebReportingSpec {
         and:"User see ERROR message"
         toastMessage == "Error!"
 
-        then: "Refresh the page, tenure number list stays the same"
-        driver.navigate().refresh()
+        then: "Tenure number list stays the same"
         tenureUpdated(TENURE_BAD) == false
  
     }
 
     def "Scenario: User can create new mine manager and update mine manager information"(){
-        
         given: "I go to mine profile"
         go urlTemp
 
@@ -118,14 +113,13 @@ class  C_MineProfileSpec extends GebReportingSpec {
         contactInfoTab.click()
         sleep(100)
 
-        and: "I create a new mine manager"
-        createMineManager(FirstName,LastName)
-
-        and: "I can update mine manager with the manager just created"
-        updateMineManager(FirstName,LastName,Date)
+        and: "I create a new mine manager and update mine manager with the manager just created"
+        modifyManager(FirstName,LastName,Date)
+        sleep(200)
 
         then: "Should see successful message"
         assert toastMessage == "Successfully updated the manager of ${selectedMine_NAME}"
+        
 
         then: "I can see the manager information get updated"
         mineManagerCheck(FirstName,LastName,Date) == [true,true]

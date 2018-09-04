@@ -1,56 +1,60 @@
 package pages
 
 import geb.Page
+import modules.*
 
 class MineProfilePage extends Page {
-    static at = { title == "MDS" }
+    static at = { title == "MDS"}
     static content = {
         //General
-        activeTab (wait:true) {$("div.ant-tabs-tabpane-active").find("h1").text()}
-        summaryTab (wait:true) {$("div.ant-tabs-tab", text: "summary")}
-        contactInfoTab (wait:true) {$("div.ant-tabs-tab", text: "Contact Information")}
         mineName (wait:true) {$("h1",0).text()}
-        mineProfile_NO {$("h2",0).text()}  
-        toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
+        mineNumber {$("h5",0).text().minus("Mine #: ")}  
+        toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
+        updateButton (wait:true) {$("button").has("span",text:"Update")}
+
+        //TabPanel
+        activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
+        summaryTab (wait:true) {$("div.ant-tabs-tab", text: "Summary")}
+        contactInfoTab (wait:true) {$("div.ant-tabs-tab", text: "Contact Information")}
+        tenureTab (wait:true) {$("div.ant-tabs-tab", text: "Tenure")}
 
         //Summary Tab     
-        mineTenureNumber    (wait:true) {$("div.ant-col-6").find("div")}
+        
         
 
-        //Tenure number form
-        warningMessage (wait:true) {$("div", class:"ant-form-explain").find("span").text()}
-        tenureNumberBox (wait:true) {$("input", id:"tenureNumber")}
-        addTenureNumberButton (wait:true) {$("button").has("span",text:"Add Tenure Number")}
+        //Tenure Tab
+        addTenureNumberButton (wait:true) {$("div.btn-center").find("button").has("span",text:"Add Tenure Number")}
+        updateTenureForm {module UpdateTenureForm}
+        tenureNumberList (wait:true) {$("div.ant-col-12")find("p.p-large").find("div")}
+        noDataMessage (required: false){$("h1", text:"No data at this time")}
         
         //Contact info tab
-        selectToInputManager (wait:true) {$("div", class:"ant-select-selection ant-select-selection--single")}
-        updateButton (wait:true) {$("button").has("span",text:"Update")}
-        mineManagerInfo (wait:true) {$("div.ant-row").find("div.ant-col-12").find("div")}
-        //effectiveDateInfo (wait:true) {$("div.ant-col-12").find("div")}
-
-
-        //update mine manager form
-        managerFirstNameBox (wait:true) {$("input", id:"first_name")}
-        managerSurNameBox (wait:true) {$("input", id:"surname")}
-        managerSelectNameBox (wait:true) {$("input", id:"mineManager")}
-        datePicker1 (wait:true) {$("input", class:"ant-calendar-picker-input ant-input")}
-        datePicker2 (wait:true) {$("input.ant-calendar-input", placeholder:"Select date")}
-        createMineManagerButton (wait:true) {$("button").has("span",text:"Create Personnel")}
-        updateMineManagerButton (wait:true) {$("button").has("span",text:"Update Mine Manager")} 
+        updateManagerForm {module UpdateManagerForm}
+        mineManagerInfo (wait:true) {$("div.ant-col-12").find("p.p-large")}
+        noManagerMessage (required: false){$("h1", text:"No Assigned Mine Manager")}
+        addMineManagerButton (wait:true) {$("button").has("span",text:"Add Mine Manager")}
+        
     }
 
 
     def addTenure(tenureNum){
-        tenureNumberBox = tenureNum
-        addTenureNumberButton.click()
+        tenureTab.click()
+        if(noDataMessage.present){
+            addTenureNumberButton.click()
+        }
+        else{
+            updateButton.click()
+        }
+        updateTenureForm.addTenure(tenureNum)
     }
 
     def tenureUpdated(tenureNum){
         //check the LAST updated tenure number
+        tenureTab.click()
         def tenureUpdated = false
-        def lastTenure = mineTenureNumber.size()
-        if (mineTenureNumber[lastTenure-1].text() == tenureNum) {
+        def lastTenure = tenureNumberList.size()
+        if (tenureNumberList[lastTenure-1].text() == tenureNum) {
             tenureUpdated = true
         }
         return tenureUpdated
@@ -65,38 +69,25 @@ class MineProfilePage extends Page {
     }
 
 
-    def selectDate(date){
-        datePicker1.click()
-        datePicker2.click()
-        datePicker2=date
-    }
-
-
-    def createMineManager(firstName,lastName){
-        updateButton.click()
-        managerFirstNameBox = firstName
-        managerSurNameBox = lastName
-        createMineManagerButton.click()
-        if (toastMessage=="Error!"){
-            closeToastMessage.click()
+    def modifyManager(FirstName,LastName,Date){
+        if(noManagerMessage.present){
+            addMineManagerButton.click()
         }
-        if (toastMessage == "Successfully created: ${firstName} ${lastName}"){
-            closeToastMessage.click()
+        else{
+            updateButton.click()
         }
+        updateManagerForm.createMineManager(FirstName,LastName)
+        updateManagerForm.updateMineManager(FirstName,LastName,Date)
     }
 
-    def updateMineManager(firstName,lastName,date){
-        selectToInputManager.click()
-        managerSelectNameBox = "${firstName} ${lastName}"
-        selectDate(date)
-        updateMineManagerButton.click()
-    }
 
 
     def mineManagerCheck(firstName,lastName,date){
         def nameUpdated = false
         def dateUpdated = false
-        int i = mineManagerInfo.size()
+        def i = mineManagerInfo.size()
+        // println mineManagerInfo*.text()
+        // println "--------------------"
         if(mineManagerInfo[i-2].text()=="${firstName} ${lastName}"){
             nameUpdated = true 
         }

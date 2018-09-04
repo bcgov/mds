@@ -15,9 +15,8 @@ class DashboardPage extends Page {
         createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
         
         //Dashboard
-        mineName (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
-        mineID (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
-        viewButton (wait:true) {$("button").has("span", text:"View")}
+        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
+        viewButton (wait:true) {$("button").has("span", text:"View Mine")}
         
         //search
         searchBox (wait:true){$("input", class:"ant-input")}
@@ -28,25 +27,31 @@ class DashboardPage extends Page {
         recordPerPage (wait:true) {$()}
     }
 
+    def mineInfoSelector (mineIndex){
+        //select <mineIndex> row of mine info on dashboard
+        def mineID = mineInfo[mineIndex*3].text()
+        def mineName = mineInfo[mineIndex*3+1].text()
+        return [mineID,mineName]
+    }
+
     def selectRandomMine(){
         def mineToView = new Random().nextInt(viewButton.size())+1
-        def viewMineName = ""
-        def viewMineID = ""
+        def mineSelected = ["",""] 
         if (viewButton.size()!= 0 ){
-            println viewButton.size()  
-            println "mine to view:" + mineToView
-            println mineName[2*mineToView].text()
-            viewMineName = mineName[mineToView*2].text()
-            viewMineID = mineID[mineToView*2].text()
+            mineSelected = mineInfoSelector(mineToView)
+            println "mineSelected:  "+mineSelected
             viewButton[mineToView-1].click(); 
         } 
-        return[viewMineID,viewMineName]  
+        return[mineSelected[0],mineSelected[1]]  
     }
 
     def dashboardValidation(mineToCheck){
         //check if last created mine record has the same NAME as mineToCheck
         def mineCreated = false
-        if (mineName[mineName.size()-2].text() == mineToCheck){
+        println mineInfoSelector(viewButton.size())[1]
+        println "-------------------"
+        if (mineInfoSelector(viewButton.size())[1] == mineToCheck){
+            
             mineCreated = true
         }                               
         return mineCreated
@@ -77,11 +82,9 @@ class DashboardPage extends Page {
         //randomly select a mine from the search result list
         if (resultList.present){
             int mineToSelect = new Random().nextInt(resultList.size())
-            println mineToSelect
-            println resultList[mineToSelect].text().minus(".* - ")
-            resultList[mineToSelect].click()
-
-            
+            def selectedMineID = resultList[mineToSelect].text().split(' - ')[1]
+            resultList[mineToSelect].click()  
+            return selectedMineID      
         }
     }
 

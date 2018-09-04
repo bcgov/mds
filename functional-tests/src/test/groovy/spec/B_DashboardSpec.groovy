@@ -91,11 +91,12 @@ class  B_DashboardSpec extends GebReportingSpec {
         searchBox = "trend"
 
         and: "I select a mine from the result list"
-        searchResultSelection()
+        def viewMineID = searchResultSelection()
         
         
         then: "I am redirected to the mine summary page"
-        println currenturl
+        at MineProfilePage
+        assert mineNumber == viewMineID
 
     }
     
