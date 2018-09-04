@@ -25,7 +25,7 @@ class MineHeader extends Component {
           <h5>Mine #: {mine.mine_detail[0].mine_no} </h5>
           <div className="dashboard__header__content--inline">
             <div className="inline-flex">
-              <img src={SMALL_PIN} />
+              <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
               <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
             </div>

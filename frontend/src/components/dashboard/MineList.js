@@ -21,7 +21,7 @@ class MineList extends Component {
     const { mines, mineIds } = this.props;
     return (
       <div>
-        <Row type="flex">
+        <Row type="flex" style={{textAlign: 'center'}}>
           <Col span={8}><h2>Mine Number</h2></Col>
           <Col span={8}><h2>Name</h2></Col>
           <Col span={8}><h2>Action</h2></Col>
@@ -30,7 +30,7 @@ class MineList extends Component {
         {mineIds.map((id) => {
           return (
             <div key={id}>
-              <Row type="flex">
+              <Row type="flex" style={{ textAlign: 'center' }}>
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                 <Col span={8}>

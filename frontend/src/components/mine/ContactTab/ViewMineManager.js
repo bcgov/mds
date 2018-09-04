@@ -47,10 +47,12 @@ export class ViewMineManager extends Component {
    */
   handleSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+      this.setState({
+        visible: !this.state.visible,
+      });
+
       this.props.getMineRecordById(this.props.mine.guid).then(() => {
-        this.setState({
-          visible: false,
-        });
+        console.log("DONE FETCHING")
       });
     })
   }

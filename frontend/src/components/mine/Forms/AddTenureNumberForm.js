@@ -14,7 +14,7 @@ export const AddTenureNumberForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col>
           <Form.Item>
             <Field
               id="tenureNumber"
