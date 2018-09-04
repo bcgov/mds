@@ -47,20 +47,15 @@ export class ViewMineManager extends Component {
    */
   handleSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.setState({
-        visible: !this.state.visible,
-      });
-
-      this.props.getMineRecordById(this.props.mine.guid).then(() => {
-        console.log("DONE FETCHING")
-      });
+      this.setState({ visible: !this.state.visible });
+      this.props.getMineRecordById(this.props.mine.guid);
     })
   }
 
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
     if (this.props.personnelIds.length === 0) {
-      return (<NullScreen primaryMessage="" secondaryMessage="Please add below" img={MINER_TWO}/>)
+      return (<NullScreen primaryMessage="No data available" secondaryMessage="Please create personnel below" img={MINER_TWO}/>)
     } else {
       return (
         <UpdateMineManagerForm
