@@ -49,7 +49,7 @@ export class CreateMine extends Component {
           </div>
         </div>
         <Modal
-          title="Create A Mine Record"
+          title="Create Mine Record"
           visible={this.state.visible}
           onCancel={this.toggleModal}
           footer={null}

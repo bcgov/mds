@@ -33,7 +33,7 @@ export const AddMineRecordform = (props) => {
             <Field
               id="latitude"
               name="latitude"
-              label='Lat'
+              label='Latitude'
               component={RenderField}
               validate={[number, maxLength(10), lat]}
             />
@@ -44,14 +44,14 @@ export const AddMineRecordform = (props) => {
             <Field
               id="longitude"
               name="longitude"
-              label='Long'
+              label='Longitude'
               component={RenderField}
               validate={[number, maxLength(12), lon]}
             />
           </Form.Item>
         </Col>
       </Row>
-      <div className="right"><Button type="primary" htmlType="submit">Create Mine</Button></div>
+      <div className="right"><Button type="primary" htmlType="submit">Create Mine Record</Button></div>
     </Form>
   );
 };
