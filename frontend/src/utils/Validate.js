@@ -34,7 +34,7 @@ export const minLength = memoize((min) => (value) => value && value.length < min
 
 export const exactLength = memoize((min) => (value) => value && value.length !== min ? `Must be ${min} characters long` : undefined);
 
-export const number = (value) => (value && isNaN(Number(value)) ? 'Coordinates must be a number' : undefined);
+export const number = (value) => (value && isNaN(Number(value)) ? 'Input must be a number' : undefined);
 
 export const lat = (value) => (value && !Validate.checkLat(value)) ? 'Invalid latitude coordinate e.g. 53.7267': undefined;
 
