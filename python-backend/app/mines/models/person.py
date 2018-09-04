@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 from .mixins import AuditMixin
 
+
 class Person(AuditMixin, db.Model):
     __tablename__ = 'person'
     person_guid = db.Column(UUID(as_uuid=True), primary_key=True)
@@ -17,7 +18,7 @@ class Person(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid
-    
+
     def save(self):
         db.session.add(self)
         try:
@@ -34,7 +35,7 @@ class Person(AuditMixin, db.Model):
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
-            }
+        }
 
     @classmethod
     def find_by_person_guid(cls, _id):
@@ -43,14 +44,15 @@ class Person(AuditMixin, db.Model):
     @classmethod
     def find_by_mgr_appointment(cls, _id):
         return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mgr_appointment_guid=_id).first()
-    
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mine_guid=_id).first()
-    
+
     @classmethod
     def find_by_name(cls, first_name, surname):
-        return cls.query.filter(func.lower(cls.first_name)==func.lower(first_name), func.lower(cls.surname)==func.lower(surname)).first()
+        return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.surname) == func.lower(surname)).first()
+
 
 class MgrAppointment(AuditMixin, db.Model):
     __tablename__ = "mgr_appointment"
@@ -62,7 +64,7 @@ class MgrAppointment(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
-    
+
     def save(self):
         db.session.add(self)
         try:
@@ -71,22 +73,26 @@ class MgrAppointment(AuditMixin, db.Model):
             db.session.rollback()
 
     def json(self):
+        person = Person.find_by_person_guid(str(self.person_guid))
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
             'person_guid': str(self.person_guid),
+            'first_name': person.first_name,
+            'surname': person.surname,
+            'full_name': person.first_name + ' ' + person.surname,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
-            }
+        }
 
     @classmethod
     def find_by_mgr_appointment_guid(cls, _id):
         return cls.query.filter_by(mgr_appointment_guid=_id).first()
-    
+
     @classmethod
     def find_by_person_guid(cls, _id):
-        return cls.query.filter_by(person_guid=_id).first()
+        return cls.query.filter_by(person_guid=_id)
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).first()
+        return cls.query.filter_by(mine_guid=_id)

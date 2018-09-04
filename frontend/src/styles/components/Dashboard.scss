@@ -1,0 +1,13 @@
+.landing-page {
+  background-color: $default-white;
+
+  &__header {
+    padding: $default-padding-xl;
+  }
+
+  &__content {
+    background-color: $background-white;
+    border-radius: 60px 60px 0 0;
+    padding: $default-padding-xl;
+  }
+}

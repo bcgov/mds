@@ -26,7 +26,7 @@ export const AddTenureNumberForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit">Add Tenure Number</Button>
+      <div className="right"><Button type="primary" htmlType="submit">Add Tenure Number</Button></div>
     </Form>
   );
 };
@@ -34,6 +34,7 @@ export const AddTenureNumberForm = (props) => {
 AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
-  form: FORM.ADD_TENURE_NUMBER
+  form: FORM.ADD_TENURE_NUMBER,
+  destroyOnUnmount: true
 })(AddTenureNumberForm)
 );
