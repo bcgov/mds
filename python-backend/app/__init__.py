@@ -97,6 +97,7 @@ def register_commands(app):
             mine_identity.save()
             mine_detail.save()
             mine_location.save()
+        click.echo(f'Created {num} random mines.')
 
     @app.cli.command()
     def delete_data():
@@ -104,3 +105,4 @@ def register_commands(app):
         for table in reversed(meta.sorted_tables):
             db.session.execute(table.delete())
         db.session.commit()
+        click.echo(f'Database has been cleared.')

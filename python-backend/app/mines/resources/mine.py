@@ -117,7 +117,7 @@ class MineList(Resource):
     def get(self):
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
-        mines = MineIdentity.query.paginate(page, items_per_page, False)
+        mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
         return {
             'mines': list(map(lambda x: x.json(), mines.items)),
             'has_next': mines.has_next,
