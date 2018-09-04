@@ -4,6 +4,7 @@ backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
 project: project-build | project-run
+rebuild: project-build
 reset:	stop | clean
 
 project-build:

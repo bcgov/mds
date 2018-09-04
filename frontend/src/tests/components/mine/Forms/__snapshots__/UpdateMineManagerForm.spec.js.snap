@@ -70,7 +70,7 @@ ShallowWrapper {
           </Col>
         </Row>,
         <div
-          className="btn-right"
+          className="right"
         >
           <Button
             block={false}
@@ -304,7 +304,7 @@ ShallowWrapper {
           >
             Update Mine Manager
           </Button>,
-          "className": "btn-right",
+          "className": "right",
         },
         "ref": null,
         "rendered": Object {
@@ -385,7 +385,7 @@ ShallowWrapper {
             </Col>
           </Row>,
           <div
-            className="btn-right"
+            className="right"
           >
             <Button
               block={false}
@@ -619,7 +619,7 @@ ShallowWrapper {
             >
               Update Mine Manager
             </Button>,
-            "className": "btn-right",
+            "className": "right",
           },
           "ref": null,
           "rendered": Object {

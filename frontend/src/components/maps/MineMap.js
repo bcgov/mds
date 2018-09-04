@@ -24,13 +24,13 @@ class MineMap extends Component {
         mapProperties={{ basemap: 'streets' }}
         viewProperties={{
           center: [
-            this.props.mine.mine_location[0] ? this.props.mine.mine_location[0].longitude : -127.6476, 
+            this.props.mine.mine_location[0] ? this.props.mine.mine_location[0].longitude : -127.6476,
             this.props.mine.mine_location[0] ? this.props.mine.mine_location[0].latitude : 53.7267
           ],
           zoom: this.props.mine.mine_location[0] ? 8 : 4
         }}
       >
-        <MapPin />
+        <MapPin/>
       </Map>
     );
   }
