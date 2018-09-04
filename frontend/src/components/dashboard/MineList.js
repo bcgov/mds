@@ -22,7 +22,7 @@ class MineList extends Component {
     return (
       <div>
         <Row type="flex" style={{textAlign: 'center'}}>
-          <Col span={8}><h2>Mine Number</h2></Col>
+          <Col span={8}><h2>Mine ID</h2></Col>
           <Col span={8}><h2>Name</h2></Col>
           <Col span={8}><h2>Action</h2></Col>
         </Row>

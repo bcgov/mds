@@ -22,7 +22,7 @@ class MineHeader extends Component {
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
           <h1>{mine.mine_detail[0].mine_name}</h1>
-          <h5>Mine #: {mine.mine_detail[0].mine_no} </h5>
+          <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <div className="dashboard__header__content--inline">
             <div className="inline-flex">
               <img className="inline-flex--img" src={SMALL_PIN} />
