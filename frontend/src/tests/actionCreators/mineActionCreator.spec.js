@@ -27,7 +27,7 @@ describe('`createMineRecord` action creator', () => {
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayLoad).reply(200, mockResponse);
-    return (createMineRecord(mineName)(dispatch)).then(() => {
+    return (createMineRecord(mockPayLoad)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

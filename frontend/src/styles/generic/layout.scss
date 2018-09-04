@@ -1,0 +1,22 @@
+body {
+  font-family: $default-font;
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  height: 55px;
+}
+
+.content {
+  overflow: initial;
+  background-color: $background-white;
+}
+
+.footer {
+  height: 60px;
+  background-color: $default-blue;
+}
+

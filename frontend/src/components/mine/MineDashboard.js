@@ -7,12 +7,13 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 
 import { getUserAccessData } from '@/selectors/authenticationSelectors';
-
-import UpdateMine from './SummaryTab/UpdateMine';
+import MineTenureInfo from './TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
 import Loading from '@/components/reusables/Loading';
+import NullScreen from '@/components/reusables/NullScreen'; 
+import { NO_MINE } from '@/constants/assets';
 
 const TabPane = Tabs.TabPane;
 
@@ -38,17 +39,33 @@ export class MineDashboard extends Component {
       return(<Loading />)
     } else {
         return (
-          <div>
-            <MineHeader mine={this.props.mine}/>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="Summary" key="1">
-                <MineSummary mine={this.props.mine} />
-                <UpdateMine {...this.props} />
-              </TabPane>
-              <TabPane tab="Contact Information" key="2">
-                <MineContactInfo mine={this.props.mine}/>
-              </TabPane>
-            </Tabs>
+          <div className="dashboard">
+            <div>
+              <MineHeader mine={this.props.mine} mapData={this.props.mapData}/>
+            </div>
+            <div className="dashboard__content">
+              <Tabs 
+                defaultActiveKey="1"
+                size='large'
+                animated={{ inkBar: true, tabPane: false }}
+              >
+                <TabPane tab="Summary" key="1">
+                  <MineSummary mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Permit" key="2">
+                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                </TabPane>
+                <TabPane tab="Contact Information" key="3">
+                  <MineContactInfo mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Compliance" key="4">
+                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                </TabPane>
+                <TabPane tab="Tenure" key="5">
+                  <MineTenureInfo {...this.props}/>
+                </TabPane>
+              </Tabs>
+            </div>
           </div>
         );
       }

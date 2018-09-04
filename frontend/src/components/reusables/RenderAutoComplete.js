@@ -8,7 +8,7 @@ function options(data) {
       data.map((opt) => {
       const search = opt.mine_name.concat(" - ", opt.mine_no);
       return (
-        <AutoComplete.Option key={opt.guid} value={opt.mine_no}>
+        <AutoComplete.Option key={opt.guid} value={opt.guid}>
           {search}
         </AutoComplete.Option>
       )})
@@ -28,18 +28,18 @@ const RenderAutoComplete = ({
   data,
   handleSearch,
 }) => (
-    <div style={{ width: 300 }}>
+    <div>
       <AutoComplete
         dropdownMatchSelectWidth={true}
         size="large"
-        style={{ width: '100%' }}
+        style={{ width: '50%' }}
         dataSource={options(data)}
         placeholder="Search for a mine"
         optionLabelProp="value"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onSelect={handleSearch}
       >
-        <Input suffix={<Icon type="search" className="certain-category-icon" />} />
+        <Input suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
       </AutoComplete>
     </div>
   );

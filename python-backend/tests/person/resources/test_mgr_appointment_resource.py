@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import json
 
 from app.mines.models.person import MgrAppointment
-from ..constants import *
+from tests.constants import TEST_MINE_GUID, TEST_MANAGER_GUID, TEST_PERSON_2_GUID
 
 
 # GET

@@ -10,7 +10,7 @@ const initialState = {
   mines: {},
   mineIds: [],
   mineNameList: [],
-  minesPageData: {}
+  minesPageData: {},
 };
 
 const createItemMap = (array, idField) => {
@@ -37,7 +37,7 @@ const mineReducer = (state = initialState, action) => {
         return {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
-          mineIds: createItemIdsArray([action.payload], 'guid'),
+          mineIds: createItemIdsArray([action.payload], 'guid')
         }
       case actionTypes.STORE_MINE_NAME_LIST:
         return {

@@ -8,7 +8,10 @@ const props = {}
 
 const setupDispatchProps = () => {
   dispatchProps.getPersonnelById = jest.fn();
-  dispatchProps.handleManagerUpdate = jest.fn();
+  dispatchProps.getPersonnelList = jest.fn();
+  dispatchProps.createPersonnel = jest.fn();
+  dispatchProps.addMineManager = jest.fn();
+  dispatchProps.getMineRecordById = jest.fn();
 };
 
 const setupProps = () => {

@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
-import { Card, Button, Modal, Avatar, Badge, } from 'antd';
+import { Button, Modal, Avatar, Badge, } from 'antd';
 import PropTypes from 'prop-types';
+import queryString from 'query-string'
 
 import { CreateGuard } from '@/HOC/CreateGuard';
 import AddMineRecordForm from '@/components/mine/Forms/AddMineRecordForm';
 
 const propTypes = {
+  getMineRecords: PropTypes.func.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   createMineRecord: PropTypes.func.isRequired,
+  getMineNameList: PropTypes.func.isRequired
 };
 
 export class CreateMine extends Component {
   state = { visible: false }
 
   handleSubmit = (value) => {
-    this.props.createMineRecord(value.mineName).then(() => {
+    this.props.createMineRecord(value).then(() => {
       this.setState({
         visible: false,
       });
-    })
+    }).then(() => {
+      const params = queryString.parse(this.props.location.search);
+      if (params.page && params.per_page) {
+        this.props.getMineRecords(params.page, params.per_page);
+      } else {
+        this.props.getMineRecords('1', '25');
+      }
+      this.props.getMineNameList();
+    });
   }
 
   toggleModal = () => {
@@ -29,27 +41,20 @@ export class CreateMine extends Component {
   render() {
     return (
       <div>
-        <Card style={{ textAlign: "center" }}>
-          <div>
-            <Badge count={"+"}>
-              <Avatar shape="square" size="large" icon="database" />
-            </Badge>
-          </div>
-          <div style={{ padding: "10px" }}>
-            <Button type="primary" size="small" onClick={this.toggleModal}>
+        <div style={{ padding: "10px" }}>
+          <div className="right">
+            <Button type="primary" size="large" onClick={this.toggleModal}>
                 Create Mine Record
             </Button>
           </div>
-        </Card>
+        </div>
         <Modal
           title="Create A Mine Record"
           visible={this.state.visible}
-          onOk={this.handleSubmit}
-          onCancel={this.handleCancel}
+          onCancel={this.toggleModal}
           footer={null}
-          closable={false}
         >
-          <AddMineRecordForm onSubmit={this.handleSubmit} handleCancel={this.toggleModal}/>
+          <AddMineRecordForm onSubmit={this.handleSubmit} />
         </Modal>
       </div>
     );
