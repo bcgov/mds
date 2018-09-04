@@ -75,6 +75,20 @@
       "displayName": "API Url",
       "description": "URL for the backend API",
       "value": "http://localhost:3000"
+    },
+    {
+        "name": "CPU_LIMIT",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "500m"
+    },
+    {
+        "name": "MEMORY_LIMIT",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "1Gi"
     }
   ],
   "message": "The following service(s) have been created in your project: ${NAME}${SUFFIX}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshift/nodejs-ex/blob/master/README.md.",
@@ -220,6 +234,16 @@
                     "value": "${KEYCLOAK_ROLE_VIEW}"
                   }
                 ],
+                "resources": {
+                    "limits": {
+                        "cpu": "${CPU_LIMIT}",
+                        "memory": "${MEMORY_LIMIT}"
+                    },
+                    "requests": {
+                        "cpu": "${CPU_LIMIT}",
+                        "memory": "${MEMORY_LIMIT}"
+                    }
+                },
                 "ports": [
                   {
                     "containerPort": 3000

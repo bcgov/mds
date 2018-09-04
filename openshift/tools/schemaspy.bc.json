@@ -13,7 +13,7 @@
             "name": "openjdk",
             "creationTimestamp": null,
             "annotations": {
-            "description": "Python Base Image"
+            "description": "Schemaspy Base Image"
             },
             "labels": {
             "shared": "true"
@@ -41,7 +41,20 @@
           "kind": "ImageStream",
           "apiVersion": "v1",
           "metadata": {
-              "name": "${NAME}"
+            "name": "${NAME}",
+            "creationTimestamp": null,
+            "labels": {
+              "shared": "true"
+            },
+            "annotations": {
+              "description": "Keeps track of changes in the application image"
+            }
+          },
+          "spec": {
+            "lookupPolicy": {
+              "local": false
+            },
+            "tags":[ ]
           }
       },
       {
