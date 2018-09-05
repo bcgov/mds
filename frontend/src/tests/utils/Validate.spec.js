@@ -71,10 +71,10 @@ describe('Validate class', () => {
       expect(number(value)).toEqual(undefined);
     });
 
-    it('returns `Coordinates must be a number` if `value` is not a number', () => {
+    it('returns `Input must be a number` if `value` is not a number', () => {
       const value = 'number';
       const valueTwo = "385192451257";
-      expect(number(value)).toEqual(`Coordinates must be a number`);
+      expect(number(value)).toEqual(`Input must be a number`);
       expect(number(valueTwo)).toEqual(undefined);
     });
   });

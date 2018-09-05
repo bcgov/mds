@@ -81,7 +81,7 @@ ShallowWrapper {
             mine1
           </h1>
           <h5>
-            Mine #: 
+            Mine ID: 
             BLAH9091
              
           </h5>
@@ -92,6 +92,7 @@ ShallowWrapper {
               className="inline-flex"
             >
               <img
+                className="inline-flex--img"
                 src={
                   Object {
                     "process": [Function],
@@ -100,7 +101,7 @@ ShallowWrapper {
               />
               <div>
                 <p>
-                  Lat: 
+                  Lat:
                 </p>
               </div>
               <div>
@@ -182,7 +183,7 @@ ShallowWrapper {
               mine1
             </h1>,
             <h5>
-              Mine #: 
+              Mine ID: 
               BLAH9091
                
             </h5>,
@@ -193,6 +194,7 @@ ShallowWrapper {
                 className="inline-flex"
               >
                 <img
+                  className="inline-flex--img"
                   src={
                     Object {
                       "process": [Function],
@@ -201,7 +203,7 @@ ShallowWrapper {
                 />
                 <div>
                   <p>
-                    Lat: 
+                    Lat:
                   </p>
                 </div>
                 <div>
@@ -254,14 +256,14 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": Array [
-                "Mine #: ",
+                "Mine ID: ",
                 "BLAH9091",
                 " ",
               ],
             },
             "ref": null,
             "rendered": Array [
-              "Mine #: ",
+              "Mine ID: ",
               "BLAH9091",
               " ",
             ],
@@ -277,6 +279,7 @@ ShallowWrapper {
                   className="inline-flex"
                 >
                   <img
+                    className="inline-flex--img"
                     src={
                       Object {
                         "process": [Function],
@@ -285,7 +288,7 @@ ShallowWrapper {
                   />
                   <div>
                     <p>
-                      Lat: 
+                      Lat:
                     </p>
                   </div>
                   <div>
@@ -327,6 +330,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <img
+                      className="inline-flex--img"
                       src={
                         Object {
                           "process": [Function],
@@ -335,7 +339,7 @@ ShallowWrapper {
                     />,
                     <div>
                       <p>
-                        Lat: 
+                        Lat:
                       </p>
                     </div>,
                     <div>
@@ -353,6 +357,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "host",
                     "props": Object {
+                      "className": "inline-flex--img",
                       "src": Object {
                         "process": [Function],
                       },
@@ -367,7 +372,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": <p>
-                        Lat: 
+                        Lat:
                       </p>,
                     },
                     "ref": null,
@@ -377,13 +382,13 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": Array [
-                          "Lat: ",
+                          "Lat:",
                           null,
                         ],
                       },
                       "ref": null,
                       "rendered": Array [
-                        "Lat: ",
+                        "Lat:",
                         null,
                       ],
                       "type": "p",
@@ -564,7 +569,7 @@ ShallowWrapper {
               mine1
             </h1>
             <h5>
-              Mine #: 
+              Mine ID: 
               BLAH9091
                
             </h5>
@@ -575,6 +580,7 @@ ShallowWrapper {
                 className="inline-flex"
               >
                 <img
+                  className="inline-flex--img"
                   src={
                     Object {
                       "process": [Function],
@@ -583,7 +589,7 @@ ShallowWrapper {
                 />
                 <div>
                   <p>
-                    Lat: 
+                    Lat:
                   </p>
                 </div>
                 <div>
@@ -665,7 +671,7 @@ ShallowWrapper {
                 mine1
               </h1>,
               <h5>
-                Mine #: 
+                Mine ID: 
                 BLAH9091
                  
               </h5>,
@@ -676,6 +682,7 @@ ShallowWrapper {
                   className="inline-flex"
                 >
                   <img
+                    className="inline-flex--img"
                     src={
                       Object {
                         "process": [Function],
@@ -684,7 +691,7 @@ ShallowWrapper {
                   />
                   <div>
                     <p>
-                      Lat: 
+                      Lat:
                     </p>
                   </div>
                   <div>
@@ -737,14 +744,14 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": Array [
-                  "Mine #: ",
+                  "Mine ID: ",
                   "BLAH9091",
                   " ",
                 ],
               },
               "ref": null,
               "rendered": Array [
-                "Mine #: ",
+                "Mine ID: ",
                 "BLAH9091",
                 " ",
               ],
@@ -760,6 +767,7 @@ ShallowWrapper {
                     className="inline-flex"
                   >
                     <img
+                      className="inline-flex--img"
                       src={
                         Object {
                           "process": [Function],
@@ -768,7 +776,7 @@ ShallowWrapper {
                     />
                     <div>
                       <p>
-                        Lat: 
+                        Lat:
                       </p>
                     </div>
                     <div>
@@ -810,6 +818,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <img
+                        className="inline-flex--img"
                         src={
                           Object {
                             "process": [Function],
@@ -818,7 +827,7 @@ ShallowWrapper {
                       />,
                       <div>
                         <p>
-                          Lat: 
+                          Lat:
                         </p>
                       </div>,
                       <div>
@@ -836,6 +845,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "host",
                       "props": Object {
+                        "className": "inline-flex--img",
                         "src": Object {
                           "process": [Function],
                         },
@@ -850,7 +860,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": <p>
-                          Lat: 
+                          Lat:
                         </p>,
                       },
                       "ref": null,
@@ -860,13 +870,13 @@ ShallowWrapper {
                         "nodeType": "host",
                         "props": Object {
                           "children": Array [
-                            "Lat: ",
+                            "Lat:",
                             null,
                           ],
                         },
                         "ref": null,
                         "rendered": Array [
-                          "Lat: ",
+                          "Lat:",
                           null,
                         ],
                         "type": "p",

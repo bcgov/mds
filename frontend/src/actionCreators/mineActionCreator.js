@@ -38,7 +38,6 @@ export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
     return response;
   })
   .catch(() => {
-    console.log("errrrrrrror");
     notification.error({message: String.ERROR, duration: 10});
     dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
     dispatch(hideLoading());
@@ -53,6 +52,7 @@ export const getMineRecords = (page, per_page) => (dispatch) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMineList(response.data));
     dispatch(hideLoading());
+    return response;
   })
   .catch(() => {
     notification.error({message: String.ERROR, duration: 10});

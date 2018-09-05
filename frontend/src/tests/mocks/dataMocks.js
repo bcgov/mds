@@ -97,3 +97,15 @@ export const MINE_NAME_LIST = [
       "mine_no": "BLAH6734"
     }
   ]
+
+export const PAGE_DATA = {
+  "current_page": 1,
+  "has_next": true,
+  "has_prev":false,
+  "items_per_page":25,
+  "mines":[],
+  "next_num":2,
+  "prev_num":null,
+  "total":9000,
+  "total_pages":360,
+}

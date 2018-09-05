@@ -80,15 +80,15 @@ ShallowWrapper {
               "process": [Function],
             }
           }
-          primaryMessage="No Assigned Mine Manager"
-          secondaryMessage="Please add mine manger below"
+          primaryMessage="No assigned mine manager"
+          secondaryMessage="Please add mine manager below"
         />,
         <div
           className="center"
         >
           <Connect(CreateGuard)
             handleAction={[Function]}
-            string="Add Mine Manager"
+            string="Update Mine Manager"
             type="primary"
           />
         </div>,
@@ -145,8 +145,8 @@ ShallowWrapper {
           "img": Object {
             "process": [Function],
           },
-          "primaryMessage": "No Assigned Mine Manager",
-          "secondaryMessage": "Please add mine manger below",
+          "primaryMessage": "No assigned mine manager",
+          "secondaryMessage": "Please add mine manager below",
         },
         "ref": null,
         "rendered": null,
@@ -159,7 +159,7 @@ ShallowWrapper {
         "props": Object {
           "children": <Connect(CreateGuard)
             handleAction={[Function]}
-            string="Add Mine Manager"
+            string="Update Mine Manager"
             type="primary"
           />,
           "className": "center",
@@ -171,7 +171,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "handleAction": [Function],
-            "string": "Add Mine Manager",
+            "string": "Update Mine Manager",
             "type": "primary",
           },
           "ref": null,
@@ -316,15 +316,15 @@ ShallowWrapper {
                 "process": [Function],
               }
             }
-            primaryMessage="No Assigned Mine Manager"
-            secondaryMessage="Please add mine manger below"
+            primaryMessage="No assigned mine manager"
+            secondaryMessage="Please add mine manager below"
           />,
           <div
             className="center"
           >
             <Connect(CreateGuard)
               handleAction={[Function]}
-              string="Add Mine Manager"
+              string="Update Mine Manager"
               type="primary"
             />
           </div>,
@@ -381,8 +381,8 @@ ShallowWrapper {
             "img": Object {
               "process": [Function],
             },
-            "primaryMessage": "No Assigned Mine Manager",
-            "secondaryMessage": "Please add mine manger below",
+            "primaryMessage": "No assigned mine manager",
+            "secondaryMessage": "Please add mine manager below",
           },
           "ref": null,
           "rendered": null,
@@ -395,7 +395,7 @@ ShallowWrapper {
           "props": Object {
             "children": <Connect(CreateGuard)
               handleAction={[Function]}
-              string="Add Mine Manager"
+              string="Update Mine Manager"
               type="primary"
             />,
             "className": "center",
@@ -407,7 +407,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "handleAction": [Function],
-              "string": "Add Mine Manager",
+              "string": "Update Mine Manager",
               "type": "primary",
             },
             "ref": null,
