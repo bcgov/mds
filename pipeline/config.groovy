@@ -172,7 +172,7 @@ app {
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'BACKEND_HOST': "https://${vars.modules.'mds-python-backend'.HOST}",
+                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
