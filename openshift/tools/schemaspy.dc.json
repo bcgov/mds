@@ -88,9 +88,9 @@
                     "execNewPod": {
                       "containerName": "${NAME}",
                       "command": [
-                        "bash",
+                        "sh",
                         "-c",
-                        "for i in {1..10}; do timeout 1 bash -c '</dev/tcp/$BACKEND_HOST/80' && s=0 && break || s=$? && sleep 30; done; (echo $s && exit $s)"
+                        "nc -vzw 3600 ${BACKEND_HOST} 80"
                       ]
                     }
                   },
