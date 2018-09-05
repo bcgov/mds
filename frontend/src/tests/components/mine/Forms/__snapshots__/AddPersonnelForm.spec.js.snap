@@ -85,6 +85,7 @@ ShallowWrapper {
           </Button>
         </div>
       </Form>,
+      "className": "form__personnel",
     },
     "ref": null,
     "rendered": Object {
@@ -466,6 +467,7 @@ ShallowWrapper {
             </Button>
           </div>
         </Form>,
+        "className": "form__personnel",
       },
       "ref": null,
       "rendered": Object {
