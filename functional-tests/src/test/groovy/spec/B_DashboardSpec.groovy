@@ -100,4 +100,22 @@ class  B_DashboardSpec extends GebReportingSpec {
 
     }
     
+    def "Scenario: User can select how many records to display on one page"(){
+        given: "I am on the Dashboard Page"
+        to DashboardPage
+
+        when: "I select #/page"
+        paginationSelection(page)
+
+        then: "The dashboard display will change according to my selection"
+        driver.currentUrl.endswith("per_page="+page)
+
+        where:
+        page| _
+        25| _
+        50| _
+        75| _
+        100| _
+
+    }
 }
