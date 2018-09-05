@@ -130,7 +130,9 @@ app {
                             'IMAGE_STREAM_NAME':"mds-postgresql",
                             'IMAGE_STREAM_VERSION':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',
-                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory}"
                     ]
                 ],
                 [
@@ -144,7 +146,9 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
+                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}",
+                            'CPU_LIMIT':"${vars.resources.node.cpu}",
+                            'MEMORY_LIMIT':"${vars.resources.node.memory}"
                     ]
                 ],
                 [
@@ -157,7 +161,9 @@ app {
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'HOST': "${vars.modules.'mds-python-backend'.HOST}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'CPU_LIMIT':"${vars.resources.python.cpu}",
+                            'MEMORY_LIMIT':"${vars.resources.python.memory}"
                     ]
                 ],
                 [
@@ -196,6 +202,20 @@ environments {
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
+            resources {
+                node {
+                    cpu = "250m"
+                    memory = "1.5Gi"
+                }
+                python {
+                    cpu = "250m"
+                    memory = "1.5Gi"
+                }
+                postgres {
+                    cpu = "200m"
+                    memory = "1Gi"
+                }
+            }
             deployment {
                 env {
                     name = "dev"
@@ -210,9 +230,6 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-                'bdd-stack' {
-                    HOST = "bdd-stack-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -234,6 +251,20 @@ environments {
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
+            resources {
+                node {
+                    cpu = "1"
+                    memory = "4Gi"
+                }
+                python {
+                    cpu = "1"
+                    memory = "8Gi"
+                }
+                postgres {
+                    cpu = "1"
+                    memory = "6Gi"
+                }
+            }
             deployment {
                 env {
                     name = "test"
@@ -248,9 +279,6 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-                'bdd-stack' {
-                    HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -270,6 +298,20 @@ environments {
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
+            resources {
+                node {
+                    cpu = "1"
+                    memory = "4Gi"
+                }
+                python {
+                    cpu = "1"
+                    memory = "8Gi"
+                }
+                postgres {
+                    cpu = "1"
+                    memory = "6Gi"
+                }
+            }
             deployment {
                 env {
                     name = "prod"
@@ -284,9 +326,6 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-                'bdd-stack' {
-                    HOST = "bdd-stack-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

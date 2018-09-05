@@ -47,7 +47,9 @@ export class Dashboard extends Component {
         this.setState({mineList: true})
       });
     } else {
-      this.props.getMineRecords('1', '25');
+      this.props.getMineRecords('1', '25').then(() => {
+        this.setState({ mineList: true })
+      });
     }
     this.props.getMineNameList();
   }

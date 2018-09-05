@@ -47,6 +47,20 @@
     {
       "name": "HOST",
       "required": false
+    },
+    {
+        "name": "CPU_LIMIT",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "500m"
+    },
+    {
+        "name": "MEMORY_LIMIT",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "1Gi"
     }
   ],
   "objects": [
@@ -242,12 +256,12 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "1",
-                    "memory": "2.5Gi"
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
                   },
                   "requests": {
-                    "cpu": "500m",
-                    "memory": "2Gi"
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -305,7 +319,7 @@
                     },
                     "requests": {
                       "cpu": "200m",
-                      "memory": "1Gi"
+                      "memory": "750Mi"
                     }
                   }
               }
