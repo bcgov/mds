@@ -3,7 +3,9 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row, Divider } from 'antd';
+import NullScreen from '@/components/reusables/NullScreen';
+import { NO_MINE } from '@/constants/assets';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -16,29 +18,28 @@ const defaultProps = {
 class MineSummary extends Component {
   render() {
     const { mine } = this.props;
+    if (!mine.mgr_appointment[0]) {
+      return (<NullScreen primaryMessage="No data at this time" img={NO_MINE} />);
+    }
     return (
       <div>
-        <h1> Mine Summary </h1>
-        <Card title="Mine">
+        <Card className="card-top">
           <Row type="flex">
-            <Col span={6}><strong>MINE_NO</strong></Col>
-            <Col span={6}><strong>NAME</strong></Col>
-            <Col span={6}><strong>GUID</strong></Col>
-            <Col span={6}><strong>TENURE</strong></Col>
+            <Col span={12}><h4>Mine Manager</h4></Col>
+            <Col span={12}><h4>Manager Since</h4></Col>
           </Row>
           <Row type="flex">
-            <Col span={6}>{mine.mine_detail[0] ? mine.mine_detail[0].mine_no : "-"}</Col>
-            <Col span={6}>{mine.mine_detail[0] ? mine.mine_detail[0].mine_name : "-"}</Col>
-            <Col span={6}>{mine.guid}</Col>
-            <Col span={6}>
-              {mine.mineral_tenure_xref.map((tenure) => {
-                return (
-                  <div key={tenure.tenure_number_id}>
-                    {tenure.tenure_number_id}
-                  </div>
-                )
-              })}
-            </Col>
+            <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
+            <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
+          </Row>
+          <Divider />
+          <Row type="flex">
+            <Col span={12}><h4>Permittee</h4></Col>
+            <Col span={12}><h4>Permittee Since</h4></Col>
+          </Row>
+          <Row type="flex">
+            <Col span={12}><p className="p-large">N/A</p></Col>
+            <Col span={12}><p className="p-large">N/A</p></Col>
           </Row>
         </Card>
       </div>

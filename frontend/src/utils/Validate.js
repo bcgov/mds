@@ -12,6 +12,16 @@ class Validator {
   FLOATS_REGEX = /^-?\d*(\.{1}\d+)?$/;
   NUMBERS_OR_EMPTY_STRING_REGEX = /^-?\d*\.?\d*$/;
   URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+  LAT_REGEX = /^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$/;
+  LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
+
+  checkLat(lat) {
+    return this.LAT_REGEX.test(lat);
+  }
+
+  checkLon(lon) {
+    return this.LON_REGEX.test(lon);
+  }
 }
 
 export const Validate = new Validator();
@@ -24,3 +34,8 @@ export const minLength = memoize((min) => (value) => value && value.length < min
 
 export const exactLength = memoize((min) => (value) => value && value.length !== min ? `Must be ${min} characters long` : undefined);
 
+export const number = (value) => (value && isNaN(Number(value)) ? 'Input must be a number' : undefined);
+
+export const lat = (value) => (value && !Validate.checkLat(value)) ? 'Invalid latitude coordinate e.g. 53.7267': undefined;
+
+export const lon = (value) => (value && !Validate.checkLon(value)) ? 'Invalid longitude coordinate e.g. -127.6476000' : undefined;

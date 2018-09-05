@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required, exactLength } from '@/utils/Validate';
+import { required, exactLength, number } from '@/utils/Validate';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -14,19 +14,19 @@ export const AddTenureNumberForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col>
           <Form.Item>
             <Field
               id="tenureNumber"
               name="tenureNumber"
               label='Tenure Number'
               component={RenderField}
-              validate={[required, exactLength(7)]}
+              validate={[required, exactLength(7), number]}
             />
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit">Add Tenure Number</Button>
+      <div className="right"><Button type="primary" htmlType="submit">Add Tenure Number</Button></div>
     </Form>
   );
 };
@@ -34,6 +34,7 @@ export const AddTenureNumberForm = (props) => {
 AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
-  form: FORM.ADD_TENURE_NUMBER
+  form: FORM.ADD_TENURE_NUMBER,
+  destroyOnUnmount: true
 })(AddTenureNumberForm)
 );

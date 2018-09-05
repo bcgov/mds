@@ -28,6 +28,11 @@ export const MINES = {
           mine_name: "mine3",
           mine_no: "BLAH9091"
         }
+      ], 
+      mine_location: [
+        { longitude: null,
+          latitude: null
+        }
       ]
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
@@ -46,6 +51,12 @@ export const MINES = {
         {
           mine_name: "mine2",
           mine_no: "BLAH9091"
+        }
+      ],
+      mine_location: [
+        {
+          longitude: null,
+          latitude: null
         }
       ]
     }
@@ -67,4 +78,34 @@ export const PERSONNEL = {
       full_name: "mock Two"
     }
   }
+}
+
+export const MINE_NAME_LIST = [
+    {
+      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+      "mine_name": "New Mine",
+      "mine_no": "BLAH6194"
+    },
+    {
+      "guid": "89a65274-581d-4862-8630-99f5f7687089",
+      "mine_name": "Mine Two",
+      "mine_no": "BLAH0502"
+    },
+    {
+      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+      "mine_name": "Legit Mine",
+      "mine_no": "BLAH6734"
+    }
+  ]
+
+export const PAGE_DATA = {
+  "current_page": 1,
+  "has_next": true,
+  "has_prev":false,
+  "items_per_page":25,
+  "mines":[],
+  "next_num":2,
+  "prev_num":null,
+  "total":9000,
+  "total_pages":360,
 }

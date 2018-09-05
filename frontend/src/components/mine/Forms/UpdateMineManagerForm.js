@@ -47,7 +47,7 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit">Update Mine Manager</Button>
+      <div className="right"><Button type="primary" htmlType="submit">Update Mine Manager</Button></div>
     </Form>
   );
 };
@@ -56,6 +56,7 @@ UpdateMineManagerForm.propTypes = propTypes;
 UpdateMineManagerForm.defaultProps = defaultProps;
 
 export default (reduxForm({
-    form: FORM.UPDATE_MINE_MANAGER
+    form: FORM.UPDATE_MINE_MANAGER,
+    destroyOnUnmount: true
   })(UpdateMineManagerForm)
 );

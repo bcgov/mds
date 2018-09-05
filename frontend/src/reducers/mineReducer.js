@@ -9,6 +9,8 @@ import { MINES } from '@/constants/reducerTypes';
 const initialState = {
   mines: {},
   mineIds: [],
+  mineNameList: [],
+  minesPageData: {},
 };
 
 const createItemMap = (array, idField) => {
@@ -29,12 +31,18 @@ const mineReducer = (state = initialState, action) => {
           ...state,
           mines: createItemMap(action.payload.mines, 'guid'),
           mineIds: createItemIdsArray(action.payload.mines, 'guid'),
+          minesPageData: action.payload
         }
       case actionTypes.STORE_MINE:
         return {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
-          mineIds: createItemIdsArray([action.payload], 'guid'),
+          mineIds: createItemIdsArray([action.payload], 'guid')
+        }
+      case actionTypes.STORE_MINE_NAME_LIST:
+        return {
+          ...state,
+          mineNameList: action.payload,
         }
       case actionTypes.UPDATE_MINE_RECORD:
         return {
@@ -49,5 +57,7 @@ const mineReducer = (state = initialState, action) => {
 
 export const getMines = (state) => state[MINES].mines;
 export const getMineIds = (state) => state[MINES].mineIds;
+export const getMineNames = (state) => state[MINES].mineNameList;
+export const getMinesPageData = (state) => state[MINES].minesPageData;
 
 export default mineReducer;

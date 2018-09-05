@@ -19,6 +19,12 @@ ShallowWrapper {
             "mine_no": "BLAH9091",
           },
         ],
+        "mine_location": Array [
+          Object {
+            "latitude": null,
+            "longitude": null,
+          },
+        ],
         "mineral_tenure_xref": Array [
           Object {
             "tenure_number_id": "1234567",
@@ -48,6 +54,12 @@ ShallowWrapper {
               "mine_no": "BLAH9091",
             },
           ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
+            },
+          ],
           "mineral_tenure_xref": Array [
             Object {
               "tenure_number_id": "1234567",
@@ -65,6 +77,12 @@ ShallowWrapper {
             Object {
               "mine_name": "mine2",
               "mine_no": "BLAH9091",
+            },
+          ],
+          "mine_location": Array [
+            Object {
+              "latitude": null,
+              "longitude": null,
             },
           ],
           "mineral_tenure_xref": Array [
@@ -91,639 +109,9 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <MineHeader
-          mine={
-            Object {
-              "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mgr_appointment": Array [],
-              "mine_detail": Array [
-                Object {
-                  "mine_name": "mine1",
-                  "mine_no": "BLAH9091",
-                },
-                Object {
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                },
-              ],
-              "mineral_tenure_xref": Array [
-                Object {
-                  "tenure_number_id": "1234567",
-                },
-              ],
-            }
-          }
-        />,
-        <Tabs
-          defaultActiveKey="1"
-          hideAdd={false}
-          prefixCls="ant-tabs"
-        >
-          <TabPane
-            placeholder={null}
-            tab="Summary"
-          >
-            <MineSummary
-              mine={
-                Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mgr_appointment": Array [],
-                  "mine_detail": Array [
-                    Object {
-                      "mine_name": "mine1",
-                      "mine_no": "BLAH9091",
-                    },
-                    Object {
-                      "mine_name": "mine3",
-                      "mine_no": "BLAH9091",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                }
-              }
-            />
-            <Connect(CreateGuard)
-              getMineRecord={[MockFunction]}
-              mine={
-                Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mgr_appointment": Array [],
-                  "mine_detail": Array [
-                    Object {
-                      "mine_name": "mine1",
-                      "mine_no": "BLAH9091",
-                    },
-                    Object {
-                      "mine_name": "mine3",
-                      "mine_no": "BLAH9091",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                }
-              }
-              mineId="Blah123"
-              mineIds={
-                Array [
-                  "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "18145c75-49ad-0101-85f3-a43e45ae989a",
-                ]
-              }
-              mines={
-                Object {
-                  "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                  "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                    "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine2",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                }
-              }
-              updateMineRecord={[MockFunction]}
-              userRoles={Array []}
-            />
-          </TabPane>
-          <TabPane
-            placeholder={null}
-            tab="Contact Information"
-          >
-            <MineContactInfo
-              mine={
-                Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mgr_appointment": Array [],
-                  "mine_detail": Array [
-                    Object {
-                      "mine_name": "mine1",
-                      "mine_no": "BLAH9091",
-                    },
-                    Object {
-                      "mine_name": "mine3",
-                      "mine_no": "BLAH9091",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                }
-              }
-            />
-          </TabPane>
-        </Tabs>,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "mine": Object {
-            "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mgr_appointment": Array [],
-            "mine_detail": Array [
-              Object {
-                "mine_name": "mine1",
-                "mine_no": "BLAH9091",
-              },
-              Object {
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-              },
-            ],
-            "mineral_tenure_xref": Array [
-              Object {
-                "tenure_number_id": "1234567",
-              },
-            ],
-          },
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": Array [
-            <TabPane
-              placeholder={null}
-              tab="Summary"
-            >
-              <MineSummary
-                mine={
-                  Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  }
-                }
-              />
-              <Connect(CreateGuard)
-                getMineRecord={[MockFunction]}
-                mine={
-                  Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  }
-                }
-                mineId="Blah123"
-                mineIds={
-                  Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ]
-                }
-                mines={
-                  Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine2",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  }
-                }
-                updateMineRecord={[MockFunction]}
-                userRoles={Array []}
-              />
-            </TabPane>,
-            <TabPane
-              placeholder={null}
-              tab="Contact Information"
-            >
-              <MineContactInfo
-                mine={
-                  Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  }
-                }
-              />
-            </TabPane>,
-          ],
-          "defaultActiveKey": "1",
-          "hideAdd": false,
-          "prefixCls": "ant-tabs",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": "1",
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [
-                <MineSummary
-                  mine={
-                    Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    }
-                  }
-                />,
-                <Connect(CreateGuard)
-                  getMineRecord={[MockFunction]}
-                  mine={
-                    Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    }
-                  }
-                  mineId="Blah123"
-                  mineIds={
-                    Array [
-                      "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ]
-                  }
-                  mines={
-                    Object {
-                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine3",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine2",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                    }
-                  }
-                  updateMineRecord={[MockFunction]}
-                  userRoles={Array []}
-                />,
-              ],
-              "placeholder": null,
-              "tab": "Summary",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "mine": Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "getMineRecord": [MockFunction],
-                  "mine": Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  },
-                  "mineId": "Blah123",
-                  "mineIds": Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ],
-                  "mines": Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine2",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  },
-                  "updateMineRecord": [MockFunction],
-                  "userRoles": Array [],
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-            ],
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": "2",
-            "nodeType": "class",
-            "props": Object {
-              "children": <MineContactInfo
-                mine={
-                  Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mgr_appointment": Array [],
-                    "mine_detail": Array [
-                      Object {
-                        "mine_name": "mine1",
-                        "mine_no": "BLAH9091",
-                      },
-                      Object {
-                        "mine_name": "mine3",
-                        "mine_no": "BLAH9091",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                  }
-                }
-              />,
-              "placeholder": null,
-              "tab": "Contact Information",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "mine": Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mgr_appointment": Array [],
-                  "mine_detail": Array [
-                    Object {
-                      "mine_name": "mine1",
-                      "mine_no": "BLAH9091",
-                    },
-                    Object {
-                      "mine_name": "mine3",
-                      "mine_no": "BLAH9091",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                },
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-        ],
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
+        <div>
           <MineHeader
+            mapData={undefined}
             mine={
               Object {
                 "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -738,6 +126,12 @@ ShallowWrapper {
                     "mine_no": "BLAH9091",
                   },
                 ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
                 "mineral_tenure_xref": Array [
                   Object {
                     "tenure_number_id": "1234567",
@@ -745,11 +139,22 @@ ShallowWrapper {
                 ],
               }
             }
-          />,
+          />
+        </div>,
+        <div
+          className="dashboard__content"
+        >
           <Tabs
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
+              }
+            }
             defaultActiveKey="1"
             hideAdd={false}
             prefixCls="ant-tabs"
+            size="large"
           >
             <TabPane
               placeholder={null}
@@ -770,6 +175,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -778,7 +189,74 @@ ShallowWrapper {
                   }
                 }
               />
-              <Connect(CreateGuard)
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Permit"
+            >
+              <NullScreen
+                img={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                primaryMessage="No data at this time"
+                secondaryMessage=""
+              />
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Contact Information"
+            >
+              <MineContactInfo
+                mine={
+                  Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mgr_appointment": Array [],
+                    "mine_detail": Array [
+                      Object {
+                        "mine_name": "mine1",
+                        "mine_no": "BLAH9091",
+                      },
+                      Object {
+                        "mine_name": "mine3",
+                        "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
+                  }
+                }
+              />
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Compliance"
+            >
+              <NullScreen
+                img={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                primaryMessage="No data at this time"
+                secondaryMessage=""
+              />
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Tenure"
+            >
+              <MineTenureInfo
                 getMineRecord={[MockFunction]}
                 mine={
                   Object {
@@ -792,6 +270,12 @@ ShallowWrapper {
                       Object {
                         "mine_name": "mine3",
                         "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
                       },
                     ],
                     "mineral_tenure_xref": Array [
@@ -823,6 +307,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -842,6 +332,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -852,6 +348,153 @@ ShallowWrapper {
                 }
                 updateMineRecord={[MockFunction]}
                 userRoles={Array []}
+              />
+            </TabPane>
+          </Tabs>
+        </div>,
+      ],
+      "className": "dashboard",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <MineHeader
+            mapData={undefined}
+            mine={
+              Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mgr_appointment": Array [],
+                "mine_detail": Array [
+                  Object {
+                    "mine_name": "mine1",
+                    "mine_no": "BLAH9091",
+                  },
+                  Object {
+                    "mine_name": "mine3",
+                    "mine_no": "BLAH9091",
+                  },
+                ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
+                "mineral_tenure_xref": Array [
+                  Object {
+                    "tenure_number_id": "1234567",
+                  },
+                ],
+              }
+            }
+          />,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "mapData": undefined,
+            "mine": Object {
+              "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mgr_appointment": Array [],
+              "mine_detail": Array [
+                Object {
+                  "mine_name": "mine1",
+                  "mine_no": "BLAH9091",
+                },
+                Object {
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                },
+              ],
+              "mine_location": Array [
+                Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+              ],
+              "mineral_tenure_xref": Array [
+                Object {
+                  "tenure_number_id": "1234567",
+                },
+              ],
+            },
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <Tabs
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
+              }
+            }
+            defaultActiveKey="1"
+            hideAdd={false}
+            prefixCls="ant-tabs"
+            size="large"
+          >
+            <TabPane
+              placeholder={null}
+              tab="Summary"
+            >
+              <MineSummary
+                mine={
+                  Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mgr_appointment": Array [],
+                    "mine_detail": Array [
+                      Object {
+                        "mine_name": "mine1",
+                        "mine_no": "BLAH9091",
+                      },
+                      Object {
+                        "mine_name": "mine3",
+                        "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
+                  }
+                }
+              />
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Permit"
+            >
+              <NullScreen
+                img={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                primaryMessage="No data at this time"
+                secondaryMessage=""
               />
             </TabPane>
             <TabPane
@@ -873,6 +516,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -882,45 +531,131 @@ ShallowWrapper {
                 }
               />
             </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Compliance"
+            >
+              <NullScreen
+                img={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                primaryMessage="No data at this time"
+                secondaryMessage=""
+              />
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Tenure"
+            >
+              <MineTenureInfo
+                getMineRecord={[MockFunction]}
+                mine={
+                  Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mgr_appointment": Array [],
+                    "mine_detail": Array [
+                      Object {
+                        "mine_name": "mine1",
+                        "mine_no": "BLAH9091",
+                      },
+                      Object {
+                        "mine_name": "mine3",
+                        "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
+                  }
+                }
+                mineId="Blah123"
+                mineIds={
+                  Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ]
+                }
+                mines={
+                  Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine2",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                  }
+                }
+                updateMineRecord={[MockFunction]}
+                userRoles={Array []}
+              />
+            </TabPane>
           </Tabs>,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "mine": Object {
-              "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mgr_appointment": Array [],
-              "mine_detail": Array [
-                Object {
-                  "mine_name": "mine1",
-                  "mine_no": "BLAH9091",
-                },
-                Object {
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                },
-              ],
-              "mineral_tenure_xref": Array [
-                Object {
-                  "tenure_number_id": "1234567",
-                },
-              ],
-            },
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
+          "className": "dashboard__content",
         },
-        Object {
+        "ref": null,
+        "rendered": Object {
           "instance": null,
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "animated": Object {
+              "inkBar": true,
+              "tabPane": false,
+            },
             "children": Array [
               <TabPane
                 placeholder={null}
@@ -941,6 +676,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -949,80 +690,19 @@ ShallowWrapper {
                     }
                   }
                 />
-                <Connect(CreateGuard)
-                  getMineRecord={[MockFunction]}
-                  mine={
+              </TabPane>,
+              <TabPane
+                placeholder={null}
+                tab="Permit"
+              >
+                <NullScreen
+                  img={
                     Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
-                        },
-                      ],
-                      "mineral_tenure_xref": Array [
-                        Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
+                      "process": [Function],
                     }
                   }
-                  mineId="Blah123"
-                  mineIds={
-                    Array [
-                      "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ]
-                  }
-                  mines={
-                    Object {
-                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine3",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine2",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      },
-                    }
-                  }
-                  updateMineRecord={[MockFunction]}
-                  userRoles={Array []}
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
                 />
               </TabPane>,
               <TabPane
@@ -1044,6 +724,12 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
                       "mineral_tenure_xref": Array [
                         Object {
                           "tenure_number_id": "1234567",
@@ -1053,129 +739,28 @@ ShallowWrapper {
                   }
                 />
               </TabPane>,
-            ],
-            "defaultActiveKey": "1",
-            "hideAdd": false,
-            "prefixCls": "ant-tabs",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": "1",
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <MineSummary
-                    mine={
-                      Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine3",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      }
+              <TabPane
+                placeholder={null}
+                tab="Compliance"
+              >
+                <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
                     }
-                  />,
-                  <Connect(CreateGuard)
-                    getMineRecord={[MockFunction]}
-                    mine={
-                      Object {
-                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mgr_appointment": Array [],
-                        "mine_detail": Array [
-                          Object {
-                            "mine_name": "mine1",
-                            "mine_no": "BLAH9091",
-                          },
-                          Object {
-                            "mine_name": "mine3",
-                            "mine_no": "BLAH9091",
-                          },
-                        ],
-                        "mineral_tenure_xref": Array [
-                          Object {
-                            "tenure_number_id": "1234567",
-                          },
-                        ],
-                      }
-                    }
-                    mineId="Blah123"
-                    mineIds={
-                      Array [
-                        "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      ]
-                    }
-                    mines={
-                      Object {
-                        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                          "mgr_appointment": Array [],
-                          "mine_detail": Array [
-                            Object {
-                              "mine_name": "mine1",
-                              "mine_no": "BLAH9091",
-                            },
-                            Object {
-                              "mine_name": "mine3",
-                              "mine_no": "BLAH9091",
-                            },
-                          ],
-                          "mineral_tenure_xref": Array [
-                            Object {
-                              "tenure_number_id": "1234567",
-                            },
-                          ],
-                        },
-                        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                          "mgr_appointment": Array [],
-                          "mine_detail": Array [
-                            Object {
-                              "mine_name": "mine1",
-                              "mine_no": "BLAH9091",
-                            },
-                            Object {
-                              "mine_name": "mine2",
-                              "mine_no": "BLAH9091",
-                            },
-                          ],
-                          "mineral_tenure_xref": Array [
-                            Object {
-                              "tenure_number_id": "1234567",
-                            },
-                          ],
-                        },
-                      }
-                    }
-                    updateMineRecord={[MockFunction]}
-                    userRoles={Array []}
-                  />,
-                ],
-                "placeholder": null,
-                "tab": "Summary",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "mine": Object {
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />
+              </TabPane>,
+              <TabPane
+                placeholder={null}
+                tab="Tenure"
+              >
+                <MineTenureInfo
+                  getMineRecord={[MockFunction]}
+                  mine={
+                    Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mgr_appointment": Array [],
                       "mine_detail": Array [
@@ -1188,34 +773,10 @@ ShallowWrapper {
                           "mine_no": "BLAH9091",
                         },
                       ],
-                      "mineral_tenure_xref": Array [
+                      "mine_location": Array [
                         Object {
-                          "tenure_number_id": "1234567",
-                        },
-                      ],
-                    },
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "getMineRecord": [MockFunction],
-                    "mine": Object {
-                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mgr_appointment": Array [],
-                      "mine_detail": Array [
-                        Object {
-                          "mine_name": "mine1",
-                          "mine_no": "BLAH9091",
-                        },
-                        Object {
-                          "mine_name": "mine3",
-                          "mine_no": "BLAH9091",
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -1223,13 +784,17 @@ ShallowWrapper {
                           "tenure_number_id": "1234567",
                         },
                       ],
-                    },
-                    "mineId": "Blah123",
-                    "mineIds": Array [
+                    }
+                  }
+                  mineId="Blah123"
+                  mineIds={
+                    Array [
                       "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "18145c75-49ad-0101-85f3-a43e45ae989a",
-                    ],
-                    "mines": Object {
+                    ]
+                  }
+                  mines={
+                    Object {
                       "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
                         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                         "mgr_appointment": Array [],
@@ -1241,6 +806,12 @@ ShallowWrapper {
                           Object {
                             "mine_name": "mine3",
                             "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
                           },
                         ],
                         "mineral_tenure_xref": Array [
@@ -1262,26 +833,145 @@ ShallowWrapper {
                             "mine_no": "BLAH9091",
                           },
                         ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
                         "mineral_tenure_xref": Array [
                           Object {
                             "tenure_number_id": "1234567",
                           },
                         ],
                       },
-                    },
-                    "updateMineRecord": [MockFunction],
-                    "userRoles": Array [],
+                    }
+                  }
+                  updateMineRecord={[MockFunction]}
+                  userRoles={Array []}
+                />
+              </TabPane>,
+            ],
+            "defaultActiveKey": "1",
+            "hideAdd": false,
+            "prefixCls": "ant-tabs",
+            "size": "large",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "1",
+              "nodeType": "class",
+              "props": Object {
+                "children": <MineSummary
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                />,
+                "placeholder": null,
+                "tab": "Summary",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "mine": Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mgr_appointment": Array [],
+                    "mine_detail": Array [
+                      Object {
+                        "mine_name": "mine1",
+                        "mine_no": "BLAH9091",
+                      },
+                      Object {
+                        "mine_name": "mine3",
+                        "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
                 },
-              ],
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
               "type": [Function],
             },
             Object {
               "instance": null,
               "key": "2",
+              "nodeType": "class",
+              "props": Object {
+                "children": <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />,
+                "placeholder": null,
+                "tab": "Permit",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "img": Object {
+                    "process": [Function],
+                  },
+                  "primaryMessage": "No data at this time",
+                  "secondaryMessage": "",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "3",
               "nodeType": "class",
               "props": Object {
                 "children": <MineContactInfo
@@ -1297,6 +987,12 @@ ShallowWrapper {
                         Object {
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
                         },
                       ],
                       "mineral_tenure_xref": Array [
@@ -1329,6 +1025,12 @@ ShallowWrapper {
                         "mine_no": "BLAH9091",
                       },
                     ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
                     "mineral_tenure_xref": Array [
                       Object {
                         "tenure_number_id": "1234567",
@@ -1342,8 +1044,1428 @@ ShallowWrapper {
               },
               "type": [Function],
             },
+            Object {
+              "instance": null,
+              "key": "4",
+              "nodeType": "class",
+              "props": Object {
+                "children": <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />,
+                "placeholder": null,
+                "tab": "Compliance",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "img": Object {
+                    "process": [Function],
+                  },
+                  "primaryMessage": "No data at this time",
+                  "secondaryMessage": "",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "5",
+              "nodeType": "class",
+              "props": Object {
+                "children": <MineTenureInfo
+                  getMineRecord={[MockFunction]}
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                  mineId="Blah123"
+                  mineIds={
+                    Array [
+                      "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    ]
+                  }
+                  mines={
+                    Object {
+                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine2",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                    }
+                  }
+                  updateMineRecord={[MockFunction]}
+                  userRoles={Array []}
+                />,
+                "placeholder": null,
+                "tab": "Tenure",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "getMineRecord": [MockFunction],
+                  "mine": Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mgr_appointment": Array [],
+                    "mine_detail": Array [
+                      Object {
+                        "mine_name": "mine1",
+                        "mine_no": "BLAH9091",
+                      },
+                      Object {
+                        "mine_name": "mine3",
+                        "mine_no": "BLAH9091",
+                      },
+                    ],
+                    "mine_location": Array [
+                      Object {
+                        "latitude": null,
+                        "longitude": null,
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
+                  },
+                  "mineId": "Blah123",
+                  "mineIds": Array [
+                    "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  ],
+                  "mines": Object {
+                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                      "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine2",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                  },
+                  "updateMineRecord": [MockFunction],
+                  "userRoles": Array [],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
           ],
           "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div>
+            <MineHeader
+              mapData={undefined}
+              mine={
+                Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mgr_appointment": Array [],
+                  "mine_detail": Array [
+                    Object {
+                      "mine_name": "mine1",
+                      "mine_no": "BLAH9091",
+                    },
+                    Object {
+                      "mine_name": "mine3",
+                      "mine_no": "BLAH9091",
+                    },
+                  ],
+                  "mine_location": Array [
+                    Object {
+                      "latitude": null,
+                      "longitude": null,
+                    },
+                  ],
+                  "mineral_tenure_xref": Array [
+                    Object {
+                      "tenure_number_id": "1234567",
+                    },
+                  ],
+                }
+              }
+            />
+          </div>,
+          <div
+            className="dashboard__content"
+          >
+            <Tabs
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
+                }
+              }
+              defaultActiveKey="1"
+              hideAdd={false}
+              prefixCls="ant-tabs"
+              size="large"
+            >
+              <TabPane
+                placeholder={null}
+                tab="Summary"
+              >
+                <MineSummary
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Permit"
+              >
+                <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Contact Information"
+              >
+                <MineContactInfo
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Compliance"
+              >
+                <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Tenure"
+              >
+                <MineTenureInfo
+                  getMineRecord={[MockFunction]}
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                  mineId="Blah123"
+                  mineIds={
+                    Array [
+                      "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    ]
+                  }
+                  mines={
+                    Object {
+                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine2",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                    }
+                  }
+                  updateMineRecord={[MockFunction]}
+                  userRoles={Array []}
+                />
+              </TabPane>
+            </Tabs>
+          </div>,
+        ],
+        "className": "dashboard",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <MineHeader
+              mapData={undefined}
+              mine={
+                Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mgr_appointment": Array [],
+                  "mine_detail": Array [
+                    Object {
+                      "mine_name": "mine1",
+                      "mine_no": "BLAH9091",
+                    },
+                    Object {
+                      "mine_name": "mine3",
+                      "mine_no": "BLAH9091",
+                    },
+                  ],
+                  "mine_location": Array [
+                    Object {
+                      "latitude": null,
+                      "longitude": null,
+                    },
+                  ],
+                  "mineral_tenure_xref": Array [
+                    Object {
+                      "tenure_number_id": "1234567",
+                    },
+                  ],
+                }
+              }
+            />,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "mapData": undefined,
+              "mine": Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mgr_appointment": Array [],
+                "mine_detail": Array [
+                  Object {
+                    "mine_name": "mine1",
+                    "mine_no": "BLAH9091",
+                  },
+                  Object {
+                    "mine_name": "mine3",
+                    "mine_no": "BLAH9091",
+                  },
+                ],
+                "mine_location": Array [
+                  Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                ],
+                "mineral_tenure_xref": Array [
+                  Object {
+                    "tenure_number_id": "1234567",
+                  },
+                ],
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Tabs
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
+                }
+              }
+              defaultActiveKey="1"
+              hideAdd={false}
+              prefixCls="ant-tabs"
+              size="large"
+            >
+              <TabPane
+                placeholder={null}
+                tab="Summary"
+              >
+                <MineSummary
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Permit"
+              >
+                <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Contact Information"
+              >
+                <MineContactInfo
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Compliance"
+              >
+                <NullScreen
+                  img={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  primaryMessage="No data at this time"
+                  secondaryMessage=""
+                />
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Tenure"
+              >
+                <MineTenureInfo
+                  getMineRecord={[MockFunction]}
+                  mine={
+                    Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    }
+                  }
+                  mineId="Blah123"
+                  mineIds={
+                    Array [
+                      "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    ]
+                  }
+                  mines={
+                    Object {
+                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine2",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                    }
+                  }
+                  updateMineRecord={[MockFunction]}
+                  userRoles={Array []}
+                />
+              </TabPane>
+            </Tabs>,
+            "className": "dashboard__content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "animated": Object {
+                "inkBar": true,
+                "tabPane": false,
+              },
+              "children": Array [
+                <TabPane
+                  placeholder={null}
+                  tab="Summary"
+                >
+                  <MineSummary
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                  />
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Permit"
+                >
+                  <NullScreen
+                    img={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    primaryMessage="No data at this time"
+                    secondaryMessage=""
+                  />
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Contact Information"
+                >
+                  <MineContactInfo
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                  />
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Compliance"
+                >
+                  <NullScreen
+                    img={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    primaryMessage="No data at this time"
+                    secondaryMessage=""
+                  />
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Tenure"
+                >
+                  <MineTenureInfo
+                    getMineRecord={[MockFunction]}
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                    mineId="Blah123"
+                    mineIds={
+                      Array [
+                        "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      ]
+                    }
+                    mines={
+                      Object {
+                        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                          "mgr_appointment": Array [],
+                          "mine_detail": Array [
+                            Object {
+                              "mine_name": "mine1",
+                              "mine_no": "BLAH9091",
+                            },
+                            Object {
+                              "mine_name": "mine3",
+                              "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
+                          "mineral_tenure_xref": Array [
+                            Object {
+                              "tenure_number_id": "1234567",
+                            },
+                          ],
+                        },
+                        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                          "mgr_appointment": Array [],
+                          "mine_detail": Array [
+                            Object {
+                              "mine_name": "mine1",
+                              "mine_no": "BLAH9091",
+                            },
+                            Object {
+                              "mine_name": "mine2",
+                              "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
+                          "mineral_tenure_xref": Array [
+                            Object {
+                              "tenure_number_id": "1234567",
+                            },
+                          ],
+                        },
+                      }
+                    }
+                    updateMineRecord={[MockFunction]}
+                    userRoles={Array []}
+                  />
+                </TabPane>,
+              ],
+              "defaultActiveKey": "1",
+              "hideAdd": false,
+              "prefixCls": "ant-tabs",
+              "size": "large",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": "1",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <MineSummary
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                  />,
+                  "placeholder": null,
+                  "tab": "Summary",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "mine": Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "2",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <NullScreen
+                    img={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    primaryMessage="No data at this time"
+                    secondaryMessage=""
+                  />,
+                  "placeholder": null,
+                  "tab": "Permit",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "img": Object {
+                      "process": [Function],
+                    },
+                    "primaryMessage": "No data at this time",
+                    "secondaryMessage": "",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "3",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <MineContactInfo
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                  />,
+                  "placeholder": null,
+                  "tab": "Contact Information",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "mine": Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "4",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <NullScreen
+                    img={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    primaryMessage="No data at this time"
+                    secondaryMessage=""
+                  />,
+                  "placeholder": null,
+                  "tab": "Compliance",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "img": Object {
+                      "process": [Function],
+                    },
+                    "primaryMessage": "No data at this time",
+                    "secondaryMessage": "",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "5",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <MineTenureInfo
+                    getMineRecord={[MockFunction]}
+                    mine={
+                      Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      }
+                    }
+                    mineId="Blah123"
+                    mineIds={
+                      Array [
+                        "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "18145c75-49ad-0101-85f3-a43e45ae989a",
+                      ]
+                    }
+                    mines={
+                      Object {
+                        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                          "mgr_appointment": Array [],
+                          "mine_detail": Array [
+                            Object {
+                              "mine_name": "mine1",
+                              "mine_no": "BLAH9091",
+                            },
+                            Object {
+                              "mine_name": "mine3",
+                              "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
+                          "mineral_tenure_xref": Array [
+                            Object {
+                              "tenure_number_id": "1234567",
+                            },
+                          ],
+                        },
+                        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                          "mgr_appointment": Array [],
+                          "mine_detail": Array [
+                            Object {
+                              "mine_name": "mine1",
+                              "mine_no": "BLAH9091",
+                            },
+                            Object {
+                              "mine_name": "mine2",
+                              "mine_no": "BLAH9091",
+                            },
+                          ],
+                          "mine_location": Array [
+                            Object {
+                              "latitude": null,
+                              "longitude": null,
+                            },
+                          ],
+                          "mineral_tenure_xref": Array [
+                            Object {
+                              "tenure_number_id": "1234567",
+                            },
+                          ],
+                        },
+                      }
+                    }
+                    updateMineRecord={[MockFunction]}
+                    userRoles={Array []}
+                  />,
+                  "placeholder": null,
+                  "tab": "Tenure",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "getMineRecord": [MockFunction],
+                    "mine": Object {
+                      "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mgr_appointment": Array [],
+                      "mine_detail": Array [
+                        Object {
+                          "mine_name": "mine1",
+                          "mine_no": "BLAH9091",
+                        },
+                        Object {
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                        },
+                      ],
+                      "mine_location": Array [
+                        Object {
+                          "latitude": null,
+                          "longitude": null,
+                        },
+                      ],
+                      "mineral_tenure_xref": Array [
+                        Object {
+                          "tenure_number_id": "1234567",
+                        },
+                      ],
+                    },
+                    "mineId": "Blah123",
+                    "mineIds": Array [
+                      "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "18145c75-49ad-0101-85f3-a43e45ae989a",
+                    ],
+                    "mines": Object {
+                      "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine3",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                      "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                        "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                        "mgr_appointment": Array [],
+                        "mine_detail": Array [
+                          Object {
+                            "mine_name": "mine1",
+                            "mine_no": "BLAH9091",
+                          },
+                          Object {
+                            "mine_name": "mine2",
+                            "mine_no": "BLAH9091",
+                          },
+                        ],
+                        "mine_location": Array [
+                          Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                        ],
+                        "mineral_tenure_xref": Array [
+                          Object {
+                            "tenure_number_id": "1234567",
+                          },
+                        ],
+                      },
+                    },
+                    "updateMineRecord": [MockFunction],
+                    "userRoles": Array [],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          "type": "div",
         },
       ],
       "type": "div",
