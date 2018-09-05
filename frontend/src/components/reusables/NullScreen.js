@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  img: PropTypes.string,
+  img: PropTypes.object,
   primaryMessage: PropTypes.string.isRequired,
   secondaryMessage: PropTypes.string
 };

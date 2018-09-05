@@ -47,7 +47,7 @@ class MineTenureInfo extends Component {
           />
           <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
           <Modal
-            title="Update Mine Manager"
+            title="Add Tenure Number"
             visible={this.state.visible}
             footer={null}
             onCancel={this.toggleModal}
@@ -74,10 +74,10 @@ class MineTenureInfo extends Component {
             })}
             </p></Col>
           </Row>
-          <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Update" type="primary" /></div>
+          <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
         </Card>
         <Modal
-          title="Update Mine Manager"
+          title="Add Tenure Number"
           visible={this.state.visible}
           footer={null}
           onCancel={this.toggleModal}
