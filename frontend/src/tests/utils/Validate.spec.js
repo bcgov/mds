@@ -2,7 +2,7 @@ import {
   required,
   maxLength,
   minLength,
-  exactLength, 
+  exactLength,
   number,
   lat,
   lon

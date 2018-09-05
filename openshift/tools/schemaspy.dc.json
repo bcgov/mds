@@ -13,7 +13,7 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}-${VERSION}",
+          "name": "${NAME}${SUFFIX}",
           "annotations": {
             "description": "Exposes and load balances the application pods"
           }
@@ -36,7 +36,7 @@
         "kind": "Route",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}-${VERSION}"
+          "name": "${NAME}${SUFFIX}"
         },
         "spec": {
           "host": "${APPLICATION_DOMAIN}",
@@ -46,7 +46,7 @@
           },
           "to": {
             "kind": "Service",
-            "name": "${NAME}-${VERSION}"
+            "name": "${NAME}${SUFFIX}"
           }
         }
       },
@@ -83,6 +83,17 @@
           "strategy": {
             "type": "Rolling",
             "rollingParams": {
+                "pre": {
+                    "failurePolicy": "Abort",
+                    "execNewPod": {
+                      "containerName": "${NAME}",
+                      "command": [
+                        "bash",
+                        "-c",
+                        "for i in {1..10}; do timeout 1 bash -c '</dev/tcp/$BACKEND_HOST/80' && s=0 && break || s=$? && sleep 30; done; (echo $s && exit $s)"
+                      ]
+                    }
+                  },
               "updatePeriodSeconds": 1,
               "intervalSeconds": 1,
               "timeoutSeconds": 600
@@ -129,6 +140,10 @@
                     }
                   ],
                   "env": [
+                    {
+                        "name": "BACKEND_HOST",
+                        "value": "${BACKEND_HOST}"
+                    },
                     {
                       "name": "DATABASE_HOST",
                       "value": "${DB_CONFIG_NAME}"
@@ -203,9 +218,20 @@
         "required": true
       },
       {
+        "name": "SUFFIX",
+        "displayName": "Name Suffix",
+        "description": "A suffix appended to all objects",
+        "required": true
+      },
+      {
         "name": "DB_CONFIG_NAME",
         "displayName": "Database Config Name",
         "description": "Configuration name for the database",
+        "required": true
+      },
+      {
+        "name": "BACKEND_HOST",
+        "description": "Hostname for the backend",
         "required": true
       },
       {
