@@ -106,14 +106,21 @@ def register_commands(app):
         db.session.bulk_save_objects(mine_identity_list)
         db.session.bulk_save_objects(mine_detail_list)
         db.session.bulk_save_objects(mine_location_list)
-        db.session.commit()
-
-        click.echo(f'Created {num} random mines.')
+        try:
+            db.session.commit()
+            click.echo(f'Created {num} random mines.')
+        except:
+            db.session.rollback()
+            click.echo(f'Error, failed on commit.')
 
     @app.cli.command()
     def delete_data():
         meta = db.metadata
         for table in reversed(meta.sorted_tables):
             db.session.execute(table.delete())
-        db.session.commit()
-        click.echo(f'Database has been cleared.')
+        try:
+            db.session.commit()
+            click.echo(f'Database has been cleared.')
+        except:
+            db.session.rollback()
+            click.echo(f'Error, failed on commit.')
