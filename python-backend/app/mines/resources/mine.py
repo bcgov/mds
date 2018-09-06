@@ -115,6 +115,10 @@ class Mine(Resource):
 class MineList(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
+        _map = request.args.get('map', None, type=str)
+        if _map and _map.lower() == 'true':
+            return {'mines': list(map(lambda x: x.json(), MineIdentity.query.all()))}
+
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
         mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
@@ -134,4 +138,4 @@ class MineList(Resource):
 class MineListByName(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
-        return {'mines': list(map(lambda x: x.json_by_name(), MineIdentity.query.all()))}
+        return {'mines': list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, MineIdentity.query.all()))}
