@@ -14,6 +14,7 @@ def test_get_mines_by_list(test_client, auth_headers):
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
+<<<<<<< HEAD
 
 def test_get_mines_by_list_search(test_client, auth_headers):
     get_resp = test_client.get('/mines/names?search=mine_name', headers=auth_headers['full_auth_header'])
@@ -27,3 +28,5 @@ def test_get_mines_by_list_search(test_client, auth_headers):
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
+=======
+>>>>>>> added lat long into /mine/name, and added map as optional request args

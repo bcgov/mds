@@ -140,6 +140,7 @@ class MineListByName(Resource):
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
+<<<<<<< HEAD
         search_term = request.args.get('search')
         if search_term:
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
@@ -150,3 +151,6 @@ class MineListByName(Resource):
 
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result }
+=======
+        return {'mines': list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, MineIdentity.query.all()))}
+>>>>>>> added lat long into /mine/name, and added map as optional request args
