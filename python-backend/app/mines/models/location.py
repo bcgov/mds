@@ -1,11 +1,11 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
-from .mixins import AuditMixin
+from .mixins import AuditMixin, Base
 from app.extensions import db
 
 
-class MineLocation(AuditMixin, db.Model):
+class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
     mine_location_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), primary_key=True)
@@ -16,15 +16,6 @@ class MineLocation(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MineLocation %r>' % self.mine_guid
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-            return True
-        except:
-            db.session.rollback()
-            return False
 
     def json(self):
         lat = self.latitude

@@ -2,11 +2,11 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from .mixins import AuditMixin
+from .mixins import AuditMixin, Base
 from app.extensions import db
 
 
-class MineIdentity(AuditMixin, db.Model):
+class MineIdentity(AuditMixin, Base):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy=True)
@@ -18,12 +18,6 @@ class MineIdentity(AuditMixin, db.Model):
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
 
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         return {
@@ -70,7 +64,7 @@ class MineIdentity(AuditMixin, db.Model):
 
         return result
 
-class MineDetail(AuditMixin, db.Model):
+class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
@@ -80,15 +74,6 @@ class MineDetail(AuditMixin, db.Model):
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-            return True
-        except:
-            db.session.rollback()
-            return False
-
     def json(self):
         return {'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
@@ -97,7 +82,7 @@ class MineDetail(AuditMixin, db.Model):
         return cls.query.filter_by(mine_no=_id).first()
 
 
-class MineralTenureXref(AuditMixin, db.Model):
+class MineralTenureXref(AuditMixin, Base):
     __tablename__ = "mineral_tenure_xref"
     mineral_tenure_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
@@ -107,13 +92,6 @@ class MineralTenureXref(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MineralTenureXref %r>' % self.tenure_number_id
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         return {'tenure_number_id': str(self.tenure_number_id)}

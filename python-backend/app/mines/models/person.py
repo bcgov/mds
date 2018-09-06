@@ -3,10 +3,10 @@ from datetime import datetime
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
-from .mixins import AuditMixin
+from .mixins import AuditMixin, Base
 
 
-class Person(AuditMixin, db.Model):
+class Person(AuditMixin, Base):
     __tablename__ = 'person'
     person_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     first_name = db.Column(db.String(60), nullable=False)
@@ -18,13 +18,6 @@ class Person(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         return {
@@ -54,7 +47,7 @@ class Person(AuditMixin, db.Model):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.surname) == func.lower(surname)).first()
 
 
-class MgrAppointment(AuditMixin, db.Model):
+class MgrAppointment(AuditMixin, Base):
     __tablename__ = "mgr_appointment"
     mgr_appointment_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
@@ -64,13 +57,6 @@ class MgrAppointment(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         person = Person.find_by_person_guid(str(self.person_guid))
