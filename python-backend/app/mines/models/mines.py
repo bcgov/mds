@@ -39,7 +39,7 @@ class MineIdentity(AuditMixin, db.Model):
         return {
             'guid': str(self.mine_guid),
             'mine_name': mine_detail.mine_name if mine_detail else '',
-            'mine_no': mine_detail.mine_no if mine_detail else '',
+            'mine_no': mine_detail.mine_no if mine_detail else ''
         }
 
     def json_by_location(self):
