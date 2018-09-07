@@ -75,9 +75,14 @@ def register_commands(app):
     @click.argument('num')
     def create_data(num):
         DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        mine_identity_list = []
+        mine_detail_list = []
+        mine_location_list = []
         for i in range(int(num)):
             random_location = random_geo()
             mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
+            mine_identity_list.append(mine_identity)
+
             mine_detail = MineDetail(
                 mine_detail_guid=uuid.uuid4(),
                 mine_guid=mine_identity.mine_guid,
@@ -85,6 +90,8 @@ def register_commands(app):
                 mine_name=generate_name(),
                 **DUMMY_USER_KWARGS
             )
+            mine_detail_list.append(mine_detail)
+
             mine_location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine_identity.mine_guid,
@@ -94,9 +101,13 @@ def register_commands(app):
                 expiry_date=datetime.today(),
                 **DUMMY_USER_KWARGS,
             )
-            mine_identity.save()
-            mine_detail.save()
-            mine_location.save()
+            mine_location_list.append(mine_location)
+
+        db.session.bulk_save_objects(mine_identity_list)
+        db.session.bulk_save_objects(mine_detail_list)
+        db.session.bulk_save_objects(mine_location_list)
+        db.session.commit()
+
         click.echo(f'Created {num} random mines.')
 
     @app.cli.command()

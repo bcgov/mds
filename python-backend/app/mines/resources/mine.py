@@ -19,7 +19,7 @@ class Mine(Resource):
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
-        mine = MineIdentity.find_by_mine_no(mine_no) or MineIdentity.find_by_mine_guid(mine_no)
+        mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if mine:
             return mine.json()
         return {'message': 'Mine not found'}, 404
@@ -77,7 +77,7 @@ class Mine(Resource):
         lon = data['longitude']
         if not tenure and not (lat and lon):
             return {'error': 'No fields filled.'}, 400
-        mine = MineIdentity.find_by_mine_no(mine_no) or MineIdentity.find_by_mine_guid(mine_no)
+        mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
             return {'message': 'Mine not found'}, 404
         dummy_user = 'DummyUser'
@@ -115,6 +115,10 @@ class Mine(Resource):
 class MineList(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
+        _map = request.args.get('map', None, type=str)
+        if _map and _map.lower() == 'true':
+            return {'mines': list(map(lambda x: x.json(), MineIdentity.query.all()))}
+
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
         mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
@@ -132,6 +136,17 @@ class MineList(Resource):
 
 
 class MineListByName(Resource):
+    MINE_LIST_RESULT_LIMIT = 500
+
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
-        return {'mines': list(map(lambda x: x.json_by_name(), MineIdentity.query.all()))}
+        search_term = request.args.get('search')
+        if search_term:
+            name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
+            guid_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+            mines = MineIdentity.query.join(MineDetail).filter(name_filter | guid_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
+
+        result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
+        return {'mines': result }
