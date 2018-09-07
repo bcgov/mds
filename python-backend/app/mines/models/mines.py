@@ -18,7 +18,6 @@ class MineIdentity(AuditMixin, Base):
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
 
-
     def json(self):
         return {
             'guid': str(self.mine_guid),
@@ -44,6 +43,13 @@ class MineIdentity(AuditMixin, Base):
             'longitude': str(mine_location.longitude)
         }
 
+    def json_for_map(self):
+        return {
+            'guid': str(self.mine_guid),
+            'mine_detail': [item.json() for item in self.mine_detail],
+            'mine_location': [item.json() for item in self.mine_location]
+        }
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -63,6 +69,7 @@ class MineIdentity(AuditMixin, Base):
             result = cls.find_by_mine_no(_id)
 
         return result
+
 
 class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
