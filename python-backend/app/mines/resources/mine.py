@@ -148,5 +148,5 @@ class MineListByName(Resource):
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
-        result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}))
+        result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result }
