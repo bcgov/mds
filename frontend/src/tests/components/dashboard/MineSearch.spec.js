@@ -1,21 +1,27 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineSearch from '@/components/dashboard/MineSearch';
+import {MineSearch} from '@/components/dashboard/MineSearch';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
-const props = {};
+const dispatchProps = {};
+const reducerProps = {};
 
-const setupProps = () => {
-  props.mineNameList = MOCK.MINE_NAME_LIST
+const setupDispatchProps = () => {
+  dispatchProps.getMineNameList = jest.fn();
+};
+
+const setupReducerProps = () => {
+  reducerProps.mineNameList = MOCK.MINE_NAME_LIST;
 };
 
 beforeEach(() => {
-  setupProps();
+  setupDispatchProps();
+  setupReducerProps();
 });
 
 describe('MineSearch', () => {
   it('renders properly', () => {
-    const component = shallow(<MineSearch {...props} />);
+    const component = shallow(<MineSearch {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });
