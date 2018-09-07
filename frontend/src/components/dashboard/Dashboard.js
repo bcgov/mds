@@ -22,24 +22,21 @@ const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
-  getMineNameList: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
-  mineNameList: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
-  mineNameList: [],
   pageData: {}
 };
 
 export class Dashboard extends Component {
   state = {mineList: false}
- 
+
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     if (params.page && params.per_page) {
@@ -51,18 +48,17 @@ export class Dashboard extends Component {
         this.setState({ mineList: true })
       });
     }
-    this.props.getMineNameList();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
-    
+
     if (locationChanged) {
       const params = queryString.parse(nextProps.location.search);
       this.props.getMineRecords(params.page, params.per_page);
     }
   }
-  
+
   onPageChange = (current, pageSize) => {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
@@ -107,10 +103,9 @@ export class Dashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <CreateMine 
-            createMineRecord={this.props.createMineRecord} 
-            getMineRecords={this.props.getMineRecords} 
-            getMineNameList={this.props.getMineNameList} 
+          <CreateMine
+            createMineRecord={this.props.createMineRecord}
+            getMineRecords={this.props.getMineRecords}
             location={this.props.location}
           />
         </div>
@@ -126,7 +121,6 @@ const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
     mineIds: getMineIds(state),
-    mineNameList: getMineNames(state).mines,
     pageData: getMinesPageData(state)
   };
 };
@@ -134,7 +128,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getMineRecords,
-    getMineNameList,
     createMineRecord,
   }, dispatch);
 };

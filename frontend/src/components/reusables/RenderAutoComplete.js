@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, AutoComplete } from 'antd';
-import debounce from 'lodash/debounce';
 
 const propTypes = {
+  handleChange: PropTypes.func,
   handleSelect: PropTypes.func,
   data: PropTypes.array
 };
@@ -26,6 +26,7 @@ class RenderAutoComplete extends Component {
           optionLabelProp="value"
           filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onSelect={this.props.handleSelect}
+          onChange={this.props.handleChange}
         >
           <Input suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
         </AutoComplete>

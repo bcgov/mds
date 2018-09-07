@@ -62,6 +62,13 @@ class MineIdentity(AuditMixin, db.Model):
     def find_by_mine_no(cls, _id):
         return cls.query.join(cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
 
+    @classmethod
+    def find_by_mine_no_or_guid(cls, _id):
+        result = cls.find_by_mine_guid(_id)
+        if result is None:
+            result = cls.find_by_mine_no(_id)
+
+        return result
 
 class MineDetail(AuditMixin, db.Model):
     __tablename__ = "mine_detail"
