@@ -2,8 +2,8 @@ import decimal
 import uuid
 
 from flask import request
-
 from flask_restplus import Resource, reqparse
+
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..models.location import MineLocation
 from ..utils.random import generate_mine_no
@@ -86,8 +86,8 @@ class Mine(Resource):
         if tenure:
             if not tenure.isdigit():
                 return {'error': 'Field tenure_id must contain only digits.'}, 400
-            if len(tenure) != 7:
-                return {'error': 'Field tenure_id must be exactly 7 digits long.'}, 400
+            if len(tenure) not in [6, 7]:
+                return {'error': 'Field tenure_id must be 6 or 7 digits long.'}, 400
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
             if tenure_exists:
                 return {'error': 'Field tenure_id already exists for this mine'}, 400

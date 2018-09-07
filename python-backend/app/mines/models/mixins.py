@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from sqlalchemy.exc import DBAPIError
+
 from app.extensions import db
 
 
@@ -11,7 +13,7 @@ class Base(db.Model):
         if commit:
             try:
                 db.session.commit()
-            except:
+            except DBAPIError:
                 db.session.rollback()
 
 

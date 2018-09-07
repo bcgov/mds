@@ -118,7 +118,7 @@ def test_put_mine_tenure_invalid_length(test_client, auth_headers):
     }
     put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Field tenure_id must be exactly 7 digits long.'}
+    assert put_data == {'error': 'Field tenure_id must be 6 or 7 digits long.'}
     assert put_resp.status_code == 400
 
 
