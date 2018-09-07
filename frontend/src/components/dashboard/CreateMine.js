@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Avatar, Badge, } from 'antd';
+import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
 

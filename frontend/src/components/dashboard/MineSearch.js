@@ -18,7 +18,7 @@ const defaultProps = {
   mineNameList: [],
 };
 
-class MineSearch extends Component {
+export class MineSearch extends Component {
   state = { redirectTo: null, mineData: [] }
 
   componentDidMount() {

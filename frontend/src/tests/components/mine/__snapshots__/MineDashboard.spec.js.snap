@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
     getMineRecord={[MockFunction]}
+    getMineRecordById={[MockFunction]}
     mine={
       Object {
         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -258,6 +259,7 @@ ShallowWrapper {
             >
               <MineTenureInfo
                 getMineRecord={[MockFunction]}
+                getMineRecordById={[MockFunction]}
                 mine={
                   Object {
                     "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -551,6 +553,7 @@ ShallowWrapper {
             >
               <MineTenureInfo
                 getMineRecord={[MockFunction]}
+                getMineRecordById={[MockFunction]}
                 mine={
                   Object {
                     "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -759,6 +762,7 @@ ShallowWrapper {
               >
                 <MineTenureInfo
                   getMineRecord={[MockFunction]}
+                  getMineRecordById={[MockFunction]}
                   mine={
                     Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -1086,6 +1090,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <MineTenureInfo
                   getMineRecord={[MockFunction]}
+                  getMineRecordById={[MockFunction]}
                   mine={
                     Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -1187,6 +1192,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "getMineRecord": [MockFunction],
+                  "getMineRecordById": [MockFunction],
                   "mine": Object {
                     "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mgr_appointment": Array [],
@@ -1442,6 +1448,7 @@ ShallowWrapper {
               >
                 <MineTenureInfo
                   getMineRecord={[MockFunction]}
+                  getMineRecordById={[MockFunction]}
                   mine={
                     Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -1735,6 +1742,7 @@ ShallowWrapper {
               >
                 <MineTenureInfo
                   getMineRecord={[MockFunction]}
+                  getMineRecordById={[MockFunction]}
                   mine={
                     Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -1943,6 +1951,7 @@ ShallowWrapper {
                 >
                   <MineTenureInfo
                     getMineRecord={[MockFunction]}
+                    getMineRecordById={[MockFunction]}
                     mine={
                       Object {
                         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -2270,6 +2279,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": <MineTenureInfo
                     getMineRecord={[MockFunction]}
+                    getMineRecordById={[MockFunction]}
                     mine={
                       Object {
                         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -2371,6 +2381,7 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "getMineRecord": [MockFunction],
+                    "getMineRecordById": [MockFunction],
                     "mine": Object {
                       "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mgr_appointment": Array [],

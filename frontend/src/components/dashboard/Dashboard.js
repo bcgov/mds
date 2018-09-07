@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { Pagination } from 'antd';
 import queryString from 'query-string'
 
-import { getMineRecords, getMineNameList, createMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMineNames, getMinesPageData } from '@/selectors/mineSelectors';
+import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
+import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import CreateMine from '@/components/dashboard/CreateMine';

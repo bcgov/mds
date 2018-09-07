@@ -6,6 +6,8 @@ const dispatchProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.createMineRecord = jest.fn();
+  dispatchProps.getMineRecords = jest.fn();
+  dispatchProps.location = {};
 };
 
 beforeEach(() => {

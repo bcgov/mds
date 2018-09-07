@@ -16,3 +16,10 @@ def test_mine_model_find_by_mine_guid_fail(test_client, auth_headers):
 def test_mine_model_find_by_mine_no(test_client, auth_headers):
     mine = MineIdentity.find_by_mine_no(TEST_MINE_NO)
     assert str(mine.mine_detail[0].mine_no) == TEST_MINE_NO
+
+def test_mine_model_find_by_mine_no_or_guid(test_client, auth_headers):
+    mine = MineIdentity.find_by_mine_no_or_guid(TEST_MINE_NO)
+    assert str(mine.mine_detail[0].mine_no) == TEST_MINE_NO
+
+    mine = MineIdentity.find_by_mine_no_or_guid(TEST_MINE_GUID)
+    assert str(mine.mine_guid) == TEST_MINE_GUID
