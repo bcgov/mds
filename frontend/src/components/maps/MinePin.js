@@ -1,6 +1,6 @@
 /**
- * @class MapPin.js must be the child of arcGIS <Map /> or <Sceen />,
- * MapPin is connected to redux to access/display all mines information - reusalble on any view will display the
+ * @class MinePin.js must be the child of arcGIS <Map /> or <Sceen />,
+ * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the
  *
  */
 import { Component } from 'react';
@@ -24,13 +24,13 @@ const defaultProps = {
 };
 
 const symbol = {
-  "url": '../../../public/locationPin.png',
+  "url": '../../../public/Pin.svg',
   "height": 40,
   "width": 30,
   "type": "picture-marker"
 };
 
-export class MapPin extends Component {
+export class MinePin extends Component {
  state = { graphic: null };
 
   popupTemplate(id) {
@@ -99,8 +99,8 @@ export class MapPin extends Component {
   }
 }
 
-MapPin.propTypes = propTypes;
-MapPin.defaultProps = defaultProps;
+MinePin.propTypes = propTypes;
+MinePin.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
@@ -109,4 +109,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, null)(MapPin));
+export default withRouter(connect(mapStateToProps, null)(MinePin));

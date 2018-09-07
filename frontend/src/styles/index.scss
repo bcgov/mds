@@ -14,7 +14,7 @@
 // ELEMENTS - Bare, unclassed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import './elements/elements.scss';
 // OBJECTS - layouts (CSS Grid or flexbox)
-@import './objects/actions.scss';
+
 // COMPONENTS - specific UI components.
 @import './components/loading.scss';
 @import './components/MineDashboard.scss';

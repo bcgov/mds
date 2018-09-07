@@ -5,18 +5,22 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Pagination } from 'antd';
+import { Pagination, Tabs } from 'antd';
 import queryString from 'query-string'
 
 import { getMineRecords, getMineNameList, createMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMineNames, getMinesPageData } from '@/selectors/mineSelectors';
-import MineList from '@/components/dashboard/MineList';
-import MineSearch from '@/components/dashboard/MineSearch';
+import MineList from '@/components/dashboard/ListTab/MineList';
+import MineSearch from '@/components/dashboard/ListTab/MineSearch';
+import MapSearch from '@/components/dashboard/MapTab/MapSearch';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
 import { NO_MINE } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
 import Loading from '@/components/reusables/Loading';
+import MineMap from '@/components/maps/MineMap';
+
+const TabPane = Tabs.TabPane;
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
@@ -38,7 +42,7 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = {mineList: false}
+  state = { mineList: false, lat: 53.7267, long: -127.6476}
  
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
@@ -67,6 +71,10 @@ export class Dashboard extends Component {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
 
+  handleCoordinateSearch = (value) => {
+    this.setState({lat: Number(value.latitude), long: Number(value.longitude)})
+  }
+
   renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
@@ -79,21 +87,33 @@ export class Dashboard extends Component {
       } else {
         return (
           <div>
-            <MineSearch mineNameList={this.props.mineNameList} />
-            <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
-            <div className="center">
-              <Pagination
-                showSizeChanger
-                onShowSizeChange={this.onPageChange}
-                onChange={this.onPageChange}
-                defaultCurrent={pageNumber}
-                current={pageNumber}
-                total={this.props.pageData.total}
-                pageSizeOptions={['25', '50', '75', '100']}
-                pageSize={perPageNumber}
-                showTotal={total => `${total} Results`}
-              />
-            </div>
+            <Tabs
+              defaultActiveKey="1"
+              size='large'
+              animated={{ inkBar: true, tabPane: false }}
+            >
+              <TabPane tab="List" key="1">
+                <MineSearch mineNameList={this.props.mineNameList} />
+                <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
+                <div className="center">
+                  <Pagination
+                    showSizeChanger
+                    onShowSizeChange={this.onPageChange}
+                    onChange={this.onPageChange}
+                    defaultCurrent={pageNumber}
+                    current={pageNumber}
+                    total={this.props.pageData.total}
+                    pageSizeOptions={['25', '50', '75', '100']}
+                    pageSize={perPageNumber}
+                    showTotal={total => `${total} Results`}
+                  />
+                </div>
+              </TabPane>
+              <TabPane tab="Map" key="2">
+                <MapSearch mineNameList={this.props.mineNameList} handleCoordinateSearch={this.handleCoordinateSearch}/>
+                <MineMap {...this.state} />
+              </TabPane>
+            </Tabs>
           </div>
         )
       }
