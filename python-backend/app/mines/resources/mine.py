@@ -9,6 +9,8 @@ from ..models.location import MineLocation
 from ..utils.random import generate_mine_no
 from app.extensions import jwt
 
+import time
+
 
 class Mine(Resource):
     parser = reqparse.RequestParser()
@@ -143,10 +145,10 @@ class MineListByName(Resource):
         search_term = request.args.get('search')
         if search_term:
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
-            guid_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
-            mines = MineIdentity.query.join(MineDetail).filter(name_filter | guid_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
-        return {'mines': result}
+        return {'mines': result }
