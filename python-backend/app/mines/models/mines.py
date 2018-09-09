@@ -27,6 +27,13 @@ class MineIdentity(AuditMixin, Base):
             'mine_location': [item.json() for item in self.mine_location]
         }
 
+    def json_for_map(self):
+        return {
+            'guid': str(self.mine_guid),
+            'mine_detail': [item.json() for item in self.mine_detail],
+            'mine_location': [item.json() for item in self.mine_location]
+        }
+
     def json_by_name(self):
         mine_detail = self.mine_detail[0] if self.mine_detail else None
         return {
