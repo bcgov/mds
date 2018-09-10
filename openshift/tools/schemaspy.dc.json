@@ -28,7 +28,7 @@
             }
           ],
           "selector": {
-            "name": "${NAME}"
+            "name": "${NAME}${SUFFIX}"
           }
         }
       },
