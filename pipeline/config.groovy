@@ -82,8 +82,7 @@ app {
                     'params':[
                         'NAME':"mds-postgresql",
                         'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}",
-                        'SOURCE_REPOSITORY_URL': "https://github.com/bcgov/openshift-postgresql-oracle_fdw.git"
+                        'TAG_NAME':"${app.build.version}"
                     ]
                 ],
                 [

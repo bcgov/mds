@@ -19,16 +19,6 @@
             "required": true
         },
         {
-            "name": "SOURCE_REPOSITORY_URL",
-            "value": "https://github.com/bcgov/openshift-postgresql-oracle_fdw.git",
-            "required": true
-        },
-        {
-            "name": "SOURCE_REPOSITORY_REF",
-            "required": false,
-            "value": "master"
-        },
-        {
             "name": "TAG_NAME",
             "required": true
         }
@@ -105,18 +95,16 @@
                     }
                 ],
                 "runPolicy": "SerialLatestOnly",
-                "contextDir": "",
                 "source": {
                     "git": {
-                        "ref": "${SOURCE_REPOSITORY_REF}",
-                        "uri": "${SOURCE_REPOSITORY_URL}"
+                        "uri": "https://github.com/bcgov/openshift-postgresql-oracle_fdw"
                     },
                     "type": "Git"
                 },
                 "strategy": {
                     "type": "Docker",
-                    "dockerfilePath": "Dockerfile.rhel7",
                     "dockerStrategy": {
+                        "dockerfilePath": "Dockerfile.rhel7",
                         "from": {
                             "kind": "ImageStreamTag",
                             "name": "rhel7:7.5"
