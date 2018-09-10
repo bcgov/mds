@@ -113,6 +113,7 @@ def register_commands(app):
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
+            raise
 
     @app.cli.command()
     def delete_data():
@@ -125,3 +126,4 @@ def register_commands(app):
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
+            raise
