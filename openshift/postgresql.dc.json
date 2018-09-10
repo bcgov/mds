@@ -38,10 +38,9 @@
         {
             "description": "Username for PostgreSQL user that will be used for accessing the database.",
             "displayName": "PostgreSQL Connection Username",
-            "from": "user[A-Z0-9]{3}",
-            "generate": "expression",
             "name": "POSTGRESQL_USER",
-            "required": true
+            "required": true,
+            "value": "mds"
         },
         {
             "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
@@ -141,7 +140,6 @@
                     "template.openshift.io/expose-database_name": "{.data['database-name']}",
                     "template.openshift.io/expose-password": "{.data['database-password']}",
                     "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
-                    "template.openshift.io/expose-username": "{.data['database-user']}",
                     "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
                     "as-copy-of": "template.${NAME}-secret"
                 },
@@ -151,7 +149,7 @@
                 "database-name": "${POSTGRESQL_DATABASE}",
                 "database-password": "${POSTGRESQL_PASSWORD}",
                 "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                "database-user": "${POSTGRESQL_USER}",
+                "database-user": null,
                 "oracle-fdw-name": null,
                 "oracle-fdw-foreign-schema": null,
                 "oracle-fdw-foreign-server": null,
