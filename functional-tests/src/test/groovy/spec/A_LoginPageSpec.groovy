@@ -21,14 +21,11 @@ class  A_LoginPageSpec extends GebReportingSpec {
         at LoginPage
 
         and: "I input username and password"
-        println LoginPage.getClass()
         IDIRusername = Const.IDIR_USERNAME
         IDIRpassword = Const.IDIR_PASSWORD
         IDIRloginButton.click()
 
         then: "I am on the Dashboard page"
-        println DashboardPage.getClass()
         at DashboardPage
-        println title
     }
 }

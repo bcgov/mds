@@ -27,7 +27,7 @@ class  B_DashboardSpec extends GebReportingSpec {
 
         then: "I should see the successful message"
         //toastMessage == "Successfully created: " + NAME_GOOD
-        println "created"
+        println toastMessage
     }
 
 
@@ -43,7 +43,7 @@ class  B_DashboardSpec extends GebReportingSpec {
 
         when: "I input invalid mine name"
         createMineForm.createMineRecord(badName)
-        println scenario
+        println "Scenario: "+scenario
 
         then: "I should see a warning"
         createMineForm.errorMessage == errorMessage
@@ -70,7 +70,7 @@ class  B_DashboardSpec extends GebReportingSpec {
 
         when: "I search for a mine using mine name"
         searchBox = keyword
-        println scenario
+        println "Scenario: "+scenario
 
 
         then: "I should see a list of mine record whose names contain the keyword"
@@ -80,7 +80,7 @@ class  B_DashboardSpec extends GebReportingSpec {
         scenario                | keyword
         "regular search"        |"Trend"
         "not case sensitive"    |"LKK"
-        "search by ID"          |"blah6"   
+        "search by ID"          |"blah0000"   
         "not found"             |"sdkfj"
     }
 
@@ -97,30 +97,32 @@ class  B_DashboardSpec extends GebReportingSpec {
         
         then: "I am redirected to the mine summary page"
         at MineProfilePage
-        assert mineNumber == viewMineID
+        assert mineNumber == "Mine ID: "+viewMineID
 
     }
-    
-    def "Scenario: User can select how many records to display on one page"(){
-        given: "I am on the Dashboard Page"
-        to DashboardPage
 
-        when: "I select #/page"
-        paginationSelection(page)
+    /*need to create multiple mine records first*/
+    // def "Scenario: User can select how many records to display on one page"(){
+    //     given: "I am on the Dashboard Page"
+    //     to DashboardPage
 
-        then: "The dashboard display will change according to my selection"
-        driver.currentUrl.endswith("per_page="+page)
+    //     when: "I select #/page"
+    //     paginationSelection(page)
 
-        where:
-        page| _
-        25| _
-        50| _
-        75| _
-        100| _
+    //     then: "The dashboard display will change according to my selection"
+    //     driver.currentUrl.endswith("per_page="+page)
 
-    }
+    //     where:
+    //     page| _
+    //     25| _
+    //     50| _
+    //     75| _
+    //     100| _
+
+    // }
 
     def cleanupSpec() {
+        println "---------Cleaning--------------"
         DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
     } 
 }
