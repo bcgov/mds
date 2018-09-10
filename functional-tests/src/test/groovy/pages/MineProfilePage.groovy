@@ -5,10 +5,13 @@ import modules.*
 
 class MineProfilePage extends Page {
     static at = { title == "MDS"}
+    static url = "dashboard/9c1b63b6-ccfb-48b0-be85-3cb3c5d1a276/summary/"
     static content = {
         //General
         mineName (wait:true) {$("h1",0).text()}
-        mineNumber {$("h5",0).text().minus("Mine #: ")}  
+        mineNumber {$("h5",0).text().minus("Mine #: ")} 
+        latValue (wait:true) {$("div.p",0).text()} 
+        longValue (wait:true) {$("div.p",1).text()} 
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
         updateButton (wait:true) {$("button").has("span",text:"Update")}

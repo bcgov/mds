@@ -5,51 +5,43 @@ import spock.lang.*
 
 
 import pages.*
+import utils.*
 
  
 @Title("MDS-MineProfilePage")
 @Stepwise
 class  C_MineProfileSpec extends GebReportingSpec {
-    @Shared selectedMine = ["",""]
-    @Shared selectedMine_NO 
-    @Shared selectedMine_NAME
-    @Shared urlTemp =""
- 
+  
     static TENURE_BAD =  "1234cha"  
 
-
+    //manager
     static FirstName = "Vivián"
-    static LastName = "Iányús"
+    static LastName = "Iáoyús"
     static Date = "2017-08-04"
 
+    def setupSpec(){
+        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_creation.sql').text)
+    }
+
+    
 
     def "Scenario: User can view the mine profile"(){
-        when: "I go to the dashboard page"
-        to DashboardPage
+        when: "I go to the mine profile page for BLAH0000(the test mine)"
+        to MineProfilePage
 
-        and: "I select a mind to view"
-        selectedMine = selectRandomMine()
-        selectedMine_NO = selectedMine[0]
-        selectedMine_NAME = selectedMine[1]
-
-        
-        then: "I am on the mine profile page"
-        at MineProfilePage
-       
-        when:
-        urlTemp = driver.currentUrl
-
-        then: "I should see profile of selected Mine"
+        then: "I should see profile of the Mine"
         sleep(100)
         assert activeTab == "Summary"       
-        assert mineNumber == selectedMine_NO
-        assert mineName == selectedMine_NAME
+        assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
+        assert mineName == Const.MINE_NAME
+        println latValue
+        println longValue
 
     }
 
     def "Scenario: User should be able to add tenure number"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         when: "User can update mine record with a new tenure number"
         def tempTenure = generateTenure()
@@ -126,6 +118,10 @@ class  C_MineProfileSpec extends GebReportingSpec {
 
 
 
+    }
+
+    def cleanupSpec() {
+        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
     }
 
 

@@ -48,6 +48,9 @@ dependencies {
     }
     testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
+    //psql
+    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+
     // If using JUnit, need to depend on geb-junit (3 or 4)
     testCompile "org.gebish:geb-junit4:$gebVersion"
 
