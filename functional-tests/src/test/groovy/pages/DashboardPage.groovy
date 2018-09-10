@@ -15,7 +15,7 @@ class DashboardPage extends Page {
         createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
         
         //Dashboard
-        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
+        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
         viewButton (wait:true) {$("button").has("span", text:"View Mine")}
         
         //search
@@ -25,10 +25,12 @@ class DashboardPage extends Page {
         //pagination
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
         pageinationSelection (wait:true) {$("div.ant-select-selection-selected-value")}
-        25perPage (wait:true) {$("li.ant-select-dropdown-menu-item",text:"25 / page")}
-        50perPage (wait:true) {$("li.ant-select-dropdown-menu-item",text:"50 / page")}
-        75perPage (wait:true) {$("li.ant-select-dropdown-menu-item",text:"75 / page")}
-        100perPage (wait:true) {$("li.ant-select-dropdown-menu-item",text:"100 / page")}
+        
+        
+        // 25perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"25 / page")}
+        // 50perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"50 / page")}
+        // 75perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"75 / page")}
+        // 100perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"100 / page")}
     }
 
     def mineInfoSelector (mineIndex){

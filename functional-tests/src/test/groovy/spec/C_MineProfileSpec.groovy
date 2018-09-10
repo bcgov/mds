@@ -20,6 +20,7 @@ class  C_MineProfileSpec extends GebReportingSpec {
     static Date = "2017-08-04"
 
     def setupSpec(){
+        println "---------Creating test mine record--------------"
         DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_creation.sql').text)
     }
 
@@ -30,12 +31,13 @@ class  C_MineProfileSpec extends GebReportingSpec {
         to MineProfilePage
 
         then: "I should see profile of the Mine"
-        sleep(100)
-        assert activeTab == "Summary"       
+        // sleep(500)
+        // println activeTab
+        waitFor {activeTab == "Summary" }      
         assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
-        println latValue
-        println longValue
+        assert latValue.minus("Lat:").startsWith("48")
+        assert longValue.minus("Long:").startsWith("-125")
 
     }
 
@@ -48,7 +50,7 @@ class  C_MineProfileSpec extends GebReportingSpec {
         addTenure(tempTenure)
 
         and: "see successful message"
-        toastMessage == "Successfully updated: ${selectedMine_NAME}"
+        toastMessage == "Successfully updated: VIVIANTEST"
 
 
         then: "User can see the updated tenure number list"
@@ -56,13 +58,13 @@ class  C_MineProfileSpec extends GebReportingSpec {
 
     }
 
-    def "Scenario: User should not be able to add tenure number if the length is invalid"(){
+    def "Scenario: User should not be able to add tenure number if the given tenure is invalid"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         when: "Tenure number is not all numerical but not meet length requirement"
         addTenure(bad_tenure)
-        println scenario
+        println "Scenario: "+scenario
 
         and:"User see warning message"
         updateTenureForm.warningMessage == warning
@@ -75,28 +77,12 @@ class  C_MineProfileSpec extends GebReportingSpec {
         scenario        |bad_tenure    |warning
         "short tenure"  |"123456"      |"Must be 7 characters long"
         "long tenure"   |"123456677998"|"Must be 7 characters long"
-    }
-
-
-    def "Scenario: User should not be able to add tenure number if it contains nonnumerical value"(){
-        given: "I go to mine profile"
-        go urlTemp
-         
-        
-        when: "Tenure number contains nonnumerical value"
-        addTenure(TENURE_BAD)
-
-        and:"User see ERROR message"
-        toastMessage == "Error!"
-
-        then: "Tenure number list stays the same"
-        tenureUpdated(TENURE_BAD) == false
- 
+        "contains non-numerical value" | "1234cha" | "Input must be a number"
     }
 
     def "Scenario: User can create new mine manager and update mine manager information"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         and: "At mine profile page"
         at MineProfilePage
@@ -110,17 +96,16 @@ class  C_MineProfileSpec extends GebReportingSpec {
         sleep(200)
 
         then: "Should see successful message"
-        assert toastMessage == "Successfully updated the manager of ${selectedMine_NAME}"
+        assert toastMessage == "Successfully updated the manager of VIVIANTEST"
         
 
         then: "I can see the manager information get updated"
         mineManagerCheck(FirstName,LastName,Date) == [true,true]
 
-
-
     }
 
     def cleanupSpec() {
+        println "---------Cleaning--------------"
         DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
     }
 
