@@ -4,8 +4,9 @@ import geb.spock.GebReportingSpec
 import spock.lang.*
 
 import pages.*
+import utils.*
 
-@Title("MDS-DashboardPage")
+@Title("MDS-Homepage")
 @Stepwise
 class  B_DashboardSpec extends GebReportingSpec {
     static NAME_GOOD = "Trend-Roman"
@@ -118,4 +119,8 @@ class  B_DashboardSpec extends GebReportingSpec {
         100| _
 
     }
+
+    def cleanupSpec() {
+        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
+    } 
 }
