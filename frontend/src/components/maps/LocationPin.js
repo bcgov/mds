@@ -19,12 +19,13 @@ const defaultProps = {
 };
 
 export class LocationPin extends Component {
-  state = { graphic: null, layer: null };
+  state = { graphic: null};
 
   renderGraphic = (props) => {
-    loadModules(['esri/Graphic', 'esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', "dojo/_base/Color"])
-      .then(([Graphic, GraphicsLayer, SimpleMarkerSymbol, Color]) => {
-        const symbol = new SimpleMarkerSymbol("solid", 14, null, new Color("red"));
+    loadModules(['esri/Graphic', 'esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', 'esri/symbols/SimpleLineSymbol', "dojo/_base/Color"])
+      .then(([Graphic, GraphicsLayer, SimpleMarkerSymbol, SimpleLineSymbol, Color]) => {
+        const symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 20, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([210, 105, 30, 0.5]), 8), new Color([210, 105, 30, 0.9]));
+
         const point = {
           type: "point",
           longitude: props[0],
@@ -37,18 +38,14 @@ export class LocationPin extends Component {
             symbol: symbol,
           });
 
-        var layer = new GraphicsLayer({
-          id: 'pulse',
-          graphics: [graphic],
-        });
 
-        this.props.map.remove(this.state.layer);
-        this.props.map.add(layer);
-        this.setState({ graphic, layer });
-        
+        this.props.view.graphics.remove(this.state.graphic);
+        this.props.view.graphics.add(graphic);
+        this.setState({ graphic });
+
       });
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.center !== this.props.center) {
       this.renderGraphic(nextProps.center);
@@ -60,7 +57,6 @@ export class LocationPin extends Component {
   }
 
   componentWillUnmount() {
-    this.props.map.remove(this.state.layer);
     this.props.view.graphics.remove(this.state.graphic);
   }
   render() {
