@@ -2,6 +2,7 @@
 
 backend: backend-build | backend-run
 database: database-build | database-run
+cache: cache-build | cache-run
 frontend: frontend-build | frontend-run
 project: project-build | project-run
 rebuild: project-build
@@ -30,6 +31,14 @@ database-build:
 database-run:
 	@echo "+\n++ Running postgres...\n+"
 	@docker-compose up -d postgres
+
+cache-build:
+	@echo "+\n++ Performing redis build ...\n+"
+	@docker-compose build --force-rm redis
+
+cache-run:
+	@echo "+\n++ Running redis...\n+"
+	@docker-compose up -d redis
 
 frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"

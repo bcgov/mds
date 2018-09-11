@@ -14,7 +14,7 @@ from .mines.resources.location import MineLocationResource, MineLocationListReso
 from .mines.utils.random import generate_mine_no, generate_name, random_geo
 from .config import Config
 
-from .extensions import db, jwt
+from .extensions import db, jwt, cache
 
 
 def create_app(test_config=None):
@@ -45,6 +45,7 @@ def register_extensions(app):
 
     CORS(app)
 
+    cache.init_app(app)
     return None
 
 

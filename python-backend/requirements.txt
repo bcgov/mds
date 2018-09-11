@@ -4,6 +4,7 @@ atomicwrites==1.1.5
 attrs==18.1.0
 click==6.7
 Flask==1.0.2
+Flask-Caching==1.4.0
 Flask-Cors==3.0.6
 Flask-Migrate==2.2.1
 flask-restplus==0.11.0
@@ -25,6 +26,7 @@ python-dateutil==2.7.3
 python-dotenv==0.9.1
 python-editor==1.0.3
 pytz==2018.5
+redis==2.10.6
 requests==2.19.1
 six==1.11.0
 SQLAlchemy==1.2.10

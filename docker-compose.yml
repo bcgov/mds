@@ -16,6 +16,18 @@ services:
     networks:
       - postgres
 
+####################### Redis Definition #######################
+  redis:
+    image: redis:latest
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "6379:6379"
+    entrypoint: ["redis-server", "--appendonly", "yes", "--requirepass", "test"]
+    networks:
+      - redis
+
 ####################### Backend Definition #######################
   backend:
     restart: always
@@ -25,10 +37,12 @@ services:
       - 5000:5000
     depends_on:
       - postgres
+      - redis
     # Export environment variables from .env into the container environment
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
       - postgres
+      - redis
       - backend
 
 ####################### Frontend Definition #######################
@@ -49,6 +63,8 @@ services:
 ####################### Networks Definition #######################
 networks:
   postgres:
+    driver: "bridge"
+  redis:
     driver: "bridge"
   frontend:
     driver: "bridge"
