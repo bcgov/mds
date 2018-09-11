@@ -6,7 +6,7 @@ import spock.lang.*
 import pages.*
 import utils.*
 
-@Title("MDS-Homepage")
+@Title("MDS-Dashboard Page")
 @Stepwise
 class  B_DashboardSpec extends GebReportingSpec {
     static NAME_GOOD = "Trend-Roman"
