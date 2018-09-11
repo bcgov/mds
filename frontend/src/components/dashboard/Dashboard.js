@@ -1,5 +1,5 @@
 /**
- * @class Dasboard is the main landing page of the application, currently containts a list of viewable mines and the ability to add a new mine.
+ * @className Dasboard is the main landing page of the application, currently containts a list of viewable mines and the ability to add a new mine.
  */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
@@ -8,18 +8,11 @@ import PropTypes from 'prop-types';
 import { Pagination, Tabs } from 'antd';
 import queryString from 'query-string'
 
-<<<<<<< HEAD
-import { getMineRecords, getMineNameList, createMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMineNames, getMinesPageData } from '@/selectors/mineSelectors';
-import MineList from '@/components/dashboard/ListTab/MineList';
-import MineSearch from '@/components/dashboard/ListTab/MineSearch';
-import MapSearch from '@/components/dashboard/MapTab/MapSearch';
-=======
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
-import MineList from '@/components/dashboard/MineList';
-import MineSearch from '@/components/dashboard/MineSearch';
->>>>>>> c0237837c1c485e85056a367d6728c397f4c7396
+import MineList from '@/components/dashboard/ListTab/MineList';
+import MineSearch from '@/components/dashboard/ListTab/MineSearch';
+import SearchCoordinatesForm from '@/components/mine/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
 import { NO_MINE } from '@/constants/assets';
@@ -46,32 +39,30 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-<<<<<<< HEAD
   state = { mineList: false, lat: 53.7267, long: -127.6476}
  
-=======
-  state = {mineList: false}
-
->>>>>>> c0237837c1c485e85056a367d6728c397f4c7396
   componentDidMount() {
-    const params = queryString.parse(this.props.location.search);
-    if (params.page && params.per_page) {
-      this.props.getMineRecords(params.page, params.per_page).then(() => {
-        this.setState({mineList: true})
-      });
-    } else {
-      this.props.getMineRecords('1', '25').then(() => {
-        this.setState({ mineList: true })
-      });
-    }
+    const params = queryString.parse(this.props.location.search); 
+    this.renderDataFromURL(params);
   }
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
-
     if (locationChanged) {
-      const params = queryString.parse(nextProps.location.search);
-      this.props.getMineRecords(params.page, params.per_page);
+      const params = queryString.parse(nextProps.location.search); 
+      this.renderDataFromURL(params);
+    }
+  }
+
+  renderDataFromURL = (params) => {
+    if (params.page && params.per_page) {
+      this.props.getMineRecords(params.page, params.per_page, params.map).then(() => {
+        this.setState({ mineList: true })
+      });
+    } else {
+      this.props.getMineRecords('1', '25', params.map).then(() => {
+        this.setState({ mineList: true })
+      });
     }
   }
 
@@ -79,14 +70,34 @@ export class Dashboard extends Component {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
 
+  /** 
+   * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
+   */
   handleCoordinateSearch = (value) => {
-    this.setState({lat: Number(value.latitude), long: Number(value.longitude)})
+    if (typeof value === 'string') {
+      const newVal = value.split(",");
+      this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]) })
+    } else {
+      this.setState({lat: Number(value.latitude), long: Number(value.longitude)})
+    }
+  }
+
+  handleTabChange = (key) => {
+    const params = queryString.parse(this.props.location.search);
+    if (key === 'map' ) {
+      this.setState({ mineList: false })
+      this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
+    } else {
+      this.setState({ mineList: false })
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
+    }
   }
 
   renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
+    const isMap = params.map ? 'map' : 'list';
     if (this.state.mineList) {
       if (this.props.mineIds.length === 0) {
         return (
@@ -96,12 +107,13 @@ export class Dashboard extends Component {
         return (
           <div>
             <Tabs
-              defaultActiveKey="1"
+              activeKey={isMap}
               size='large'
               animated={{ inkBar: true, tabPane: false }}
+              onTabClick={this.handleTabChange}
             >
-              <TabPane tab="List" key="1">
-                <MineSearch mineNameList={this.props.mineNameList} />
+              <TabPane tab="List" key="list">
+                <MineSearch />
                 <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
                 <div className="center">
                   <Pagination
@@ -117,8 +129,9 @@ export class Dashboard extends Component {
                   />
                 </div>
               </TabPane>
-              <TabPane tab="Map" key="2">
-                <MapSearch mineNameList={this.props.mineNameList} handleCoordinateSearch={this.handleCoordinateSearch}/>
+              <TabPane tab="Map" key="map">
+                <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
+                <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                 <MineMap {...this.state} />
               </TabPane>
             </Tabs>

@@ -1,6 +1,7 @@
 /**
  * @class MineMap.js  is an arcGIS <Map /> component,
  * NOTE:: coordinates are in [long, lat] format.
+ * MineMap.js is located on Landing page as well as Mine Summary page.
  */
 import React, { Component } from 'react';
 import { Map } from 'react-arcgis';
@@ -10,8 +11,8 @@ import LocationPin from './LocationPin';
 
 const propTypes = {
   mine: PropTypes.object,
-  lat: PropTypes.number.isRequired,
-  long: PropTypes.number.isRequired
+  lat: PropTypes.number,
+  long: PropTypes.number
 };
 
 const defaultProps = {
@@ -19,35 +20,39 @@ const defaultProps = {
 };
 
 class MineMap extends Component {
-  state = { map: null, view: null, updated: false }
+  state = { map: null, view: null, center: null, zoom: null }
 
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.lat != this.props.lat) || (nextProps.long != this.props.long)) {
-      let newView = this.state.view;
-      newView.center = [nextProps.long, nextProps.lat];
-      this.setState({view: newView, updated: !this.state.updated});
+      const newView = this.state.view;
+      const center = [nextProps.long, nextProps.lat];
+      newView.center = center;
+      newView.zoom = 10;
+      this.setState({view: newView, center});
     }
   }
 
   handleLoadMap = (map, view) => {
     this.setState({map, view})
+    console.log(this.state.view);
   }
 
   renderPin() {
-    // if (this.state.updated) {
+    if (this.state.center){
       return (
-        <div>
-          <LocationPin className="loaction-pin" lat={this.props.lat} long={this.props.long}/>
-        </div>
+        <LocationPin center={this.state.center}/>
       )
-    // }
+    } else {
+      return <div></div>;
+    }
   }
 
   render() {
     if (this.props.mine) {
       const { mine } = this.props;
       return (
+        // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
         <Map
           style={{ width: '100vw', height: '475px' }}
@@ -60,13 +65,15 @@ class MineMap extends Component {
             zoom: mine.mine_location[0] ? 8 : 4
           }}
           onLoad={this.handleLoadMap}
+          // onMouseWheel={(event) => event.preventDefault()}
           >
           <MinePin/>
         </Map>
       );
     } 
     return (
-      // default to the center of BC and change zoom level if mine location does not exist.
+      // Map located on landing page - contains all mine pins and adds a location pin when searched.
+      // this.props.lat & this.props.long get changed in Dashboard.js
       <Map
         style={{ width: '100vw', height: '100vh' }}
         mapProperties={{ basemap: 'streets' }}
@@ -78,8 +85,9 @@ class MineMap extends Component {
           zoom: 6
         }}
         onLoad={this.handleLoadMap}
+        // onMouseWheel={(event) => event.preventDefault()}
       >
-        {/* `{this.state.updated && this.renderPin()}` */}
+        {this.renderPin()}
         <MinePin />
       </Map>
     );

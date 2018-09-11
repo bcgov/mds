@@ -5,82 +5,75 @@
  */
 import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
-import Lottie from 'react-lottie';
 import PropTypes from 'prop-types';
-import * as loader from '@/assets/loader.json';
 
 const propTypes = {
-  lat: PropTypes.number.isRequired,
-  long: PropTypes.number.isRequired,
-  view: PropTypes.object.isRequired
+  center: PropTypes.array.isRequired,
+  view: PropTypes.object.isRequired,
+  map: PropTypes.object.isRequired
 };
 
 const defaultProps = {
-  view: {}
+  view: {},
+  map: {}
 };
 
-// const symbol = {
-//   "url": '../../../public/round.json',
-//   "height": 40,
-//   "width": 30,
-//   "type": "picture-marker"
+// const markerSymbol = {
+//   type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+//   style: "circle",
+//   color: [244, 67, 54, 0.84],
+//   size: "10px"
 // };
 
-var markerSymbol = {
-  type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-  style: "circle",
-  color: [51, 204, 51, 0.3],
-  size: "8px", 
-  declaredClass: 'location-pin'
-};
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: loader
-};
 export class LocationPin extends Component {
-  state = { graphic: null };
+  state = { graphic: null, layer: null };
 
-  symbol = () => {
-     return (
-       <Lottie 
-       options = { defaultOptions }
-         />
-     )
-   }
-  componentWillMount() {
+  renderGraphic = (props) => {
+    loadModules(['esri/Graphic', 'esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', "dojo/_base/Color"])
+      .then(([Graphic, GraphicsLayer, SimpleMarkerSymbol, Color]) => {
+        const symbol = new SimpleMarkerSymbol("solid", 14, null, new Color("red"));
+        const point = {
+          type: "point",
+          longitude: props[0],
+          latitude: props[1]
+        };
 
-    loadModules(['esri/Graphic']).then(([Graphic]) => {
-      // create a new Graphic for every mine in the array or fetch the ID from the URL for a single mine.
-      // data must be passed into this.points() and this.popupTemplate to associate the correct information with the correct lat/long.
-
-
-
-      const point = {
-        type: "point",
-        longitude: this.props.long,
-        latitude: this.props.lat,
-      }
-
-      const graphic =
+        const graphic =
           new Graphic({
-          geometry: point,
-          symbol: markerSymbol,
-        })
+            geometry: point,
+            symbol: symbol,
+          });
 
-      this.setState({ graphic: graphic });
-      this.props.view.graphics.removeAll();
-      this.props.view.graphics.add(graphic);
-    });
+        var layer = new GraphicsLayer({
+          id: 'pulse',
+          graphics: [graphic],
+        });
+
+        this.props.map.remove(this.state.layer);
+        this.props.map.add(layer);
+        this.setState({ graphic, layer });
+        
+      });
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.center !== this.props.center) {
+      this.renderGraphic(nextProps.center);
+    }
+  }
+
+  componentWillMount() {
+    this.renderGraphic(this.props.center);
   }
 
   componentWillUnmount() {
+    this.props.map.remove(this.state.layer);
     this.props.view.graphics.remove(this.state.graphic);
   }
   render() {
     return (
-      null
+     null
     );
   }
 }

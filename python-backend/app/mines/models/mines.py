@@ -46,8 +46,8 @@ class MineIdentity(AuditMixin, db.Model):
         mine_location = self.mine_location[0] if self.mine_location else None
         return {
             'guid': str(self.mine_guid),
-            'latitude': str(mine_location.latitude),
-            'longitude': str(mine_location.longitude)
+            'latitude': str(mine_location.latitude) if mine_location else '',
+            'longitude': str(mine_location.longitude) if mine_location else ''
         }
 
     @classmethod

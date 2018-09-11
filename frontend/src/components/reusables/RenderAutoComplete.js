@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Icon, Input, AutoComplete } from 'antd';
 
 const propTypes = {
-  handleChange: PropTypes.func,
-  handleSelect: PropTypes.func,
-  data: PropTypes.array
+  handleChange: PropTypes.func.isRequired,
+  handleSelect: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired
 };
 
 /**
  * Ant Design `AutoComplete` component for redux-form.
+ * 
  */
 class RenderAutoComplete extends Component {
 
@@ -17,6 +18,7 @@ class RenderAutoComplete extends Component {
     return (
       <div>
         <AutoComplete
+          allowClear
           dropdownMatchSelectWidth={true}
           size="large"
           backfill={true}

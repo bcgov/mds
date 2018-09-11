@@ -44,6 +44,40 @@
   }
 }
 
-.loaction-pin {
-   animation: pulsate 1s ease-out;
+#pulse_layer {
+  -webkit-animation-duration: 3s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: pulse;
+        -moz-animation-duration: 3s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-name: pulse;
+    // width: 50px;
+    // height: 50px;
+    // // position: absolute;
+    // // top: 250px;
+    // // display: block;
+    // background: rgba(0, 67, 54, 0.53);
+    // border-radius: 50%;
+    // opacity: 0;
+    // animation: pulsate 2400ms ease-out infinite;
 }
+
+
+@keyframes pulse
+      {
+        0%
+        {
+          opacity: 1.0;
+
+        }
+        45%
+        {
+          opacity: .20;
+
+        }
+        100%
+        {
+          opacity: 1.0;
+
+        }
+      }

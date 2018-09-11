@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
+import { required, maxLength, number, lat, lon } from '@/utils/Validate';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -21,7 +21,7 @@ export const SearchCoordinatesForm = (props) => {
               name="latitude"
               label='Latitude'
               component={RenderField}
-              validate={[number, maxLength(10), lat]}
+              validate={[number, maxLength(10), lat, required]}
               />
           </Form.Item>
         </Col>
@@ -34,7 +34,7 @@ export const SearchCoordinatesForm = (props) => {
               name="longitude"
               label='Longitude'
               component={RenderField}
-              validate={[number, maxLength(12), lon]}
+              validate={[number, maxLength(12), lon, required]}
             />
           </Form.Item>
         </Col>

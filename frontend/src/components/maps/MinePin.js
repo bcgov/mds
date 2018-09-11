@@ -3,18 +3,20 @@
  * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the
  *
  */
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import * as route from '@/constants/routes';
 
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired
+  view: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -23,15 +25,8 @@ const defaultProps = {
   view: {}
 };
 
-const symbol = {
-  "url": '../../../public/Pin.svg',
-  "height": 40,
-  "width": 30,
-  "type": "picture-marker"
-};
-
 export class MinePin extends Component {
- state = { graphic: null };
+ state = { graphic: null, isFullMap: false };
 
   popupTemplate(id) {
     const { mine_name } = this.props.mines[id].mine_detail[0];
@@ -40,7 +35,7 @@ export class MinePin extends Component {
       content:
       `<div>
         <div>
-          <a href={router.MINE_SUMMARY.dynamicRoute(id)}>
+          <a href=${route.MINE_SUMMARY.dynamicRoute(id)} rel="no-refresh">
             View
           </a>
         </div>
@@ -68,17 +63,25 @@ export class MinePin extends Component {
       let mineIds = [];
       if (mineId) {
         mineIds = [mineId];
+        this.setState({ isFullMap: false})
       }
       else {
+        this.setState({ isFullMap: true})
         mineIds = this.props.mineIds;
       }
+      const symbol = {
+        "url": '../../../public/Pin.svg',
+        "width": this.state.isFullMap ? '40' : '80',
+        "height": this.state.isFullMap ? '40' : '80',
+        "type": "picture-marker"
+      };
 
       const graphicArray = mineIds.map((id) => {
         return (
           new Graphic({
             geometry: this.points(id),
             symbol: symbol,
-            popupTemplate: this.popupTemplate(id)
+            popupTemplate: this.state.isFullMap ? this.popupTemplate(id) : null
           })
         )
       })
