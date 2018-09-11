@@ -13,6 +13,7 @@ from app.extensions import jwt
 class Mine(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str)
+    parser.add_argument('note', type=str)
     parser.add_argument('tenure_number_id', type=str)
     parser.add_argument('longitude', type=decimal.Decimal)
     parser.add_argument('latitude', type=decimal.Decimal)
@@ -33,6 +34,7 @@ class Mine(Resource):
         name = data['name']
         lat = data['latitude']
         lon = data['longitude']
+        note = data['note']
         location = None
         if not name:
             return {'error': 'Must specify a name.'}, 400
@@ -48,6 +50,7 @@ class Mine(Resource):
             mine_guid=mine_identity.mine_guid,
             mine_no=generate_mine_no(),
             mine_name=name,
+            mine_note=note if note else '',
             **dummy_user_kwargs
         )
         mine_detail.save()
@@ -65,6 +68,7 @@ class Mine(Resource):
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
             'mine_name': mine_detail.mine_name,
+            'mine_note': mine_detail.mine_note,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None
         }

@@ -11,7 +11,7 @@ CREATE TABLE mine_detail (
   mine_guid uuid NOT NULL,
   mine_no   character varying(10) NOT NULL,
   mine_name character varying(60) NOT NULL,
-
+  mine_note character varying(300) NOT NULL DEFAULT '',
   effective_date date NOT NULL DEFAULT now(),
   expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
   create_user      character varying(60) NOT NULL,

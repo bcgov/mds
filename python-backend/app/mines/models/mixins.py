@@ -15,6 +15,7 @@ class Base(db.Model):
                 db.session.commit()
             except DBAPIError:
                 db.session.rollback()
+                raise
 
 
 class AuditMixin(object):
