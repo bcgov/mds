@@ -127,7 +127,7 @@
               }
             },
             "mid": {
-              "failurePolicy": "Abort",
+              "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flyway-migration",
                 "command": [
