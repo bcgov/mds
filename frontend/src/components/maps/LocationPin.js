@@ -18,14 +18,6 @@ const defaultProps = {
   map: {}
 };
 
-// const markerSymbol = {
-//   type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-//   style: "circle",
-//   color: [244, 67, 54, 0.84],
-//   size: "10px"
-// };
-
-
 export class LocationPin extends Component {
   state = { graphic: null, layer: null };
 

@@ -33,9 +33,11 @@ class MineMap extends Component {
     }
   }
 
+  /**
+   * handleLoadMap creates an instance of map and view to keep in state for later use, map and view are implicently passed into any children of <Map>
+   */
   handleLoadMap = (map, view) => {
     this.setState({map, view})
-    console.log(this.state.view);
   }
 
   renderPin() {
@@ -65,7 +67,7 @@ class MineMap extends Component {
             zoom: mine.mine_location[0] ? 8 : 4
           }}
           onLoad={this.handleLoadMap}
-          // onMouseWheel={(event) => event.preventDefault()}
+          onMouseWheel={(event) => event.event.stopPropagation()}
           >
           <MinePin/>
         </Map>
@@ -85,7 +87,7 @@ class MineMap extends Component {
           zoom: 6
         }}
         onLoad={this.handleLoadMap}
-        // onMouseWheel={(event) => event.preventDefault()}
+        onMouseWheel={(event) => event.stopPropagation()}
       >
         {this.renderPin()}
         <MinePin />

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
-import { Form, Button, Col, Row } from 'antd';
+import { Form, Button, Col, Row, Icon } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, number, lat, lon } from '@/utils/Validate';
 
@@ -13,33 +13,33 @@ const propTypes = {
 export const SearchCoordinatesForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Row gutter={16}>  
-        <Col span={12} offset={12}>
+      {/* <Row>  
+        <Col> */}
           <Form.Item>
             <Field
               id="latitude"
               name="latitude"
-              label='Latitude'
+              placeholder='Latitude'
               component={RenderField}
               validate={[number, maxLength(10), lat, required]}
               />
           </Form.Item>
-        </Col>
+        {/* </Col>
         </Row>
-        <Row gutter={16}>
-        <Col span={12} offset={12}>
+        <Row>
+        <Col> */}
           <Form.Item>
             <Field
               id="longitude"
               name="longitude"
-              label='Longitude'
+              placeholder='Longitude'
               component={RenderField}
               validate={[number, maxLength(12), lon, required]}
             />
           </Form.Item>
-        </Col>
-      </Row>
-      <div className="right"><Button type="primary" htmlType="submit">Search</Button></div>
+        {/* </Col>
+      </Row> */}
+      <div className="right"><Button type="primary" htmlType="submit"><Icon type="search" /></Button></div>
     </Form>
   );
 };

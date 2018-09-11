@@ -30,6 +30,10 @@
   background-color:  $default-dark-green;
 }
 
+.ant-divider, .ant-divider-vertical {
+  margin: 0 15px;
+  height: 30px;
+}
 // CARDS
 .ant-card {
   margin: auto;

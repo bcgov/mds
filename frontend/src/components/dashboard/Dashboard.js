@@ -1,11 +1,12 @@
 /**
- * @className Dasboard is the main landing page of the application, currently containts a list of viewable mines and the ability to add a new mine.
+ * @className Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * 
  */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Pagination, Tabs } from 'antd';
+import { Pagination, Tabs, Col, Row, Divider } from 'antd';
 import queryString from 'query-string'
 
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
@@ -113,8 +114,14 @@ export class Dashboard extends Component {
               onTabClick={this.handleTabChange}
             >
               <TabPane tab="List" key="list">
-                <MineSearch />
-                <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
+                <div className="center">
+                  <MineSearch/>
+                </div>
+                <MineList 
+                  mines={this.props.mines} 
+                  mineIds={this.props.mineIds} 
+                  pageData={this.props.pageData} 
+                />
                 <div className="center">
                   <Pagination
                     showSizeChanger
@@ -130,8 +137,17 @@ export class Dashboard extends Component {
                 </div>
               </TabPane>
               <TabPane tab="Map" key="map">
-                <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
-                <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
+                <div className="landing-page__content--search">
+                  <Col span={10}><MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/></Col>
+                  <Col span={2}>
+                  <div className="center">
+                    <Divider type="vertical"/>
+                    <h2>OR</h2>
+                    <Divider type="vertical"/>
+                    </div>
+                  </Col>
+                  <Col span={10}><SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} /></Col>
+                  </div>
                 <MineMap {...this.state} />
               </TabPane>
             </Tabs>

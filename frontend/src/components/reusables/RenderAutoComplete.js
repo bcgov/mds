@@ -16,13 +16,12 @@ class RenderAutoComplete extends Component {
 
   render() {
     return (
-      <div>
         <AutoComplete
           allowClear
           dropdownMatchSelectWidth={true}
           size="large"
           backfill={true}
-          style={{ width: '50%' }}
+          style={{ width: '100%' }}
           dataSource={this.props.data}
           placeholder="Search for a mine"
           optionLabelProp="value"
@@ -32,7 +31,6 @@ class RenderAutoComplete extends Component {
         >
           <Input suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
         </AutoComplete>
-      </div>
     );
   }
 }

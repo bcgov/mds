@@ -1,3 +1,6 @@
+/**
+ * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
+ */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -71,13 +74,11 @@ export class MineSearch extends Component {
       return <Redirect push to={this.state.redirectTo} />
     }
     return (
-      <div className="center">
-        <RenderAutoComplete 
-          handleSelect={this.handleListSelect}
-          data={this.transformData(this.props.mineNameList)}
-          handleChange={this.handleChange}
-        />
-      </div>
+      <RenderAutoComplete 
+        handleSelect={this.handleListSelect}
+        data={this.transformData(this.props.mineNameList)}
+        handleChange={this.handleChange}
+      />
     );
   }
 }
