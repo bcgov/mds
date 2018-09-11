@@ -14,7 +14,7 @@ class Person(AuditMixin, Base):
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    mgr_appointment = db.relationship('MgrAppointment', backref='person', lazy=True)
+    mgr_appointment = db.relationship('MgrAppointment', backref='person', lazy='joined')
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid

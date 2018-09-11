@@ -28,7 +28,7 @@
             }
           ],
           "selector": {
-            "name": "${NAME}"
+            "name": "${NAME}${SUFFIX}"
           }
         }
       },
@@ -74,7 +74,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}",
+          "name": "${NAME}${SUFFIX}",
           "annotations": {
             "description": "Defines how to deploy the container."
           }
