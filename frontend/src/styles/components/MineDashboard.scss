@@ -14,7 +14,7 @@
       @include mobile {
           padding: 5px 10px;
         }
-      
+
       &--inline {
         @include flex;
         justify-content: space-between;
@@ -24,8 +24,8 @@
         }
       }
     }
-  } 
-  
+  }
+
   &__content {
     margin: 50px;
   }
@@ -44,40 +44,30 @@
   }
 }
 
-#pulse_layer {
-  -webkit-animation-duration: 3s;
-        -webkit-animation-iteration-count: infinite;
-        -webkit-animation-name: pulse;
-        -moz-animation-duration: 3s;
-        -moz-animation-iteration-count: infinite;
-        -moz-animation-name: pulse;
-    // width: 50px;
-    // height: 50px;
-    // // position: absolute;
-    // // top: 250px;
-    // // display: block;
-    // background: rgba(0, 67, 54, 0.53);
-    // border-radius: 50%;
-    // opacity: 0;
-    // animation: pulsate 2400ms ease-out infinite;
+.pin {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 38px;
+    left: 38px;
+    background: rgba(5, 124, 255, 1);
+    border: 2px solid #FFF;
+    border-radius: 50%;
+    z-index: 1000;
 }
 
+@keyframes pulsate {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 
-@keyframes pulse
-      {
-        0%
-        {
-          opacity: 1.0;
-
-        }
-        45%
-        {
-          opacity: .20;
-
-        }
-        100%
-        {
-          opacity: 1.0;
-
-        }
-      }
+circle {
+    animation: pulsate 2400ms ease-out infinite;
+}
