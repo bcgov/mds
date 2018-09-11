@@ -7,7 +7,7 @@ from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..models.location import MineLocation
 from ..utils.random import generate_mine_no
-from app.extensions import jwt
+from app.extensions import jwt, cache
 
 
 class Mine(Resource):
@@ -60,7 +60,7 @@ class Mine(Resource):
                 **dummy_user_kwargs
             )
             location.save()
-
+        cache.delete('all_mines_for_map')
         return {
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
@@ -108,16 +108,21 @@ class Mine(Resource):
                 **dummy_user_kwargs
             )
             location.save()
+            cache.delete('all_mines_for_map')
 
         return mine.json()
 
 
 class MineList(Resource):
+    @cache.cached(604800, key_prefix='all_mines_for_map')
+    def map_list(self):
+        return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
+
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         _map = request.args.get('map', None, type=str)
         if _map and _map.lower() == 'true':
-            return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
+            return self.map_list()
 
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
