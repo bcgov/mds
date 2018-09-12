@@ -7,7 +7,6 @@
 }
 
 .ant-tabs-nav {
-
   .ant-tabs-tab-active {
     font-weight: $bold !important;
   }
@@ -24,12 +23,26 @@
 }
 
 // DIVIDER 
-.ant-divider-horizontal {
-  margin: 5px;
-  height: 1px;
-  background-color:  $default-dark-green;
+.ant-divider {
+  .ant-divider-horizontal {
+    margin: 5px;
+    height: 1px;
+    background-color:  $default-dark-green;
+  }
+  &.ant-divider-vertical {
+    margin: 0 15px;
+    height: 30px;
+    width: 2px;
+    background-color: $default-brown;
+  }
 }
 
+// BUTTON 
+
+.ant-btn-primary {
+  margin-bottom: 15px;
+  min-width: 100px;
+}
 // CARDS
 .ant-card {
   margin: auto;

@@ -12,6 +12,7 @@ import AddPersonnelForm from '../Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
 import { MINER, MINER_TWO } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
+import LoadingBar from 'react-redux-loading-bar'
 
 const propTypes = {
   getPersonnelById: PropTypes.func.isRequired,
@@ -102,6 +103,7 @@ export class ViewMineManager extends Component {
             footer={null}
             onCancel={this.toggleModal}
           >
+            <LoadingBar scope="modal" style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} />
             <div>
               {this.renderMineManagerForm()}
               <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />

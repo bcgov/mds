@@ -14,7 +14,7 @@
       @include mobile {
           padding: 5px 10px;
         }
-      
+
       &--inline {
         @include flex;
         justify-content: space-between;
@@ -24,8 +24,8 @@
         }
       }
     }
-  } 
-  
+  }
+
   &__content {
     margin: 50px;
   }
@@ -40,6 +40,29 @@
   }
 
   div {
+    display: fixed;
     padding: $default-padding-sm;
   }
+}
+
+@keyframes pulsate {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+
+circle {
+  animation: pulsate 2400ms ease-out infinite;
 }

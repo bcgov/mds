@@ -8,6 +8,11 @@
   &__content {
     background-color: $background-white;
     border-radius: 60px 60px 0 0;
-    padding: $default-padding-xl;
+    
+    &--search {
+      @include flex;
+      padding: $default-padding-xl;
+      justify-content: space-around;
+    }
   }
 }

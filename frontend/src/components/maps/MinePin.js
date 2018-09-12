@@ -1,20 +1,24 @@
 /**
- * @class MapPin.js must be the child of arcGIS <Map /> or <Sceen />,
- * MapPin is connected to redux to access/display all mines information - reusalble on any view will display the
+ * @class MinePin.js must be the child of arcGIS <Map /> or <Sceen />,
+ * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the
  *
  */
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import MapPopup from '@/components/maps/MapPopup'
+import { renderToString } from 'react-dom/server'
+
 
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired
+  view: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -23,28 +27,15 @@ const defaultProps = {
   view: {}
 };
 
-const symbol = {
-  "url": '../../../public/locationPin.png',
-  "height": 40,
-  "width": 30,
-  "type": "picture-marker"
-};
-
-export class MapPin extends Component {
- state = { graphic: null };
+export class MinePin extends Component {
+ state = { graphic: null, isFullMap: false };
 
   popupTemplate(id) {
     const { mine_name } = this.props.mines[id].mine_detail[0];
+    const content = renderToString(<MapPopup id={id} />);
     return {
       title: mine_name,
-      content:
-      `<div>
-        <div>
-          <a href={router.MINE_SUMMARY.dynamicRoute(id)}>
-            View
-          </a>
-        </div>
-      </div>`
+      content: content
     };
   }
 
@@ -68,17 +59,25 @@ export class MapPin extends Component {
       let mineIds = [];
       if (mineId) {
         mineIds = [mineId];
+        this.setState({ isFullMap: false})
       }
       else {
+        this.setState({ isFullMap: true})
         mineIds = this.props.mineIds;
       }
+      const symbol = {
+        "url": '../../../public/Pin.svg',
+        "width": this.state.isFullMap ? '40' : '80',
+        "height": this.state.isFullMap ? '40' : '80',
+        "type": "picture-marker"
+      };
 
       const graphicArray = mineIds.map((id) => {
         return (
           new Graphic({
             geometry: this.points(id),
             symbol: symbol,
-            popupTemplate: this.popupTemplate(id)
+            popupTemplate: this.state.isFullMap ? this.popupTemplate(id) : null
           })
         )
       })
@@ -99,8 +98,8 @@ export class MapPin extends Component {
   }
 }
 
-MapPin.propTypes = propTypes;
-MapPin.defaultProps = defaultProps;
+MinePin.propTypes = propTypes;
+MinePin.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
@@ -109,4 +108,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, null)(MapPin));
+export default withRouter(connect(mapStateToProps, null)(MinePin));

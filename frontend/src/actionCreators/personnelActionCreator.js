@@ -12,34 +12,34 @@ import { createRequestHeader } from '@/utils/RequestHeaders';
 
 export const createPersonnel = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERSONNEL));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.post(ENVIRONMENT.apiUrl + API.PERSON, payload, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully created: " + payload.first_name + " " + payload.surname, duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERSONNEL));
-      dispatch(hideLoading());
+      dispatch(hideLoading('modal'));
       return response;
     })
     .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.CREATE_PERSONNEL));
-      dispatch(hideLoading());
+      dispatch(hideLoading('modal'));
     });
 };
 
 export const getPersonnelList = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERSONNEL_LIST));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.get(ENVIRONMENT.apiUrl + API.PERSONS, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERSONNEL_LIST));
       dispatch(personnelActions.storePersonnelList(response.data));
-      dispatch(hideLoading());
+      dispatch(hideLoading('modal'));
     })
     .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PERSONNEL_LIST));
-      dispatch(hideLoading());
+      dispatch(hideLoading('modal'));
     });
 };
 

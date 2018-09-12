@@ -33,9 +33,10 @@ h5 {
   color: $font-black;
 }
 
-p {
+p, .p {
   font-size: $default-p;
   color: $font-black;
+  font-weight: $light;
 }
 
 .p-large {
@@ -43,7 +44,6 @@ p {
   color: $font-black;
   font-weight: $bold;
 }
-
 
 a, Link {
   &:hover {

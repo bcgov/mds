@@ -1,22 +1,27 @@
 /**
- * @class Dasboard is the main landing page of the application, currently containts a list of viewable mines and the ability to add a new mine.
+ * @className Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ *
  */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Pagination } from 'antd';
+import { Pagination, Tabs, Col, Row, Divider } from 'antd';
 import queryString from 'query-string'
 
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
+import SearchCoordinatesForm from '@/components/mine/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
 import { NO_MINE } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
 import Loading from '@/components/reusables/Loading';
+import MineMap from '@/components/maps/MineMap';
+
+const TabPane = Tabs.TabPane;
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
@@ -35,27 +40,30 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = {mineList: false}
-
+  state = { mineList: false, lat: 53.7267, long: -127.6476, showCoordinates: false, mineName: null}
+ 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
-    if (params.page && params.per_page) {
-      this.props.getMineRecords(params.page, params.per_page).then(() => {
-        this.setState({mineList: true})
-      });
-    } else {
-      this.props.getMineRecords('1', '25').then(() => {
-        this.setState({ mineList: true })
-      });
-    }
+    this.renderDataFromURL(params);
   }
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
-
     if (locationChanged) {
       const params = queryString.parse(nextProps.location.search);
-      this.props.getMineRecords(params.page, params.per_page);
+      this.renderDataFromURL(params);
+    }
+  }
+
+  renderDataFromURL = (params) => {
+    if (params.page && params.per_page) {
+      this.props.getMineRecords(params.page, params.per_page, params.map).then(() => {
+        this.setState({ mineList: true })
+      });
+    } else {
+      this.props.getMineRecords('1', '25', params.map).then(() => {
+        this.setState({ mineList: true })
+      });
     }
   }
 
@@ -63,10 +71,34 @@ export class Dashboard extends Component {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
 
+  /**
+   * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
+   */
+  handleCoordinateSearch = (value) => {
+    if (typeof value === 'string') {
+      const newVal = value.split(",");
+      this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
+    } else {
+      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null})
+    }
+  }
+
+  handleTabChange = (key) => {
+    const params = queryString.parse(this.props.location.search);
+    if (key === 'map' ) {
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+      this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
+    } else {
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
+    }
+  }
+
   renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
+    const isMap = params.map ? 'map' : 'list';
     if (this.state.mineList) {
       if (this.props.mineIds.length === 0) {
         return (
@@ -75,21 +107,71 @@ export class Dashboard extends Component {
       } else {
         return (
           <div>
-            <MineSearch mineNameList={this.props.mineNameList} />
-            <MineList mines={this.props.mines} mineIds={this.props.mineIds} pageData={this.props.pageData} />
-            <div className="center">
-              <Pagination
-                showSizeChanger
-                onShowSizeChange={this.onPageChange}
-                onChange={this.onPageChange}
-                defaultCurrent={pageNumber}
-                current={pageNumber}
-                total={this.props.pageData.total}
-                pageSizeOptions={['25', '50', '75', '100']}
-                pageSize={perPageNumber}
-                showTotal={total => `${total} Results`}
-              />
-            </div>
+            <Tabs
+              activeKey={isMap}
+              size='large'
+              animated={{ inkBar: true, tabPane: false }}
+              onTabClick={this.handleTabChange}
+            >
+              <TabPane tab="List" key="list">
+                <Row>
+                  <Col span={12} offset={6}>
+                    <MineSearch/>
+                  </Col>
+                </Row>
+                <MineList 
+                  mines={this.props.mines} 
+                  mineIds={this.props.mineIds} 
+                  pageData={this.props.pageData} 
+                />
+                <div className="center">
+                  <Pagination
+                    showSizeChanger
+                    onShowSizeChange={this.onPageChange}
+                    onChange={this.onPageChange}
+                    defaultCurrent={pageNumber}
+                    current={pageNumber}
+                    total={this.props.pageData.total}
+                    pageSizeOptions={['25', '50', '75', '100']}
+                    pageSize={perPageNumber}
+                    showTotal={total => `${total} Results`}
+                  />
+                </div>
+              </TabPane>
+              <TabPane tab="Map" key="map">
+                <div className="landing-page__content--search">
+                  <Col span={10}>
+                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
+                  </Col>
+                  <Col span={2}>
+                    <div className="center">
+                      <Divider type="vertical"/>
+                      <h2>OR</h2>
+                      <Divider type="vertical"/>
+                    </div>
+                  </Col>
+                  <Col span={10}>
+                    <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
+                  </Col>
+                </div>
+                {this.state.mineName &&
+                  <div className="center">
+                    <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
+                  </div>
+                }
+                {this.state.showCoordinates  && 
+                  <div className="center">
+                    <div className="inline-flex">
+                    <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
+                    <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
+                    </div>
+                  </div>
+                }
+                <div className="landing-page__content map">
+                  <MineMap {...this.state} />
+                </div>
+              </TabPane>
+            </Tabs>
           </div>
         )
       }

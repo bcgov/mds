@@ -5,10 +5,10 @@ import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
+import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleCancel: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired
 };
 
 export const AddMineRecordform = (props) => {
@@ -60,6 +60,6 @@ AddMineRecordform.propTypes = propTypes;
 
 export default (reduxForm({
     form: FORM.ADD_MINE_RECORD,
-    destroyOnUnmount: true
+    onSubmitSuccess: resetForm(FORM.ADD_MINE_RECORD),
   })(AddMineRecordform)
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MapPin } from '@/components/maps/MapPin';
+import { MinePin } from '@/components/maps/MinePin';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const props = {};
@@ -14,9 +14,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('MapPin', () => {
+describe('MinePin', () => {
   it('renders properly', () => {
-    const component = shallow(<MapPin {...props}/>);
+    const component = shallow(<MinePin {...props}/>);
     expect(component).toMatchSnapshot();
   });
 });

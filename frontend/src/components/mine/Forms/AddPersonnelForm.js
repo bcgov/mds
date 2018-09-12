@@ -5,6 +5,7 @@ import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row, Card } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
+import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -48,6 +49,6 @@ AddPersonnelForm.propTypes = propTypes;
 
 export default (reduxForm({
     form: FORM.ADD_PERSONNEL,
-    destroyOnUnmount: true
+    onSubmitSuccess: resetForm(FORM.ADD_PERSONNEL),
   })(AddPersonnelForm)
 );
