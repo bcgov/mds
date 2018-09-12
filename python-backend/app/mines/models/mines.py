@@ -76,12 +76,13 @@ class MineDetail(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     mine_no = db.Column(db.String(10), unique=True)
     mine_name = db.Column(db.String(60), nullable=False)
+    mine_note = db.Column(db.String(300), default='')
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
     def json(self):
-        return {'mine_name': self.mine_name, 'mine_no': self.mine_no}
+        return {'mine_name': self.mine_name, 'mine_no': self.mine_no, 'mine_note': self.mine_note}
 
     @classmethod
     def find_by_mine_no(cls, _id):
