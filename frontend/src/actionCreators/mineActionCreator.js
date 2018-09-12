@@ -45,7 +45,6 @@ export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
 };
 
 export const getMineRecords = (page, per_page, map) => (dispatch) => {
-  console.log("ACTION GOT MAP === ", map);
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, map), createRequestHeader())

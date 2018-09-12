@@ -6,6 +6,7 @@ import RenderDate from '../../reusables/RenderDate';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
+import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -57,6 +58,6 @@ UpdateMineManagerForm.defaultProps = defaultProps;
 
 export default (reduxForm({
     form: FORM.UPDATE_MINE_MANAGER,
-    destroyOnUnmount: true
+  onSubmitSuccess: resetForm(FORM.UPDATE_MINE_MANAGER),
   })(UpdateMineManagerForm)
 );

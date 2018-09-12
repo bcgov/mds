@@ -5,6 +5,7 @@ import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, exactLength, number } from '@/utils/Validate';
+import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -35,6 +36,6 @@ AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
   form: FORM.ADD_TENURE_NUMBER,
-  destroyOnUnmount: true
+  onSubmitSuccess: resetForm(FORM.ADD_TENURE_NUMBER),
 })(AddTenureNumberForm)
 );

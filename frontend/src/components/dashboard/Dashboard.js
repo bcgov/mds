@@ -11,8 +11,8 @@ import queryString from 'query-string'
 
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
-import MineList from '@/components/dashboard/ListTab/MineList';
-import MineSearch from '@/components/dashboard/ListTab/MineSearch';
+import MineList from '@/components/dashboard/MineList';
+import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/mine/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
@@ -40,7 +40,7 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = { mineList: false, lat: 53.7267, long: -127.6476}
+  state = { mineList: false, lat: 53.7267, long: -127.6476, showCoordinates: false, mineName: null}
  
   componentDidMount() {
     const params = queryString.parse(this.props.location.search); 
@@ -77,19 +77,19 @@ export class Dashboard extends Component {
   handleCoordinateSearch = (value) => {
     if (typeof value === 'string') {
       const newVal = value.split(",");
-      this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]) })
+      this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
     } else {
-      this.setState({lat: Number(value.latitude), long: Number(value.longitude)})
+      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null})
     }
   }
 
   handleTabChange = (key) => {
     const params = queryString.parse(this.props.location.search);
     if (key === 'map' ) {
-      this.setState({ mineList: false })
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
     } else {
-      this.setState({ mineList: false })
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
     }
   }
@@ -114,9 +114,11 @@ export class Dashboard extends Component {
               onTabClick={this.handleTabChange}
             >
               <TabPane tab="List" key="list">
-                <div className="center">
-                  <MineSearch/>
-                </div>
+                <Row>
+                  <Col span={12} offset={6}>
+                    <MineSearch/>
+                  </Col>
+                </Row>
                 <MineList 
                   mines={this.props.mines} 
                   mineIds={this.props.mineIds} 
@@ -138,17 +140,36 @@ export class Dashboard extends Component {
               </TabPane>
               <TabPane tab="Map" key="map">
                 <div className="landing-page__content--search">
-                  <Col span={10}><MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/></Col>
+                  <Col span={10}>
+                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
+                  </Col>
                   <Col span={2}>
-                  <div className="center">
-                    <Divider type="vertical"/>
-                    <h2>OR</h2>
-                    <Divider type="vertical"/>
+                    <div className="center">
+                      <Divider type="vertical"/>
+                      <h2>OR</h2>
+                      <Divider type="vertical"/>
                     </div>
                   </Col>
-                  <Col span={10}><SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} /></Col>
+                  <Col span={10}>
+                    <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
+                  </Col>
+                </div>
+                {this.state.mineName &&
+                  <div className="center">
+                    <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
-                <MineMap {...this.state} />
+                }
+                {this.state.showCoordinates  && 
+                  <div className="center">
+                    <div className="inline-flex">
+                    <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
+                    <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
+                    </div>
+                  </div>
+                }
+                <div className="landing-page__content map">
+                  <MineMap {...this.state} />
+                </div>
               </TabPane>
             </Tabs>
           </div>

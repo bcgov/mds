@@ -22,9 +22,9 @@ export class LocationPin extends Component {
   state = { graphic: null};
 
   renderGraphic = (props) => {
-    loadModules(['esri/Graphic', 'esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', 'esri/symbols/SimpleLineSymbol', "dojo/_base/Color"])
-      .then(([Graphic, GraphicsLayer, SimpleMarkerSymbol, SimpleLineSymbol, Color]) => {
-        const symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 20, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([210, 105, 30, 0.5]), 8), new Color([210, 105, 30, 0.9]));
+    loadModules(['esri/Graphic', 'esri/symbols/SimpleMarkerSymbol', 'esri/symbols/SimpleLineSymbol', "dojo/_base/Color"])
+      .then(([Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color]) => {
+        const symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 15, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([188, 41, 41]), 5), new Color([188, 41, 41]));
 
         const point = {
           type: "point",

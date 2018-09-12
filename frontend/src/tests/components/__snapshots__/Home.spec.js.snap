@@ -38,6 +38,19 @@ ShallowWrapper {
           className="content"
         >
           <DashboardRoutes />
+          <BackTop
+            visibilityHeight={400}
+          >
+            <Button
+              block={false}
+              ghost={false}
+              loading={false}
+              prefixCls="ant-btn"
+              type="primary"
+            >
+              Back To Top
+            </Button>
+          </BackTop>
         </Adapter>,
         <div
           className="footer"
@@ -106,19 +119,71 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <DashboardRoutes />,
+          "children": Array [
+            <DashboardRoutes />,
+            <BackTop
+              visibilityHeight={400}
+            >
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                Back To Top
+              </Button>
+            </BackTop>,
+          ],
           "className": "content",
         },
         "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {},
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                Back To Top
+              </Button>,
+              "visibilityHeight": 400,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "block": false,
+                "children": "Back To Top",
+                "ghost": false,
+                "loading": false,
+                "prefixCls": "ant-btn",
+                "type": "primary",
+              },
+              "ref": null,
+              "rendered": "Back To Top",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
         "type": [Function],
       },
       Object {
@@ -163,6 +228,19 @@ ShallowWrapper {
             className="content"
           >
             <DashboardRoutes />
+            <BackTop
+              visibilityHeight={400}
+            >
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                Back To Top
+              </Button>
+            </BackTop>
           </Adapter>,
           <div
             className="footer"
@@ -231,19 +309,71 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <DashboardRoutes />,
+            "children": Array [
+              <DashboardRoutes />,
+              <BackTop
+                visibilityHeight={400}
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  Back To Top
+                </Button>
+              </BackTop>,
+            ],
             "className": "content",
           },
           "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "function",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  Back To Top
+                </Button>,
+                "visibilityHeight": 400,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "Back To Top",
+                  "ghost": false,
+                  "loading": false,
+                  "prefixCls": "ant-btn",
+                  "type": "primary",
+                },
+                "ref": null,
+                "rendered": "Back To Top",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
           "type": [Function],
         },
         Object {

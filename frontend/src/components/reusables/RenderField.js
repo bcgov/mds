@@ -25,7 +25,8 @@ const RenderField = ({
 }) => (
     <Form.Item
       label={label}
-      placeholder={placeholder}
+      placeholder="lat"
+      // placeholder={placeholder}
       validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
       help={touched &&
         ((error && <span>{error}</span>) ||

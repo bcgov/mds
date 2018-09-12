@@ -40,34 +40,29 @@
   }
 
   div {
+    display: fixed;
     padding: $default-padding-sm;
   }
 }
 
-.pin {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    top: 38px;
-    left: 38px;
-    background: rgba(5, 124, 255, 1);
-    border: 2px solid #FFF;
-    border-radius: 50%;
-    z-index: 1000;
-}
-
 @keyframes pulsate {
     0% {
-        opacity: 0;
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
     }
     50% {
-        opacity: 1;
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
     }
     100% {
-        opacity: 0;
+      opacity: 0;
     }
 }
 
 circle {
-    animation: pulsate 2400ms ease-out infinite;
+  animation: pulsate 2400ms ease-out infinite;
 }

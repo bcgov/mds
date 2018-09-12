@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 export class MineSearch extends Component {
-  state = { redirectTo: null }
+  state = { redirectTo: null}
 
   componentDidMount() {
     // Get the initial list of mines
@@ -60,8 +60,9 @@ export class MineSearch extends Component {
       data.map((opt) => {
       const search = opt.mine_name.concat(" - ", opt.mine_no);
       const coordinates = opt.longitude.concat(",", opt.latitude);
+      const mineDetails = coordinates.concat(",", opt.mine_name);
       dataList.push(
-        <AutoComplete.Option key={opt.guid} value={this.props.isMapView ? coordinates : opt.guid}>
+        <AutoComplete.Option key={opt.guid} value={this.props.isMapView ? mineDetails : opt.guid}>
           {search}
         </AutoComplete.Option>
       )})
