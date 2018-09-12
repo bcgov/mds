@@ -2,8 +2,8 @@ import decimal
 import uuid
 
 from flask import request
-
 from flask_restplus import Resource, reqparse
+
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..models.location import MineLocation
 from ..utils.random import generate_mine_no
@@ -13,6 +13,7 @@ from app.extensions import jwt
 class Mine(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str)
+    parser.add_argument('note', type=str)
     parser.add_argument('tenure_number_id', type=str)
     parser.add_argument('longitude', type=decimal.Decimal)
     parser.add_argument('latitude', type=decimal.Decimal)
@@ -33,6 +34,7 @@ class Mine(Resource):
         name = data['name']
         lat = data['latitude']
         lon = data['longitude']
+        note = data['note']
         location = None
         if not name:
             return {'error': 'Must specify a name.'}, 400
@@ -48,6 +50,7 @@ class Mine(Resource):
             mine_guid=mine_identity.mine_guid,
             mine_no=generate_mine_no(),
             mine_name=name,
+            mine_note=note if note else '',
             **dummy_user_kwargs
         )
         mine_detail.save()
@@ -65,6 +68,7 @@ class Mine(Resource):
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
             'mine_name': mine_detail.mine_name,
+            'mine_note': mine_detail.mine_note,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None
         }
@@ -86,8 +90,8 @@ class Mine(Resource):
         if tenure:
             if not tenure.isdigit():
                 return {'error': 'Field tenure_id must contain only digits.'}, 400
-            if len(tenure) != 7:
-                return {'error': 'Field tenure_id must be exactly 7 digits long.'}, 400
+            if len(tenure) not in [6, 7]:
+                return {'error': 'Field tenure_id must be 6 or 7 digits long.'}, 400
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
             if tenure_exists:
                 return {'error': 'Field tenure_id already exists for this mine'}, 400
@@ -117,7 +121,7 @@ class MineList(Resource):
     def get(self):
         _map = request.args.get('map', None, type=str)
         if _map and _map.lower() == 'true':
-            return {'mines': list(map(lambda x: x.json(), MineIdentity.query.all()))}
+            return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
 
         items_per_page = request.args.get('per_page', 50, type=int)
         page = request.args.get('page', 1, type=int)
@@ -143,8 +147,8 @@ class MineListByName(Resource):
         search_term = request.args.get('search')
         if search_term:
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
-            guid_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
-            mines = MineIdentity.query.join(MineDetail).filter(name_filter | guid_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 

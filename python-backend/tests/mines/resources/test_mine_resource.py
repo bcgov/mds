@@ -41,7 +41,7 @@ def test_post_mine_no_name(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_post_mine_guid(test_client, auth_headers):
+def test_post_mine_name_exceed_chars(test_client, auth_headers):
     test_mine_data = {
         "name": "012345678911234567892123456789312345678941234567895123456789512345678961",
         "latitude": "49.2827",
@@ -63,7 +63,19 @@ def test_post_mine_name_only_success(test_client, auth_headers):
     assert post_resp.status_code == 200
 
 
-def test_post_mine_success(test_client, auth_headers):
+def test_post_mine_name_and_note(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine_and_note",
+        "note": "This is a note",
+    }
+    post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_data['note'] == test_mine_data['note']
+    assert post_resp.status_code == 200
+
+
+def test_post_mine_name_and_coord(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine",
         "latitude": "49.2827000",
@@ -74,6 +86,22 @@ def test_post_mine_success(test_client, auth_headers):
     assert post_data['mine_name'] == test_mine_data['name']
     assert post_data['latitude'] == test_mine_data['latitude']
     assert post_data['longitude'] == test_mine_data['longitude']
+    assert post_resp.status_code == 200
+
+
+def test_post_mine_success_all(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine",
+        "latitude": "49.2827000",
+        "longitude": "123.1207000",
+        "note": "This is a note"
+    }
+    post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_data['latitude'] == test_mine_data['latitude']
+    assert post_data['longitude'] == test_mine_data['longitude']
+    assert post_data['note'] == test_mine_data['note']
     assert post_resp.status_code == 200
 
 
@@ -118,7 +146,7 @@ def test_put_mine_tenure_invalid_length(test_client, auth_headers):
     }
     put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Field tenure_id must be exactly 7 digits long.'}
+    assert put_data == {'error': 'Field tenure_id must be 6 or 7 digits long.'}
     assert put_resp.status_code == 400
 
 

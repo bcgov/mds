@@ -2,34 +2,34 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from .mixins import AuditMixin
+from .mixins import AuditMixin, Base
 from app.extensions import db
 
 
-class MineIdentity(AuditMixin, db.Model):
+class MineIdentity(AuditMixin, Base):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy=True)
-    mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy=True)
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy=True)
-    mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy=True)
+    mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy='joined')
+    mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy='joined')
+    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
+    mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
     # might have to add UUID(as_uuid=True) if we want to pass as UUID obj and not string
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         return {
             'guid': str(self.mine_guid),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
+            'mine_detail': [item.json() for item in self.mine_detail],
+            'mine_location': [item.json() for item in self.mine_location]
+        }
+
+    def json_for_map(self):
+        return {
+            'guid': str(self.mine_guid),
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location]
         }
@@ -70,34 +70,26 @@ class MineIdentity(AuditMixin, db.Model):
 
         return result
 
-class MineDetail(AuditMixin, db.Model):
+class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     mine_no = db.Column(db.String(10), unique=True)
     mine_name = db.Column(db.String(60), nullable=False)
+    mine_note = db.Column(db.String(300), default='')
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-            return True
-        except:
-            db.session.rollback()
-            return False
-
     def json(self):
-        return {'mine_name': self.mine_name, 'mine_no': self.mine_no}
+        return {'mine_name': self.mine_name, 'mine_no': self.mine_no, 'mine_note': self.mine_note}
 
     @classmethod
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).first()
 
 
-class MineralTenureXref(AuditMixin, db.Model):
+class MineralTenureXref(AuditMixin, Base):
     __tablename__ = "mineral_tenure_xref"
     mineral_tenure_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
@@ -107,13 +99,6 @@ class MineralTenureXref(AuditMixin, db.Model):
 
     def __repr__(self):
         return '<MineralTenureXref %r>' % self.tenure_number_id
-
-    def save(self):
-        db.session.add(self)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
     def json(self):
         return {'tenure_number_id': str(self.tenure_number_id)}

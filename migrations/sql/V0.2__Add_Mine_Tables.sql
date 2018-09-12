@@ -11,7 +11,7 @@ CREATE TABLE mine_detail (
   mine_guid uuid NOT NULL,
   mine_no   character varying(10) NOT NULL,
   mine_name character varying(60) NOT NULL,
-
+  mine_note character varying(300) NOT NULL DEFAULT '',
   effective_date date NOT NULL DEFAULT now(),
   expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
   create_user      character varying(60) NOT NULL,
@@ -21,8 +21,13 @@ CREATE TABLE mine_detail (
 FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
-COMMENT ON TABLE mine_identity IS 'Unique entry denoting the existence of a mine in British Columbia.';
 
+CREATE INDEX mine_detail_number_idx ON mine_detail (mine_no);
+CREATE INDEX mine_detail_name_idx ON mine_detail (mine_name);
+CREATE INDEX mine_detail_update_timestamp_idx ON mine_detail (update_timestamp);
+
+
+COMMENT ON TABLE mine_identity IS 'Unique entry denoting the existence of a mine in British Columbia.';
 COMMENT ON TABLE mine_detail IS 'Core attribution of a mine.';
 COMMENT ON COLUMN mine_detail.effective_date IS 'Calendar date upon this attribution is accepted as true (time component implicitly 00:00:00.00).';
 COMMENT ON COLUMN mine_detail.expiry_date IS 'Calendar date after which this attribution is accepted as no longer true (time component implicitly 23:59:59.99).';

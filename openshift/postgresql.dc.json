@@ -38,10 +38,9 @@
         {
             "description": "Username for PostgreSQL user that will be used for accessing the database.",
             "displayName": "PostgreSQL Connection Username",
-            "from": "user[A-Z0-9]{3}",
-            "generate": "expression",
             "name": "POSTGRESQL_USER",
-            "required": true
+            "required": true,
+            "value": "mds"
         },
         {
             "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
@@ -65,6 +64,36 @@
             "generate": "expression",
             "name": "POSTGRESQL_ADMIN_PASSWORD",
             "required": true
+        },
+        {
+            "description": "Oracle FDW name",
+            "name": "FDW_NAME",
+            "value": ""
+        },
+        {
+            "description": "Oracle FDW remote schema name",
+            "name": "FDW_FOREIGN_SCHEMA",
+            "value": ""
+        },
+        {
+            "description": "Oracle FDW remote server name",
+            "name": "FDW_FOREIGN_SERVER",
+            "value": ""
+        },
+        {
+            "description": "Oracle FDW user",
+            "name": "FDW_USER",
+            "value": ""
+        },
+        {
+            "description": "Oracle FDW pass",
+            "name": "FDW_PASS",
+            "value": ""
+        },
+        {
+            "description": "Oracle FDW postgres schema",
+            "name": "FDW_SCHEMA",
+            "value": ""
         },
         {
             "description": "Name of the PostgreSQL database accessed.",
@@ -111,7 +140,6 @@
                     "template.openshift.io/expose-database_name": "{.data['database-name']}",
                     "template.openshift.io/expose-password": "{.data['database-password']}",
                     "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
-                    "template.openshift.io/expose-username": "{.data['database-user']}",
                     "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
                     "as-copy-of": "template.${NAME}-secret"
                 },
@@ -121,8 +149,13 @@
                 "database-name": "${POSTGRESQL_DATABASE}",
                 "database-password": "${POSTGRESQL_PASSWORD}",
                 "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                "database-user": "${POSTGRESQL_USER}",
-                "database-admin-user": "${POSTGRESQL_ADMIN_USER}"
+                "database-user": null,
+                "oracle-fdw-name": null,
+                "oracle-fdw-foreign-schema": null,
+                "oracle-fdw-foreign-server": null,
+                "oracle-fdw-user": null,
+                "oracle-fdw-password": null,
+                "oracle-fdw-schema": null
             }
         },
         {
@@ -252,6 +285,60 @@
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "key": "database-name",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_NAME",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-name",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_FOREIGN_SCHEMA",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-foreign-schema",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_FOREIGN_SERVER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-foreign-server",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_USER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-user",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_PASS",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-password",
+                                                "name": "${DATABASE_SERVICE_NAME}"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "FDW_SCHEMA",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "oracle-fdw-schema",
                                                 "name": "${DATABASE_SERVICE_NAME}"
                                             }
                                         }

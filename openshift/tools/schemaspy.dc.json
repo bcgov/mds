@@ -28,8 +28,10 @@
             }
           ],
           "selector": {
-            "name": "${NAME}"
-          }
+            "name": "${NAME}${SUFFIX}"
+          },
+          "type": "ClusterIP",
+          "sessionAffinity": "None"
         }
       },
       {
@@ -47,7 +49,11 @@
           "to": {
             "kind": "Service",
             "name": "${NAME}${SUFFIX}"
-          }
+          },
+          "port": {
+            "targetPort": "8080-tcp"
+          },
+          "wildcardPolicy": "None"
         }
       },
       {
@@ -74,7 +80,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}",
+          "name": "${NAME}${SUFFIX}",
           "annotations": {
             "description": "Defines how to deploy the container."
           }
@@ -90,12 +96,10 @@
                       "command": [
                         "sh",
                         "-c",
-                        "nc -vzw 3600 ${BACKEND_HOST} 80"
+                        "nc -vzw 1800 ${BACKEND_HOST} 80"
                       ]
                     }
                   },
-              "updatePeriodSeconds": 1,
-              "intervalSeconds": 1,
               "timeoutSeconds": 600
             }
           },
@@ -119,13 +123,13 @@
           ],
           "replicas": 1,
           "selector": {
-            "name": "${NAME}"
+            "name": "${NAME}${SUFFIX}"
           },
           "template": {
             "metadata": {
-              "name": "${NAME}",
+              "name": "${NAME}${SUFFIX}",
               "labels": {
-                "name": "${NAME}"
+                "name": "${NAME}${SUFFIX}"
               }
             },
             "spec": {
