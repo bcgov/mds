@@ -15,7 +15,7 @@ class DashboardPage extends Page {
         createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
         
         //Dashboard
-        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
+        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
         viewButton (wait:true) {$("button").has("span", text:"View Mine")}
         
         //search
@@ -24,7 +24,13 @@ class DashboardPage extends Page {
         
         //pagination
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
-        recordPerPage (wait:true) {$()}
+        pageinationSelection (wait:true) {$("div.ant-select-selection-selected-value")}
+        
+        
+        // 25perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"25 / page")}
+        // 50perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"50 / page")}
+        // 75perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"75 / page")}
+        // 100perPage (required:false, wait: false) {$("li.ant-select-dropdown-menu-item",text:"100 / page")}
     }
 
     def mineInfoSelector (mineIndex){
@@ -89,10 +95,20 @@ class DashboardPage extends Page {
     }
 
 
-    def paginationValidation(){
-        int totalMineNumber = totalMineNum.minus(" Results").toInteger()
-        println totalMineNumber
-        return true
+    def paginationSelection(page){
+        int totalRecordNumber = totalMineNum.minus(" Results").toInteger()
+        pageinationSelection.click()
+        switch(page){
+            case 25:
+            25perPage.click()
+            case 50:
+            50perPage.click()
+            case 75:
+            75perPage.click()
+            case 100:
+            100perPage.click()
+        }
     }
-    
+
+
 }

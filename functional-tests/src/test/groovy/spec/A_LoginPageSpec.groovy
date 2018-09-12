@@ -5,6 +5,7 @@ import spock.lang.*
 
 
 import pages.*
+import utils.Const
 
 
 
@@ -15,18 +16,16 @@ class  A_LoginPageSpec extends GebReportingSpec {
     def "I can log into the app given valid credentials"(){
         given:"I go to the homepage"
         to LoginPage
-        sleep(2000)
 
         when: "Page loaded"
         at LoginPage
 
         and: "I input username and password"
-        IDIRusername = "vzhang"
-        IDIRpassword = "Only4Support"
+        IDIRusername = Const.IDIR_USERNAME
+        IDIRpassword = Const.IDIR_PASSWORD
         IDIRloginButton.click()
 
         then: "I am on the Dashboard page"
-     
         at DashboardPage
     }
 }
