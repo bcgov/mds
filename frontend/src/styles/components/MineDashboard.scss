@@ -47,6 +47,7 @@
 
 @keyframes pulsate {
     0% {
+<<<<<<< HEAD
       opacity: 0;
     }
     25% {
@@ -60,9 +61,26 @@
     }
     100% {
       opacity: 0;
+=======
+        opacity: 0;
+
+    }
+    50% {
+        opacity: 1;
+
+    }
+    100% {
+        opacity: 0;
+
+>>>>>>> 62c98079a2063c726e2062863384f164fa9c1349
     }
 }
 
 circle {
+<<<<<<< HEAD
   animation: pulsate 2400ms ease-out infinite;
 }
+=======
+    animation: pulsate 2400ms ease-out infinite;
+}
+>>>>>>> 62c98079a2063c726e2062863384f164fa9c1349

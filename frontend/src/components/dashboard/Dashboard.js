@@ -1,6 +1,6 @@
 /**
  * @className Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
- * 
+ *
  */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
@@ -43,14 +43,14 @@ export class Dashboard extends Component {
   state = { mineList: false, lat: 53.7267, long: -127.6476, showCoordinates: false, mineName: null}
  
   componentDidMount() {
-    const params = queryString.parse(this.props.location.search); 
+    const params = queryString.parse(this.props.location.search);
     this.renderDataFromURL(params);
   }
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      const params = queryString.parse(nextProps.location.search); 
+      const params = queryString.parse(nextProps.location.search);
       this.renderDataFromURL(params);
     }
   }
@@ -71,7 +71,7 @@ export class Dashboard extends Component {
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
   }
 
-  /** 
+  /**
    * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
    */
   handleCoordinateSearch = (value) => {

@@ -6,9 +6,11 @@
 import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import * as route from '@/constants/routes';
+import MapPopup from '@/components/maps/MapPopup'
+import { renderToString } from 'react-dom/server'
+
 
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
 
@@ -30,16 +32,10 @@ export class MinePin extends Component {
 
   popupTemplate(id) {
     const { mine_name } = this.props.mines[id].mine_detail[0];
+    const content = renderToString(<MapPopup id={id} />);
     return {
       title: mine_name,
-      content:
-      `<div>
-        <div>
-          <a href=${route.MINE_SUMMARY.dynamicRoute(id)} rel="no-refresh">
-            View
-          </a>
-        </div>
-      </div>`
+      content: content
     };
   }
 
