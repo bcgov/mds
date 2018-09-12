@@ -2,6 +2,6 @@ FROM postgres:9.6
 
 # Copy only migration scripts for creation
 COPY ./sql/V*.sql /docker-entrypoint-initdb.d/
-COPY ./sql/afterMigrate.sql /docker-entrypoint-initdb.d/zAfterMigrate.sql
+COPY ./sql/afterMigrate__0_create_test_db.sql /docker-entrypoint-initdb.d/zafterMigrate__0_create_test_db.sql
 
 VOLUME ["/var/lib/postgresql/data"]
