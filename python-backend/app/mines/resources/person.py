@@ -4,11 +4,11 @@ import uuid
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity
 from ..models.person import Person, MgrAppointment
-
 from app.extensions import jwt
+from .mixins import UserMixin
 
 
-class PersonResource(Resource):
+class PersonResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str)
     parser.add_argument('surname', type=str)
@@ -32,13 +32,13 @@ class PersonResource(Resource):
         person_exists = Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
-        # Dummy User for now
-        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        user_info = self.get_user_info()
+        user_kwargs = {'create_user': user_info, 'update_user': user_info}
         person = Person(
             person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
-            **dummy_user_kwargs
+            **user_kwargs
         )
         person.save()
         return person.json()
@@ -61,7 +61,7 @@ class PersonResource(Resource):
         return person_exists.json()
 
 
-class ManagerResource(Resource):
+class ManagerResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('person_guid', type=str)
     parser.add_argument('mine_guid', type=str)
@@ -101,14 +101,14 @@ class ManagerResource(Resource):
             previous_mgr.expiry_date = previous_mgr_expiry_date
             previous_mgr.save()
 
-        # Dummy User for now
-        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        user_info = self.get_user_info()
+        user_kwargs = {'create_user': user_info, 'update_user': user_info}
         manager = MgrAppointment(
             mgr_appointment_guid=uuid.uuid4(),
             person_guid=data['person_guid'],
             mine_guid=data['mine_guid'],
             effective_date=data['effective_date'],
-            **dummy_user_kwargs
+            **user_kwargs
         )
         manager.save()
         return {

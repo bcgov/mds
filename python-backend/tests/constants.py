@@ -50,6 +50,9 @@ FULL_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
+    "email": "test-email",
+    "given_name": "test-given-name",
     "realm_access": {
         "roles": [
             "mds-mine-view",
