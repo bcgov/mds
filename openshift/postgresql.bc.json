@@ -19,27 +19,8 @@
             "required": true
         },
         {
-            "name": "SOURCE_REPOSITORY_URL",
-            "required": true
-        },
-        {
-            "name": "SOURCE_REPOSITORY_REF",
-            "required": false,
-            "value": "master"
-        },
-        {
             "name": "TAG_NAME",
             "required": true
-        },
-        {
-            "name": "RHSCL_PG_DOCKER_IMAGE",
-            "required": true,
-            "value": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-14"
-        },
-        {
-            "name": "RHSCL_PG_IMAGE_TAG",
-            "required": true,
-            "value": "9.6.1-14"
         }
     ],
     "objects": [
@@ -47,8 +28,7 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "rhscl-postgresql",
-                "creationTimestamp": null,
+                "name": "rhel7",
                 "labels": {
                     "shared": "true"
                 },
@@ -60,11 +40,11 @@
                 },
                 "tags":[
                     {
-                        "name": "${RHSCL_PG_IMAGE_TAG}",
+                        "name": "7.5",
                         "annotations": null,
                         "from": {
                             "kind": "DockerImage",
-                            "name": "${RHSCL_PG_DOCKER_IMAGE}"
+                            "name": "registry.access.redhat.com/rhel7:7.5"
                         },
                         "generation": 1,
                         "importPolicy": {},
@@ -74,7 +54,8 @@
                     }
                 ]
             }
-        },{
+        },
+        {
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
@@ -115,19 +96,18 @@
                 ],
                 "runPolicy": "SerialLatestOnly",
                 "source": {
-                    "contextDir": "database",
                     "git": {
-                        "ref": "${SOURCE_REPOSITORY_REF}",
-                        "uri": "${SOURCE_REPOSITORY_URL}"
+                        "uri": "https://github.com/bcgov/openshift-postgresql-oracle_fdw"
                     },
                     "type": "Git"
                 },
                 "strategy": {
                     "type": "Docker",
                     "dockerStrategy": {
+                        "dockerfilePath": "Dockerfile.rhel7",
                         "from": {
                             "kind": "ImageStreamTag",
-                            "name": "rhscl-postgresql:${RHSCL_PG_IMAGE_TAG}"
+                            "name": "rhel7:7.5"
                         }
                     }
                 },
@@ -140,11 +120,11 @@
                 "resources": {
                     "limits": {
                         "cpu": "1",
-                        "memory": "8Gi"
+                        "memory": "4Gi"
                     },
                     "requests": {
                         "cpu": "500m",
-                        "memory": "4Gi"
+                        "memory": "2Gi"
                     }
                 },
                 "postCommit": {},

@@ -6,6 +6,8 @@ import click
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
+from sqlalchemy.exc import DBAPIError
+
 from .mines.models.mines import MineIdentity, MineDetail
 from .mines.models.location import MineLocation
 from .mines.resources.mine import Mine, MineList, MineListByName
@@ -13,7 +15,6 @@ from .mines.resources.person import ManagerResource, PersonResource, PersonList
 from .mines.resources.location import MineLocationResource, MineLocationListResource
 from .mines.utils.random import generate_mine_no, generate_name, random_geo
 from .config import Config
-
 from .extensions import db, jwt
 
 
@@ -106,14 +107,23 @@ def register_commands(app):
         db.session.bulk_save_objects(mine_identity_list)
         db.session.bulk_save_objects(mine_detail_list)
         db.session.bulk_save_objects(mine_location_list)
-        db.session.commit()
-
-        click.echo(f'Created {num} random mines.')
+        try:
+            db.session.commit()
+            click.echo(f'Created {num} random mines.')
+        except DBAPIError:
+            db.session.rollback()
+            click.echo(f'Error, failed on commit.')
+            raise
 
     @app.cli.command()
     def delete_data():
         meta = db.metadata
         for table in reversed(meta.sorted_tables):
             db.session.execute(table.delete())
-        db.session.commit()
-        click.echo(f'Database has been cleared.')
+        try:
+            db.session.commit()
+            click.echo(f'Database has been cleared.')
+        except DBAPIError:
+            db.session.rollback()
+            click.echo(f'Error, failed on commit.')
+            raise
