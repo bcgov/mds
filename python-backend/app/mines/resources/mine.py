@@ -8,8 +8,8 @@ from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ..models.location import MineLocation
 from ..utils.random import generate_mine_no
 from app.extensions import jwt
-from jose import jwt as jwt_jose
 from .mixins import UserMixin
+
 
 class Mine(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -153,4 +153,4 @@ class MineListByName(Resource):
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
-        return {'mines': result }
+        return {'mines': result}
