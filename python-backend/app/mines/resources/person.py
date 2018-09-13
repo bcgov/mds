@@ -12,6 +12,9 @@ class PersonResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str)
     parser.add_argument('surname', type=str)
+    parser.add_argument('phone_no', type=str)
+    parser.add_argument('phone_ext', type=str)
+    parser.add_argument('email', type=str)
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, person_guid):
@@ -29,6 +32,10 @@ class PersonResource(Resource, UserMixin):
             return {'error': 'Must specify a first name.'}, 400
         if not data['surname']:
             return {'error': 'Must specify a surname.'}, 400
+        if not data['phone_no']:
+            return {'error': 'Must specify a phone number.'}, 400
+        if not data['email']:
+            return {'error': 'Must specify an email.'}, 400
         person_exists = Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
@@ -36,6 +43,9 @@ class PersonResource(Resource, UserMixin):
             person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
+            phone_no=data['phone_no'],
+            email=data['email'],
+            phone_ext=data['phone_ext'] if data['phone_ext'] else '',
             **self.get_create_update_dict()
         )
         person.save()
