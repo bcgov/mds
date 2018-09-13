@@ -76,6 +76,7 @@ export class MineSearch extends Component {
     }
     return (
       <RenderAutoComplete 
+        placeholder="Search for a mine by name"
         handleSelect={this.handleListSelect}
         data={this.transformData(this.props.mineNameList)}
         handleChange={this.handleChange}

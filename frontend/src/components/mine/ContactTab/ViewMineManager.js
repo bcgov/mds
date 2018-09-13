@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row, Modal, Card } from 'antd';
+import { Col, Row, Modal, Card, Button, Drawer, List, Avatar, Divider } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
@@ -32,7 +32,7 @@ const defaultProps = {
 };
 
 export class ViewMineManager extends Component {
-  state = { visible: false }
+  state = { modalVisible: false, drawerVisible: false }
 
   /**
  * add new personnel (firstName, surname) to db.
@@ -48,7 +48,7 @@ export class ViewMineManager extends Component {
    */
   handleSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.setState({ visible: !this.state.visible });
+      this.setState({ modalVisible: !this.state.modalVisible });
       this.props.getMineRecordById(this.props.mine.guid);
     })
   }
@@ -68,9 +68,16 @@ export class ViewMineManager extends Component {
     }
   }
 
+  toggleDrawer = () => {
+    this.setState({
+      drawerVisible: !this.state.drawerVisible,
+    });
+  };
+
+
   toggleModal = () => {
     this.setState({
-      visible: !this.state.visible,
+      modalVisible: !this.state.modalVisible,
     });
   }
 
@@ -79,6 +86,17 @@ export class ViewMineManager extends Component {
     if (this.props.mine.mgr_appointment[0]) {
       this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
     }
+  }
+
+  renderHistory() {
+    if (this.props.personnelIds[0] && this.props.mine.mgr_appointment[0]) {
+      return (
+    this.props.personnel['f3cd8605-1aaa-41b6-9c47-09d4b5341b3e'].mgr_appointment.map((data, i) => {
+            return (<div key={i}><p>{data.effective_date} - {data.expiry_date}
+</p></div>)
+          })
+        )
+        }
   }
 
   render() {
@@ -95,11 +113,12 @@ export class ViewMineManager extends Component {
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
             </Row>
+            <Button type="secondary" onClick={this.toggledrawer}>View profile</Button>
             <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/></div>
           </Card>
           <Modal
             title="Update Mine Manager"
-            visible={this.state.visible}
+            visible={this.state.modalVisible}
             footer={null}
             onCancel={this.toggleModal}
           >
@@ -109,6 +128,27 @@ export class ViewMineManager extends Component {
               <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
             </div>
           </Modal>
+
+          <Drawer
+          width={640}
+          placement="right"
+          closable={false}
+          onClose={this.toggleDrawer}
+          visible={true}
+        >
+          <h1>Mine Manager</h1>
+          <p>{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p>
+          <p>{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p>
+          <Divider />
+          <p>Contacts</p>
+          <p>Email:</p>
+          <p>Phone:</p>
+         
+          <Divider />
+          <p>History</p>
+         {this.renderHistory()}
+        
+        </Drawer>
         </div>
         );
     } else if (!this.props.mine.mgr_appointment[0]) {
@@ -118,7 +158,7 @@ export class ViewMineManager extends Component {
           <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/></div>
           <Modal
             title="Update Mine Manager"
-            visible={this.state.visible}
+            visible={this.state.modalVisible}
             footer={null}
             onCancel={this.toggleModal}
           >

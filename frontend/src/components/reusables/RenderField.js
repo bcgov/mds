@@ -26,14 +26,13 @@ const RenderField = ({
 }) => (
     <Form.Item
       label={label}
-      placeholder={placeholder}
       validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
       help={touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))
       }
     >
-      <Input id={id} type={type} {...input} />
+      <Input id={id} type={type} placeholder={placeholder} {...input} />
     </Form.Item>
   );
 
