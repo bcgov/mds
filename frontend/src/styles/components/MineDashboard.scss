@@ -33,6 +33,7 @@
 
 .inline-flex {
   @include flex;
+  justify-content: space-between;
 
   &--img {
     margin-top: 5px;

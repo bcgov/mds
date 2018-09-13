@@ -113,8 +113,20 @@ export class ViewMineManager extends Component {
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
               <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
             </Row>
-            <Button type="secondary" onClick={this.toggledrawer}>View profile</Button>
-            <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/></div>
+             <Row type="flex">
+              <Col span={12}><h4>Email</h4></Col>
+              <Col span={6}><h4>Phone Number</h4></Col>
+              <Col span={6}><h4>Ext</h4></Col>
+            </Row>
+            <Row type="flex">
+              <Col span={12}><p className="p-large">mine@mine.com</p></Col>
+              <Col span={6}><p className="p-large">555-555-5555</p></Col>
+              <Col span={6}><p className="p-large">7564</p></Col>
+            </Row>
+            <div className="right">
+            <Button type="secondary" onClick={this.toggleDrawer}>View profile</Button>
+            <ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/>
+            </div>
           </Card>
           <Modal
             title="Update Mine Manager"
@@ -134,7 +146,7 @@ export class ViewMineManager extends Component {
           placement="right"
           closable={false}
           onClose={this.toggleDrawer}
-          visible={true}
+          visible={this.state.drawerVisible}
         >
           <h1>Mine Manager</h1>
           <p>{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p>

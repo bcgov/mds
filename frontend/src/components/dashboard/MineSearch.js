@@ -36,9 +36,12 @@ export class MineSearch extends Component {
    * @param value = mine.guid || 'mine.long, mine.lat';
    */
   handleListSelect = (value) => {
-    this.props.isMapView ?
-    this.props.handleCoordinateSearch(value) :
-    this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
+    if (this.props.isMapView) {
+      this.props.handleCoordinateSearch(value);
+    } else {
+      this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
+    }
+    
   }
 
   /**
@@ -76,6 +79,7 @@ export class MineSearch extends Component {
     }
     return (
       <RenderAutoComplete 
+        selected={this.state.selected}
         placeholder="Search for a mine by name"
         handleSelect={this.handleListSelect}
         data={this.transformData(this.props.mineNameList)}
