@@ -4,6 +4,7 @@
   "description": "Boilerplate for React.js projects",
   "private": true,
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.0.0",
     "antd": "^3.7.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
@@ -38,6 +39,7 @@
     "babel-jest": "^22.4.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-import": "^1.8.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
@@ -118,6 +120,7 @@
     "output": "./coverage/tests-report.xml"
   },
   "browserslist": [
-    "> 0.1%"
+    "> 0.1%",
+    "IE >= 8"
   ]
 }
