@@ -2,6 +2,11 @@ FROM postgres:9.6
 
 # Copy only migration scripts for creation
 COPY ./sql/V*.sql /docker-entrypoint-initdb.d/
-COPY ./sql/afterMigrate.sql /docker-entrypoint-initdb.d/zAfterMigrate.sql
+COPY ./sql/after*.sql /docker-entrypoint-initdb.d/
+
+WORKDIR /docker-entrypoint-initdb.d
+
+# Prefix all the aftermigrate.sql files with a `z` to run at the end
+RUN for filename in after*.sql; do mv "$filename" "z_$filename"; done;
 
 VOLUME ["/var/lib/postgresql/data"]
