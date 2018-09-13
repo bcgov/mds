@@ -70,6 +70,7 @@ class MineIdentity(AuditMixin, Base):
 
         return result
 
+
 class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
