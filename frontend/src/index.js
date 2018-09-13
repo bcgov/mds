@@ -1,3 +1,5 @@
+import 'core-js/es6/map';
+import 'core-js/es6/set';
 import 'babel-polyfill';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
