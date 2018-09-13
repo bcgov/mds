@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row, Card } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required } from '@/utils/Validate';
+import { required, email, phoneNumber, maxLength } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
@@ -35,6 +35,30 @@ export const AddPersonnelForm = (props) => {
                 label='Surname'
                 component={RenderField}
                 validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item>
+              <Field
+                id="phone_no"
+                name="phone_no"
+                label='Phone Number'
+                component={RenderField}
+                validate={[required, phoneNumber, maxLength(12)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item>
+              <Field
+                id="email"
+                name="email"
+                label='Email'
+                component={RenderField}
+                validate={[required, email]}
               />
             </Form.Item>
           </Col>

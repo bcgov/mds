@@ -20,8 +20,8 @@ export const createMineRecord = (payload) => (dispatch) => {
     dispatch(hideLoading());
     return response;
   })
-  .catch(() => {
-    notification.error({message: String.ERROR, duration: 10});
+  .catch((error) => {
+    notification.error({message: error || String.ERROR, duration: 10});
     dispatch(error(reducerTypes.CREATE_MINE_RECORD));
     dispatch(hideLoading());
   });

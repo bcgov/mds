@@ -20,7 +20,9 @@ export const createPersonnel = (payload) => (dispatch) => {
       dispatch(hideLoading('modal'));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err.response);
+      // console.log(response);
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.CREATE_PERSONNEL));
       dispatch(hideLoading('modal'));

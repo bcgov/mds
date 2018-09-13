@@ -8,20 +8,19 @@ const propTypes = {
   input: PropTypes.any,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  autosize: PropTypes.bool,
   type: PropTypes.string,
   meta: PropTypes.object,
 };
 
+const { TextArea } = Input;
 /**
  * Ant Design `Input` component for redux-form.
  */
-const RenderField = ({
+const RenderAutoSizeField = ({
   id,
   input,
   label,
   placeholder,
-  type,
   meta: { touched, error, warning },
 }) => (
     <Form.Item
@@ -33,10 +32,10 @@ const RenderField = ({
           (warning && <span>{warning}</span>))
       }
     >
-      <Input id={id} type={type} {...input} />
+      <TextArea id={id} {...input} autosize/>
     </Form.Item>
   );
 
-RenderField.propTypes = propTypes;
+RenderAutoSizeField.propTypes = propTypes;
 
-export default RenderField;
+export default RenderAutoSizeField;

@@ -6,8 +6,8 @@ class Validator {
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
   USA_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-  EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
+  EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+  PHONE_REGEX = /^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/i;
   NAME_REGEX = /^[A-Za-zÀ-ÿ'\-\s']+$/;
   FLOATS_REGEX = /^-?\d*(\.{1}\d+)?$/;
   NUMBERS_OR_EMPTY_STRING_REGEX = /^-?\d*\.?\d*$/;
@@ -21,6 +21,14 @@ class Validator {
 
   checkLon(lon) {
     return this.LON_REGEX.test(lon);
+  }
+
+  checkPhone(number) {
+    return this.PHONE_REGEX.test(number);
+  }
+
+  checkEmail(email) {
+    return this.EMAIL_REGEX.test(email);
   }
 }
 
@@ -39,3 +47,7 @@ export const number = (value) => (value && isNaN(Number(value)) ? 'Input must be
 export const lat = (value) => (value && !Validate.checkLat(value)) ? 'Invalid latitude coordinate e.g. 53.7267': undefined;
 
 export const lon = (value) => (value && !Validate.checkLon(value)) ? 'Invalid longitude coordinate e.g. -127.6476000' : undefined;
+
+export const phoneNumber  = (value) => (value && !Validate.checkPhone(value)) ? 'Invalid phone number' : undefined;
+
+export const email = (value) => (value && !Validate.checkEmail(value)) ? 'Invalid email address' : undefined;
