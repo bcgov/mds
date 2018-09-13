@@ -1,5 +1,8 @@
 {
   "presets": [
+    ["env", {
+        "useBuiltIns": true
+    }],
     "es2015",
     "env",
     "react",
