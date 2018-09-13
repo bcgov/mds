@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row, Card } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required, email, phoneNumber, maxLength } from '@/utils/Validate';
+import { required, email, phoneNumber, maxLength, number } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
@@ -40,7 +40,7 @@ export const AddPersonnelForm = (props) => {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={10}>
             <Form.Item>
               <Field
                 id="phone_no"
@@ -51,7 +51,18 @@ export const AddPersonnelForm = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={4}>
+            <Form.Item>
+              <Field
+                id="phone_ext"
+                name="phone_ext"
+                label='Ext'
+                component={RenderField}
+                validate={[number, maxLength(5)]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={10}>
             <Form.Item>
               <Field
                 id="email"

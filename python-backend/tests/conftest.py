@@ -31,7 +31,13 @@ from .constants import (TEST_MINE_NAME,
                         VIEW_ONLY_AUTH_CLAIMS,
                         TOKEN_HEADER,
                         TEST_MINE_DETAIL_GUID,
-                        TEST_TENURE_GUID
+                        TEST_TENURE_GUID,
+                        TEST_EMAIL_1,
+                        TEST_EMAIL_2,
+                        TEST_EMAIL_3,
+                        TEST_PHONE_1,
+                        TEST_PHONE_2,
+                        TEST_PHONE_3
                         )
 
 
@@ -121,6 +127,9 @@ def setup_data():
         person_guid=uuid.UUID(TEST_PERSON_GUID),
         first_name=TEST_FIRST_NAME,
         surname=TEST_SURNAME,
+        email=TEST_EMAIL_1,
+        phone_no=TEST_PHONE_1,
+        phone_ext='',
         **DUMMY_USER_KWARGS
     )
     person.save()
@@ -128,6 +137,9 @@ def setup_data():
         person_guid=uuid.UUID(TEST_PERSON_2_GUID),
         first_name=TEST_FIRST_NAME_2,
         surname=TEST_SURNAME_2,
+        email=TEST_EMAIL_2,
+        phone_no=TEST_PHONE_2,
+        phone_ext='',
         **DUMMY_USER_KWARGS
     )
     person2.save()
@@ -135,6 +147,9 @@ def setup_data():
         person_guid=uuid.UUID(TEST_PERSON_3_GUID),
         first_name=TEST_FIRST_NAME_3,
         surname=TEST_SURNAME_3,
+        email=TEST_EMAIL_3,
+        phone_no=TEST_PHONE_3,
+        phone_ext='1234',
         **DUMMY_USER_KWARGS
     )
     person3.save()

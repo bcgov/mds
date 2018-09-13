@@ -46,7 +46,7 @@ def test_post_person_view_only(test_client, auth_headers):
 
 
 def test_post_person_full_auth(test_client, auth_headers):
-    test_person_data = {"first_name": "FirstAuth", "surname": "LastAuth"}
+    test_person_data = {"first_name": "FirstAuth", "surname": "LastAuth", "email": "testauth@test.com", "phone_no": "1234567899"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 200
 

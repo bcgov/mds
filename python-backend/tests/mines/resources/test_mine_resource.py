@@ -71,7 +71,7 @@ def test_post_mine_name_and_note(test_client, auth_headers):
     post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_name'] == test_mine_data['name']
-    assert post_data['note'] == test_mine_data['note']
+    assert post_data['mine_note'] == test_mine_data['note']
     assert post_resp.status_code == 200
 
 
@@ -101,7 +101,7 @@ def test_post_mine_success_all(test_client, auth_headers):
     assert post_data['mine_name'] == test_mine_data['name']
     assert post_data['latitude'] == test_mine_data['latitude']
     assert post_data['longitude'] == test_mine_data['longitude']
-    assert post_data['note'] == test_mine_data['note']
+    assert post_data['mine_note'] == test_mine_data['note']
     assert post_resp.status_code == 200
 
 

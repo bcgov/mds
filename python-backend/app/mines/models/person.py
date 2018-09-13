@@ -11,6 +11,9 @@ class Person(AuditMixin, Base):
     person_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     first_name = db.Column(db.String(60), nullable=False)
     surname = db.Column(db.String(60), nullable=False)
+    phone_no = db.Column(db.String(10), nullable=False)
+    phone_ext = db.Column(db.String(4), nullable=False)
+    email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
@@ -25,6 +28,9 @@ class Person(AuditMixin, Base):
             'first_name': str(self.first_name),
             'surname': str(self.surname),
             'full_name': str(self.first_name) + ' ' + str(self.surname),
+            'phone_no': str(self.phone_no),
+            'phone_ext': str(self.phone_ext),
+            'email': str(self.email),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
