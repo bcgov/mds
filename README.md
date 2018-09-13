@@ -20,5 +20,4 @@ Please read the [How to develop](USAGE.md).
 ## License
 Code released under the [Apache License, Version 2.0](LICENSE.md).
 
-
-<VIVIAN'S PLACEHOLDER>
+ 
