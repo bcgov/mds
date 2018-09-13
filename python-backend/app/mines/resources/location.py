@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from ..models.location import MineLocation
 from ..models.mines import MineIdentity
 
