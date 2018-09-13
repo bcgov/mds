@@ -7,6 +7,7 @@
     "antd": "^3.7.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
+    "babel-polyfill": "^6.26.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "jest-localstorage-mock": "^2.2.0",
