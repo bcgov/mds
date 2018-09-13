@@ -32,13 +32,11 @@ class PersonResource(Resource, UserMixin):
         person_exists = Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
-        user_info = self.get_user_info()
-        user_kwargs = {'create_user': user_info, 'update_user': user_info}
         person = Person(
             person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
-            **user_kwargs
+            **self.get_create_update_dict()
         )
         person.save()
         return person.json()
@@ -101,14 +99,12 @@ class ManagerResource(Resource, UserMixin):
             previous_mgr.expiry_date = previous_mgr_expiry_date
             previous_mgr.save()
 
-        user_info = self.get_user_info()
-        user_kwargs = {'create_user': user_info, 'update_user': user_info}
         manager = MgrAppointment(
             mgr_appointment_guid=uuid.uuid4(),
             person_guid=data['person_guid'],
             mine_guid=data['mine_guid'],
             effective_date=data['effective_date'],
-            **user_kwargs
+            **self.get_create_update_dict()
         )
         manager.save()
         return {

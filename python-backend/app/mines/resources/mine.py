@@ -41,9 +41,7 @@ class Mine(Resource, UserMixin):
             return {'error': 'Must specify a name.'}, 400
         if len(name) > 60:
             return {'error': 'Specified name exceeds 60 characters.'}, 400
-        user_info = self.get_user_info()
-        user_kwargs = {'create_user': user_info, 'update_user': user_info}
-        mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **user_kwargs)
+        mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         mine_identity.save()
         mine_detail = MineDetail(
             mine_detail_guid=uuid.uuid4(),
@@ -51,7 +49,7 @@ class Mine(Resource, UserMixin):
             mine_no=generate_mine_no(),
             mine_name=name,
             mine_note=note if note else '',
-            **user_kwargs
+            **self.get_create_update_dict()
         )
         mine_detail.save()
         if lat and lon:
@@ -60,7 +58,7 @@ class Mine(Resource, UserMixin):
                 mine_guid=mine_identity.mine_guid,
                 latitude=lat,
                 longitude=lon,
-                **user_kwargs
+                **self.get_create_update_dict()
             )
             location.save()
 
@@ -84,8 +82,6 @@ class Mine(Resource, UserMixin):
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
             return {'message': 'Mine not found'}, 404
-        user_info = self.get_user_info()
-        user_kwargs = {'create_user': user_info, 'update_user': user_info}
         # Tenure validation
         if tenure:
             if not tenure.isdigit():
@@ -99,7 +95,7 @@ class Mine(Resource, UserMixin):
                 mineral_tenure_xref_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
                 tenure_number_id=tenure,
-                **user_kwargs
+                **self.get_create_update_dict()
             )
             tenure.save()
         # Location validation
@@ -109,7 +105,7 @@ class Mine(Resource, UserMixin):
                 mine_guid=mine.mine_guid,
                 latitude=lat,
                 longitude=lon,
-                **user_kwargs
+                **self.get_create_update_dict()
             )
             location.save()
 
