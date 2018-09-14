@@ -1,4 +1,38 @@
-ASSUMPTIONS:
+## SQL scripts for ETL and Migrations
+This folder contains following:
+- Dockerfile : Dockerfile defining image definition for running flyway migrations
+- Dockerfile.dev : Dockerfile defining postgres migrations for local development
+- etl\ : Directory containing SQL scripts for any ETL process
+- sql\ : Directory containing SQL scripts for migrations to be run by Flyway
+
+We are using Flyway to version and run our Database migrations. The docker image also contains Postgres-client (psql)
+which allows us to run any scripts directly against the database.
+
+### Migrations
+
+The migrations scripts are versioned as per flyway recommended convention. For more info:
+https://flywaydb.org/documentation/migrations
+
+### ETL (Extract, Transform, Load)
+
+The etl scripts are used for fetching data from the legacy MMS system. Currently they do not run automatically and require
+manually execution.
+To run the script manually, follow the instructions below:
+1. Login into Openshift console and navigate to the deployment environment.
+2. Open up a terminal into the `flyway-migration` container under the `mds-python-backend` pod.
+3. Navigate to the `etl` directory under `FLYWAY_HOME` directory.
+```
+cd $FLYWAY_HOME\etl
+```
+4. Run the desired script against the current database.
+```
+psql -f FILENAME.sql
+```
+
+Note: If you want to run scripts against a seperate db first. You can pass different parameters to the psql client such as : `psql -d DATABASE_NAME -f FILENAME.sql`
+
+
+#### ASSUMPTIONS:
 - there is a dedicated database (e.g. `mds`), with an owner (e.g. `mds`) that has all the required privileges required
 - Openshift Pipeline will take care of this.  Note that if you require it locally:
    `psql -t -U $POSTGRESQL_USER`
@@ -8,7 +42,7 @@ ASSUMPTIONS:
   CREATE USER mds WITH ENCRYPTED PASSWORD '<xxxx>';
   GRANT ALL PRIVILEGES ON DATABASE mds TO mds;
 ```
-1. Logged in as superuser on 'mds' database: 
+1. Logged in as superuser on 'mds' database:
 
 ```
 cd $APP_ROOT/src/migrations
@@ -17,7 +51,7 @@ psql -d $POSTGRESQL_DATABASE -f sql/V0.1__Extension_Crypto.sql
 
 To revert: `psql -d $POSTGRESQL_DATABASE -f sql/U0.1__Extension_Crypto.sql`
 
-2. Logged in as 'mds' user on 'mds' database: 
+2. Logged in as 'mds' user on 'mds' database:
 
 ```
 cd $APP_ROOT/src/migrations
@@ -39,12 +73,12 @@ psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER << EOF
 EOF
 ```
 
-3. Optional test data, logged in as 'mds' user on 'mds' database: 
+3. Optional test data, logged in as 'mds' user on 'mds' database:
 
 ```
 psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER << EOF
 INSERT INTO mine_identity
- (mine_guid, create_user, update_user) 
+ (mine_guid, create_user, update_user)
 VALUES (
  '2daa4513-201f-4103-83c6-5bd1fae6a962'::uuid
  ,'IDIR\GARYWONG'
@@ -87,7 +121,7 @@ INSERT INTO person
 VALUES (
  'e251f99f-1bf8-4956-ac84-de1c058496ed'::uuid
 ,'Joseph'
-,'Technicolour'  
+,'Technicolour'
 ,'IDIR\GARYWONG'
 ,'IDIR\GARYWONG'
 ,'1999-12-31'::date
@@ -114,11 +148,11 @@ INNER JOIN mine_detail         det  ON id.mine_guid   = det.mine_guid
 INNER JOIN mineral_tenure_xref xref ON xref.mine_guid = id.mine_guid;
 
 SELECT id.mine_guid, det.mine_no, det.mine_name, mgr.first_name, mgr.surname,
-       app.effective_date, 
+       app.effective_date,
        CASE app.expiry_date
          WHEN '9999-12-31'::date THEN NULL
          ELSE app.expiry_date
-       END 
+       END
 FROM   mine_identity id,
        mine_detail det,
        person mgr,
