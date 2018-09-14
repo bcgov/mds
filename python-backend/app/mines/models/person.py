@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
+
+from .mines import MineIdentity
 from .mixins import AuditMixin, Base
 
 
@@ -15,7 +17,7 @@ class Person(AuditMixin, Base):
     phone_ext = db.Column(db.String(4), nullable=False)
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     mgr_appointment = db.relationship('MgrAppointment', backref='person', lazy='joined')
 
@@ -59,16 +61,19 @@ class MgrAppointment(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     person_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('person.person_guid'), primary_key=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
 
     def json(self):
         person = Person.find_by_person_guid(str(self.person_guid))
+        mine = MineIdentity.find_by_mine_guid(str(self.mine_guid))
+        mine_name = mine.mine_detail[0].mine_name
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
+            'mine_name': str(mine_name),
             'person_guid': str(self.person_guid),
             'first_name': person.first_name,
             'surname': person.surname,
