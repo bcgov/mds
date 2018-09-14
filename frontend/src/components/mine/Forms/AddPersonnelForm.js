@@ -58,7 +58,7 @@ export const AddPersonnelForm = (props) => {
                 name="phone_ext"
                 label='Ext'
                 component={RenderField}
-                validate={[number, maxLength(5)]}
+                validate={[number, maxLength(4)]}
               />
             </Form.Item>
           </Col>

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row, Modal, Card, Button, Drawer, List, Avatar, Divider } from 'antd';
+import { Link } from 'react-router-dom';
+import { Col, Row, Modal, Card, Button } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
@@ -13,6 +14,7 @@ import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
 import { MINER, MINER_TWO } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
 import LoadingBar from 'react-redux-loading-bar'
+import * as router from '@/constants/routes';
 
 const propTypes = {
   getPersonnelById: PropTypes.func.isRequired,
@@ -32,7 +34,7 @@ const defaultProps = {
 };
 
 export class ViewMineManager extends Component {
-  state = { modalVisible: false, drawerVisible: false }
+  state = { modalVisible: false }
 
   /**
  * add new personnel (firstName, surname) to db.
@@ -68,13 +70,6 @@ export class ViewMineManager extends Component {
     }
   }
 
-  toggleDrawer = () => {
-    this.setState({
-      drawerVisible: !this.state.drawerVisible,
-    });
-  };
-
-
   toggleModal = () => {
     this.setState({
       modalVisible: !this.state.modalVisible,
@@ -87,18 +82,6 @@ export class ViewMineManager extends Component {
       this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
     }
   }
-
-  renderHistory() {
-    if (this.props.personnelIds[0] && this.props.mine.mgr_appointment[0]) {
-      return (
-    this.props.personnel['f3cd8605-1aaa-41b6-9c47-09d4b5341b3e'].mgr_appointment.map((data, i) => {
-            return (<div key={i}><p>{data.effective_date} - {data.expiry_date}
-</p></div>)
-          })
-        )
-        }
-  }
-
   render() {
     const { mine } = this.props;
     if (this.props.mine.mgr_appointment[0]) {
@@ -124,7 +107,9 @@ export class ViewMineManager extends Component {
               <Col span={6}><p className="p-large">7564</p></Col>
             </Row>
             <div className="right">
-            <Button type="secondary" onClick={this.toggleDrawer}>View profile</Button>
+              <Link to={router.PERSONNEL_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
+                <Button type="secondary">View profile</Button>
+              </Link>
             <ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/>
             </div>
           </Card>
@@ -140,27 +125,6 @@ export class ViewMineManager extends Component {
               <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
             </div>
           </Modal>
-
-          <Drawer
-          width={640}
-          placement="right"
-          closable={false}
-          onClose={this.toggleDrawer}
-          visible={this.state.drawerVisible}
-        >
-          <h1>Mine Manager</h1>
-          <p>{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p>
-          <p>{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p>
-          <Divider />
-          <p>Contacts</p>
-          <p>Email:</p>
-          <p>Phone:</p>
-         
-          <Divider />
-          <p>History</p>
-         {this.renderHistory()}
-        
-        </Drawer>
         </div>
         );
     } else if (!this.props.mine.mgr_appointment[0]) {
