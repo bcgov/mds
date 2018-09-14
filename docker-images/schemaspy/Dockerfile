@@ -13,11 +13,11 @@ RUN apk update && \
     apk --no-cache add \
         tini \
         git \
+        curl \
         openssh-client && \
     apk --no-cache add --virtual \
         devs \
-        tar \
-        curl
+        tar
 
 # Install Caddy Server, and All Middleware
 RUN curl -L "https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
