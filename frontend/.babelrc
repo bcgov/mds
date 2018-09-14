@@ -1,12 +1,15 @@
 {
   "presets": [
+    ["env", {
+        "useBuiltIns": true
+    }],
+    "es2015",
     "env",
     "react",
     "stage-2"
   ],
   "plugins": [
-    ["transform-runtime", {
-      "regenerator": true
-    }]
+    ["transform-runtime", {"regenerator": true}],
+    ["transform-class-properties"]
   ]
 }

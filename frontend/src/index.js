@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
@@ -20,7 +21,7 @@ export class Index extends Component {
   render() {
     if (this.state.environment) {
       return (
-        <App />
+          <App />
       )
     }else {
       return(<div></div>)
