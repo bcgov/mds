@@ -5,7 +5,7 @@ import uuid
 import click
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Api
+from flask_restplus import Api, Resource
 from sqlalchemy.exc import DBAPIError
 
 from .mines.models.mines import MineIdentity, MineDetail
@@ -62,6 +62,12 @@ def register_routes(app, api):
     api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
     api.add_resource(PersonList, '/persons')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+
+    # Healthcheck endpoint
+    @api.route('/health')
+    class Healthcheck(Resource):
+        def get(self):
+            return {'success': 'true'}
 
     # Default error handler to propogate lower level errors up to the API level
     @api.errorhandler

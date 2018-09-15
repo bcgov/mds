@@ -96,7 +96,7 @@
                       "command": [
                         "sh",
                         "-c",
-                        "nc -vzw 1800 ${BACKEND_HOST} 80"
+                        "curl --connect-timeout 5 --retry-delay 60 --retry-connrefused --retry-max-time 1200 ${BACKEND_HOST}/health"
                       ]
                     }
                   },
