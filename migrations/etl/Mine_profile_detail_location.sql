@@ -1,7 +1,11 @@
-/* data migration from MMS to MDS*/
+-- 1. Migrate MINE PROFILE (mine name, mumber, lat/long)
 
---1. Migrate MINE PROFILE (mine name, mumber, lat/long)
 
+-- Create the ETL_PROFILE table
+/*
+This is the intermediary table that will be used to
+store data from the MMS database.
+*/
 CREATE TABLE IF NOT EXISTS ETL_PROFILE (
     mine_guid uuid          ,
     mine_no   varchar(7)    ,
@@ -10,7 +14,9 @@ CREATE TABLE IF NOT EXISTS ETL_PROFILE (
     lon_dec  numeric(11,7)
 );
 
---update ETL_PROFILE for new mine record found
+-- Upsert data into ETL_PROFILE from MMS
+-- If new rows have been added since the last ETL, only insert the new ones.
+-- Generate a random UUID for mine_guid
 INSERT INTO ETL_PROFILE (
     mine_guid       ,
     mine_no         ,
@@ -29,7 +35,7 @@ WHERE NOT EXISTS (
     FROM    ETL_PROFILE
     WHERE   mine_no = mine_profile.mine_no);
 
---insert mine_guid generated in ETL_PROFILE for new record found in MMS
+-- Upsert data from ETL_PROFILE into mine_identity table
 INSERT INTO mine_identity(
     mine_guid           ,
     create_user         ,
@@ -48,7 +54,7 @@ WHERE NOT EXISTS (
     FROM    mine_detail
     WHERE   mine_no = ETL_PROFILE.mine_no);
 
---update MDS mine_detail for new record in ETL_PROFILE
+-- Upsert data from ETL_PROFILE into mine_detail
 INSERT INTO mine_detail(
     mine_detail_guid    ,
     mine_guid           ,
@@ -77,7 +83,7 @@ WHERE NOT EXISTS (
     FROM    mine_detail
     WHERE   mine_no = ETL_PROFILE.mine_no);
 
---update mine_location for new record in ETL_PROFILE
+-- Upsert data from ETL_PROFILE into mine_location
 WITH new_record AS
 (
     SELECT *
