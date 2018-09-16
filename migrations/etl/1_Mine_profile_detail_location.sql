@@ -1,8 +1,8 @@
 -- 1. Migrate MINE PROFILE (mine name, mumber, lat/long)
- -- Create the ETL_PROFILE table
+-- Create the ETL_PROFILE table
 /*
 This is the intermediary table that will be used to
-store data from the MMS database.
+store mine profile from the MMS database.
 */
 CREATE TABLE IF NOT EXISTS ETL_PROFILE (
     mine_guid uuid          ,
@@ -32,7 +32,7 @@ WHERE NOT EXISTS (
     FROM    ETL_PROFILE
     WHERE   mine_no = mine_profile.mine_no);
 
---Temp table to store only records in ETL that does not exist in mine_details
+--Temp table to store only records in ETL_PROFILE that does not exist in mine_details
 DROP TABLE IF EXISTS new_profile;
 CREATE TEMP TABLE new_profile AS
 (
@@ -41,7 +41,7 @@ CREATE TEMP TABLE new_profile AS
     WHERE NOT EXISTS (
         SELECT  1
         FROM    mine_detail
-        WHERE   mine_no = ETL_PROFILE.mine_no
+        WHERE   mine_guid = ETL_PROFILE.mine_guid
     )
 );
 -- Upsert data from new_record into mine_identity table
@@ -58,7 +58,6 @@ SELECT
     'mms_migration'     ,
     now()
 FROM new_profile new;
-
 -- Upsert data from new_record into mine_detail
 INSERT INTO mine_detail(
     mine_detail_guid    ,
@@ -72,15 +71,15 @@ INSERT INTO mine_detail(
     update_user         ,
     update_timestamp    )
 SELECT
-    gen_random_uuid()      ,
-    new.mine_guid   ,
-    new.mine_no     ,
-    new.mine_nm     ,
+    gen_random_uuid()   ,
+    new.mine_guid       ,
+    new.mine_no         ,
+    new.mine_nm         ,
     now()               ,
     '9999-12-31'::date	,
-    'mms'               ,
+    'mms_migration'     ,
     now()               ,
-    'mms'               ,
+    'mms_migration'     ,
     now()
 FROM new_profile new;
 
@@ -115,9 +114,9 @@ SELECT
     new.lon_dec         ,
     now()               ,
     '9999-12-31'::date	,
-    'mms'               ,
+    'mms_migration'     ,
     now()               ,
-    'mms'               ,
+    'mms_migration'     ,
     now()
 FROM new_profile new
 WHERE
