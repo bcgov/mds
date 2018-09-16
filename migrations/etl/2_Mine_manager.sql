@@ -137,8 +137,6 @@ SELECT
     CASE 
         WHEN manager.phone_no='' THEN 'Unknown'
         WHEN manager.phone_no='   ' THEN 'Unknown'
-        WHEN char_length(manager.phone_no)<10 THEN 'Unknown'
-        WHEN regexp_matches()
         ELSE manager.phone_no
     END                         ,
     CASE manager.email
