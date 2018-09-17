@@ -45,6 +45,7 @@ SearchCoordinatesForm.propTypes = propTypes;
 
 export default (reduxForm({
   form: FORM.SEARCH_COORDINATES,
+  touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
 })(SearchCoordinatesForm)
 );

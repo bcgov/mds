@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import LoadingBar from 'react-redux-loading-bar'
 import { Col, Row, Modal, Card, Button } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
@@ -13,7 +14,6 @@ import AddPersonnelForm from '../Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
 import { MINER, MINER_TWO } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
-import LoadingBar from 'react-redux-loading-bar'
 import * as router from '@/constants/routes';
 
 const propTypes = {
@@ -58,7 +58,13 @@ export class ViewMineManager extends Component {
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
     if (this.props.personnelIds.length === 0) {
-      return (<NullScreen primaryMessage="No data available" secondaryMessage="Please create personnel below" img={MINER_TWO}/>)
+      return (
+        <NullScreen 
+          primaryMessage="No data available" 
+          secondaryMessage="Please create personnel below" 
+          img={MINER_TWO}
+        />
+      )
     } else {
       return (
         <UpdateMineManagerForm
@@ -82,9 +88,11 @@ export class ViewMineManager extends Component {
       this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
     }
   }
+
   render() {
     const { mine } = this.props;
-    if (this.props.mine.mgr_appointment[0]) {
+    if (this.props.mine.mgr_appointment[0] && this.props.personnelIds[0]) {
+      const personnel = this.props.personnel[mine.mgr_appointment[0].person_guid];
       return (
         <div>
           <Card>
@@ -102,15 +110,19 @@ export class ViewMineManager extends Component {
               <Col span={6}><h4>Ext</h4></Col>
             </Row>
             <Row type="flex">
-              <Col span={12}><p className="p-large">mine@mine.com</p></Col>
-              <Col span={6}><p className="p-large">555-555-5555</p></Col>
-              <Col span={6}><p className="p-large">7564</p></Col>
+              <Col span={12}><p className="p-large">{personnel.email}</p></Col>
+              <Col span={6}><p className="p-large">{personnel.phone_no}</p></Col>
+              <Col span={6}><p className="p-large">{personnel.phone_ext}</p></Col>
             </Row>
             <div className="right">
               <Link to={router.PERSONNEL_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
                 <Button type="secondary">View profile</Button>
               </Link>
-            <ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/>
+              <ConditionalButton 
+                handleAction={this.toggleModal} 
+                string="Update Mine Manager" 
+                type="primary"
+              />
             </div>
           </Card>
           <Modal
@@ -119,19 +131,32 @@ export class ViewMineManager extends Component {
             footer={null}
             onCancel={this.toggleModal}
           >
-            <LoadingBar scope="modal" style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} />
+            <LoadingBar 
+              scope="modal" 
+              style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
+            />
             <div>
               {this.renderMineManagerForm()}
               <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
             </div>
           </Modal>
         </div>
-        );
+      );
     } else if (!this.props.mine.mgr_appointment[0]) {
       return (
         <div>
-          <NullScreen primaryMessage="No assigned mine manager" secondaryMessage="Please add mine manager below" img={MINER} />
-          <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Update Mine Manager" type="primary"/></div>
+          <NullScreen 
+            primaryMessage="No assigned mine manager" 
+            secondaryMessage="Please add mine manager below" 
+            img={MINER} 
+          />
+          <div className="center">
+            <ConditionalButton 
+              handleAction={this.toggleModal} 
+              string="Update Mine Manager"
+              type="primary"
+             />
+          </div>
           <Modal
             title="Update Mine Manager"
             visible={this.state.modalVisible}

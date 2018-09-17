@@ -7,7 +7,7 @@ class Validator {
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
   USA_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
   EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-  PHONE_REGEX = /^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/i;
+  PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
   NAME_REGEX = /^[A-Za-zÀ-ÿ'\-\s']+$/;
   FLOATS_REGEX = /^-?\d*(\.{1}\d+)?$/;
   NUMBERS_OR_EMPTY_STRING_REGEX = /^-?\d*\.?\d*$/;
@@ -48,6 +48,6 @@ export const lat = (value) => (value && !Validate.checkLat(value)) ? 'Invalid la
 
 export const lon = (value) => (value && !Validate.checkLon(value)) ? 'Invalid longitude coordinate e.g. -127.6476000' : undefined;
 
-export const phoneNumber  = (value) => (value && !Validate.checkPhone(value)) ? 'Invalid phone number' : undefined;
+export const phoneNumber  = (value) => (value && !Validate.checkPhone(value)) ? 'Invalid phone number e.g. xxx-xxx-xxxx' : undefined;
 
 export const email = (value) => (value && !Validate.checkEmail(value)) ? 'Invalid email address' : undefined;

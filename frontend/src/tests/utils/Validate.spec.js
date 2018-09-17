@@ -146,17 +146,16 @@ describe('Validate class', () => {
 
     it('returns `undefined` if  if `value` is a valid phone number', () => {
       const value = '555-555-5065';
-      const valueTwo = "5555555555";
       expect(phoneNumber(value)).toEqual(undefined);
-      expect(phoneNumber(valueTwo)).toEqual(undefined);
     });
 
-    it('returns `Invalid phone number` if `value` is not a valid phone number', () => {
+    it('returns `Invalid phone number e.g. xxx-xxx-xxxx` if `value` is not a valid phone number', () => {
       const valueOne = '5555-55-5555';
       const valueTwo = "555-5555-555";
-      expect(phoneNumber(valueOne)).toEqual('Invalid phone number');
-      expect(phoneNumber(valueTwo)).toEqual('Invalid phone number');
-     
+      const valueThree = "5555555555";
+      expect(phoneNumber(valueOne)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
+      expect(phoneNumber(valueTwo)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
+      expect(phoneNumber(valueThree)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
     });
   });
 

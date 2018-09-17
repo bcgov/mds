@@ -2,7 +2,7 @@
 
 // TABS 
 .ant-tabs-nav-scroll {
-  margin: auto;
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -38,10 +38,25 @@
 }
 
 // BUTTON 
+.ant-btn-secondary {
+  margin-right: 15px;
+  color: white;
+  background-color: $default-brown;
+  min-width: 100px;
+
+  &:hover {
+    opacity: 0.6;
+    color: white;
+    background-color: $default-brown;
+    border: 1px solid $default-brown;
+  }
+}
 
 .ant-btn-primary {
-  margin-bottom: 15px;
   min-width: 100px;
+  &:hover {
+    opacity: 0.6;
+  }
 }
 // CARDS
 .ant-card {
