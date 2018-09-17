@@ -1,6 +1,9 @@
 from app.extensions import jwt
 from jose import jwt as jwt_jose
 
+VALID_REALM = [
+    'idir'
+]
 
 class User:
     def get_user_raw_info(self):
@@ -26,4 +29,5 @@ class User:
 
     def get_user_username(self):
         raw_info = self.get_user_raw_info()
-        return raw_info['preferred_username']
+        realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
+        return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info['preferred_username']
