@@ -24,12 +24,12 @@ class MineHeader extends Component {
           <h1>{mine.mine_detail[0].mine_name}</h1>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <div className="dashboard__header__content--inline">
-            <div className="inline-flex">
+            <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
               <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
             </div>
-            <div className="inline-flex">
+            <div className="inline-flex between">
               <img src={ELLIPSE} />
               <div><h5>Status: </h5></div>
               <div><h3>Active</h3></div>

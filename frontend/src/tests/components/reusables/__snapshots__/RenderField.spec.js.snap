@@ -31,6 +31,7 @@ ShallowWrapper {
       "children": <Input
         disabled={false}
         id={1}
+        placeholder={undefined}
         prefixCls="ant-input"
         type=""
       />,
@@ -38,7 +39,6 @@ ShallowWrapper {
       "hasFeedback": false,
       "help": false,
       "label": "",
-      "placeholder": "lat",
       "prefixCls": "ant-form",
       "validateStatus": "",
     },
@@ -50,6 +50,7 @@ ShallowWrapper {
       "props": Object {
         "disabled": false,
         "id": 1,
+        "placeholder": undefined,
         "prefixCls": "ant-input",
         "type": "",
       },
@@ -68,6 +69,7 @@ ShallowWrapper {
         "children": <Input
           disabled={false}
           id={1}
+          placeholder={undefined}
           prefixCls="ant-input"
           type=""
         />,
@@ -75,7 +77,6 @@ ShallowWrapper {
         "hasFeedback": false,
         "help": false,
         "label": "",
-        "placeholder": "lat",
         "prefixCls": "ant-form",
         "validateStatus": "",
       },
@@ -87,6 +88,7 @@ ShallowWrapper {
         "props": Object {
           "disabled": false,
           "id": 1,
+          "placeholder": undefined,
           "prefixCls": "ant-input",
           "type": "",
         },

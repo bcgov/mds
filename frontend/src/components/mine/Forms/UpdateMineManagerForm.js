@@ -58,6 +58,7 @@ UpdateMineManagerForm.defaultProps = defaultProps;
 
 export default (reduxForm({
     form: FORM.UPDATE_MINE_MANAGER,
-  onSubmitSuccess: resetForm(FORM.UPDATE_MINE_MANAGER),
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.UPDATE_MINE_MANAGER),
   })(UpdateMineManagerForm)
 );

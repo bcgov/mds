@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
+import RenderAutoSizeField from '@/components/reusables/RenderAutoSizeField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
@@ -47,6 +48,20 @@ export const AddMineRecordform = (props) => {
               label='Longitude'
               component={RenderField}
               validate={[number, maxLength(12), lon]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col>
+          <Form.Item>
+            <Field
+              style={{height: '400px'}}
+              id="note"
+              name="note"
+              label='Notes'
+              component={RenderAutoSizeField}
+              validate={[maxLength(300)]}
             />
           </Form.Item>
         </Col>
