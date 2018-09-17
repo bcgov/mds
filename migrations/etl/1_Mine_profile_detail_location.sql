@@ -14,6 +14,15 @@ CREATE TABLE IF NOT EXISTS ETL_PROFILE (
 -- Upsert data into ETL_PROFILE from MMS
 -- If new rows have been added since the last ETL, only insert the new ones.
 -- Generate a random UUID for mine_guid
+WITH mms_new AS(
+    SELECT *
+    FROM mms.mmsmin mms_profile
+    WHERE NOT EXISTS (
+        SELECT  1
+        FROM    ETL_PROFILE
+        WHERE   mine_no = mms_profile.mine_no
+    )
+)
 INSERT INTO ETL_PROFILE (
     mine_guid       ,
     mine_no         ,
@@ -22,29 +31,25 @@ INSERT INTO ETL_PROFILE (
     lon_dec         )
 SELECT
     gen_random_uuid()       ,
-    mine_profile.mine_no    ,
-    mine_profile.mine_nm    ,
-    mine_profile.lat_dec    ,
-    mine_profile.lon_dec
-FROM mms.mmsmin mine_profile
-WHERE NOT EXISTS (
-    SELECT  1
-    FROM    ETL_PROFILE
-    WHERE   mine_no = mine_profile.mine_no);
+    mms_new.mine_no    ,
+    mms_new.mine_nm    ,
+    mms_new.lat_dec    ,
+    mms_new.lon_dec
+FROM mms_new;
 
---Temp table to store only records in ETL_PROFILE that does not exist in mine_details
-DROP TABLE IF EXISTS new_profile;
-CREATE TEMP TABLE new_profile AS
-(
+
+
+
+-- Upsert data from new_record into mine_identity table
+WITH new_record AS (
     SELECT *
     FROM ETL_PROFILE
     WHERE NOT EXISTS (
         SELECT  1
-        FROM    mine_detail
+        FROM    mine_identity
         WHERE   mine_guid = ETL_PROFILE.mine_guid
     )
-);
--- Upsert data from new_record into mine_identity table
+)
 INSERT INTO mine_identity(
     mine_guid           ,
     create_user         ,
@@ -57,8 +62,20 @@ SELECT
     now()               ,
     'mms_migration'     ,
     now()
-FROM new_profile new;
+FROM new_record new;
+
+
+
 -- Upsert data from new_record into mine_detail
+WITH new_record AS (
+    SELECT *
+    FROM ETL_PROFILE
+    WHERE NOT EXISTS (
+        SELECT  1
+        FROM    mine_detail
+        WHERE   mine_guid = ETL_PROFILE.mine_guid
+    )
+)
 INSERT INTO mine_detail(
     mine_detail_guid    ,
     mine_guid           ,
@@ -81,12 +98,12 @@ SELECT
     now()               ,
     'mms_migration'     ,
     now()
-FROM new_profile new;
+FROM new_record new;
 
---Temp table to store only records in ETL that does not exist in mine_location
-DROP TABLE IF EXISTS new_location;
-CREATE TEMP TABLE new_location AS
-(
+
+ 
+-- Upsert data from new_record into mine_location
+WITH new_record AS (
     SELECT *
     FROM ETL_PROFILE
     WHERE NOT EXISTS (
@@ -94,8 +111,7 @@ CREATE TEMP TABLE new_location AS
         FROM    mine_location
         WHERE   mine_no = ETL_PROFILE.mine_no
     )
-);
--- Upsert data from new_record into mine_location
+)
 INSERT INTO mine_location(
     mine_location_guid  ,
     mine_guid           ,
@@ -118,7 +134,7 @@ SELECT
     now()               ,
     'mms_migration'     ,
     now()
-FROM new_profile new
+FROM new_record new
 WHERE
     (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
     AND
