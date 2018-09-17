@@ -37,15 +37,15 @@ export class PersonnelProfile extends Component {
             <div className="inline-flex between">
               <h1>{personnel.full_name}</h1>
               <div className="inline-flex">
-                <img className="inline-flex--img" src={EMAIL} />
+                <img src={EMAIL} />
                 <h5>{personnel.email}</h5>
               </div>
             </div>
             <div className="inline-flex between">
               <h2>Mine Manager</h2>
               <div className="inline-flex">
-                <img className="inline-flex--img" src={PHONE} />
-                <h5>{personnel.phone_no}<span> Ext: </span> {personnel.phone_ext}</h5>
+                <img src={PHONE} />
+                <h5>{personnel.phone_no}</h5>
               </div>
             </div>
           </div>
