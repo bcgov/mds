@@ -18,9 +18,7 @@ class Person(AuditMixin, Base):
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
-    # mgr_appointment = db.relationship('MgrAppointment', backref='person', lazy='joined')
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid
