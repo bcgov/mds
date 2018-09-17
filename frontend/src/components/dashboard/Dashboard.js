@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Pagination, Tabs, Col, Row, Divider } from 'antd';
+import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
 
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
@@ -20,6 +20,7 @@ import { NO_MINE } from '@/constants/assets';
 import NullScreen from '@/components/reusables/NullScreen';
 import Loading from '@/components/reusables/Loading';
 import MineMap from '@/components/maps/MineMap';
+import * as String from '@/constants/strings';
 
 const TabPane = Tabs.TabPane;
 
@@ -40,7 +41,7 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = { mineList: false, lat: 53.7267, long: -127.6476, showCoordinates: false, mineName: null}
+  state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
  
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
@@ -61,7 +62,7 @@ export class Dashboard extends Component {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.getMineRecords('1', '25', params.map).then(() => {
+      this.props.getMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }
@@ -77,7 +78,12 @@ export class Dashboard extends Component {
   handleCoordinateSearch = (value) => {
     if (typeof value === 'string') {
       const newVal = value.split(",");
-      this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
+      if (newVal[0] && newVal[1]) {
+        this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
+      } else {
+        this.setState({ lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false })
+        notification.error({ message: String.NO_COORDINATES, duration: 10 });
+      }
     } else {
       this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null})
     }
@@ -102,7 +108,7 @@ export class Dashboard extends Component {
     if (this.state.mineList) {
       if (this.props.mineIds.length === 0) {
         return (
-          <NullScreen primaryMessage="No data found at this time" secondaryMessage="Please try again later" img={NO_MINE} />
+          <NullScreen primaryMessage={String.NO_DATA} secondaryMessage={String.TRY_AGAIN} img={NO_MINE} />
         )
       } else {
         return (
@@ -161,7 +167,7 @@ export class Dashboard extends Component {
                 }
                 {this.state.showCoordinates  && 
                   <div className="center">
-                    <div className="inline-flex">
+                    <div className="inline-flex evenly">
                     <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
                     <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
                     </div>

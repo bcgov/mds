@@ -5,7 +5,9 @@ import {
   exactLength,
   number,
   lat,
-  lon
+  lon,
+  phoneNumber,
+  email
 } from '@/utils/Validate';
 
 describe('Validate class', () => {
@@ -132,6 +134,55 @@ describe('Validate class', () => {
     it('returns `Invalid longitude coordinate e.g. -127.6476000` if `value` exceed 7 digits past decimal.', () => {
       const value = 100.12345678;
       expect(lon(value)).toEqual('Invalid longitude coordinate e.g. -127.6476000');
+    });
+  });
+
+
+  describe('`phoneNumber` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(phoneNumber(value)).toEqual(undefined);
+    });
+
+    it('returns `undefined` if  if `value` is a valid phone number', () => {
+      const value = '555-555-5065';
+      expect(phoneNumber(value)).toEqual(undefined);
+    });
+
+    it('returns `Invalid phone number e.g. xxx-xxx-xxxx` if `value` is not a valid phone number', () => {
+      const valueOne = '5555-55-5555';
+      const valueTwo = "555-5555-555";
+      const valueThree = "5555555555";
+      expect(phoneNumber(valueOne)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
+      expect(phoneNumber(valueTwo)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
+      expect(phoneNumber(valueThree)).toEqual('Invalid phone number e.g. xxx-xxx-xxxx');
+    });
+  });
+
+  describe('`email` function', () => {
+    it('returns `undefined` if blank', () => {
+      const value = '';
+      expect(email(value)).toEqual(undefined);
+    });
+
+    it('returns `undefined` if  if `value` is a valid email address', () => {
+      const value = 'test@test.com';
+      const valueTwo = "test.test@test.test.ca";
+      const valueThree = "test-test@test.test.ca";
+      const valueFour = "test_test@test.test.ca";
+      expect(email(value)).toEqual(undefined);
+      expect(email(valueTwo)).toEqual(undefined);
+      expect(email(valueThree)).toEqual(undefined);
+      expect(email(valueFour)).toEqual(undefined);
+    });
+
+    it('returns `Invalid email address` if `value` is not a valid email address', () => {
+      const valueOne = 'test@test.testtest';
+      const valueTwo = "test@test";
+      const valueThree = "test";
+      expect(email(valueOne)).toEqual('Invalid email address');
+      expect(email(valueTwo)).toEqual('Invalid email address');
+      expect(email(valueThree)).toEqual('Invalid email address');
     });
   });
 });

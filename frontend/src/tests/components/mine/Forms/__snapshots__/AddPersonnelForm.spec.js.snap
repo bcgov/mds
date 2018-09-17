@@ -38,7 +38,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="first_name"
-                label="First Name"
+                label="First Name *"
                 name="first_name"
                 validate={
                   Array [
@@ -59,10 +59,86 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="surname"
-                label="Surname"
+                label="Surname *"
                 name="surname"
                 validate={
                   Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col
+            span={24}
+          >
+            <FormItem
+              colon={true}
+              hasFeedback={false}
+              prefixCls="ant-form"
+            >
+              <Field
+                component={[Function]}
+                id="email"
+                label="Email *"
+                name="email"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col
+            span={18}
+          >
+            <FormItem
+              colon={true}
+              hasFeedback={false}
+              prefixCls="ant-form"
+            >
+              <Field
+                component={[Function]}
+                id="phone_no"
+                label="Phone Number *"
+                name="phone_no"
+                placeholder="e.g. xxx-xxx-xxxx"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            span={6}
+          >
+            <FormItem
+              colon={true}
+              hasFeedback={false}
+              prefixCls="ant-form"
+            >
+              <Field
+                component={[Function]}
+                id="phone_ext"
+                label="Ext"
+                name="phone_ext"
+                validate={
+                  Array [
+                    [Function],
                     [Function],
                   ]
                 }
@@ -108,7 +184,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="first_name"
-                  label="First Name"
+                  label="First Name *"
                   name="first_name"
                   validate={
                     Array [
@@ -129,10 +205,86 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="surname"
-                  label="Surname"
+                  label="Surname *"
                   name="surname"
                   validate={
                     Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+          </Row>,
+          <Row
+            gutter={16}
+          >
+            <Col
+              span={24}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="email"
+                  label="Email *"
+                  name="email"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+          </Row>,
+          <Row
+            gutter={16}
+          >
+            <Col
+              span={18}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="phone_no"
+                  label="Phone Number *"
+                  name="phone_no"
+                  placeholder="e.g. xxx-xxx-xxxx"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              span={6}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="phone_ext"
+                  label="Ext"
+                  name="phone_ext"
+                  validate={
+                    Array [
+                      [Function],
                       [Function],
                     ]
                   }
@@ -179,7 +331,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name"
+                    label="First Name *"
                     name="first_name"
                     validate={
                       Array [
@@ -200,7 +352,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="surname"
-                    label="Surname"
+                    label="Surname *"
                     name="surname"
                     validate={
                       Array [
@@ -228,7 +380,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name"
+                    label="First Name *"
                     name="first_name"
                     validate={
                       Array [
@@ -248,7 +400,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name"
+                    label="First Name *"
                     name="first_name"
                     validate={
                       Array [
@@ -268,7 +420,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "first_name",
-                    "label": "First Name",
+                    "label": "First Name *",
                     "name": "first_name",
                     "validate": Array [
                       [Function],
@@ -295,7 +447,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="surname"
-                    label="Surname"
+                    label="Surname *"
                     name="surname"
                     validate={
                       Array [
@@ -315,7 +467,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="surname"
-                    label="Surname"
+                    label="Surname *"
                     name="surname"
                     validate={
                       Array [
@@ -335,9 +487,317 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "surname",
-                    "label": "Surname",
+                    "label": "Surname *",
                     "name": "surname",
                     "validate": Array [
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Col
+              span={24}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="email"
+                  label="Email *"
+                  name="email"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>,
+            "gutter": 16,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="email"
+                  label="Email *"
+                  name="email"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>,
+              "span": 24,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Field
+                  component={[Function]}
+                  id="email"
+                  label="Email *"
+                  name="email"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />,
+                "colon": true,
+                "hasFeedback": false,
+                "prefixCls": "ant-form",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "component": [Function],
+                  "id": "email",
+                  "label": "Email *",
+                  "name": "email",
+                  "validate": Array [
+                    [Function],
+                    [Function],
+                  ],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone Number *"
+                    name="phone_no"
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>,
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>,
+            ],
+            "gutter": 16,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone Number *"
+                    name="phone_no"
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                "span": 18,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone Number *"
+                    name="phone_no"
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "colon": true,
+                  "hasFeedback": false,
+                  "prefixCls": "ant-form",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "id": "phone_no",
+                    "label": "Phone Number *",
+                    "name": "phone_no",
+                    "placeholder": "e.g. xxx-xxx-xxxx",
+                    "validate": Array [
+                      [Function],
+                      [Function],
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                "span": 6,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "colon": true,
+                  "hasFeedback": false,
+                  "prefixCls": "ant-form",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "id": "phone_ext",
+                    "label": "Ext",
+                    "name": "phone_ext",
+                    "validate": Array [
+                      [Function],
                       [Function],
                     ],
                   },
@@ -420,7 +880,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="first_name"
-                  label="First Name"
+                  label="First Name *"
                   name="first_name"
                   validate={
                     Array [
@@ -441,10 +901,86 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="surname"
-                  label="Surname"
+                  label="Surname *"
                   name="surname"
                   validate={
                     Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              span={24}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="email"
+                  label="Email *"
+                  name="email"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              span={18}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="phone_no"
+                  label="Phone Number *"
+                  name="phone_no"
+                  placeholder="e.g. xxx-xxx-xxxx"
+                  validate={
+                    Array [
+                      [Function],
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              span={6}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="phone_ext"
+                  label="Ext"
+                  name="phone_ext"
+                  validate={
+                    Array [
+                      [Function],
                       [Function],
                     ]
                   }
@@ -490,7 +1026,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name"
+                    label="First Name *"
                     name="first_name"
                     validate={
                       Array [
@@ -511,10 +1047,86 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="surname"
-                    label="Surname"
+                    label="Surname *"
                     name="surname"
                     validate={
                       Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>,
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email *"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>,
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone Number *"
+                    name="phone_no"
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
                         [Function],
                       ]
                     }
@@ -561,7 +1173,7 @@ ShallowWrapper {
                     <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name"
+                      label="First Name *"
                       name="first_name"
                       validate={
                         Array [
@@ -582,7 +1194,7 @@ ShallowWrapper {
                     <Field
                       component={[Function]}
                       id="surname"
-                      label="Surname"
+                      label="Surname *"
                       name="surname"
                       validate={
                         Array [
@@ -610,7 +1222,7 @@ ShallowWrapper {
                     <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name"
+                      label="First Name *"
                       name="first_name"
                       validate={
                         Array [
@@ -630,7 +1242,7 @@ ShallowWrapper {
                     "children": <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name"
+                      label="First Name *"
                       name="first_name"
                       validate={
                         Array [
@@ -650,7 +1262,7 @@ ShallowWrapper {
                     "props": Object {
                       "component": [Function],
                       "id": "first_name",
-                      "label": "First Name",
+                      "label": "First Name *",
                       "name": "first_name",
                       "validate": Array [
                         [Function],
@@ -677,7 +1289,7 @@ ShallowWrapper {
                     <Field
                       component={[Function]}
                       id="surname"
-                      label="Surname"
+                      label="Surname *"
                       name="surname"
                       validate={
                         Array [
@@ -697,7 +1309,7 @@ ShallowWrapper {
                     "children": <Field
                       component={[Function]}
                       id="surname"
-                      label="Surname"
+                      label="Surname *"
                       name="surname"
                       validate={
                         Array [
@@ -717,9 +1329,317 @@ ShallowWrapper {
                     "props": Object {
                       "component": [Function],
                       "id": "surname",
-                      "label": "Surname",
+                      "label": "Surname *",
                       "name": "surname",
                       "validate": Array [
+                        [Function],
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email *"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>,
+              "gutter": 16,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email *"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                "span": 24,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email *"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "colon": true,
+                  "hasFeedback": false,
+                  "prefixCls": "ant-form",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "id": "email",
+                    "label": "Email *",
+                    "name": "email",
+                    "validate": Array [
+                      [Function],
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone Number *"
+                      name="phone_no"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>,
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>,
+              ],
+              "gutter": 16,
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone Number *"
+                      name="phone_no"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>,
+                  "span": 18,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone Number *"
+                      name="phone_no"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />,
+                    "colon": true,
+                    "hasFeedback": false,
+                    "prefixCls": "ant-form",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "component": [Function],
+                      "id": "phone_no",
+                      "label": "Phone Number *",
+                      "name": "phone_no",
+                      "placeholder": "e.g. xxx-xxx-xxxx",
+                      "validate": Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>,
+                  "span": 6,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />,
+                    "colon": true,
+                    "hasFeedback": false,
+                    "prefixCls": "ant-form",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "component": [Function],
+                      "id": "phone_ext",
+                      "label": "Ext",
+                      "name": "phone_ext",
+                      "validate": Array [
+                        [Function],
                         [Function],
                       ],
                     },

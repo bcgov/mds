@@ -8,6 +8,7 @@ import { Map } from 'react-arcgis';
 import PropTypes from 'prop-types';
 import MinePin from './MinePin';
 import LocationPin from './LocationPin';
+import * as String from '@/constants/strings';
 
 const propTypes = {
   mine: PropTypes.object,
@@ -61,13 +62,13 @@ class MineMap extends Component {
           mapProperties={{ basemap: 'streets' }}
           viewProperties={{
             center: [
-              mine.mine_location[0] ? mine.mine_location[0].longitude : -127.6476,
-              mine.mine_location[0] ? mine.mine_location[0].latitude : 53.7267
+              mine.mine_location[0] ? mine.mine_location[0].longitude : String.DEFAULT_LONG,
+              mine.mine_location[0] ? mine.mine_location[0].latitude : String.DEFAULT_LAT
             ],
             zoom: mine.mine_location[0] ? 8 : 4
           }}
           onLoad={this.handleLoadMap}
-          onMouseWheel={(event) => event.event.stopPropagation()}
+          onMouseWheel={(event) => event.stopPropagation()}
           >
           <MinePin/>
         </Map>

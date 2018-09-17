@@ -31,38 +31,6 @@
   }
 }
 
-.inline-flex {
-  @include flex;
-
-  &--img {
-    margin-top: 5px;
-    height: 40%;
-  }
-
-  div {
-    display: fixed;
-    padding: $default-padding-sm;
-  }
-}
-
-@keyframes pulsate {
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    75% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 0;
-    }
-}
-
 circle {
-  animation: pulsate 2400ms ease-out infinite;
+  @include pulsateAnimation;
 }

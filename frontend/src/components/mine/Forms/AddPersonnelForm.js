@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/reusables/RenderField';
 import { Form, Button, Col, Row, Card } from 'antd';
 import * as FORM from '@/constants/forms';
-import { required } from '@/utils/Validate';
+import { required, email, phoneNumber, maxLength, number } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
@@ -21,7 +21,7 @@ export const AddPersonnelForm = (props) => {
               <Field
                 id="first_name"
                 name="first_name"
-                label='First Name'
+                label='First Name *'
                 component={RenderField}
                 validate={[required]}
               />
@@ -32,13 +32,51 @@ export const AddPersonnelForm = (props) => {
               <Field
                 id="surname"
                 name="surname"
-                label='Surname'
+                label='Surname *'
                 component={RenderField}
                 validate={[required]}
               />
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id="email"
+                name="email"
+                label='Email *'
+                component={RenderField}
+                validate={[required, email]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={18}>
+            <Form.Item>
+              <Field
+                id="phone_no"
+                name="phone_no"
+                label='Phone Number *'
+                placeholder="e.g. xxx-xxx-xxxx"
+                component={RenderField}
+                validate={[required, phoneNumber, maxLength(12)]}
+              />
+            </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item>
+                <Field
+                  id="phone_ext"
+                  name="phone_ext"
+                  label='Ext'
+                  component={RenderField}
+                  validate={[number, maxLength(4)]}
+                />
+              </Form.Item>
+            </Col>
+          </Row >
         <div className="right"><Button type="primary" htmlType="submit">Create Personnel</Button></div>
       </Form>
     </div>

@@ -27,6 +27,7 @@ body {
 
 .right {
   text-align: right;
+  margin: 15px;
 }
 
 .left {
@@ -35,4 +36,26 @@ body {
 
 .inline {
   display: inline-block;
+}
+
+.inline-flex {
+  @include flex;
+  
+  &--img {
+    margin-top: 5px;
+    height: 50%;
+  }
+  
+  div {
+    display: fixed;
+    padding: $default-padding-sm;
+  }
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.evenly {
+  justify-content: space-evenly;
 }
