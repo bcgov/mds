@@ -247,7 +247,7 @@
         "displayName": "CPU Limit",
         "required": true,
         "description": "Maximum amount of CPU the container can use.",
-        "value": "150m"
+        "value": "200m"
       },
       {
         "name": "MEMORY_LIMIT",
