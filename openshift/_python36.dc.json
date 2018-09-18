@@ -133,7 +133,11 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./flyway info && ./flyway migrate"
+                  "cd $FLYWAY_HOME &&",
+                  "./flyway info &&",
+                  "./flyway migrate &&",
+                  "./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_test &&",
+                  "./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_functional_test"
                 ]
               }
             },
@@ -210,6 +214,10 @@
                   {
                     "name": "DB_HOST",
                     "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "DB_DUMMY",
+                    "value": "DUMMY"
                   },
                   {
                     "name": "DB_PASS",
