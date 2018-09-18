@@ -133,9 +133,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./flyway migrate",
-                  "cd $FLYWAY_HOME && ./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_test && ",
-                  "cd $FLYWAY_HOME && ./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_functional_test"
+                  "cd $FLYWAY_HOME && ./flyway migrate && ./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_test && ./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_functional_test"
                 ]
               }
             },
