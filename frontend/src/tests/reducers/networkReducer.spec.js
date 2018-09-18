@@ -1,5 +1,5 @@
-import networkReducer from "../../reducers/networkReducer";
-import {request, success, error} from "../../actions/genericActions";
+import networkReducer from "@/reducers/networkReducer";
+import {request, success, error} from "@/actions/genericActions";
 
 describe('networkReducer', () => {
 

@@ -115,3 +115,5 @@ export const PAGE_DATA = {
   "total":9000,
   "total_pages":360,
 }
+
+export const COORDINATES = [48.70707, -122.489504]

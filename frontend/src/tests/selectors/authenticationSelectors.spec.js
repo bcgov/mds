@@ -1,7 +1,7 @@
-import { isAuthenticated, getKeycloak, getUserAccessData, getUserInfo } from "../../selectors/authenticationSelectors";
+import { isAuthenticated, getKeycloak, getUserAccessData, getUserInfo } from "@/selectors/authenticationSelectors";
 import authenticationReducer from "@/reducers/authenticationReducer";
-import {authenticateUser, logoutUser, storeKeycloakData, storeUserAccessData} from "../../actions/authenticationActions";
-import {AUTHENTICATION} from "../../constants/reducerTypes";
+import {authenticateUser, logoutUser, storeKeycloakData, storeUserAccessData} from "@/actions/authenticationActions";
+import {AUTHENTICATION} from "@/constants/reducerTypes";
 
 const mockData = {
   userAccessData: ["role1"],

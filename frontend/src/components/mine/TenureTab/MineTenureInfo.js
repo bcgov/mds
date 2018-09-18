@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AddTenureNumberForm from '../Forms/AddTenureNumberForm';
-import ConditionalButton from '@/components/reusables/ConditionalButton';
-import NullScreen from '@/components/reusables/NullScreen'; 
+import AddTenureNumberForm from '@/components/Forms/AddTenureNumberForm';
+import ConditionalButton from '@/components/common/ConditionalButton';
+import NullScreen from '@/components/common/NullScreen'; 
 import { TENURE } from '@/constants/assets';
 import { Modal, Card, Row, Col } from 'antd';
 
@@ -10,6 +10,7 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   getMineRecordById: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -42,7 +43,8 @@ class MineTenureInfo extends Component {
       return (
         <div>
           <NullScreen 
-            primaryMessage="No data at this time" secondaryMessage="Please add tenure number below" 
+            primaryMessage="No data at this time" 
+            secondaryMessage="Please add tenure number below" 
             img={TENURE} 
           />
           <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>

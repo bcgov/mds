@@ -7,7 +7,7 @@ import { PHONE, EMAIL } from '@/constants/assets';
 
 import { getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getPersonnel } from '@/selectors/personnelSelectors';
-import Loading from '@/components/reusables/Loading';
+import Loading from '@/components/common/Loading';
 
 const TabPane = Tabs.TabPane;
 

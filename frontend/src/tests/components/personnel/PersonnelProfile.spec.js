@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MineContactInfo } from '@/components/mine/ContactTab/MineContactInfo';
+import { PersonnelProfile } from '@/components/personnel/PersonnelProfile';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
@@ -8,10 +8,11 @@ const reducerProps = {}
 
 const setupDispatchProps = () => {
   dispatchProps.getPersonnelById = jest.fn();
+  dispatchProps.match = {};
 };
 
 const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  reducerProps.personnel = MOCK.PERSONNEL.personnel[MOCK.PERSONNEL.personnelIds[0]];
 };
 
 beforeEach(() => {
@@ -19,9 +20,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe('MineContactInfo', () => {
+describe('PersonnelProfile', () => {
   it('renders properly', () => {
-    const component = shallow(<MineContactInfo {...dispatchProps} {...reducerProps} />);
+    const component = shallow(
+      <PersonnelProfile
+        {...dispatchProps}
+        {...reducerProps}
+        match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
+      />
+    );
     expect(component).toMatchSnapshot();
   });
 });

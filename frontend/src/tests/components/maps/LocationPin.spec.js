@@ -1,21 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineSummary from '@/components/mine/SummaryTab/MineSummary';
+import { LocationPin } from '@/components/maps/LocationPin';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
-const props = {}
+const props = {};
 
 const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.center = MOCK.COORDINATES;
+  props.map = {},
+  props.view = {}
 };
 
 beforeEach(() => {
   setupProps();
 });
 
-describe('MineSummary', () => {
+describe('LocationPin', () => {
   it('renders properly', () => {
-    const component = shallow(<MineSummary {...props} />);
+    const component = shallow(<LocationPin {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

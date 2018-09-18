@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MineDashboard } from '@/components/mine/MineDashboard';
+import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
-const dispatchProps = {};
-const reducerProps = {}
+const props = {}
+const dispatchProps = {}
 
 const setupDispatchProps = () => {
   dispatchProps.getMineRecordById = jest.fn();
@@ -12,24 +12,22 @@ const setupDispatchProps = () => {
   dispatchProps.match = {};
 };
 
-const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.mines = MOCK.MINES.mines;
+const setupProps = () => {
+  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 };
 
 beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
+  setupProps();
 });
 
-describe('MineDashboard', () => {
+describe('MineTenureInfo', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MineDashboard 
-      {...dispatchProps} 
-      {...reducerProps} 
+    <MineTenureInfo 
+      {...props} 
+      {...dispatchProps}
       match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
-    />
+      />
   );
     expect(component).toMatchSnapshot();
   });
