@@ -23,6 +23,10 @@ backend-run:
 	@echo "+\n++ Running backend app...\n+"
 	@docker-compose up -d backend
 
+backend-entry:
+	@echo "+\n++ Entering backend container ...\n+"
+	@docker exec -it mds_backend bash
+
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
 	@docker-compose build --force-rm postgres
