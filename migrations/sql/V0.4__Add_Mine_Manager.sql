@@ -4,7 +4,7 @@ CREATE TABLE person (
   first_name character varying(100) NOT NULL,
   surname    character varying(100) NOT NULL,
   phone_no character varying(12) NOT NULL,
-  phone_ext character varying(4) NOT NULL DEFAULT '',
+  phone_ext character varying(4),
   email character varying(254) NOT NULL,
   effective_date date NOT NULL DEFAULT now(),
   expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,

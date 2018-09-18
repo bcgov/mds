@@ -14,13 +14,11 @@ class Person(AuditMixin, Base):
     first_name = db.Column(db.String(60), nullable=False)
     surname = db.Column(db.String(60), nullable=False)
     phone_no = db.Column(db.String(10), nullable=False)
-    phone_ext = db.Column(db.String(4), nullable=False)
+    phone_ext = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
-    # mgr_appointment = db.relationship('MgrAppointment', backref='person', lazy='joined')
 
     def __repr__(self):
         return '<Person %r>' % self.person_guid

@@ -43,7 +43,9 @@ BASE_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "realm_access": {
-        "roles": []
+        "roles": [
+            "idir"
+        ]
     }
 }
 
@@ -63,6 +65,7 @@ FULL_AUTH_CLAIMS = {
         "roles": [
             "mds-mine-view",
             "mds-mine-create",
+            "idir"
         ]
     }
 }
@@ -79,6 +82,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "realm_access": {
         "roles": [
             "mds-mine-view",
+            "idir"
         ]
     }
 }

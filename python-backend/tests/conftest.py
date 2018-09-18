@@ -129,7 +129,6 @@ def setup_data():
         surname=TEST_SURNAME,
         email=TEST_EMAIL_1,
         phone_no=TEST_PHONE_1,
-        phone_ext='',
         **DUMMY_USER_KWARGS
     )
     person.save()
@@ -139,7 +138,6 @@ def setup_data():
         surname=TEST_SURNAME_2,
         email=TEST_EMAIL_2,
         phone_no=TEST_PHONE_2,
-        phone_ext='',
         **DUMMY_USER_KWARGS
     )
     person2.save()
