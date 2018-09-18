@@ -1,5 +1,5 @@
-import authenticationReducer from "../../reducers/authenticationReducer";
-import {authenticateUser, logoutUser, storeKeycloakData, storeUserAccessData} from "../../actions/authenticationActions";
+import authenticationReducer from "@/reducers/authenticationReducer";
+import {authenticateUser, logoutUser, storeKeycloakData, storeUserAccessData} from "@/actions/authenticationActions";
 
 describe('authReducer', () => {
 

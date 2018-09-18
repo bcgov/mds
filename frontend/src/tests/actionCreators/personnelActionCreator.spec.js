@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { createPersonnel, getPersonnelList, getPersonnelById, addMineManager } from '../../actionCreators/personnelActionCreator';
+import { createPersonnel, getPersonnelList, getPersonnelById, addMineManager } from '@/actionCreators/personnelActionCreator';
 import * as genericActions from '@/actions/genericActions';
 import * as API from '@/constants/API';
 import * as MOCK from '../mocks/dataMocks';

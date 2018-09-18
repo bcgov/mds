@@ -13,12 +13,12 @@ import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCre
 import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
-import SearchCoordinatesForm from '@/components/mine/Forms/SearchCoordinatesForm';
+import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
 import { NO_MINE } from '@/constants/assets';
-import NullScreen from '@/components/reusables/NullScreen';
-import Loading from '@/components/reusables/Loading';
+import NullScreen from '@/components/common/NullScreen';
+import Loading from '@/components/common/Loading';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 

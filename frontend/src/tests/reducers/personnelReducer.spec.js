@@ -1,5 +1,5 @@
-import personnelReducer from "../../reducers/personnelReducer";
-import {storePersonnel, storePersonnelList} from "../../actions/personnelActions";
+import personnelReducer from "@/reducers/personnelReducer";
+import { storePersonnel, storePersonnelList } from "@/actions/personnelActions";
 
 describe('personnelReducer', () => {
 

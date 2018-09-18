@@ -38,11 +38,9 @@ export class LocationPin extends Component {
             symbol: symbol,
           });
 
-
         this.props.view.graphics.remove(this.state.graphic);
         this.props.view.graphics.add(graphic);
         this.setState({ graphic });
-
       });
   }
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string'
 
 import { CreateGuard } from '@/HOC/CreateGuard';
-import AddMineRecordForm from '@/components/mine/Forms/AddMineRecordForm';
+import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,

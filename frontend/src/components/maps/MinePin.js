@@ -55,10 +55,10 @@ export class MinePin extends Component {
     loadModules(['esri/Graphic']).then(([Graphic]) => {
       // create a new Graphic for every mine in the array or fetch the ID from the URL for a single mine.
       // data must be passed into this.points() and this.popupTemplate to associate the correct information with the correct lat/long.
-      const mineId = this.props.match.params.id;
+      const { id } = this.props.match.params;
       let mineIds = [];
-      if (mineId) {
-        mineIds = [mineId];
+      if (id) {
+        mineIds = [id];
         this.setState({ isFullMap: false})
       }
       else {

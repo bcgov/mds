@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getMineNameList } from '@/actionCreators/mineActionCreator';
 import { getMineNames } from '@/selectors/mineSelectors';
-import RenderAutoComplete from '@/components/reusables/RenderAutoComplete';
+import RenderAutoComplete from '@/components/common/RenderAutoComplete';
 import * as router from '@/constants/routes';
 import { AutoComplete } from 'antd';
 
