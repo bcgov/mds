@@ -133,10 +133,10 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME &&",
-                  "./flyway info &&",
-                  "./flyway migrate &&",
-                  "./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_test &&",
+                  "cd $FLYWAY_HOME && ",
+                  "./flyway info && ",
+                  "./flyway migrate && ",
+                  "./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_test && ",
                   "./flyway migrate -url=jdbc:postgresql://${FLYWAY_DB_HOST}/mds_functional_test"
                 ]
               }
