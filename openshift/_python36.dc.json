@@ -310,6 +310,37 @@
                   {
                     "name": "FLYWAY_URL",
                     "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
+                  },
+                  {
+                    "name": "PGUSER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PGHOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "PGPASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PGDATABASE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
                   }
                 ],
                 "resources": {
