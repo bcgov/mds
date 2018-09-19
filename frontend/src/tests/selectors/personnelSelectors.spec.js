@@ -1,7 +1,7 @@
-import {getPersonnel, getPersonnelIds } from "../../selectors/personnelSelectors";
+import {getPersonnel, getPersonnelIds } from "@/selectors/personnelSelectors";
 import personnelReducer from "@/reducers/personnelReducer";
-import {storePersonnelList} from "../../actions/personnelActions";
-import {PERSONNEL} from "../../constants/reducerTypes";
+import {storePersonnelList} from "@/actions/personnelActions";
+import {PERSONNEL} from "@/constants/reducerTypes";
 
 describe('personnelSelectors', () => {
   const personnelListInput = {"persons" : [{"person_guid": "test123"},{"person_guid": "test456"}]};

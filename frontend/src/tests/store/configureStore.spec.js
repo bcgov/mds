@@ -1,4 +1,4 @@
-import configureStore from "../../store/configureStore";
+import configureStore from "@/store/configureStore";
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';

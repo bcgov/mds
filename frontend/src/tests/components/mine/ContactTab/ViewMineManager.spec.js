@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { ViewMineManager } from '@/components/mine/ContactTab/ViewMineManager';
-import * as MOCK from '../../../mocks/dataMocks';
+import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
 const props = {}

@@ -8,12 +8,12 @@ import { Col, Row, Modal, Card, Button } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
-import ConditionalButton from '@/components/reusables/ConditionalButton';
-import Loading from '@/components/reusables/Loading';
-import AddPersonnelForm from '../Forms/AddPersonnelForm';
-import UpdateMineManagerForm from '../Forms/UpdateMineManagerForm';
+import ConditionalButton from '@/components/common/ConditionalButton';
+import Loading from '@/components/common/Loading';
+import AddPersonnelForm from '@/components/Forms/AddPersonnelForm';
+import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import { MINER, MINER_TWO } from '@/constants/assets';
-import NullScreen from '@/components/reusables/NullScreen';
+import NullScreen from '@/components/common/NullScreen';
 import * as router from '@/constants/routes';
 
 const propTypes = {
