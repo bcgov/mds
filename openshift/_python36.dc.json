@@ -133,7 +133,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./flyway info && ./flyway migrate"
+                  "cd $FLYWAY_HOME && ./flyway migrate"
                 ]
               }
             },
