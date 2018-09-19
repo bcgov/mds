@@ -182,7 +182,7 @@
                   ],
                   "readinessProbe": {
                     "timeoutSeconds": 300,
-                    "initialDelaySeconds": 60,
+                    "initialDelaySeconds": 150,
                     "httpGet": {
                       "path": "/",
                       "port": 8080
@@ -198,8 +198,8 @@
                   },
                   "resources": {
                     "requests": {
-                        "cpu": "200m",
-                        "memory": "512Mi"
+                        "cpu": "${CPU_REQUEST}",
+                        "memory": "${MEMORY_REQUEST}"
                     },
                     "limits": {
                       "cpu": "${CPU_LIMIT}",
@@ -247,14 +247,28 @@
         "displayName": "CPU Limit",
         "required": true,
         "description": "Maximum amount of CPU the container can use.",
-        "value": "300m"
+        "value": "500m"
       },
       {
         "name": "MEMORY_LIMIT",
         "displayName": "Memory Limit",
         "required": true,
         "description": "Maximum amount of memory the container can use.",
-        "value": "750Mi"
+        "value": "1Gi"
+      },
+      {
+        "name": "CPU_REQUEST",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "200m"
+      },
+      {
+        "name": "MEMORY_REQUEST",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "512Mi"
       },
       {
         "name": "APPLICATION_DOMAIN",
