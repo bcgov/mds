@@ -45,7 +45,7 @@ class PersonResource(Resource, UserMixin):
             surname=data['surname'],
             phone_no=data['phone_no'],
             email=data['email'],
-            phone_ext=data['phone_ext'] if data['phone_ext'] else '',
+            phone_ext=data['phone_ext'] if data['phone_ext'] else None,
             **self.get_create_update_dict()
         )
         person.save()
