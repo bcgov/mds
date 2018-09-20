@@ -15,7 +15,7 @@ class Mine(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str)
     parser.add_argument('note', type=str)
-    parser.add_argument('tenure_number_id', type=str)
+    parser.add_argument('tenure_number_id', type=int)
     parser.add_argument('longitude', type=decimal.Decimal)
     parser.add_argument('latitude', type=decimal.Decimal)
 
@@ -24,33 +24,46 @@ class Mine(Resource, UserMixin):
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if mine:
             return mine.json()
-        return {'message': 'Mine not found'}, 404
+        return {
+            'error': {
+                'status': 404,
+                'message': 'Mine not found'
+            }
+        }, 404
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no=None):
         if mine_no:
-            return {'error': 'Unexpected mine number in Url.'}, 400
+            return {
+                'error': {
+                    'status': 400,
+                    'message': 'Error: Unexpected mine number in Url.'
+                }
+            }, 400
 
         data = Mine.parser.parse_args()
-        name = data['name']
         lat = data['latitude']
         lon = data['longitude']
         note = data['note']
         location = None
-        if not name:
-            return {'error': 'Must specify a name.'}, 400
-        if len(name) > 60:
-            return {'error': 'Specified name exceeds 60 characters.'}, 400
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
+        try:
+            mine_detail = MineDetail(
+                mine_detail_guid=uuid.uuid4(),
+                mine_guid=mine_identity.mine_guid,
+                mine_no=generate_mine_no(),
+                mine_name=data['name'],
+                mine_note=note if note else '',
+                **self.get_create_update_dict()
+            )
+        except AssertionError as e:
+            return {
+                'error': {
+                    'status': 400,
+                    'message': 'Error: {}'.format(e)
+                }
+            }, 400
         mine_identity.save()
-        mine_detail = MineDetail(
-            mine_detail_guid=uuid.uuid4(),
-            mine_guid=mine_identity.mine_guid,
-            mine_no=generate_mine_no(),
-            mine_name=name,
-            mine_note=note if note else '',
-            **self.get_create_update_dict()
-        )
         mine_detail.save()
         if lat and lon:
             location = MineLocation(
@@ -78,25 +91,46 @@ class Mine(Resource, UserMixin):
         lat = data['latitude']
         lon = data['longitude']
         if not tenure and not (lat and lon):
-            return {'error': 'No fields filled.'}, 400
+            return {
+                'error': {
+                    'status': 400,
+                    'message': 'Error: No fields filled.'
+                }
+            }, 400
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
-            return {'message': 'Mine not found'}, 404
+            return {
+                'error': {
+                    'status': 404,
+                    'message': 'Mine not found'
+                }
+            }, 404
         # Tenure validation
         if tenure:
-            if not tenure.isdigit():
-                return {'error': 'Field tenure_id must contain only digits.'}, 400
-            if len(tenure) not in [6, 7]:
-                return {'error': 'Field tenure_id must be 6 or 7 digits long.'}, 400
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
             if tenure_exists:
-                return {'error': 'Field tenure_id already exists for this mine'}, 400
-            tenure = MineralTenureXref(
-                mineral_tenure_xref_guid=uuid.uuid4(),
-                mine_guid=mine.mine_guid,
-                tenure_number_id=tenure,
-                **self.get_create_update_dict()
-            )
+                tenure_exists_mine_guid = tenure_exists.mine_guid
+                if tenure_exists_mine_guid == mine.mine_guid:
+                    return {
+                        'error': {
+                            'status': 400,
+                            'message': 'Error: Field tenure_id already exists for this mine.'
+                        }
+                    }, 400
+            try:
+                tenure = MineralTenureXref(
+                    mineral_tenure_xref_guid=uuid.uuid4(),
+                    mine_guid=mine.mine_guid,
+                    tenure_number_id=tenure,
+                    **self.get_create_update_dict()
+                )
+            except AssertionError as e:
+                return {
+                    'error': {
+                        'status': 400,
+                        'message': 'Error: {}'.format(e)
+                    }
+                }, 400
             tenure.save()
         # Location validation
         if lat and lon:

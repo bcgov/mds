@@ -6,7 +6,12 @@ from tests.constants import TEST_MINE_GUID, TEST_PERSON_GUID, TEST_FIRST_NAME, T
 def test_get_person_not_found(test_client, auth_headers):
     get_resp = test_client.get('/person/' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'message': 'Person not found'}
+    assert get_data == {
+        'error': {
+            'status': 404,
+            'message': 'Person not found'
+        }
+    }
     assert get_resp.status_code == 404
 
 
@@ -22,7 +27,12 @@ def test_post_person_invalid_url(test_client, auth_headers):
     test_person_data = {"first_name": "First", "surname": "Last"}
     post_resp = test_client.post('/person/some_id', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Unexpected person id in Url.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Unexpected person id in Url.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -30,7 +40,12 @@ def test_post_person_no_first_name(test_client, auth_headers):
     test_person_data = {"surname": "Last"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Must specify a first name.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person first name is not provided.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -38,7 +53,12 @@ def test_post_person_no_surname(test_client, auth_headers):
     test_person_data = {"first_name": "First"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Must specify a surname.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person surname is not provided.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -46,29 +66,44 @@ def test_post_person_no_phone_no(test_client, auth_headers):
     test_person_data = {"first_name": "First", "surname": "Last", "email": "this@test.com"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Must specify a phone number.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person phone number is not provided.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
 def test_post_person_no_email(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "surname": "Last", "phone_no": "1234567890"}
+    test_person_data = {"first_name": "First", "surname": "Last", "phone_no": "123-456-7890"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Must specify an email.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person email is not provided.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
 def test_post_person_name_exists(test_client, auth_headers):
-    test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME, "email": "this@test.com", "phone_no": "1234567890"}
+    test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME, "email": "this@test.com", "phone_no": "123-456-7890"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_data == {'error': 'Person with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['surname'])}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['surname'])
+        }
+    }
     assert post_resp.status_code == 400
 
 
 def test_post_person_success(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "surname": "Last", "email": "this@test.com", "phone_no": "1234567890"}
+    test_person_data = {"first_name": "First", "surname": "Last", "email": "this@test.com", "phone_no": "123-456-7890"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_data['first_name'] == test_person_data['first_name']
@@ -81,7 +116,12 @@ def test_put_person_not_found(test_client, auth_headers):
     test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME}
     put_resp = test_client.put('/person/' + TEST_MINE_GUID, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'message': 'Person not found'}
+    assert put_data == {
+        'error': {
+            'status': 404,
+            'message': 'Person not found'
+        }
+    }
     assert put_resp.status_code == 404
 
 
@@ -89,7 +129,12 @@ def test_put_person_name_exists(test_client, auth_headers):
     test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME}
     put_resp = test_client.put('/person/' + TEST_PERSON_GUID, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Person with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['surname'])}
+    assert put_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Person with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['surname'])
+        }
+    }
     assert put_resp.status_code == 400
 
 

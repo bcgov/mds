@@ -5,6 +5,7 @@ VALID_REALM = [
     'idir'
 ]
 
+
 class User:
     def get_user_raw_info(self):
         token = jwt.get_token_auth_header()
