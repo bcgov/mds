@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from tests.constants import TEST_PERSON_GUID, TEST_PERSON_2_GUID, TEST_MANAGER_GUID, TEST_PERSON_3_GUID, TEST_MINE_GUID
 
 
@@ -46,7 +47,7 @@ def test_post_person_view_only(test_client, auth_headers):
 
 
 def test_post_person_full_auth(test_client, auth_headers):
-    test_person_data = {"first_name": "FirstAuth", "surname": "LastAuth", "email": "testauth@test.com", "phone_no": "1234567899"}
+    test_person_data = {"first_name": "FirstAuth", "surname": "LastAuth", "email": "testauth@test.com", "phone_no": "123-456-7899"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 200
 
