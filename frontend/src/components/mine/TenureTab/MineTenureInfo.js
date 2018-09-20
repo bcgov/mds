@@ -39,7 +39,7 @@ class MineTenureInfo extends Component {
   render() {
     const { mine } = this.props;
 
-    if (mine.mineral_tenure_xref.length === 0) {
+    if (!mine.mineral_tenure_xref || mine.mineral_tenure_xref.length === 0) {
       return (
         <div>
           <NullScreen 
