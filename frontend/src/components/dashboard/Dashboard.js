@@ -92,8 +92,13 @@ export class Dashboard extends Component {
   handleTabChange = (key) => {
     const params = queryString.parse(this.props.location.search);
     if (key === 'map' ) {
+      if (!params.page && !params.per_page) {
+        this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+        this.props.history.push(router.MINE_DASHBOARD.relativeRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE))
+    } else {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
+      }
     } else {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
