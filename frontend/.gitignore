@@ -18,4 +18,4 @@
 *.snap
 
 # Vs code settlings
-.vscode/settings.json
+.vscode/*
