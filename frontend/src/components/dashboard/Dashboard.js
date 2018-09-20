@@ -165,7 +165,7 @@ export class Dashboard extends Component {
                     <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                   </Col>
                 </div>
-                {this.state.mineName &&
+                { this.state.mineName &&
                   <div className="center">
                     <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
