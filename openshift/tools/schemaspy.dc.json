@@ -13,7 +13,7 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}-${VERSION}",
+          "name": "${NAME}${SUFFIX}",
           "annotations": {
             "description": "Exposes and load balances the application pods"
           }
@@ -28,15 +28,17 @@
             }
           ],
           "selector": {
-            "name": "${NAME}"
-          }
+            "name": "${NAME}${SUFFIX}"
+          },
+          "type": "ClusterIP",
+          "sessionAffinity": "None"
         }
       },
       {
         "kind": "Route",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}-${VERSION}"
+          "name": "${NAME}${SUFFIX}"
         },
         "spec": {
           "host": "${APPLICATION_DOMAIN}",
@@ -46,8 +48,12 @@
           },
           "to": {
             "kind": "Service",
-            "name": "${NAME}-${VERSION}"
-          }
+            "name": "${NAME}${SUFFIX}"
+          },
+          "port": {
+            "targetPort": "8080-tcp"
+          },
+          "wildcardPolicy": "None"
         }
       },
       {
@@ -74,7 +80,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-          "name": "${NAME}",
+          "name": "${NAME}${SUFFIX}",
           "annotations": {
             "description": "Defines how to deploy the container."
           }
@@ -83,8 +89,17 @@
           "strategy": {
             "type": "Rolling",
             "rollingParams": {
-              "updatePeriodSeconds": 1,
-              "intervalSeconds": 1,
+                "pre": {
+                    "failurePolicy": "Abort",
+                    "execNewPod": {
+                      "containerName": "${NAME}",
+                      "command": [
+                        "sh",
+                        "-c",
+                        "curl --connect-timeout 5 --retry 20 --retry-delay 60 --retry-connrefused --retry-max-time 1200 https://${BACKEND_HOST}/health"
+                      ]
+                    }
+                  },
               "timeoutSeconds": 600
             }
           },
@@ -108,13 +123,13 @@
           ],
           "replicas": 1,
           "selector": {
-            "name": "${NAME}"
+            "name": "${NAME}${SUFFIX}"
           },
           "template": {
             "metadata": {
-              "name": "${NAME}",
+              "name": "${NAME}${SUFFIX}",
               "labels": {
-                "name": "${NAME}"
+                "name": "${NAME}${SUFFIX}"
               }
             },
             "spec": {
@@ -129,6 +144,10 @@
                     }
                   ],
                   "env": [
+                    {
+                        "name": "BACKEND_HOST",
+                        "value": "${BACKEND_HOST}"
+                    },
                     {
                       "name": "DATABASE_HOST",
                       "value": "${DB_CONFIG_NAME}"
@@ -163,7 +182,7 @@
                   ],
                   "readinessProbe": {
                     "timeoutSeconds": 300,
-                    "initialDelaySeconds": 60,
+                    "initialDelaySeconds": 150,
                     "httpGet": {
                       "path": "/",
                       "port": 8080
@@ -178,6 +197,10 @@
                     }
                   },
                   "resources": {
+                    "requests": {
+                        "cpu": "${CPU_REQUEST}",
+                        "memory": "${MEMORY_REQUEST}"
+                    },
                     "limits": {
                       "cpu": "${CPU_LIMIT}",
                       "memory": "${MEMORY_LIMIT}"
@@ -203,9 +226,20 @@
         "required": true
       },
       {
+        "name": "SUFFIX",
+        "displayName": "Name Suffix",
+        "description": "A suffix appended to all objects",
+        "required": true
+      },
+      {
         "name": "DB_CONFIG_NAME",
         "displayName": "Database Config Name",
         "description": "Configuration name for the database",
+        "required": true
+      },
+      {
+        "name": "BACKEND_HOST",
+        "description": "Hostname for the backend",
         "required": true
       },
       {
@@ -221,6 +255,20 @@
         "required": true,
         "description": "Maximum amount of memory the container can use.",
         "value": "1Gi"
+      },
+      {
+        "name": "CPU_REQUEST",
+        "displayName": "CPU Limit",
+        "required": true,
+        "description": "Maximum amount of CPU the container can use.",
+        "value": "200m"
+      },
+      {
+        "name": "MEMORY_REQUEST",
+        "displayName": "Memory Limit",
+        "required": true,
+        "description": "Maximum amount of memory the container can use.",
+        "value": "512Mi"
       },
       {
         "name": "APPLICATION_DOMAIN",

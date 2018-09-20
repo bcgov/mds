@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { MineContactInfo } from '@/components/mine/ContactTab/MineContactInfo';
-import * as MOCK from '../../../mocks/dataMocks';
+import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
 const reducerProps = {}

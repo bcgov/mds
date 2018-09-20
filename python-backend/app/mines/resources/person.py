@@ -4,14 +4,17 @@ import uuid
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity
 from ..models.person import Person, MgrAppointment
-
 from app.extensions import jwt
+from .mixins import UserMixin
 
 
-class PersonResource(Resource):
+class PersonResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str)
     parser.add_argument('surname', type=str)
+    parser.add_argument('phone_no', type=str)
+    parser.add_argument('phone_ext', type=str)
+    parser.add_argument('email', type=str)
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, person_guid):
@@ -29,16 +32,21 @@ class PersonResource(Resource):
             return {'error': 'Must specify a first name.'}, 400
         if not data['surname']:
             return {'error': 'Must specify a surname.'}, 400
+        if not data['phone_no']:
+            return {'error': 'Must specify a phone number.'}, 400
+        if not data['email']:
+            return {'error': 'Must specify an email.'}, 400
         person_exists = Person.find_by_name(data['first_name'], data['surname'])
         if person_exists:
             return {'error': 'Person with the name: {} {} already exists'.format(data['first_name'], data['surname'])}, 400
-        # Dummy User for now
-        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
         person = Person(
             person_guid=uuid.uuid4(),
             first_name=data['first_name'],
             surname=data['surname'],
-            **dummy_user_kwargs
+            phone_no=data['phone_no'],
+            email=data['email'],
+            phone_ext=data['phone_ext'] if data['phone_ext'] else None,
+            **self.get_create_update_dict()
         )
         person.save()
         return person.json()
@@ -61,7 +69,7 @@ class PersonResource(Resource):
         return person_exists.json()
 
 
-class ManagerResource(Resource):
+class ManagerResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('person_guid', type=str)
     parser.add_argument('mine_guid', type=str)
@@ -101,20 +109,20 @@ class ManagerResource(Resource):
             previous_mgr.expiry_date = previous_mgr_expiry_date
             previous_mgr.save()
 
-        # Dummy User for now
-        dummy_user_kwargs = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
         manager = MgrAppointment(
             mgr_appointment_guid=uuid.uuid4(),
             person_guid=data['person_guid'],
             mine_guid=data['mine_guid'],
             effective_date=data['effective_date'],
-            **dummy_user_kwargs
+            **self.get_create_update_dict()
         )
         manager.save()
         return {
             'person_guid': str(manager.person_guid),
             'mgr_appointment_guid': str(manager.mgr_appointment_guid),
             'mine_guid': str(manager.mine_guid),
+            'effective_date': str(manager.effective_date),
+            'expiry_date': str(manager.expiry_date),
             'first_name': person_exists.first_name,
             'surname': person_exists.surname,
             'full_name': person_exists.first_name + ' ' + person_exists.surname

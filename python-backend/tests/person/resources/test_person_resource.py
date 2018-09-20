@@ -42,8 +42,24 @@ def test_post_person_no_surname(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
+def test_post_person_no_phone_no(test_client, auth_headers):
+    test_person_data = {"first_name": "First", "surname": "Last", "email": "this@test.com"}
+    post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data == {'error': 'Must specify a phone number.'}
+    assert post_resp.status_code == 400
+
+
+def test_post_person_no_email(test_client, auth_headers):
+    test_person_data = {"first_name": "First", "surname": "Last", "phone_no": "1234567890"}
+    post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data == {'error': 'Must specify an email.'}
+    assert post_resp.status_code == 400
+
+
 def test_post_person_name_exists(test_client, auth_headers):
-    test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME}
+    test_person_data = {"first_name": TEST_FIRST_NAME, "surname": TEST_SURNAME, "email": "this@test.com", "phone_no": "1234567890"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
 
@@ -52,7 +68,7 @@ def test_post_person_name_exists(test_client, auth_headers):
 
 
 def test_post_person_success(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "surname": "Last"}
+    test_person_data = {"first_name": "First", "surname": "Last", "email": "this@test.com", "phone_no": "1234567890"}
     post_resp = test_client.post('/person', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_data['first_name'] == test_person_data['first_name']

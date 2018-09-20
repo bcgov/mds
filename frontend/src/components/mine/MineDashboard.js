@@ -1,18 +1,20 @@
 /**
- * @class MineDashboard.js is an individual mines dashboard, contains all relevant information/data from the MineConatiner.js and passes it down to children.
+ * @class MineDashboard.js is an individual mines dashboard
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 
-import { getUserAccessData } from '@/selectors/authenticationSelectors';
-import MineTenureInfo from './TenureTab/MineTenureInfo';
+import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
+import { getMines } from '@/selectors/mineSelectors';
+import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
-import Loading from '@/components/reusables/Loading';
-import NullScreen from '@/components/reusables/NullScreen'; 
+import Loading from '@/components/common/Loading';
+import NullScreen from '@/components/common/NullScreen'; 
 import { NO_MINE } from '@/constants/assets';
 
 const TabPane = Tabs.TabPane;
@@ -20,28 +22,31 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   getMineRecordById: PropTypes.func,
   updateMineRecord: PropTypes.func,
-  mine: PropTypes.object.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
-  userRoles: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
-  mine: {},
   mines: {},
-  mineIds: [],
-  userRoles: [],
 };
 
 export class MineDashboard extends Component {
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getMineRecordById(id);
+  }
+
   render() {
-    if (!this.props.mine) {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
+    if (!mine) {
       return(<Loading />)
     } else {
         return (
           <div className="dashboard">
             <div>
-              <MineHeader mine={this.props.mine} mapData={this.props.mapData}/>
+              <MineHeader mine={mine} />
             </div>
             <div className="dashboard__content">
               <Tabs 
@@ -50,13 +55,13 @@ export class MineDashboard extends Component {
                 animated={{ inkBar: true, tabPane: false }}
               >
                 <TabPane tab="Summary" key="1">
-                  <MineSummary mine={this.props.mine} />
+                  <MineSummary mine={mine} />
                 </TabPane>
                 <TabPane tab="Permit" key="2">
                   <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
                 </TabPane>
                 <TabPane tab="Contact Information" key="3">
-                  <MineContactInfo mine={this.props.mine} />
+                  <MineContactInfo mine={mine} />
                 </TabPane>
                 <TabPane tab="Compliance" key="4">
                   <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
@@ -74,12 +79,19 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userRoles: getUserAccessData(state),
+    mines: getMines(state),
   };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    getMineRecordById,
+    updateMineRecord
+  }, dispatch);
 };
 
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, null)(MineDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);

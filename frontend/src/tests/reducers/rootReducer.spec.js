@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
-import {rootReducer, reducerObject} from '../../reducers/rootReducer';
+import {rootReducer, reducerObject} from '@/reducers/rootReducer';
 import * as reducerTypes from '@/constants/reducerTypes';
-import {authenticateUser} from "../../actions/authenticationActions";
+import {authenticateUser} from "@/actions/authenticationActions";
 
 describe('Store', () => {
   it('should handle recipe creation', () => {

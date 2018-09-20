@@ -1,7 +1,8 @@
 // internal URL's
 import Home from '@/components/Home';
 import Dashboard from '@/components/dashboard/Dashboard';
-import MineContainer from '@/components/mine/MineContainer';
+import MineDashboard from '@/components/mine/MineDashboard';
+import PersonnelProfile from '@/components/personnel/PersonnelProfile';
 
 export const DASHBOARD = {
     route: '/',
@@ -11,12 +12,19 @@ export const DASHBOARD = {
 export const MINE_DASHBOARD = {
   route: '/dashboard',
   dynamicRoute: (page, per_page) => `/dashboard?page=${page}&per_page=${per_page}`,
+  relativeRoute: (page, per_page) => `/dashboard?page=${page}&per_page=${per_page}&map=true`,
   component: Dashboard,
 };
 
 export const MINE_SUMMARY = {
   route: '/dashboard/:id/summary',
   dynamicRoute: (id) => `/dashboard/${id}/summary`,
-  component: MineContainer,
+  component: MineDashboard,
+};
+
+export const PERSONNEL_PROFILE = {
+  route: '/dashboard/profile/:id',
+  dynamicRoute: (id) => `/dashboard/profile/${id}`,
+  component: PersonnelProfile,
 };
 

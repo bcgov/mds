@@ -103,9 +103,88 @@ $x-large-width: 90em;
   }
 }
 
+@keyframes pulsate {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+@-o-keyframes pulsate {
+    /* Opera */
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+@-webkit-keyframes pulsate {
+    /* Safari and Chrome */
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+@-moz-keyframes pulsate {
+    /* Firefox */
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+
 @mixin animation($type, $duration) {
   animation: $type $duration;
   -moz-animation: $type $duration;
   -webkit-animation: $type $duration;
   -o-animation: $type $duration;
+}
+
+@mixin pulsateAnimation {
+  animation: pulsate 2400ms ease-out infinite;;
+  -moz-animation: pulsate 2400ms ease-out infinite;;
+  -webkit-animation: pulsate 2400ms ease-out infinite;;
+  -o-animation: pulsate 2400ms ease-out infinite;;
 }

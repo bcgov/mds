@@ -13,6 +13,11 @@ CREATE TABLE mineral_tenure_xref (
 FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
+
+CREATE INDEX mineral_tenure_xref_tenure_no_idx ON mineral_tenure_xref (tenure_number_id);
+CREATE INDEX mineral_tenure_xref_update_timestamp_idx ON mineral_tenure_xref (update_timestamp);
+
+
 COMMENT ON TABLE mineral_tenure_xref IS 'A cross-reference to the official Mineral Tenure(s) associated with this mine, via the Owner.';
 COMMENT ON COLUMN mineral_tenure_xref.effective_date IS 'Calendar date upon this cross-reference is accepted as true (time component implicitly 00:00:00.00).';
 COMMENT ON COLUMN mineral_tenure_xref.expiry_date IS 'Calendar date after which this cross-reference is accepted as no longer true (time component implicitly 23:59:59.99).';

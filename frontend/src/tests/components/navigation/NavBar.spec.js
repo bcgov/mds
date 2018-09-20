@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { NavBar } from '../../../components/navigation/NavBar';
+import { NavBar } from '@/components/navigation/NavBar';
 
 const reducerProps = {}
 

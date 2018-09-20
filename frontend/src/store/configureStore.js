@@ -8,7 +8,9 @@ export default function configureStore() {
 	if (process.env.NODE_ENV === 'development') {
 		return createStore(
 			rootReducer,
-			applyMiddleware(thunk, logger, loadingBarMiddleware()),
+			applyMiddleware(thunk, logger, loadingBarMiddleware({
+				scope: 'modal',
+			})),
 		);
 	} else {
 		return createStore(

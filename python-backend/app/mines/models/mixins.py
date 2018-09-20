@@ -1,6 +1,21 @@
 from datetime import datetime
 
+from sqlalchemy.exc import DBAPIError
+
 from app.extensions import db
+
+
+class Base(db.Model):
+    __abstract__ = True
+
+    def save(self, commit=True):
+        db.session.add(self)
+        if commit:
+            try:
+                db.session.commit()
+            except DBAPIError:
+                db.session.rollback()
+                raise
 
 
 class AuditMixin(object):

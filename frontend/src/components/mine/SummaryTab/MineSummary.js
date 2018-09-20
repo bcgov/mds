@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Col, Row, Divider } from 'antd';
-import NullScreen from '@/components/reusables/NullScreen';
+import NullScreen from '@/components/common/NullScreen';
 import { NO_MINE } from '@/constants/assets';
 
 const propTypes = {

@@ -1,10 +1,10 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { createMineRecord, updateMineRecord, getMineRecords, getMineRecordById, getMineNameList } from '../../actionCreators/mineActionCreator';
-import * as genericActions from '../../actions/genericActions';
-import * as API from '../../constants/API';
-import * as MOCK from '../mocks/dataMocks';
-import { ENVIRONMENT } from '../../constants/environment'
+import { createMineRecord, updateMineRecord, getMineRecords, getMineRecordById, getMineNameList } from '@/actionCreators/mineActionCreator';
+import * as genericActions from '@/actions/genericActions';
+import * as API from '@/constants/API';
+import * as MOCK from '@/tests/mocks/dataMocks';
+import { ENVIRONMENT } from '@/constants/environment'
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, 'request');
@@ -80,7 +80,7 @@ describe('`getMineRecords` action creator', () => {
     return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -90,7 +90,7 @@ describe('`getMineRecords` action creator', () => {
     return (getMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });

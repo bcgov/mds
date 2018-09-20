@@ -4,6 +4,7 @@ services:
 ####################### Postgres Definition #######################
   postgres:
     restart: always
+    container_name: mds_postgres
     build:
       context: migrations
       dockerfile: Dockerfile.dev
@@ -19,6 +20,7 @@ services:
 ####################### Backend Definition #######################
   backend:
     restart: always
+    container_name: mds_backend
     build:
       context: python-backend
     ports:
@@ -34,6 +36,7 @@ services:
 ####################### Frontend Definition #######################
   frontend:
     restart: always
+    container_name: mds_frontend
     build:
       context: frontend
     ports:

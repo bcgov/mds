@@ -7,6 +7,12 @@ TEST_FIRST_NAME_2 = 'first_name2'
 TEST_SURNAME_2 = 'test_surname2'
 TEST_FIRST_NAME_3 = 'first_name3'
 TEST_SURNAME_3 = 'test_surname3'
+TEST_EMAIL_1 = 'test1@test.com'
+TEST_EMAIL_2 = 'test2@test.com'
+TEST_EMAIL_3 = 'test3@test.com'
+TEST_PHONE_1 = '1234567890'
+TEST_PHONE_2 = '1234567891'
+TEST_PHONE_3 = '1234567892'
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
 TEST_MINE_DETAIL_GUID = '94de18e5-5239-4df0-aa2d-b21961d4721e'
 TEST_PERSON_GUID = 'df4939f0-04c9-49dc-bf04-2a3c3b8b0e24'
@@ -37,7 +43,9 @@ BASE_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "realm_access": {
-        "roles": []
+        "roles": [
+            "idir"
+        ]
     }
 }
 
@@ -50,10 +58,14 @@ FULL_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
+    "email": "test-email",
+    "given_name": "test-given-name",
     "realm_access": {
         "roles": [
             "mds-mine-view",
             "mds-mine-create",
+            "idir"
         ]
     }
 }
@@ -70,6 +82,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "realm_access": {
         "roles": [
             "mds-mine-view",
+            "idir"
         ]
     }
 }

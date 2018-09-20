@@ -1,7 +1,7 @@
-import {getMineIds, getMines } from "../../selectors/mineSelectors";
+import {getMineIds, getMines } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
-import {storeMineList} from "../../actions/mineActions";
-import {MINES} from "../../constants/reducerTypes";
+import { storeMineList } from "@/actions/mineActions";
+import { MINES } from "@/constants/reducerTypes";
 
 describe('mineSelectors', () => {
   const mineListInput = {"mines": [{"guid": "test123"}, {"guid": "test456"}]};

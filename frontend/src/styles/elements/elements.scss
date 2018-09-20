@@ -1,7 +1,7 @@
 h1, h2, h3, h4, h5, p {
   padding: 0;
   margin: 0;
-  width: 100%;
+  width: auto;
 }
 
 h1 {
@@ -33,9 +33,10 @@ h5 {
   color: $font-black;
 }
 
-p {
+p, .p {
   font-size: $default-p;
   color: $font-black;
+  font-weight: $light;
 }
 
 .p-large {
@@ -43,7 +44,6 @@ p {
   color: $font-black;
   font-weight: $bold;
 }
-
 
 a, Link {
   &:hover {

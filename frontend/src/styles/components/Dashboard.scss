@@ -8,6 +8,31 @@
   &__content {
     background-color: $background-white;
     border-radius: 60px 60px 0 0;
-    padding: $default-padding-xl;
+    
+    &--search {
+      @include flex;
+      padding: $default-padding-xl;
+      justify-content: space-around;
+    }
   }
+}
+
+.profile {
+  background-color: $default-white;
+
+  &__header {
+   @extend .landing-page__header;
+  }
+
+  &__content {
+    @extend .landing-page__content;
+
+    &__header {
+      padding: 30px;
+    }
+  }
+}
+
+.antd-list {
+  margin: 0 50px;
 }

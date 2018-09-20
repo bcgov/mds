@@ -84,17 +84,23 @@ export const MINE_NAME_LIST = [
     {
       "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
       "mine_name": "New Mine",
-      "mine_no": "BLAH6194"
+      "mine_no": "BLAH6194",
+      "longitude": '-119.6963833',
+      "latitude": '51.4961750'
     },
     {
       "guid": "89a65274-581d-4862-8630-99f5f7687089",
       "mine_name": "Mine Two",
-      "mine_no": "BLAH0502"
+      "mine_no": "BLAH0502",
+      "longitude": '-119.6963833',
+      "latitude": '51.4961750'
     },
     {
       "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
       "mine_name": "Legit Mine",
-      "mine_no": "BLAH6734"
+      "mine_no": "BLAH6734",
+      "longitude": '-119.6963833',
+      "latitude": '51.4961750'
     }
   ]
 
@@ -109,3 +115,5 @@ export const PAGE_DATA = {
   "total":9000,
   "total_pages":360,
 }
+
+export const COORDINATES = [48.70707, -122.489504]

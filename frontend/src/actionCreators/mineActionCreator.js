@@ -27,7 +27,7 @@ export const createMineRecord = (payload) => (dispatch) => {
   });
 };
 
-export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => { 
+export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading());
   return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , {"tenure_number_id": tenureNumber}, createRequestHeader())
@@ -44,20 +44,17 @@ export const updateMineRecord = (id, tenureNumber, mineName) => (dispatch) => {
   });
 };
 
-export const getMineRecords = (page, per_page) => (dispatch) => {
-  dispatch(showLoading());
+export const getMineRecords = (page, per_page, map) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
-  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page), createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, map), createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMineList(response.data));
-    dispatch(hideLoading());
     return response;
   })
   .catch(() => {
     notification.error({message: String.ERROR, duration: 10});
     dispatch(error(reducerTypes.GET_MINE_RECORD));
-    dispatch(hideLoading());
   });
 };
 
@@ -77,10 +74,11 @@ export const getMineRecordById = (mineNo) => (dispatch) => {
   });
 };
 
-export const getMineNameList = () => (dispatch) => {
+export const getMineNameList = (search=null) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
-  return axios.get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST, createRequestHeader())
+  const config = {...createRequestHeader(), params: {search: search}}
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST, config)
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(mineActions.storeMineNameList(response.data));

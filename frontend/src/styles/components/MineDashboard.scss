@@ -14,7 +14,7 @@
       @include mobile {
           padding: 5px 10px;
         }
-      
+
       &--inline {
         @include flex;
         justify-content: space-between;
@@ -24,22 +24,13 @@
         }
       }
     }
-  } 
-  
+  }
+
   &__content {
     margin: 50px;
   }
 }
 
-.inline-flex {
-  @include flex;
-
-  &--img {
-    margin-top: 5px;
-    height: 40%;
-  }
-
-  div {
-    padding: $default-padding-sm;
-  }
+circle {
+  @include pulsateAnimation;
 }
