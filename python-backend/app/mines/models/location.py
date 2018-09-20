@@ -8,8 +8,8 @@ from app.extensions import db
 class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
     mine_location_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), primary_key=True)
-    latitude = db.Column(db.Numeric(9, 7), primary_key=True, unique=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    latitude = db.Column(db.Numeric(9, 7), nullable=False)
     longitude = db.Column(db.Numeric(11, 7), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

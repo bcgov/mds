@@ -1,7 +1,9 @@
 from datetime import datetime
+import re
 
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import validates
 from app.extensions import db
 
 from .mines import MineIdentity
@@ -53,6 +55,38 @@ class Person(AuditMixin, Base):
     def find_by_name(cls, first_name, surname):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.surname) == func.lower(surname)).first()
 
+    @validates('first_name')
+    def validate_first_name(self, key, first_name):
+        if not first_name:
+            raise AssertionError('Person first name is not provided.')
+        if len(first_name) > 60:
+            raise AssertionError('Person first name must not exceed 60 characters.')
+        return first_name
+
+    @validates('surname')
+    def validate_surname(self, key, surname):
+        if not surname:
+            raise AssertionError('Person surname is not provided.')
+        if len(surname) > 60:
+            raise AssertionError('Person surname must not exceed 60 characters.')
+        return surname
+
+    @validates('phone_no')
+    def validate_phone_no(self, key, phone_no):
+        if not phone_no:
+            raise AssertionError('Person phone number is not provided.')
+        if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
+            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
+        return phone_no
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if not email:
+            raise AssertionError('Person email is not provided.')
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            raise AssertionError('Invalid email format.')
+        return email
+
 
 class MgrAppointment(AuditMixin, Base):
     __tablename__ = "mgr_appointment"
@@ -92,3 +126,21 @@ class MgrAppointment(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.filter_by(mine_guid=_id)
+
+    @validates('person_guid')
+    def validate_person_guid(self, key, person_guid):
+        if not person_guid:
+            raise AssertionError('Person guid is not provided.')
+        return person_guid
+
+    @validates('mine_guid')
+    def validate_mine_guid(self, key, mine_guid):
+        if not mine_guid:
+            raise AssertionError('Mine guid is not provided.')
+        return mine_guid
+
+    @validates('effective_date')
+    def validate_effective_date(self, key, effective_date):
+        if not effective_date:
+            raise AssertionError('Effective date is not provided.')
+        return effective_date

@@ -1,6 +1,7 @@
 from datetime import datetime
 import uuid
 
+from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from .mixins import AuditMixin, Base
 from app.extensions import db
@@ -88,6 +89,26 @@ class MineDetail(AuditMixin, Base):
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).first()
 
+    @validates('mine_name')
+    def validate_mine_name(self, key, mine_name):
+        if not mine_name:
+            raise AssertionError('No mine name provided.')
+        if len(mine_name) > 60:
+            raise AssertionError('Mine name must not exceed 60 characters.')
+        return mine_name
+
+    @validates('mine_note')
+    def validate_mine_note(self, key, mine_note):
+        if len(mine_note) > 300:
+            raise AssertionError('Mine note must not exceed 300 characters.')
+        return mine_note
+
+    @validates('mine_no')
+    def validate_mine_no(self, key, mine_no):
+        if len(mine_no) > 10:
+            raise AssertionError('Mine number must not exceed 10 characters.')
+        return mine_no
+
 
 class MineralTenureXref(AuditMixin, Base):
     __tablename__ = "mineral_tenure_xref"
@@ -106,3 +127,9 @@ class MineralTenureXref(AuditMixin, Base):
     @classmethod
     def find_by_tenure(cls, _id):
         return cls.query.filter_by(tenure_number_id=_id).first()
+
+    @validates('tenure_number_id')
+    def validate_tenure_number_id(self, key, tenure_number_id):
+        if len(str(tenure_number_id)) not in [6, 7]:
+            raise AssertionError('Tenure number must be 6 or 7 digits long.')
+        return tenure_number_id

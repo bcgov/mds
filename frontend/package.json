@@ -90,6 +90,8 @@
     "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u --runInBand"
   },
   "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/",
     "setupFiles": [
       "./src/setupTests.js",
       "jest-localstorage-mock"
