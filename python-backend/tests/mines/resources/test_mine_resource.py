@@ -6,7 +6,12 @@ from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID
 def test_get_mine_not_found(test_client, auth_headers):
     get_resp = test_client.get('/mine/' + 'NOT_FOUND', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'message': 'Mine not found'}
+    assert get_data == {
+        'error': {
+            'status': 404,
+            'message': 'Mine not found'
+        }
+    }
     assert get_resp.status_code == 404
 
 
@@ -29,7 +34,12 @@ def test_post_mine_invalid_url(test_client, auth_headers):
     test_mine_data = {"name": "test_create_mine"}
     post_resp = test_client.post('/mine/some_mine_no', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Unexpected mine number in Url.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Unexpected mine number in Url.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -37,7 +47,12 @@ def test_post_mine_no_name(test_client, auth_headers):
     test_mine_data = {}
     post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Must specify a name.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: No mine name provided.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -49,7 +64,12 @@ def test_post_mine_name_exceed_chars(test_client, auth_headers):
     }
     post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': 'Specified name exceeds 60 characters.'}
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Mine name must not exceed 60 characters.'
+        }
+    }
     assert post_resp.status_code == 400
 
 
@@ -110,7 +130,12 @@ def test_put_mine_tenure_no_tenure(test_client, auth_headers):
     test_tenure_data = {}
     put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'No fields filled.'}
+    assert put_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: No fields filled.'
+        }
+    }
     assert put_resp.status_code == 400
 
 
@@ -122,20 +147,13 @@ def test_put_mine_tenure_mine_not_found(test_client, auth_headers):
     }
     put_resp = test_client.put('/mine/' + 'NOT_FOUND', data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'message': 'Mine not found'}
-    assert put_resp.status_code == 404
-
-
-def test_put_mine_tenure_invalid_characters(test_client, auth_headers):
-    test_tenure_data = {
-        "tenure_number_id": "rewrewr",
-        "latitude": "49.2828",
-        "longitude": "123.1208"
+    assert put_data == {
+        'error': {
+            'status': 404,
+            'message': 'Mine not found'
+        }
     }
-    put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Field tenure_id must contain only digits.'}
-    assert put_resp.status_code == 400
+    assert put_resp.status_code == 404
 
 
 def test_put_mine_tenure_invalid_length(test_client, auth_headers):
@@ -146,7 +164,12 @@ def test_put_mine_tenure_invalid_length(test_client, auth_headers):
     }
     put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Field tenure_id must be 6 or 7 digits long.'}
+    assert put_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Tenure number must be 6 or 7 digits long.'
+        }
+    }
     assert put_resp.status_code == 400
 
 
@@ -158,7 +181,12 @@ def test_put_mine_tenure_already_exists(test_client, auth_headers):
     }
     put_resp = test_client.put('/mine/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': 'Field tenure_id already exists for this mine'}
+    assert put_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Field tenure_id already exists for this mine.'
+        }
+    }
     assert put_resp.status_code == 400
 
 
