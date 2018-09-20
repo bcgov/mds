@@ -16,3 +16,6 @@
 # Test snap
 *__snapshots__*
 *.snap
+
+# Vs code settlings
+.vscode/settings.json
