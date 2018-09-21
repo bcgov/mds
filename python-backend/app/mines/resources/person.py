@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import uuid
 
+from flask import request
 from flask_restplus import Resource, reqparse
 from ..models.mines import MineIdentity
 from ..models.person import Person, MgrAppointment
@@ -200,3 +201,19 @@ class PersonList(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         return {'persons': list(map(lambda x: x.json(), Person.query.all()))}
+
+
+class PersonListSearch(Resource):
+    PERSON_LIST_RESULT_LIMIT = 100
+
+    @jwt.requires_roles(["mds-mine-view"])
+    def get(self):
+        search_term = request.args.get('search')
+        if search_term:
+            first_name_filter = Person.first_name.ilike('%{}%'.format(search_term))
+            surname_filter = Person.surname.ilike('%{}%'.format(search_term))
+            persons = Person.query.filter(first_name_filter | surname_filter).limit(self.PERSON_LIST_RESULT_LIMIT).all()
+        else:
+            persons = Person.query.limit(self.PERSON_LIST_RESULT_LIMIT).all()
+
+        return {'persons': list(map(lambda x: x.json(), persons))}

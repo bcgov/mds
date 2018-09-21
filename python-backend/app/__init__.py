@@ -11,7 +11,7 @@ from sqlalchemy.exc import DBAPIError
 from .mines.models.mines import MineIdentity, MineDetail
 from .mines.models.location import MineLocation
 from .mines.resources.mine import Mine, MineList, MineListByName
-from .mines.resources.person import ManagerResource, PersonResource, PersonList
+from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
 from .mines.utils.random import generate_mine_no, generate_name, random_geo
 from .config import Config
@@ -61,6 +61,7 @@ def register_routes(app, api):
     api.add_resource(MineLocationListResource, '/mines/location')
     api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
     api.add_resource(PersonList, '/persons')
+    api.add_resource(PersonListSearch, '/persons/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
 
     # Healthcheck endpoint
