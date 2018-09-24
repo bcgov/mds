@@ -8,7 +8,6 @@ DECLARE
 BEGIN
     RAISE NOTICE 'Start updating mine manager:';
     RAISE NOTICE '.. Step 1 of 2: Scan if any new managers are created in MMS';
-    SELECT count(*) FROM ETL_MANAGER into old_row;
     -- This is the intermediary table that will be used to store mine manager profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_MANAGER(
         mine_guid   uuid        ,
@@ -20,6 +19,7 @@ BEGIN
         email       varchar(254),
         effective_date  date NOT NULL DEFAULT now()
     );
+    SELECT count(*) FROM ETL_MANAGER into old_row;
     WITH
     --List of NoW (Notice Of Work) whose attached contact is a Mine Manager;
     now_wContact AS(

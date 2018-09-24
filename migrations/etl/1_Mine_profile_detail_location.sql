@@ -7,7 +7,6 @@ DECLARE
 BEGIN
     RAISE NOTICE 'Start updating mine profile:';
     RAISE NOTICE '.. Step 1 of 3: Scan new mine records in MMS';
-    SELECT count(*) FROM ETL_PROFILE into old_row;
     -- This is the intermediary table that will be used to store mine profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
         mine_guid uuid          ,
@@ -16,6 +15,7 @@ BEGIN
         lat_dec   numeric(9,7)  ,
         lon_dec  numeric(11,7)
     );
+    SELECT count(*) FROM ETL_PROFILE into old_row;
     -- Upsert data into ETL_PROFILE from MMS
     -- If new rows have been added since the last ETL, only insert the new ones.
     -- Generate a random UUID for mine_guid

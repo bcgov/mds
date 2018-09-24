@@ -182,7 +182,7 @@
                   ],
                   "readinessProbe": {
                     "timeoutSeconds": 300,
-                    "initialDelaySeconds": 150,
+                    "initialDelaySeconds": 60,
                     "httpGet": {
                       "path": "/",
                       "port": 8080
