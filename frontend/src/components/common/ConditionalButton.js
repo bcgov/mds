@@ -22,7 +22,8 @@ const defaultProps = {
 
 export const ConditionalButton = (props) => {
   return (
-    <Button 
+    <Button
+      className="full"
       type={props.type} 
       onClick={props.handleAction}
     >

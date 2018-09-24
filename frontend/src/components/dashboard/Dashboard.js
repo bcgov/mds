@@ -113,7 +113,7 @@ export class Dashboard extends Component {
     if (this.state.mineList) {
       if (this.props.mineIds.length === 0) {
         return (
-          <NullScreen primaryMessage={String.NO_DATA} secondaryMessage={String.TRY_AGAIN} img={NO_MINE} />
+          <NullScreen type="dashboard" />
         )
       } else {
         return (
@@ -126,7 +126,7 @@ export class Dashboard extends Component {
             >
               <TabPane tab="List" key="list">
                 <Row>
-                  <Col span={12} offset={6}>
+                  <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
                     <MineSearch/>
                   </Col>
                 </Row>
@@ -137,6 +137,7 @@ export class Dashboard extends Component {
                 />
                 <div className="center">
                   <Pagination
+                    size="small"
                     showSizeChanger
                     onShowSizeChange={this.onPageChange}
                     onChange={this.onPageChange}
@@ -145,7 +146,7 @@ export class Dashboard extends Component {
                     total={this.props.pageData.total}
                     pageSizeOptions={['25', '50', '75', '100']}
                     pageSize={perPageNumber}
-                    showTotal={total => `${total} Results`}
+                    // showTotal={total => `${total} Results`}
                   />
                 </div>
               </TabPane>

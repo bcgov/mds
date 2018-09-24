@@ -36,7 +36,7 @@ class MineList extends Component {
                 <Col span={8}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary">
-                      View Mine
+                      View
                     </Button>
                   </Link>
                 </Col>

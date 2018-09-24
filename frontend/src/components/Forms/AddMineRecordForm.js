@@ -29,7 +29,7 @@ export const AddMineRecordform = (props) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
               id="latitude"
@@ -40,7 +40,7 @@ export const AddMineRecordform = (props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
               id="longitude"
@@ -66,7 +66,7 @@ export const AddMineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right"><Button type="primary" htmlType="submit">Create Mine Record</Button></div>
+      <div className="right center-mobile"><Button className="full" type="primary" htmlType="submit">Create Mine Record</Button></div>
     </Form>
   );
 };

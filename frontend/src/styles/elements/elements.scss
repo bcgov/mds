@@ -8,6 +8,10 @@ h1 {
   font-size: $default-h1;
   font-weight: $bold;
   color: $font-black;
+
+  @include mobile {
+    font-size: $mobile-h1;
+  }
 }
 h2 {
   font-size: $default-h2;

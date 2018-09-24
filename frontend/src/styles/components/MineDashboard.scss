@@ -12,7 +12,8 @@
       top: -100px;
 
       @include mobile {
-          padding: 5px 10px;
+          padding: 20px;
+          top: -140px;
         }
 
       &--inline {
@@ -28,6 +29,10 @@
 
   &__content {
     margin: 50px;
+
+    @include mobile {
+      margin: 10px;
+    }
   }
 }
 

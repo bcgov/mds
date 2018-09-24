@@ -54,8 +54,25 @@ body {
 
 .between {
   justify-content: space-between;
+
+  @include mobile {
+    justify-content: unset;
+  }
 }
 
 .evenly {
   justify-content: space-evenly;
+}
+
+.center-mobile {
+  @include mobile {
+    text-align: center !important;
+    margin: 0 !important;
+  }
+}
+
+.full {
+  @include mobile {
+    width: 80% !important;
+  }
 }

@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { Layout, BackTop, Button } from 'antd';
+import { Layout, BackTop, Button, Icon } from 'antd';
 import LoadingBar from 'react-redux-loading-bar'
 
 import DashboardRoutes from '@/routes/DashboardRoutes';
@@ -24,8 +24,8 @@ export class Home extends Component {
         <Content className="content">
           <DashboardRoutes />
           <BackTop>
-            <Button type="primary">Back To Top</Button>
-          </BackTop>
+            <Button type="primary"><Icon type="arrow-up" theme="outlined" /></Button>
+          </BackTop >
         </Content>
         <div className="footer" ></div>
       </Layout>

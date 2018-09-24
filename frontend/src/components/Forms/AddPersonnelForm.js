@@ -16,7 +16,7 @@ export const AddPersonnelForm = (props) => {
     <div className="form__personnel">
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col md={12} sm={12} xs={24}>
             <Form.Item>
               <Field
                 id="first_name"
@@ -27,7 +27,7 @@ export const AddPersonnelForm = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col md={12} sm={12} xs={24}>
             <Form.Item>
               <Field
                 id="surname"
@@ -77,7 +77,7 @@ export const AddPersonnelForm = (props) => {
               </Form.Item>
             </Col>
           </Row >
-        <div className="right"><Button type="primary" htmlType="submit">Create Personnel</Button></div>
+        <div className="right center-mobile"><Button className="full" type="primary" htmlType="submit">Create Personnel</Button></div>
       </Form>
     </div>
   );

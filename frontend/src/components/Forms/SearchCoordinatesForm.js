@@ -32,8 +32,8 @@ export const SearchCoordinatesForm = (props) => {
           validate={[number, maxLength(12), lon, required]}
         />
       </Form.Item>
-      <div className="right">
-        <Button type="primary" htmlType="submit">
+      <div className="right center-mobile">
+        <Button className="full" type="primary" htmlType="submit">
           <Icon type="search" />
         </Button>
       </div>

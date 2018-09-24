@@ -23,7 +23,7 @@ export const UpdateMineManagerForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
               id="mineManager"
@@ -36,7 +36,7 @@ export const UpdateMineManagerForm = (props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
               id="startDate"
@@ -48,7 +48,7 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right"><Button type="primary" htmlType="submit">Update Mine Manager</Button></div>
+      <div className="right center-mobile"><Button className="full" type="primary" htmlType="submit">Update Mine Manager</Button></div>
     </Form>
   );
 };

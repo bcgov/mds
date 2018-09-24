@@ -42,7 +42,6 @@
   margin-right: 15px;
   color: white;
   background-color: $default-brown;
-  min-width: 100px;
 
   &:hover {
     opacity: 0.6;
@@ -53,7 +52,6 @@
 }
 
 .ant-btn-primary {
-  min-width: 100px;
   &:hover {
     opacity: 0.6;
   }
