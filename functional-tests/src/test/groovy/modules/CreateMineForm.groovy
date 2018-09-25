@@ -32,3 +32,4 @@ class CreateMineForm extends Module {
         createMineButton.click()             
     }
 } 
+ 
