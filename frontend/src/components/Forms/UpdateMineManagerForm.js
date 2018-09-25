@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row } from 'antd';
 import RenderSelect from '@/components/common/RenderSelect';
+// import RenderAutoComplete from '@/components/common/RenderAutoComplete';
 import RenderDate from '@/components/common/RenderDate';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
@@ -10,6 +11,7 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   personnel: PropTypes.object.isRequired,
   personnelIds: PropTypes.array.isRequired
 };
@@ -33,6 +35,7 @@ export const UpdateMineManagerForm = (props) => {
               data={props.personnelIds}
               option={props.personnel}
               validate={[required]}
+              handleChange={props.handleChange}
             />
           </Form.Item>
         </Col>

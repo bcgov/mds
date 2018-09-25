@@ -1,27 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Select } from 'antd';
+import { Form, AutoComplete, Input } from 'antd';
 
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   input: PropTypes.any,
   label: PropTypes.string,
   opton: PropTypes.object,
   meta: PropTypes.object,
-  data: PropTypes.array
+  data: PropTypes.array,
 };
+
+const transformData = (data, option) => {
+  if (data) {
+    const dataList = [];
+    data.map((opt) => {
+    dataList.push(
+      <AutoComplete.Option key={opt} value={opt}>
+        {option[opt].full_name}
+      </AutoComplete.Option>
+    )})
+    return dataList;
+  }
+}
 
 /**
  * Ant Design `Select` component for redux-form.
  */
 const RenderSelect = ({
-  id,
-  input,
-  label,
-  option,
-  meta: { touched, error, warning },
   data,
+  label,
+  handleChange,
+  option,
+  input,
+  meta: { touched, error, warning },
 }) => (
     <Form.Item
       label={label}
@@ -31,18 +43,21 @@ const RenderSelect = ({
           (warning && <span>{warning}</span>))
       }
     >
-      <Select
-        showSearch
+      <AutoComplete
+        defaultActiveFirstOption={false}
+        notFoundContent={'Not Found'}
+        allowClear
+        dropdownMatchSelectWidth={true}
+        backfill={true}
+        style={{ width: '100%' }}
+        dataSource={transformData(data, option)}
         placeholder="Select a person"
-        optionFilterProp="children"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        id={id} 
+        onChange={handleChange}
         {...input}
       >
-        {data.map((value) => (
-          <Select.Option key={value} value={value}>{option[value].full_name}</Select.Option>
-        ))}
-      </Select>
+        <Input />
+      </AutoComplete>
     </Form.Item>
   );
 
