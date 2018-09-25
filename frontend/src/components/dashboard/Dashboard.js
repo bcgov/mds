@@ -16,9 +16,9 @@ import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
-import { NO_MINE } from '@/constants/assets';
 import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
+import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 
@@ -136,18 +136,32 @@ export class Dashboard extends Component {
                   pageData={this.props.pageData} 
                 />
                 <div className="center">
-                  <Pagination
-                    // size="small"
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={pageNumber}
-                    current={pageNumber}
-                    total={this.props.pageData.total}
-                    pageSizeOptions={['25', '50', '75', '100']}
-                    pageSize={perPageNumber}
-                    showTotal={total => `${total} Results`}
-                  />
+                  <MediaQuery maxWidth={500}>
+                    <Pagination
+                      size="small"
+                      showSizeChanger
+                      onShowSizeChange={this.onPageChange}
+                      onChange={this.onPageChange}
+                      defaultCurrent={pageNumber}
+                      current={pageNumber}
+                      total={this.props.pageData.total}
+                      pageSizeOptions={['25', '50', '75', '100']}
+                      pageSize={perPageNumber}
+                    />
+                  </MediaQuery>
+                  <MediaQuery minWidth={501}>
+                    <Pagination
+                      showSizeChanger
+                      onShowSizeChange={this.onPageChange}
+                      onChange={this.onPageChange}
+                      defaultCurrent={pageNumber}
+                      current={pageNumber}
+                      total={this.props.pageData.total}
+                      pageSizeOptions={['25', '50', '75', '100']}
+                      pageSize={perPageNumber}
+                      showTotal={total => `${total} Results`}
+                    />
+                  </MediaQuery>
                 </div>
               </TabPane>
               <TabPane tab="Map" key="map">
