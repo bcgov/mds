@@ -21,8 +21,9 @@ The scripts all inherit base classes from the [BCDevops/ocp-cd-pipeline](https:/
 We follow the [Feature branches workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). But instead of the develop branch, we use Sprint branches which are merged into master at the end of each sprint and a new Sprint branch is created. In other words, at the end of every sprint, new features are released.
 
 ### Branch names:
-- fix/JIRA_TICKET_NUMBER : For any minor fixes.
-- feature/JIRA_TICKET_NUMBER : For any minor fixes.
+- SprintYEAR.SPRINT_NUMBER (e.g. Sprint2018.5) : Current release branch
+- fix/JIRA_TICKET_NUMBER (e.g. fix/MDS-32) : For any minor fixes.
+- feature/JIRA_TICKET_NUMBER (e.g. feature/MDS-32) : For any minor fixes.
 
 ### Pull requests:
 All the pull requests should be opened against the current release branch. To be mindful of OpenShift resources, PR's should only be opened when they are ready to receive feedback so they can be merged.
