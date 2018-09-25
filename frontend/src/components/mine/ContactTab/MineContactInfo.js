@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ViewMineManager from './ViewMineManager';
+import ViewPermittee from './ViewPermittee';
 
 
 const propTypes = {
@@ -21,6 +22,7 @@ export class MineContactInfo extends Component {
     return (
       <div>
         <ViewMineManager mine={this.props.mine} />
+        <ViewPermittee mine={this.props.mine} />
       </div>
     );
   }
