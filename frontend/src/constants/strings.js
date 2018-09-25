@@ -1,8 +1,12 @@
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = 'Error!';
 export const TRY_AGAIN = 'Please try again later';
-export const NO_DATA = 'No data found at this time';
+export const NO_DATA = 'No data available';
 export const NO_COORDINATES = 'This mine does not contain valid coordinates';
+export const NO_MINE_MANAGER = 'No assigned mine manager';
+export const ADD_MINE_MANAGER  = 'Please add mine manager below';
+export const ADD_TENURE = 'Please add tenure number below';
+export const ADD_PERSONNEL = 'Please create personnel below';
 
 
 // default coordinates for center of BC
