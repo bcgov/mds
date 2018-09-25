@@ -8,6 +8,7 @@ from app.extensions import db, jwt as _jwt
 from app.mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from app.mines.models.person import Person, MgrAppointment
 from app.mines.models.location import MineLocation
+from app.mines.models.permit import Permit, PermitStatusCode
 from .constants import (TEST_MINE_NAME,
                         TEST_MINE_NO,
                         TEST_FIRST_NAME,
@@ -37,7 +38,12 @@ from .constants import (TEST_MINE_NAME,
                         TEST_EMAIL_3,
                         TEST_PHONE_1,
                         TEST_PHONE_2,
-                        TEST_PHONE_3
+                        TEST_PHONE_3,
+                        TEST_PERMIT_STATUS_CODE_1,
+                        TEST_PERMIT_STATUS_CODE_GUID_1,
+                        TEST_PERMIT_STATUS_CODE_NAME_1,
+                        TEST_PERMIT_GUID_1,
+                        TEST_PERMIT_NO_1,
                         )
 
 
@@ -162,6 +168,27 @@ def setup_data():
         **DUMMY_USER_KWARGS
     )
     manager.save()
+
+    # Test Permit Status Code
+    permit_code = PermitStatusCode(
+        permit_status_code=TEST_PERMIT_STATUS_CODE_1,
+        permit_status_code_guid=TEST_PERMIT_STATUS_CODE_GUID_1,
+        permit_status_description=TEST_PERMIT_STATUS_CODE_NAME_1,
+        **DUMMY_USER_KWARGS
+    )
+    permit_code.save()
+
+    # Test Permit Data
+    permit = Permit(
+        permit_guid=TEST_PERMIT_GUID_1,
+        mine_guid=TEST_MINE_GUID,
+        permit_no=TEST_PERMIT_NO_1,
+        status_code=TEST_PERMIT_STATUS_CODE_1,
+        received_date=datetime.today(),
+        approved_date=datetime.today(),
+        **DUMMY_USER_KWARGS
+    )
+    permit.save()
 
 
 def clear_data(session):

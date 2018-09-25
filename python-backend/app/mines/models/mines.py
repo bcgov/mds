@@ -14,6 +14,7 @@ class MineIdentity(AuditMixin, Base):
     mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy='joined')
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
+    mine_permit = db.relationship('Permit', backref='mine_identity', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
@@ -24,7 +25,8 @@ class MineIdentity(AuditMixin, Base):
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_detail': [item.json() for item in self.mine_detail],
-            'mine_location': [item.json() for item in self.mine_location]
+            'mine_location': [item.json() for item in self.mine_location],
+            'mine_permit': [item.json() for item in self.mine_permit]
         }
 
     def json_for_map(self):

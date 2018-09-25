@@ -14,6 +14,7 @@ from .mines.models.person import Person
 from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
+from .mines.resources.permit import PermitResource
 from .mines.utils.random import generate_mine_no, generate_name, random_geo
 from .config import Config
 from .extensions import db, jwt
@@ -64,6 +65,7 @@ def register_routes(app, api):
     api.add_resource(PersonList, '/persons')
     api.add_resource(PersonListSearch, '/persons/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+    api.add_resource(PermitResource, '/permit', '/permit/<string:permit_guid>')
 
     # Healthcheck endpoint
     @api.route('/health')
