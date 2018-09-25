@@ -1,8 +1,10 @@
 body {
   font-family: $default-font;
+  width: 100vw;
 }
 
 .layout {
+  width: 100vw;
   min-height: 100vh;
 }
 
@@ -66,13 +68,15 @@ body {
 
 .center-mobile {
   @include mobile {
+    display: block;
     text-align: center !important;
     margin: 0 !important;
   }
 }
 
-.full {
+.full-mobile {
   @include mobile {
-    width: 80% !important;
+    width: 100% !important;
+    margin: 5px 0;
   }
 }

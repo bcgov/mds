@@ -137,7 +137,7 @@ export class Dashboard extends Component {
                 />
                 <div className="center">
                   <Pagination
-                    size="small"
+                    // size="small"
                     showSizeChanger
                     onShowSizeChange={this.onPageChange}
                     onChange={this.onPageChange}
@@ -146,34 +146,41 @@ export class Dashboard extends Component {
                     total={this.props.pageData.total}
                     pageSizeOptions={['25', '50', '75', '100']}
                     pageSize={perPageNumber}
-                    // showTotal={total => `${total} Results`}
+                    showTotal={total => `${total} Results`}
                   />
                 </div>
               </TabPane>
               <TabPane tab="Map" key="map">
                 <div className="landing-page__content--search">
-                  <Col span={10}>
+                  <Col md={10} xs={24}>
                     <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
                   </Col>
-                  <Col span={2}>
+                  <Col md={2} sm={0} xs={0}>
                     <div className="center">
                       <Divider type="vertical"/>
                       <h2>OR</h2>
                       <Divider type="vertical"/>
                     </div>
                   </Col>
-                  <Col span={10}>
+                  <Col md={0} sm={24} xs={24}>
+                    <div className="center">
+                      <Divider >
+                      <h2>OR</h2>
+                      </Divider>
+                    </div>
+                  </Col>
+                  <Col md={10} xs={24}>
                     <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                   </Col>
                 </div>
                 { this.state.mineName &&
-                  <div className="center">
+                  <div className="center center-mobile">
                     <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
                 }
                 {this.state.showCoordinates  && 
                   <div className="center">
-                    <div className="inline-flex evenly">
+                    <div className="inline-flex evenly center-mobile">
                     <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
                     <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
                     </div>

@@ -77,7 +77,7 @@ export const AddPersonnelForm = (props) => {
               </Form.Item>
             </Col>
           </Row >
-        <div className="right center-mobile"><Button className="full" type="primary" htmlType="submit">Create Personnel</Button></div>
+        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Create Personnel</Button></div>
       </Form>
     </div>
   );

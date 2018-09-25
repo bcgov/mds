@@ -66,7 +66,7 @@ export const AddMineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full" type="primary" htmlType="submit">Create Mine Record</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Create Mine Record</Button></div>
     </Form>
   );
 };

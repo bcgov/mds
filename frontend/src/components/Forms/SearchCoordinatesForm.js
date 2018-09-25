@@ -33,7 +33,7 @@ export const SearchCoordinatesForm = (props) => {
         />
       </Form.Item>
       <div className="right center-mobile">
-        <Button className="full" type="primary" htmlType="submit">
+        <Button className="full-mobile" type="primary" htmlType="submit">
           <Icon type="search" />
         </Button>
       </div>

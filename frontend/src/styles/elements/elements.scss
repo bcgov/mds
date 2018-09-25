@@ -47,10 +47,56 @@ p, .p {
   font-size: $default-h2;
   color: $font-black;
   font-weight: $bold;
+
+  @include tablet {
+    font-size: $default-p;
+  }
 }
 
 a, Link {
   &:hover {
     color: $default-light-blue
+  }
+}
+
+// table
+table {
+  width: 100%;
+}
+  
+@include tablet {
+  // hide title when mobile
+  table th {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    display: block;
+  }
+  
+  table td {
+    display: block;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: $light;
+    color: $default-dark-green;
+    text-transform: uppercase;
+    float: left;
+    margin-top: 5px;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
   }
 }

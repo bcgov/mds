@@ -41,7 +41,7 @@ export class CreateMine extends Component {
       <div>
         <div style={{ padding: "10px" }}>
           <div className="right center-mobile">
-            <Button className="full" type="primary" size="large" onClick={this.toggleModal}>
+            <Button className="full-mobile" type="primary" size="large" onClick={this.toggleModal}>
                 Create Mine Record
             </Button>
           </div>

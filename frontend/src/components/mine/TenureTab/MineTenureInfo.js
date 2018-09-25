@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Card, Row, Col } from 'antd';
+import { Modal, Card } from 'antd';
 import AddTenureNumberForm from '@/components/Forms/AddTenureNumberForm';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen'; 
-import { TENURE } from '@/constants/assets';
-import WithNull from '@/HOC/WithNull';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -59,21 +57,23 @@ class MineTenureInfo extends Component {
     return (
       <div>
         <Card>
-          <Row type="flex">
-            <Col span={12}><h4>Tenure Numbers</h4></Col>
-          </Row>
-          <Row type="flex">
-          <Col span={12}><p className="p-large">
-            {mine.mineral_tenure_xref.map((tenure) => {
-              return (
-                <div key={tenure.tenure_number_id}>
-                  {tenure.tenure_number_id}
-                </div>
-              )
-            })}
-            </p></Col>
-          </Row>
-          <div className="right"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
+          <table>
+            <tr>
+              <th scope="col"><h4>Tenure Numbers</h4></th>
+            </tr>
+            <tr>
+              <td data-label="Tenure Numbers">
+                {mine.mineral_tenure_xref.map((tenure) => {
+                  return (
+                    <p key={tenure.tenure_number_id} className="p-large">
+                      {tenure.tenure_number_id}
+                    </p>
+                    )
+                })}
+              </td>
+            </tr>
+          </table>
+          <div className="right center-mobile"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
         </Card>
         <Modal
           title="Add Tenure Number"

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar'
-import { Col, Row, Modal, Card, Button } from 'antd';
+import { Modal, Card, Button } from 'antd';
 import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
@@ -12,7 +12,6 @@ import ConditionalButton from '@/components/common/ConditionalButton';
 import Loading from '@/components/common/Loading';
 import AddPersonnelForm from '@/components/Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
-import { MINER, MINER_TWO } from '@/constants/assets';
 import NullScreen from '@/components/common/NullScreen';
 import * as router from '@/constants/routes';
 
@@ -90,34 +89,36 @@ export class ViewMineManager extends Component {
       return (
         <div>
           <Card>
-            <Row type="flex">
-              <Col span={12}><h4>Mine Manager</h4></Col>
-              <Col span={12}><h4>Manager Since</h4></Col>
-            </Row>
-            <Row type="flex">
-              <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></Col>
-              <Col span={12}><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></Col>
-            </Row>
-             <Row type="flex">
-              <Col span={12}><h4>Email</h4></Col>
-              <Col span={6}><h4>Phone Number</h4></Col>
-              <Col span={6}><h4>Ext</h4></Col>
-            </Row>
-            <Row type="flex">
-              <Col span={12}><p className="p-large">{personnel.email}</p></Col>
-              <Col span={6}><p className="p-large">{personnel.phone_no}</p></Col>
-              <Col span={6}><p className="p-large">{personnel.phone_ext}</p></Col>
-            </Row>
-            <div className="right">
+            <table>
+              <tbody>
+                <tr>
+                  <th scope="col"><h4>Mine Manager</h4></th>
+                  <th scope="col"><h4>Manager Since</h4></th>
+                </tr>
+                <tr>
+                  <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></td>
+                  <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
+                </tr>
+                <tr>
+                  <th scope="col"><h4>Email</h4></th>
+                  <th scope="col"><h4>Phone Number (Ext)</h4></th>
+                </tr>
+                <tr>
+                  <td data-label="Email"><p className="p-large">{personnel.email}</p></td>
+                  <td data-label="Phone Number (Ext)"><p className="p-large">{personnel.phone_no} ({personnel.phone_ext})</p></td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="right center-mobile">
               <Link to={router.PERSONNEL_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
-                <Button type="secondary">View profile</Button>
+                <Button className="full-mobile" type="secondary">View profile</Button>
               </Link>
               <ConditionalButton 
                 handleAction={this.toggleModal} 
                 string="Update Mine Manager" 
                 type="primary"
               />
-            </div>
+            </div> 
           </Card>
           <Modal
             title="Update Mine Manager"
