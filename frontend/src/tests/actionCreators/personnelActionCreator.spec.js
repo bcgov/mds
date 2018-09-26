@@ -49,11 +49,12 @@ describe('`createMinePersonnel` action creator', () => {
 });
 
 describe('`getPersonnelList` action creator', () => {
-  const url = ENVIRONMENT.apiUrl + API.PERSONS;
+  const value = " ";
+  const url = ENVIRONMENT.apiUrl + API.PERSONS + '?search=' + value;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
-    return (getPersonnelList()(dispatch)).then(() => {
+    return (getPersonnelList(value)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);

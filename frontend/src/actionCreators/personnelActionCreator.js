@@ -27,10 +27,10 @@ export const createPersonnel = (payload) => (dispatch) => {
     });
 };
 
-export const getPersonnelList = () => (dispatch) => {
+export const getPersonnelList = (value) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERSONNEL_LIST));
   dispatch(showLoading('modal'));
-  return axios.get(ENVIRONMENT.apiUrl + API.PERSONS, createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.PERSONS + `?search=` + value, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERSONNEL_LIST));
       dispatch(personnelActions.storePersonnelList(response.data));
