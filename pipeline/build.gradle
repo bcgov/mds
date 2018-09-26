@@ -10,7 +10,7 @@ repositories {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.5.0'
-    compile 'ca.bc.gov.devops.cd.pipeline:ocp-pipeline:0.0.3'
+    compile 'ca.bc.gov.devops.cd.pipeline:ocp-pipeline:0.0.4'
 }
 
 sourceSets {
@@ -36,13 +36,13 @@ ext.getScriptArgs = {->
 
 task('cd-build', type: JavaExec) {
     description 'Run Build Groovy script'
- 
+
     // Set main property to name of Groovy script class.
     main = 'Build'
- 
+
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
- 
+
     args project.getScriptArgs()
 
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
@@ -50,13 +50,13 @@ task('cd-build', type: JavaExec) {
 
 task('cd-deploy', type: JavaExec) {
     description 'Run Deploy Groovy script'
- 
+
     // Set main property to name of Groovy script class.
     main = 'Deploy'
- 
+
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
- 
+
     args project.getScriptArgs()
 
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
@@ -64,13 +64,13 @@ task('cd-deploy', type: JavaExec) {
 
 task('cd-zap', type: JavaExec) {
     description 'Run ZAP Groovy script'
- 
+
     // Set main property to name of Groovy script class.
     main = 'Zap'
- 
+
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
- 
+
     args project.getScriptArgs()
 
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
@@ -92,13 +92,13 @@ task('cd-functional-test', type: JavaExec) {
 
 task('cd-unit-test', type: JavaExec) {
     description 'Run ZAP Groovy script'
- 
+
     // Set main property to name of Groovy script class.
     main = 'UnitTest'
- 
+
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
- 
+
     args project.getScriptArgs()
 
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())

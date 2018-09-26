@@ -13,6 +13,7 @@ import Loading from '@/components/common/Loading';
 import AddPersonnelForm from '@/components/Forms/AddPersonnelForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import NullScreen from '@/components/common/NullScreen';
+import { AutoComplete } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
@@ -34,7 +35,6 @@ const defaultProps = {
 
 export class ViewMineManager extends Component {
   state = { modalVisible: false }
-
   /**
  * add new personnel (firstName, surname) to db.
  */
@@ -54,6 +54,16 @@ export class ViewMineManager extends Component {
     })
   }
 
+
+  handleChange = (value) => {
+    if (value.length > 2){
+      this.props.getPersonnelList(value);
+    }
+    else if (value.length === 0) {
+      this.props.getPersonnelList();
+    }
+  }
+
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
     if (this.props.personnelIds.length === 0) {
@@ -65,6 +75,7 @@ export class ViewMineManager extends Component {
             onSubmit={this.handleSubmit}
             personnel={this.props.personnel}
             personnelIds={this.props.personnelIds}
+            handleChange={this.handleChange}
           />
           <p className="center">Didn't find what you're looking for? Please add a new party below</p>
         </div>

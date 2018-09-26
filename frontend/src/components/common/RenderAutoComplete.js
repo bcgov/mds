@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, AutoComplete } from 'antd';
 
@@ -29,7 +29,6 @@ const RenderAutoComplete = ({
       style={{ width: '100%' }}
       dataSource={data}
       placeholder={placeholder}
-      optionLabelProp="value"
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onSelect={handleSelect}
       onChange={handleChange}
