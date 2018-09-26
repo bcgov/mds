@@ -17,8 +17,9 @@ BEGIN
         surname     varchar(100),
         phone_no    varchar(12),
         email       varchar(254),
-        effective_date  date NOT NULL DEFAULT now(),
-        combo_id    varchar(600)
+        effective_date      date NOT NULL DEFAULT now(),
+        person_combo_id     varchar(600),
+        mgr_combo_id        varchar(600)
     );
     SELECT count(*) FROM ETL_MANAGER into old_row;
     WITH 
@@ -101,7 +102,7 @@ BEGIN
         SELECT
             manager_ref_list.mine_no,
             COALESCE(NULLIF(regexp_replace(contact_info.name,' ', '', 'g'),''),'Unknown') first_name,
-            COALESCE(NULLIF(regexp_replace(contact_info.name,' ', '', 'g'),''),'Unknown') surname, 
+            COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname, 
             CASE 
                 WHEN good_phone.good_phone_no = 'Unknown' THEN good_phone.good_phone_no
                 ELSE
@@ -127,55 +128,104 @@ BEGIN
             manager_info.phone_no   ,
             manager_info.email      ,
             manager_info.effective_date,
-            UPPER(manager_info.first_name||manager_info.surname||manager_info.phone_no||manager_info.email) AS combo_id
+            UPPER(manager_info.first_name||manager_info.surname||manager_info.phone_no||manager_info.email) AS person_combo_id,
+            UPPER(manager_info.first_name||manager_info.surname||manager_info.phone_no||manager_info.email||manager_info.mine_no) AS mgr_combo_id
         FROM mine_detail 
         INNER JOIN manager_info ON
             mine_detail.mine_no=manager_info.mine_no
     ),
-    -- Select and assign person_guid to distinct managers
-    distinct_person AS (
-        SELECT DISTINCT 
-            combo_id
-        FROM 
-            mms_manager
-    ),
-    distinct_person_wGuid AS (
-        SELECT 
-            gen_random_uuid() person_guid,
-            distinct_person.combo_id
-        FROM
-            distinct_person
-    ),
-    -- Full manager table 
-    mms_manager_full AS (
-        SELECT
-            manager_info.mine_no    ,
-            manager_info.mine_guid  ,
-            distinct_person_wGuid.person_guid    ,
-            manager_info.first_name ,
-            manager_info.surname    ,
-            manager_info.phone_no   ,
-            manager_info.email      ,
-            manager_info.effective_date,
-            UPPER(manager_info.first_name||manager_info.surname||
-            manager_info.phone_no||manager_info.mine_guid) AS combo_id
-        FROM mms_manager manager_info
-        INNER JOIN distinct_person_wGuid ON
-            manager_info.combo_id=distinct_person_wGuid.combo_id
-    ),
-    -- Upsert data into ETL_MANAGER from MMS
-    -- If new mine with manager info has been added since the last ETL, only insert the new ones.
-    -- Generate a random UUID for person_guid
+
+ 
+ 
+    -- Select a list of new manager record that will be added to the etl table
     new_mms_manager AS(
         SELECT *
-        FROM mms_manager_full mms_manager
+        FROM mms_manager 
         WHERE NOT EXISTS (
             SELECT 1
             FROM ETL_Manager
             WHERE 
-                combo_id = mms_manager.combo_id
+                mgr_combo_id = mms_manager.mgr_combo_id
+        ) 
+    ),
+    -- Select a list of distinct person from the new record list
+    distinct_person AS (
+        SELECT DISTINCT 
+            person_combo_id
+        FROM 
+            new_mms_manager
+    ),
+    -- List of person already exists in MDS person table
+    distinct_person_old AS(
+        SELECT *
+        FROM distinct_person
+        WHERE EXISTS (
+            SELECT 1
+            FROM person
+            WHERE 
+                UPPER(person.first_name||person.surname||person.phone_no||person.email) = distinct_person.person_combo_id
         )
+    ),
+    -- Get person guid from MDS person table
+    distinct_person_old_wGuid AS (
+        SELECT
+            person.person_guid,
+            mms_distinct.person_combo_id
+        FROM
+            distinct_person_old mms_distinct
+        INNER JOIN person ON
+            UPPER(person.first_name||person.surname||person.phone_no||person.email) = mms_distinct.person_combo_id
+    ),
+    -- List of person that does not exist in MDS ETL table
+    distinct_person_new AS (
+        SELECT *
+        FROM distinct_person
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM ETL_Manager
+            WHERE 
+                person_combo_id = distinct_person.person_combo_id
+        )
+    ),
+    -- Assign randomly generated GUID 
+    distinct_person_new_wGuid AS (
+        SELECT
+            gen_random_uuid() person_guid,
+            person_combo_id
+        FROM
+            distinct_person_new
+    ), 
+    -- Combine the list of new manager record with person_guid
+    distinct_person_wGuid AS(
+        SELECT 
+            old_wGuid.person_guid,
+            old_wGuid.person_combo_id
+        FROM  distinct_person_old_wGuid old_wGuid
+        UNION
+        SELECT
+            new_wGuid.person_guid,
+            new_wGuid.person_combo_id
+        FROM distinct_person_new_wGuid new_wGuid
+    ), 
+
+    -- Full manager table 
+    mms_manager_full AS (
+        SELECT
+            manager_info.mine_no            ,
+            manager_info.mine_guid          ,
+            distinct_person_wGuid.person_guid    ,
+            manager_info.first_name         ,
+            manager_info.surname            ,
+            manager_info.phone_no           ,
+            manager_info.email              ,
+            manager_info.effective_date     ,
+            manager_info.person_combo_id    ,
+            manager_info.mgr_combo_id
+        FROM new_mms_manager manager_info
+        INNER JOIN distinct_person_wGuid ON
+            manager_info.person_combo_id=distinct_person_wGuid.person_combo_id
     )
+ 
     INSERT INTO ETL_MANAGER (
         mine_guid    ,
         mine_no      ,
@@ -185,7 +235,8 @@ BEGIN
         phone_no     ,
         email        ,
         effective_date,
-        combo_id     )
+        person_combo_id,
+        mgr_combo_id     )
     SELECT
         manager.mine_guid           ,
         manager.mine_no             ,
@@ -195,8 +246,9 @@ BEGIN
         manager.phone_no            ,
         manager.email               ,
         manager.effective_date      ,
-        manager.combo_id
-    FROM new_mms_manager manager;
+        manager.person_combo_id     ,
+        manager.mgr_combo_id
+    FROM mms_manager_full manager;
     SELECT count(*) FROM ETL_MANAGER INTO new_row; 
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row); 
 END $$;
@@ -220,8 +272,7 @@ BEGIN
             SELECT  1
             FROM    person
             WHERE   
-                UPPER(first_name||surname||phone_no||email) = 
-                UPPER(ETL_MANAGER.first_name||ETL_MANAGER.surname||ETL_MANAGER.phone_no||ETL_MANAGER.email)
+                person_guid = ETL_MANAGER.person_guid
         )
     ),
     distinct_new_manager AS (
@@ -263,8 +314,8 @@ BEGIN
         now()
     FROM distinct_new_manager new;
     SELECT count(*) FROM person INTO new_row; 
-    RAISE NOTICE '.... # new manager records MMS: %', (new_row-old_row);
-    RAISE NOTICE '.... Total manager records MMS: %', (new_row);
+    RAISE NOTICE '.... # new person records MMS: %', (new_row-old_row);
+    RAISE NOTICE '.... Total person records MMS: %', (new_row);
 END $$; 
 
 DO $$
