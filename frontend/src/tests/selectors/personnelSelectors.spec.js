@@ -1,5 +1,5 @@
 import {getPersonnel, getPersonnelIds } from "@/selectors/personnelSelectors";
-import personnelReducer from "@/reducers/personnelReducer";
+import partyReducer from "@/reducers/partyReducer";
 import {storePersonnelList} from "@/actions/personnelActions";
 import {PERSONNEL} from "@/constants/reducerTypes";
 
@@ -7,9 +7,9 @@ describe('personnelSelectors', () => {
   const personnelListInput = {"persons" : [{"person_guid": "test123"},{"person_guid": "test456"}]};
   const personnelListProcessed = {"test123": {"person_guid": "test123"}, "test456": {"person_guid": "test456"}};
 
-  it('`getPersonnel` calls `personnelReducer.getPersonnel`', () => {
+  it('`getPersonnel` calls `partyReducer.getPersonnel`', () => {
     const storeAction = storePersonnelList(personnelListInput);
-    const storeState = personnelReducer({}, storeAction);
+    const storeState = partyReducer({}, storeAction);
     const mockState = {
       [PERSONNEL]: storeState
     };
@@ -17,9 +17,9 @@ describe('personnelSelectors', () => {
     expect(getPersonnel(mockState)).toEqual(personnelListProcessed);
   });
 
-  it('`getPersonnelIds` calls `personnelReducer.getPersonnelIds`', () => {
+  it('`getPersonnelIds` calls `partyReducer.getPersonnelIds`', () => {
     const storeAction = storePersonnelList(personnelListInput);
-    const storeState = personnelReducer({}, storeAction);
+    const storeState = partyReducer({}, storeAction);
     const mockState = {
       [PERSONNEL]: storeState
     };

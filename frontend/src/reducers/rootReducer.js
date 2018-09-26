@@ -4,7 +4,7 @@ import { loadingBarReducer } from 'react-redux-loading-bar'
 import * as reducerTypes from '@/constants/reducerTypes';
 import networkReducer from './networkReducer';
 import mineReducer from '@/reducers/mineReducer';
-import personnelReducer from '@/reducers/personnelReducer';
+import partyReducer from '@/reducers/partyReducer';
 import authenticationReducer from '@/reducers/authenticationReducer';
 
 export const createReducer = (reducer, name) => (state, action) => {
@@ -19,7 +19,7 @@ export const reducerObject = {
   loadingBar: loadingBarReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
-  [reducerTypes.PERSONNEL]: personnelReducer,
+  [reducerTypes.PERSONNEL]: partyReducer,
   [reducerTypes.CREATE_PERSONNEL]: createReducer(networkReducer, reducerTypes.CREATE_PERSONNEL),
   [reducerTypes.GET_PERSONNEL_LIST]: createReducer(networkReducer, reducerTypes.GET_PERSONNEL_LIST),
   [reducerTypes.GET_PERSONNEL]: createReducer(networkReducer, reducerTypes.GET_PERSONNEL),

@@ -22,7 +22,7 @@ const createItemIdsArray = (array, idField) => {
   return array.map(item => item[idField]);
 };
 
-const personnelReducer = (state = initialState, action) => {
+const partyReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERSONNEL_LIST:
       return {
@@ -44,4 +44,4 @@ const personnelReducer = (state = initialState, action) => {
 export const getPersonnel = (state) => state[PERSONNEL].personnel;
 export const getPersonnelIds = (state) => state[PERSONNEL].personnelIds;
 
-export default personnelReducer;
+export default partyReducer;

@@ -1,4 +1,4 @@
-import * as personnelReducer from '@/reducers/personnelReducer';
+import * as partyReducer from '@/reducers/partyReducer';
 
-export const getPersonnel = (state) => personnelReducer.getPersonnel(state);
-export const getPersonnelIds = (state) => personnelReducer.getPersonnelIds(state);
+export const getPersonnel = (state) => partyReducer.getPersonnel(state);
+export const getPersonnelIds = (state) => partyReducer.getPersonnelIds(state);
