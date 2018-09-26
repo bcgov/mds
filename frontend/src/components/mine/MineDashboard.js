@@ -58,13 +58,13 @@ export class MineDashboard extends Component {
                   <MineSummary mine={mine} />
                 </TabPane>
                 <TabPane tab="Permit" key="2">
-                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                  <NullScreen type="generic" />
                 </TabPane>
                 <TabPane tab="Contact Information" key="3">
                   <MineContactInfo mine={mine} />
                 </TabPane>
                 <TabPane tab="Compliance" key="4">
-                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                  <NullScreen type="generic" />
                 </TabPane>
                 <TabPane tab="Tenure" key="5">
                   <MineTenureInfo mine={mine} {...this.props}/>

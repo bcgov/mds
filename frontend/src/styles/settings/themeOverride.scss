@@ -38,24 +38,28 @@
 }
 
 // BUTTON 
+.ant-btn {
+  margin: 10px;
+}
 .ant-btn-secondary {
-  margin-right: 15px;
-  color: white;
-  background-color: $default-brown;
-  min-width: 100px;
+  color: $default-dark-green;
+  border: 1px solid $default-dark-green;
 
   &:hover {
-    opacity: 0.6;
-    color: white;
-    background-color: $default-brown;
-    border: 1px solid $default-brown;
+    color: darken($default-dark-green, 30%);
+    color: saturate($default-dark-green, 10%);
+    border: 1px solid  darken($default-dark-green, 30%);
+    border: 1px solid  saturate($default-dark-green, 10%);
   }
 }
 
 .ant-btn-primary {
-  min-width: 100px;
   &:hover {
-    opacity: 0.6;
+    background-color: darken($default-dark-green, 30%);
+    background-color: saturate($default-dark-green, 10%);
+    border: 1px solid  darken($default-dark-green, 30%);
+    border: 1px solid  saturate($default-dark-green, 10%);
+    // opacity: 0.6;
   }
 }
 // CARDS
@@ -63,7 +67,10 @@
   margin: auto;
   text-align: left;
   border-radius: 25px;
-  width: 60vw;
+}
+
+.ant-card-body {
+  padding: 10px;
 }
 
 .ant-card-bordered {

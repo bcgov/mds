@@ -15,8 +15,9 @@ class DashboardPage extends Page {
         createMineButton (wait: true) {$("button").has("span", text:"Create Mine Record")}  
         
         //Dashboard
-        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-8")}
-        viewButton (wait:true) {$("button").has("span", text:"View Mine")}
+        mineInfo (wait:true) {$("div.ant-row-flex").find("div.ant-col-4")}
+        viewButton (wait:true) {$("button").has("span", text:"View")}
+
         
         //search
         searchBox (wait:true){$("input", class:"ant-input")}
