@@ -13,6 +13,12 @@
       @include flex;
       padding: $default-padding-xl;
       justify-content: space-around;
+
+      @include tablet {
+        display: block !important;
+        // padding: 10px;
+        justify-content: unset;
+      }
     }
   }
 }
@@ -35,4 +41,8 @@
 
 .antd-list {
   margin: 0 50px;
+
+  @include mobile {
+    margin: 0;
+  }
 }

@@ -1,4 +1,8 @@
 .null-screen {
   text-align: center;
-  margin: $default-margin-xxl;
+  margin: $default-margin-lg;
+
+  @include mobile {
+    margin: 0;
+  }
 }

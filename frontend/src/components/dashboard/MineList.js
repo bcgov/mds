@@ -35,8 +35,8 @@ class MineList extends Component {
                 <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
                 <Col span={8}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-                    <Button type="primary">
-                      View Mine
+                    <Button type="primary" style={{margin: '0'}}>
+                      View
                     </Button>
                   </Link>
                 </Col>
