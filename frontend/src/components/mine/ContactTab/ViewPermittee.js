@@ -122,7 +122,7 @@ export class ViewPermittee extends Component {
               style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
             />
             <div>
-              <p className="center">Didn't find what you're looking for? Please add a new entity below</p>
+              <p className="center">Didn't find what you're looking for? Please add a new party below</p>
             <div className="center">
               <RadioGroup defaultValue={true} size="large" onChange={this.handleChange}>
                 <RadioButton value={true}>Person</RadioButton>

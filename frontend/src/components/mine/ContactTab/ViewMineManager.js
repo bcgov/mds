@@ -60,11 +60,14 @@ export class ViewMineManager extends Component {
       return (<NullScreen type="manager" small/>)
     } else {
       return (
-        <UpdateMineManagerForm
-          onSubmit={this.handleSubmit}
-          personnel={this.props.personnel}
-          personnelIds={this.props.personnelIds}
-        />
+        <div>
+          <UpdateMineManagerForm
+            onSubmit={this.handleSubmit}
+            personnel={this.props.personnel}
+            personnelIds={this.props.personnelIds}
+          />
+          <p className="center">Didn't find what you're looking for? Please add a new party below</p>
+        </div>
       )
     }
   }
