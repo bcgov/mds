@@ -14,7 +14,7 @@ import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
 import Loading from '@/components/common/Loading';
-import NullScreen from '@/components/common/NullScreen'; 
+import NullScreen from '@/components/common/NullScreen';
 import { NO_MINE } from '@/constants/assets';
 
 const TabPane = Tabs.TabPane;
@@ -49,7 +49,7 @@ export class MineDashboard extends Component {
               <MineHeader mine={mine} />
             </div>
             <div className="dashboard__content">
-              <Tabs 
+              <Tabs
                 defaultActiveKey="1"
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
