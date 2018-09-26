@@ -10,6 +10,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .mines.models.mines import MineIdentity, MineDetail
 from .mines.models.location import MineLocation
+from .mines.models.person import Person
 from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
@@ -117,6 +118,31 @@ def register_commands(app):
         try:
             db.session.commit()
             click.echo(f'Created {num} random mines.')
+        except DBAPIError:
+            db.session.rollback()
+            click.echo(f'Error, failed on commit.')
+            raise
+
+    @app.cli.command()
+    @click.argument('num')
+    def create_person(num):
+        DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+        person_list = []
+        for i in range(int(num)):
+            person = Person(
+                person_guid=uuid.uuid4(),
+                first_name=generate_name(),
+                surname=generate_name(),
+                email=generate_name() + '@' + generate_name() + '.com',
+                phone_no='123-123-1234',
+                **DUMMY_USER_KWARGS
+            )
+            person_list.append(person)
+
+        db.session.bulk_save_objects(person_list)
+        try:
+            db.session.commit()
+            click.echo(f'Created {num} random persons.')
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
