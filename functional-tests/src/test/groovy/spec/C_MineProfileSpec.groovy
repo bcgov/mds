@@ -5,58 +5,52 @@ import spock.lang.*
 
 
 import pages.*
+import utils.*
 
  
 @Title("MDS-MineProfilePage")
 @Stepwise
 class  C_MineProfileSpec extends GebReportingSpec {
-    @Shared selectedMine = ["",""]
-    @Shared selectedMine_NO 
-    @Shared selectedMine_NAME
-    @Shared urlTemp =""
- 
+  
     static TENURE_BAD =  "1234cha"  
 
-
+    //manager
     static FirstName = "Vivián"
-    static LastName = "Iányús"
+    static LastName = "Iáoyús"
     static Date = "2017-08-04"
 
+    def setupSpec(){
+        println "---------Creating test mine record--------------"
+        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_creation.sql').text)
+    }
+
+    
 
     def "Scenario: User can view the mine profile"(){
-        when: "I go to the dashboard page"
-        to DashboardPage
+        when: "I go to the mine profile page for BLAH0000(the test mine)"
+        to MineProfilePage
 
-        and: "I select a mind to view"
-        selectedMine = selectRandomMine()
-        selectedMine_NO = selectedMine[0]
-        selectedMine_NAME = selectedMine[1]
-
-        
-        then: "I am on the mine profile page"
-        at MineProfilePage
-       
-        when:
-        urlTemp = driver.currentUrl
-
-        then: "I should see profile of selected Mine"
-        sleep(100)
-        assert activeTab == "Summary"       
-        assert mineNumber == selectedMine_NO
-        assert mineName == selectedMine_NAME
+        then: "I should see profile of the Mine"
+        // sleep(500)
+        // println activeTab
+        waitFor {activeTab == "Summary" }      
+        assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
+        assert mineName == Const.MINE_NAME
+        assert latValue.minus("Lat:").startsWith("48")
+        assert longValue.minus("Long:").startsWith("-125")
 
     }
 
     def "Scenario: User should be able to add tenure number"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         when: "User can update mine record with a new tenure number"
         def tempTenure = generateTenure()
         addTenure(tempTenure)
 
         and: "see successful message"
-        toastMessage == "Successfully updated: ${selectedMine_NAME}"
+        toastMessage == "Successfully updated: ${Const.MINE_NAME}"
 
 
         then: "User can see the updated tenure number list"
@@ -64,13 +58,13 @@ class  C_MineProfileSpec extends GebReportingSpec {
 
     }
 
-    def "Scenario: User should not be able to add tenure number if the length is invalid"(){
+    def "Scenario: User should not be able to add tenure number if the given tenure is invalid"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         when: "Tenure number is not all numerical but not meet length requirement"
         addTenure(bad_tenure)
-        println scenario
+        println "Scenario: "+scenario
 
         and:"User see warning message"
         updateTenureForm.warningMessage == warning
@@ -83,28 +77,12 @@ class  C_MineProfileSpec extends GebReportingSpec {
         scenario        |bad_tenure    |warning
         "short tenure"  |"123456"      |"Must be 7 characters long"
         "long tenure"   |"123456677998"|"Must be 7 characters long"
-    }
-
-
-    def "Scenario: User should not be able to add tenure number if it contains nonnumerical value"(){
-        given: "I go to mine profile"
-        go urlTemp
-         
-        
-        when: "Tenure number contains nonnumerical value"
-        addTenure(TENURE_BAD)
-
-        and:"User see ERROR message"
-        toastMessage == "Error!"
-
-        then: "Tenure number list stays the same"
-        tenureUpdated(TENURE_BAD) == false
- 
+        "contains non-numerical value" | "1234cha" | "Input must be a number"
     }
 
     def "Scenario: User can create new mine manager and update mine manager information"(){
         given: "I go to mine profile"
-        go urlTemp
+        to MineProfilePage
 
         and: "At mine profile page"
         at MineProfilePage
@@ -118,14 +96,17 @@ class  C_MineProfileSpec extends GebReportingSpec {
         sleep(200)
 
         then: "Should see successful message"
-        assert toastMessage == "Successfully updated the manager of ${selectedMine_NAME}"
+        assert toastMessage == "Successfully updated the manager of ${Const.MINE_NAME}"
         
 
         then: "I can see the manager information get updated"
         mineManagerCheck(FirstName,LastName,Date) == [true,true]
 
+    }
 
-
+    def cleanupSpec() {
+        println "---------Cleaning--------------"
+        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
     }
 
 
