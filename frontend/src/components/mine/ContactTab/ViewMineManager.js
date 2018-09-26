@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar'
 import { Modal, Card, Button } from 'antd';
-import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
+import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/partyActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
 import ConditionalButton from '@/components/common/ConditionalButton';
