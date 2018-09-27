@@ -13,7 +13,8 @@ class Permit(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    approved_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    issue_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     permit_status_code = db.Column(db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
 
     def __repr__(self):
@@ -26,7 +27,8 @@ class Permit(AuditMixin, Base):
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
             'received_date': self.received_date.isoformat(),
-            'approved_date': self.approved_date.isoformat()
+            'issue_date': self.issue_date.isoformat(),
+            'expiry_date': self.issue_date.isoformat()
         }
 
     @classmethod
@@ -59,13 +61,13 @@ class Permit(AuditMixin, Base):
             raise AssertionError('Permit received date cannot be set to the future.')
         return received_date
 
-    @validates('approved_date')
-    def validate_approved_date(self, key, approved_date):
-        if approved_date.isoformat() == '9999-12-31':
-            return approved_date
-        if approved_date > datetime.today():
-            raise AssertionError('Permit approved date cannot be set to the future.')
-        return approved_date
+    @validates('issue_date')
+    def validate_issue_date(self, key, issue_date):
+        if issue_date.isoformat() == '9999-12-31':
+            return issue_date
+        if issue_date > datetime.today():
+            raise AssertionError('Permit issue date cannot be set to the future.')
+        return issue_date
 
 
 class PermitStatusCode(AuditMixin, Base):

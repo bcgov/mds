@@ -14,7 +14,7 @@ class MineIdentity(AuditMixin, Base):
     mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy='joined')
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
-    mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.approved_date)', lazy='joined')
+    mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid

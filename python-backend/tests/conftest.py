@@ -185,7 +185,7 @@ def setup_data():
         permit_no=TEST_PERMIT_NO_1,
         permit_status_code=TEST_PERMIT_STATUS_CODE_1,
         received_date=datetime.today(),
-        approved_date=datetime.today(),
+        issue_date=datetime.today(),
         **DUMMY_USER_KWARGS
     )
     permit.save(commit=False)
