@@ -1,12 +1,14 @@
 -- 1. Migrate MINE PROFILE (mine name, mumber, lat/long)
 -- Create the ETL_PROFILE table
+
+
 DO $$
-DECLARE
+DECLARE 
     old_row   integer;
     new_row   integer;
-BEGIN
+BEGIN 
     RAISE NOTICE 'Start updating mine profile:';
-    RAISE NOTICE '.. Step 1 of 3: Scan new mine records in MMS';
+    RAISE NOTICE '.. Step 1 of 2: Scan new mine records in MMS';
     -- This is the intermediary table that will be used to store mine profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
         mine_guid uuid          ,
@@ -41,16 +43,15 @@ BEGIN
         mms_new.lat_dec    ,
         mms_new.lon_dec
     FROM mms_new;
-    SELECT count(*) FROM ETL_PROFILE INTO new_row;
+    SELECT count(*) FROM ETL_PROFILE INTO new_row; 
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
-
 END $$;
 
 
 
 
 DO $$
-DECLARE
+DECLARE 
     old_row         integer;
     new_row         integer;
     location_row    integer;
@@ -79,7 +80,7 @@ BEGIN
         now()               ,
         'mms_migration'     ,
         now()
-    FROM new_record new;
+    FROM new_record new; 
     -- Upsert data from new_record into mine_detail
     WITH new_record AS (
         SELECT *
@@ -149,7 +150,7 @@ BEGIN
     WHERE
         (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
         AND
-        (new.lat_dec <> 0 AND new.lon_dec <> 0);
+        (new.lat_dec <> 0 AND new.lon_dec <> 0); 
     SELECT count(*) FROM mine_detail into new_row;
     SELECT count(*) FROM mine_location into location_row;
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
@@ -163,7 +164,7 @@ END $$;
 
 
 
-
+ 
 
 
 
