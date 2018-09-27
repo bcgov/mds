@@ -11,11 +11,8 @@ from sqlalchemy.exc import DBAPIError
 
 from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from .mines.models.location import MineLocation
-<<<<<<< HEAD
 from .mines.models.person import Person
-=======
 from .mines.models.permit import Permit
->>>>>>> added fix to model for permit and permit status code and added permit/tenure generation
 from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
@@ -163,7 +160,7 @@ def register_commands(app):
                 person_guid=uuid.uuid4(),
                 first_name=generate_name(),
                 surname=generate_name(),
-                email=generate_name() + '@' + generate_name() + '.com',
+                email=random_key_gen(key_length=8, numbers=False) + '@' + random_key_gen(key_length=8, numbers=False) + '.com',
                 phone_no='123-123-1234',
                 **DUMMY_USER_KWARGS
             )
