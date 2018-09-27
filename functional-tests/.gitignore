@@ -6,6 +6,6 @@ build
 *.iml
 *.iws
 out
-.idea
 images
 target
+.env
