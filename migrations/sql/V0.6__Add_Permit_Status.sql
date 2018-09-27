@@ -25,6 +25,3 @@ CREATE TABLE permit (
 FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED,
 FOREIGN KEY (permit_status_code) REFERENCES permit_status_code(permit_status_code) DEFERRABLE INITIALLY DEFERRED
 );
-
-ALTER TABLE permit RENAME approved_date TO issue_date;
-ALTER TABLE permit ADD COLUMN expiry_date date NOT NULL DEFAULT '9999-12-31'::date;
