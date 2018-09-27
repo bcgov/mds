@@ -10,4 +10,4 @@ VALUES
     ('A', 'Ammended Permit', 20, 'system-mds', 'system-mds'),
     ('Z', 'Permit Not required', 30, 'system-mds', 'system-mds'),
     ('M', 'Permit type not selected', 40, 'system-mds', 'system-mds')
-;
+ON CONFLICT DO NOTHING;
