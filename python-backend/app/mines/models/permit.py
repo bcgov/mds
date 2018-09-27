@@ -14,7 +14,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     approved_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    status_code = db.Column(db.String(1), db.ForeignKey('permit_status_code.permit_status_code'))
+    permit_status_code = db.Column(db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
@@ -24,7 +24,7 @@ class Permit(AuditMixin, Base):
             'permit_guid': str(self.permit_guid),
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
-            'status_code': self.status_code,
+            'permit_status_code': self.permit_status_code,
             'received_date': self.received_date.isoformat(),
             'approved_date': self.approved_date.isoformat()
         }
@@ -37,11 +37,11 @@ class Permit(AuditMixin, Base):
     def find_by_mine_guid(cls, _id):
         return cls.query.filter_by(mine_guid=_id)
 
-    @validates('status_code')
-    def validate_status_code(self, key, status_code):
-        if not status_code:
-            raise AssertionError('Status code is not provided.')
-        return status_code
+    @validates('permit_status_code')
+    def validate_status_code(self, key, permit_status_code):
+        if not permit_status_code:
+            raise AssertionError('Permit status code is not provided.')
+        return permit_status_code
 
     @validates('permit_no')
     def validate_permit_no(self, key, permit_no):
@@ -70,9 +70,9 @@ class Permit(AuditMixin, Base):
 
 class PermitStatusCode(AuditMixin, Base):
     __tablename__ = 'permit_status_code'
-    permit_status_code = db.Column(db.String(3), nullable=False, primary_key=True)
+    permit_status_code = db.Column(db.String(2), nullable=False, primary_key=True)
     permit_status_code_guid = db.Column(UUID(as_uuid=True))
-    permit_status_description = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
@@ -80,10 +80,10 @@ class PermitStatusCode(AuditMixin, Base):
 
     def json(self):
         return {
-            'status_code': self.status_code,
-            'status_code_guid': str(self.mine_guid),
-            'status_name': self.permit_no,
-            'status_description': self.status_code,
+            'permit_status_code': self.permit_status_code,
+            'permit_status_code_guid': self.permit_status_code_guid,
+            'description': self.description,
+            'display_order': str(self.display_order)
         }
 
     @classmethod
@@ -98,14 +98,14 @@ class PermitStatusCode(AuditMixin, Base):
     def validate_permit_status_code(self, key, permit_status_code):
         if not permit_status_code:
             raise AssertionError('Permit status code is not provided.')
-        if len(permit_status_code) > 1:
+        if len(permit_status_code) > 2:
             raise AssertionError('Permit number must not exceed 1 characters.')
         return permit_status_code
 
-    @validates('permit_status_description')
-    def validate_permit_status_description(self, key, permit_status_description):
-        if not permit_status_description:
+    @validates('description')
+    def validate_description(self, key, description):
+        if not description:
             raise AssertionError('Permit status description is not provided.')
-        if len(permit_status_description) > 100:
+        if len(description) > 100:
             raise AssertionError('Permit status description must not exceed 100 characters.')
-        return permit_status_description
+        return description

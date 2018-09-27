@@ -4,7 +4,7 @@ from tests.constants import TEST_PERMIT_GUID_1, TEST_MINE_GUID
 
 # GET
 def test_get_permit_not_found(test_client, auth_headers):
-    get_resp = test_client.get('/permit/' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get('/permits/' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_data == {
         'error': {
@@ -16,7 +16,7 @@ def test_get_permit_not_found(test_client, auth_headers):
 
 
 def test_get_permit(test_client, auth_headers):
-    get_resp = test_client.get('/permit/' + TEST_PERMIT_GUID_1, headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get('/permits/' + TEST_PERMIT_GUID_1, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_data['permit_guid'] == TEST_PERMIT_GUID_1
     assert get_resp.status_code == 200

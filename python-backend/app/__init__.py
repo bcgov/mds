@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 import sys
 import uuid
 
@@ -8,14 +9,18 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from sqlalchemy.exc import DBAPIError
 
-from .mines.models.mines import MineIdentity, MineDetail
+from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from .mines.models.location import MineLocation
+<<<<<<< HEAD
 from .mines.models.person import Person
+=======
+from .mines.models.permit import Permit
+>>>>>>> added fix to model for permit and permit status code and added permit/tenure generation
 from .mines.resources.mine import Mine, MineList, MineListByName
 from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
 from .mines.resources.permit import PermitResource
-from .mines.utils.random import generate_mine_no, generate_name, random_geo
+from .mines.utils.random import generate_mine_no, generate_name, random_geo, random_key_gen
 from .config import Config
 from .extensions import db, jwt
 
@@ -65,7 +70,7 @@ def register_routes(app, api):
     api.add_resource(PersonList, '/persons')
     api.add_resource(PersonListSearch, '/persons/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
-    api.add_resource(PermitResource, '/permit', '/permit/<string:permit_guid>')
+    api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -89,6 +94,8 @@ def register_commands(app):
         mine_identity_list = []
         mine_detail_list = []
         mine_location_list = []
+        mine_permit_list = []
+        mine_tenure_list = []
         for i in range(int(num)):
             random_location = random_geo()
             mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
@@ -114,12 +121,33 @@ def register_commands(app):
             )
             mine_location_list.append(mine_location)
 
+            for random_tenure in range(random.randint(1, 3)):
+                mine_tenure = MineralTenureXref(
+                    mineral_tenure_xref_guid=uuid.uuid4(),
+                    mine_guid=mine_identity.mine_guid,
+                    tenure_number_id=random_key_gen(key_length=7, letters=False),
+                    **DUMMY_USER_KWARGS,
+                )
+                mine_tenure_list.append(mine_tenure)
+
+            for random_permit in range(random.randint(1, 5)):
+                mine_permit = Permit(
+                    permit_guid=uuid.uuid4(),
+                    mine_guid=mine_identity.mine_guid,
+                    permit_no=random_key_gen(key_length=12),
+                    permit_status_code=random.choice(['N', 'A', 'Z', 'M']),
+                    **DUMMY_USER_KWARGS,
+                )
+                mine_permit_list.append(mine_permit)
+
         db.session.bulk_save_objects(mine_identity_list)
         db.session.bulk_save_objects(mine_detail_list)
         db.session.bulk_save_objects(mine_location_list)
+        db.session.bulk_save_objects(mine_permit_list)
+        db.session.bulk_save_objects(mine_tenure_list)
         try:
             db.session.commit()
-            click.echo(f'Created {num} random mines.')
+            click.echo(f'Created {num} random mines with permits.')
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')

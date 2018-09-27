@@ -28,12 +28,12 @@ class Person(AuditMixin, Base):
     def json(self):
         return {
             'person_guid': str(self.person_guid),
-            'first_name': str(self.first_name),
-            'surname': str(self.surname),
-            'full_name': str(self.first_name) + ' ' + str(self.surname),
-            'phone_no': str(self.phone_no),
-            'phone_ext': str(self.phone_ext),
-            'email': str(self.email),
+            'first_name': self.first_name,
+            'surname': self.surname,
+            'full_name': self.first_name + ' ' + self.surname,
+            'phone_no': self.phone_no,
+            'phone_ext': self.phone_ext,
+            'email': self.email,
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
@@ -106,11 +106,12 @@ class MgrAppointment(AuditMixin, Base):
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
-            'mine_name': str(mine_name),
+            'mine_name': mine_name,
             'person_guid': str(self.person_guid),
             'first_name': person.first_name,
             'surname': person.surname,
             'full_name': person.first_name + ' ' + person.surname,
+            'email': person.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }
