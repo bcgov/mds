@@ -5,42 +5,41 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar'
 import { Modal, Card, Button } from 'antd';
-import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/partyActionCreator';
+import { createParty, fetchParties, addMineManager, fetchPartyById } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
-import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
+import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import Loading from '@/components/common/Loading';
-import AddPersonnelForm from '@/components/Forms/AddPersonnelForm';
+import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import NullScreen from '@/components/common/NullScreen';
-import { AutoComplete } from 'antd';
 import * as router from '@/constants/routes';
 
 const propTypes = {
-  getPersonnelById: PropTypes.func.isRequired,
-  getPersonnelList: PropTypes.func.isRequired,
-  createPersonnel: PropTypes.func.isRequired,
+  fetchPartyById: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   getMineRecordById: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  personnel: PropTypes.object.isRequired,
-  personnelIds: PropTypes.array.isRequired
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired
 };
 
 const defaultProps = {
   mine: {},
-  personnel: {},
-  personnelIds: []
+  parties: {},
+  partyIds: []
 };
 
 export class ViewMineManager extends Component {
   state = { modalVisible: false }
   /**
- * add new personnel (firstName, surname) to db.
+ * add new parties (firstName, surname) to db.
  */
-  handlePersonnelSubmit = (values) => {
-    this.props.createPersonnel(values).then(() => {
-      this.props.getPersonnelList();
+  handlePartySubmit = (values) => {
+    this.props.createParty(values).then(() => {
+      this.props.fetchParties();
     });
   }
 
@@ -57,24 +56,24 @@ export class ViewMineManager extends Component {
 
   handleChange = (value) => {
     if (value.length > 2){
-      this.props.getPersonnelList(value);
+      this.props.fetchParties(value);
     }
     else if (value.length === 0) {
-      this.props.getPersonnelList();
+      this.props.fetchParties();
     }
   }
 
   // temporary check - in the future this table will be seeded with data
   renderMineManagerForm() {
-    if (this.props.personnelIds.length === 0) {
+    if (this.props.partyIds.length === 0) {
       return (<NullScreen type="manager" small/>)
     } else {
       return (
         <div>
           <UpdateMineManagerForm
             onSubmit={this.handleSubmit}
-            personnel={this.props.personnel}
-            personnelIds={this.props.personnelIds}
+            parties={this.props.parties}
+            partyIds={this.props.partyIds}
             handleChange={this.handleChange}
           />
           <p className="center">Didn't find what you're looking for? Please add a new party below</p>
@@ -90,16 +89,16 @@ export class ViewMineManager extends Component {
   }
 
   componentDidMount() {
-    this.props.getPersonnelList();
+    this.props.fetchParties();
     if (this.props.mine.mgr_appointment[0]) {
-      this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
+      this.props.fetchPartyById(this.props.mine.mgr_appointment[0].person_guid);
     }
   }
 
   render() {
     const { mine } = this.props;
-    if (this.props.mine.mgr_appointment[0] && this.props.personnelIds[0]) {
-      const personnel = this.props.personnel[mine.mgr_appointment[0].person_guid];
+    if (this.props.mine.mgr_appointment[0] && this.props.partyIds[0]) {
+      const parties = this.props.parties[mine.mgr_appointment[0].person_guid];
       return (
         <div>
           <Card>
@@ -118,15 +117,15 @@ export class ViewMineManager extends Component {
                   <th scope="col"><h4>Phone Number (Ext)</h4></th>
                 </tr>
                 <tr>
-                  <td data-label="Email"><p className="p-large">{personnel.email}</p></td>
-                  <td data-label="Phone Number (Ext)"><p className="p-large">{personnel.phone_no} ({personnel.phone_ext})</p></td>
+                  <td data-label="Email"><p className="p-large">{parties.email}</p></td>
+                  <td data-label="Phone Number (Ext)"><p className="p-large">{parties.phone_no} ({parties.phone_ext ? parties.phone_ext : 'N/A'})</p></td>
                 </tr>
               </tbody>
             </table>
             <div className="right center-mobile">
-              <Link to={router.PERSONNEL_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
+              <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
                 <Button className="full-mobile" type="secondary">View profile</Button>
-              </Link>
+              </Link> 
               <ConditionalButton 
                 handleAction={this.toggleModal} 
                 string="Update Mine Manager" 
@@ -146,7 +145,7 @@ export class ViewMineManager extends Component {
             />
             <div>
               {this.renderMineManagerForm()}
-              <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
+              <AddPartyForm onSubmit={this.handlePartySubmit} />
             </div>
           </Modal>
         </div>
@@ -172,7 +171,7 @@ export class ViewMineManager extends Component {
           >
             <div>
               {this.renderMineManagerForm()}
-              <AddPersonnelForm onSubmit={this.handlePersonnelSubmit} />
+              <AddPartyForm onSubmit={this.handlePartySubmit} />
             </div>
           </Modal>
         </div>
@@ -188,16 +187,16 @@ ViewMineManager.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
-    personnel: getPersonnel(state),
-    personnelIds: getPersonnelIds(state),
+    parties: getParties(state),
+    partyIds: getPartyIds(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getPersonnelById,
-    getPersonnelList,
-    createPersonnel,
+    fetchPartyById,
+    fetchParties,
+    createParty,
     addMineManager,
     getMineRecordById,
   }, dispatch);

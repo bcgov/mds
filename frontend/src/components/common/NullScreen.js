@@ -28,7 +28,7 @@ const NullScreen = (props) => {
         <div>
           <img src={props.small ? MINER_TWO : MINER} />
           <h1>{props.small ? String.NO_DATA : String.NO_MINE_MANAGER}</h1>
-          <h5>{props.small ? String.ADD_PERSONNEL : String.ADD_MINE_MANAGER}</h5>
+          <h5>{props.small ? String.ADD_PARTY : String.ADD_MINE_MANAGER}</h5>
         </div>
       }
       {props.type === 'tenure' &&

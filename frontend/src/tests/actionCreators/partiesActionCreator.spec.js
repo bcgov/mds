@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { createPersonnel, getPersonnelList, getPersonnelById, addMineManager } from '@/actionCreators/personnelActionCreator';
+import { createParty, fetchParties, fetchPartyById, addMineManager } from '@/actionCreators/partiesActionCreator';
 import * as genericActions from '@/actions/genericActions';
 import * as API from '@/constants/API';
 import * as MOCK from '../mocks/dataMocks';
@@ -21,16 +21,16 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe('`createMinePersonnel` action creator', () => {
+describe('`createMinePARTIES` action creator', () => {
   const mockPayload = {
     "first_name": 'mockName',
     "surname": 'mockSurname'
   }
-  const url = ENVIRONMENT.apiUrl + API.PERSON;
+  const url = ENVIRONMENT.apiUrl + API.PARTY;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return (createPersonnel(mockPayload)(dispatch)).then(() => {
+    return (createParty(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -40,7 +40,7 @@ describe('`createMinePersonnel` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
-    return (createPersonnel(mockPayload)(dispatch)).then(() => {
+    return (createParty(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -48,13 +48,13 @@ describe('`createMinePersonnel` action creator', () => {
   });
 });
 
-describe('`getPersonnelList` action creator', () => {
+describe('`fetchParties` action creator', () => {
   const value = " ";
-  const url = ENVIRONMENT.apiUrl + API.PERSONS + '?search=' + value;
+  const url = ENVIRONMENT.apiUrl + API.PARTIES + '?search=' + value;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
-    return (getPersonnelList(value)(dispatch)).then(() => {
+    return (fetchParties(value)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -64,7 +64,7 @@ describe('`getPersonnelList` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
-    return (getPersonnelList()(dispatch)).then(() => {
+    return (fetchParties()(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -72,13 +72,13 @@ describe('`getPersonnelList` action creator', () => {
   });
 });
 
-describe('`getPersonnelById` action creator', () => {
-  const mockPayload = MOCK.PERSONNEL.personnelIds[0];
-  const url = ENVIRONMENT.apiUrl + API.PERSON + "/" + mockPayload;
+describe('`fetchPartyById` action creator', () => {
+  const mockPayload = MOCK.PARTY.partyIds[0];
+  const url = ENVIRONMENT.apiUrl + API.PARTY + "/" + mockPayload;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, mockPayload).reply(200, mockResponse);
-    return (getPersonnelById(mockPayload)(dispatch)).then(() => {
+    return (fetchPartyById(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -88,7 +88,7 @@ describe('`getPersonnelById` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
-    return (getPersonnelById(mockPayload)(dispatch)).then(() => {
+    return (fetchPartyById(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -99,7 +99,7 @@ describe('`getPersonnelById` action creator', () => {
 describe('`addMineManager` action creator', () => {
   const mockPayload = {
     "mine_guid": MOCK.MINES.mineIds[0],
-    "person_guid": MOCK.PERSONNEL.personnelIds[0], 
+    "person_guid": MOCK.PARTY.partyds[0], 
     "effective_date": '2018-10-10', 
     }
   const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_detail[0].mine_name;

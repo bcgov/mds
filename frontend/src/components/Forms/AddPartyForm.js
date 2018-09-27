@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/common/RenderField';
-import { Form, Button, Col, Row, Card } from 'antd';
+import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, email, phoneNumber, maxLength, number } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
@@ -11,9 +11,9 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired
 };
 
-export const AddPersonnelForm = (props) => {
+export const AddPartyForm = (props) => {
   return (
-    <div className="form__personnel">
+    <div className="form__parties">
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Row gutter={16}>
           <Col md={12} sm={12} xs={24}>
@@ -77,16 +77,16 @@ export const AddPersonnelForm = (props) => {
               </Form.Item>
             </Col>
           </Row >
-        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Create Personnel</Button></div>
+        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Create Party</Button></div>
       </Form>
     </div>
   );
 };
 
-AddPersonnelForm.propTypes = propTypes;
+AddPartyForm.propTypes = propTypes;
 
 export default (reduxForm({
-    form: FORM.ADD_PERSONNEL,
-    onSubmitSuccess: resetForm(FORM.ADD_PERSONNEL),
-  })(AddPersonnelForm)
+    form: FORM.ADD_PARTY,
+    onSubmitSuccess: resetForm(FORM.ADD_PARTY),
+  })(AddPartyForm)
 );

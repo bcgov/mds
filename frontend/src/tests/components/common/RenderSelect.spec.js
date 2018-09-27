@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import RenderSelect from '@/components/common/RenderSelect';
-import { PERSONNEL } from '@/tests/mocks/dataMocks';
+import { PARTY } from '@/tests/mocks/dataMocks';
 
 
 let props = {};
@@ -29,8 +29,8 @@ beforeEach(() => {
 describe('RenderSelect', () => {
 
   it('renders properly', () => {
-    props.data = PERSONNEL.personnelIds
-    props.option = PERSONNEL.personnel
+    props.data = PARTY.partyIds
+    props.option = PARTY.parties
     const wrapper = shallow(<RenderSelect {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

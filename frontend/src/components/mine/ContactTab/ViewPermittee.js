@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
 import { Modal, Card, Radio } from 'antd';
-import { createPersonnel, getPersonnelList, addMineManager, getPersonnelById } from '@/actionCreators/personnelActionCreator';
+import { createParty, fetchParties, addMineManager, fetchPartyById } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
-import { getPersonnel, getPersonnelIds } from '@/selectors/personnelSelectors';
+import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPermitteeForm from '@/components/Forms/AddPermitteeForm';
-import AddPersonnelForm from '@/components/Forms/AddPersonnelForm';
+import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import NullScreen from '@/components/common/NullScreen';
 
@@ -17,31 +17,31 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 const propTypes = {
-  getPersonnelById: PropTypes.func.isRequired,
-  getPersonnelList: PropTypes.func.isRequired,
-  createPersonnel: PropTypes.func.isRequired,
+  fetchPartyById: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   getMineRecordById: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  personnel: PropTypes.object.isRequired,
-  personnelIds: PropTypes.array.isRequired
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired
 };
 
 const defaultProps = {
   mine: {},
-  personnel: {},
-  personnelIds: []
+  parties: {},
+  partyIds: []
 };
 
 export class ViewPermittee extends Component {
   state = { modalVisible: false, per: true }
 
   /**
- * add new personnel (firstName, surname) OR compnay (companyName) to db.
+ * add new parties (firstName, surname) OR compnay (companyName) to db.
  */
-  handlePersonnelSubmit = (values) => {
-    this.props.createPersonnel(values).then(() => {
-      this.props.getPersonnelList();
+  handlepartiesSubmit = (values) => {
+    this.props.createParty(values).then(() => {
+      this.props.fetchParties();
     });
   }
 
@@ -60,7 +60,7 @@ export class ViewPermittee extends Component {
     return (
       <div>
         {this.state.per &&
-          <AddPersonnelForm onSubmit={this.handleSubmit}/>
+          <AddPartyForm onSubmit={this.handleSubmit}/>
         }
         {!this.state.per && 
           <AddPermitteeForm onSubmit={this.handleSubmit}/>
@@ -80,9 +80,9 @@ export class ViewPermittee extends Component {
   }
 
   componentDidMount() {
-    this.props.getPersonnelList();
+    this.props.fetchParties();
     if (this.props.mine.mgr_appointment[0]) {
-      this.props.getPersonnelById(this.props.mine.mgr_appointment[0].person_guid);
+      this.props.fetchPartyById(this.props.mine.mgr_appointment[0].person_guid);
     }
   }
 
@@ -142,16 +142,16 @@ ViewPermittee.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
-    personnel: getPersonnel(state),
-    personnelIds: getPersonnelIds(state),
+    parties: getParties(state),
+    partyIds: getPartyIds(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getPersonnelById,
-    getPersonnelList,
-    createPersonnel,
+    fetchPartyById,
+    fetchParties,
+    createParty,
     addMineManager,
     getMineRecordById,
   }, dispatch);

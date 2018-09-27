@@ -11,13 +11,13 @@ import { resetForm } from '@/utils/helpers';
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  personnel: PropTypes.object.isRequired,
-  personnelIds: PropTypes.array.isRequired
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired
 };
 
 const defaultProps = {
-  personnel: {},
-  personnelIds: []
+  parties: {},
+  partyIds: []
 };
 
 export const UpdateMineManagerForm = (props) => {
@@ -31,8 +31,8 @@ export const UpdateMineManagerForm = (props) => {
               name="mineManager"
               label='Mine Manager'
               component={RenderLargeSelect}
-              data={props.personnelIds}
-              option={props.personnel}
+              data={props.partyIds}
+              option={props.parties}
               validate={[required]}
               handleChange={props.handleChange}
             />

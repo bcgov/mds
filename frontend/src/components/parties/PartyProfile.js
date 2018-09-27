@@ -2,50 +2,50 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs, Row, Col, Divider, Icon } from 'antd';
+import { Tabs, Row, Col, Divider } from 'antd';
 import { PHONE, EMAIL } from '@/constants/assets';
 
-import { getPersonnelById } from '@/actionCreators/personnelActionCreator';
-import { getPersonnel } from '@/selectors/personnelSelectors';
+import { fetchPartyById } from '@/actionCreators/partiesActionCreator';
+import { getParties } from '@/selectors/partiesSelectors';
 import Loading from '@/components/common/Loading';
 
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  getPersonnelById: PropTypes.func.isRequired,
-  personnel: PropTypes.object.isRequired,
+  fetchPartyById: PropTypes.func.isRequired,
+  parties: PropTypes.object.isRequired,
   match: PropTypes.object
 };
 
 const defaultProps = {
- personnel: {},
+ parties: {},
 };
 
-export class PersonnelProfile extends Component {
+export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getPersonnelById(id);
+    this.props.fetchPartyById(id);
   }
 
   render() {
     const { id } = this.props.match.params;
-    const personnel = this.props.personnel[id];
-    if (personnel) {
+    const parties = this.props.parties[id];
+    if (parties) {
       return (
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1>{personnel.full_name}</h1>
+              <h1>{parties.full_name}</h1>
               <div className="inline-flex">
                 <img src={EMAIL} />
-                <h5>{personnel.email}</h5>
+                <h5>{parties.email}</h5>
               </div>
             </div>
             <div className="inline-flex between">
               <h2>Mine Manager</h2>
               <div className="inline-flex">
                 <img src={PHONE} />
-                <h5>{personnel.phone_no}</h5>
+                <h5>{parties.phone_no}</h5>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@ export class PersonnelProfile extends Component {
                     <Col span={8}><h2>date</h2></Col>
                   </Row>
                   <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}} />
-                  {personnel.mgr_appointment.map((history, i) => {
+                  {parties.mgr_appointment.map((history, i) => {
                     const expiry = (history.expiry_date === '9999-12-31') ? 'PRESENT' : history.expiry_date;
                     return (
                       <div key={i}>
@@ -90,17 +90,17 @@ export class PersonnelProfile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    personnel: getPersonnel(state),
+    parties: getParties(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getPersonnelById
+    fetchPartyById
   }, dispatch);
 };
 
-PersonnelProfile.propTypes = propTypes;
-PersonnelProfile.defaultProps = defaultProps;
+PartyProfile.propTypes = propTypes;
+PartyProfile.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonnelProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(PartyProfile);

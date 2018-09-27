@@ -33,7 +33,7 @@ const RenderSelect = ({
     >
       <Select
         showSearch
-        placeholder="Select a person"
+        placeholder="Select a party"
         optionFilterProp="children"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         id={id} 

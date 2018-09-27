@@ -13,7 +13,7 @@ const propTypes = {
 
 export const AddPermitteeForm = (props) => {
   return (
-    <div className="form__personnel">
+    <div className="form__parties">
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>

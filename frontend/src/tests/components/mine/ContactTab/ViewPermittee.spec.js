@@ -7,17 +7,17 @@ const dispatchProps = {};
 const props = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getPersonnelById = jest.fn();
-  dispatchProps.getPersonnelList = jest.fn();
-  dispatchProps.createPersonnel = jest.fn();
+  dispatchProps.fetchPartyById = jest.fn();
+  dispatchProps.fetchParties = jest.fn();
+  dispatchProps.createParty = jest.fn();
   dispatchProps.addMineManager = jest.fn();
   dispatchProps.getMineRecordById = jest.fn();
 };
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.personnel = MOCK.PERSONNEL.personnel;
-  props.personnelIds = MOCK.PERSONNEL.personnelIds;
+  props.parties = MOCK.PARTY.parties;
+  props.partyIds = MOCK.PARTY.partyIds;
 };
 
 beforeEach(() => {

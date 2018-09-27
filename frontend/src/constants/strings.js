@@ -6,7 +6,7 @@ export const NO_COORDINATES = 'This mine does not contain valid coordinates';
 export const NO_MINE_MANAGER = 'No assigned mine manager';
 export const ADD_MINE_MANAGER  = 'Please add mine manager below';
 export const ADD_TENURE = 'Please add tenure number below';
-export const ADD_PERSONNEL = 'Please create personnel below';
+export const ADD_PARTY = 'Please create party below';
 
 
 // default coordinates for center of BC
