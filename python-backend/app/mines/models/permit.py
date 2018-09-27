@@ -71,7 +71,6 @@ class Permit(AuditMixin, Base):
 class PermitStatusCode(AuditMixin, Base):
     __tablename__ = 'permit_status_code'
     permit_status_code = db.Column(db.String(2), nullable=False, primary_key=True)
-    permit_status_code_guid = db.Column(UUID(as_uuid=True))
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
 
@@ -81,14 +80,9 @@ class PermitStatusCode(AuditMixin, Base):
     def json(self):
         return {
             'permit_status_code': self.permit_status_code,
-            'permit_status_code_guid': self.permit_status_code_guid,
             'description': self.description,
             'display_order': str(self.display_order)
         }
-
-    @classmethod
-    def find_by_permit_status_code_guid(cls, _id):
-        return cls.query.filter_by(permit_status_code_guid=_id).first()
 
     @classmethod
     def find_by_permit_status_code(cls, _id):

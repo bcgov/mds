@@ -40,7 +40,6 @@ from .constants import (TEST_MINE_NAME,
                         TEST_PHONE_2,
                         TEST_PHONE_3,
                         TEST_PERMIT_STATUS_CODE_1,
-                        TEST_PERMIT_STATUS_CODE_GUID_1,
                         TEST_PERMIT_STATUS_CODE_NAME_1,
                         TEST_PERMIT_GUID_1,
                         TEST_PERMIT_NO_1,
@@ -174,7 +173,6 @@ def setup_data():
     for permit_code_value in TEST_PERMIT_STATUS_CODES:
         permit_code = PermitStatusCode(
             permit_status_code=permit_code_value,
-            permit_status_code_guid=TEST_PERMIT_STATUS_CODE_GUID_1,
             description=TEST_PERMIT_STATUS_CODE_NAME_1,
             **DUMMY_USER_KWARGS
         )
