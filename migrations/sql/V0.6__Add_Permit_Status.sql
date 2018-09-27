@@ -16,8 +16,7 @@ CREATE TABLE permit (
   mine_guid uuid NOT NULL,
   permit_no character varying(12) NOT NULL,
   received_date date NOT NULL DEFAULT '9999-12-31'::date,
-  issue_date    date NOT NULL DEFAULT '9999-12-31'::date,
-  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
+  approved_date    date NOT NULL DEFAULT '9999-12-31'::date,
   permit_status_code character varying(2) NOT NULL,
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
@@ -26,3 +25,6 @@ CREATE TABLE permit (
 FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED,
 FOREIGN KEY (permit_status_code) REFERENCES permit_status_code(permit_status_code) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE permit RENAME approved_date TO issue_date;
+ALTER TABLE permit ADD COLUMN expiry_date date NOT NULL DEFAULT '9999-12-31'::date;
