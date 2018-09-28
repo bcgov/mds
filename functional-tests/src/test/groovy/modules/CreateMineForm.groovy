@@ -4,6 +4,7 @@ package modules
 import geb.Module
 
 class CreateMineForm extends Module {
+    static at = {$("div.ant-modal-title").text()=="Create Mine Record"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         errorMessage (wait: true) {$("div", class:"ant-form-explain").text()}
@@ -32,3 +33,4 @@ class CreateMineForm extends Module {
         createMineButton.click()             
     }
 } 
+ 

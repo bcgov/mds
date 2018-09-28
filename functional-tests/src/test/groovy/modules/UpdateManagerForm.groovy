@@ -3,6 +3,7 @@ package modules
 import geb.Module
 
 class UpdateManagerForm extends Module {
+    static at = {$("div.ant-modal-title").text()=="Update Mine Manager"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         errorMessage (wait: true) {$("div", class:"ant-form-explain").text()}

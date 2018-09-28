@@ -8,6 +8,7 @@ from app.extensions import db, jwt as _jwt
 from app.mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from app.mines.models.person import Person, MgrAppointment
 from app.mines.models.location import MineLocation
+from app.mines.models.permit import Permit, PermitStatusCode
 from .constants import (TEST_MINE_NAME,
                         TEST_MINE_NO,
                         TEST_FIRST_NAME,
@@ -37,7 +38,12 @@ from .constants import (TEST_MINE_NAME,
                         TEST_EMAIL_3,
                         TEST_PHONE_1,
                         TEST_PHONE_2,
-                        TEST_PHONE_3
+                        TEST_PHONE_3,
+                        TEST_PERMIT_STATUS_CODE_1,
+                        TEST_PERMIT_STATUS_CODE_NAME_1,
+                        TEST_PERMIT_GUID_1,
+                        TEST_PERMIT_NO_1,
+                        TEST_PERMIT_STATUS_CODES
                         )
 
 
@@ -98,8 +104,8 @@ def setup_data():
         mine_name=TEST_MINE_NAME,
         **DUMMY_USER_KWARGS
     )
-    mine_identity.save()
-    mine_detail.save()
+    mine_identity.save(commit=False)
+    mine_detail.save(commit=False)
 
     # Test Tenure Data
     tenure = MineralTenureXref(
@@ -108,7 +114,7 @@ def setup_data():
         tenure_number_id=TEST_TENURE_ID,
         **DUMMY_USER_KWARGS
     )
-    tenure.save()
+    tenure.save(commit=False)
 
     # Test Location Data
     mine_location = MineLocation(
@@ -120,7 +126,7 @@ def setup_data():
         expiry_date=datetime.today(),
         **DUMMY_USER_KWARGS,
     )
-    mine_location.save()
+    mine_location.save(commit=False)
 
     # Test Person Data
     person = Person(
@@ -131,7 +137,7 @@ def setup_data():
         phone_no=TEST_PHONE_1,
         **DUMMY_USER_KWARGS
     )
-    person.save()
+    person.save(commit=False)
     person2 = Person(
         person_guid=uuid.UUID(TEST_PERSON_2_GUID),
         first_name=TEST_FIRST_NAME_2,
@@ -140,7 +146,7 @@ def setup_data():
         phone_no=TEST_PHONE_2,
         **DUMMY_USER_KWARGS
     )
-    person2.save()
+    person2.save(commit=False)
     person3 = Person(
         person_guid=uuid.UUID(TEST_PERSON_3_GUID),
         first_name=TEST_FIRST_NAME_3,
@@ -150,7 +156,7 @@ def setup_data():
         phone_ext='1234',
         **DUMMY_USER_KWARGS
     )
-    person3.save()
+    person3.save(commit=False)
 
     # Test Manager Data
     manager = MgrAppointment(
@@ -161,7 +167,29 @@ def setup_data():
         expiry_date=datetime.today(),
         **DUMMY_USER_KWARGS
     )
-    manager.save()
+    manager.save(commit=False)
+
+    # Test Permit Status Codes
+    for permit_code_value in TEST_PERMIT_STATUS_CODES:
+        permit_code = PermitStatusCode(
+            permit_status_code=permit_code_value,
+            description=TEST_PERMIT_STATUS_CODE_NAME_1,
+            **DUMMY_USER_KWARGS
+        )
+        permit_code.save(commit=False)
+
+    # Test Permit Data
+    permit = Permit(
+        permit_guid=TEST_PERMIT_GUID_1,
+        mine_guid=TEST_MINE_GUID,
+        permit_no=TEST_PERMIT_NO_1,
+        permit_status_code=TEST_PERMIT_STATUS_CODE_1,
+        received_date=datetime.today(),
+        issue_date=datetime.today(),
+        **DUMMY_USER_KWARGS
+    )
+    permit.save(commit=False)
+    db.session.commit()
 
 
 def clear_data(session):
