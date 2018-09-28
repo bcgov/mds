@@ -8,13 +8,15 @@ import { required, email, phoneNumber, maxLength, number } from '@/utils/Validat
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  isPerson: PropTypes.bool
 };
 
 export const AddPartyForm = (props) => {
   return (
     <div className="form__parties">
       <Form layout="vertical" onSubmit={props.handleSubmit}>
+      {props.isPerson &&
         <Row gutter={16}>
           <Col md={12} sm={12} xs={24}>
             <Form.Item>
@@ -39,6 +41,22 @@ export const AddPartyForm = (props) => {
             </Form.Item>
           </Col>
         </Row>
+      }
+      {!props.isPerson &&
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id="companyName"
+                name="companyName"
+                label='Company Name *'
+                component={RenderField}
+                validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      }
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
@@ -77,7 +95,7 @@ export const AddPartyForm = (props) => {
               </Form.Item>
             </Col>
           </Row >
-        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Create Party</Button></div>
+        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? 'Create Personnel' : 'Create Company'}</Button></div>
       </Form>
     </div>
   );

@@ -27,10 +27,10 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
-export const fetchParties = (value) => (dispatch) => {
+export const fetchParties = (type, value) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading('modal'));
-  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(value), createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(type, value), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));
@@ -55,7 +55,7 @@ export const fetchPartyById = (id) => (dispatch) => {
     .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PARTY));
-      dispatch(hideLoading());
+        dispatch(hideLoading());
     });
 };
 

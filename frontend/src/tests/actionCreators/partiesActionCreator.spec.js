@@ -21,7 +21,7 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe('`createMinePARTIES` action creator', () => {
+describe('`createParty` action creator', () => {
   const mockPayload = {
     "first_name": 'mockName',
     "surname": 'mockSurname'
@@ -50,7 +50,7 @@ describe('`createMinePARTIES` action creator', () => {
 
 describe('`fetchParties` action creator', () => {
   const value = " ";
-  const url = ENVIRONMENT.apiUrl + API.PARTIES + '?search=' + value;
+  const url = ENVIRONMENT.apiUrl + API.PARTIES(value);
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
@@ -99,7 +99,7 @@ describe('`fetchPartyById` action creator', () => {
 describe('`addMineManager` action creator', () => {
   const mockPayload = {
     "mine_guid": MOCK.MINES.mineIds[0],
-    "person_guid": MOCK.PARTY.partyds[0], 
+    "person_guid": MOCK.PARTY.partyIds[0], 
     "effective_date": '2018-10-10', 
     }
   const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_detail[0].mine_name;

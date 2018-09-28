@@ -12,12 +12,18 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired
+  partyIds: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  isPerson: PropTypes.bool,
 };
 
 const defaultProps = {
   parties: {},
-  partyIds: []
+  partyIds: [],
+  id: '',
+  label: '',
 };
 
 export const UpdateMineManagerForm = (props) => {
@@ -27,9 +33,9 @@ export const UpdateMineManagerForm = (props) => {
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="mineManager"
-              name="mineManager"
-              label='Mine Manager'
+              id={props.id}
+              name={props.id}
+              label={props.label}
               component={RenderLargeSelect}
               data={props.partyIds}
               option={props.parties}
@@ -50,7 +56,7 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Mine Manager</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.action}</Button></div>
     </Form>
   );
 };

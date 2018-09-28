@@ -25,10 +25,22 @@ const NullScreen = (props) => {
         </div>
       }
       {props.type === 'manager' &&
+        <div className="inline">
+          <img src={MINER_TWO} />
+          <h1>{String.NO_MINE_MANAGER}</h1>
+        </div>
+      }
+      {props.type === 'permittee' &&
+        <div className="inline">
+          <img src={MINER_TWO} />
+          <h1>{String.NO_PERMITTEE}</h1>
+        </div>
+      }
+       {props.type === 'manager-small' &&
         <div>
-          <img src={props.small ? MINER_TWO : MINER} />
-          <h1>{props.small ? String.NO_DATA : String.NO_MINE_MANAGER}</h1>
-          <h5>{props.small ? String.ADD_PARTY : String.ADD_MINE_MANAGER}</h5>
+          <img src={MINER_TWO} />
+          <h1>{String.NO_DATA}</h1>
+          <h5>{String.ADD_PARTY}</h5>
         </div>
       }
       {props.type === 'tenure' &&
