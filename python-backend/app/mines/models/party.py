@@ -10,38 +10,42 @@ from .mines import MineIdentity
 from .mixins import AuditMixin, Base
 
 
-class Person(AuditMixin, Base):
+class Party(AuditMixin, Base):
     __tablename__ = 'person'
-    person_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    first_name = db.Column(db.String(60), nullable=False)
-    surname = db.Column(db.String(60), nullable=False)
+    party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    first_name = db.Column(db.String(100), nullable=True)
+    middle_name = db.Column(db.String(100), nullable=True)
+    party_name = db.Column(db.String(100), nullable=True)
     phone_no = db.Column(db.String(10), nullable=False)
     phone_ext = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
+    party_type = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
     def __repr__(self):
-        return '<Person %r>' % self.person_guid
+        return '<Party %r>' % self.person_guid
 
     def json(self):
         return {
-            'person_guid': str(self.person_guid),
-            'first_name': self.first_name,
-            'surname': self.surname,
-            'full_name': self.first_name + ' ' + self.surname,
-            'phone_no': self.phone_no,
-            'phone_ext': self.phone_ext,
-            'email': self.email,
+            'party_guid': str(self.person_guid),
+            'first_name': str(self.first_name),
+            'surname': str(self.surname),
+            'full_name': str(self.first_name) + ' ' + str(self.surname),
+            'company_name': self.company_name,
+            'party_type': str(self.party_type),
+            'phone_no': str(self.phone_no),
+            'phone_ext': str(self.phone_ext),
+            'email': str(self.email),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }
 
     @classmethod
-    def find_by_person_guid(cls, _id):
-        return cls.query.filter_by(person_guid=_id).first()
+    def find_by_party_guid(cls, _id):
+        return cls.query.filter_by(party_guid=_id).first()
 
     @classmethod
     def find_by_mgr_appointment(cls, _id):
@@ -59,16 +63,16 @@ class Person(AuditMixin, Base):
     def validate_first_name(self, key, first_name):
         if not first_name:
             raise AssertionError('Person first name is not provided.')
-        if len(first_name) > 60:
-            raise AssertionError('Person first name must not exceed 60 characters.')
+        if len(first_name) > 100:
+            raise AssertionError('Person first name must not exceed 100 characters.')
         return first_name
 
     @validates('surname')
     def validate_surname(self, key, surname):
         if not surname:
             raise AssertionError('Person surname is not provided.')
-        if len(surname) > 60:
-            raise AssertionError('Person surname must not exceed 60 characters.')
+        if len(surname) > 100:
+            raise AssertionError('Person surname must not exceed 100 characters.')
         return surname
 
     @validates('phone_no')
@@ -92,7 +96,7 @@ class MgrAppointment(AuditMixin, Base):
     __tablename__ = "mgr_appointment"
     mgr_appointment_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    person_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('person.person_guid'), primary_key=True)
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
@@ -100,18 +104,17 @@ class MgrAppointment(AuditMixin, Base):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
 
     def json(self):
-        person = Person.find_by_person_guid(str(self.person_guid))
+        party = Party.find_by_party_guid(str(self.party_guid))
         mine = MineIdentity.find_by_mine_guid(str(self.mine_guid))
         mine_name = mine.mine_detail[0].mine_name
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
-            'mine_name': mine_name,
-            'person_guid': str(self.person_guid),
+            'mine_name': str(mine_name),
+            'party_guid': str(self.party_guid),
             'first_name': person.first_name,
             'surname': person.surname,
             'full_name': person.first_name + ' ' + person.surname,
-            'email': person.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }
