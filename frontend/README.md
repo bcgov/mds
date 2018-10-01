@@ -77,7 +77,7 @@ B. Using a docker container
 cd ../
 ```
 
-2. Issue the makefile command that runs the backend
+2. Issue the makefile command that runs the frontend
 ```
 make frontend
 ```
