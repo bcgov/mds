@@ -8,6 +8,7 @@ This file describes how to run the project and develop against it.
 
 * Docker
 * Makefile
+* IDIR Account (Contact repository owner for a valid IDIR account to be able to access the application locally)
 
 ## Getting Started (OSX and LINUX)
 
