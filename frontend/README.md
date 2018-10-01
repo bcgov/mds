@@ -27,7 +27,9 @@ The application requires a whole suite of npm modules for building/testing/runni
 
 ## Directory/Naming convention
 
-The application naming convention is based off of [BEM](http://getbem.com/introduction/) and [ITCSS](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/) naming convention and is structured as follows:
+The SASS/CSS files naming convention is based off of [BEM](http://getbem.com/introduction/) and [ITCSS](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/).
+
+The application is structured as follows:
 
 ```
 |-- public
