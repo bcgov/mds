@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TENURE, MINER, NO_MINE, MINER_TWO  } from '@/constants/assets';
+import { TENURE, NO_MINE, MINER_TWO  } from '@/constants/assets';
 import * as String from '@/constants/strings';
 
 const propTypes = {
@@ -25,15 +25,9 @@ const NullScreen = (props) => {
         </div>
       }
       {props.type === 'manager' &&
-        <div className="inline">
+        <div className="null-screen--inline">
           <img src={MINER_TWO} />
           <h1>{String.NO_MINE_MANAGER}</h1>
-        </div>
-      }
-      {props.type === 'permittee' &&
-        <div className="inline">
-          <img src={MINER_TWO} />
-          <h1>{String.NO_PERMITTEE}</h1>
         </div>
       }
        {props.type === 'manager-small' &&

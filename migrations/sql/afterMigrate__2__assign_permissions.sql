@@ -1,7 +1,1 @@
 -- Grant permissions to the non-superuser
-GRANT ALL PRIVILEGES ON DATABASE mds TO mds;
-GRANT ALL PRIVILEGES ON SCHEMA public TO mds;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mds;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO mds;
-
-GRANT postgres TO mds;

@@ -4,13 +4,6 @@ import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const props = {}
-const dispatchProps = {}
-
-const setupDispatchProps = () => {
-  dispatchProps.getMineRecordById = jest.fn();
-  dispatchProps.updateMineRecord = jest.fn();
-  dispatchProps.match = {};
-};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
@@ -18,7 +11,6 @@ const setupProps = () => {
 
 beforeEach(() => {
   setupProps();
-  setupDispatchProps();
 });
 
 describe('MineTenureInfo', () => {
@@ -26,8 +18,6 @@ describe('MineTenureInfo', () => {
     const component = shallow(
     <MineTenureInfo 
       {...props} 
-      {...dispatchProps}
-      match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
       />
   );
     expect(component).toMatchSnapshot();

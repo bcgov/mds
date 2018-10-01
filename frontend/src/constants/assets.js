@@ -1,7 +1,7 @@
 // all static image files
 export { default as HOME } from '../assets/images/Home.svg';
-export { default as PROFILE } from '../assets/images/Profile.png';
-export { default as ELLIPSE } from '../assets/images/Ellipse.png';
+export { default as PROFILE } from '../assets/images/Profile.svg';
+export { default as ELLIPSE } from '../assets/images/Ellipse.svg';
 export { default as MINER } from '../assets/images/Miner.svg';
 export { default as NO_MINE } from '../assets/images/no-mine.svg';
 export { default as MINER_TWO } from '../assets/images/Miner-2.svg';

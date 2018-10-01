@@ -5,4 +5,17 @@
   @include mobile {
     margin: 0;
   }
+
+  &--inline {
+    @include flex;
+    justify-content: center;
+    margin: 0;
+
+    h1 {
+      margin-top: 15px;
+    }
+    @include mobile {
+      display: block;
+    }
+  }
 }
