@@ -11,12 +11,14 @@ from sqlalchemy.exc import DBAPIError
 
 from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from .mines.models.location import MineLocation
-from .mines.models.person import Person
+from .mines.models.party import Party
 from .mines.models.permit import Permit
+from .mines.models.permittee import Permittee
 from .mines.resources.mine import Mine, MineList, MineListByName
-from .mines.resources.person import ManagerResource, PersonResource, PersonList, PersonListSearch
+from .mines.resources.party import ManagerResource, PartyResource, PartyList, PartyListSearch
 from .mines.resources.location import MineLocationResource, MineLocationListResource
 from .mines.resources.permit import PermitResource
+from .mines.resources.permittee import PermitteeResource
 from .mines.utils.random import generate_mine_no, generate_name, random_geo, random_key_gen
 from .config import Config
 from .extensions import db, jwt
@@ -63,11 +65,12 @@ def register_routes(app, api):
     api.add_resource(MineList, '/mines')
     api.add_resource(MineListByName, '/mines/names')
     api.add_resource(MineLocationListResource, '/mines/location')
-    api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
-    api.add_resource(PersonList, '/persons')
-    api.add_resource(PersonListSearch, '/persons/names')
+    api.add_resource(PartyResource, '/party', '/party/<string:party_guid>')
+    api.add_resource(PartyList, '/parties')
+    api.add_resource(PartyListSearch, '/parties/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
     api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
+    api.add_resource(PermitteeResource, '/permittees', '/permittees/<string:permittee_guid>')
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -93,6 +96,8 @@ def register_commands(app):
         mine_location_list = []
         mine_permit_list = []
         mine_tenure_list = []
+        mine_party_list = []
+        mine_permittee_list = []
         for i in range(int(num)):
             random_location = random_geo()
             mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
@@ -118,7 +123,18 @@ def register_commands(app):
             )
             mine_location_list.append(mine_location)
 
-            for random_tenure in range(random.randint(1, 3)):
+            party = Party(
+                party_guid=uuid.uuid4(),
+                first_name=generate_name(),
+                party_name=generate_name(),
+                email=random_key_gen(key_length=8, numbers=False) + '@' + random_key_gen(key_length=8, numbers=False) + '.com',
+                phone_no='123-123-1234',
+                party_type_code="PER",
+                **DUMMY_USER_KWARGS
+            )
+            mine_party_list.append(party)
+
+            for random_tenure in range(random.randint(0, 4)):
                 mine_tenure = MineralTenureXref(
                     mineral_tenure_xref_guid=uuid.uuid4(),
                     mine_guid=mine_identity.mine_guid,
@@ -127,7 +143,7 @@ def register_commands(app):
                 )
                 mine_tenure_list.append(mine_tenure)
 
-            for random_permit in range(random.randint(1, 5)):
+            for random_permit in range(random.randint(0, 6)):
                 mine_permit = Permit(
                     permit_guid=uuid.uuid4(),
                     mine_guid=mine_identity.mine_guid,
@@ -136,40 +152,25 @@ def register_commands(app):
                     **DUMMY_USER_KWARGS,
                 )
                 mine_permit_list.append(mine_permit)
+                mine_permittee = Permittee(
+                    permittee_guid=uuid.uuid4(),
+                    permit_guid=mine_permit.permit_guid,
+                    party_guid=party.party_guid,
+                    **DUMMY_USER_KWARGS
+                )
+                mine_permittee_list.append(mine_permittee)
 
         db.session.bulk_save_objects(mine_identity_list)
         db.session.bulk_save_objects(mine_detail_list)
         db.session.bulk_save_objects(mine_location_list)
         db.session.bulk_save_objects(mine_permit_list)
         db.session.bulk_save_objects(mine_tenure_list)
+        db.session.bulk_save_objects(mine_party_list)
+        db.session.bulk_save_objects(mine_permittee_list)
+
         try:
             db.session.commit()
-            click.echo(f'Created {num} random mines with permits.')
-        except DBAPIError:
-            db.session.rollback()
-            click.echo(f'Error, failed on commit.')
-            raise
-
-    @app.cli.command()
-    @click.argument('num')
-    def create_person(num):
-        DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-        person_list = []
-        for i in range(int(num)):
-            person = Person(
-                person_guid=uuid.uuid4(),
-                first_name=generate_name(),
-                surname=generate_name(),
-                email=random_key_gen(key_length=8, numbers=False) + '@' + random_key_gen(key_length=8, numbers=False) + '.com',
-                phone_no='123-123-1234',
-                **DUMMY_USER_KWARGS
-            )
-            person_list.append(person)
-
-        db.session.bulk_save_objects(person_list)
-        try:
-            db.session.commit()
-            click.echo(f'Created {num} random persons.')
+            click.echo(f'Created {num} random mines with tenure, permits, and permittee.')
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')

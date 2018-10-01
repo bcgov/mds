@@ -8,40 +8,48 @@ from app.extensions import db
 
 from .mines import MineIdentity
 from .mixins import AuditMixin, Base
+from .constants import PARTY_STATUS_CODE
 
 
 class Party(AuditMixin, Base):
-    __tablename__ = 'person'
+    __tablename__ = 'party'
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     first_name = db.Column(db.String(100), nullable=True)
     middle_name = db.Column(db.String(100), nullable=True)
-    party_name = db.Column(db.String(100), nullable=True)
+    party_name = db.Column(db.String(100), nullable=False)
     phone_no = db.Column(db.String(10), nullable=False)
     phone_ext = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
-    party_type = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
+    party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
     def __repr__(self):
-        return '<Party %r>' % self.person_guid
+        return '<Party %r>' % self.party_guid
 
     def json(self):
-        return {
-            'party_guid': str(self.person_guid),
-            'first_name': str(self.first_name),
-            'surname': str(self.surname),
-            'full_name': str(self.first_name) + ' ' + str(self.surname),
-            'company_name': self.company_name,
-            'party_type': str(self.party_type),
-            'phone_no': str(self.phone_no),
-            'phone_ext': str(self.phone_ext),
-            'email': str(self.email),
-            'mgr_appointment': [item.json() for item in self.mgr_appointment],
+        context = {
+            'party_guid': str(self.party_guid),
+            'party_type_code': self.party_type_code,
+            'phone_no': self.phone_no,
+            'phone_ext': self.phone_ext,
+            'email': self.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }
+        if self.party_type_code == PARTY_STATUS_CODE['per']:
+            context.update({
+                'first_name': self.first_name,
+                'party_name': self.party_name,
+                'name': self.first_name + ' ' + self.party_name,
+                'mgr_appointment': [item.json() for item in self.mgr_appointment],
+            })
+        elif self.party_type_code == PARTY_STATUS_CODE['org']:
+            context.update({
+                'name': self.party_name,
+            })
+        return context
 
     @classmethod
     def find_by_party_guid(cls, _id):
@@ -56,29 +64,31 @@ class Party(AuditMixin, Base):
         return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mine_guid=_id).first()
 
     @classmethod
-    def find_by_name(cls, first_name, surname):
-        return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.surname) == func.lower(surname)).first()
+    def find_by_party_name(cls, party_name):
+        return cls.query.filter(func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['org']).first()
+
+    @classmethod
+    def find_by_name(cls, first_name, party_name):
+        return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
     @validates('first_name')
     def validate_first_name(self, key, first_name):
-        if not first_name:
-            raise AssertionError('Person first name is not provided.')
-        if len(first_name) > 100:
+        if first_name and len(first_name) > 100:
             raise AssertionError('Person first name must not exceed 100 characters.')
         return first_name
 
-    @validates('surname')
-    def validate_surname(self, key, surname):
-        if not surname:
-            raise AssertionError('Person surname is not provided.')
-        if len(surname) > 100:
-            raise AssertionError('Person surname must not exceed 100 characters.')
-        return surname
+    @validates('party_name')
+    def validate_party_name(self, key, party_name):
+        if not party_name:
+            raise AssertionError('Party name is not provided.')
+        if len(party_name) > 100:
+            raise AssertionError('Party name must not exceed 100 characters.')
+        return party_name
 
     @validates('phone_no')
     def validate_phone_no(self, key, phone_no):
         if not phone_no:
-            raise AssertionError('Person phone number is not provided.')
+            raise AssertionError('Party phone number is not provided.')
         if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
             raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
         return phone_no
@@ -86,10 +96,47 @@ class Party(AuditMixin, Base):
     @validates('email')
     def validate_email(self, key, email):
         if not email:
-            raise AssertionError('Person email is not provided.')
+            raise AssertionError('Party email is not provided.')
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
+
+
+class PartyTypeCode(AuditMixin, Base):
+    __tablename__ = 'party_type_code'
+    party_type_code = db.Column(db.String(3), nullable=False, primary_key=True)
+    description = db.Column(db.String(100), nullable=False)
+    display_order = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<Permit %r>' % self.permit_guid
+
+    def json(self):
+        return {
+            'party_type_code': self.party_type_code,
+            'description': self.description,
+            'display_order': str(self.display_order)
+        }
+
+    @classmethod
+    def find_by_party_type_code(cls, _id):
+        return cls.query.filter_by(party_type_code=_id).first()
+
+    @validates('party_type_code')
+    def validate_party_type_code(self, key, party_type_code):
+        if not party_type_code:
+            raise AssertionError('Party type code is not provided.')
+        if len(party_type_code) > 3:
+            raise AssertionError('Party type code must not exceed 3 characters.')
+        return party_type_code
+
+    @validates('description')
+    def validate_description(self, key, description):
+        if not description:
+            raise AssertionError('Party type description is not provided.')
+        if len(description) > 100:
+            raise AssertionError('Party type description must not exceed 100 characters.')
+        return description
 
 
 class MgrAppointment(AuditMixin, Base):
@@ -112,9 +159,9 @@ class MgrAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'mine_name': str(mine_name),
             'party_guid': str(self.party_guid),
-            'first_name': person.first_name,
-            'surname': person.surname,
-            'full_name': person.first_name + ' ' + person.surname,
+            'first_name': party.first_name,
+            'surname': party.party_name,
+            'full_name': party.first_name + ' ' + party.party_name,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }
@@ -124,18 +171,18 @@ class MgrAppointment(AuditMixin, Base):
         return cls.query.filter_by(mgr_appointment_guid=_id).first()
 
     @classmethod
-    def find_by_person_guid(cls, _id):
-        return cls.query.filter_by(person_guid=_id)
+    def find_by_party_guid(cls, _id):
+        return cls.query.filter_by(party_guid=_id)
 
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.filter_by(mine_guid=_id)
 
     @validates('person_guid')
-    def validate_person_guid(self, key, person_guid):
-        if not person_guid:
-            raise AssertionError('Person guid is not provided.')
-        return person_guid
+    def validate_party_guid(self, key, party_guid):
+        if not party_guid:
+            raise AssertionError('Party guid is not provided.')
+        return party_guid
 
     @validates('mine_guid')
     def validate_mine_guid(self, key, mine_guid):

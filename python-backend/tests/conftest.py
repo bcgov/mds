@@ -6,9 +6,11 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
-from app.mines.models.person import Person, MgrAppointment
+from app.mines.models.party import Party, MgrAppointment, PartyTypeCode
 from app.mines.models.location import MineLocation
 from app.mines.models.permit import Permit, PermitStatusCode
+from app.mines.models.permittee import Permittee
+from app.mines.models.constants import PARTY_STATUS_CODE
 from .constants import (TEST_MINE_NAME,
                         TEST_MINE_NO,
                         TEST_FIRST_NAME,
@@ -43,7 +45,8 @@ from .constants import (TEST_MINE_NAME,
                         TEST_PERMIT_STATUS_CODE_NAME_1,
                         TEST_PERMIT_GUID_1,
                         TEST_PERMIT_NO_1,
-                        TEST_PERMIT_STATUS_CODES
+                        TEST_PERMIT_STATUS_CODES,
+                        TEST_PERMITTEE_GUID
                         )
 
 
@@ -128,32 +131,44 @@ def setup_data():
     )
     mine_location.save(commit=False)
 
+    # Test Person Type Codes
+    for k, v in PARTY_STATUS_CODE.items():
+        party_code = PartyTypeCode(
+            party_type_code=v,
+            description=v,
+            **DUMMY_USER_KWARGS
+        )
+        party_code.save()
+
     # Test Person Data
-    person = Person(
-        person_guid=uuid.UUID(TEST_PERSON_GUID),
+    person = Party(
+        party_guid=uuid.UUID(TEST_PERSON_GUID),
         first_name=TEST_FIRST_NAME,
-        surname=TEST_SURNAME,
+        party_name=TEST_SURNAME,
         email=TEST_EMAIL_1,
         phone_no=TEST_PHONE_1,
+        party_type_code='PER',
         **DUMMY_USER_KWARGS
     )
     person.save(commit=False)
-    person2 = Person(
-        person_guid=uuid.UUID(TEST_PERSON_2_GUID),
+    person2 = Party(
+        party_guid=uuid.UUID(TEST_PERSON_2_GUID),
         first_name=TEST_FIRST_NAME_2,
-        surname=TEST_SURNAME_2,
+        party_name=TEST_SURNAME_2,
         email=TEST_EMAIL_2,
         phone_no=TEST_PHONE_2,
+        party_type_code='PER',
         **DUMMY_USER_KWARGS
     )
     person2.save(commit=False)
-    person3 = Person(
-        person_guid=uuid.UUID(TEST_PERSON_3_GUID),
+    person3 = Party(
+        party_guid=uuid.UUID(TEST_PERSON_3_GUID),
         first_name=TEST_FIRST_NAME_3,
-        surname=TEST_SURNAME_3,
+        party_name=TEST_SURNAME_3,
         email=TEST_EMAIL_3,
         phone_no=TEST_PHONE_3,
         phone_ext='1234',
+        party_type_code='PER',
         **DUMMY_USER_KWARGS
     )
     person3.save(commit=False)
@@ -161,7 +176,7 @@ def setup_data():
     # Test Manager Data
     manager = MgrAppointment(
         mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
-        person_guid=uuid.UUID(TEST_PERSON_GUID),
+        party_guid=uuid.UUID(TEST_PERSON_GUID),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         effective_date=datetime.today(),
         expiry_date=datetime.today(),
@@ -189,6 +204,16 @@ def setup_data():
         **DUMMY_USER_KWARGS
     )
     permit.save(commit=False)
+
+    # Test Permittee Data
+    permittee = Permittee(
+        permittee_guid=uuid.UUID(TEST_PERMITTEE_GUID),
+        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
+        party_guid=uuid.UUID(TEST_PERSON_GUID),
+        **DUMMY_USER_KWARGS
+    )
+    permittee.save(commit=False)
+
     db.session.commit()
 
 
