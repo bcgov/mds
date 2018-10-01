@@ -39,7 +39,7 @@ Only on windows:
     
 Only on MacOS:
 
-    gradlew.bat -DsafariTest.single=CustomJUnitSpecRunner safariTest 
+    ./gradlew -DsafariTest.single=CustomJUnitSpecRunner safariTest 
     
     
 
