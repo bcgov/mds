@@ -37,7 +37,7 @@ const defaultProps = {
   handlePartySubmit = (values, type) => {
     const payload = {type: type, ...values}
     this.props.createParty(payload).then(() => {
-      this.props.fetchParties(type);
+      this.props.fetchParties();
     });
   }
   /**
@@ -57,14 +57,14 @@ const defaultProps = {
   }
 
    handlePermitteeSubmit = (values) => {
-    this.props.addPermittee(values.permittee, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+    //  this needs to be fixed - to allow users to selectt he permittee they want to update..
+    this.props.addPermittee(this.props.mine.mine_permit[0].permittee[0].permittee_guid, this.props.mine.mine_permit[0].permittee[0].permit_guid, values.permittee, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ permitteeModalVisable: !this.state.permitteeModalVisable });
       this.props.getMineRecordById(this.props.mine.guid);
     })
   }
 
   handleChange = (value) => {
-    console.log("im changing my search~!!!!!");
     if (value.length > 2){
       this.props.fetchParties(value);
     }

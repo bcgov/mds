@@ -27,10 +27,10 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
-export const fetchParties = (type, value) => (dispatch) => {
+export const fetchParties = (value) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading('modal'));
-  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(type, value), createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(value), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));
@@ -76,10 +76,10 @@ export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) =>
     });
 };
 
-export const addPermittee = (partyId, mineName, date) => (dispatch) => {
+export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PERMITTEE));
   dispatch(showLoading());
-  return axios.post(ENVIRONMENT.apiUrl + API.PERMITTEE, { "party_guid": partyId, "effective_date": date }, createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.PERMITTEE, { "permittee_guid": permitteeId, "permit_guid": permitId, "party_guid": partyId, "effective_date": date }, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully updated the permittee of " + mineName, duration: 10 });
       dispatch(success(reducerTypes.ADD_PERMITTEE));

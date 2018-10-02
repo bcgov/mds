@@ -51,13 +51,13 @@ export class ViewPermittee extends Component {
                 </tr>
               </tbody>
             </table>
-            <div className="right center-mobile">
+            {/* <div className="right center-mobile">
               <ConditionalButton 
                 handleAction={this.props.toggleModal} 
                 string="Update Permittee" 
                 type="primary"
               />
-            </div> 
+            </div>  */}
           </Card>
           <Modal
             title="Update Permittee"
