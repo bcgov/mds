@@ -111,6 +111,14 @@ def test_post_person_success(test_client, auth_headers):
     assert post_resp.status_code == 200
 
 
+def test_post_company_success(test_client, auth_headers):
+    test_person_data = {"party_name": "Last", "email": "this@test.com", "phone_no": "123-456-7890", "type": "ORG"}
+    post_resp = test_client.post('/party', data=test_person_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['party_name'] == test_person_data['party_name']
+    assert post_resp.status_code == 200
+
+
 # PUT
 def test_put_person_not_found(test_client, auth_headers):
     test_person_data = {"first_name": TEST_FIRST_NAME, "party_name": TEST_SURNAME}
