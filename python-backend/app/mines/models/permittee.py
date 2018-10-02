@@ -24,7 +24,7 @@ class Permittee(AuditMixin, Base):
             'permittee_guid': str(self.permittee_guid),
             'permit_guid': str(self.permit_guid),
             'party_guid': str(self.party_guid),
-            'party_name': party.party_name if party else None,
+            'party': party.json(show_mgr=False) if party else None,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }

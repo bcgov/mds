@@ -9,8 +9,9 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from sqlalchemy.exc import DBAPIError
 
-from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
+from .mines.models.constants import PARTY_STATUS_CODE, PERMIT_STATUS_CODE
 from .mines.models.location import MineLocation
+from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
 from .mines.models.party import Party
 from .mines.models.permit import Permit
 from .mines.models.permittee import Permittee
@@ -129,7 +130,7 @@ def register_commands(app):
                 party_name=generate_name(),
                 email=random_key_gen(key_length=8, numbers=False) + '@' + random_key_gen(key_length=8, numbers=False) + '.com',
                 phone_no='123-123-1234',
-                party_type_code="PER",
+                party_type_code=PARTY_STATUS_CODE['per'],
                 **DUMMY_USER_KWARGS
             )
             mine_party_list.append(party)
@@ -148,7 +149,7 @@ def register_commands(app):
                     permit_guid=uuid.uuid4(),
                     mine_guid=mine_identity.mine_guid,
                     permit_no=random_key_gen(key_length=12),
-                    permit_status_code=random.choice(['N', 'A', 'Z', 'M']),
+                    permit_status_code=random.choice(PERMIT_STATUS_CODE['choices']),
                     **DUMMY_USER_KWARGS,
                 )
                 mine_permit_list.append(mine_permit)
