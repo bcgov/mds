@@ -12,7 +12,7 @@ BEGIN
     CREATE TABLE IF NOT EXISTS ETL_MANAGER(
         mine_guid   uuid        ,
         mine_no     varchar(7)  ,
-        person_guid uuid        ,
+        party_guid uuid        ,
         first_name  varchar(100),
         surname     varchar(100),
         phone_no    varchar(12),
@@ -161,20 +161,20 @@ BEGIN
         FROM distinct_person
         WHERE EXISTS (
             SELECT 1
-            FROM person
+            FROM party
             WHERE 
-                UPPER(person.first_name||person.surname||person.phone_no||person.email) = distinct_person.person_combo_id
+                UPPER(party.first_name||party.party_name||party.phone_no||party.email) = distinct_person.person_combo_id
         )
     ),
     -- Get person guid from MDS person table
     distinct_person_old_wGuid AS (
         SELECT
-            person.person_guid,
+            party.party_guid,
             mms_distinct.person_combo_id
         FROM
             distinct_person_old mms_distinct
-        INNER JOIN person ON
-            UPPER(person.first_name||person.surname||person.phone_no||person.email) = mms_distinct.person_combo_id
+        INNER JOIN party ON
+            UPPER(party.first_name||party.party_name||party.phone_no||party.email) = mms_distinct.person_combo_id
     ),
     -- List of person that does not exist in MDS ETL table
     distinct_person_new AS (
@@ -190,20 +190,20 @@ BEGIN
     -- Assign randomly generated GUID 
     distinct_person_new_wGuid AS (
         SELECT
-            gen_random_uuid() person_guid,
+            gen_random_uuid() party_guid,
             person_combo_id
         FROM
             distinct_person_new
     ), 
-    -- Combine the list of new manager record with person_guid
+    -- Combine the list of new manager record with party_guid
     distinct_person_wGuid AS(
         SELECT 
-            old_wGuid.person_guid,
+            old_wGuid.party_guid,
             old_wGuid.person_combo_id
         FROM  distinct_person_old_wGuid old_wGuid
         UNION
         SELECT
-            new_wGuid.person_guid,
+            new_wGuid.party_guid,
             new_wGuid.person_combo_id
         FROM distinct_person_new_wGuid new_wGuid
     ), 
@@ -213,7 +213,7 @@ BEGIN
         SELECT
             manager_info.mine_no            ,
             manager_info.mine_guid          ,
-            distinct_person_wGuid.person_guid    ,
+            distinct_person_wGuid.party_guid    ,
             manager_info.first_name         ,
             manager_info.surname            ,
             manager_info.phone_no           ,
@@ -224,12 +224,11 @@ BEGIN
         FROM new_mms_manager manager_info
         INNER JOIN distinct_person_wGuid ON
             manager_info.person_combo_id=distinct_person_wGuid.person_combo_id
-    )
- 
+    ) 
     INSERT INTO ETL_MANAGER (
         mine_guid    ,
         mine_no      ,
-        person_guid  ,
+        party_guid  ,
         first_name   ,
         surname      ,
         phone_no     ,
@@ -240,7 +239,7 @@ BEGIN
     SELECT
         manager.mine_guid           ,
         manager.mine_no             ,
-        manager.person_guid         ,
+        manager.party_guid         ,
         manager.first_name          ,
         manager.surname             ,
         manager.phone_no            ,
@@ -272,12 +271,12 @@ BEGIN
             SELECT  1
             FROM    person
             WHERE   
-                person_guid = ETL_MANAGER.person_guid
+                party_guid = ETL_MANAGER.party_guid
         )
     ),
     distinct_new_manager AS (
         SELECT DISTINCT ON
-            (person_guid) person_guid       ,
+            (party_guid) party_guid       ,
             first_name                      ,
             surname                         ,
             phone_no                        ,
@@ -285,10 +284,10 @@ BEGIN
             effective_date      
         FROM new_manager
     )
-    INSERT INTO person(
-        person_guid ,
+    INSERT INTO party(
+        party_guid ,
         first_name  ,	
-        surname     ,
+        party_name     ,
         phone_no	,
         phone_ext	,
         email	    ,
@@ -297,10 +296,12 @@ BEGIN
         create_user	    ,
         create_timestamp,
         update_user	    ,
-        update_timestamp
+        update_timestamp,
+        party_type_code
+
     )
     SELECT 
-        new.person_guid ,
+        new.party_guid ,
         new.first_name  ,
         new.surname     ,
         new.phone_no    ,
@@ -311,7 +312,8 @@ BEGIN
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
-        now()
+        now()               ,
+        'PER'
     FROM distinct_new_manager new;
     SELECT count(*) FROM person INTO new_row; 
     RAISE NOTICE '.... # new person records MMS: %', (new_row-old_row);
@@ -334,7 +336,7 @@ BEGIN
             SELECT  1
             FROM    mgr_appointment
             WHERE   
-                person_guid = ETL_MANAGER.person_guid
+                party_guid = ETL_MANAGER.party_guid
             AND 
                 mine_guid = ETL_Manager.mine_guid
         )
@@ -342,7 +344,7 @@ BEGIN
     INSERT INTO mgr_appointment(
         mgr_appointment_guid,
         mine_guid	        ,
-        person_guid	        ,
+        party_guid	        ,
         effective_date	    ,
         expiry_date	 	    ,
         create_user	        ,	
@@ -353,7 +355,7 @@ BEGIN
     SELECT
         gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
         new.mine_guid       ,
-        new.person_guid     ,
+        new.party_guid     ,
         new.effective_date  ,
         '9999-12-31'::date  ,
         'mms_migration'     ,
