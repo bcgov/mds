@@ -2,11 +2,15 @@
 
 DO $$
 DECLARE
-    company_keyword_special text:= '[0-9!@#$&()\\-`+,/\"]'
+    company_keyword_special varchar := '[-!0-9@#$&()`+/\"]
+        |Mining|Mineral|Resources|National|Regional|Energy|Products
+        | and | of |Pacific|Metal|Canada|Canadian|Engineering|Mountain|Lake';
     --case sensitive keyword
-    company_keyword_cs  text:='Corp|Inc|Expl';
+    company_keyword_cs  varchar :='Corp|Inc|Expl|Mine|INC|South|North|West';
     --case insensitive keyword
-    company_keyword_ci  text:='ltd|limited|co.|holdings|Contracting|Consultants|Mining|Minerals';
+    company_keyword_ci  varchar :='ltd|limited|co.|holdings
+        |Contracting|llp|Consultants|Enterprise|service|city
+        |ulc|Association|Partnership|Trucking|Property|Division|Industries|Developments';
     old_row_etl         integer;
     new_row_etl         integer;
     start_time          timestamp;
@@ -270,11 +274,11 @@ BEGIN
             'ORG' ::text AS party_type
         FROM permittee_new_record 
         WHERE 
-            permittee_nm ~* '[-!0-9@#$&()`+/\"]|Mining|Mineral|Resources|National|Regional|Energy|Products| and | of |Pacific|Metal|Canada|Canadian|Engineering|Mountain|Lake'
+            permittee_nm ~* company_keyword_special
             OR 
-            permittee_nm ~ 'Corp|Inc|Expl|Mine|INC|South|North|West'
+            permittee_nm ~ company_keyword_cs
             OR 
-            permittee_nm ~* 'ltd|limited|co.|holdings|Contracting|llp|Consultants|Enterprise|service|city|ulc|Association|Partnership|Trucking|Property|Division|Industries|Developments'
+            permittee_nm ~* company_keyword_ci
     ),
     permittee_person AS (
         SELECT
@@ -422,5 +426,6 @@ BEGIN
     SELECT count(*) FROM ETL_PERMIT_PERMITTEE INTO new_row_etl;
     SELECT now() INTO end_time;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row_etl-old_row_etl); 
-    RAISE NOTICE 'Finish in %', age(end_time,start_time); 
+    RAISE NOTICE 'Start at %', start_time; 
+    RAISE NOTICE 'Start at %', end_time; 
 END $$;
