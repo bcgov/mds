@@ -82,7 +82,7 @@
     },
     {
         "name": "MEMORY_LIMIT",
-        "value": "512Mi"
+        "value": "750Mi"
     },
     {
         "name": "CPU_REQUEST",
@@ -90,7 +90,7 @@
     },
     {
         "name": "MEMORY_REQUEST",
-        "value": "750Mi"
+        "value": "512Mi"
     }
   ],
   "objects": [
