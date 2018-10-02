@@ -35,7 +35,7 @@ export class PartyProfile extends Component {
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1>{parties.full_name}</h1>
+              <h1>{parties.name}</h1>
               <div className="inline-flex">
                 <img src={EMAIL} />
                 <h5>{parties.email}</h5>

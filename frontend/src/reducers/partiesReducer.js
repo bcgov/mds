@@ -27,14 +27,14 @@ const partiesReducer = (state = initialState, action) => {
     case actionTypes.STORE_PARTIES:
       return {
         ...state,
-        parties: createItemMap(action.payload.persons, 'person_guid'),
-        partyIds: createItemIdsArray(action.payload.persons, 'person_guid'),
+        parties: createItemMap(action.payload.parties, 'party_guid'),
+        partyIds: createItemIdsArray(action.payload.parties, 'party_guid'),
       }
     case actionTypes.STORE_PARTY:
       return {
         ...state,
-        parties: createItemMap([action.payload], 'person_guid'),
-        partyIds: createItemIdsArray([action.payload], 'person_guid'),
+        parties: createItemMap([action.payload], 'party_guid'),
+        partyIds: createItemIdsArray([action.payload], 'party_guid'),
       }
     default:
       return state;

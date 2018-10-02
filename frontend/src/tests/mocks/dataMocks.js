@@ -15,6 +15,7 @@ export const MINES = {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mgr_appointment: [],
       mine_permit: [],
+      mine_permittee: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567"
@@ -40,6 +41,7 @@ export const MINES = {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mgr_appointment: [],
       mine_permit: [],
+      mine_permittee: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567"

@@ -9,3 +9,4 @@ export { default as SMALL_PIN } from '../assets/images/small-pin.png';
 export { default as TENURE } from '../assets/images/Tenure.svg';
 export { default as EMAIL } from '../assets/images/Email.svg';
 export { default as PHONE } from '../assets/images/Phone.svg';
+export { default as PERMIT } from '../assets/images/Permit.svg';

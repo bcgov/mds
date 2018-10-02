@@ -47,7 +47,7 @@ class Party(AuditMixin, Base):
             })
         elif self.party_type_code == PARTY_STATUS_CODE['org']:
             context.update({
-                'name': self.party_name,
+                'party_name': self.party_name,
             })
         return context
 
@@ -162,6 +162,7 @@ class MgrAppointment(AuditMixin, Base):
             'first_name': party.first_name,
             'surname': party.party_name,
             'full_name': party.first_name + ' ' + party.party_name,
+            'email': party.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }

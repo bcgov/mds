@@ -14,19 +14,19 @@ describe('partiesReducer', () => {
 
   it('receives STORE_PARTY', () => {
     const expectedValue = {
-      parties: {"test123": {"person_guid": "test123"}},
+      parties: {"test123": {"party_guid": "test123"}},
       partyIds: ["test123"],
     };
-    const result = partiesReducer(undefined, storeParty({"person_guid": "test123"}));
+    const result = partiesReducer(undefined, storeParty({"party_guid": "test123"}));
     expect(result).toEqual(expectedValue);
   });
 
   it('receives STORE_PARTY', () => {
     const expectedValue = {
-      parties: {"test123": {"person_guid": "test123"}, "test456": {"person_guid": "test456"}},
+      parties: {"test123": {"party_guid": "test123"}, "test456": {"party_guid": "test456"}},
       partyIds: ["test123", "test456"],
     };
-    const result = partiesReducer(undefined, storeParties({"persons" : [{"person_guid": "test123"},{"person_guid": "test456"}]}));
+    const result = partiesReducer(undefined, storeParties({"persons" : [{"party_guid": "test123"},{"party_guid": "test456"}]}));
     expect(result).toEqual(expectedValue);
   });
 

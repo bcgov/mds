@@ -22,9 +22,9 @@ class MineSummary extends Component {
     }
     return (
       <div>
-        {mine.mgr_appointment[0] &&
           <Card>
             <table>
+            {mine.mgr_appointment[0] &&
               <tbody>
                 <tr>
                   <th scope="col"><h4>Mine Manager</h4></th>
@@ -37,22 +37,24 @@ class MineSummary extends Component {
                   <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
                 </tr>
                 </tbody>
-                {mine.mine_permittee &&
+                }
+                {mine.mine_permittee[0] &&
                   <tbody>
                     <tr>
                       <th scope="col"><h4>Permittee</h4></th>
-                      <th scope="col"><h4>Permittee Since</h4></th>
                     </tr>
                     <tr>
-                      <td data-label="Permittee"><p className="p-large">N/A</p></td>
-                      <td data-label="Permittee Since"><p className="p-large">N/A</p></td>
+                      {mine.mine_permittee.map((permittee) => {
+                        return (
+                          <td key={permittee.party_guid} data-label="Permittee"><p className="p-large">{permittee.party_name}</p></td>
+                        )
+                      })}
                     </tr>
                   </tbody>
                 }
             </table>
           </Card>
-        }
-        {mine.mine_permit && 
+        {mine.mine_permit[0] && 
           <Card>
             <table>
               <tbody>

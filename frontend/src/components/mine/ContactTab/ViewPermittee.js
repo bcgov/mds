@@ -26,6 +26,21 @@ const defaultProps = {
 };
 
 export class ViewPermittee extends Component {
+
+  handleSubmit = (values) => {
+    const type = this.props.isPerson ? 'PER' : 'ORG';
+    this.props.handlePartySubmit(values, type);
+  }
+
+  handleChange = (value) => {
+    console.log("im changing my search~!!!!!");
+    if (value.length > 2){
+      this.props.fetchParties(value);
+    }
+    else if (value.length === 0) {
+      this.props.fetchParties();
+    }
+  }
   render() {
     const { mine } = this.props;
       return (
@@ -35,11 +50,13 @@ export class ViewPermittee extends Component {
               <tbody>
                 <tr>
                   <th scope="col"><h4>Permittee</h4></th>
-                  <th scope="col"><h4>Permittee Since</h4></th>
                 </tr>
                 <tr>
-                  <td data-label="Permittee"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></td>
-                  <td data-label="Permittee Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
+                {mine.mine_permittee.map((permittee) => {
+                  return (
+                    <td key={permittee.party_guid} data-label="Permittee"><p className="p-large">{permittee.party_name}</p></td>
+                  )
+                })}
                 </tr>
               </tbody>
             </table>
@@ -72,14 +89,14 @@ export class ViewPermittee extends Component {
                 onSubmit={this.props.handleSubmit}
                 parties={this.props.parties}
                 partyIds={this.props.partyIds}
-                handleChange={this.props.handleChange}
+                handleChange={this.handleChange}
                 isPerson={this.props.isPerson}
                 id="permittee"
                 label="Permittee"
                 action={String.UPDATE_PERMITTEE}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
-              <AddPartyForm onSubmit={this.props.handlePartySubmit} isPerson={this.props.isPerson}/>
+              <AddPartyForm onSubmit={this.handleSubmit} isPerson={this.props.isPerson}/>
             </div>
           </Modal>
         </div>

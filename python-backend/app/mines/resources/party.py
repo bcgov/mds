@@ -66,7 +66,7 @@ class PartyResource(Resource, UserMixin):
                 'first_name': data['first_name'],
             })
         elif party_type_code == PARTY_STATUS_CODE['org']:
-            party_exists = Party.find_by_nmae(data['party_name'])
+            party_exists = Party.find_by_party_name(data['party_name'])
             if party_exists:
                 return {
                     'error': {

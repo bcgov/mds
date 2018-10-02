@@ -4,8 +4,8 @@ import {storeParties} from "@/actions/partyActions";
 import {PARTIES} from "@/constants/reducerTypes";
 
 describe('partiesSelectors', () => {
-  const listInput = {"persons" : [{"person_guid": "test123"},{"person_guid": "test456"}]};
-  const listProcessed = {"test123": {"person_guid": "test123"}, "test456": {"person_guid": "test456"}};
+  const listInput = {"persons" : [{"party_guid": "test123"},{"party_guid": "test456"}]};
+  const listProcessed = {"test123": {"party_guid": "test123"}, "test456": {"party_guid": "test456"}};
 
   it('`getParties` calls `partiesReducer.getParties`', () => {
     const storeAction = storeParties(listInput);

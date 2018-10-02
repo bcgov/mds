@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TENURE, NO_MINE, MINER_TWO  } from '@/constants/assets';
+import { TENURE, NO_MINE, MINER_TWO, PERMIT  } from '@/constants/assets';
 import * as String from '@/constants/strings';
 
 const propTypes = {
@@ -42,6 +42,12 @@ const NullScreen = (props) => {
           <img src={TENURE} />
           <h1>{String.NO_DATA}</h1>
           <h5>{String.ADD_TENURE}</h5>
+        </div>
+      }
+      {props.type === 'permit' &&
+        <div>
+          <img src={PERMIT} />
+          <h1>{String.NO_PERMIT}</h1>
         </div>
       }
     </div>

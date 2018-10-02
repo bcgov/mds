@@ -21,11 +21,16 @@ class MineIdentity(AuditMixin, Base):
 
     def json(self):
         mine_permit = [item.json() for item in self.mine_permit]
-        mine_permittee = []
+        mine_permittee_list = []
         for permit in mine_permit:
             permittee = permit['permittee']
             if permittee:
-                mine_permittee.append(permittee[0]['party_name'])
+                permittee_ctx = {
+                    'party_guid': permittee[0]['party_guid'],
+                    'party_name': permittee[0]['party_name']
+                }
+                if permittee_ctx not in mine_permittee_list:
+                    mine_permittee_list.append(permittee_ctx)
         return {
             'guid': str(self.mine_guid),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
@@ -33,7 +38,7 @@ class MineIdentity(AuditMixin, Base):
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': mine_permit,
-            'mine_permittee': mine_permittee
+            'mine_permittee': mine_permittee_list
         }
 
     def json_for_map(self):

@@ -8,16 +8,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
-import { createParty, fetchParties, addMineManager, fetchPartyById } from '@/actionCreators/partiesActionCreator';
+import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  fetchPartyById: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
+  addPermittee: PropTypes.func.isRequired,
   getMineRecordById: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired
@@ -34,21 +34,20 @@ const defaultProps = {
   /**
  * add new parties (firstName, surname) to db.
  */
-  handlePartySubmit = (values) => {
-    console.log(values);
-    this.props.createParty(values).then(() => {
-      this.props.fetchParties();
+  handlePartySubmit = (values, type) => {
+    const payload = {type: type, ...values}
+    this.props.createParty(payload).then(() => {
+      this.props.fetchParties(type);
     });
   }
   /**
    * change mine manager on record.
    */
   handleManagerSubmit = (values) => {
-    console.log(this.state.isPerson);
-      this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-        this.setState({ modalVisible: !this.state.modalVisible });
-        this.props.getMineRecordById(this.props.mine.guid);
-      })
+    this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+      this.setState({ modalVisible: !this.state.modalVisible });
+      this.props.getMineRecordById(this.props.mine.guid);
+    })
   }
 
   togglePartyChange = (value) => {
@@ -58,11 +57,14 @@ const defaultProps = {
   }
 
    handlePermitteeSubmit = (values) => {
-    console.log(values);
+    this.props.addPermittee(values.permittee, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+      this.setState({ permitteeModalVisable: !this.state.permitteeModalVisable });
+      this.props.getMineRecordById(this.props.mine.guid);
+    })
   }
 
-
   handleChange = (value) => {
+    console.log("im changing my search~!!!!!");
     if (value.length > 2){
       this.props.fetchParties(value);
     }
@@ -89,9 +91,6 @@ const defaultProps = {
 
   render() {
   const { mine } = this.props;
-  const parties = mine.mgr_appointment[0] ? this.props.parties[mine.mgr_appointment[0].person_guid] : null ;
-  const permittee = mine.mine_permittee ? this.props.parties[mine.mine_permittee[0].person_guid] : null;
-
    return (
      <div>
         <ViewMineManager 
@@ -102,7 +101,7 @@ const defaultProps = {
           handleSubmit={this.handleManagerSubmit}
           handlePartySubmit={this.handlePartySubmit}
         />
-        {parties &&
+        {mine.mine_permittee[0] &&
           <ViewPermittee 
             {...this.props}
             {...this.state}
@@ -130,10 +129,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchPartyById,
     fetchParties,
     createParty,
     addMineManager,
+    addPermittee,
     getMineRecordById,
   }, dispatch);
 }

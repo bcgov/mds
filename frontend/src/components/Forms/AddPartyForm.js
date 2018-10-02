@@ -32,8 +32,8 @@ export const AddPartyForm = (props) => {
           <Col md={12} sm={12} xs={24}>
             <Form.Item>
               <Field
-                id="surname"
-                name="surname"
+                id="party_name"
+                name="party_name"
                 label='Surname *'
                 component={RenderField}
                 validate={[required]}
@@ -47,8 +47,8 @@ export const AddPartyForm = (props) => {
           <Col span={24}>
             <Form.Item>
               <Field
-                id="companyName"
-                name="companyName"
+                id="party_name"
+                name="party_name"
                 label='Company Name *'
                 component={RenderField}
                 validate={[required]}

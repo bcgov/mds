@@ -28,7 +28,9 @@ const defaultProps = {
 };
  
 export class ViewMineManager extends Component {
-  // temporary check - in the future this table will be seeded with data
+ handleSubmit = (values) => {
+  this.props.handlePartySubmit(values, 'PER')
+ }
   renderMineManagerForm() {
     if (this.props.partyIds.length === 0) {
       return (<NullScreen type="manager-small"/>)
@@ -52,7 +54,7 @@ export class ViewMineManager extends Component {
 
   render() {
     const { mine } = this.props;
-      const parties = mine.mgr_appointment[0] ? this.props.parties[mine.mgr_appointment[0].person_guid] : null;
+      const parties = mine.mgr_appointment[0] ? this.props.parties[mine.mgr_appointment[0].party_guid] : null;
       return (
         <div>
           <Modal
@@ -67,7 +69,7 @@ export class ViewMineManager extends Component {
               />
               <div>
                 {this.renderMineManagerForm()}
-                <AddPartyForm onSubmit={this.props.handlePartySubmit} isPerson/>
+                <AddPartyForm onSubmit={this.handleSubmit} isPerson/>
               </div>
             </Modal>
         {!mine.mgr_appointment[0] &&
@@ -108,7 +110,7 @@ export class ViewMineManager extends Component {
                 </tbody>
               </table>
               <div className="right center-mobile">
-                <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].person_guid)}>
+                <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].party_guid)}>
                   <Button className="full-mobile" type="secondary">View profile</Button>
                 </Link> 
                 <ConditionalButton 

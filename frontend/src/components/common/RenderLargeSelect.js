@@ -17,7 +17,7 @@ const transformData = (data, option) => {
     data.map((opt) => {
     dataList.push(
       <AutoComplete.Option key={opt} value={opt}>
-        {option[opt].full_name}
+        {option[opt].name}
       </AutoComplete.Option>
     )})
     return dataList;
