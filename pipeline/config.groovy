@@ -243,7 +243,7 @@ environments {
 
     'test' {
         vars {
-            DB_PVC_SIZE = '1Gi'
+            DB_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
