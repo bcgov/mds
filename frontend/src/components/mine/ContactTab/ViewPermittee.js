@@ -31,16 +31,7 @@ export class ViewPermittee extends Component {
     const type = this.props.isPerson ? 'PER' : 'ORG';
     this.props.handlePartySubmit(values, type);
   }
-
-  handleChange = (value) => {
-    console.log("im changing my search~!!!!!");
-    if (value.length > 2){
-      this.props.fetchParties(value);
-    }
-    else if (value.length === 0) {
-      this.props.fetchParties();
-    }
-  }
+  
   render() {
     const { mine } = this.props;
       return (
