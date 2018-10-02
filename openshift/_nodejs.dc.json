@@ -78,19 +78,19 @@
     },
     {
         "name": "CPU_LIMIT",
-        "value": "500m"
+        "value": "250m"
     },
     {
         "name": "MEMORY_LIMIT",
-        "value": "1.5Gi"
+        "value": "512Mi"
     },
     {
         "name": "CPU_REQUEST",
-        "value": "300m"
+        "value": "200m"
     },
     {
         "name": "MEMORY_REQUEST",
-        "value": "1Gi"
+        "value": "750Mi"
     }
   ],
   "objects": [
@@ -276,7 +276,10 @@
         "apiVersion": "autoscaling/v1",
         "kind": "HorizontalPodAutoscaler",
         "metadata": {
-            "name": "${NAME}${SUFFIX}"
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+                "name": "${NAME}${SUFFIX}"
+            }
         },
         "spec": {
             "maxReplicas": 4,

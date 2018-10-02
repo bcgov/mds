@@ -377,7 +377,10 @@
         "apiVersion": "autoscaling/v1",
         "kind": "HorizontalPodAutoscaler",
         "metadata": {
-            "name": "${NAME}${SUFFIX}"
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+                "name": "${NAME}${SUFFIX}"
+            }
         },
         "spec": {
             "maxReplicas": 4,
