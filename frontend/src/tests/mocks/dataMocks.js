@@ -40,7 +40,44 @@ export const MINES = {
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mgr_appointment: [],
-      mine_permit: [],
+      mine_permit: [
+        {
+          expiry_date: "9999-12-31",
+          issue_date: "9999-12-31",
+          mine_guid: "1628847c-060b-45f2-990f-815877174801",
+          permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+          permit_no: "KNaaWwVdiJ40",
+          permit_status_code: "Z",
+          permittee : [
+            {
+              effective_date: "2018-10-02",
+              expiry_date: "9999-12-31",
+              party_guid: "5a922021-6065-46b9-b67d-a3c897cabf73",
+              party_name: "Yivihoke",
+              permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+              permittee_guid: "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
+            }
+          ]
+        },
+        {
+          expiry_date: "9999-12-31",
+          issue_date: "9999-12-31",
+          mine_guid: "1628847c-060b-45f2-990f-815877174801",
+          permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+          permit_no: "xfM0c0ZKEw7B",
+          permit_status_code: "Z",
+          permittee: [
+            {
+              effective_date: "2018-10-02",
+              expiry_date: "9999-12-31",
+              party_guid: "5a922021-6065-46b9-b67d-a3c897cabf73",
+              party_name: "Yivihoke",
+              permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+              permittee_guid: "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+            }
+          ]
+        }
+      ],
       mine_permittee: [],
       mineral_tenure_xref: [
         {
