@@ -2,21 +2,20 @@
 
 Collection of groovy scripts to help run jobs in a Jenkins pipeline.
 
-This folder contains following:
-- gradle : Directory containing gradle dependencies and runtime wrapper jar
-- src/groovy : Groovy files containing the runtime code for different build steps in the pipeline
-- build.gradle : Build configuration for the gradle runner
-- config.groovy : Configuration file containing information regarding different deployment environments in the pipeline
-- gradlew(.bat) : Gradle runner executable
-
-Do not put any confidential/secret key into the config.groovy file as it gets checked
-into the git repository.
+```
+|-- gradle (Directory containing gradle dependencies and runtime wrapper jar)
+|-- src (Source code of the application)
+    |-- groovy (Groovy files containing the runtime code for different build steps in the pipeline)
+|-- build.gradle (Build configuration for the gradle runner)
+|-- config.groovy (Configuration file containing information regarding different deployment environments in the pipeline)
+|-- gradlew(.bat) (Gradle runner executable)
+```
 
 ## Library Dependency
 The scripts all inherit base classes from the [BCDevops/ocp-cd-pipeline](https://github.com/BCDevOps/ocp-cd-pipeline)
 
 
-## Github Flow
+## Git Flow
 
 We follow the [Feature branches workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). But instead of the develop branch, we use Sprint branches which are merged into master at the end of each sprint and a new Sprint branch is created. In other words, at the end of every sprint, new features are released.
 

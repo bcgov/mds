@@ -78,20 +78,21 @@
     },
     {
         "name": "CPU_LIMIT",
-        "displayName": "CPU Limit",
-        "required": true,
-        "description": "Maximum amount of CPU the container can use.",
-        "value": "500m"
+        "value": "250m"
     },
     {
         "name": "MEMORY_LIMIT",
-        "displayName": "Memory Limit",
-        "required": true,
-        "description": "Maximum amount of memory the container can use.",
-        "value": "1Gi"
+        "value": "750Mi"
+    },
+    {
+        "name": "CPU_REQUEST",
+        "value": "200m"
+    },
+    {
+        "name": "MEMORY_REQUEST",
+        "value": "512Mi"
     }
   ],
-  "message": "The following service(s) have been created in your project: ${NAME}${SUFFIX}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshift/nodejs-ex/blob/master/README.md.",
   "objects": [
     {
       "kind": "ImageStream",
@@ -240,8 +241,8 @@
                         "memory": "${MEMORY_LIMIT}"
                     },
                     "requests": {
-                        "cpu": "${CPU_LIMIT}",
-                        "memory": "${MEMORY_LIMIT}"
+                        "cpu": "${CPU_REQUEST}",
+                        "memory": "${MEMORY_REQUEST}"
                     }
                 },
                 "ports": [
@@ -270,6 +271,26 @@
           }
         }
       }
+    },
+    {
+        "apiVersion": "autoscaling/v1",
+        "kind": "HorizontalPodAutoscaler",
+        "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+                "name": "${NAME}${SUFFIX}"
+            }
+        },
+        "spec": {
+            "maxReplicas": 4,
+            "minReplicas": 2,
+            "scaleTargetRef": {
+                "apiVersion": "v1",
+                "kind": "DeploymentConfig",
+                "name": "${NAME}${SUFFIX}"
+            },
+            "targetCPUUtilizationPercentage": 80
+        }
     }
   ]
 }
