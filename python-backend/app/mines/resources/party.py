@@ -66,7 +66,7 @@ class PartyResource(Resource, UserMixin):
                 'first_name': data['first_name'],
             })
         elif party_type_code == PARTY_STATUS_CODE['org']:
-            party_exists = Party.find_by_nmae(data['party_name'])
+            party_exists = Party.find_by_party_name(data['party_name'])
             if party_exists:
                 return {
                     'error': {
@@ -268,19 +268,14 @@ class PartyListSearch(Resource):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         search_term = request.args.get('search')
-        search_type = request.args.get('type')
-        if search_type == 'per':
-            if search_term:
-                first_name_filter = Party.first_name.ilike('%{}%'.format(search_term))
-                party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))
+        search_type = request.args.get('type').upper()
+        if search_term:
+            first_name_filter = Party.first_name.ilike('%{}%'.format(search_term))
+            party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))
+            if search_type in ['PER', 'ORG']:
+                parties = Party.query.filter(first_name_filter | party_name_filter, Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+            else:
                 parties = Party.query.filter(first_name_filter | party_name_filter).limit(self.PARTY_LIST_RESULT_LIMIT).all()
-            else:
-                parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
         else:
-            if search_term:
-                party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))
-                parties = Party.query.filter(party_name_filter).limit(self.PARTY_LIST_RESULT_LIMIT).all()
-            else:
-                parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
-
+            parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
         return {'parties': list(map(lambda x: x.json(), parties))}

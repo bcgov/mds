@@ -47,7 +47,7 @@ class Party(AuditMixin, Base):
             })
         elif self.party_type_code == PARTY_STATUS_CODE['org']:
             context.update({
-                'name': self.party_name,
+                'party_name': self.party_name,
             })
         return context
 
