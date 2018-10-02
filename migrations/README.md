@@ -1,12 +1,14 @@
 ## SQL scripts for ETL and Migrations
 This folder contains following:
-- Dockerfile : Dockerfile defining image definition for running flyway migrations
-- Dockerfile.dev : Dockerfile defining postgres migrations for local development
-- etl\ : Directory containing SQL scripts for any ETL process
-- sql\ : Directory containing SQL scripts for migrations to be run by Flyway
+```
+|-- Dockerfile (Dockerfile definition for OpenShift build)
+|-- Dockerfile.dev (Dockerfile definition for local development)
+|-- etl\ (Directory containing SQL scripts for any ETL process)
+|-- sql\ (Directory containing SQL scripts for migrations to be run by Flyway)
+```
 
-We are using Flyway to version and run our Database migrations. The docker image also contains Postgres-client (psql)
-which allows us to run any scripts directly against the database.
+The project uses Flyway to version and run the Database migrations. The docker image also contains Postgres-client (psql)
+which can be used to run any scripts directly against the database.
 
 ### Migrations
 
@@ -22,7 +24,7 @@ To run the script manually, follow the instructions below:
 2. Open up a terminal into the `flyway-migration` container under the `mds-python-backend` pod.
 3. Navigate to the `etl` directory under `FLYWAY_HOME` directory.
 ```
-cd $FLYWAY_HOME\etl
+cd $FLYWAY_HOME/etl
 ```
 4. Run the desired script against the current database.
 ```
