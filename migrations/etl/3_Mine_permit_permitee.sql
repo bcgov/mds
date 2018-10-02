@@ -295,7 +295,7 @@ BEGIN
                 WHEN permittee_nm ~ ','
                 THEN COALESCE(NULLIF(regexp_replace
                 (
-                    trim(leading from permittee_nm, split_part(permittee_nm,',',1 )),
+                    trim(leading from permittee_nm, split_part(permittee_nm,', ',1 )),
                     ' ', '', 'b'),''),'N/A'
                 )
                 WHEN permittee_nm ~ ' '
