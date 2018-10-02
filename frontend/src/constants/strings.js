@@ -10,7 +10,8 @@ export const ADD_MINE_MANAGER  = 'Please add mine manager below';
 export const ADD_TENURE = 'Please add tenure number below';
 export const ADD_PARTY = 'Please create party below';
 
-export const PARTY_NOT_FOUND = `Didn't find what you're looking for? Please add a new party below`
+export const PARTY_NOT_FOUND = `If the party is not in the list above, please add a new person or company below`;
+export const PERSON_NOT_FOUND = 'If the party is not in the list above, please add a new person below'
 
 export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
 export const UPDATE_PERMITTEE = 'Update Permittee';

@@ -46,7 +46,7 @@ export class ViewMineManager extends Component {
             label="Mine Manager"
             action={String.UPDATE_MINE_MANAGER}
           />
-          <p className="center">{String.PARTY_NOT_FOUND}</p>
+          <p className="center">{String.PERSON_NOT_FOUND}</p>
         </div>
       )
     }

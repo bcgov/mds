@@ -125,32 +125,32 @@ describe('`addMineManager` action creator', () => {
   });
 });
 
-// describe('`addPermittee` action creator', () => {
-//   const mockPayload = {
-//     "permit_guid": MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit[0].permit_guid,
-//     "permittee_guid": MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit[0].permittee[0].permittee_guid,
-//     "party_guid": MOCK.PARTY.partyIds[0], 
-//     "effective_date": '2018-10-10', 
-//     }
-//   const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_detail[0].mine_name;
-//   const url = ENVIRONMENT.apiUrl + API.PERMITTEE;
-//   it('Request successful, dispatches `success` with correct response', () => {
-//     const mockResponse = { data: { success: true } };
-//     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-//     return (addPermittee(mockPayload.permit_guid, mockPayload.permittee_guid, mockPayload.party_guid, mineName, mockPayload.effective_date)(dispatch)).then(() => {
-//       expect(requestSpy).toHaveBeenCalledTimes(1);
-//       expect(successSpy).toHaveBeenCalledTimes(1);
-//       expect(dispatch).toHaveBeenCalledTimes(4);
-//     });
-//   });
+describe('`addPermittee` action creator', () => {
+  const mockPayload = {
+    "permittee_guid": MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit[0].permittee[0].permittee_guid,
+    "permit_guid": MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit[0].permit_guid,
+    "party_guid": MOCK.PARTY.partyIds[0], 
+    "effective_date": '2018-10-10', 
+    }
+  const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_detail[0].mine_name;
+  const url = ENVIRONMENT.apiUrl + API.PERMITTEE;
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return (addPermittee(mockPayload.permittee_guid, mockPayload.permit_guid, mockPayload.party_guid, mineName, mockPayload.effective_date)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
 
-//   it('Request failure, dispatches `error` with correct response', () => {
-//     const mockError = { errors: [], message: 'Error' };
-//     mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
-//     return (addPermittee(mockPayload, mineName)(dispatch)).then(() => {
-//       expect(requestSpy).toHaveBeenCalledTimes(1);
-//       expect(errorSpy).toHaveBeenCalledTimes(1);
-//       expect(dispatch).toHaveBeenCalledTimes(4);
-//     });
-//   });
-// });
+  it('Request failure, dispatches `error` with correct response', () => {
+    const mockError = { errors: [], message: 'Error' };
+    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
+    return (addPermittee(mockPayload, mineName)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});

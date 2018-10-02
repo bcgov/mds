@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Col, Row } from 'antd';
+import { Form, Button, Col, Row, Divider } from 'antd';
 import RenderLargeSelect from '@/components/common/RenderLargeSelect';
+import RenderSelect from '@/components/common/RenderSelect';
 import RenderDate from '@/components/common/RenderDate';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
@@ -17,6 +18,7 @@ const propTypes = {
   label: PropTypes.string.isRequired,
   action: PropTypes.string.isRequired,
   isPerson: PropTypes.bool,
+  permittee: PropTypes.array,
 };
 
 const defaultProps = {
@@ -29,6 +31,32 @@ const defaultProps = {
 export const UpdateMineManagerForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
+    {/* {props.permittee &&  */}
+      <div>
+        <Divider >
+          From
+        </Divider>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id={props.id}
+                name={props.id}
+                label={props.label}
+                component={RenderSelect}
+                data={props.partyIds}
+                option={props.parties}
+                validate={[required]}
+                handleChange={props.handleChange}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider >
+          To
+        </Divider>
+      </div>
+      {/* } */}
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>

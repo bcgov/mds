@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio } from 'antd';
+import { Modal, Card, Radio, Select, Divider } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import * as String from '@/constants/strings';
+
+const Option = Select.Option;
 
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
+  togglePartyChange: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
   permitteeModalVisable: PropTypes.bool,
   isPerson: PropTypes.bool,
@@ -51,13 +54,13 @@ export class ViewPermittee extends Component {
                 </tr>
               </tbody>
             </table>
-            {/* <div className="right center-mobile">
+            <div className="right center-mobile">
               <ConditionalButton 
                 handleAction={this.props.toggleModal} 
                 string="Update Permittee" 
                 type="primary"
               />
-            </div>  */}
+            </div> 
           </Card>
           <Modal
             title="Update Permittee"
@@ -70,12 +73,6 @@ export class ViewPermittee extends Component {
               style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
             />
             <div>
-              <div className="center">
-                <Radio.Group defaultValue={true} size="large" onChange={this.props.togglePartyChange}>
-                  <Radio.Button value={true}>Person</Radio.Button>
-                  <Radio.Button value={false}>Company</Radio.Button>
-                </Radio.Group>
-              </div>
               <UpdateMineManagerForm
                 onSubmit={this.props.handleSubmit}
                 parties={this.props.parties}
@@ -87,6 +84,12 @@ export class ViewPermittee extends Component {
                 action={String.UPDATE_PERMITTEE}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
+              <div className="center">
+                <Radio.Group defaultValue={true} size="large" onChange={this.props.togglePartyChange}>
+                  <Radio.Button value={true}>Person</Radio.Button>
+                  <Radio.Button value={false}>Company</Radio.Button>
+                </Radio.Group>
+              </div>
               <AddPartyForm onSubmit={this.handleSubmit} isPerson={this.props.isPerson}/>
             </div>
           </Modal>
