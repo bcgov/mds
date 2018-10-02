@@ -20,9 +20,18 @@ class MineIdentity(AuditMixin, Base):
         return '<MineIdentity %r>' % self.mine_guid
 
     def json(self):
+<<<<<<< HEAD
         mine_permit = [item.json() for item in self.mine_permit]
         mine_permittee_list = []
         for permit in mine_permit:
+=======
+        mine_permit_list = []
+        for item in self.mine_permit:
+            if item.expiry_date.isoformat() == '9999-12-31':
+                mine_permit_list.append(item.json())
+        mine_permittee_list = []
+        for permit in mine_permit_list:
+>>>>>>> 757e58ce6ed5c51ab3063c24a2f727f555a7f961
             permittee = permit['permittee']
             if permittee:
                 permittee_ctx = {
@@ -37,7 +46,11 @@ class MineIdentity(AuditMixin, Base):
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
+<<<<<<< HEAD
             'mine_permit': mine_permit,
+=======
+            'mine_permit': mine_permit_list,
+>>>>>>> 757e58ce6ed5c51ab3063c24a2f727f555a7f961
             'mine_permittee': mine_permittee_list
         }
 
