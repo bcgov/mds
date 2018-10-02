@@ -20,28 +20,13 @@ class MineIdentity(AuditMixin, Base):
         return '<MineIdentity %r>' % self.mine_guid
 
     def json(self):
-        mine_permit_list = []
-        for item in self.mine_permit:
-            if item.expiry_date.isoformat() == '9999-12-31':
-                mine_permit_list.append(item.json())
-        mine_permittee_list = []
-        for permit in mine_permit_list:
-            permittee = permit['permittee']
-            if permittee:
-                permittee_ctx = {
-                    'party_guid': permittee[0]['party_guid'],
-                    'party_name': permittee[0]['party_name']
-                }
-                if permittee_ctx not in mine_permittee_list:
-                    mine_permittee_list.append(permittee_ctx)
         return {
             'guid': str(self.mine_guid),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
-            'mine_permit': mine_permit_list,
-            'mine_permittee': mine_permittee_list
+            'mine_permit': [item.json() for item in self.mine_permit],
         }
 
     def json_for_map(self):

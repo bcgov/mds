@@ -28,7 +28,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
-    def json(self):
+    def json(self, show_mgr=True):
         context = {
             'party_guid': str(self.party_guid),
             'party_type_code': self.party_type_code,
@@ -36,19 +36,16 @@ class Party(AuditMixin, Base):
             'phone_ext': self.phone_ext,
             'email': self.email,
             'effective_date': self.effective_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat()
+            'expiry_date': self.expiry_date.isoformat(),
+            'party_name': self.party_name
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
                 'first_name': self.first_name,
-                'party_name': self.party_name,
                 'name': self.first_name + ' ' + self.party_name,
-                'mgr_appointment': [item.json() for item in self.mgr_appointment],
             })
-        elif self.party_type_code == PARTY_STATUS_CODE['org']:
-            context.update({
-                'party_name': self.party_name,
-            })
+            if show_mgr:
+                context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
         return context
 
     @classmethod
@@ -160,9 +157,14 @@ class MgrAppointment(AuditMixin, Base):
             'mine_name': str(mine_name),
             'party_guid': str(self.party_guid),
             'first_name': party.first_name,
+<<<<<<< HEAD
             'surname': party.party_name,
             'full_name': party.first_name + ' ' + party.party_name,
             'email': party.email,
+=======
+            'party_name': party.party_name,
+            'name': party.first_name + ' ' + party.party_name,
+>>>>>>> 76747d55d5fb47f5358440969fc5871e958e9d01
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()
         }

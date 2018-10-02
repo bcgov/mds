@@ -29,7 +29,7 @@ TEST_PERMIT_NO_1 = 'TEST56789012'
 TEST_PERMIT_STATUS_CODE_1 = 'T'
 TEST_PERMIT_STATUS_CODE_NAME_1 = 'TEST'
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-TEST_PERMIT_STATUS_CODES = ['A', 'N', 'Z', 'M', 'T']
+TEST_PERMIT_STATUS_CODES = ['O', 'C', 'T']
 TEST_PERMITTEE_GUID = '07bd6be1-5a27-4280-94a9-6358cc95d07d'
 
 # Auth Constants
