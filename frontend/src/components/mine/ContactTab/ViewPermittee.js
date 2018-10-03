@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio } from 'antd';
+import { Modal, Card, Radio, Divider } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
@@ -41,32 +41,28 @@ export class ViewPermittee extends Component {
         <div>
           <Card>
             <table>
-                <tbody>
-                  <tr>
-                    <th scope="col"><h4>Permittee</h4></th>
-                    <th scope="col"><h4>Permittee Since</h4></th>
-                  </tr>
-                  {permitteeIds.map((id) => {
-                    return (
-                      <tr key={id}>
-                        <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                        <td key={id} data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
-                      </tr>
-                    )
-                  })}
-                  <tr>
-                    <th scope="col"><h4>Email</h4></th>
-                    <th scope="col"><h4>Phone Number (Ext)</h4></th>
-                  </tr>
-                  {permitteeIds.map((id) => {
-                    return (
-                      <tr key={id}>
+              {permitteeIds.map((id) => {
+              return (
+                  <tbody key={id}>
+                    <tr>
+                      <th scope="col"><h4>Permittee</h4></th>
+                      <th scope="col"><h4>Permittee Since</h4></th>
+                    </tr>
+                    <tr key={id}>
+                      <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                      <td key={id} data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                    </tr>
+                    <tr>
+                      <th scope="col"><h4>Email</h4></th>
+                      <th scope="col"><h4>Phone Number (Ext)</h4></th>
+                    </tr>
+                    <tr>
                       <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
                       <td data-label="Phone Number (Ext)"><p className="p-large">{permittees[id].party.phone_no} ({permittees[id].party.phone_ext ? permittees[id].party.phone_ext : 'N/A'})</p></td>
                     </tr>
-                    )
-                  })}
-                </tbody>
+                  </tbody>
+                  )
+                })}
               </table>
             <div className="right center-mobile">
               {/* <ConditionalButton 
