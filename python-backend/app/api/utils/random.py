@@ -2,7 +2,7 @@ import math
 import random
 import string
 
-from ..models.mines import MineDetail
+from ..mine.models.mines import MineDetail
 
 VOWELS = "aeiou"
 CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))

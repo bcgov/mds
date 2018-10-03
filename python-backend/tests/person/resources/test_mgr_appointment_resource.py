@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import json
 
-from app.mines.models.party import MgrAppointment
+from app.api.party.models.party import MgrAppointment
 from tests.constants import TEST_MINE_GUID, TEST_MANAGER_GUID, TEST_PERSON_2_GUID
 
 

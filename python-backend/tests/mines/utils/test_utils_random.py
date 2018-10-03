@@ -1,4 +1,4 @@
-from app.mines.utils.random import random_key_gen, generate_mine_no, generate_name, random_geo
+from app.api.utils.random import random_key_gen, generate_mine_no, generate_name, random_geo
 
 
 def test_utils_random_key_gen():

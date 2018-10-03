@@ -6,9 +6,9 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from .mines import MineIdentity
-from .mixins import AuditMixin, Base
-from .constants import PARTY_STATUS_CODE
+from ...mine.models.mines import MineIdentity
+from ...utils.models_mixins import AuditMixin, Base
+from ...constants import PARTY_STATUS_CODE
 
 
 class Party(AuditMixin, Base):

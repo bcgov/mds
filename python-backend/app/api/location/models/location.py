@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
-from .mixins import AuditMixin, Base
+from ...utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 
