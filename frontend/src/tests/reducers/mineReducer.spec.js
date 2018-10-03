@@ -1,6 +1,5 @@
 import mineReducer from "@/reducers/mineReducer";
 import {updateMine, storeMine, storeMineList, storeMineNameList} from "@/actions/mineActions";
-import * as MOCKS from '@/tests/mocks/datamocks';
 
 describe('mineReducer', () => {
 
