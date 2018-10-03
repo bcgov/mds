@@ -99,7 +99,10 @@ def register_commands(app):
         mine_tenure_list = []
         mine_party_list = []
         mine_permittee_list = []
+        party = None
         for i in range(int(num)):
+            # Ability to add previous party to have multiple permittee
+            prev_party_guid = party.party_guid if party else None
             random_location = random_geo()
             mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
             mine_identity_list.append(mine_identity)
@@ -145,18 +148,25 @@ def register_commands(app):
                 mine_tenure_list.append(mine_tenure)
 
             for random_permit in range(random.randint(0, 6)):
+                random_year = random.randint(1970, 2017)
+                random_month = random.randint(1, 12)
+                random_day = random.randint(1,28)
+                random_date = datetime(random_year, random_month, random_day)
                 mine_permit = Permit(
                     permit_guid=uuid.uuid4(),
                     mine_guid=mine_identity.mine_guid,
                     permit_no=random_key_gen(key_length=12),
                     permit_status_code=random.choice(PERMIT_STATUS_CODE['choices']),
+                    issue_date=random_date,
                     **DUMMY_USER_KWARGS,
                 )
                 mine_permit_list.append(mine_permit)
+                permittee_party = random.choice([party.party_guid, prev_party_guid]) if prev_party_guid else party.party_guid
                 mine_permittee = Permittee(
                     permittee_guid=uuid.uuid4(),
                     permit_guid=mine_permit.permit_guid,
-                    party_guid=party.party_guid,
+                    party_guid=permittee_party,
+                    effective_date=random_date,
                     **DUMMY_USER_KWARGS
                 )
                 mine_permittee_list.append(mine_permittee)
