@@ -22,19 +22,19 @@ const createItemMap = (array, idField) => {
   }, {});
 };
 
-const renderCurrentPermittee = (array, path) => {
+const renderCurrentPermittee = (array) => {
   const permitteeObj = {};
   array.map((permit) => {
-    permitteeObj[permit[path]] = permit.permittee[0];
+    permitteeObj[permit.permittee[0].party_guid] = permit.permittee[0];
   })
   return permitteeObj;
  }
 
- const renderCurrentPermitteeIds = (array, path) => {
+ const renderCurrentPermitteeIds = (array) => {
   const permitteeIds = [];
   let unique;
   array.map((permit) => {
-    permitteeIds.push(permit[path]);
+    permitteeIds.push(permit.permittee[0].party_guid);
   })
   unique = [...new Set(permitteeIds)];
   return unique;
@@ -62,8 +62,8 @@ const mineReducer = (state = initialState, action) => {
         case actionTypes.STORE_CURRENT_PERMITTEES:
         return {
           ...state,
-          permittees: renderCurrentPermittee(action.payload.mine_permit, 'permittee[0].party_guid'),
-          permitteeIds: renderCurrentPermitteeIds(action.payload.mine_permit, 'permittee[0].party_guid')
+          permittees: renderCurrentPermittee(action.payload.mine_permit),
+          permitteeIds: renderCurrentPermitteeIds(action.payload.mine_permit)
         }
       case actionTypes.STORE_MINE_NAME_LIST:
         return {
