@@ -148,17 +148,18 @@ def register_commands(app):
                 mine_tenure_list.append(mine_tenure)
 
             for random_permit in range(random.randint(0, 6)):
+                random_year = random.randint(1970, 2017)
+                random_month = random.randint(1, 12)
+                random_day = random.randint(1,28)
+                random_date = datetime(random_year, random_month, random_day)
                 mine_permit = Permit(
                     permit_guid=uuid.uuid4(),
                     mine_guid=mine_identity.mine_guid,
                     permit_no=random_key_gen(key_length=12),
                     permit_status_code=random.choice(PERMIT_STATUS_CODE['choices']),
+                    issue_date=random_date,
                     **DUMMY_USER_KWARGS,
                 )
-                random_year = random.randint(1970, 2017)
-                random_month = random.randint(1, 12)
-                random_day = random.randint(1,28)
-                random_date = datetime(random_year, random_month, random_day)
                 mine_permit_list.append(mine_permit)
                 permittee_party = random.choice([party.party_guid, prev_party_guid]) if prev_party_guid else party.party_guid
                 mine_permittee = Permittee(
