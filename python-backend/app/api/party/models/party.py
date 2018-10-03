@@ -6,9 +6,9 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from .mines import MineIdentity
-from .mixins import AuditMixin, Base
-from .constants import PARTY_STATUS_CODE
+from ...mine.models.mines import MineIdentity
+from ...utils.models_mixins import AuditMixin, Base
+from ...constants import PARTY_STATUS_CODE
 
 
 class Party(AuditMixin, Base):
@@ -158,6 +158,7 @@ class MgrAppointment(AuditMixin, Base):
             'party_guid': str(self.party_guid),
             'first_name': party.first_name,
             'party_name': party.party_name,
+            'email': party.email,
             'name': party.first_name + ' ' + party.party_name,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()

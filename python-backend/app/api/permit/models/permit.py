@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from .mixins import AuditMixin, Base
+from ...utils.models_mixins import AuditMixin, Base
 
 
 class Permit(AuditMixin, Base):
