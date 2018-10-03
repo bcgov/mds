@@ -112,11 +112,11 @@ export const PARTY = {
   parties: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      full_name: "mock name"
+      name: "mock name"
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      full_name: "mock Two"
+      name: "mock Two"
     }
   }
 }

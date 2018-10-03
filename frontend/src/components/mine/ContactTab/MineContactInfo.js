@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
+import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
@@ -101,7 +102,7 @@ const defaultProps = {
           handleSubmit={this.handleManagerSubmit}
           handlePartySubmit={this.handlePartySubmit}
         />
-        {mine.mine_permittee[0] &&
+        {mine.mine_permit[0] &&
           <ViewPermittee 
             {...this.props}
             {...this.state}
@@ -124,6 +125,8 @@ const mapStateToProps = (state) => {
   return {
     parties: getParties(state),
     partyIds: getPartyIds(state),
+    permittees: getCurrentPermittees(state),
+    permitteeIds: getCurrentPermitteeIds(state),
   };
 };
 

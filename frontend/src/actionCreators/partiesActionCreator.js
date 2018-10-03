@@ -15,7 +15,7 @@ export const createParty = (payload) => (dispatch) => {
   dispatch(showLoading('modal'));
   return axios.post(ENVIRONMENT.apiUrl + API.PARTY, payload, createRequestHeader())
     .then((response) => {
-      notification.success({ message: "Successfully created a naw party", duration: 10 });
+      notification.success({ message: "Successfully created a new party", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PARTY));
       dispatch(hideLoading('modal'));
       return response;

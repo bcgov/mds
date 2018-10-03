@@ -96,7 +96,7 @@ export class ViewMineManager extends Component {
                     <th scope="col"><h4>Manager Since</h4></th>
                   </tr>
                   <tr>
-                    <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></td>
+                    <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].name : "-"}</p></td>
                     <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
                   </tr>
                   <tr>

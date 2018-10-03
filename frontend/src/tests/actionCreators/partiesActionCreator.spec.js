@@ -24,7 +24,7 @@ beforeEach(() => {
 describe('`createParty` action creator', () => {
   const mockPayload = {
     "first_name": 'mockName',
-    "surname": 'mockSurname'
+    "party_name": 'mockSurname'
   }
   const url = ENVIRONMENT.apiUrl + API.PARTY;
   it('Request successful, dispatches `success` with correct response', () => {

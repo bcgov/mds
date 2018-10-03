@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio, Select, Divider } from 'antd';
+import { Modal, Card, Radio } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
 import * as String from '@/constants/strings';
-
-const Option = Select.Option;
 
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
@@ -19,13 +17,15 @@ const propTypes = {
   permitteeModalVisable: PropTypes.bool,
   isPerson: PropTypes.bool,
   parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired
+  partyIds: PropTypes.array.isRequired,
+  permittees: PropTypes.object,
+  permitteeIds: PropTypes.array
 };
 
 const defaultProps = {
   mine: {},
-  parties: {},
-  partyIds: []
+  permittees: {},
+  permitteeIds: [],
 };
 
 export class ViewPermittee extends Component {
@@ -36,30 +36,44 @@ export class ViewPermittee extends Component {
   }
   
   render() {
-    const { mine } = this.props;
+    const { permittees, permitteeIds } = this.props;
       return (
         <div>
           <Card>
             <table>
-              <tbody>
-                <tr>
-                  <th scope="col"><h4>Permittee</h4></th>
-                </tr>
-                <tr>
-                {mine.mine_permittee.map((permittee) => {
-                  return (
-                    <td key={permittee.party_guid} data-label="Permittee"><p className="p-large">{permittee.party_name}</p></td>
-                  )
-                })}
-                </tr>
-              </tbody>
-            </table>
+                <tbody>
+                  <tr>
+                    <th scope="col"><h4>Permittee</h4></th>
+                    <th scope="col"><h4>Permittee Since</h4></th>
+                  </tr>
+                  {permitteeIds.map((id) => {
+                    return (
+                      <tr key={id}>
+                        <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                        <td key={id} data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                      </tr>
+                    )
+                  })}
+                  <tr>
+                    <th scope="col"><h4>Email</h4></th>
+                    <th scope="col"><h4>Phone Number (Ext)</h4></th>
+                  </tr>
+                  {permitteeIds.map((id) => {
+                    return (
+                      <tr key={id}>
+                      <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
+                      <td data-label="Phone Number (Ext)"><p className="p-large">{permittees[id].party.phone_no} ({permittees[id].party.phone_ext ? permittees[id].party.phone_ext : 'N/A'})</p></td>
+                    </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             <div className="right center-mobile">
-              <ConditionalButton 
+              {/* <ConditionalButton 
                 handleAction={this.props.toggleModal} 
                 string="Update Permittee" 
                 type="primary"
-              />
+              /> */}
             </div> 
           </Card>
           <Modal

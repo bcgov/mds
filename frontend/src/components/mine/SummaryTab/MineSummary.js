@@ -8,6 +8,8 @@ import NullScreen from '@/components/common/NullScreen';
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
+  permittees: PropTypes.object,
+  permitteeIds: PropTypes.array
 };
 
 const defaultProps = {
@@ -16,10 +18,11 @@ const defaultProps = {
 
 class MineSummary extends Component {
   render() {
-    const { mine } = this.props;
+    const { mine, permittees, permitteeIds } = this.props;
     if (!mine.mgr_appointment[0] && !mine.mine_permit[0]) {
       return (<NullScreen type="generic" />);
     }
+
     return (
       <div>
           <Card>
@@ -32,24 +35,28 @@ class MineSummary extends Component {
                   <th scope="col"><h4>Manager Since</h4></th>
                 </tr>
                 <tr>
-                  <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].full_name : "-"}</p></td>
+                  <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].name : "-"}</p></td>
                   <td data-label="Email"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].email : "-"}</p></td>
                   <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
                 </tr>
                 </tbody>
                 }
-                {mine.mine_permittee[0] &&
+                {mine.mine_permit && 
                   <tbody>
                     <tr>
                       <th scope="col"><h4>Permittee</h4></th>
+                      <th scope="col"><h4>Email</h4></th>
+                      <th scope="col"><h4>Permittee Since</h4></th>
                     </tr>
-                    <tr>
-                      {mine.mine_permittee.map((permittee) => {
+                      {permitteeIds.map((id) => {
                         return (
-                          <td key={permittee.party_guid} data-label="Permittee"><p className="p-large">{permittee.party_name}</p></td>
+                          <tr key={id}>
+                            <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                            <td key={id} data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
+                            <td key={id} data-label="Effective Date"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                          </tr>
                         )
                       })}
-                    </tr>
                   </tbody>
                 }
             </table>
