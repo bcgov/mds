@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from ..models.permit import Permit
 from app.extensions import jwt
-from .mixins import UserMixin
+from ...utils.resources_mixins import UserMixin
 
 
 class PermitResource(Resource, UserMixin):

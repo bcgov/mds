@@ -9,18 +9,18 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from sqlalchemy.exc import DBAPIError
 
-from .mines.models.constants import PARTY_STATUS_CODE, PERMIT_STATUS_CODE
-from .mines.models.location import MineLocation
-from .mines.models.mines import MineIdentity, MineDetail, MineralTenureXref
-from .mines.models.party import Party
-from .mines.models.permit import Permit
-from .mines.models.permittee import Permittee
-from .mines.resources.mine import Mine, MineList, MineListByName
-from .mines.resources.party import ManagerResource, PartyResource, PartyList, PartyListSearch
-from .mines.resources.location import MineLocationResource, MineLocationListResource
-from .mines.resources.permit import PermitResource
-from .mines.resources.permittee import PermitteeResource
-from .mines.utils.random import generate_mine_no, generate_name, random_geo, random_key_gen
+from .api.constants import PARTY_STATUS_CODE, PERMIT_STATUS_CODE
+from .api.location.models.location import MineLocation
+from .api.mine.models.mines import MineIdentity, MineDetail, MineralTenureXref
+from .api.party.models.party import Party
+from .api.permit.models.permit import Permit
+from .api.permittee.models.permittee import Permittee
+from .api.mine.resources.mine import Mine, MineList, MineListByName
+from .api.party.resources.party import ManagerResource, PartyResource, PartyList, PartyListSearch
+from .api.location.resources.location import MineLocationResource, MineLocationListResource
+from .api.permit.resources.permit import PermitResource
+from .api.permittee.resources.permittee import PermitteeResource
+from .api.utils.random import generate_mine_no, generate_name, random_geo, random_key_gen
 from .config import Config
 from .extensions import db, jwt
 

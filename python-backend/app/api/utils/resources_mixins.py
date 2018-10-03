@@ -1,4 +1,4 @@
-from .utils.user_info import User
+from .include.user_info import User
 
 
 class UserMixin(object):

@@ -1,5 +1,5 @@
 from tests.constants import TEST_PERMIT_GUID_1, TEST_MINE_GUID
-from app.mines.models.permit import Permit
+from app.api.permit.models.permit import Permit
 
 
 # Permit Model Class Methods

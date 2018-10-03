@@ -2,11 +2,11 @@ from datetime import datetime, timedelta
 import uuid
 
 from flask_restplus import Resource, reqparse
-from ..models.party import Party
-from ..models.permit import Permit
+from ...party.models.party import Party
+from ...permit.models.permit import Permit
 from ..models.permittee import Permittee
 from app.extensions import jwt
-from .mixins import UserMixin
+from ...utils.resources_mixins import UserMixin
 
 
 class PermitteeResource(Resource, UserMixin):

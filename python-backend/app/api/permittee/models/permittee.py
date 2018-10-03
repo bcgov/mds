@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 
-from .party import Party
-from .mixins import AuditMixin, Base
+from ...party.models.party import Party
+from ...utils.models_mixins import AuditMixin, Base
 
 
 class Permittee(AuditMixin, Base):

@@ -5,10 +5,10 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
-from ..models.location import MineLocation
-from ..utils.random import generate_mine_no
+from ...location.models.location import MineLocation
+from ...utils.random import generate_mine_no
 from app.extensions import jwt
-from .mixins import UserMixin
+from ...utils.resources_mixins import UserMixin
 
 
 class Mine(Resource, UserMixin):

@@ -3,11 +3,11 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from ..models.mines import MineIdentity
+from ...mine.models.mines import MineIdentity
 from ..models.party import Party, MgrAppointment
-from ..models.constants import PARTY_STATUS_CODE
+from ...constants import PARTY_STATUS_CODE
 from app.extensions import jwt
-from .mixins import UserMixin
+from ...utils.resources_mixins import UserMixin
 
 
 class PartyResource(Resource, UserMixin):
