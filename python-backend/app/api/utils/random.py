@@ -2,6 +2,8 @@ import math
 import random
 import string
 
+import names
+
 from ..mine.models.mines import MineDetail
 
 VOWELS = "aeiou"
@@ -30,17 +32,11 @@ def generate_mine_no():
     return mine_no
 
 
-def generate_name():
-    names = []
+def generate_mine_name():
+    name_list = []
     for i in range(random.randint(1, 2)):
-        word = ""
-        for j in range(random.randint(3, 11)):
-            if j % 2 == 0:
-                word += random.choice(CONSONANTS)
-            else:
-                word += random.choice(VOWELS)
-        names.append(word.capitalize())
-    return ' '.join(names)
+        name_list.append(names.get_last_name())
+    return ' '.join(name_list)
 
 
 def random_geo():

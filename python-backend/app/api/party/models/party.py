@@ -46,6 +46,8 @@ class Party(AuditMixin, Base):
             })
             if show_mgr:
                 context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
+        elif self.party_type_code == PARTY_STATUS_CODE['org']:
+            context.update({'name': self.party_name})
         return context
 
     @classmethod
