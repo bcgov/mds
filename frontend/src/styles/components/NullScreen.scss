@@ -1,4 +1,21 @@
 .null-screen {
   text-align: center;
-  margin: $default-margin-xxl;
+  margin: $default-margin-lg;
+
+  @include mobile {
+    margin: 0;
+  }
+
+  &--inline {
+    @include flex;
+    justify-content: center;
+    margin: 0;
+
+    h1 {
+      margin-top: 15px;
+    }
+    @include mobile {
+      display: block;
+    }
+  }
 }

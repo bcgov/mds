@@ -50,17 +50,19 @@
     },
     {
         "name": "CPU_LIMIT",
-        "displayName": "CPU Limit",
-        "required": true,
-        "description": "Maximum amount of CPU the container can use.",
         "value": "500m"
     },
     {
         "name": "MEMORY_LIMIT",
-        "displayName": "Memory Limit",
-        "required": true,
-        "description": "Maximum amount of memory the container can use.",
         "value": "1Gi"
+    },
+    {
+        "name": "CPU_REQUEST",
+        "value": "300m"
+    },
+    {
+        "name": "MEMORY_REQUEST",
+        "value": "768Mi"
     }
   ],
   "objects": [
@@ -139,7 +141,16 @@
             },
             "timeoutSeconds": 1200
           },
-          "resources": {},
+            "resources": {
+                "limits": {
+                    "cpu": "250m",
+                    "memory": "750Mi"
+                },
+                "requests": {
+                    "cpu": "200m",
+                    "memory": "500Mi"
+                }
+            },
           "activeDeadlineSeconds": 21600
         },
         "triggers": [
@@ -260,8 +271,8 @@
                     "memory": "${MEMORY_LIMIT}"
                   },
                   "requests": {
-                    "cpu": "${CPU_LIMIT}",
-                    "memory": "${MEMORY_LIMIT}"
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -345,14 +356,14 @@
                 ],
                 "resources": {
                     "limits": {
-                      "cpu": "250m",
-                      "memory": "1Gi"
+                      "cpu": "150m",
+                      "memory": "512Mi"
                     },
                     "requests": {
-                      "cpu": "200m",
-                      "memory": "750Mi"
+                      "cpu": "100m",
+                      "memory": "384Mi"
                     }
-                  }
+                }
               }
             ],
             "restartPolicy": "Always",
@@ -361,6 +372,26 @@
           }
         }
       }
+    },
+    {
+        "apiVersion": "autoscaling/v1",
+        "kind": "HorizontalPodAutoscaler",
+        "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+                "name": "${NAME}${SUFFIX}"
+            }
+        },
+        "spec": {
+            "maxReplicas": 4,
+            "minReplicas": 1,
+            "scaleTargetRef": {
+                "apiVersion": "v1",
+                "kind": "DeploymentConfig",
+                "name": "${NAME}${SUFFIX}"
+            },
+            "targetCPUUtilizationPercentage": 80
+        }
     },
     {
       "kind": "Service",

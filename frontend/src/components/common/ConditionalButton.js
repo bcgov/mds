@@ -22,7 +22,8 @@ const defaultProps = {
 
 export const ConditionalButton = (props) => {
   return (
-    <Button 
+    <Button
+      className="full-mobile"
       type={props.type} 
       onClick={props.handleAction}
     >

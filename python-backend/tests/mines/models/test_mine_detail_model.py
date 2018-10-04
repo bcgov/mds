@@ -1,5 +1,5 @@
 from tests.constants import TEST_MINE_NO
-from app.mines.models.mines import MineDetail
+from app.api.mine.models.mines import MineDetail
 
 
 # MineDetail Class Methods

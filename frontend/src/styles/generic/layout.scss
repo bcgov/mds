@@ -1,8 +1,10 @@
 body {
   font-family: $default-font;
+  width: 100vw;
 }
 
 .layout {
+  width: 100vw;
   min-height: 100vh;
 }
 
@@ -27,7 +29,6 @@ body {
 
 .right {
   text-align: right;
-  margin: 15px;
 }
 
 .left {
@@ -54,8 +55,27 @@ body {
 
 .between {
   justify-content: space-between;
+
+  @include mobile {
+    justify-content: unset;
+  }
 }
 
 .evenly {
   justify-content: space-evenly;
+}
+
+.center-mobile {
+  @include mobile {
+    display: block;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+}
+
+.full-mobile {
+  @include mobile {
+    width: 100% !important;
+    margin: 5px 0;
+  }
 }

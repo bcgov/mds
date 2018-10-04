@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from './store/configureStore';
 import Routes from './routes/Routes';
+import { hot } from 'react-hot-loader'
 
 export const store = configureStore();
 
@@ -18,4 +19,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default hot(module)(App)

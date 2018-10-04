@@ -118,17 +118,19 @@
         },
         {
             "name": "CPU_LIMIT",
-            "displayName": "CPU Limit",
-            "required": true,
-            "description": "Maximum amount of CPU the container can use.",
             "value": "500m"
         },
         {
             "name": "MEMORY_LIMIT",
-            "displayName": "Memory Limit",
-            "required": true,
-            "description": "Maximum amount of memory the container can use.",
-            "value": "1Gi"
+            "value": "2Gi"
+        },
+        {
+            "name": "CPU_RESOURCE",
+            "value": "300m"
+        },
+        {
+            "name": "MEMORY_RESOURCE",
+            "value": "1.5Gi"
         }
     ],
     "objects": [
@@ -378,8 +380,8 @@
                                 },
                                 "resources": {
                                     "requests": {
-                                        "cpu": "${CPU_LIMIT}",
-                                        "memory": "${MEMORY_LIMIT}"
+                                        "cpu": "${CPU_RESOURCE}",
+                                        "memory": "${MEMORY_RESOURCE}"
                                     },
                                     "limits": {
                                         "cpu": "${CPU_LIMIT}",

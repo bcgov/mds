@@ -1,5 +1,5 @@
 from tests.constants import TEST_MINE_GUID, TEST_LOCATION_GUID
-from app.mines.models.location import MineLocation
+from app.api.location.models.location import MineLocation
 
 
 # MineLocation Class Methods

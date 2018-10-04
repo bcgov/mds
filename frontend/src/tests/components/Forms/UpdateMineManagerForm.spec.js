@@ -11,15 +11,16 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.personnel = MOCK.PERSONNEL.personnel;
-  props.personnelIds = MOCK.PERSONNEL.personnelIds;
+  props.parties = MOCK.PARTY.parties;
+  props.partyIds = MOCK.PARTY.partyIds;
 }
 
 beforeEach(() => {
   setupDispatchProps();
+  setupProps();
 });
 
-describe('AddPersonnelFrom', () => {
+describe('AddPartyFrom', () => {
   it('renders properly', () => {
     const component = shallow(<UpdateMineManagerForm {...dispatchProps} {...props}/>);
     expect(component).toMatchSnapshot();

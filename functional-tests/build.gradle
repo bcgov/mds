@@ -1,18 +1,21 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+//1. Import files needed to:
+//Determine what OS is running the test
+//Determines how exceptions/event are formatted in test logging.
+import org.apache.tools.ant.taskdefs.condition.Os 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
-// Shelly's note: setup baseURL env var to take test/dev
 
-
+//2. Plugins
 plugins {
-    id 'com.gradle.build-scan' version '1.16'
     id "groovy"
     id "com.energizedwork.webdriver-binaries" version "1.0"
     id "net.foragerr.jmeter" version "1.0.10-3.3"
     
 }
 
+
+//3. Extra Properties for project
 ext {
     // The drivers we want to use
     drivers = ["firefox", "firefoxHeadless", "chrome", "chromeHeadless","ie","edge","safari"]
@@ -29,44 +32,47 @@ ext {
     }
 }
 
+//Based on version specifies above, handles all specifics needed running on Mac/Unix/PC
 apply from: "gradle/osSpecificDownloads.gradle"
 
+//4. Repositories to search for dependencies
 repositories {
     mavenCentral()
 }
-
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-}
-
+ 
+//5. Compiles all the dependencies
 dependencies {
-    // If using Spock, need to depend on geb-spock
+    //If using Spock, need to depend on geb-spock
     testCompile "org.gebish:geb-spock:$gebVersion"
     testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
         exclude group: "org.codehaus.groovy"
     }
     testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
-    // If using JUnit, need to depend on geb-junit (3 or 4)
+    //If using JUnit, need to depend on geb-junit (3 or 4)
     testCompile "org.gebish:geb-junit4:$gebVersion"
 
-    //Support
+    //Support needed for Geb to run off of. 
     testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 
-    // Drivers
+    //Drivers
     testCompile "org.seleniumhq.selenium:selenium-safari-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-ie-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-edge-driver:$seleniumVersion"
 
-    // Spock reports
+    //Spock reports
     testCompile( 'com.athaydes:spock-reports:1.4.0' ) {
         transitive = false // this avoids affecting your version of Groovy/Spock
     }
     testCompile 'org.slf4j:slf4j-api:1.7.13'
     testCompile 'org.slf4j:slf4j-simple:1.7.13'
+
+    //Needed to insert/cleanup test data directly into DB
+    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+    //Needed to use env variable
+    compile 'io.github.cdimascio:java-dotenv:3.1.2'
 }
 
 webdriverBinaries {
@@ -75,12 +81,14 @@ webdriverBinaries {
     //iedriver ieDriverVersion
 }
 
+
+//6. Set up Tasks
 drivers.each { driver ->
     task "${driver}Test"(type: Test) {
         group JavaBasePlugin.VERIFICATION_GROUP
 
         outputs.upToDateWhen { false }  // Always run tests
-
+        //system properties for Geb
         systemProperty "geb.build.reportsDir", reporting.file("geb/$name")
         systemProperty "geb.env", driver
     }
@@ -105,9 +113,6 @@ test {
     enabled = false
     scanForTestClasses = false
     include '**/CustomJUnitSpecRunner*'
-
-
-
 }
 
 tasks.withType(Test) {

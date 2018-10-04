@@ -9,7 +9,7 @@ services:
       context: migrations
       dockerfile: Dockerfile.dev
     environment:
-      - POSTGRES_USER=test
+      - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
       - POSTGRES_DB=mds
     ports:

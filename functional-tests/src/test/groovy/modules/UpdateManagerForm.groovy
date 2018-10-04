@@ -3,6 +3,7 @@ package modules
 import geb.Module
 
 class UpdateManagerForm extends Module {
+    static at = {$("div.ant-modal-title").text()=="Update Mine Manager"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         errorMessage (wait: true) {$("div", class:"ant-form-explain").text()}
@@ -18,7 +19,7 @@ class UpdateManagerForm extends Module {
         selectToInputManager (wait:true) {$("div", class:"ant-select-selection ant-select-selection--single")}
          
         //button
-        createMineManagerButton (wait:true) {$("button").has("span",text:"Create Personnel")}
+        createMineManagerButton (wait:true) {$("button").has("span",text:"Create Party")}
         updateMineManagerButton (wait:true) {$("button").has("span",text:"Update Mine Manager")} 
         cancelButton (wait:true) {$("button.ant-modal-close")}     
         updateButton (wait:true) {$("button").has("span",text:"Update")}

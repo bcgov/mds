@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 import sys
 import uuid
 
@@ -8,12 +9,18 @@ from flask_cors import CORS
 from flask_restplus import Api, Resource
 from sqlalchemy.exc import DBAPIError
 
-from .mines.models.mines import MineIdentity, MineDetail
-from .mines.models.location import MineLocation
-from .mines.resources.mine import Mine, MineList, MineListByName
-from .mines.resources.person import ManagerResource, PersonResource, PersonList
-from .mines.resources.location import MineLocationResource, MineLocationListResource
-from .mines.utils.random import generate_mine_no, generate_name, random_geo
+from .api.constants import PARTY_STATUS_CODE, PERMIT_STATUS_CODE
+from .api.location.models.location import MineLocation
+from .api.mine.models.mines import MineIdentity, MineDetail, MineralTenureXref
+from .api.party.models.party import Party
+from .api.permit.models.permit import Permit
+from .api.permittee.models.permittee import Permittee
+from .api.mine.resources.mine import Mine, MineList, MineListByName
+from .api.party.resources.party import ManagerResource, PartyResource, PartyList, PartyListSearch
+from .api.location.resources.location import MineLocationResource, MineLocationListResource
+from .api.permit.resources.permit import PermitResource
+from .api.permittee.resources.permittee import PermitteeResource
+from .api.utils.random import generate_mine_no, generate_name, random_geo, random_key_gen
 from .config import Config
 from .extensions import db, jwt
 
@@ -59,9 +66,12 @@ def register_routes(app, api):
     api.add_resource(MineList, '/mines')
     api.add_resource(MineListByName, '/mines/names')
     api.add_resource(MineLocationListResource, '/mines/location')
-    api.add_resource(PersonResource, '/person', '/person/<string:person_guid>')
-    api.add_resource(PersonList, '/persons')
+    api.add_resource(PartyResource, '/party', '/party/<string:party_guid>')
+    api.add_resource(PartyList, '/parties')
+    api.add_resource(PartyListSearch, '/parties/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+    api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
+    api.add_resource(PermitteeResource, '/permittees', '/permittees/<string:permittee_guid>')
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -85,7 +95,14 @@ def register_commands(app):
         mine_identity_list = []
         mine_detail_list = []
         mine_location_list = []
+        mine_permit_list = []
+        mine_tenure_list = []
+        mine_party_list = []
+        mine_permittee_list = []
+        party = None
         for i in range(int(num)):
+            # Ability to add previous party to have multiple permittee
+            prev_party_guid = party.party_guid if party else None
             random_location = random_geo()
             mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
             mine_identity_list.append(mine_identity)
@@ -110,12 +127,61 @@ def register_commands(app):
             )
             mine_location_list.append(mine_location)
 
+            party = Party(
+                party_guid=uuid.uuid4(),
+                first_name=generate_name(),
+                party_name=generate_name(),
+                email=random_key_gen(key_length=8, numbers=False) + '@' + random_key_gen(key_length=8, numbers=False) + '.com',
+                phone_no='123-123-1234',
+                party_type_code=PARTY_STATUS_CODE['per'],
+                **DUMMY_USER_KWARGS
+            )
+            mine_party_list.append(party)
+
+            for random_tenure in range(random.randint(0, 4)):
+                mine_tenure = MineralTenureXref(
+                    mineral_tenure_xref_guid=uuid.uuid4(),
+                    mine_guid=mine_identity.mine_guid,
+                    tenure_number_id=random_key_gen(key_length=7, letters=False),
+                    **DUMMY_USER_KWARGS,
+                )
+                mine_tenure_list.append(mine_tenure)
+
+            for random_permit in range(random.randint(0, 6)):
+                random_year = random.randint(1970, 2017)
+                random_month = random.randint(1, 12)
+                random_day = random.randint(1,28)
+                random_date = datetime(random_year, random_month, random_day)
+                mine_permit = Permit(
+                    permit_guid=uuid.uuid4(),
+                    mine_guid=mine_identity.mine_guid,
+                    permit_no=random_key_gen(key_length=12),
+                    permit_status_code=random.choice(PERMIT_STATUS_CODE['choices']),
+                    issue_date=random_date,
+                    **DUMMY_USER_KWARGS,
+                )
+                mine_permit_list.append(mine_permit)
+                permittee_party = random.choice([party.party_guid, prev_party_guid]) if prev_party_guid else party.party_guid
+                mine_permittee = Permittee(
+                    permittee_guid=uuid.uuid4(),
+                    permit_guid=mine_permit.permit_guid,
+                    party_guid=permittee_party,
+                    effective_date=random_date,
+                    **DUMMY_USER_KWARGS
+                )
+                mine_permittee_list.append(mine_permittee)
+
         db.session.bulk_save_objects(mine_identity_list)
         db.session.bulk_save_objects(mine_detail_list)
         db.session.bulk_save_objects(mine_location_list)
+        db.session.bulk_save_objects(mine_permit_list)
+        db.session.bulk_save_objects(mine_tenure_list)
+        db.session.bulk_save_objects(mine_party_list)
+        db.session.bulk_save_objects(mine_permittee_list)
+
         try:
             db.session.commit()
-            click.echo(f'Created {num} random mines.')
+            click.echo(f'Created {num} random mines with tenure, permits, and permittee.')
         except DBAPIError:
             db.session.rollback()
             click.echo(f'Error, failed on commit.')

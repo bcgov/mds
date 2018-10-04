@@ -18,6 +18,7 @@ const setupProps = () => {
 
 beforeEach(() => {
   setupProps();
+  setupDispatchProps();
 });
 
 describe('MineTenureInfo', () => {

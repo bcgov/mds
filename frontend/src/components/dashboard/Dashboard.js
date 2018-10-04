@@ -16,9 +16,9 @@ import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
-import { NO_MINE } from '@/constants/assets';
 import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
+import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 
@@ -92,8 +92,13 @@ export class Dashboard extends Component {
   handleTabChange = (key) => {
     const params = queryString.parse(this.props.location.search);
     if (key === 'map' ) {
+      if (!params.page && !params.per_page) {
+        this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+        this.props.history.push(router.MINE_DASHBOARD.relativeRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE))
+    } else {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
+      }
     } else {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
@@ -108,7 +113,7 @@ export class Dashboard extends Component {
     if (this.state.mineList) {
       if (this.props.mineIds.length === 0) {
         return (
-          <NullScreen primaryMessage={String.NO_DATA} secondaryMessage={String.TRY_AGAIN} img={NO_MINE} />
+          <NullScreen type="dashboard" />
         )
       } else {
         return (
@@ -121,7 +126,7 @@ export class Dashboard extends Component {
             >
               <TabPane tab="List" key="list">
                 <Row>
-                  <Col span={12} offset={6}>
+                  <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
                     <MineSearch/>
                   </Col>
                 </Row>
@@ -131,43 +136,65 @@ export class Dashboard extends Component {
                   pageData={this.props.pageData} 
                 />
                 <div className="center">
-                  <Pagination
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={pageNumber}
-                    current={pageNumber}
-                    total={this.props.pageData.total}
-                    pageSizeOptions={['25', '50', '75', '100']}
-                    pageSize={perPageNumber}
-                    showTotal={total => `${total} Results`}
-                  />
+                  <MediaQuery maxWidth={500}>
+                    <Pagination
+                      size="small"
+                      showSizeChanger
+                      onShowSizeChange={this.onPageChange}
+                      onChange={this.onPageChange}
+                      defaultCurrent={pageNumber}
+                      current={pageNumber}
+                      total={this.props.pageData.total}
+                      pageSizeOptions={['25', '50', '75', '100']}
+                      pageSize={perPageNumber}
+                    />
+                  </MediaQuery>
+                  <MediaQuery minWidth={501}>
+                    <Pagination
+                      showSizeChanger
+                      onShowSizeChange={this.onPageChange}
+                      onChange={this.onPageChange}
+                      defaultCurrent={pageNumber}
+                      current={pageNumber}
+                      total={this.props.pageData.total}
+                      pageSizeOptions={['25', '50', '75', '100']}
+                      pageSize={perPageNumber}
+                      showTotal={total => `${total} Results`}
+                    />
+                  </MediaQuery>
                 </div>
               </TabPane>
               <TabPane tab="Map" key="map">
                 <div className="landing-page__content--search">
-                  <Col span={10}>
+                  <Col md={10} xs={24}>
                     <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
                   </Col>
-                  <Col span={2}>
+                  <Col md={2} sm={0} xs={0}>
                     <div className="center">
                       <Divider type="vertical"/>
                       <h2>OR</h2>
                       <Divider type="vertical"/>
                     </div>
                   </Col>
-                  <Col span={10}>
+                  <Col md={0} sm={24} xs={24}>
+                    <div className="center">
+                      <Divider >
+                      <h2>OR</h2>
+                      </Divider>
+                    </div>
+                  </Col>
+                  <Col md={10} xs={24}>
                     <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                   </Col>
                 </div>
-                {this.state.mineName &&
-                  <div className="center">
+                { this.state.mineName &&
+                  <div className="center center-mobile">
                     <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
                 }
                 {this.state.showCoordinates  && 
                   <div className="center">
-                    <div className="inline-flex evenly">
+                    <div className="inline-flex evenly center-mobile">
                     <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
                     <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
                     </div>

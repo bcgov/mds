@@ -8,14 +8,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 
 import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines } from '@/selectors/mineSelectors';
+import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
+import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
 import Loading from '@/components/common/Loading';
-import NullScreen from '@/components/common/NullScreen'; 
-import { NO_MINE } from '@/constants/assets';
+import NullScreen from '@/components/common/NullScreen';
 
 const TabPane = Tabs.TabPane;
 
@@ -40,6 +40,7 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return(<Loading />)
     } else {
@@ -49,25 +50,25 @@ export class MineDashboard extends Component {
               <MineHeader mine={mine} />
             </div>
             <div className="dashboard__content">
-              <Tabs 
+              <Tabs
                 defaultActiveKey="1"
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
               >
                 <TabPane tab="Summary" key="1">
-                  <MineSummary mine={mine} />
+                  <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
                 </TabPane>
                 <TabPane tab="Permit" key="2">
-                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                  <MinePermitInfo mine={mine} />
                 </TabPane>
                 <TabPane tab="Contact Information" key="3">
                   <MineContactInfo mine={mine} />
                 </TabPane>
                 <TabPane tab="Compliance" key="4">
-                  <NullScreen primaryMessage="No data at this time" img={NO_MINE} />
+                  <NullScreen type="generic" />
                 </TabPane>
                 <TabPane tab="Tenure" key="5">
-                  <MineTenureInfo {...this.props}/>
+                  <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
               </Tabs>
             </div>
@@ -80,6 +81,8 @@ export class MineDashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
+    permittees: getCurrentPermittees(state),
+    permitteeIds: getCurrentPermitteeIds(state),
   };
 };
 

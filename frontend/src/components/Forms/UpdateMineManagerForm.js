@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row } from 'antd';
-import RenderSelect from '@/components/common/RenderSelect';
+import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderDate from '@/components/common/RenderDate';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
@@ -10,33 +10,42 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  personnel: PropTypes.object.isRequired,
-  personnelIds: PropTypes.array.isRequired
+  handleChange: PropTypes.func.isRequired,
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  isPerson: PropTypes.bool,
+  permittee: PropTypes.array,
 };
 
 const defaultProps = {
-  personnel: {},
-  personnelIds: []
+  parties: {},
+  partyIds: [],
+  id: '',
+  label: '',
 };
 
 export const UpdateMineManagerForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="mineManager"
-              name="mineManager"
-              label='Mine Manager'
-              component={RenderSelect}
-              data={props.personnelIds}
-              option={props.personnel}
+              id={props.id}
+              name={props.id}
+              label={props.label}
+              component={RenderLargeSelect}
+              data={props.partyIds}
+              option={props.parties}
               validate={[required]}
+              handleChange={props.handleChange}
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col md={12} xs={24}>
           <Form.Item>
             <Field
               id="startDate"
@@ -48,7 +57,7 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right"><Button type="primary" htmlType="submit">Update Mine Manager</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.action}</Button></div>
     </Form>
   );
 };

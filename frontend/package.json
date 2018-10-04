@@ -21,6 +21,7 @@
     "react-lottie": "^1.2.3",
     "react-redux": "^5.0.7",
     "react-redux-loading-bar": "^4.0.5",
+    "react-responsive": "^5.0.0",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.0",
     "redux-form": "^7.4.2",
@@ -58,6 +59,7 @@
     "nodemon": "^1.17.4",
     "optimize-css-assets-webpack-plugin": "^4.0.1",
     "postcss-loader": "^2.1.5",
+    "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
     "sw-precache-webpack-plugin": "^0.11.5",
@@ -79,7 +81,7 @@
     "puppeteer": "^1.4.0"
   },
   "scripts": {
-    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --env development",
+    "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
     "start": "node server.js",
@@ -90,6 +92,8 @@
     "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u --runInBand"
   },
   "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/",
     "setupFiles": [
       "./src/setupTests.js",
       "jest-localstorage-mock"

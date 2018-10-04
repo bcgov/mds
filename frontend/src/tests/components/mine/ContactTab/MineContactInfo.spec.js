@@ -7,11 +7,17 @@ const dispatchProps = {};
 const reducerProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getPersonnelById = jest.fn();
+  dispatchProps.fetchParties = jest.fn();
+  dispatchProps.createParty = jest.fn();
+  dispatchProps.addMineManager = jest.fn();
+  dispatchProps.addPermittee = jest.fn();
+  dispatchProps.getMineRecordById = jest.fn();
 };
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  reducerProps.parties = {},
+  reducerProps.partyIds = {}
 };
 
 beforeEach(() => {
