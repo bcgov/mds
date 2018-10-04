@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { AddPersonnelForm } from '@/components/Forms/AddPersonnelForm';
+import { AddPartyForm } from '@/components/Forms/AddPartyForm';
 
 const dispatchProps = {};
 
@@ -12,9 +12,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe('AddPersonnelFrom', () => {
+describe('AddPartyFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<AddPersonnelForm {...dispatchProps} />);
+    const component = shallow(<AddPartyForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,18 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { PersonnelProfile } from '@/components/personnel/PersonnelProfile';
+import { PartyProfile } from '@/components/parties/PartyProfile';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
 const reducerProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getPersonnelById = jest.fn();
+  dispatchProps.fetchPartyById = jest.fn();
   dispatchProps.match = {};
 };
 
 const setupReducerProps = () => {
-  reducerProps.personnel = MOCK.PERSONNEL.personnel[MOCK.PERSONNEL.personnelIds[0]];
+  reducerProps.parties = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
 };
 
 beforeEach(() => {
@@ -20,10 +20,10 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe('PersonnelProfile', () => {
+describe('PartyProfile', () => {
   it('renders properly', () => {
     const component = shallow(
-      <PersonnelProfile
+      <PartyProfile
         {...dispatchProps}
         {...reducerProps}
         match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}

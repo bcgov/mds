@@ -2,7 +2,7 @@
 import Home from '@/components/Home';
 import Dashboard from '@/components/dashboard/Dashboard';
 import MineDashboard from '@/components/mine/MineDashboard';
-import PersonnelProfile from '@/components/personnel/PersonnelProfile';
+import PartyProfile from '@/components/parties/PartyProfile';
 
 export const DASHBOARD = {
     route: '/',
@@ -22,9 +22,9 @@ export const MINE_SUMMARY = {
   component: MineDashboard,
 };
 
-export const PERSONNEL_PROFILE = {
+export const PARTY_PROFILE = {
   route: '/dashboard/profile/:id',
   dynamicRoute: (id) => `/dashboard/profile/${id}`,
-  component: PersonnelProfile,
+  component: PartyProfile,
 };
 

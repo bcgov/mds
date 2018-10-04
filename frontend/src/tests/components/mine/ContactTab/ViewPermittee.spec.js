@@ -1,33 +1,33 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MineContactInfo } from '@/components/mine/ContactTab/MineContactInfo';
+import { ViewPermittee  } from '@/components/mine/ContactTab/ViewPermittee';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
-const reducerProps = {}
+const props = {}
 
 const setupDispatchProps = () => {
+  dispatchProps.fetchPartyById = jest.fn();
   dispatchProps.fetchParties = jest.fn();
   dispatchProps.createParty = jest.fn();
   dispatchProps.addMineManager = jest.fn();
-  dispatchProps.addPermittee = jest.fn();
   dispatchProps.getMineRecordById = jest.fn();
 };
 
-const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.parties = {},
-  reducerProps.partyIds = {}
+const setupProps = () => {
+  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.parties = MOCK.PARTY.parties;
+  props.partyIds = MOCK.PARTY.partyIds;
 };
 
 beforeEach(() => {
   setupDispatchProps();
-  setupReducerProps();
+  setupProps();
 });
 
-describe('MineContactInfo', () => {
+describe('ViewPermittee', () => {
   it('renders properly', () => {
-    const component = shallow(<MineContactInfo {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<ViewPermittee {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

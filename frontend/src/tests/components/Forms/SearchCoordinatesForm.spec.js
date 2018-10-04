@@ -12,7 +12,7 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe('AddPersonnelFrom', () => {
+describe('AddPartyFrom', () => {
   it('renders properly', () => {
     const component = shallow(<SearchCoordinatesForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();

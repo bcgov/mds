@@ -17,7 +17,7 @@ const transformData = (data, option) => {
     data.map((opt) => {
     dataList.push(
       <AutoComplete.Option key={opt} value={opt}>
-        {option[opt].full_name}
+        {option[opt].name}
       </AutoComplete.Option>
     )})
     return dataList;
@@ -51,7 +51,7 @@ const RenderLargeSelect = ({
         backfill={true}
         style={{ width: '100%' }}
         dataSource={transformData(data, option)}
-        placeholder="Select a person"
+        placeholder="Select a party"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={handleChange}
         {...input}

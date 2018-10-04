@@ -11,13 +11,20 @@ import { resetForm } from '@/utils/helpers';
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  personnel: PropTypes.object.isRequired,
-  personnelIds: PropTypes.array.isRequired
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  isPerson: PropTypes.bool,
+  permittee: PropTypes.array,
 };
 
 const defaultProps = {
-  personnel: {},
-  personnelIds: []
+  parties: {},
+  partyIds: [],
+  id: '',
+  label: '',
 };
 
 export const UpdateMineManagerForm = (props) => {
@@ -27,12 +34,12 @@ export const UpdateMineManagerForm = (props) => {
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="mineManager"
-              name="mineManager"
-              label='Mine Manager'
+              id={props.id}
+              name={props.id}
+              label={props.label}
               component={RenderLargeSelect}
-              data={props.personnelIds}
-              option={props.personnel}
+              data={props.partyIds}
+              option={props.parties}
               validate={[required]}
               handleChange={props.handleChange}
             />
@@ -50,7 +57,7 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Mine Manager</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.action}</Button></div>
     </Form>
   );
 };

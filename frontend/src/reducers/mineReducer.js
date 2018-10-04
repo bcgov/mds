@@ -11,6 +11,8 @@ const initialState = {
   mineIds: [],
   mineNameList: [],
   minesPageData: {},
+  permittees: {},
+  permitteeIds: [],
 };
 
 const createItemMap = (array, idField) => {
@@ -19,6 +21,24 @@ const createItemMap = (array, idField) => {
     return result;
   }, {});
 };
+
+const renderCurrentPermittee = (array) => {
+  const permitteeObj = {};
+  array.map((permit) => {
+    permitteeObj[permit.permittee[0].party_guid] = permit.permittee[0];
+  })
+  return permitteeObj;
+ }
+
+ const renderCurrentPermitteeIds = (array) => {
+  const permitteeIds = [];
+  let unique;
+  array.map((permit) => {
+    permitteeIds.push(permit.permittee[0].party_guid);
+  })
+  unique = [...new Set(permitteeIds)];
+  return unique;
+ }
 
 const createItemIdsArray = (array, idField) => {
   return array.map(item => item[idField]);
@@ -37,7 +57,13 @@ const mineReducer = (state = initialState, action) => {
         return {
           ...state,
           mines: createItemMap([action.payload], 'guid'),
-          mineIds: createItemIdsArray([action.payload], 'guid')
+          mineIds: createItemIdsArray([action.payload], 'guid'),
+        }
+        case actionTypes.STORE_CURRENT_PERMITTEES:
+        return {
+          ...state,
+          permittees: renderCurrentPermittee(action.payload.mine_permit),
+          permitteeIds: renderCurrentPermitteeIds(action.payload.mine_permit)
         }
       case actionTypes.STORE_MINE_NAME_LIST:
         return {
@@ -59,5 +85,7 @@ export const getMines = (state) => state[MINES].mines;
 export const getMineIds = (state) => state[MINES].mineIds;
 export const getMineNames = (state) => state[MINES].mineNameList;
 export const getMinesPageData = (state) => state[MINES].minesPageData;
+export const getCurrentPermittees = (state) => state[MINES].permittees;
+export const getCurrentPermitteeIds = (state) => state[MINES].permitteeIds;
 
 export default mineReducer;

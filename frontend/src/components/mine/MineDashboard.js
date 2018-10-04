@@ -8,14 +8,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 
 import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines } from '@/selectors/mineSelectors';
+import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
+import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
 import Loading from '@/components/common/Loading';
 import NullScreen from '@/components/common/NullScreen';
-import { NO_MINE } from '@/constants/assets';
 
 const TabPane = Tabs.TabPane;
 
@@ -40,6 +40,7 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return(<Loading />)
     } else {
@@ -55,10 +56,10 @@ export class MineDashboard extends Component {
                 animated={{ inkBar: true, tabPane: false }}
               >
                 <TabPane tab="Summary" key="1">
-                  <MineSummary mine={mine} />
+                  <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
                 </TabPane>
                 <TabPane tab="Permit" key="2">
-                  <NullScreen type="generic" />
+                  <MinePermitInfo mine={mine} />
                 </TabPane>
                 <TabPane tab="Contact Information" key="3">
                   <MineContactInfo mine={mine} />
@@ -80,6 +81,8 @@ export class MineDashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
+    permittees: getCurrentPermittees(state),
+    permitteeIds: getCurrentPermitteeIds(state),
   };
 };
 

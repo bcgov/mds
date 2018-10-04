@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TENURE, MINER, NO_MINE, MINER_TWO  } from '@/constants/assets';
+import { TENURE, NO_MINE, MINER_TWO, PERMIT  } from '@/constants/assets';
 import * as String from '@/constants/strings';
 
 const propTypes = {
@@ -25,10 +25,16 @@ const NullScreen = (props) => {
         </div>
       }
       {props.type === 'manager' &&
+        <div className="null-screen--inline">
+          <img src={MINER_TWO} />
+          <h1>{String.NO_MINE_MANAGER}</h1>
+        </div>
+      }
+       {props.type === 'manager-small' &&
         <div>
-          <img src={props.small ? MINER_TWO : MINER} />
-          <h1>{props.small ? String.NO_DATA : String.NO_MINE_MANAGER}</h1>
-          <h5>{props.small ? String.ADD_PERSONNEL : String.ADD_MINE_MANAGER}</h5>
+          <img src={MINER_TWO} />
+          <h1>{String.NO_DATA}</h1>
+          <h5>{String.ADD_PARTY}</h5>
         </div>
       }
       {props.type === 'tenure' &&
@@ -36,6 +42,12 @@ const NullScreen = (props) => {
           <img src={TENURE} />
           <h1>{String.NO_DATA}</h1>
           <h5>{String.ADD_TENURE}</h5>
+        </div>
+      }
+      {props.type === 'permit' &&
+        <div>
+          <img src={PERMIT} />
+          <h1>{String.NO_PERMIT}</h1>
         </div>
       }
     </div>
