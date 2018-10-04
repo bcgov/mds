@@ -1,5 +1,5 @@
 import mineReducer from "@/reducers/mineReducer";
-import {updateMine, storeMine, storeMineList, storeMineNameList} from "@/actions/mineActions";
+import {updateMine, storeMine, storeMineList, storeMineNameList, storeCurrentPermittees} from "@/actions/mineActions";
 
 describe('mineReducer', () => {
 
@@ -53,6 +53,41 @@ describe('mineReducer', () => {
     const result = mineReducer(undefined, storeMine({"guid": "test123"}));
     expect(result).toEqual(expectedValue);
   });
+
+  // it('receives STORE_CURRENT_PERMITTEES', () => {
+  //   const expectedValue = {
+  //     mines: {},
+  //     mineIds: [],
+  //     mineNameList: [],
+  //     minesPageData: {},
+  //     permittees: { "party_guid": "test123", "party": {}},
+  //     permitteeIds: ["test123"],
+  //   };
+  //   const array = {"mine_permit": [
+  //       {
+  //         "permittee": [
+  //           {
+  //             "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+  //             "party": {
+  //               "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+  //             }
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "permittee": [
+  //           {
+  //             "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+  //             "party": {
+  //               "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     ]};
+  //   const result = mineReducer(undefined, storeCurrentPermittees(array.mine_permit));
+  //   expect(result).toEqual(expectedValue);
+  // });
 
   it('receives UPDATE_MINE_RECORD', () => {
     const storedMineValue = {

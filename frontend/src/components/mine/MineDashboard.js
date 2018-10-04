@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-
 import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';

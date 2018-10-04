@@ -172,14 +172,14 @@ export class Dashboard extends Component {
                   <Col md={2} sm={0} xs={0}>
                     <div className="center">
                       <Divider type="vertical"/>
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       <Divider type="vertical"/>
                     </div>
                   </Col>
                   <Col md={0} sm={24} xs={24}>
                     <div className="center">
                       <Divider >
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       </Divider>
                     </div>
                   </Col>
