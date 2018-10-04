@@ -14,17 +14,13 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  action: PropTypes.string.isRequired,
   permit: PropTypes.array,
 };
 
 const defaultProps = {
   parties: {},
   partyIds: [],
-  id: '',
-  label: '',
+  permit: [],
 };
 
 const permitteeOptions = (permit) => {
@@ -39,7 +35,7 @@ const permitteeOptions = (permit) => {
   return dataArray;
 }
 
-export const UpdatePermitteeFormn = (props) => {
+export const UpdatePermitteeForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Divider>
@@ -90,17 +86,17 @@ export const UpdatePermitteeFormn = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.action}</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Permittee</Button></div>
     </Form>
   );
 };
 
-UpdatePermitteeFormn.propTypes = propTypes;
-UpdatePermitteeFormn.defaultProps = defaultProps;
+UpdatePermitteeForm.propTypes = propTypes;
+UpdatePermitteeForm.defaultProps = defaultProps;
 
 export default (reduxForm({
     form: FORM.UPDATE_PERMITTEE,
     touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.UPDATE_PERMITTEE),
-  })(UpdatePermitteeFormn)
+  })(UpdatePermitteeForm)
 );

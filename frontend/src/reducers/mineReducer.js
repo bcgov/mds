@@ -31,6 +31,7 @@ const renderCurrentPermittee = (array) => {
  }
 
  const renderCurrentPermitteeIds = (array) => {
+   console.log(array);
   const permitteeIds = [];
   let unique;
   array.map((permit) => {

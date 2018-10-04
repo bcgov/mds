@@ -19,7 +19,6 @@ const RenderSelect = ({
   id,
   input,
   label,
-  option,
   placeholder,
   meta: { touched, error, warning },
   data,
@@ -40,10 +39,8 @@ const RenderSelect = ({
         id={id} 
         {...input}
       >
-      {/* {transformData(data)} */}
         {data.map((value) => (
-          // <Select.Option key={value} value={value}>{option[value].name}</Select.Option>
-        <Select.Option key={value.value} value={value.value}>{value.option}</Select.Option>
+          <Select.Option key={value.value} value={value.value}>{value.option}</Select.Option>
         ))}
       </Select>
     </Form.Item>
