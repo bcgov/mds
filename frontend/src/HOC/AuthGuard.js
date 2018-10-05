@@ -3,11 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Keycloak from 'keycloak-js';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-
 import { isAuthenticated, getKeycloak } from '@/selectors/authenticationSelectors';
 import { authenticateUser, storeKeycloakData, storeUserAccessData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/common/Loading';
 import { KEYCLOAK } from '@/constants/environment';
+
+/**
+ * @constant AuthGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
+ */
 
 export const AuthGuard = (WrappedComponent) => {
 

@@ -1,11 +1,11 @@
-/**
- * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
 import { ELLIPSE, SMALL_PIN } from '@/constants/assets';
 
+/**
+ * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
+ */
 const propTypes = {
   mine: PropTypes.object.isRequired
 };

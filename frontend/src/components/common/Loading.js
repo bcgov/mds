@@ -1,6 +1,8 @@
+/**
+ * @constant Loading is a full page loading spinner using a LottieFiles JSON animation
+ */
 import React from 'react';
 import Lottie from 'react-lottie';
-import { Spin } from 'antd';
 import * as loader from '@/assets/loader.json';
 
 const Loading = () => {
@@ -16,7 +18,6 @@ const Loading = () => {
           options={defaultOptions}
         />
       </div>
-      {/* <Spin id="loader" tip="Loading..." size="large" /> */}
     </div>
   )
 }

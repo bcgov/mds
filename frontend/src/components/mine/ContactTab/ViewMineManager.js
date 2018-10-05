@@ -10,10 +10,13 @@ import NullScreen from '@/components/common/NullScreen';
 import * as router from '@/constants/routes';
 import * as String from '@/constants/strings';
 
+/**
+ * @class ViewMineManager - all information of mine managers located under MineContactInfo.js
+ */
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   modalVisable: PropTypes.bool,
   mine: PropTypes.object.isRequired,

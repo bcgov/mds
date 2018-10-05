@@ -1,8 +1,3 @@
-/**
- * @class MineMap.js  is an arcGIS <Map /> component,
- * NOTE:: coordinates are in [long, lat] format.
- * MineMap.js is located on Landing page as well as Mine Summary page.
- */
 import React, { Component } from 'react';
 import { Map } from 'react-arcgis';
 import PropTypes from 'prop-types';
@@ -10,6 +5,11 @@ import MinePin from './MinePin';
 import LocationPin from './LocationPin';
 import * as String from '@/constants/strings';
 
+/**
+ * @class MineMap.js  is an arcGIS <Map /> component,
+ * NOTE:: coordinates are in [long, lat] format.
+ * MineMap.js is located on Landing page as well as Mine Summary page.
+ */
 const propTypes = {
   mine: PropTypes.object,
   lat: PropTypes.number,
@@ -22,7 +22,6 @@ const defaultProps = {
 
 class MineMap extends Component {
   state = { map: null, view: null, center: null, zoom: null }
-
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.lat != this.props.lat) || (nextProps.long != this.props.long)) {

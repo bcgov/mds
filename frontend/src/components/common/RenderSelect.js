@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
+/**
+ * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
+ */
 
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -12,9 +15,6 @@ const propTypes = {
   meta: PropTypes.object,
   data: PropTypes.array
 };
-/**
- * Ant Design `Select` component for redux-form.
- */
 const RenderSelect = ({
   id,
   input,

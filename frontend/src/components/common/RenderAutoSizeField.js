@@ -2,20 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 
+/**
+ * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
+ */
 
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   input: PropTypes.any,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  type: PropTypes.string,
   meta: PropTypes.object,
 };
 
 const { TextArea } = Input;
-/**
- * Ant Design `Input` component for redux-form.
- */
 const RenderAutoSizeField = ({
   id,
   input,

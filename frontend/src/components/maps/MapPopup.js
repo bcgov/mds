@@ -13,8 +13,8 @@ const propTypes = {
 const defaultProps = {
   id: ''
 };
-export class MapPopup extends Component {
 
+export class MapPopup extends Component {
   render() {
     return (
       <StaticRouter context={this.context}>

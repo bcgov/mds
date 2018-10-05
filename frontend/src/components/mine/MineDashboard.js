@@ -1,6 +1,3 @@
-/**
- * @class MineDashboard.js is an individual mines dashboard
- */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
@@ -16,6 +13,9 @@ import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
 import Loading from '@/components/common/Loading';
 import NullScreen from '@/components/common/NullScreen';
 
+/**
+ * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
+ */
 const TabPane = Tabs.TabPane;
 
 const propTypes = {

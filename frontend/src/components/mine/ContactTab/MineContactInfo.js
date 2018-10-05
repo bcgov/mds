@@ -1,7 +1,3 @@
-
-/**
- * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard (including all Mine Manager information);
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -12,6 +8,10 @@ import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSe
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
+
+/**
+ * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
