@@ -4,6 +4,9 @@ import { Modal, Card } from 'antd';
 import AddTenureNumberForm from '@/components/Forms/AddTenureNumberForm';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen'; 
+/**
+ * @class  MineTenureInfo - all tenure information related to the mine.
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired,

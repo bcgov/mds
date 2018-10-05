@@ -3,13 +3,14 @@ import { shallow } from 'enzyme';
 import RenderAutoComplete from '@/components/common/RenderAutoComplete';
 import { MINE_NAME_LIST } from '@/tests/mocks/dataMocks';
 
-
 let props = {};
 
 const setupProps = () => {
   props = {
     data: [],
-    handleSearch: jest.fn(),
+    placeholder: '',
+    handleSelect: jest.fn(),
+    handleChange: jest.fn(),
   };
 }
 

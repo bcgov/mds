@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
-
 import { CreateGuard } from '@/HOC/CreateGuard';
 import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
+import * as String from '@/constants/strings';
+
+/**
+ * @class CreateMine - Component to create a mine record.
+ */
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
@@ -25,7 +29,7 @@ export class CreateMine extends Component {
       if (params.page && params.per_page) {
         this.props.getMineRecords(params.page, params.per_page);
       } else {
-        this.props.getMineRecords('1', '25');
+        this.props.getMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
       }
     });
   }
@@ -39,12 +43,10 @@ export class CreateMine extends Component {
   render() {
     return (
       <div>
-        <div style={{ padding: "10px" }}>
-          <div className="right center-mobile">
-            <Button className="full-mobile" type="primary" size="large" onClick={this.toggleModal}>
-                Create Mine Record
-            </Button>
-          </div>
+        <div className="right center-mobile">
+          <Button className="full-mobile" type="primary" size="large" onClick={this.toggleModal}>
+              Create Mine Record
+          </Button>
         </div>
         <Modal
           title="Create Mine Record"

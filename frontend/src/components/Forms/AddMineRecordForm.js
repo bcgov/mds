@@ -56,7 +56,6 @@ export const AddMineRecordform = (props) => {
         <Col>
           <Form.Item>
             <Field
-              style={{height: '400px'}}
               id="note"
               name="note"
               label='Notes'

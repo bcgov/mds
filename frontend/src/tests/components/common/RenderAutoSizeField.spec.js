@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RenderDate from '@/components/common/RenderDate';
+import RenderAutoSizeField from '@/components/common/RenderAutoSizeField';
 
 let props = {};
 
@@ -9,8 +9,7 @@ const setupProps = () => {
     id: 1,
     input: '',
     label: '',
-    placeholder: 'yyyy-mm-dd',
-    onChange: jest.fn((date, dateString) => dateString),
+    type: '',
     meta: {
       touched: false,
       error: false,
@@ -23,10 +22,10 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('RenderDate', () => {
+describe('RenderAutoSizeField', () => {
 
   it('renders properly', () => {
-    const wrapper = shallow(<RenderDate {...props} />);
+    const wrapper = shallow(<RenderAutoSizeField {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 

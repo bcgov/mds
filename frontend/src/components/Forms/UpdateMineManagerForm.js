@@ -44,6 +44,7 @@ export const UpdateMineManagerForm = (props) => {
               id="startDate"
               name="startDate"
               label='Select a Start date'
+              placeholder="yyyy-mm-dd"
               component={RenderDate}
               validate={[required]}
             />

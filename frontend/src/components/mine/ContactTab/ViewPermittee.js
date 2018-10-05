@@ -6,6 +6,9 @@ import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdatePermitteeForm from '@/components/Forms/UpdatePermitteeForm';
 import * as String from '@/constants/strings';
+/**
+ * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
+ */
 
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
@@ -95,7 +98,6 @@ export class ViewPermittee extends Component {
                 partyIds={this.props.partyIds}
                 handleChange={this.handleChange}
                 isPerson={this.props.isPerson}
-                action={String.UPDATE_PERMITTEE}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
               <div className="center">
