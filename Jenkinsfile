@@ -26,7 +26,7 @@ pipeline {
             agent { label 'master' }
             steps {
                 echo "Running unit tests and reporting them to SonarQube ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--git_branch=${GIT_BRANCH} -Pargs.--env=dev'
             }
         }
         stage ('ZAP (DEV)'){
