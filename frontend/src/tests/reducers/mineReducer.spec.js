@@ -1,5 +1,5 @@
 import mineReducer from "@/reducers/mineReducer";
-import {updateMine, storeMine, storeMineList, storeMineNameList} from "@/actions/mineActions";
+import {updateMine, storeMine, storeMineList, storeMineNameList } from "@/actions/mineActions";
 
 describe('mineReducer', () => {
 

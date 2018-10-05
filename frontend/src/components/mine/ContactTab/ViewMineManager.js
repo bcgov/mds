@@ -18,7 +18,8 @@ const propTypes = {
   modalVisable: PropTypes.bool,
   mine: PropTypes.object.isRequired,
   parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired
+  partyIds: PropTypes.array.isRequired,
+  modalVisible: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
@@ -42,9 +43,6 @@ export class ViewMineManager extends Component {
             parties={this.props.parties}
             partyIds={this.props.partyIds}
             handleChange={this.props.handleChange}
-            id="mineManager"
-            label="Mine Manager"
-            action={String.UPDATE_MINE_MANAGER}
           />
           <p className="center">{String.PERSON_NOT_FOUND}</p>
         </div>
