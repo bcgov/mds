@@ -37,7 +37,7 @@ if (opt?.h) {
 
 def config = OpenShiftHelper.loadBuildConfig(opt)
 def namespace = config.app.namespaces."${opt.env}".namespace
-def branch = "${opt.git_branch}"
+def branch = "${opt.branch}"
 def appLabel = "${opt.env}-${config.app.build.env.id}"
 def dbConfig = "${config.app.name}-postgresql-${config.app.build.env.id}"
 
