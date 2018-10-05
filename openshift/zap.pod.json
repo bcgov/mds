@@ -52,19 +52,19 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "500m",
-                                "memory": "4Gi"
+                                "cpu": "250m",
+                                "memory": "1Gi"
                             },
                             "requests": {
-                                "cpu": "250m",
-                                "memory": "2Gi"
+                                "cpu": "150m",
+                                "memory": "768Mi"
                             }
                         },
                         "imagePullPolicy": "IfNotPresent"
                     }
                 ],
                 "restartPolicy": "Never",
-                "activeDeadlineSeconds": 240,
+                "activeDeadlineSeconds": 360,
                 "dnsPolicy": "ClusterFirst"
             },
             "status": {}
