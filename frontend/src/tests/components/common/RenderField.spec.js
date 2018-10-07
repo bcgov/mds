@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import RenderField from '@/components/common/RenderField';
 
-
 let props = {};
 
 const setupProps = () => {
@@ -10,7 +9,6 @@ const setupProps = () => {
     id: 1,
     input: '',
     label: '',
-    type: '',
     meta: {
       touched: false,
       error: false,

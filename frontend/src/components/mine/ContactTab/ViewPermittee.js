@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio, Divider } from 'antd';
+import { Modal, Card, Radio } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
-import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
+import UpdatePermitteeForm from '@/components/Forms/UpdatePermitteeForm';
 import * as String from '@/constants/strings';
+/**
+ * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
+ */
 
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
@@ -33,6 +36,11 @@ export class ViewPermittee extends Component {
   handleSubmit = (values) => {
     const type = this.props.isPerson ? 'PER' : 'ORG';
     this.props.handlePartySubmit(values, type);
+  }
+
+  handleChange = (values) => {
+    const isCompany = true;
+    this.props.handleChange(values, isCompany);
   }
   
   render() {
@@ -65,11 +73,11 @@ export class ViewPermittee extends Component {
                 })}
               </table>
             <div className="right center-mobile">
-              {/* <ConditionalButton 
+              <ConditionalButton 
                 handleAction={this.props.toggleModal} 
                 string="Update Permittee" 
                 type="primary"
-              /> */}
+              />
             </div> 
           </Card>
           <Modal
@@ -83,15 +91,13 @@ export class ViewPermittee extends Component {
               style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
             />
             <div>
-              <UpdateMineManagerForm
+              <UpdatePermitteeForm
+                permit={this.props.mine.mine_permit}
                 onSubmit={this.props.handleSubmit}
                 parties={this.props.parties}
                 partyIds={this.props.partyIds}
                 handleChange={this.handleChange}
                 isPerson={this.props.isPerson}
-                id="permittee"
-                label="Permittee"
-                action={String.UPDATE_PERMITTEE}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
               <div className="center">

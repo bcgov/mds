@@ -1,7 +1,3 @@
-
-/**
- * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard (including all Mine Manager information);
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -12,6 +8,10 @@ import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSe
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { getMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
+
+/**
+ * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -58,8 +58,8 @@ const defaultProps = {
   }
 
    handlePermitteeSubmit = (values) => {
-    //  this needs to be fixed - to allow users to selectt he permittee they want to update..
-    this.props.addPermittee(this.props.mine.mine_permit[0].permittee[0].permittee_guid, this.props.mine.mine_permit[0].permittee[0].permit_guid, values.permittee, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+    const guids = values.permittee.split(", ");
+    this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ permitteeModalVisable: !this.state.permitteeModalVisable });
       this.props.getMineRecordById(this.props.mine.guid);
     })

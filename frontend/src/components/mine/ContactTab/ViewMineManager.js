@@ -10,15 +10,19 @@ import NullScreen from '@/components/common/NullScreen';
 import * as router from '@/constants/routes';
 import * as String from '@/constants/strings';
 
+/**
+ * @class ViewMineManager - all information of mine managers located under MineContactInfo.js
+ */
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   modalVisable: PropTypes.bool,
   mine: PropTypes.object.isRequired,
   parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired
+  partyIds: PropTypes.array.isRequired,
+  modalVisible: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
@@ -42,9 +46,6 @@ export class ViewMineManager extends Component {
             parties={this.props.parties}
             partyIds={this.props.partyIds}
             handleChange={this.props.handleChange}
-            id="mineManager"
-            label="Mine Manager"
-            action={String.UPDATE_MINE_MANAGER}
           />
           <p className="center">{String.PERSON_NOT_FOUND}</p>
         </div>

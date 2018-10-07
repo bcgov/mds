@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, AutoComplete } from 'antd';
 
+/**
+ * @constant RenderAutoComplete - Ant Design `AutoComplete` component for redux-form.
+ * 
+ */
+
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
   placeholder: PropTypes.string
 };
-
-/**
- * Ant Design `AutoComplete` component for redux-form.
- * 
- */
 const RenderAutoComplete = ({
   data,
   placeholder,

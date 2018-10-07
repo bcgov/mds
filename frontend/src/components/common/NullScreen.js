@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { TENURE, NO_MINE, MINER_TWO, PERMIT  } from '@/constants/assets';
 import * as String from '@/constants/strings';
 
+/**
+ * @constant NullScreen is a reusable view for when there is no data to display, add more views when required.
+ */
+
 const propTypes = {
-  type: PropTypes.string.isRequired,
-  small: PropTypes.bool
+  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit']),
 };
 
 const NullScreen = (props) => {

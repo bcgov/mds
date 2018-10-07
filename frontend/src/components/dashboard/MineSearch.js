@@ -1,6 +1,3 @@
-/**
- * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
- */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,6 +9,9 @@ import RenderAutoComplete from '@/components/common/RenderAutoComplete';
 import * as router from '@/constants/routes';
 import { AutoComplete } from 'antd';
 
+/**
+ * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
+ */
 const propTypes = {
   getMineNameList: PropTypes.func.isRequired,
   handleCoordinateSearch: PropTypes.func,
@@ -27,7 +27,6 @@ export class MineSearch extends Component {
   state = { redirectTo: null}
 
   componentDidMount() {
-    // Get the initial list of mines
     this.props.getMineNameList();
   }
 
@@ -41,9 +40,7 @@ export class MineSearch extends Component {
     } else {
       this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
     }
-    
   }
-
   /**
    *  If the user has typed more than 3 characters filter the search
    * If they clear the search, revert back to default search set

@@ -16,8 +16,8 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.parties = {},
-  reducerProps.partyIds = {}
+  reducerProps.parties = MOCK.PARTY.parties;
+  reducerProps.partyIds = MOCK.PARTY.partyIds;
 };
 
 beforeEach(() => {
