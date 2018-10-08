@@ -86,7 +86,7 @@
     },
     {
         "name": "CPU_REQUEST",
-        "value": "200m"
+        "value": "100m"
     },
     {
         "name": "MEMORY_REQUEST",
