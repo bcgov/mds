@@ -360,7 +360,7 @@
                       "memory": "512Mi"
                     },
                     "requests": {
-                      "cpu": "100m",
+                      "cpu": "70m",
                       "memory": "384Mi"
                     }
                 }
