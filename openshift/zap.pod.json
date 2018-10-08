@@ -60,7 +60,7 @@
                                 "memory": "768Mi"
                             }
                         },
-                        "imagePullPolicy": "IfNotPresent"
+                        "imagePullPolicy": "Always"
                     }
                 ],
                 "restartPolicy": "Never",
