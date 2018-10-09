@@ -434,7 +434,7 @@
 			},
 			"spec": {
 				"APPLICATION_DOMAIN": "${APPLICATION_DOMAIN}",
-				"path": "${PATH}",
+				"path": "/",
 				"to": {
 					"kind": "Service",
 					"name": "${NAME}${SUFFIX}",

@@ -149,7 +149,7 @@
 		  "termination": "edge",
 		  "insecureEdgeTerminationPolicy": "Redirect"
 		},
-		"path": "${PATH}",
+		"path": "/",
 		"to": {
 		  "kind": "Service",
 		  "name": "${NAME}${SUFFIX}"

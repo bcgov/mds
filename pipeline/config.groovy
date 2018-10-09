@@ -211,7 +211,7 @@ environments {
                     PATH = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
-                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                 }
             }
