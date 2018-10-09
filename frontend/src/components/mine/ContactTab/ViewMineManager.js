@@ -18,11 +18,10 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  modalVisable: PropTypes.bool,
+  modalVisible: PropTypes.bool,
   mine: PropTypes.object.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
-  modalVisible: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
