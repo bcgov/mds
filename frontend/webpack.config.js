@@ -11,7 +11,7 @@ const DEVELOPMENT = 'development';
 const PRODUCTION = 'production';
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || process.env.BASE_PATH + "/" || '/';
 
 const PATHS = {
   src: path.join(__dirname, "src"),

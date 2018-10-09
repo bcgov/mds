@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Boilerplate for React.js projects",
   "private": true,
+  "homepage": "${BASE_PATH}/",
   "dependencies": {
     "antd": "^3.7.0",
     "axios": "^0.18.0",

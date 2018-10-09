@@ -2,6 +2,14 @@ const express = require('express');
 const fs = require('fs');
 const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
+const PATH = process.env.BASE_PATH;
+let BASE_PATH = "";
+if(PATH && PATH === "/") {
+  BASE_PATH = "";
+}else if (PATH) {
+  BASE_PATH = PATH;
+}
+
 const app = express();
 const port = 3000;
 const commonHeaders = {
@@ -40,7 +48,7 @@ const serveGzipped = (contentType) => (req, res, next) => {
   next();
 }
 
-app.get("/env", function(req, res) {
+app.get(`${BASE_PATH}/env`, function(req, res) {
   res.set(commonHeaders);
   res.json({
       backend: 'mds-python-backend',
@@ -54,15 +62,16 @@ app.get("/env", function(req, res) {
   });
 });
 
-app.get('*.js', serveGzipped('text/javascript'));
-app.get('*.css', serveGzipped('text/css'));
+app.get(`${BASE_PATH}/*.js`, serveGzipped('text/javascript'));
+app.get(`${BASE_PATH}/*.css`, serveGzipped('text/css'));
 
-app.get('/service-worker.js', (req, res) => {
+app.get(`${BASE_PATH}/service-worker.js`, (req, res) => {
   res.set(commonHeaders);
   res.set({ 'Content-Type': 'application/javascript; charset=utf-8' });
   res.send(fs.readFileSync('build/service-worker.js'));
 });
 
-app.use('/147', staticServe);
+app.use(`${BASE_PATH}/`, staticServe);
+app.use(`${BASE_PATH}/*`, staticServe);
 
 app.listen(port, '0.0.0.0', () => console.log('Server running'));
