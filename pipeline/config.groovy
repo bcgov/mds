@@ -145,7 +145,7 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
+                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
                     ]
                 ],
                 [
@@ -168,7 +168,7 @@ app {
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}",
+                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
@@ -177,14 +177,6 @@ app {
                     ]
                 ]
         ]
-    }
-}
-
-//Default Values (Should it default to DEV or PROD???)
-vars {
-    DB_PVC_SIZE = '1Gi'
-    modules {
-
     }
 }
 
