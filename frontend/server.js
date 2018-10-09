@@ -63,7 +63,6 @@ app.get('/service-worker.js', (req, res) => {
   res.send(fs.readFileSync('build/service-worker.js'));
 });
 
-app.use('/', staticServe);
-app.use('*', staticServe);
+app.use('/147', staticServe);
 
 app.listen(port, '0.0.0.0', () => console.log('Server running'));
