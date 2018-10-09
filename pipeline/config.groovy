@@ -212,15 +212,15 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}"
                 }
             }
         }
