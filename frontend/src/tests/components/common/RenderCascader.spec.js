@@ -8,7 +8,7 @@ const setupProps = () => {
   props = {
     id: 1,
     input: '',
-    label: '',
+    placeholder: '',
     meta: {
       touched: false,
       error: false,

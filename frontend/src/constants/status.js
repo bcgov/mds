@@ -55,13 +55,14 @@ export const MINE_STATUS = [
   }, {
     value: 'Operating',
     label: 'Operating',
-    children: [{
-    value: 'Year Round',
-    label: 'Year round',
-  },
-  {
-    value: 'Seasonal',
-    label: 'Seasonal',
-  }],
-}
+    children: [
+      {
+      value: 'Year Round',
+      label: 'Year round',
+    },
+    {
+      value: 'Seasonal',
+      label: 'Seasonal',
+    }],
+  }
 ];
