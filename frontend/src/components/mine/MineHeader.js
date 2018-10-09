@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN, PENCIL } from '@/constants/assets';
 import MineRecordForm from '@/components/Forms/MineRecordForm';
 import ConditionalButton from '@/components/common/ConditionalButton';
 
@@ -24,7 +24,6 @@ class MineHeader extends Component {
   state = { visible: false }
   
   handleUpdateMineRecord = (value) => {
-    console.log(status);
     this.props.updateMineRecord(this.props.mine.guid, value, value.name).then(() =>{
       this.props.getMineRecordById(this.props.mine.guid);
       this.setState({
@@ -45,7 +44,6 @@ class MineHeader extends Component {
       "name": mine.mine_detail[0].mine_name,
       "latitude": mine.mine_location[0].latitude,
       "longitude": mine.mine_location[0].longitude,
-      "mine_status": ["Closed", "Care & Maintenance"]
     }
     return (
       <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record"/>
@@ -58,15 +56,14 @@ class MineHeader extends Component {
       <div className="dashboard__header">
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
-        <div className="inline-flex between full-mobile">
-          <h1>{mine.mine_detail[0].mine_name}</h1>
-          <ConditionalButton 
-            className="center-mobile" 
-            type="primary" 
-            handleAction={this.toggleModal}
-            string="Update"
-          />
-        </div>
+          <div className="inline-flex between">
+            <h1>{mine.mine_detail[0].mine_name}</h1>
+            <ConditionalButton 
+              type="primary" 
+              handleAction={this.toggleModal}
+              string={<img style={{padding: '5px'}}src={PENCIL} />}
+            />
+          </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <Modal
             title="Update Mine Record"
