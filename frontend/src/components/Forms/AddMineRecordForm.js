@@ -9,7 +9,7 @@ import { required, maxLength, minLength, number, lat, lon } from '@/utils/Valida
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export const AddMineRecordform = (props) => {

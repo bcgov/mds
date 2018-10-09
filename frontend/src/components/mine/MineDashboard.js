@@ -36,6 +36,13 @@ export class MineDashboard extends Component {
     this.props.getMineRecordById(id);
   }
 
+  handleMineUpdate = (values) => {
+    this.props.updateMineRecord(values).then(() => {
+      const { id } = this.props.match.params;
+      this.props.getMineRecordById(id);
+    })
+  }
+
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
@@ -46,7 +53,7 @@ export class MineDashboard extends Component {
         return (
           <div className="dashboard">
             <div>
-              <MineHeader mine={mine} />
+              <MineHeader mine={mine} handleMineUpdate={this.handleMineUpdate}/>
             </div>
             <div className="dashboard__content">
               <Tabs

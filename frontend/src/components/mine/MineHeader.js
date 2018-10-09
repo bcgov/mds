@@ -9,7 +9,8 @@ import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
-  mine: PropTypes.object.isRequired
+  mine: PropTypes.object.isRequired,
+  handleMineUpdate: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -18,12 +19,15 @@ const defaultProps = {
 
 class MineHeader extends Component {
   state = { visible: false }
+  
   handleSubmit = (value) => {
+    this.props.handleMineUpdate(value).then(() =>{
       this.setState({
         visible: false,
       });
+    })
   }
-
+  
   toggleModal = () => {
     this.setState({
       visible: !this.state.visible,
@@ -31,6 +35,11 @@ class MineHeader extends Component {
   }
   render() {
     const { mine } = this.props;
+    const initialValues = {
+      "name": mine.mine_detail[0].mine_name,
+      "latitude": mine.mine_location[0].latitude,
+      "longitude": mine.mine_location[0].longitude,
+    }
     return (
       <div className="dashboard__header">
         <MineMap mine={mine}/>
@@ -48,7 +57,7 @@ class MineHeader extends Component {
           onCancel={this.toggleModal}
           footer={null}
         >
-          <AddMineRecordForm onSubmit={this.handleSubmit} />
+          <AddMineRecordForm onSubmit={this.handleSubmit} initialValues={initialValues}/>
         </Modal>
           <div className="dashboard__header__content--inline">
             <div className="inline-flex between">
