@@ -73,5 +73,7 @@ app.get(`${BASE_PATH}/service-worker.js`, (req, res) => {
 
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}/*`, staticServe);
+app.use(`/`, staticServe);
+app.use(`*`, staticServe);
 
 app.listen(port, '0.0.0.0', () => console.log('Server running'));
