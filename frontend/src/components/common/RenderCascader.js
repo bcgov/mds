@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Cascader } from 'antd';
-import {MINE_STATUS} from '@/constants/status';
 
 /**
  * @constant RenderCascader - Ant Design `Cascader` component for redux-form.
@@ -27,7 +26,7 @@ const RenderCascader = ({
           (warning && <span>{warning}</span>))
       }
     >
-     <Cascader id={id} options={MINE_STATUS} placeholder={placeholder} {...input}/>
+     <Cascader id={id} placeholder={placeholder} {...input}/>
     </Form.Item>
   );
 
