@@ -22,6 +22,11 @@ const createItemMap = (array, idField) => {
   }, {});
 };
 
+
+const createItemIdsArray = (array, idField) => {
+  return array.map(item => item[idField]);
+};
+
 const renderCurrentPermittee = (array) => {
   const permitteeObj = {};
   array.map((permit) => {
@@ -39,11 +44,7 @@ const renderCurrentPermittee = (array) => {
   unique = [...new Set(permitteeIds)];
   return unique;
  }
-
-const createItemIdsArray = (array, idField) => {
-  return array.map(item => item[idField]);
-};
-
+ 
 const mineReducer = (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.STORE_MINE_LIST:

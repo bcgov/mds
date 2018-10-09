@@ -50,7 +50,7 @@
     },
     {
         "name": "CPU_LIMIT",
-        "value": "500m"
+        "value": "200m"
     },
     {
         "name": "MEMORY_LIMIT",
@@ -58,7 +58,7 @@
     },
     {
         "name": "CPU_REQUEST",
-        "value": "300m"
+        "value": "150m"
     },
     {
         "name": "MEMORY_REQUEST",
@@ -360,7 +360,7 @@
                       "memory": "512Mi"
                     },
                     "requests": {
-                      "cpu": "100m",
+                      "cpu": "70m",
                       "memory": "384Mi"
                     }
                 }

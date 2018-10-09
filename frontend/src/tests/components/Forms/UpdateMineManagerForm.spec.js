@@ -8,6 +8,7 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.handleChange= jest.fn();
 };
 
 const setupProps = () => {

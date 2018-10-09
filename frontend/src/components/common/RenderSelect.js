@@ -39,8 +39,8 @@ const RenderSelect = ({
         id={id} 
         {...input}
       >
-        {data.map((value) => (
-          <Select.Option key={value.value} value={value.value}>{value.option}</Select.Option>
+        {data.map((i, value) => (
+          <Select.Option key={i} value={value.value}>{value.option}</Select.Option>
         ))}
       </Select>
     </Form.Item>

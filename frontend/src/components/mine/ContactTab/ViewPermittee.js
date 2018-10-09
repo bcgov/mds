@@ -17,7 +17,7 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   togglePartyChange: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  permitteeModalVisable: PropTypes.bool,
+  permitteeModalVisible: PropTypes.bool,
   isPerson: PropTypes.bool,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
@@ -82,7 +82,7 @@ export class ViewPermittee extends Component {
           </Card>
           <Modal
             title="Update Permittee"
-            visible={this.props.permitteeModalVisable}
+            visible={this.props.permitteeModalVisible}
             footer={null}
             onCancel={this.props.toggleModal}
           >
