@@ -140,6 +140,7 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
+                            'PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "production",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
@@ -156,7 +157,8 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
-                            'HOST': "${vars.modules.'mds-python-backend'.HOST}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ],
@@ -170,6 +172,7 @@ app {
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
+                            'PATH': "${vars.modules.'schemaspy'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ]
@@ -208,13 +211,16 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca/${vars.git.changeId}"
+                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "${vars.git.changeId}"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca/${vars.git.changeId}"
+                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "${vars.git.changeId}"
                 }
                 'schemaspy' {
-                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca/${vars.git.changeId}"
+                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "${vars.git.changeId}"
                 }
             }
         }
@@ -244,12 +250,15 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
             }
         }
@@ -277,12 +286,15 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/"
                 }
             }
         }
