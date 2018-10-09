@@ -215,6 +215,10 @@
 				  {
 					"name": "NODE_ENV",
 					"value": "${NODE_ENV}"
+                  },
+                  {
+					"name": "BASE_PATH",
+					"value": "${PATH}"
 				  },
 				  {
 					"name": "KEYCLOAK_RESOURCE",
