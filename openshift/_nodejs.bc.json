@@ -40,7 +40,12 @@
       "displayName": "Node Environment",
       "description": "Environment for running node",
       "value": "DEV"
-    }
+    },
+    {
+			"name": "PATH",
+			"required": false,
+			"value": "/"
+	}
   ],
   "objects": [
     {
@@ -213,6 +218,10 @@
               {
                 "name": "API_URL",
                 "value": "${API_URL}"
+              },
+              {
+                "name": "BASE_PATH",
+                "value": "${PATH}"
               }
             ]
           }
