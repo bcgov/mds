@@ -181,6 +181,22 @@
 					  }
 					}
 				  ],
+				  "readinessProbe": {
+					"timeoutSeconds": 300,
+					"initialDelaySeconds": 60,
+					"httpGet": {
+					  "path": "${PATH}",
+					  "port": 8080
+					}
+				  },
+				  "livenessProbe": {
+					"timeoutSeconds": 300,
+					"initialDelaySeconds": 300,
+					"httpGet": {
+					  "path": "${PATH}",
+					  "port": 8080
+					}
+				  },
 				  "resources": {
 					"requests": {
 						"cpu": "${CPU_REQUEST}",
