@@ -24,7 +24,7 @@ class MineTenureInfo extends Component {
 
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
-    this.props.updateMineRecord(this.props.mine.guid, value.tenureNumber, this.props.mine.mine_detail[0].mine_name).then(() => {
+    this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_detail[0].mine_name).then(() => {
       this.props.getMineRecordById(id);
       this.setState({
         visible: !this.state.visible,

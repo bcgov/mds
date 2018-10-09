@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import MineMap from '@/components/maps/MineMap';
 import { ELLIPSE, SMALL_PIN } from '@/constants/assets';
-import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
+import MineRecordForm from '@/components/Forms/MineRecordForm';
+import ConditionalButton from '@/components/common/ConditionalButton';
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  handleMineUpdate: PropTypes.func.isRequired
+  handleMineUpdate: PropTypes.func.isRequired,
+  updateMineRecord: PropTypes.func,
+  getMineRecordById: PropTypes.func,
 };
 
 const defaultProps = {
@@ -20,8 +23,10 @@ const defaultProps = {
 class MineHeader extends Component {
   state = { visible: false }
   
-  handleSubmit = (value) => {
-    this.props.handleMineUpdate(value).then(() =>{
+  handleUpdateMineRecord = (value) => {
+    console.log(status);
+    this.props.updateMineRecord(this.props.mine.guid, value, value.name).then(() =>{
+      this.props.getMineRecordById(this.props.mine.guid);
       this.setState({
         visible: false,
       });
@@ -33,32 +38,44 @@ class MineHeader extends Component {
       visible: !this.state.visible,
     });
   }
-  render() {
-    const { mine } = this.props;
+
+  renderInitialValues = (mine) => {
+    // initialValues is built into redux forms, simply pass in the prop 'initialValues' with the correct field names and redux forms will do the rest. 
     const initialValues = {
       "name": mine.mine_detail[0].mine_name,
       "latitude": mine.mine_location[0].latitude,
       "longitude": mine.mine_location[0].longitude,
+      "mine_status": ["Closed", "Care & Maintenance"]
     }
+    return (
+      <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record"/>
+    )
+  }
+
+  render() {
+    const { mine } = this.props;
     return (
       <div className="dashboard__header">
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
+        <div className="inline-flex between full-mobile">
           <h1>{mine.mine_detail[0].mine_name}</h1>
-          <div className="right">
-          <Button className="full-mobile center-mobile" type="primary" size="large" onClick={this.toggleModal}>
-              Update Mine Record
-          </Button>
+          <ConditionalButton 
+            className="center-mobile" 
+            type="primary" 
+            handleAction={this.toggleModal}
+            string="Update"
+          />
         </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <Modal
-          title="Create Mine Record"
-          visible={this.state.visible}
-          onCancel={this.toggleModal}
-          footer={null}
-        >
-          <AddMineRecordForm onSubmit={this.handleSubmit} initialValues={initialValues}/>
-        </Modal>
+            title="Update Mine Record"
+            visible={this.state.visible}
+            onCancel={this.toggleModal}
+            footer={null}
+          >
+            {this.renderInitialValues(mine)}
+          </Modal>
           <div className="dashboard__header__content--inline">
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
