@@ -1,12 +1,8 @@
-/**
- * @class MineDashboard.js is an individual mines dashboard
- */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-
 import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
@@ -17,6 +13,9 @@ import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
 import Loading from '@/components/common/Loading';
 import NullScreen from '@/components/common/NullScreen';
 
+/**
+ * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
+ */
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
@@ -36,7 +35,6 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     this.props.getMineRecordById(id);
   }
-
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
@@ -47,7 +45,7 @@ export class MineDashboard extends Component {
         return (
           <div className="dashboard">
             <div>
-              <MineHeader mine={mine} />
+              <MineHeader mine={mine} {...this.props}/>
             </div>
             <div className="dashboard__content">
               <Tabs

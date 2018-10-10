@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, AutoComplete, Input } from 'antd';
 
+/**
+ * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit. 
+ */
 
 const propTypes = {
   input: PropTypes.any,
@@ -9,6 +12,7 @@ const propTypes = {
   opton: PropTypes.object,
   meta: PropTypes.object,
   data: PropTypes.array,
+  handleChange: PropTypes.func
 };
 
 const transformData = (data, option) => {
@@ -24,9 +28,6 @@ const transformData = (data, option) => {
   }
 }
 
-/**
- * Ant Design `AutoComplete` component for redux-form -- being used instead of select for large data sets that require a limit.
- */
 const RenderLargeSelect = ({
   data,
   label,

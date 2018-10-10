@@ -90,7 +90,9 @@ class Mine(Resource, UserMixin):
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        if not tenure and not (lat and lon):
+        mine_name = data['name']
+        mine_note = data['note']
+        if not tenure and not (lat and lon) and not mine_name and not mine_note:
             return {
                 'error': {
                     'status': 400,
@@ -105,6 +107,30 @@ class Mine(Resource, UserMixin):
                     'message': 'Mine not found'
                 }
             }, 404
+        # Mine Detail
+        if mine_name or mine_note:
+            mine_detail = mine.mine_detail[0]
+            try:
+                new_mine_detail = MineDetail(
+                    mine_detail_guid=uuid.uuid4(),
+                    mine_guid=mine.mine_guid,
+                    mine_no=mine_detail.mine_no,
+                    mine_name=mine_detail.mine_name,
+                    mine_note=mine_detail.mine_note,
+                    **self.get_create_update_dict()
+                )
+                if mine_name:
+                    new_mine_detail.mine_name = mine_name
+                if mine_note:
+                    new_mine_detail.mine_note = mine_note
+            except AssertionError as e:
+                return {
+                    'error': {
+                        'status': 400,
+                        'message': 'Error: {}'.format(e)
+                    }
+                }, 400
+            new_mine_detail.save()
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
+import MineRecordForm from '@/components/Forms/MineRecordForm';
 
 const dispatchProps = {};
 
@@ -12,9 +12,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe('AddMineRecordForm', () => {
+describe('MineRecordForm', () => {
   it('renders properly', () => {
-    const component = shallow(<AddMineRecordForm {...dispatchProps} />);
+    const component = shallow(<MineRecordForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

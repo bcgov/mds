@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "zap",
+        "name": "sonar",
         "creationTimestamp": null
     },
     "parameters": [
@@ -11,7 +11,7 @@
             "displayName": "Name",
             "description": "A name used for all objects",
             "required": true,
-            "value": "sonnar-runner"
+            "value": "sonar-runner"
         },
         {
             "name": "IMAGE",
@@ -30,6 +30,11 @@
             "name": "DB_CONFIG_NAME",
             "displayName": "Database Config Name",
             "description": "Configuration name for the database",
+            "required": true
+        },
+        {
+            "name": "GIT_BRANCH",
+            "description": "Current git branch name",
             "required": true
         }
     ],
@@ -55,12 +60,12 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "1",
-                                "memory": "4Gi"
+                                "cpu": "300m",
+                                "memory": "2Gi"
                             },
                             "requests": {
-                                "cpu": "750m",
-                                "memory": "3Gi"
+                                "cpu": "250m",
+                                "memory": "1Gi"
                             }
                         },
                         "env": [
@@ -97,6 +102,10 @@
                               {
                                 "name": "DB_NAME_TEST",
                                 "value": "mds_test"
+                              },
+                              {
+                                "name": "GIT_BRANCH",
+                                "value": "${GIT_BRANCH}"
                               }
                         ],
                         "imagePullPolicy": "Always"

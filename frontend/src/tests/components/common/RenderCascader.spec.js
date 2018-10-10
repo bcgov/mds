@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RenderDate from '@/components/common/RenderDate';
+import RenderCascader from '@/components/common/RenderCascader';
 
 let props = {};
 
@@ -8,9 +8,7 @@ const setupProps = () => {
   props = {
     id: 1,
     input: '',
-    label: '',
-    placeholder: 'yyyy-mm-dd',
-    onChange: jest.fn((date, dateString) => dateString),
+    placeholder: '',
     meta: {
       touched: false,
       error: false,
@@ -23,10 +21,10 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('RenderDate', () => {
+describe('RenderCascader', () => {
 
   it('renders properly', () => {
-    const wrapper = shallow(<RenderDate {...props} />);
+    const wrapper = shallow(<RenderCascader {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 

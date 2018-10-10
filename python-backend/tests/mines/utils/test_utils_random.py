@@ -1,4 +1,4 @@
-from app.api.utils.random import random_key_gen, generate_mine_no, generate_name, random_geo
+from app.api.utils.random import random_key_gen, generate_mine_no, generate_mine_name, random_geo
 
 
 def test_utils_random_key_gen():
@@ -13,8 +13,8 @@ def test_generate_mine_no(test_client):
     assert len(random_mine_no) == 8
 
 
-def test_generate_name():
-    random_name = generate_name()
+def test_generate_mine_name():
+    random_name = generate_mine_name()
     name_list = random_name.split()
     name_list_length = len(name_list)
     assert name_list_length < 3 and name_list_length > 0

@@ -9,7 +9,6 @@ import * as API from '@/constants/API';
 import { ENVIRONMENT } from '@/constants/environment'
 import { createRequestHeader } from '@/utils/RequestHeaders';
 
-
 export const createParty = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PARTY));
   dispatch(showLoading('modal'));

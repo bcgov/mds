@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Tabs, Row, Col, Divider } from 'antd';
 import { PHONE, EMAIL } from '@/constants/assets';
-
 import { fetchPartyById } from '@/actionCreators/partiesActionCreator';
 import { getParties } from '@/selectors/partiesSelectors';
 import Loading from '@/components/common/Loading';
+import * as router from '@/constants/routes';
+
+/**
+ * @class PartyProfile - profile view for personnel/companies
+ */
 
 const TabPane = Tabs.TabPane;
 
@@ -25,6 +30,7 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
+
   }
 
   render() {
@@ -68,7 +74,11 @@ export class PartyProfile extends Component {
                     return (
                       <div key={i}>
                         <Row type="flex" style={{ textAlign: 'center' }}>
-                          <Col span={8}>{history.mine_name}</Col>
+                          <Col span={8}>
+                            <Link to={router.MINE_SUMMARY.dynamicRoute(history.mine_guid)}>
+                              {history.mine_name}
+                            </Link>
+                          </Col>
                           <Col span={8}>Mine Manager</Col>
                           <Col span={8}>{history.effective_date} - {expiry}</Col>
                         </Row>

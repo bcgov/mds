@@ -1,14 +1,9 @@
-/**
- * @className Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
- *
- */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
-
 import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
@@ -22,13 +17,17 @@ import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 
+/**
+ * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ *
+ */
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
   getMineRecords: PropTypes.func.isRequired,
+  createMineRecord: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
-  createMineRecord: PropTypes.func,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
@@ -172,14 +171,14 @@ export class Dashboard extends Component {
                   <Col md={2} sm={0} xs={0}>
                     <div className="center">
                       <Divider type="vertical"/>
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       <Divider type="vertical"/>
                     </div>
                   </Col>
                   <Col md={0} sm={24} xs={24}>
                     <div className="center">
                       <Divider >
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       </Divider>
                     </div>
                   </Col>

@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { ConditionalButton } from '@/components/common/ConditionalButton';
 
-
 let props = {};
 const dispatchProps = {}
 
@@ -14,7 +13,7 @@ const setupProps = () => {
   props = {
     string: '',
     type: 'primary'
-  };
+    };
 }
 
 beforeEach(() => {

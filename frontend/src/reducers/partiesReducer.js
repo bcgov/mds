@@ -2,8 +2,8 @@ import * as actionTypes from '@/constants/actionTypes';
 import { PARTIES } from '@/constants/reducerTypes';
 
 /**
- * @file mineReducer.js
- * all data associated with new mine/existing mine records is handled witnin this reducer.
+ * @file partiesReducer.js
+ * all data associated with parties is handled witnin this reducer.
  */
 
 const initialState = {

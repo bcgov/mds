@@ -16,7 +16,8 @@ const setupProps = () => {
       warning: false,
     },
     data: [],
-    option: {}
+    option: {},
+    handleChange: jest.fn()
   };
 }
 
