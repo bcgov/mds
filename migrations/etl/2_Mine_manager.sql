@@ -110,8 +110,8 @@ BEGIN
             person.first_name       ,
             person.surname          ,
             --no contact info for major mine as it's not from NoW
-            'Unknown'::char AS phone_no        ,
-            'Unknown'::char AS email           ,
+            'Unknown'::varchar AS phone_no        ,
+            'Unknown'::varchar AS email           ,
             now() AS effective_date   
         FROM major_new_manager manager
         INNER JOIN major_person_info person ON

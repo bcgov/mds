@@ -311,7 +311,7 @@ BEGIN
         SELECT 
             party_combo_id  ,
             party_guid      ,
-            first_name::char,
+            first_name::varchar,
             party_name      ,
             party_type
         FROM permittee_org
