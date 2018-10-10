@@ -10,6 +10,7 @@ if ENV_FILE:
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
+    PATH = os.environ.get('PATH', '')
     DB_HOST = os.environ.get('DB_HOST', 'localhost')
     DB_USER = os.environ.get('DB_USER', 'user')
     DB_PASS = os.environ.get('DB_PASS', 'pass')
