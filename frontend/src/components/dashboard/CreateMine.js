@@ -3,7 +3,7 @@ import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
 import { CreateGuard } from '@/HOC/CreateGuard';
-import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
+import MineRecordForm from '@/components/Forms/MineRecordForm';
 import * as String from '@/constants/strings';
 
 /**
@@ -54,7 +54,7 @@ export class CreateMine extends Component {
           onCancel={this.toggleModal}
           footer={null}
         >
-          <AddMineRecordForm onSubmit={this.handleSubmit} />
+          <MineRecordForm onSubmit={this.handleSubmit} title="Create Mine Record"/>
         </Modal>
       </div>
     );
