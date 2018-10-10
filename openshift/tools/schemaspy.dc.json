@@ -46,7 +46,7 @@
 			"insecureEdgeTerminationPolicy": "Redirect",
 			"termination": "edge"
 		  },
-		  "path": "${PATH}",
+		  "path": "/",
 		  "to": {
 			"kind": "Service",
 			"name": "${NAME}${SUFFIX}"
@@ -185,7 +185,7 @@
 					"timeoutSeconds": 300,
 					"initialDelaySeconds": 60,
 					"httpGet": {
-					  "path": "${PATH}",
+					  "path": "/",
 					  "port": 8080
 					}
 				  },
@@ -193,7 +193,7 @@
 					"timeoutSeconds": 300,
 					"initialDelaySeconds": 300,
 					"httpGet": {
-					  "path": "${PATH}",
+					  "path": "/",
 					  "port": 8080
 					}
 				  },
@@ -276,11 +276,6 @@
 		"displayName": "Application Hostname",
 		"description": "The exposed hostname that will route to the service, if left blank a value will be defaulted.",
 		"value": ""
-	  },
-	  {
-		"name": "PATH",
-		"required": false,
-		"value": "/"
-		}
+	  }
 	]
   }

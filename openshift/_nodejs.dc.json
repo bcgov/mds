@@ -35,7 +35,7 @@
 	  "value": ""
 	},
 	{
-		"name": "PATH",
+		"name": "BASE_PATH",
 		"required": false,
 		"value": "/"
 	},
@@ -218,11 +218,11 @@
                   },
                   {
 					"name": "BASE_PATH",
-					"value": "${PATH}"
+					"value": "${BASE_PATH}"
                   },
                   {
 					"name": "ASSET_PATH",
-					"value": "${PATH}/"
+					"value": "${BASE_PATH}/"
 				  },
 				  {
 					"name": "KEYCLOAK_RESOURCE",
@@ -268,7 +268,7 @@
 				  "timeoutSeconds": 3,
 				  "initialDelaySeconds": 3,
 				  "httpGet": {
-					"path": "${PATH}",
+					"path": "${BASE_PATH}",
 					"port": 3000
 				  }
 				},
@@ -276,7 +276,7 @@
 					"timeoutSeconds": 3,
 					"initialDelaySeconds": 30,
 					"httpGet": {
-						"path": "${PATH}",
+						"path": "${BASE_PATH}",
 						"port": 3000
 					}
 				}

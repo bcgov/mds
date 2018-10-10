@@ -2,7 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
-const BASE_PATH = process.env.BASE_PATH;
+let BASE_PATH = process.env.BASE_PATH;
+if (dotenv.parsed) {
+  BASE_PATH = dotenv.parsed.BASE_PATH
+}
 
 const app = express();
 const port = 3000;

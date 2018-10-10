@@ -35,12 +35,12 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
-// Populate the env file with Environment variables from the system
+// Populate the env dict with Environment variables from the system
 if (process.env){
   Object.keys(process.env).map(key => {
     envFile[key] = JSON.stringify(process.env[key]);
 });
-// Update the env vars with any in the .env file
+// Update the env dict with any in the .env file
 }
 if (dotenv.parsed){
     Object.keys(dotenv.parsed).map(key => {
@@ -69,6 +69,7 @@ const commonConfig = merge([
       alias: PATH_ALIASES,
     },
   },
+  parts.setEnvironmentVariable(envFile),
   parts.loadJS({
     include: PATHS.src,
   }),
@@ -88,7 +89,6 @@ const devConfig = merge([
       filename: 'bundle.js',
     },
   },
-  parts.setEnvironmentVariable(envFile),
   parts.generateSourceMaps({
     type: "eval-source-map",
   }),
@@ -114,7 +114,6 @@ const prodConfig = merge([
     },
   },
   parts.clean(PATHS.build),
-  parts.setEnvironmentVariable(envFile),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss'),
