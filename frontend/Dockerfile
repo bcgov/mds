@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install app dependencies
 COPY package*.json /app
-RUN npm install
+RUN npm install --silent
 
 # Add node_modules binary to the path
 ENV PATH $PATH:/app/node_modules/.bin
