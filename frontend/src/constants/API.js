@@ -7,3 +7,4 @@ export const PARTIES  = (value) => value ? `/parties?search=${value}` : `/partie
 export const MANAGER = '/manager';
 export const PERMITTEE = '/permittees';
 export const MINE_NAME_LIST = '/mines/names';
+export const STATUS_OPTIONS = '/mines/status';

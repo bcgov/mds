@@ -13,7 +13,7 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
   handleMineUpdate: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
-  getMineRecordById: PropTypes.func,
+  fetchMineRecordById: PropTypes.func,
 };
 
 const defaultProps = {
@@ -25,7 +25,7 @@ class MineHeader extends Component {
   
   handleUpdateMineRecord = (value) => {
     this.props.updateMineRecord(this.props.mine.guid, value, value.name).then(() =>{
-      this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.guid);
       this.setState({
         visible: false,
       });

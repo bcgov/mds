@@ -6,7 +6,7 @@ import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
 import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
-import { getMineRecordById } from '@/actionCreators/mineActionCreator';
+import { fetchMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 
 /**
@@ -19,7 +19,7 @@ const propTypes = {
   createParty: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   addPermittee: PropTypes.func.isRequired,
-  getMineRecordById: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired
 };
@@ -47,7 +47,7 @@ const defaultProps = {
   handleManagerSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ modalVisible: !this.state.modalVisible });
-      this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.guid);
     })
   }
 
@@ -61,7 +61,7 @@ const defaultProps = {
     const guids = values.permittee.split(", ");
     this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ permitteeModalVisible: !this.state.permitteeModalVisible });
-      this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.guid);
     })
   }
 
@@ -136,7 +136,7 @@ const mapDispatchToProps = (dispatch) => {
     createParty,
     addMineManager,
     addPermittee,
-    getMineRecordById,
+    fetchMineRecordById,
   }, dispatch);
 }
 

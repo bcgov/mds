@@ -7,7 +7,7 @@ const dispatchProps = {};
 const reducerProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getMineRecordById = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.match = {};
 };

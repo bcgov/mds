@@ -7,7 +7,7 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.getMineRecords = jest.fn(() => Promise.resolve({}));
+  dispatchProps.fetchMineRecord = jest.fn(() => Promise.resolve({}));
   dispatchProps.createMineRecord = jest.fn();
 };
 

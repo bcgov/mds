@@ -6,3 +6,4 @@ export const getMineNames = (state) => mineReducer.getMineNames(state);
 export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
 export const getCurrentPermittees = (state) => mineReducer.getCurrentPermittees(state);
 export const getCurrentPermitteeIds = (state) => mineReducer.getCurrentPermitteeIds(state);
+export const getMineStatusOptions = (state) => mineReducer.getMineStatusOptions(state);

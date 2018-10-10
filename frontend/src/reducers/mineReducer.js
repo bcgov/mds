@@ -13,6 +13,7 @@ const initialState = {
   minesPageData: {},
   permittees: {},
   permitteeIds: [],
+  mineStatusOptions: {}
 };
 
 const createItemMap = (array, idField) => {
@@ -71,6 +72,11 @@ const mineReducer = (state = initialState, action) => {
           ...state,
           mineNameList: action.payload,
         }
+      case actionTypes.STORE_STATUS_OPTIONS:
+        return {
+          ...state,
+          mineStatusOptions: action.payload,
+        }
       case actionTypes.UPDATE_MINE_RECORD:
         return {
           ...state,
@@ -88,5 +94,6 @@ export const getMineNames = (state) => state[MINES].mineNameList;
 export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getCurrentPermittees = (state) => state[MINES].permittees;
 export const getCurrentPermitteeIds = (state) => state[MINES].permitteeIds;
+export const getMineStatusOptions = (state) => state[MINES].mineStatusOptions;
 
 export default mineReducer;

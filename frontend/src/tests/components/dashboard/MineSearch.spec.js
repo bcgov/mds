@@ -7,7 +7,7 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.getMineNameList = jest.fn();
+  dispatchProps.fetchMineNameList = jest.fn();
 };
 
 const setupReducerProps = () => {

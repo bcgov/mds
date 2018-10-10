@@ -11,7 +11,7 @@ const setupDispatchProps = () => {
   dispatchProps.createParty = jest.fn();
   dispatchProps.addMineManager = jest.fn();
   dispatchProps.addPermittee = jest.fn();
-  dispatchProps.getMineRecordById = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn();
 };
 
 const setupReducerProps = () => {

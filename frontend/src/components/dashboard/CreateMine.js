@@ -11,7 +11,7 @@ import * as String from '@/constants/strings';
  */
 
 const propTypes = {
-  getMineRecords: PropTypes.func.isRequired,
+  fetchMineRecords: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   createMineRecord: PropTypes.func.isRequired
 };
@@ -27,9 +27,9 @@ export class CreateMine extends Component {
     }).then(() => {
       const params = queryString.parse(this.props.location.search);
       if (params.page && params.per_page) {
-        this.props.getMineRecords(params.page, params.per_page);
+        this.props.fetchMineRecords(params.page, params.per_page);
       } else {
-        this.props.getMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
+        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
       }
     });
   }

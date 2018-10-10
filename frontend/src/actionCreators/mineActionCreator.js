@@ -43,7 +43,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   });
 };
 
-export const getMineRecords = (page, per_page, map) => (dispatch) => {
+export const fetchMineRecords = (page, per_page, map) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, map), createRequestHeader())
   .then((response) => {
@@ -57,7 +57,7 @@ export const getMineRecords = (page, per_page, map) => (dispatch) => {
   });
 };
 
-export const getMineRecordById = (mineNo) => (dispatch) => {
+export const fetchMineRecordById = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORD));
   return axios.get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
@@ -74,7 +74,7 @@ export const getMineRecordById = (mineNo) => (dispatch) => {
   });
 };
 
-export const getMineNameList = (search=null) => (dispatch) => {
+export const fetchMineNameList = (search=null) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
   const config = {...createRequestHeader(), params: {search: search}}
@@ -88,5 +88,21 @@ export const getMineNameList = (search=null) => (dispatch) => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(hideLoading());
+    });
+};
+
+export const fetchStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
+  dispatch(showLoading('modal'));
+  return axios.get(ENVIRONMENT.apiUrl + API.STATUS_OPTIONS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(mineActions.storeParties(response.data));
+      dispatch(hideLoading('modal'));
+    })
+    .catch(() => {
+      notification.error({ message: String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(hideLoading('modal'));
     });
 };

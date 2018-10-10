@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import { getMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
+import { fetchMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
@@ -19,7 +19,7 @@ import NullScreen from '@/components/common/NullScreen';
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  getMineRecordById: PropTypes.func,
+  fetchMineRecordById: PropTypes.func,
   updateMineRecord: PropTypes.func,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
@@ -33,7 +33,7 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getMineRecordById(id);
+    this.props.fetchMineRecordById(id);
   }
   render() {
     const { id } = this.props.match.params;
@@ -86,7 +86,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getMineRecordById,
+    fetchMineRecordById,
     updateMineRecord
   }, dispatch);
 };
