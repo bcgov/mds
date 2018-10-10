@@ -11,7 +11,7 @@ const DEVELOPMENT = 'development';
 const PRODUCTION = 'production';
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
-const ASSET_PATH = process.env.ASSET_PATH || process.env.BASE_PATH + "/" || '/';
+const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -35,6 +35,13 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
+// Populate the env file with Environment variables from the system
+if (process.env){
+  Object.keys(process.env).map(key => {
+    envFile[key] = JSON.stringify(process.env[key]);
+});
+// Update the env vars with any in the .env file
+}
 if (dotenv.parsed){
     Object.keys(dotenv.parsed).map(key => {
         envFile[key] = JSON.stringify(dotenv.parsed[key]);
@@ -81,7 +88,7 @@ const devConfig = merge([
       filename: 'bundle.js',
     },
   },
-  parts.setEnvironmentVariable(DEVELOPMENT, ASSET_PATH, envFile),
+  parts.setEnvironmentVariable(envFile),
   parts.generateSourceMaps({
     type: "eval-source-map",
   }),
@@ -107,7 +114,7 @@ const prodConfig = merge([
     },
   },
   parts.clean(PATHS.build),
-  parts.setEnvironmentVariable(PRODUCTION, ASSET_PATH, envFile),
+  parts.setEnvironmentVariable(envFile),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss'),

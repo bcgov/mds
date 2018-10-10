@@ -219,6 +219,10 @@
                   {
 					"name": "BASE_PATH",
 					"value": "${PATH}"
+                  },
+                  {
+					"name": "ASSET_PATH",
+					"value": "${PATH}/"
 				  },
 				  {
 					"name": "KEYCLOAK_RESOURCE",

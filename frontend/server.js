@@ -2,13 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
-const PATH = process.env.BASE_PATH;
-let BASE_PATH = "";
-if(PATH && PATH === "/") {
-  BASE_PATH = "";
-}else if (PATH) {
-  BASE_PATH = PATH;
-}
+const BASE_PATH = process.env.BASE_PATH;
 
 const app = express();
 const port = 3000;
@@ -73,7 +67,6 @@ app.get(`${BASE_PATH}/service-worker.js`, (req, res) => {
 
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}/*`, staticServe);
-app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
 app.listen(port, '0.0.0.0', () => console.log('Server running'));

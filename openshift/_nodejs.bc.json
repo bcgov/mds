@@ -216,13 +216,13 @@
             },
             "env": [
               {
-                "name": "API_URL",
-                "value": "${API_URL}"
-              },
-              {
                 "name": "BASE_PATH",
                 "value": "${PATH}"
-              }
+							},
+							{
+								"name": "ASSET_PATH",
+								"value": "${PATH}/"
+							}
             ]
           }
         },
