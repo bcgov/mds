@@ -25,10 +25,10 @@ const defaultProps = {
 
 const permitteeOptions = (permit) => {
   const dataArray = []
-  permit.map((permit) => {
+  permit.map((obj) => {
     const data = {
-      value: permit.permittee[0].permittee_guid.concat(', ', permit.permit_guid),
-      option: permit.permittee[0].party.name.concat(", ", permit.permit_no)
+      value: obj.permittee[0].permittee_guid.concat(', ', obj.permit_guid),
+      option: obj.permittee[0].party.name.concat(", ", obj.permit_no)
     }
     dataArray.push(data);
   });
