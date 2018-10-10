@@ -50,11 +50,11 @@ describe('`updateMineRecord` action creator', () => {
   const tenureNumber = "0293847"
   const mineName = "MockMine"
   const url = ENVIRONMENT.apiUrl + API.MINE + "/" + mineId;
-  const mockPayLoad = { "tenure_number_id": tenureNumber }
+  const mockPayload = { "tenure_number_id": tenureNumber }
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url, mockPayLoad).reply(200, mockResponse);
-    return (updateMineRecord(mineId, tenureNumber, mineName)(dispatch)).then(() => {
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return (updateMineRecord(mineId, mockPayload, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -63,7 +63,7 @@ describe('`updateMineRecord` action creator', () => {
 
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
-    mockAxios.onPut(url, mockPayLoad, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onPut(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
     return (updateMineRecord(mineId, tenureNumber)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

@@ -17,7 +17,7 @@ from .api.party.models.party import Party, PartyTypeCode
 from .api.permit.models.permit import Permit, PermitStatusCode
 from .api.permittee.models.permittee import Permittee
 from .api.mine.resources.mine import Mine, MineList, MineListByName
-from .api.party.resources.party import ManagerResource, PartyResource, PartyList, PartyListSearch
+from .api.party.resources.party import ManagerResource, PartyResource, PartyList
 from .api.location.resources.location import MineLocationResource, MineLocationListResource
 from .api.permit.resources.permit import PermitResource
 from .api.permittee.resources.permittee import PermitteeResource
@@ -69,7 +69,6 @@ def register_routes(app, api):
     api.add_resource(MineLocationListResource, '/mines/location')
     api.add_resource(PartyResource, '/party', '/party/<string:party_guid>')
     api.add_resource(PartyList, '/parties')
-    api.add_resource(PartyListSearch, '/parties/names')
     api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
     api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
     api.add_resource(PermitteeResource, '/permittees', '/permittees/<string:permittee_guid>')

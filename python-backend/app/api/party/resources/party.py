@@ -257,18 +257,12 @@ class ManagerResource(Resource, UserMixin):
 
 
 class PartyList(Resource):
-    @jwt.requires_roles(["mds-mine-view"])
-    def get(self):
-        return {'parties': list(map(lambda x: x.json(), Party.query.all()))}
-
-
-class PartyListSearch(Resource):
     PARTY_LIST_RESULT_LIMIT = 100
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         search_term = request.args.get('search')
-        search_type = request.args.get('type').upper()
+        search_type = request.args.get('type').upper() if request.args.get('type') else None
         if search_term:
             first_name_filter = Party.first_name.ilike('%{}%'.format(search_term))
             party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))

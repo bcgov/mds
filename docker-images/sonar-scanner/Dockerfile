@@ -17,7 +17,7 @@ COPY ./contrib/ /opt/app-root
 
 RUN set -x && \
     yum install -y --enablerepo=rhel-7-server-extras-rpm,rhel-server-rhscl-7-rpms unzip rh-git29 scl-utils && \
-    curl -sLo /tmp/sonar-scanner-cli.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip && \
+    curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
     mkdir /opt/sonar-scanner-cli && unzip -q /tmp/sonar-scanner-cli.zip -d /opt/sonar-scanner-cli && \
     mv /opt/sonar-scanner-cli /opt/_sonar-scanner-cli && mv /opt/_sonar-scanner-cli/sonar-scanner-3.2.0.1227-linux /opt/sonar-scanner-cli && rm -rf /opt/_sonar-scanner-cli \
     rm /tmp/sonar-scanner-cli.zip && \
