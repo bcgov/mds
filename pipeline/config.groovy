@@ -72,6 +72,7 @@ app {
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
+                            'PATH': "/${app.git.changeId}",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
@@ -140,11 +141,12 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "production",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}"
+                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
                     ]
                 ],
                 [
@@ -156,7 +158,8 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
-                            'HOST': "${vars.modules.'mds-python-backend'.HOST}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
                 ],
@@ -166,7 +169,7 @@ app {
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}",
+                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
@@ -174,14 +177,6 @@ app {
                     ]
                 ]
         ]
-    }
-}
-
-//Default Values (Should it default to DEV or PROD???)
-vars {
-    DB_PVC_SIZE = '1Gi'
-    modules {
-
     }
 }
 
@@ -208,10 +203,12 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -244,9 +241,11 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = ""
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = ""
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -277,9 +276,11 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = ""
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = ""
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
