@@ -8,10 +8,10 @@ from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ...location.models.location import MineLocation
 from ...utils.random import generate_mine_no
 from app.extensions import jwt
-from ...utils.resources_mixins import UserMixin
+from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
-class Mine(Resource, UserMixin):
+class Mine(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str)
     parser.add_argument('note', type=str)
@@ -24,22 +24,12 @@ class Mine(Resource, UserMixin):
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if mine:
             return mine.json()
-        return {
-            'error': {
-                'status': 404,
-                'message': 'Mine not found'
-            }
-        }, 404
+        return self.create_error_payload(404, 'Mine not found'), 404
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no=None):
         if mine_no:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Unexpected mine number in Url.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
         data = Mine.parser.parse_args()
         lat = data['latitude']
@@ -57,12 +47,7 @@ class Mine(Resource, UserMixin):
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: {}'.format(e)
-                }
-            }, 400
+            self.raise_error(400, 'Error: {}'.format(e))
         mine_identity.save()
         mine_detail.save()
         if lat and lon:
@@ -93,20 +78,10 @@ class Mine(Resource, UserMixin):
         mine_name = data['name']
         mine_note = data['note']
         if not tenure and not (lat and lon) and not mine_name and not mine_note:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: No fields filled.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
-            return {
-                'error': {
-                    'status': 404,
-                    'message': 'Mine not found'
-                }
-            }, 404
+            return self.create_error_payload(404, 'Mine not found'), 404
         # Mine Detail
         if mine_name or mine_note:
             mine_detail = mine.mine_detail[0]
@@ -124,12 +99,7 @@ class Mine(Resource, UserMixin):
                 if mine_note:
                     new_mine_detail.mine_note = mine_note
             except AssertionError as e:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: {}'.format(e)
-                    }
-                }, 400
+                self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
         # Tenure validation
         if tenure:
@@ -137,12 +107,7 @@ class Mine(Resource, UserMixin):
             if tenure_exists:
                 tenure_exists_mine_guid = tenure_exists.mine_guid
                 if tenure_exists_mine_guid == mine.mine_guid:
-                    return {
-                        'error': {
-                            'status': 400,
-                            'message': 'Error: Field tenure_id already exists for this mine.'
-                        }
-                    }, 400
+                    self.raise_error(400, 'Error: Field tenure_id already exists for this mine.')
             try:
                 tenure = MineralTenureXref(
                     mineral_tenure_xref_guid=uuid.uuid4(),
@@ -151,12 +116,7 @@ class Mine(Resource, UserMixin):
                     **self.get_create_update_dict()
                 )
             except AssertionError as e:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: {}'.format(e)
-                    }
-                }, 400
+                self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
         # Location validation
         if lat and lon:
