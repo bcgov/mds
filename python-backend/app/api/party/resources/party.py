@@ -3,6 +3,8 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
+from sqlalchemy import or_
+
 from ...mine.models.mines import MineIdentity
 from ..models.party import Party, MgrAppointment
 from ...constants import PARTY_STATUS_CODE
@@ -173,12 +175,15 @@ class PartyList(Resource):
         search_term = request.args.get('search')
         search_type = request.args.get('type').upper() if request.args.get('type') else None
         if search_term:
-            first_name_filter = Party.first_name.ilike('%{}%'.format(search_term))
-            party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))
+            search_term_array = search_term.split()
+            _filter_list = []
+            for term in search_term_array:
+                _filter_list.append(Party.first_name.ilike('%{}%'.format(term)))
+                _filter_list.append(Party.party_name.ilike('%{}%'.format(term)))
             if search_type in ['PER', 'ORG']:
-                parties = Party.query.filter(first_name_filter | party_name_filter, Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                parties = Party.query.filter(or_(*_filter_list), Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
             else:
-                parties = Party.query.filter(first_name_filter | party_name_filter).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                parties = Party.query.filter(or_(*_filter_list)).limit(self.PARTY_LIST_RESULT_LIMIT).all()
         else:
             parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
         return {'parties': list(map(lambda x: x.json(), parties))}
