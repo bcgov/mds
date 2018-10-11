@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-from tests.constants import TEST_PERMITTEE_GUID, TEST_MINE_GUID, TEST_PERMIT_GUID_1, TEST_PERSON_3_GUID
+from tests.constants import TEST_PERMITTEE_GUID, TEST_MINE_GUID, TEST_PERMIT_GUID_1, TEST_PARTY_PER_GUID_3
 
 
 # GET
@@ -27,12 +27,12 @@ def test_get_permittee(test_client, auth_headers):
 # POST
 def test_post_permittee(test_client, auth_headers):
     data = {
-        'party_guid': TEST_PERSON_3_GUID,
+        'party_guid': TEST_PARTY_PER_GUID_3,
         'permittee_guid': TEST_PERMITTEE_GUID,
         'permit_guid': TEST_PERMIT_GUID_1,
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     get_resp = test_client.post('/permittees', data=data, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['party_guid'] == TEST_PERSON_3_GUID
+    assert get_data['party_guid'] == TEST_PARTY_PER_GUID_3
     assert get_resp.status_code == 200
