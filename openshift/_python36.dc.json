@@ -433,7 +433,7 @@
 				"creationTimestamp": null
 			},
 			"spec": {
-				"APPLICATION_DOMAIN": "${APPLICATION_DOMAIN}",
+				"host": "${APPLICATION_DOMAIN}",
 				"path": "/",
 				"to": {
 					"kind": "Service",
