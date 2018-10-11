@@ -40,12 +40,7 @@
 			"displayName": "Node Environment",
 			"description": "Environment for running node",
 			"value": "DEV"
-		},
-		{
-			"name": "PATH",
-			"required": false,
-			"value": "/"
-	}
+		}
 	],
 	"objects": [
 		{
@@ -215,14 +210,6 @@
 							"name": "${NAME}-base:${VERSION}"
 						},
 						"env": [
-							{
-								"name": "BASE_PATH",
-								"value": "${PATH}"
-							},
-							{
-								"name": "ASSET_PATH",
-								"value": "${PATH}/"
-							}
 						]
 					}
 				},
