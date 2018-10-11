@@ -39,8 +39,8 @@ export class ViewPermittee extends Component {
   }
 
   handleChange = (values) => {
-    const isCompany = true;
-    this.props.handleChange(values, isCompany);
+    // const isCompany = true;
+    this.props.handleChange(values);
   }
   
   render() {
@@ -56,9 +56,9 @@ export class ViewPermittee extends Component {
                       <th scope="col"><h4>Permittee</h4></th>
                       <th scope="col"><h4>Permittee Since</h4></th>
                     </tr>
-                    <tr key={id}>
-                      <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                      <td key={id} data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                    <tr>
+                      <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                      <td data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
                     </tr>
                     <tr>
                       <th scope="col"><h4>Email</h4></th>
