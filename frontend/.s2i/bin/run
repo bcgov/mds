@@ -21,8 +21,7 @@ run_node() {
     echo "Launching via nodemon..."
     exec nodemon --inspect="$DEBUG_PORT"
   else
-    echo "Building and launching via npm..."
-    exec npm run build
+    echo "Launching via npm..."
     exec npm run -d $NPM_RUN
   fi
 }
@@ -58,4 +57,9 @@ fi
 #
 [ "$1" == "--debug" ] && exec /bin/bash
 
+#do not fail when there is no build script
+echo "---> Building the app"
+npm run build --if-present
+
+# Run the application
 run_node
