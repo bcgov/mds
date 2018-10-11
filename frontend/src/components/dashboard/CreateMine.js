@@ -13,7 +13,8 @@ import * as String from '@/constants/strings';
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  createMineRecord: PropTypes.func.isRequired
+  createMineRecord: PropTypes.func.isRequired,
+  // mineStatusOptions: PropTypes.array
 };
 
 export class CreateMine extends Component {
@@ -54,7 +55,7 @@ export class CreateMine extends Component {
           onCancel={this.toggleModal}
           footer={null}
         >
-          <MineRecordForm onSubmit={this.handleSubmit} title="Create Mine Record"/>
+          <MineRecordForm mineStatusOptions={this.props.mineStatusOptions} onSubmit={this.handleSubmit} title="Create Mine Record"/>
         </Modal>
       </div>
     );

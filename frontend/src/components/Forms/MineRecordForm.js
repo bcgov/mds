@@ -11,7 +11,8 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  mineStatusOptions: PropTypes.array
 };
 
 export const MineRecordform = (props) => {
@@ -39,6 +40,7 @@ export const MineRecordform = (props) => {
               name="mine_status"
               label='Mine Status *'
               placeholder="Plese select status"
+              options={props.mineStatusOptions}
               component={RenderCascader}
               validate={[required]}
             />

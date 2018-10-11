@@ -14,6 +14,7 @@ const propTypes = {
   handleMineUpdate: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
+  // mineStatusOptions: PropTypes.array
 };
 
 const defaultProps = {
@@ -46,7 +47,7 @@ class MineHeader extends Component {
       "longitude": mine.mine_location[0].longitude,
     }
     return (
-      <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record"/>
+      <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
     )
   }
 

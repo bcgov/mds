@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
-import { fetchMineRecord, createMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
+import { fetchMineRecord, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
+import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
@@ -221,6 +221,7 @@ export class Dashboard extends Component {
             createMineRecord={this.props.createMineRecord}
             fetchMineRecord={this.props.fetchMineRecord}
             location={this.props.location}
+            mineStatusOptions={this.props.mineStatusOptions}
           />
         </div>
         <div className="landing-page__content">
@@ -235,13 +236,15 @@ const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
     mineIds: getMineIds(state),
-    pageData: getMinesPageData(state)
+    pageData: getMinesPageData(state),
+    // mineStatusOptions: getMineStatusOptions(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecord,
+    // fetchStatusOptions,
     createMineRecord,
   }, dispatch);
 };

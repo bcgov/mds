@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import { fetchMineRecordById, updateMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
+import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
+import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
 import MineSummary from '@/components/mine/SummaryTab/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
@@ -34,6 +34,7 @@ export class MineDashboard extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchMineRecordById(id);
+    // this.props.fetchStatusOptions();
   }
   render() {
     const { id } = this.props.match.params;
@@ -81,12 +82,14 @@ const mapStateToProps = (state) => {
     mines: getMines(state),
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
+    // mineStatusOptions: getMineStatusOptions(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
+    // fetchStatusOptions,
     updateMineRecord
   }, dispatch);
 };
