@@ -35,6 +35,7 @@ const PATH_ALIASES = {
 };
 
 const envFile = {};
+envFile["BASE_PATH"] = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env){
   Object.keys(process.env).map(key => {
