@@ -21,8 +21,9 @@ run_node() {
     echo "Launching via nodemon..."
     exec nodemon --inspect="$DEBUG_PORT"
   else
-    echo "Building Launching via npm..."
-    exec npm run build && npm run -d $NPM_RUN
+    echo "Building and launching via npm..."
+    exec npm run build
+    exec npm run -d $NPM_RUN
   fi
 }
 
