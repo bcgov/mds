@@ -149,7 +149,7 @@
 		  "termination": "edge",
 		  "insecureEdgeTerminationPolicy": "Redirect"
 		},
-		"path": "${BASE_PATH}/",
+		"path": "${BASE_PATH}",
 		"to": {
 		  "kind": "Service",
 		  "name": "${NAME}${SUFFIX}"
@@ -281,7 +281,7 @@
 		},
 		"spec": {
 			"maxReplicas": 4,
-			"minReplicas": 1,
+			"minReplicas": 2,
 			"scaleTargetRef": {
 				"apiVersion": "v1",
 				"kind": "DeploymentConfig",

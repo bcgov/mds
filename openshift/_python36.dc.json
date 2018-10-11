@@ -438,7 +438,7 @@
 			},
 			"spec": {
 				"host": "${APPLICATION_DOMAIN}",
-				"path": "${BASE_PATH}/",
+				"path": "${BASE_PATH}",
 				"to": {
 					"kind": "Service",
 					"name": "${NAME}${SUFFIX}",
