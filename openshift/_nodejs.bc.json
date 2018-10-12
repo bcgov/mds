@@ -104,7 +104,7 @@
 			"kind": "ImageStream",
 			"apiVersion": "v1",
 			"metadata": {
-				"name": "${NAME}-pr${SUFFIX}",
+				"name": "${NAME}${VERSION}",
 				"creationTimestamp": null,
 				"labels": {
                     "shared": "true"
@@ -231,7 +231,7 @@
 				"output": {
 					"to": {
 						"kind": "ImageStreamTag",
-						"name": "${NAME}-pr${SUFFIX}:${VERSION}"
+						"name": "${NAME}${VERSION}:${VERSION}"
 					}
 				},
 				"resources": {
