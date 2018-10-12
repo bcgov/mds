@@ -108,7 +108,7 @@
 				"creationTimestamp": null,
 				"labels": {
                     "shared": "true",
-                    "pr": "${BASE_PATH}"
+                    "pr": "${SUFFIX}"
 				},
 				"annotations": {
 					"description": "Keeps track of changes in the application image"
@@ -183,7 +183,7 @@
 			"metadata": {
 				"name": "${NAME}${SUFFIX}",
 				"labels": {
-                    "pr": "${BASE_PATH}"
+                    "pr": "${SUFFIX}"
                  },
 				"annotations": {
 					"description": "Defines how to build the application"
@@ -195,7 +195,8 @@
 				"failedBuildsHistoryLimit": 3,
 				"triggers": [
 					{
-						"type": "ImageChange"
+                        "type": "ImageChange",
+                        "imageChange": {}
 					},
 					{
 						"type": "ConfigChange"
