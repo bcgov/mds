@@ -161,6 +161,8 @@ class MgrAppointment(AuditMixin, Base):
             'first_name': party.first_name,
             'party_name': party.party_name,
             'email': party.email,
+            'phone_no': party.phone_no,
+            'phone_ext': party.phone_ext,
             'name': party.first_name + ' ' + party.party_name,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()

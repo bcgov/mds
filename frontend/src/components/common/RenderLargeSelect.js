@@ -9,9 +9,10 @@ import { Form, AutoComplete, Input } from 'antd';
 const propTypes = {
   input: PropTypes.any,
   label: PropTypes.string,
-  opton: PropTypes.object,
+  options: PropTypes.object,
   meta: PropTypes.object,
   data: PropTypes.array,
+  option: PropTypes.object,
   handleChange: PropTypes.func
 };
 
@@ -27,13 +28,13 @@ const transformData = (data, option) => {
     return dataList;
   }
 }
-
 const RenderLargeSelect = ({
+  id,
   data,
+  options,
   label,
-  handleChange,
-  option,
   input,
+  handleChange,
   meta: { touched, error, warning },
 }) => (
     <Form.Item
@@ -45,16 +46,18 @@ const RenderLargeSelect = ({
       }
     >
       <AutoComplete
+        getPopupContainer={() => document.getElementById(id)}
+        id={id} 
         defaultActiveFirstOption={false}
         notFoundContent={'Not Found'}
         allowClear
         dropdownMatchSelectWidth={true}
         backfill={true}
         style={{ width: '100%' }}
-        dataSource={transformData(data, option)}
+        dataSource={transformData(data, options)}
         placeholder="Select a party"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        onChange={handleChange}
+        onSearch={handleChange}
         {...input}
       >
         <Input />
