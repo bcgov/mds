@@ -40,6 +40,11 @@
 		"value": "/"
 	},
 	{
+		"name": "ROUTE",
+		"required": false,
+		"value": "/"
+	},
+	{
 	  "name": "NODE_ENV",
 	  "displayName": "Node Environment",
 	  "description": "Environment for running node",
@@ -149,7 +154,7 @@
 		  "termination": "edge",
 		  "insecureEdgeTerminationPolicy": "Redirect"
 		},
-		"path": "/",
+		"path": "${ROUTE}",
 		"to": {
 		  "kind": "Service",
 		  "name": "${NAME}${SUFFIX}"
@@ -215,12 +220,12 @@
 				  {
 					"name": "NODE_ENV",
 					"value": "${NODE_ENV}"
-                  },
-                  {
+				  },
+				  {
 					"name": "BASE_PATH",
 					"value": "${BASE_PATH}"
-                  },
-                  {
+				  },
+				  {
 					"name": "ASSET_PATH",
 					"value": "${BASE_PATH}/"
 				  },
