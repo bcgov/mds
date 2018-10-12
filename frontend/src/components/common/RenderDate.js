@@ -30,7 +30,7 @@ const RenderDate = ({
           (warning && <span>{warning}</span>))
       }
     >
-    <DatePicker 
+    <DatePicker
       id={id}
       {...input}
       placeholder={placeholder}

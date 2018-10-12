@@ -91,6 +91,7 @@ MineRecordform.propTypes = propTypes;
 
 export default (reduxForm({
     form: FORM.MINE_RECORD,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.MINE_RECORD),
   })(MineRecordform)
 );

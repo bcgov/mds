@@ -38,11 +38,6 @@ export class ViewPermittee extends Component {
     this.props.handlePartySubmit(values, type);
   }
 
-  handleChange = (values) => {
-    // const isCompany = true;
-    this.props.handleChange(values);
-  }
-  
   render() {
     const { permittees, permitteeIds } = this.props;
       return (
@@ -58,7 +53,7 @@ export class ViewPermittee extends Component {
                     </tr>
                     <tr>
                       <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                      <td data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                      <td data-label="Permittee Since"><p className="p-large">{permittees[id].effective_date}</p></td>
                     </tr>
                     <tr>
                       <th scope="col"><h4>Email</h4></th>
@@ -96,7 +91,7 @@ export class ViewPermittee extends Component {
                 onSubmit={this.props.handleSubmit}
                 parties={this.props.parties}
                 partyIds={this.props.partyIds}
-                handleChange={this.handleChange}
+                handleChange={this.props.handleChange}
                 isPerson={this.props.isPerson}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
