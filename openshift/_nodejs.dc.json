@@ -40,6 +40,11 @@
 		"value": "/"
 	},
 	{
+		"name": "ROUTE",
+		"required": false,
+		"value": "/"
+	},
+	{
 	  "name": "NODE_ENV",
 	  "displayName": "Node Environment",
 	  "description": "Environment for running node",
@@ -149,7 +154,7 @@
 		  "termination": "edge",
 		  "insecureEdgeTerminationPolicy": "Redirect"
 		},
-		"path": "${BASE_PATH}",
+		"path": "${ROUTE}",
 		"to": {
 		  "kind": "Service",
 		  "name": "${NAME}${SUFFIX}"

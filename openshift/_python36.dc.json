@@ -54,6 +54,11 @@
 			"value": "/"
 		},
 		{
+			"name": "ROUTE",
+			"required": false,
+			"value": "/"
+		},
+		{
 				"name": "CPU_LIMIT",
 				"value": "200m"
 		},
@@ -438,7 +443,7 @@
 			},
 			"spec": {
 				"host": "${APPLICATION_DOMAIN}",
-				"path": "${BASE_PATH}",
+				"path": "${ROUTE}",
 				"to": {
 					"kind": "Service",
 					"name": "${NAME}${SUFFIX}",
