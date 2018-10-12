@@ -108,7 +108,7 @@ class PartyTypeCode(AuditMixin, Base):
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
+        return '<Permit %r>' % self.party_type_code
 
     def json(self):
         return {
