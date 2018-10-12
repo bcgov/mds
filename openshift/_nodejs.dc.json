@@ -149,7 +149,7 @@
 		  "termination": "edge",
 		  "insecureEdgeTerminationPolicy": "Redirect"
 		},
-		"path": "/",
+		"path": "${BASE_PATH}",
 		"to": {
 		  "kind": "Service",
 		  "name": "${NAME}${SUFFIX}"
@@ -215,12 +215,12 @@
 				  {
 					"name": "NODE_ENV",
 					"value": "${NODE_ENV}"
-                  },
-                  {
+				  },
+				  {
 					"name": "BASE_PATH",
 					"value": "${BASE_PATH}"
-                  },
-                  {
+				  },
+				  {
 					"name": "ASSET_PATH",
 					"value": "${BASE_PATH}/"
 				  },

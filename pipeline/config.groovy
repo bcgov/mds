@@ -71,6 +71,7 @@ app {
                         'params':[
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
+                            'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
