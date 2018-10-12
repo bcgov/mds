@@ -107,7 +107,8 @@
 				"name": "${NAME}",
 				"creationTimestamp": null,
 				"labels": {
-					"shared": "true"
+                    "shared": "true",
+                    "pr": "${BASE_PATH}"
 				},
 				"annotations": {
 					"description": "Keeps track of changes in the application image"
@@ -181,7 +182,9 @@
 			"apiVersion": "v1",
 			"metadata": {
 				"name": "${NAME}${SUFFIX}",
-				"creationTimestamp": null,
+				"labels": {
+                    "pr": "${BASE_PATH}"
+                 },
 				"annotations": {
 					"description": "Defines how to build the application"
 				}
