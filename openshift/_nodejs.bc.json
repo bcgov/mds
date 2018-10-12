@@ -108,7 +108,7 @@
 				"creationTimestamp": null,
 				"labels": {
                     "shared": "true",
-                    "pr": "${SUFFIX}"
+                    "pr": "pr${SUFFIX}"
 				},
 				"annotations": {
 					"description": "Keeps track of changes in the application image"
@@ -183,7 +183,7 @@
 			"metadata": {
 				"name": "${NAME}${SUFFIX}",
 				"labels": {
-                    "pr": "${SUFFIX}"
+                    "pr": "pr${SUFFIX}"
                  },
 				"annotations": {
 					"description": "Defines how to build the application"
