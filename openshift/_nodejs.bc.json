@@ -17,6 +17,10 @@
 			"displayName": "Name Suffix",
 			"description": "A suffix appended to all objects",
 			"required": true
+        },
+        {
+			"name": "APPLICATION_SUFFIX",
+			"required": true
 		},
 		{
 			"name": "VERSION",
@@ -104,10 +108,9 @@
 			"kind": "ImageStream",
 			"apiVersion": "v1",
 			"metadata": {
-				"name": "${NAME}${SUFFIX}",
+				"name": "${NAME}${APPLICATION_SUFFIX}",
 				"creationTimestamp": null,
 				"labels": {
-                    "shared": "true"
 				},
 				"annotations": {
 					"description": "Keeps track of changes in the application image"
@@ -180,7 +183,7 @@
 			"kind": "BuildConfig",
 			"apiVersion": "v1",
 			"metadata": {
-				"name": "${NAME}${SUFFIX}",
+				"name": "${NAME}${APPLICATION_SUFFIX}",
 				"creationTimestamp": null,
 				"labels": {
                  },
@@ -231,7 +234,7 @@
 				"output": {
 					"to": {
 						"kind": "ImageStreamTag",
-						"name": "${NAME}${SUFFIX}:${VERSION}"
+						"name": "${NAME}${APPLICATION_SUFFIX}:${VERSION}"
 					}
 				},
 				"resources": {
