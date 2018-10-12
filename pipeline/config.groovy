@@ -71,6 +71,7 @@ app {
                         'params':[
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
+                            'APPLICATION_SUFFIX': "-${app.build.env.id}",
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
@@ -139,6 +140,7 @@ app {
                     'params':[
                             'NAME':"mds-frontend",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
@@ -202,6 +204,7 @@ environments {
                 key = 'dev'
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
+                application_suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -241,6 +244,7 @@ environments {
                 key = 'test'
                 namespace = 'empr-mds-test'
                 suffix = "-test"
+                application_suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -276,6 +280,7 @@ environments {
                     name = "prod"
                 }
                 suffix = "-prod"
+                application_suffix = "-pr-${vars.git.changeId}"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
             }
