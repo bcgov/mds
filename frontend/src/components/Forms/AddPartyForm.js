@@ -105,6 +105,7 @@ AddPartyForm.propTypes = propTypes;
 
 export default (reduxForm({
     form: FORM.ADD_PARTY,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_PARTY),
   })(AddPartyForm)
 );

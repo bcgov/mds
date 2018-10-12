@@ -36,6 +36,7 @@ AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
   form: FORM.ADD_TENURE_NUMBER,
+  touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_TENURE_NUMBER),
 })(AddTenureNumberForm)
 );

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row } from 'antd';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderDate from '@/components/common/RenderDate';
+import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
@@ -32,7 +32,7 @@ export const UpdateMineManagerForm = (props) => {
               label="Mine Manager"
               component={RenderLargeSelect}
               data={props.partyIds}
-              option={props.parties}
+              options={props.parties}
               validate={[required]}
               handleChange={props.handleChange}
             />

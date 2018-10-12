@@ -3,14 +3,16 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
+from sqlalchemy import or_
+
 from ...mine.models.mines import MineIdentity
 from ..models.party import Party, MgrAppointment
 from ...constants import PARTY_STATUS_CODE
 from app.extensions import jwt
-from ...utils.resources_mixins import UserMixin
+from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
-class PartyResource(Resource, UserMixin):
+class PartyResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str)
     parser.add_argument('party_name', type=str)
@@ -24,63 +26,36 @@ class PartyResource(Resource, UserMixin):
         party = Party.find_by_party_guid(party_guid)
         if party:
             return party.json()
-        return {
-            'error': {
-                'status': 404,
-                'message': 'Party not found'
-            }
-        }, 404
+        return self.create_error_payload(404, 'Party not found'), 404
+
+    def create_party_context(self, party_type_code, party_name, first_name):
+        party_context = {
+            'party_type_code': party_type_code,
+            'party_name': party_name
+        }
+        if party_type_code == PARTY_STATUS_CODE['per']:
+            if not first_name:
+                self.raise_error(400, 'Error: Party first name is not provided.')
+            party_exists = Party.find_by_name(first_name, party_name)
+            if party_exists:
+                self.raise_error(400, 'Error: Party with the name: {} {} already exists'.format(first_name, party_name))
+            party_context.update({
+                'first_name': first_name,
+            })
+        elif party_type_code == PARTY_STATUS_CODE['org']:
+            party_exists = Party.find_by_party_name(party_name)
+            if party_exists:
+                self.raise_error(400, 'Error: Party with the party name: {} already exists'.format(party_name))
+        else:
+            self.raise_error(400, 'Error: Party type is not provided.')
+        return party_context
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, party_guid=None):
         if party_guid:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Unexpected party id in Url.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Unexpected party id in Url.')
         data = PartyResource.parser.parse_args()
-        party_type_code = data['type']
-        party_context = {
-            'party_type_code': party_type_code,
-            'party_name': data['party_name']
-        }
-        if party_type_code == PARTY_STATUS_CODE['per']:
-            if not data['first_name']:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: Party first name is not provided.'
-                    }
-                }, 400
-            party_exists = Party.find_by_name(data['first_name'], data['party_name'])
-            if party_exists:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: Party with the name: {} {} already exists'.format(data['first_name'], data['party_name'])
-                    }
-                }, 400
-            party_context.update({
-                'first_name': data['first_name'],
-            })
-        elif party_type_code == PARTY_STATUS_CODE['org']:
-            party_exists = Party.find_by_party_name(data['party_name'])
-            if party_exists:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: Party with the party name: {} already exists'.format(data['party_name'])
-                    }
-                }, 400
-        else:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Party type is not provided.'
-                }
-            }, 400
+        party_context = self.create_party_context(data['type'], data['party_name'], data['first_name'])
 
         try:
             party = Party(
@@ -92,12 +67,8 @@ class PartyResource(Resource, UserMixin):
                 **party_context
             )
         except AssertionError as e:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: {}'.format(e)
-                }
-            }, 400
+            self.raise_error(400, 'Error: {}'.format(e))
+
         party.save()
         return party.json()
 
@@ -106,49 +77,29 @@ class PartyResource(Resource, UserMixin):
         data = PartyResource.parser.parse_args()
         party_exists = Party.find_by_party_guid(party_guid)
         if not party_exists:
-            return {
-                'error': {
-                    'status': 404,
-                    'message': 'Party not found'
-                }
-            }, 404
+            return self.create_error_payload(404, 'Party not found'), 404
         party_type_code = data['type']
         if party_type_code == PARTY_STATUS_CODE['per']:
             first_name = data['first_name'] if data['first_name'] else party_exists.first_name
             party_name = data['party_name'] if data['party_name'] else party_exists.party_name
             party_name_exists = Party.find_by_name(first_name, party_name)
             if party_name_exists:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: Party with the name: {} {} already exists'.format(first_name, party_name)
-                    }
-                }, 400
+                self.raise_error(400, 'Error: Party with the name: {} {} already exists'.format(first_name, party_name))
             party_exists.first_name = first_name
             party_exists.party_name = party_name
         elif party_type_code == PARTY_STATUS_CODE['org']:
             party_name = data['party_name'] if data['party_name'] else party_exists.party_name
             party_name_exists = Party.find_by_party_name(party_name)
             if party_name_exists:
-                return {
-                    'error': {
-                        'status': 400,
-                        'message': 'Error: Party with the name: {} already exists'.format(party_name)
-                    }
-                }, 400
+                self.raise_error(400, 'Error: Party with the name: {} already exists'.format(party_name))
             party_exists.party_name = party_name
         else:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Party type is not provided.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Party type is not provided.')
         party_exists.save()
         return party_exists.json()
 
 
-class ManagerResource(Resource, UserMixin):
+class ManagerResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('party_guid', type=str)
     parser.add_argument('mine_guid', type=str)
@@ -159,61 +110,26 @@ class ManagerResource(Resource, UserMixin):
         manager = MgrAppointment.find_by_mgr_appointment_guid(mgr_appointment_guid)
         if manager:
             return manager.json()
-        return {
-            'error': {
-                'status': 404,
-                'message': 'Manager not found'
-            }
-        }, 404
+        return self.create_error_payload(404, 'Manager not found'), 404
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Unexpected manager id in Url.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Unexpected manager id in Url.')
         data = ManagerResource.parser.parse_args()
         if not data['party_guid']:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Party guid is not provided.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Party guid is not provided.')
         if not data['mine_guid']:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Mine guid is not provided.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Mine guid is not provided.')
         if not data['effective_date']:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Effective date is not provided.'
-                }
-            }, 400
+            self.raise_error(400, 'Error: Effective date is not provided.')
         # Validation for mine and party exists
         party_exists = Party.find_by_party_guid(data['party_guid'])
         if not party_exists:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Party with guid: {}, does not exist.'.format(data['party_guid'])
-                }
-            }, 400
+            self.raise_error(400, 'Error: Party with guid: {}, does not exist.'.format(data['party_guid']))
         mine_exists = MineIdentity.find_by_mine_guid(data['mine_guid'])
         if not mine_exists:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: Mine with guid: {}, does not exist.'.format(data['mine_guid'])
-                }
-            }, 400
+            self.raise_error(400, 'Error: Mine with guid: {}, does not exist.'.format(data['mine_guid']))
         # Check if there is a previous manager, set expiry the day before new manager
         previous_mgr_expiry_date = data['effective_date'] - timedelta(days=1)
         previous_mgrs = mine_exists.mgr_appointment
@@ -231,12 +147,7 @@ class ManagerResource(Resource, UserMixin):
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
-            return {
-                'error': {
-                    'status': 400,
-                    'message': 'Error: {}'.format(e)
-                }
-            }, 400
+            self.raise_error(400, 'Error: {}'.format(e))
         manager.save()
         party_context = {}
         if party_exists.party_type_code == PARTY_STATUS_CODE['per']:
@@ -264,12 +175,15 @@ class PartyList(Resource):
         search_term = request.args.get('search')
         search_type = request.args.get('type').upper() if request.args.get('type') else None
         if search_term:
-            first_name_filter = Party.first_name.ilike('%{}%'.format(search_term))
-            party_name_filter = Party.party_name.ilike('%{}%'.format(search_term))
+            search_term_array = search_term.split()
+            _filter_list = []
+            for term in search_term_array:
+                _filter_list.append(Party.first_name.ilike('%{}%'.format(term)))
+                _filter_list.append(Party.party_name.ilike('%{}%'.format(term)))
             if search_type in ['PER', 'ORG']:
-                parties = Party.query.filter(first_name_filter | party_name_filter, Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                parties = Party.query.filter(or_(*_filter_list), Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
             else:
-                parties = Party.query.filter(first_name_filter | party_name_filter).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                parties = Party.query.filter(or_(*_filter_list)).limit(self.PARTY_LIST_RESULT_LIMIT).all()
         else:
             parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
         return {'parties': list(map(lambda x: x.json(), parties))}

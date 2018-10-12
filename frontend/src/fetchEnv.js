@@ -2,7 +2,7 @@ import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK, USER_ROLES } from '@/consta
 import axios from 'axios';
 
 export default function fetchEnv() {
-  return axios.get('/env')
+  return axios.get(`${process.env.BASE_PATH}/env`)
     .then(function (res) {
       try {
           JSON.stringify(res.data);

@@ -50,7 +50,7 @@ describe('`createParty` action creator', () => {
 
 describe('`fetchParties` action creator', () => {
   const value = " ";
-  const url = ENVIRONMENT.apiUrl + API.PARTIES(value);
+  const url = ENVIRONMENT.apiUrl + API.PARTIES;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
