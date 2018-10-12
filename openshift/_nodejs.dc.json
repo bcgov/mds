@@ -215,12 +215,12 @@
 				  {
 					"name": "NODE_ENV",
 					"value": "${NODE_ENV}"
-                  },
-                  {
+				  },
+				  {
 					"name": "BASE_PATH",
 					"value": "${BASE_PATH}"
-                  },
-                  {
+				  },
+				  {
 					"name": "ASSET_PATH",
 					"value": "${BASE_PATH}/"
 				  },
@@ -263,7 +263,23 @@
 				  {
 					"containerPort": 3000
 				  }
-				]
+				],
+				"readinessProbe": {
+				  "timeoutSeconds": 3,
+				  "initialDelaySeconds": 3,
+				  "httpGet": {
+					"path": "${BASE_PATH}",
+					"port": 3000
+				  }
+				},
+				"livenessProbe": {
+					"timeoutSeconds": 3,
+					"initialDelaySeconds": 30,
+					"httpGet": {
+						"path": "${BASE_PATH}",
+						"port": 3000
+					}
+				}
 			  }
 			]
 		  }

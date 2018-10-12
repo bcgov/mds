@@ -21,12 +21,12 @@
 		{
 			"name": "VERSION",
 			"required": true
-        },
-        {
-            "name": "BASE_PATH",
-            "required": false,
-            "value": "/"
-        },
+		},
+		{
+			"name": "BASE_PATH",
+			"required": false,
+			"value": "/"
+		},
 		{
 			"name": "SOURCE_CONTEXT_DIR",
 			"required": true
@@ -215,14 +215,14 @@
 							"name": "${NAME}-base:${VERSION}"
 						},
 						"env": [
-                            {
-                                "name": "BASE_PATH",
-                                "value": "${BASE_PATH}"
-                                },
-                                {
-                                "name": "ASSET_PATH",
-                                "value": "${BASE_PATH}/"
-                                }
+							{
+								"name": "BASE_PATH",
+								"value": "${BASE_PATH}"
+								},
+								{
+								"name": "ASSET_PATH",
+								"value": "${BASE_PATH}/"
+								}
 						]
 					}
 				},
