@@ -41,9 +41,9 @@ class MineHeader extends Component {
   renderInitialValues = (mine) => {
     // initialValues is built into redux forms, simply pass in the prop 'initialValues' with the correct field names and redux forms will do the rest. 
     const initialValues = {
-      "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : '',
-      "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : '',
-      "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : '',
+      "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
+      "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
+      "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
     }
     return (
       <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record"/>
