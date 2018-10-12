@@ -21,6 +21,7 @@ BEGIN
         permittee_guid      uuid                ,
         --permit info
         permit_guid         uuid                ,
+        source              numeric             ,
         mine_guid           uuid                ,
         mine_no             character varying(12)   ,
         permit_no           character varying(12)   ,
@@ -157,7 +158,8 @@ BEGIN
             contact_info.add_dt ::date AS effective_date    ,
             company_info.cmp_nm  AS permittee_nm            ,     
             company_info.tel_no                             ,
-            company_info.email
+            company_info.email                              ,
+            '1'::numeric AS source
         FROM permit_attached_permittee_list permittee_list 
         INNER JOIN mms.mmsccn contact_info ON
             permittee_list.contact_cid=contact_info.cid
@@ -181,7 +183,8 @@ BEGIN
             now.str_dt ::date AS effective_date ,
             company.cmp_nm AS permittee_nm      ,
             company.tel_no                      ,
-            company.email
+            company.email                       ,
+            '2'::numeric AS source
         FROM permit_list_no_attached_permittee permit_list
         INNER JOIN mms.mmsnow now ON 
             now.cid=permit_list.permit_cid
@@ -211,9 +214,10 @@ BEGIN
                 THEN current_date
                 ELSE to_date(mine_info.entered_date, 'YYYY/MM/DD') 
             END AS effective_date,
-            mine_info.cmp_nm AS permittee_nm,
-            mine_info.ctel_no AS tel_no,
-            mine_info.cemail AS email
+            mine_info.cmp_nm AS permittee_nm    ,
+            mine_info.ctel_no AS tel_no         ,
+            mine_info.cemail AS email           ,
+            '3'::numeric AS source 
         FROM permit_info 
         INNER JOIN mms.mmsmin mine_info ON
             mine_info.mine_no=permit_info.mine_no
@@ -239,6 +243,7 @@ BEGIN
             permittee_nm    ,
             tel_no          ,
             email           ,
+            source          ,
             concat(permittee_nm,tel_no) AS party_combo_id
         FROM permittee_info
     ),
@@ -251,7 +256,8 @@ BEGIN
             effective_date  ,
             permittee_nm    ,
             tel_no          ,
-            email           
+            email           ,
+            source  
         FROM permittee_info_wCombo
         WHERE party_combo_id NOT IN (
             SELECT party_combo_id
@@ -359,6 +365,7 @@ BEGIN
         SELECT  
             new_permittee.permit_cid    ,
             new_permittee.party_combo_id,
+            new_permittee.source        ,
             name_and_type.party_guid    ,
             name_and_type.first_name    ,
             name_and_type.party_name    ,
@@ -376,6 +383,7 @@ BEGIN
         permittee_guid      ,
         --permit info
         permit_guid         ,
+        source              ,
         mine_guid           ,
         mine_no             ,
         permit_no           ,
@@ -397,6 +405,7 @@ BEGIN
         gen_random_uuid()       ,--permittee_guid
         --permit info
         gen_random_uuid()       ,--permit_guid
+        permittee_info.source   ,
         permit_info.mine_guid   ,
         permit_info.mine_no     ,
         permit_info.permit_no   ,
@@ -411,7 +420,7 @@ BEGIN
         permittee_info.party_name       ,
         permittee_info.party_type       ,
         permittee_info.phone_no         ,
-        permittee_info.email    ,
+        permittee_info.email            ,
         permittee_info.effective_date
     FROM permit_info
     INNER JOIN permittee_new_wContact permittee_info ON
