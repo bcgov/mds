@@ -17,10 +17,19 @@
 			"displayName": "Name Suffix",
 			"description": "A suffix appended to all objects",
 			"required": true
+        },
+        {
+			"name": "APPLICATION_SUFFIX",
+			"required": true
 		},
 		{
 			"name": "VERSION",
 			"required": true
+		},
+		{
+			"name": "BASE_PATH",
+			"required": false,
+			"value": "/"
 		},
 		{
 			"name": "SOURCE_CONTEXT_DIR",
@@ -99,10 +108,9 @@
 			"kind": "ImageStream",
 			"apiVersion": "v1",
 			"metadata": {
-				"name": "${NAME}",
+				"name": "${NAME}${APPLICATION_SUFFIX}",
 				"creationTimestamp": null,
 				"labels": {
-					"shared": "true"
 				},
 				"annotations": {
 					"description": "Keeps track of changes in the application image"
@@ -175,8 +183,10 @@
 			"kind": "BuildConfig",
 			"apiVersion": "v1",
 			"metadata": {
-				"name": "${NAME}${SUFFIX}",
+				"name": "${NAME}${APPLICATION_SUFFIX}",
 				"creationTimestamp": null,
+				"labels": {
+                 },
 				"annotations": {
 					"description": "Defines how to build the application"
 				}
@@ -187,7 +197,7 @@
 				"failedBuildsHistoryLimit": 3,
 				"triggers": [
 					{
-						"type": "ImageChange"
+                        "type": "ImageChange"
 					},
 					{
 						"type": "ConfigChange"
@@ -210,13 +220,21 @@
 							"name": "${NAME}-base:${VERSION}"
 						},
 						"env": [
+							{
+								"name": "BASE_PATH",
+								"value": "${BASE_PATH}"
+								},
+								{
+								"name": "ASSET_PATH",
+								"value": "${BASE_PATH}/"
+								}
 						]
 					}
 				},
 				"output": {
 					"to": {
 						"kind": "ImageStreamTag",
-						"name": "${NAME}:${VERSION}"
+						"name": "${NAME}${APPLICATION_SUFFIX}:${VERSION}"
 					}
 				},
 				"resources": {
