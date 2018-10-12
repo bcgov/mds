@@ -22,6 +22,10 @@
 	  "required": true
 	},
 	{
+	  "name": "APPLICATION_SUFFIX",
+	  "required": true
+	},
+	{
 	  "name": "TAG_NAME",
 	  "displayName": "Name",
 	  "description": "The name assigned to all of the frontend objects defined in this template.",
@@ -108,9 +112,8 @@
 	  "kind": "ImageStream",
 	  "apiVersion": "v1",
 	  "metadata": {
-		"name": "${NAME}${SUFFIX}",
+		"name": "${NAME}${APPLICATION_SUFFIX}",
 		"labels": {
-		  "shared": "true"
 		},
 		"annotations": {
 		  "description": "Keeps track of changes in the application image"
@@ -188,7 +191,7 @@
 			  ],
 			  "from": {
 				"kind": "ImageStreamTag",
-				"name": "${NAME}${SUFFIX}:${TAG_NAME}"
+				"name": "${NAME}${APPLICATION_SUFFIX}:${TAG_NAME}"
 			  }
 			}
 		  },

@@ -157,6 +157,7 @@ app {
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'VERSION':"${app.deployment.version}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
@@ -203,6 +204,7 @@ environments {
                 key = 'dev'
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
+                application_suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -242,6 +244,7 @@ environments {
                 key = 'test'
                 namespace = 'empr-mds-test'
                 suffix = "-test"
+                application_suffix = "-pr-${vars.git.changeId}"
             }
             modules {
                 'mds-frontend' {
@@ -277,6 +280,7 @@ environments {
                     name = "prod"
                 }
                 suffix = "-prod"
+                application_suffix = "-pr-${vars.git.changeId}"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
             }
