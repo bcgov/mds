@@ -33,7 +33,7 @@ const defaultProps = {
   export class MineContactInfo extends Component {
     state = { modalVisible: false, permitteeModalVisible: false, isPerson: true }
   /**
- * add new parties (firstName, surname) to db.
+ * add new parties (firstName, surname || companyName) to db.
  */
   handlePartySubmit = (values, type) => {
     const payload = {type: type, ...values}
@@ -48,6 +48,7 @@ const defaultProps = {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ modalVisible: !this.state.modalVisible });
       this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchParties();
     })
   }
 
@@ -56,12 +57,15 @@ const defaultProps = {
       isPerson: value.target.value,
     });
   }
-
+ /**
+   * change permittee on record.
+   */
    handlePermitteeSubmit = (values) => {
     const guids = values.permittee.split(", ");
     this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ permitteeModalVisible: !this.state.permitteeModalVisible });
       this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchParties();
     })
   }
 

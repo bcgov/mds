@@ -51,9 +51,9 @@ class MineSummary extends Component {
                       {permitteeIds.map((id) => {
                         return (
                           <tr key={id}>
-                            <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                            <td key={id} data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
-                            <td key={id} data-label="Effective Date"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                            <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                            <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
+                            <td data-label="Effective Date"><p className="p-large">{permittees[id].party.effective_date}</p></td>
                           </tr>
                         )
                       })}

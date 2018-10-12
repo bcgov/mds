@@ -26,10 +26,11 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
-export const fetchParties = (value) => (dispatch) => {
+export const fetchParties = (value=null) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading('modal'));
-  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(value), createRequestHeader())
+  const config = {...createRequestHeader(), params: {search: value}}
+  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES, config)
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));

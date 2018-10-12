@@ -17,14 +17,14 @@ const RenderAutoComplete = ({
   data,
   placeholder,
   handleChange,
-  handleSelect
+  handleSelect,
 }) => (
     <AutoComplete
+      getPopupContainer={() => document.getElementById('search')}
       defaultActiveFirstOption={false}
       notFoundContent={'Not Found'}
       allowClear
       dropdownMatchSelectWidth={true}
-      size="large"
       backfill={true}
       style={{ width: '100%' }}
       dataSource={data}
@@ -33,7 +33,7 @@ const RenderAutoComplete = ({
       onSelect={handleSelect}
       onChange={handleChange}
     >
-      <Input suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
+      <Input id="search" suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
     </AutoComplete>
   );
 
