@@ -1,448 +1,462 @@
 {
-  "kind": "Template",
-  "apiVersion": "v1",
-  "metadata": {
-    "name": "mds-python-dc",
-    "creationTimestamp": null
-  },
-  "parameters": [
-    {
-      "name": "NAME",
-      "displayName": "Name",
-      "description": "A name for all objects",
-      "required": true
-    },
-    {
-      "name": "SUFFIX",
-      "displayName": "Name Suffix",
-      "description": "A suffix appended to all objects",
-      "required": true
-    },
-    {
-      "name": "FLYWAY_NAME",
-      "displayName": "Name",
-      "description": "A name for flyway objects",
-      "required": true
-    },
-    {
-      "name": "DB_CONFIG_NAME",
-      "displayName": "Database Config Name",
-      "description": "Configuration name for the database",
-      "required": true
-    },
-    {
-      "name": "VERSION",
-      "required": true
-    },
-    {
-      "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
-      "displayName": "Keycloak config URL",
-      "required": true
-    },
-    {
-      "name": "JWT_OIDC_AUDIENCE",
-      "displayName": "Keycloak clientId",
-      "required": true
-    },
-    {
-      "name": "HOST",
-      "required": false
-    },
-    {
-        "name": "CPU_LIMIT",
-        "value": "200m"
-    },
-    {
-        "name": "MEMORY_LIMIT",
-        "value": "1Gi"
-    },
-    {
-        "name": "CPU_REQUEST",
-        "value": "150m"
-    },
-    {
-        "name": "MEMORY_REQUEST",
-        "value": "768Mi"
-    }
-  ],
-  "objects": [
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[ ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${FLYWAY_NAME}",
-        "generation": 1,
-        "creationTimestamp": null,
-        "annotations": {
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "kind": "DeploymentConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null,
-        "labels": null,
-        "annotations": {
-          "description": "Defines how to deploy the application server"
-        }
-      },
-      "spec": {
-        "strategy": {
-          "type": "Recreate",
-          "recreateParams": {
-            "pre": {
-              "failurePolicy": "Abort",
-              "execNewPod": {
-                "containerName": "flyway-migration",
-                "command": [
-                  "bash",
-                  "-c",
-                  "for i in {1..10}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 30; done; (echo $s && exit $s)"
-                ]
-              }
-            },
-            "mid": {
-              "failurePolicy": "Abort",
-              "execNewPod": {
-                "containerName": "flyway-migration",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd $FLYWAY_HOME && ./flyway migrate"
-                ]
-              }
-            },
-            "timeoutSeconds": 1200
-          },
-            "resources": {
-                "limits": {
-                    "cpu": "250m",
-                    "memory": "750Mi"
-                },
-                "requests": {
-                    "cpu": "200m",
-                    "memory": "500Mi"
-                }
-            },
-          "activeDeadlineSeconds": 21600
-        },
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": [
-                "app"
-              ],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "${NAME}:${VERSION}"
-              }
-            }
-          },
-          {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": [
-                "flyway-migration"
-              ],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "${FLYWAY_NAME}:${VERSION}"
-              }
-            }
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "replicas": 1,
-        "test": false,
-        "selector": {
-          "name": "${NAME}${SUFFIX}"
-        },
-        "template": {
-          "metadata": {
-            "name": "${NAME}${SUFFIX}",
-            "creationTimestamp": null,
-            "labels": {
-              "name": "${NAME}${SUFFIX}"
-            }
-          },
-          "spec": {
-            "containers": [
-              {
-                "name": "app",
-                "image": " ",
-                "ports": [
-                  {
-                    "containerPort": 5000,
-                    "protocol": "TCP"
-                  }
-                ],
-                "env": [
-                  {
-                    "name": "DB_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DB_HOST",
-                    "value": "${DB_CONFIG_NAME}"
-                  },
-                  {
-                    "name": "DB_PASS",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DB_PORT",
-                    "value": "5432"
-                  },
-                  {
-                    "name": "DB_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLASK_RUN_PORT",
-                    "value": "5000"
-                  },
-                  {
-                    "name": "FLASK_RUN_HOST",
-                    "value": "0.0.0.0"
-                  },
-                  {
-                    "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
-                    "value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
-                  },
-                  {
-                    "name": "JWT_OIDC_AUDIENCE",
-                    "value": "${JWT_OIDC_AUDIENCE}"
-                  },
-                  {
-                    "name": "JWT_OIDC_ALGORITHMS",
-                    "value": "RS256"
-                  }
-                ],
-                "resources": {
-                  "limits": {
-                    "cpu": "${CPU_LIMIT}",
-                    "memory": "${MEMORY_LIMIT}"
-                  },
-                  "requests": {
-                    "cpu": "${CPU_REQUEST}",
-                    "memory": "${MEMORY_REQUEST}"
-                  }
-                },
-                "terminationMessagePath": "/dev/termination-log",
-                "terminationMessagePolicy": "File",
-                "imagePullPolicy": "Always"
-              },
-              {
-                "name": "flyway-migration",
-                "command": [
-                  "cat"
-                ],
-                "stdin": true,
-                "image": " ",
-                "env": [
-                  {
-                    "name": "FLYWAY_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-admin-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-admin-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_DB_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "FLYWAY_DB_HOST",
-                    "value": "${DB_CONFIG_NAME}"
-                  },
-                  {
-                    "name": "FLYWAY_URL",
-                    "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
-                  },
-                  {
-                    "name": "PGUSER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGHOST",
-                    "value": "${DB_CONFIG_NAME}"
-                  },
-                  {
-                    "name": "PGPASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "PGDATABASE",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-name"
-                      }
-                    }
-                  }
-                ],
-                "resources": {
-                    "limits": {
-                      "cpu": "150m",
-                      "memory": "512Mi"
-                    },
-                    "requests": {
-                      "cpu": "70m",
-                      "memory": "384Mi"
-                    }
-                }
-              }
-            ],
-            "restartPolicy": "Always",
-            "dnsPolicy": "ClusterFirst",
-            "securityContext": {}
-          }
-        }
-      }
-    },
-    {
-        "apiVersion": "autoscaling/v1",
-        "kind": "HorizontalPodAutoscaler",
-        "metadata": {
-            "name": "${NAME}${SUFFIX}",
-            "labels": {
-                "name": "${NAME}${SUFFIX}"
-            }
-        },
-        "spec": {
-            "maxReplicas": 4,
-            "minReplicas": 1,
-            "scaleTargetRef": {
-                "apiVersion": "v1",
-                "kind": "DeploymentConfig",
-                "name": "${NAME}${SUFFIX}"
-            },
-            "targetCPUUtilizationPercentage": 80
-        }
-    },
-    {
-      "kind": "Service",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null,
-        "labels": null,
-        "annotations": {
-          "description": "Exposes and load balances the application pods"
-        }
-      },
-      "spec": {
-        "ports": [
-          {
-            "name": "web",
-            "protocol": "TCP",
-            "port": 5000,
-            "targetPort": 5000
-          }
-        ],
-        "selector": {
-          "name": "${NAME}${SUFFIX}"
-        },
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
-      },
-      "spec": {
-        "host": "${HOST}",
-        "path": "/",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
-      }
-    }
-  ]
+	"kind": "Template",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "mds-python-dc",
+		"creationTimestamp": null
+	},
+	"parameters": [
+		{
+			"name": "NAME",
+			"displayName": "Name",
+			"description": "A name for all objects",
+			"required": true
+		},
+		{
+			"name": "SUFFIX",
+			"displayName": "Name Suffix",
+			"description": "A suffix appended to all objects",
+			"required": true
+		},
+		{
+			"name": "FLYWAY_NAME",
+			"displayName": "Name",
+			"description": "A name for flyway objects",
+			"required": true
+		},
+		{
+			"name": "DB_CONFIG_NAME",
+			"displayName": "Database Config Name",
+			"description": "Configuration name for the database",
+			"required": true
+		},
+		{
+			"name": "VERSION",
+			"required": true
+		},
+		{
+			"name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+			"displayName": "Keycloak config URL",
+			"required": true
+		},
+		{
+			"name": "JWT_OIDC_AUDIENCE",
+			"displayName": "Keycloak clientId",
+			"required": true
+		},
+		{
+			"name": "APPLICATION_DOMAIN",
+			"required": true
+		},
+		{
+			"name": "BASE_PATH",
+			"required": false,
+			"value": "/"
+		},
+		{
+			"name": "ROUTE",
+			"required": false,
+			"value": "/"
+		},
+		{
+				"name": "CPU_LIMIT",
+				"value": "200m"
+		},
+		{
+				"name": "MEMORY_LIMIT",
+				"value": "1Gi"
+		},
+		{
+				"name": "CPU_REQUEST",
+				"value": "150m"
+		},
+		{
+				"name": "MEMORY_REQUEST",
+				"value": "768Mi"
+		}
+	],
+	"objects": [
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}",
+				"creationTimestamp": null,
+				"labels": {
+					"shared": "true"
+				},
+				"annotations": {
+					"description": "Keeps track of changes in the application image"
+				}
+			},
+			"spec": {
+				"lookupPolicy": {
+					"local": false
+				},
+				"tags":[ ]
+			}
+		},
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${FLYWAY_NAME}",
+				"generation": 1,
+				"creationTimestamp": null,
+				"annotations": {
+				}
+			},
+			"spec": {
+				"lookupPolicy": {
+					"local": false
+				}
+			}
+		},
+		{
+			"kind": "DeploymentConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}${SUFFIX}",
+				"creationTimestamp": null,
+				"labels": null,
+				"annotations": {
+					"description": "Defines how to deploy the application server"
+				}
+			},
+			"spec": {
+				"strategy": {
+					"type": "Recreate",
+					"recreateParams": {
+						"pre": {
+							"failurePolicy": "Abort",
+							"execNewPod": {
+								"containerName": "flyway-migration",
+								"command": [
+									"bash",
+									"-c",
+									"for i in {1..10}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 30; done; (echo $s && exit $s)"
+								]
+							}
+						},
+						"mid": {
+							"failurePolicy": "Abort",
+							"execNewPod": {
+								"containerName": "flyway-migration",
+								"command": [
+									"bash",
+									"-c",
+									"cd $FLYWAY_HOME && ./flyway migrate"
+								]
+							}
+						},
+						"timeoutSeconds": 1200
+					},
+						"resources": {
+								"limits": {
+										"cpu": "250m",
+										"memory": "750Mi"
+								},
+								"requests": {
+										"cpu": "200m",
+										"memory": "500Mi"
+								}
+						},
+					"activeDeadlineSeconds": 21600
+				},
+				"triggers": [
+					{
+						"type": "ImageChange",
+						"imageChangeParams": {
+							"automatic": true,
+							"containerNames": [
+								"app"
+							],
+							"from": {
+								"kind": "ImageStreamTag",
+								"name": "${NAME}:${VERSION}"
+							}
+						}
+					},
+					{
+						"type": "ImageChange",
+						"imageChangeParams": {
+							"automatic": true,
+							"containerNames": [
+								"flyway-migration"
+							],
+							"from": {
+								"kind": "ImageStreamTag",
+								"name": "${FLYWAY_NAME}:${VERSION}"
+							}
+						}
+					},
+					{
+						"type": "ConfigChange"
+					}
+				],
+				"replicas": 1,
+				"test": false,
+				"selector": {
+					"name": "${NAME}${SUFFIX}"
+				},
+				"template": {
+					"metadata": {
+						"name": "${NAME}${SUFFIX}",
+						"creationTimestamp": null,
+						"labels": {
+							"name": "${NAME}${SUFFIX}"
+						}
+					},
+					"spec": {
+						"containers": [
+							{
+								"name": "app",
+								"image": " ",
+								"ports": [
+									{
+										"containerPort": 5000,
+										"protocol": "TCP"
+									}
+								],
+								"env": [
+									{
+										"name": "DB_USER",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-user"
+											}
+										}
+									},
+									{
+										"name": "DB_HOST",
+										"value": "${DB_CONFIG_NAME}"
+									},
+									{
+										"name": "DB_PASS",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-password"
+											}
+										}
+									},
+									{
+										"name": "DB_PORT",
+										"value": "5432"
+									},
+									{
+										"name": "DB_NAME",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-name"
+											}
+										}
+									},
+									{
+										"name": "FLASK_RUN_PORT",
+										"value": "5000"
+									},
+									{
+										"name": "FLASK_RUN_HOST",
+										"value": "0.0.0.0"
+									},
+									{
+										"name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+										"value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
+									},
+									{
+										"name": "JWT_OIDC_AUDIENCE",
+										"value": "${JWT_OIDC_AUDIENCE}"
+									},
+									{
+										"name": "JWT_OIDC_ALGORITHMS",
+										"value": "RS256"
+									},
+									{
+										"name": "BASE_PATH",
+										"value": "${BASE_PATH}"
+									}
+								],
+								"resources": {
+									"limits": {
+										"cpu": "${CPU_LIMIT}",
+										"memory": "${MEMORY_LIMIT}"
+									},
+									"requests": {
+										"cpu": "${CPU_REQUEST}",
+										"memory": "${MEMORY_REQUEST}"
+									}
+								},
+								"terminationMessagePath": "/dev/termination-log",
+								"terminationMessagePolicy": "File",
+								"imagePullPolicy": "Always"
+							},
+							{
+								"name": "flyway-migration",
+								"command": [
+									"cat"
+								],
+								"stdin": true,
+								"image": " ",
+								"env": [
+									{
+										"name": "FLYWAY_USER",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-admin-user"
+											}
+										}
+									},
+									{
+										"name": "FLYWAY_PASSWORD",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-admin-password"
+											}
+										}
+									},
+									{
+										"name": "FLYWAY_DB_NAME",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-name"
+											}
+										}
+									},
+									{
+										"name": "FLYWAY_DB_HOST",
+										"value": "${DB_CONFIG_NAME}"
+									},
+									{
+										"name": "FLYWAY_URL",
+										"value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
+									},
+									{
+										"name": "PGUSER",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-user"
+											}
+										}
+									},
+									{
+										"name": "PGHOST",
+										"value": "${DB_CONFIG_NAME}"
+									},
+									{
+										"name": "PGPASSWORD",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-password"
+											}
+										}
+									},
+									{
+										"name": "PGDATABASE",
+										"valueFrom": {
+											"secretKeyRef": {
+												"name": "${DB_CONFIG_NAME}",
+												"key": "database-name"
+											}
+										}
+									}
+								],
+								"resources": {
+										"limits": {
+											"cpu": "150m",
+											"memory": "512Mi"
+										},
+										"requests": {
+											"cpu": "70m",
+											"memory": "384Mi"
+										}
+								}
+							}
+						],
+						"restartPolicy": "Always",
+						"dnsPolicy": "ClusterFirst",
+						"securityContext": {}
+					}
+				}
+			}
+		},
+		{
+				"apiVersion": "autoscaling/v1",
+				"kind": "HorizontalPodAutoscaler",
+				"metadata": {
+						"name": "${NAME}${SUFFIX}",
+						"labels": {
+								"name": "${NAME}${SUFFIX}"
+						}
+				},
+				"spec": {
+						"maxReplicas": 4,
+						"minReplicas": 1,
+						"scaleTargetRef": {
+								"apiVersion": "v1",
+								"kind": "DeploymentConfig",
+								"name": "${NAME}${SUFFIX}"
+						},
+						"targetCPUUtilizationPercentage": 80
+				}
+		},
+		{
+			"kind": "Service",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}${SUFFIX}",
+				"creationTimestamp": null,
+				"labels": null,
+				"annotations": {
+					"description": "Exposes and load balances the application pods"
+				}
+			},
+			"spec": {
+				"ports": [
+					{
+						"name": "web",
+						"protocol": "TCP",
+						"port": 5000,
+						"targetPort": 5000
+					}
+				],
+				"selector": {
+					"name": "${NAME}${SUFFIX}"
+				},
+				"type": "ClusterIP",
+				"sessionAffinity": "None"
+			}
+		},
+		{
+			"kind": "Route",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}${SUFFIX}",
+				"creationTimestamp": null
+			},
+			"spec": {
+				"host": "${APPLICATION_DOMAIN}",
+				"path": "${ROUTE}",
+				"to": {
+					"kind": "Service",
+					"name": "${NAME}${SUFFIX}",
+					"weight": 100
+				},
+				"port": {
+					"targetPort": "web"
+				},
+				"tls": {
+					"termination": "edge"
+				},
+				"wildcardPolicy": "None"
+			}
+		}
+	]
 }

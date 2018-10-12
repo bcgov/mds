@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.BASE_PATH}>
           <Routes />
         </BrowserRouter>
       </Provider>
