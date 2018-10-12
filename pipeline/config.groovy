@@ -71,7 +71,7 @@ app {
                         'params':[
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
-                            'BASE_PATH': "${app.git.changeId}",
+                            'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
@@ -246,12 +246,12 @@ environments {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = ""
+                    ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = ""
+                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -283,12 +283,12 @@ environments {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = ""
+                    ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = ""
+                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
