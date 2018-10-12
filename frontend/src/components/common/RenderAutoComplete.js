@@ -20,7 +20,6 @@ const RenderAutoComplete = ({
   handleSelect,
 }) => (
     <AutoComplete
-      getPopupContainer={() => document.getElementById('search')}
       defaultActiveFirstOption={false}
       notFoundContent={'Not Found'}
       allowClear
