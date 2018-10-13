@@ -11,43 +11,7 @@ from app.api.location.models.location import MineLocation
 from app.api.permit.models.permit import Permit, PermitStatusCode
 from app.api.permittee.models.permittee import Permittee
 from app.api.constants import PARTY_STATUS_CODE
-from .constants import (TEST_MINE_NAME,
-                        TEST_MINE_NO,
-                        TEST_FIRST_NAME,
-                        TEST_SURNAME,
-                        TEST_FIRST_NAME_2,
-                        TEST_SURNAME_2,
-                        TEST_FIRST_NAME_3,
-                        TEST_SURNAME_3,
-                        TEST_MINE_GUID,
-                        TEST_PERSON_GUID,
-                        TEST_PERSON_2_GUID,
-                        TEST_PERSON_3_GUID,
-                        TEST_MANAGER_GUID,
-                        TEST_TENURE_ID,
-                        DUMMY_USER_KWARGS,
-                        TEST_LOCATION_GUID,
-                        TEST_LAT_1,
-                        TEST_LONG_1,
-                        BASE_AUTH_CLAIMS,
-                        FULL_AUTH_CLAIMS,
-                        VIEW_ONLY_AUTH_CLAIMS,
-                        TOKEN_HEADER,
-                        TEST_MINE_DETAIL_GUID,
-                        TEST_TENURE_GUID,
-                        TEST_EMAIL_1,
-                        TEST_EMAIL_2,
-                        TEST_EMAIL_3,
-                        TEST_PHONE_1,
-                        TEST_PHONE_2,
-                        TEST_PHONE_3,
-                        TEST_PERMIT_STATUS_CODE_1,
-                        TEST_PERMIT_STATUS_CODE_NAME_1,
-                        TEST_PERMIT_GUID_1,
-                        TEST_PERMIT_NO_1,
-                        TEST_PERMIT_STATUS_CODES,
-                        TEST_PERMITTEE_GUID
-                        )
+from .constants import *
 
 
 @pytest.fixture(scope="session")
@@ -142,41 +106,52 @@ def setup_data():
 
     # Test Person Data
     person = Party(
-        party_guid=uuid.UUID(TEST_PERSON_GUID),
-        first_name=TEST_FIRST_NAME,
-        party_name=TEST_SURNAME,
-        email=TEST_EMAIL_1,
-        phone_no=TEST_PHONE_1,
-        party_type_code='PER',
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
+        first_name=TEST_PARTY_PER_FIRST_NAME_1,
+        party_name=TEST_PARTY_PER_PARTY_NAME_1,
+        email=TEST_PARTY_PER_EMAIL_1,
+        phone_no=TEST_PARTY_PER_PHONE_1,
+        phone_ext=TEST_PARTY_PER_PHONE_EXT_1,
+        party_type_code=TEST_PARTY_TYPE,
         **DUMMY_USER_KWARGS
     )
     person.save(commit=False)
     person2 = Party(
-        party_guid=uuid.UUID(TEST_PERSON_2_GUID),
-        first_name=TEST_FIRST_NAME_2,
-        party_name=TEST_SURNAME_2,
-        email=TEST_EMAIL_2,
-        phone_no=TEST_PHONE_2,
-        party_type_code='PER',
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_2),
+        first_name=TEST_PARTY_PER_FIRST_NAME_2,
+        party_name=TEST_PARTY_PER_PARTY_NAME_2,
+        email=TEST_PARTY_PER_EMAIL_2,
+        phone_no=TEST_PARTY_PER_PHONE_2,
+        phone_ext=TEST_PARTY_PER_PHONE_EXT_2,
+        party_type_code=TEST_PARTY_TYPE,
         **DUMMY_USER_KWARGS
     )
     person2.save(commit=False)
     person3 = Party(
-        party_guid=uuid.UUID(TEST_PERSON_3_GUID),
-        first_name=TEST_FIRST_NAME_3,
-        party_name=TEST_SURNAME_3,
-        email=TEST_EMAIL_3,
-        phone_no=TEST_PHONE_3,
-        phone_ext='1234',
-        party_type_code='PER',
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_3),
+        first_name=TEST_PARTY_PER_FIRST_NAME_3,
+        party_name=TEST_PARTY_PER_PARTY_NAME_3,
+        email=TEST_PARTY_PER_EMAIL_3,
+        phone_no=TEST_PARTY_PER_PHONE_3,
+        phone_ext=TEST_PARTY_PER_PHONE_EXT_3,
+        party_type_code=TEST_PARTY_TYPE,
         **DUMMY_USER_KWARGS
     )
     person3.save(commit=False)
-
+    party_org = Party(
+        party_guid=uuid.UUID(TEST_PARTY_ORG_GUID),
+        party_name=TEST_PARTY_ORG_NAME,
+        email=TEST_PARTY_ORG_EMAIL,
+        phone_no=TEST_PARTY_ORG_PHONE,
+        phone_ext=TEST_PARTY_ORG_EXT,
+        party_type_code=TEST_ORG_TYPE,
+        **DUMMY_USER_KWARGS
+    )
+    party_org.save(commit=False)
     # Test Manager Data
     manager = MgrAppointment(
         mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
-        party_guid=uuid.UUID(TEST_PERSON_GUID),
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         effective_date=datetime.today(),
         expiry_date=datetime.today(),
@@ -209,7 +184,7 @@ def setup_data():
     permittee = Permittee(
         permittee_guid=uuid.UUID(TEST_PERMITTEE_GUID),
         permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        party_guid=uuid.UUID(TEST_PERSON_GUID),
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         **DUMMY_USER_KWARGS
     )
     permittee.save(commit=False)
