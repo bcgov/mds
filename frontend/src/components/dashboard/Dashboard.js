@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
-import { fetchMineRecord, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
+import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
@@ -24,7 +24,7 @@ import * as String from '@/constants/strings';
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  fetchMineRecord: PropTypes.func.isRequired,
+  fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
@@ -57,11 +57,11 @@ export class Dashboard extends Component {
 
   renderDataFromURL = (params) => {
     if (params.page && params.per_page) {
-      this.props.fetchMineRecord(params.page, params.per_page, params.map).then(() => {
+      this.props.fetchMineRecords(params.page, params.per_page, params.map).then(() => {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.fetchMineRecord(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
+      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }
@@ -219,7 +219,7 @@ export class Dashboard extends Component {
         <div className="landing-page__header">
           <CreateMine
             createMineRecord={this.props.createMineRecord}
-            fetchMineRecord={this.props.fetchMineRecord}
+            fetchMineRecords={this.props.fetchMineRecords}
             location={this.props.location}
             mineStatusOptions={this.props.mineStatusOptions}
           />
@@ -237,14 +237,14 @@ const mapStateToProps = (state) => {
     mines: getMines(state),
     mineIds: getMineIds(state),
     pageData: getMinesPageData(state),
-    // mineStatusOptions: getMineStatusOptions(state)
+    mineStatusOptions: getMineStatusOptions(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchMineRecord,
-    // fetchStatusOptions,
+    fetchMineRecords,
+    fetchStatusOptions,
     createMineRecord,
   }, dispatch);
 };

@@ -34,7 +34,7 @@ export class MineDashboard extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchMineRecordById(id);
-    // this.props.fetchStatusOptions();
+    this.props.fetchStatusOptions();
   }
   render() {
     const { id } = this.props.match.params;
@@ -82,14 +82,14 @@ const mapStateToProps = (state) => {
     mines: getMines(state),
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
-    // mineStatusOptions: getMineStatusOptions(state),
+    mineStatusOptions: getMineStatusOptions(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
-    // fetchStatusOptions,
+    fetchStatusOptions,
     updateMineRecord
   }, dispatch);
 };

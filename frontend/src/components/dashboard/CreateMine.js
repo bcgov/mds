@@ -14,7 +14,7 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   createMineRecord: PropTypes.func.isRequired,
-  // mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array
 };
 
 export class CreateMine extends Component {

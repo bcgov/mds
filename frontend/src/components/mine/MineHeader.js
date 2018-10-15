@@ -14,7 +14,7 @@ const propTypes = {
   handleMineUpdate: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
-  // mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array
 };
 
 const defaultProps = {
