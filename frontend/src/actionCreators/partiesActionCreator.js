@@ -19,8 +19,8 @@ export const createParty = (payload) => (dispatch) => {
       dispatch(hideLoading('modal'));
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.CREATE_PARTY));
       dispatch(hideLoading('modal'));
     });
@@ -29,15 +29,14 @@ export const createParty = (payload) => (dispatch) => {
 export const fetchParties = (value=null) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading('modal'));
-  const config = {...createRequestHeader(), params: {search: value}}
-  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES, config)
+  return axios.get(ENVIRONMENT.apiUrl + API.PARTIES(value), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));
       dispatch(hideLoading('modal'));
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PARTIES));
       dispatch(hideLoading('modal'));
     });
@@ -52,10 +51,10 @@ export const fetchPartyById = (id) => (dispatch) => {
       dispatch(partyActions.storeParty(response.data, id));
       dispatch(hideLoading());
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PARTY));
-        dispatch(hideLoading());
+      dispatch(hideLoading());
     });
 };
 
@@ -69,8 +68,8 @@ export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) =>
       dispatch(hideLoading());
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_MINE_MANAGER));
       dispatch(hideLoading());
     });
@@ -86,8 +85,8 @@ export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => 
       dispatch(hideLoading());
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_PERMITTEE));
       dispatch(hideLoading());
     });

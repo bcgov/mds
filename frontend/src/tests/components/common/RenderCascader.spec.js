@@ -8,6 +8,7 @@ const setupProps = () => {
   props = {
     id: 1,
     input: '',
+    options: [],
     placeholder: '',
     meta: {
       touched: false,

@@ -6,13 +6,7 @@ import networkReducer from './networkReducer';
 import mineReducer from '@/reducers/mineReducer';
 import partiesReducer from '@/reducers/partiesReducer';
 import authenticationReducer from '@/reducers/authenticationReducer';
-
-export const createReducer = (reducer, name) => (state, action) => {
-  if (name !== action.name && state !== undefined) {
-    return state;
-  }
-  return reducer(state, action);
-}
+import { createReducer } from '@/utils/helpers';
 
 export const reducerObject = {
   form: formReducer,

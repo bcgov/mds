@@ -1,5 +1,6 @@
 import * as actionTypes from '@/constants/actionTypes';
 import { MINES } from '@/constants/reducerTypes';
+import { createItemMap, createItemIdsArray } from '@/utils/helpers';
 
 /**
  * @file mineReducer.js
@@ -14,18 +15,6 @@ const initialState = {
   permittees: {},
   permitteeIds: [],
   mineStatusOptions: []
-};
-
-const createItemMap = (array, idField) => {
-  return array.reduce((result, item) => {
-    result[item[idField]] = item;
-    return result;
-  }, {});
-};
-
-
-const createItemIdsArray = (array, idField) => {
-  return array.map(item => item[idField]);
 };
 
 const renderCurrentPermittee = (array) => {
