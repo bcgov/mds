@@ -20,4 +20,7 @@ make project
 ### Container Information
 * The backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
 * The frontend container exposes port 3000 and can be accessed at http://localhost:3000
-* The Postgres container exposes port 5432 and can be connected to with the admin account (test/test)
+* The Postgres container exposes port 5432 and can be connected to with the admin account (mds/test); for example:
+```
+psql --dbname=mds --username=mds --host=localhost --password --port=5432
+```

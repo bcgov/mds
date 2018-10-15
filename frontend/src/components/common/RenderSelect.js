@@ -33,6 +33,7 @@ const RenderSelect = ({
       }
     >
       <Select
+        getPopupContainer={() => document.getElementById(id)}
         showSearch
         placeholder={placeholder}
         optionFilterProp="children"

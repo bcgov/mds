@@ -34,27 +34,9 @@ export class ViewMineManager extends Component {
  handleSubmit = (values) => {
   this.props.handlePartySubmit(values, 'PER')
  }
-  renderMineManagerForm() {
-    if (this.props.partyIds.length === 0) {
-      return (<NullScreen type="manager-small"/>)
-    } else {
-      return (
-        <div>
-          <UpdateMineManagerForm
-            onSubmit={this.props.handleSubmit}
-            parties={this.props.parties}
-            partyIds={this.props.partyIds}
-            handleChange={this.props.handleChange}
-          />
-          <p className="center">{String.PERSON_NOT_FOUND}</p>
-        </div>
-      )
-    }
-  }
 
   render() {
     const { mine } = this.props;
-      const parties = mine.mgr_appointment[0] ? this.props.parties[mine.mgr_appointment[0].party_guid] : null;
       return (
         <div>
           <Modal
@@ -68,7 +50,13 @@ export class ViewMineManager extends Component {
                 style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
               />
               <div>
-                {this.renderMineManagerForm()}
+                <UpdateMineManagerForm
+                  onSubmit={this.props.handleSubmit}
+                  parties={this.props.parties}
+                  partyIds={this.props.partyIds}
+                  handleChange={this.props.handleChange}
+                />
+                <p className="center">{String.PERSON_NOT_FOUND}</p>
                 <AddPartyForm onSubmit={this.handleSubmit} isPerson/>
               </div>
             </Modal>
@@ -86,7 +74,7 @@ export class ViewMineManager extends Component {
               </div>
             </Card>
           }
-        {parties && 
+        {mine.mgr_appointment[0] && 
           <div>
             <Card>
               <table>
@@ -96,16 +84,16 @@ export class ViewMineManager extends Component {
                     <th scope="col"><h4>Manager Since</h4></th>
                   </tr>
                   <tr>
-                    <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].name : "-"}</p></td>
-                    <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
+                    <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0].name}</p></td>
+                    <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0].effective_date}</p></td>
                   </tr>
                   <tr>
                     <th scope="col"><h4>Email</h4></th>
                     <th scope="col"><h4>Phone Number (Ext)</h4></th>
                   </tr>
                   <tr>
-                    <td data-label="Email"><p className="p-large">{parties.email}</p></td>
-                    <td data-label="Phone Number (Ext)"><p className="p-large">{parties.phone_no} ({parties.phone_ext ? parties.phone_ext : 'N/A'})</p></td>
+                    <td data-label="Email"><p className="p-large">{mine.mgr_appointment[0].email}</p></td>
+                    <td data-label="Phone Number (Ext)"><p className="p-large">{mine.mgr_appointment[0].phone_no} ({mine.mgr_appointment[0].phone_ext ? mine.mgr_appointment[0].phone_ext : 'N/A'})</p></td>
                   </tr>
                 </tbody>
               </table>

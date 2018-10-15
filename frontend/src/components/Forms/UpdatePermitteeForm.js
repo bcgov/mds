@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row, Divider } from 'antd';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderSelect from '@/components/common/RenderSelect';
+import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderDate from '@/components/common/RenderDate';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
@@ -64,11 +64,11 @@ export const UpdatePermitteeForm = (props) => {
           <Form.Item>
             <Field
               id="party"
-              name="party"
               label="New Permittee"
+              name="party"
               component={RenderLargeSelect}
               data={props.partyIds}
-              option={props.parties}
+              options={props.parties}
               validate={[required]}
               handleChange={props.handleChange}
             />

@@ -3,8 +3,8 @@
 
 DO $$
 DECLARE 
-    old_row   integer;
-    new_row   integer;
+    old_row   integer   ;
+    new_row   integer   ;
 BEGIN 
     RAISE NOTICE 'Start updating mine manager:';
     RAISE NOTICE '.. Step 1 of 3: Scan new managers in MMS';
@@ -12,242 +12,267 @@ BEGIN
     CREATE TABLE IF NOT EXISTS ETL_MANAGER(
         mine_guid   uuid        ,
         mine_no     varchar(7)  ,
-        party_guid uuid        ,
+        party_guid  uuid        ,
         first_name  varchar(100),
         surname     varchar(100),
-        phone_no    varchar(12),
+        phone_no    varchar(12) ,
         email       varchar(254),
-        effective_date      date NOT NULL DEFAULT now(),
+        effective_date      date,
         person_combo_id     varchar(600),
         mgr_combo_id        varchar(600)
     );
     SELECT count(*) FROM ETL_MANAGER into old_row;
+
     WITH 
-    --List of NoW (Notice Of Work) whose attached contact is a Mine Manager;
-    now_wContact AS(
+    --1. Major mine
+    --1.1 Major mine list
+    major_mine_list AS (
         SELECT
-            nowlist.mine_no,
-            nowlist.upd_no,
-            nowlist.cid,
-            now_contact.cid_ccn
-        FROM mms.mmsnow nowlist
-        INNER JOIN mms.mmsccc now_contact ON
-            nowlist.cid = now_contact.cid
-            AND
-            --If the 3rd letter in type_ind is 'Y', possibly denoting the contact is a Mine Manager
-            SUBSTRING(now_contact.type_ind, 3, 1) = 'Y'
+            mine_no
+        FROM mms.mmsmin mine_info
+        WHERE 
+            min_lnk = 'Y'
     ),
-    --Sublist of 'now_wContact' selecting only the latest record for each mine based on 'upd_no'
-    latest_now AS(
+    --1.2 Major mine with valid manager 
+    major_manager_list AS (
         SELECT
-            now_wContact.mine_no,
-            Max(upd_no) last_upd
-        FROM now_wContact
+            mine_no,
+            min_man AS person_combo_id,
+            mine_no||min_man AS mgr_combo_id
+        FROM mms.mmsmin mine_info
+        WHERE 
+            mine_no IN (
+                SELECT  mine_no
+                FROM    major_mine_list
+            )
+            AND
+            min_man !~ '^ *$' 
+            AND 
+            min_man IS NOT NULL
+            AND
+            min_man !~ '[0-9!@#$&()\\-`+/\:]'
+    ),
+    --1.3 Select new manager record
+    major_new_manager AS (
+        SELECT *
+        FROM major_manager_list
+        WHERE mgr_combo_id NOT IN (
+            SELECT  mgr_combo_id
+            FROM    ETL_Manager
+        )
+    ),
+    --1.4 Check if manager is a new person and format new person (name, party_id)
+    major_new_person_info AS (
+        SELECT DISTINCT ON (person_combo_id)
+            person_combo_id                 ,
+            gen_random_uuid() AS party_guid , 
+            CASE 
+                WHEN person_combo_id ~ ','
+                THEN split_part(person_combo_id,', ',1 )
+                ELSE split_part(person_combo_id,' ',1 )
+            END AS first_name,
+            CASE
+                WHEN person_combo_id ~ ','
+                THEN COALESCE(NULLIF(regexp_replace
+                    (trim(leading from person_combo_id, split_part(person_combo_id,',', 1 )||', '),
+                    ' ', '', 'b'),''),'Unknown')
+                ELSE COALESCE(NULLIF(regexp_replace
+                    (trim(leading from person_combo_id, split_part(person_combo_id,' ',1 )||' '),
+                    ' ', '', 'b'),''),'Unknown')
+            END AS surname
+        FROM major_new_manager 
+        WHERE person_combo_id NOT IN (
+            SELECT  person_combo_id
+            FROM    ETL_Manager
+        )
+    ),
+    --1.5 Complete list of person info for new manager record
+    major_person_info AS (
+        SELECT * FROM major_new_person_info  
+        UNION
+        SELECT DISTINCT ON (person_combo_id)
+            person_combo_id ,
+            party_guid      ,
+            first_name      ,
+            surname         
+        FROM ETL_MANAGER  
+        WHERE  person_combo_id IN (
+            SELECT  DISTINCT person_combo_id
+            FROM    major_new_manager
+        )
+    ),
+    major_new_manager_info AS (
+        SELECT
+            manager.mine_no         ,
+            manager.person_combo_id ,
+            manager.mgr_combo_id    ,
+            person.party_guid       ,
+            person.first_name       ,
+            person.surname          ,
+            --no contact info for major mine as it's not from NoW
+            'Unknown'::varchar AS phone_no        ,
+            'Unknown'::varchar AS email           ,
+            now() AS effective_date   
+        FROM major_new_manager manager
+        INNER JOIN major_person_info person ON
+            person.person_combo_id=manager.person_combo_id
+    ),
+    --2 Regional Mine
+    --2.1 Regional mine with valid manager
+    regional_now_manager  AS(
+        SELECT
+            SUBSTRING(cid from 1 for 7) AS mine_no  ,
+            SUBSTRING(cid from 8 for 6) AS upd_no   , 
+            cid_ccn                     AS contact_cid
+        FROM mms.mmsccc now_contact
+        WHERE
+            SUBSTRING(type_ind from 3 for 1) = 'Y'
+            AND 
+            --not a major mine
+            SUBSTRING(cid from 1 for 7) NOT IN (
+                SELECT  mine_no
+                FROM    major_mine_list
+            )
+    ),
+    --2.2 Latest NoW with manager attached
+    latest_regional_now AS(
+        SELECT
+            mine_no                 ,
+            Max(upd_no)     last_upd
+        FROM regional_now_manager
         GROUP BY
-            now_wContact.mine_no
+            mine_no
     ),
-    --Select the most recent NoW for each mine in now_wContact; 
-    latest_now_wContact AS(
-        --This list may contain more than 1 cid_ccn (contact ref id) if more than 1 manager are listed in a single NoW
-        SELECT
-            nowlist.mine_no,
-            nowlist.upd_no,
-            nowlist.cid,
-            nowlist.cid_ccn 
-        FROM now_wContact nowlist
-        INNER JOIN latest_now ON 
-            latest_now.last_upd = nowlist.upd_no
-            AND
-            latest_now.mine_no = nowlist.mine_no
-    ),
-    --Sublist of `latest_now_wContact` selecting only one manager contact based on `cid_ccn`
-    manager_selection AS(
-        SELECT
-            cid,
-            max(cid_ccn) contact_ref
-        FROM latest_now_wContact
-        GROUP BY cid
-    ),
-    --Retrieve mine manager ref id for each mine
-    manager_ref_list AS(    
-        SELECT
-            latest_now.mine_no,
-            manager_selection.contact_ref
-        FROM manager_selection
-        INNER JOIN latest_now_wContact latest_now ON
-            manager_selection.contact_ref=latest_now.cid_ccn
-            AND
-            manager_selection.cid=latest_now.cid
-    ),
-    --Extract only the numbers in phone info field
-    phone_format AS(
+    --2.3 Latest manager if more than 1 is attached 
+    latest_regional_manager AS (
         SELECT 
-            cid,
-            NULLIF(regexp_replace(phone, '\D', '','g'),'')::numeric phone_no
-        FROM mms.mmsccn
+            mine_no         ,
+            Max(contact_cid) AS contact_cid
+        FROM regional_now_manager
+        WHERE mine_no||upd_no IN (
+            SELECT mine_no||last_upd
+            FROM latest_regional_now
+        )
+        GROUP BY mine_no
     ),
-    --Format bad phone data
-    good_phone AS(
+    --2.4 Select new manager record
+    regional_new_manager AS (
+        SELECT 
+            mine_no ,
+            contact_cid AS person_combo_id,
+            mine_no||contact_cid AS mgr_combo_id
+        FROM latest_regional_manager
+        where mine_no||contact_cid NOT IN (
+            SELECT  mgr_combo_id
+            FROM    ETL_MANAGER
+        )
+    ),
+    --2.5 Check if manager is a new person 
+    regional_new_person AS (
+        SELECT DISTINCT ON (person_combo_id)
+            person_combo_id 
+        FROM regional_new_manager
+        WHERE person_combo_id NOT IN (
+            SELECT  person_combo_id
+            FROM    ETL_Manager
+        )
+    ),
+    --2.6 Extract contact info and formatting
+    regional_new_person_info AS(
+        SELECT 
+            cid AS person_combo_id  ,
+            COALESCE(NULLIF(regexp_replace(contact_info.name,' ', '', 'g'),''),'Unknown') first_name,
+            COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname ,     
+            NULLIF(regexp_replace(phone, '\D', '','g'),'')::numeric phone_no                        , --Extract numbers only from phone_no field
+            COALESCE(NULLIF(regexp_replace(contact_info.email,' ', '', 'g'),''),'Unknown') email    ,     
+            COALESCE(contact_info.add_dt,now()) effective_date
+        FROM mms.mmsccn contact_info
+        WHERE cid IN (
+            SELECT  person_combo_id
+            FROM    regional_new_person
+        )
+    ),
+    --Format phone number field to match MDS party table schema
+    regional_new_person_info_good_phone AS(
         SELECT
-            cid,
+            gen_random_uuid() AS party_guid   ,
+            person_combo_id ,
+            first_name      ,
+            surname         ,
             CASE 
                 WHEN phone_no>=10^10 AND phone_no<2*10^10 THEN (phone_no-10^10 )::varchar--Remove country code for phone_no
                 WHEN phone_no>10^9 AND phone_no<10^10 THEN (phone_no)::varchar
                 ELSE 'Unknown'
-            END AS good_phone_no
-        FROM phone_format 
+            END AS phone_no ,
+            email           ,
+            effective_date  
+        FROM regional_new_person_info 
     ),
-    --Retrieve contact details and format data from MMS 
-    manager_info AS (
+    --2.7 Complete list of person info for new manager record
+    regional_person_info AS (
+        SELECT * FROM regional_new_person_info_good_phone
+        UNION 
         SELECT
-            manager_ref_list.mine_no,
-            COALESCE(NULLIF(regexp_replace(contact_info.name,' ', '', 'g'),''),'Unknown') first_name,
-            COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname, 
-            CASE 
-                WHEN good_phone.good_phone_no = 'Unknown' THEN good_phone.good_phone_no
-                ELSE
-                    SUBSTRING(good_phone.good_phone_no from 1 for 3)||'-'||
-                    SUBSTRING(good_phone.good_phone_no from 4 for 3)||'-'||
-                    SUBSTRING(good_phone.good_phone_no from 7 for 4) 
-            END AS phone_no, 
-            COALESCE(NULLIF(regexp_replace(contact_info.email,' ', '', 'g'),''),'Unknown') email,     
-            COALESCE(contact_info.add_dt,now()) effective_date
-        FROM manager_ref_list
-        INNER JOIN mms.mmsccn contact_info ON
-            contact_info.cid = manager_ref_list.contact_ref
-        INNER JOIN good_phone ON
-            good_phone.cid=contact_info.cid
-    ),
-    --Getting mine guid into manager table by matching mine_no
-    mms_manager  AS(
-        SELECT
-            mine_detail.mine_no     ,
-            mine_detail.mine_guid   ,
-            manager_info.first_name ,
-            manager_info.surname    ,
-            manager_info.phone_no   ,
-            manager_info.email      ,
-            manager_info.effective_date,
-            UPPER(manager_info.first_name||manager_info.surname||manager_info.phone_no||manager_info.email) AS person_combo_id,
-            UPPER(manager_info.first_name||manager_info.surname||manager_info.phone_no||manager_info.email||manager_info.mine_no) AS mgr_combo_id
-        FROM mine_detail 
-        INNER JOIN manager_info ON
-            mine_detail.mine_no=manager_info.mine_no
-    ),
-
- 
- 
-    -- Select a list of new manager record that will be added to the etl table
-    new_mms_manager AS(
-        SELECT *
-        FROM mms_manager 
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM ETL_Manager
-            WHERE 
-                mgr_combo_id = mms_manager.mgr_combo_id
-        ) 
-    ),
-    -- Select a list of distinct person from the new record list
-    distinct_person AS (
-        SELECT DISTINCT 
-            person_combo_id
-        FROM 
-            new_mms_manager
-    ),
-    -- List of person already exists in MDS person table
-    distinct_person_old AS(
-        SELECT *
-        FROM distinct_person
-        WHERE EXISTS (
-            SELECT 1
-            FROM party
-            WHERE 
-                UPPER(party.first_name||party.party_name||party.phone_no||party.email) = distinct_person.person_combo_id
+            party_guid      ,
+            person_combo_id ,
+            first_name      ,
+            surname         ,
+            phone_no        ,
+            email           ,
+            effective_date
+        FROM ETL_MANAGER  
+        WHERE   person_combo_id IN (
+            SELECT  DISTINCT person_combo_id
+            FROM    regional_new_manager
         )
     ),
-    -- Get person guid from MDS person table
-    distinct_person_old_wGuid AS (
+    --2.8 Complete list of new regional mine manager
+    regional_new_manager_info AS (
         SELECT
-            party.party_guid,
-            mms_distinct.person_combo_id
-        FROM
-            distinct_person_old mms_distinct
-        INNER JOIN party ON
-            UPPER(party.first_name||party.party_name||party.phone_no||party.email) = mms_distinct.person_combo_id
+            manager.mine_no         ,
+            manager.person_combo_id ,
+            manager.mgr_combo_id    ,
+            person.party_guid       ,
+            person.first_name       ,
+            person.surname          ,
+            person.phone_no         ,
+            person.email            ,
+            person.effective_date  
+        FROM regional_new_manager manager 
+        INNER JOIN regional_person_info person   ON
+            person.person_combo_id=manager.person_combo_id
     ),
-    -- List of person that does not exist in MDS ETL table
-    distinct_person_new AS (
-        SELECT *
-        FROM distinct_person
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM ETL_Manager
-            WHERE 
-                person_combo_id = distinct_person.person_combo_id
-        )
-    ),
-    -- Assign randomly generated GUID 
-    distinct_person_new_wGuid AS (
-        SELECT
-            gen_random_uuid() party_guid,
-            person_combo_id
-        FROM
-            distinct_person_new
-    ), 
-    -- Combine the list of new manager record with party_guid
-    distinct_person_wGuid AS(
-        SELECT 
-            old_wGuid.party_guid,
-            old_wGuid.person_combo_id
-        FROM  distinct_person_old_wGuid old_wGuid
+    --3.Update MDS ETL with complete list of new mine manager
+    new_manager_info AS (
+        SELECT * FROM major_new_manager_info
         UNION
-        SELECT
-            new_wGuid.party_guid,
-            new_wGuid.person_combo_id
-        FROM distinct_person_new_wGuid new_wGuid
-    ), 
-
-    -- Full manager table 
-    mms_manager_full AS (
-        SELECT
-            manager_info.mine_no            ,
-            manager_info.mine_guid          ,
-            distinct_person_wGuid.party_guid    ,
-            manager_info.first_name         ,
-            manager_info.surname            ,
-            manager_info.phone_no           ,
-            manager_info.email              ,
-            manager_info.effective_date     ,
-            manager_info.person_combo_id    ,
-            manager_info.mgr_combo_id
-        FROM new_mms_manager manager_info
-        INNER JOIN distinct_person_wGuid ON
-            manager_info.person_combo_id=distinct_person_wGuid.person_combo_id
-    ) 
+        SELECT * FROM regional_new_manager_info
+    )
     INSERT INTO ETL_MANAGER (
-        mine_guid    ,
-        mine_no      ,
-        party_guid  ,
-        first_name   ,
-        surname      ,
-        phone_no     ,
-        email        ,
-        effective_date,
-        person_combo_id,
-        mgr_combo_id     )
+        mine_guid               ,
+        mine_no                 ,
+        party_guid              ,
+        first_name              ,
+        surname                 ,
+        phone_no                ,
+        email                   ,
+        effective_date          ,
+        person_combo_id         ,
+        mgr_combo_id            )
     SELECT
-        manager.mine_guid           ,
-        manager.mine_no             ,
-        manager.party_guid         ,
-        manager.first_name          ,
-        manager.surname             ,
-        manager.phone_no            ,
-        manager.email               ,
-        manager.effective_date      ,
-        manager.person_combo_id     ,
-        manager.mgr_combo_id
-    FROM mms_manager_full manager;
+        mds.mine_guid           ,
+        mms.mine_no             ,
+        mms.party_guid          ,
+        mms.first_name          ,
+        mms.surname             ,
+        mms.phone_no            ,
+        mms.email               ,
+        mms.effective_date      ,
+        mms.person_combo_id     ,
+        mms.mgr_combo_id
+    FROM new_manager_info mms
+    INNER JOIN mine_detail mds ON 
+        mds.mine_no=mms.mine_no; 
     SELECT count(*) FROM ETL_MANAGER INTO new_row; 
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row); 
 END $$;
@@ -261,36 +286,30 @@ DECLARE
     new_row integer;
 BEGIN
     RAISE NOTICE '.. Step 2 of 3: Update contact details for new person'; 
-    SELECT count(*) FROM person INTO old_row;
+    SELECT count(*) FROM party INTO old_row;
     WITH 
     --Select only new entry in ETL_Manager table
     new_manager AS(
-        SELECT *
-        FROM ETL_MANAGER
-        WHERE NOT EXISTS (
-            SELECT  1
-            FROM    person
-            WHERE   
-                party_guid = ETL_MANAGER.party_guid
-        )
-    ),
-    distinct_new_manager AS (
-        SELECT DISTINCT ON
-            (party_guid) party_guid       ,
-            first_name                      ,
-            surname                         ,
-            phone_no                        ,
-            email                           ,
+        SELECT DISTINCT ON (party_guid) 
+            party_guid     ,
+            first_name     ,
+            surname        ,
+            phone_no       ,
+            email          ,
             effective_date      
-        FROM new_manager
+        FROM ETL_MANAGER
+        WHERE party_guid NOT IN (
+            SELECT  party_guid
+            FROM    party
+        )
     )
     INSERT INTO party(
-        party_guid ,
-        first_name  ,	
-        party_name     ,
-        phone_no	,
-        phone_ext	,
-        email	    ,
+        party_guid      ,
+        first_name      ,	
+        party_name      ,
+        phone_no	    ,
+        phone_ext	    ,
+        email	        ,
         effective_date  ,
         expiry_date	    ,
         create_user	    ,
@@ -298,24 +317,23 @@ BEGIN
         update_user	    ,
         update_timestamp,
         party_type_code
-
     )
     SELECT 
-        new.party_guid ,
-        new.first_name  ,
-        new.surname     ,
-        new.phone_no    ,
-        'N/A'           ,
-        new.email       ,
-        new.effective_date,
-        '9999-12-31'::date,
+        party_guid  ,
+        first_name  ,
+        surname     ,
+        phone_no    ,
+        'N/A'       ,
+        email       ,
+        effective_date      ,
+        '9999-12-31'::date  ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
         now()               ,
         'PER'
-    FROM distinct_new_manager new;
-    SELECT count(*) FROM person INTO new_row; 
+    FROM new_manager;
+    SELECT count(*) FROM party INTO new_row; 
     RAISE NOTICE '.... # new person records MMS: %', (new_row-old_row);
     RAISE NOTICE '.... Total person records MMS: %', (new_row);
 END $$; 
@@ -327,7 +345,7 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment'; 
     SELECT count(*) FROM mgr_appointment INTO old_row;
-    --select 
+    --select only new record
     WITH new_manager AS
     (
         SELECT *
@@ -355,7 +373,7 @@ BEGIN
     SELECT
         gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
         new.mine_guid       ,
-        new.party_guid     ,
+        new.party_guid      ,
         new.effective_date  ,
         '9999-12-31'::date  ,
         'mms_migration'     ,

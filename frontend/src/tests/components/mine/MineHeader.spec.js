@@ -7,6 +7,7 @@ const props = {}
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.handleMineUpdate = jest.fn();
 };
 
 beforeEach(() => {
