@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { createMineRecord, updateMineRecord, fetchMineRecord, fetchMineRecordById, fetchMineNameList } from '@/actionCreators/mineActionCreator';
+import { createMineRecord, updateMineRecord, fetchMineRecords, fetchMineRecordById, fetchMineNameList } from '@/actionCreators/mineActionCreator';
 import * as genericActions from '@/actions/genericActions';
 import * as API from '@/constants/API';
 import * as MOCK from '@/tests/mocks/dataMocks';
@@ -77,7 +77,7 @@ describe('`fetchMineRecord` action creator', () => {
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return (fetchMineRecord('1', '5')(dispatch)).then(() => {
+    return (fetchMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -87,7 +87,7 @@ describe('`fetchMineRecord` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     const mockError = { errors: [], message: 'Error' };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
-    return (fetchMineRecord('1', '5')(dispatch)).then(() => {
+    return (fetchMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

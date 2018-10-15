@@ -26,17 +26,19 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
+  fetchStatusOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
+  mineStatusOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
-  pageData: {}
+  pageData: {},
 };
 
 export class Dashboard extends Component {
@@ -45,6 +47,7 @@ export class Dashboard extends Component {
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     this.renderDataFromURL(params);
+    this.props.fetchStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {

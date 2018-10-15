@@ -31,8 +31,7 @@ export const MineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      {/* commented out until ready to add status */}
-      {/* <Row gutter={16}>
+      <Row gutter={16}>
         <Col>
           <Form.Item>
             <Field
@@ -46,7 +45,7 @@ export const MineRecordform = (props) => {
             />
           </Form.Item>
         </Col>
-      </Row> */}
+      </Row>
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>

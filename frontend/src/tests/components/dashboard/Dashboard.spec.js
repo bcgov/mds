@@ -7,16 +7,18 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecord = jest.fn(() => Promise.resolve({}));
+  dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
   dispatchProps.createMineRecord = jest.fn();
+  dispatchProps.fetchStatusOptions = jest.fn();
 };
 
 const setupReducerProps = () => {
-  reducerProps.mineIds = MOCK.MINES.mineIds;
-  reducerProps.mines = MOCK.MINES.mines;
-  reducerProps.pageData = MOCK.PAGE_DATA;
   reducerProps.location = {search:""}
   reducerProps.history = {}
+  reducerProps.mines = MOCK.MINES.mines;
+  reducerProps.mineIds = MOCK.MINES.mineIds;
+  reducerProps.pageData = MOCK.PAGE_DATA;
+  reducerProps.mineStatusOptions = MOCK.MINE_STATUS_OPTIONS;
 };
 
 beforeEach(() => {

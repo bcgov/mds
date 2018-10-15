@@ -179,4 +179,85 @@ export const PAGE_DATA = {
   "total_pages":360,
 }
 
-export const COORDINATES = [48.70707, -122.489504]
+export const COORDINATES = [48.70707, -122.489504];
+export const STATUS_OPTIONS = {
+  'options':
+  [
+    {
+        "value": "ABN",
+        "label": "Abandoned"
+    },
+    {
+        "value": "CLD",
+        "label": "Closed",
+        "children": [
+        {
+            "value": "CM",
+            "label": "Care & Maintenance"
+        },
+        {
+            "value": "REC",
+            "label": "Reclamation",
+            "children": [
+            {
+                "value": "LTM",
+                "label": "LTM"
+            },
+            {
+                "value": "LWT",
+                "label": "LTM WT"
+            },
+            {
+                "value": "PRP",
+                "label": "Permit Release Pending"
+            }
+            ]
+        },
+        {
+            "value": "ORP",
+            "label": "Orphaned",
+            "children": [
+            {
+                "value": "LTM",
+                "label": "LTM"
+            },
+            {
+                "value": "LWT",
+                "label": "LTM WT"
+            },
+            {
+                "value": "RNS",
+                "label": "Reclamation Not Starte"
+            },
+            {
+                "value": "SVR",
+                "label": "Site Visit Required"
+            }
+            ]
+        },
+        {
+            "value": "UN",
+            "label": "Unknown"
+        }
+        ]
+    },
+    {
+        "value": "NS",
+        "label": "Not Started"
+    },
+    {
+        "value": "OP",
+        "label": "Operating",
+        "children": [
+        {
+            "value": "YR",
+            "label": "Year round"
+        },
+        {
+            "value": "SEA",
+            "label": "Seasonal"
+        }
+      ]
+    }
+  ]
+};

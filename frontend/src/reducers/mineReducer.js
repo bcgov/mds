@@ -13,7 +13,7 @@ const initialState = {
   minesPageData: {},
   permittees: {},
   permitteeIds: [],
-  mineStatusOptions: {}
+  mineStatusOptions: []
 };
 
 const createItemMap = (array, idField) => {
@@ -45,7 +45,7 @@ const renderCurrentPermittee = (array) => {
   unique = [...new Set(permitteeIds)];
   return unique;
  }
- 
+
 const mineReducer = (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.STORE_MINE_LIST:
@@ -75,7 +75,7 @@ const mineReducer = (state = initialState, action) => {
       case actionTypes.STORE_STATUS_OPTIONS:
         return {
           ...state,
-          mineStatusOptions: action.payload,
+          mineStatusOptions: action.payload.options,
         }
       case actionTypes.UPDATE_MINE_RECORD:
         return {

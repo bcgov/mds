@@ -12,8 +12,8 @@ import * as String from '@/constants/strings';
 
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
-  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   createMineRecord: PropTypes.func.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineStatusOptions: PropTypes.array
 };
 

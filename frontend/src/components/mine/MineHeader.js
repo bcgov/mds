@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN, PENCIL } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN, PENCIL, RED_ELLIPSE } from '@/constants/assets';
 import MineRecordForm from '@/components/Forms/MineRecordForm';
 import ConditionalButton from '@/components/common/ConditionalButton';
 
@@ -45,12 +45,13 @@ class MineHeader extends Component {
       "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
       "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
+      "mine_status": mine.mine_status ? mine.mine_status[0].status_value : null,
     }
     return (
       <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
     )
   }
-
+  
   render() {
     const { mine } = this.props;
     return (
@@ -80,11 +81,19 @@ class MineHeader extends Component {
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
               <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
             </div>
-            <div className="inline-flex between">
-              <img src={ELLIPSE} />
-              <div><h5>Status: </h5></div>
-              <div><h3>Active</h3></div>
-            </div>
+            {mine.mine_status && 
+              <div className="inline-flex between">
+                <img src={(mine.mine_status && (mine.mine_status[0].mine_operation_status === 'OP' )) ? ELLIPSE : RED_ELLIPSE} />
+                <div><h5>Status: </h5></div>
+                <div>
+                  <h3>
+                      {mine.mine_status[0].status_label.map((label, i) => {
+                      return (<span key={i}>{label} /</span>)
+                    })}
+                  </h3>
+                </div>
+              </div>
+            }
           </div>
         </div>
       </div>

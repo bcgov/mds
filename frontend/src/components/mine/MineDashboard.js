@@ -19,10 +19,14 @@ import NullScreen from '@/components/common/NullScreen';
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  fetchMineRecordById: PropTypes.func,
+  fetchMineRecordById: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
+  fetchStatusOptions: PropTypes.func.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
+  permittees: PropTypes.object,
+  permitteesIds: PropTypes.array,
+  mineStatusOptions: PropTypes.array
 };
 
 const defaultProps = {
