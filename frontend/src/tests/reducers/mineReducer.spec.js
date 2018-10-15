@@ -9,8 +9,6 @@ describe('mineReducer', () => {
       mineIds: [],
       mineNameList:[],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
     };
     const result = mineReducer(undefined, {});
     expect(result).toEqual(expectedValue);
@@ -28,8 +26,6 @@ describe('mineReducer', () => {
         'items_per_page': 50,
         'total': 1
       },
-      permittees: {},
-      permitteeIds: [],
     };
     const result = mineReducer(undefined, storeMineList({
       'mines': [],
@@ -47,8 +43,6 @@ describe('mineReducer', () => {
       mineIds: ["test123"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
     };
     const result = mineReducer(undefined, storeMine({"guid": "test123"}));
     expect(result).toEqual(expectedValue);
@@ -60,16 +54,12 @@ describe('mineReducer', () => {
       mineIds: ["test123"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
     };
     const updatedMineValue = {
       mines: {"test456": {"guid": "test456"}},
       mineIds: ["test456"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
     };
     const storedMine = mineReducer(undefined, storeMine({"guid": "test123"}));
     expect(storedMine).toEqual(storedMineValue);
@@ -83,8 +73,6 @@ describe('mineReducer', () => {
       mineIds: [],
       mineNameList: { mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039"}]},
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
     };
     const result = mineReducer(undefined, storeMineNameList({ mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039" }] }));
     expect(result).toEqual(expectedValue);
