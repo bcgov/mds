@@ -28,7 +28,7 @@ class MineStatus(AuditMixin, Base):
         status_values_list = []
         _mine_operation_status_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_code', 'mine_operation_status_code')
         _mine_operation_status_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_reason_code', 'mine_operation_status_reason_code')
-        _mine_operation_status_sub_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_sub_reason', 'mine_operation_status_sub_reason')
+        _mine_operation_status_sub_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_sub_reason_code', 'mine_operation_status_sub_reason_code')
         if _mine_operation_status_code:
             status_values_list.append(_mine_operation_status_code)
         if _mine_operation_status_reason_code:
@@ -41,7 +41,7 @@ class MineStatus(AuditMixin, Base):
         status_labels_list = []
         _mine_operation_status_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_code', 'description')
         _mine_operation_status_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_reason_code', 'description')
-        _mine_operation_status_sub_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_sub_reason', 'description')
+        _mine_operation_status_sub_reason_code = self.validate_status_code_exists(mine_status_xref, 'mine_operation_status_sub_reason_code', 'description')
         if _mine_operation_status_code:
             status_labels_list.append(_mine_operation_status_code)
         if _mine_operation_status_reason_code:
