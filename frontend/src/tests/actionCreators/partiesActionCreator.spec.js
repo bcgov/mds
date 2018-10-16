@@ -38,8 +38,7 @@ describe('`createParty` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    const mockError = { errors: [], message: 'Error' };
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (createParty(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -50,7 +49,7 @@ describe('`createParty` action creator', () => {
 
 describe('`fetchParties` action creator', () => {
   const value = " ";
-  const url = ENVIRONMENT.apiUrl + API.PARTIES;
+  const url = ENVIRONMENT.apiUrl + API.PARTIES(value);
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
@@ -62,8 +61,7 @@ describe('`fetchParties` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    const mockError = { errors: [], message: 'Error' };
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (fetchParties()(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -86,8 +84,7 @@ describe('`fetchPartyById` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    const mockError = { errors: [], message: 'Error' };
-    mockAxios.onGet(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onGet(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (fetchPartyById(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -115,8 +112,7 @@ describe('`addMineManager` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    const mockError = { errors: [], message: 'Error' };
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (addMineManager(mockPayload, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -145,8 +141,7 @@ describe('`addPermittee` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    const mockError = { errors: [], message: 'Error' };
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, mockError);
+    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (addPermittee(mockPayload, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

@@ -5,6 +5,8 @@ export const createMockHeader = () => ({
   }
 });
 
+export const ERROR = { data: { error: { message: 'Error', status: 400 }}};
+
 export const MINES = {
   mineIds: [
     "18133c75-49ad-4101-85f3-a43e35ae989a",

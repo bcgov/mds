@@ -84,108 +84,24 @@ export const fetchMineNameList = (search=null) => (dispatch) => {
       dispatch(hideLoading());
     })
     .catch((err) => {
-        notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(hideLoading());
     });
 };
 
-
-const statusOptions = {
-  'options':
-              [
-              {
-                  "value": "ABN",
-                  "label": "Abandoned"
-              },
-              {
-                  "value": "CLD",
-                  "label": "Closed",
-                  "children": [
-                  {
-                      "value": "CM",
-                      "label": "Care & Maintenance"
-                  },
-                  {
-                      "value": "REC",
-                      "label": "Reclamation",
-                      "children": [
-                      {
-                          "value": "LTM",
-                          "label": "LTM"
-                      },
-                      {
-                          "value": "LWT",
-                          "label": "LTM WT"
-                      },
-                      {
-                          "value": "PRP",
-                          "label": "Permit Release Pending"
-                      }
-                      ]
-                  },
-                  {
-                      "value": "ORP",
-                      "label": "Orphaned",
-                      "children": [
-                      {
-                          "value": "LTM",
-                          "label": "LTM"
-                      },
-                      {
-                          "value": "LWT",
-                          "label": "LTM WT"
-                      },
-                      {
-                          "value": "RNS",
-                          "label": "Reclamation Not Starte"
-                      },
-                      {
-                          "value": "SVR",
-                          "label": "Site Visit Required"
-                      }
-                      ]
-                  },
-                  {
-                      "value": "UN",
-                      "label": "Unknown"
-                  }
-                  ]
-              },
-              {
-                  "value": "NS",
-                  "label": "Not Started"
-              },
-              {
-                  "value": "OP",
-                  "label": "Operating",
-                  "children": [
-                  {
-                      "value": "YR",
-                      "label": "Year round"
-                  },
-                  {
-                      "value": "SEA",
-                      "label": "Seasonal"
-                  }
-                  ]
-              }
-              ]
-};
- 
 export const fetchStatusOptions = () => (dispatch) => {
-//   dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
-//   dispatch(showLoading('modal'));
-//   return axios.get(ENVIRONMENT.apiUrl + API.MINE_STATUS, createRequestHeader())
-//     .then((response) => {
-//       dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
-        dispatch(mineActions.storeStatusOptions(statusOptions));
-    //   dispatch(mineActions.storeStatusOptions(response.data));
-    //   dispatch(hideLoading('modal'));
-    // })
-    // .catch((err) => {
-    //    notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
-    //   dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
-    //   dispatch(hideLoading('modal'));
-    // });
+  dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
+  dispatch(showLoading('modal'));
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_STATUS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(mineActions.storeStatusOptions(response.data));
+      dispatch(hideLoading('modal'));
+    })
+    .catch((err) => {
+       notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(hideLoading('modal'));
+    });
 };

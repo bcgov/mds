@@ -20,6 +20,7 @@ export const createParty = (payload) => (dispatch) => {
       return response;
     })
     .catch((err) => {
+      console.log(err.response);
       notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.CREATE_PARTY));
       dispatch(hideLoading('modal'));
