@@ -64,7 +64,6 @@ export const getMineRecordById = (mineNo) => (dispatch) => {
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORD));
     dispatch(mineActions.storeMine(response.data, mineNo));
-    dispatch(mineActions.storeCurrentPermittees(response.data));
     dispatch(hideLoading());
   })
   .catch(() => {
