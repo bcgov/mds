@@ -111,7 +111,8 @@ class Mine(Resource, UserMixin, ErrorMixin):
         lon = data['longitude']
         mine_name = data['name']
         mine_note = data['note']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note:
+        status = data['mine_status']
+        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status:
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
@@ -162,7 +163,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict()
             )
             location.save()
-
+        self.mine_status_processor(status, mine.mine_guid) if status else None
         return mine.json()
 
 

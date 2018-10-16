@@ -249,3 +249,11 @@ def test_put_mine_note(test_client, auth_headers):
     put_data = json.loads(put_resp.data.decode())
     assert test_tenure_data['note'] in [x['mine_note'] for x in put_data['mine_detail']]
     assert put_resp.status_code == 200
+
+
+def test_put_mine_mine_status(test_client, auth_headers):
+    test_mine_data = {
+        "mine_status": "CLD, CM"
+    }
+    put_resp = test_client.put('/mine/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 200
