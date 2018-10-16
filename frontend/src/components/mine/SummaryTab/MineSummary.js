@@ -53,7 +53,7 @@ class MineSummary extends Component {
                           <tr key={id}>
                             <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
                             <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
-                            <td data-label="Effective Date"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                            <td data-label="Effective Date"><p className="p-large">{permittees[id].effective_date}</p></td>
                           </tr>
                         )
                       })}
