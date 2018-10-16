@@ -11,7 +11,6 @@ import ConditionalButton from '@/components/common/ConditionalButton';
  */
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  handleMineUpdate: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
   mineStatusOptions: PropTypes.array
@@ -84,12 +83,12 @@ class MineHeader extends Component {
             </div>
             {mine.mine_status[0] && 
               <div className="inline-flex between">
-                <img src={(mine.mine_status[0] && (mine.mine_status[0].mine_operation_status === 'OP' )) ? ELLIPSE : RED_ELLIPSE} />
-                <div><h5>Status: </h5></div>
+                <div><h5>Operating Status: </h5></div>
+                <img src={(mine.mine_status[0].status_values[0] === 'OP' ) ? ELLIPSE : RED_ELLIPSE} />
                 <div>
                   <h3>
                       {mine.mine_status[0].status_labels.map((label, i) => {
-                      return (<span key={i}>{label} |</span>)
+                      return (<span className="mine__status" key={i}>{label} </span>)
                     })}
                   </h3>
                 </div>
