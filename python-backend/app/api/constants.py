@@ -165,7 +165,7 @@ MINE_STATUS_OPTIONS = [
             },
             {
                 'value': MINE_OPERATION_STATUS_REASON['seasonal']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['seasonal']['value'],
+                'label': MINE_OPERATION_STATUS_REASON['seasonal']['label'],
                 'children': []
             }
         ]
