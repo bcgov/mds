@@ -125,6 +125,23 @@ def test_post_mine_success_all(test_client, auth_headers):
     assert post_resp.status_code == 200
 
 
+def test_post_mine_mine_status(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine_status",
+        "latitude": "49.2827000",
+        "longitude": "123.1207000",
+        "note": "This is a note",
+        "mine_status": "CLD, CM"
+    }
+    post_resp = test_client.post('/mine', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_data['latitude'] == test_mine_data['latitude']
+    assert post_data['longitude'] == test_mine_data['longitude']
+    assert post_data['mine_note'] == test_mine_data['note']
+    assert post_resp.status_code == 200
+
+
 # PUT
 def test_put_mine_tenure_no_tenure(test_client, auth_headers):
     test_tenure_data = {}
