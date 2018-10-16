@@ -20,7 +20,7 @@ export const createMineRecord = (payload) => (dispatch) => {
     return response;
   })
   .catch((err) => {
-    notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.CREATE_MINE_RECORD));
     dispatch(hideLoading());
   });
@@ -37,7 +37,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
     return response;
   })
   .catch((err) => {
-    notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
     dispatch(hideLoading());
   });
@@ -52,7 +52,7 @@ export const fetchMineRecords = (page, per_page, map) => (dispatch) => {
     return response;
   })
   .catch((err) => {
-    notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.GET_MINE_RECORD));
   });
 };
@@ -68,7 +68,7 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     dispatch(hideLoading());
   })
   .catch((err) => {
-    notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.GET_MINE_RECORD));
     dispatch(hideLoading());
   });
@@ -84,7 +84,7 @@ export const fetchMineNameList = (search=null) => (dispatch) => {
       dispatch(hideLoading());
     })
     .catch((err) => {
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(hideLoading());
     });
@@ -100,7 +100,7 @@ export const fetchStatusOptions = () => (dispatch) => {
       dispatch(hideLoading('modal'));
     })
     .catch((err) => {
-       notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+       notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
       dispatch(hideLoading('modal'));
     });

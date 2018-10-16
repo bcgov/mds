@@ -21,7 +21,8 @@ export class CreateMine extends Component {
   state = { visible: false }
 
   handleSubmit = (value) => {
-    this.props.createMineRecord(value).then(() => {
+    let mineStatus = value.mine_status.join(",");
+    this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
       this.setState({
         visible: false,
       });

@@ -25,7 +25,8 @@ class MineHeader extends Component {
   state = { visible: false }
   
   handleUpdateMineRecord = (value) => {
-    this.props.updateMineRecord(this.props.mine.guid, value, value.name).then(() =>{
+    let mineStatus = value.mine_status.join(",");
+    this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
       this.props.fetchMineRecordById(this.props.mine.guid);
       this.setState({
         visible: false,
@@ -45,7 +46,7 @@ class MineHeader extends Component {
       "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
       "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
-      "mine_status": mine.mine_status ? mine.mine_status[0].status_value : null,
+      "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
     }
     return (
       <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
@@ -81,14 +82,14 @@ class MineHeader extends Component {
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
               <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
             </div>
-            {mine.mine_status && 
+            {mine.mine_status[0] && 
               <div className="inline-flex between">
-                <img src={(mine.mine_status && (mine.mine_status[0].mine_operation_status === 'OP' )) ? ELLIPSE : RED_ELLIPSE} />
+                <img src={(mine.mine_status[0] && (mine.mine_status[0].mine_operation_status === 'OP' )) ? ELLIPSE : RED_ELLIPSE} />
                 <div><h5>Status: </h5></div>
                 <div>
                   <h3>
-                      {mine.mine_status[0].status_label.map((label, i) => {
-                      return (<span key={i}>{label} /</span>)
+                      {mine.mine_status[0].status_labels.map((label, i) => {
+                      return (<span key={i}>{label} |</span>)
                     })}
                   </h3>
                 </div>

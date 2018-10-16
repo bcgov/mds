@@ -21,7 +21,7 @@ export const createParty = (payload) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err.response);
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.CREATE_PARTY));
       dispatch(hideLoading('modal'));
     });
@@ -37,7 +37,7 @@ export const fetchParties = (value=null) => (dispatch) => {
       dispatch(hideLoading('modal'));
     })
     .catch((err) => {
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PARTIES));
       dispatch(hideLoading('modal'));
     });
@@ -53,7 +53,7 @@ export const fetchPartyById = (id) => (dispatch) => {
       dispatch(hideLoading());
     })
     .catch((err) => {
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_PARTY));
       dispatch(hideLoading());
     });
@@ -70,7 +70,7 @@ export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) =>
       return response;
     })
     .catch((err) => {
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_MINE_MANAGER));
       dispatch(hideLoading());
     });
@@ -87,7 +87,7 @@ export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => 
       return response;
     })
     .catch((err) => {
-      notification.error({ message: err.response.data ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_PERMITTEE));
       dispatch(hideLoading());
     });
