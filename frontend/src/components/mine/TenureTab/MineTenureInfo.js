@@ -11,7 +11,7 @@ import NullScreen from '@/components/common/NullScreen';
 const propTypes = {
   mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
-  getMineRecordById: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired
 };
 
@@ -25,7 +25,7 @@ class MineTenureInfo extends Component {
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
     this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_detail[0].mine_name).then(() => {
-      this.props.getMineRecordById(id);
+      this.props.fetchMineRecordById(id);
       this.setState({
         visible: !this.state.visible,
       });

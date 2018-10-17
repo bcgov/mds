@@ -7,14 +7,19 @@ const dispatchProps = {};
 const reducerProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getMineRecordById = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
+  dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.match = {};
 };
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   reducerProps.mines = MOCK.MINES.mines;
+  reducerProps.mineIds = MOCK.MINES.mineIds;
+  reducerProps.permittees = {};
+  reducerProps.permitteeIds = [];
+  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
 };
 
 beforeEach(() => {

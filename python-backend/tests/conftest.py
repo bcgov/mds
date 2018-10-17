@@ -6,11 +6,12 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.mine.models.mines import MineIdentity, MineDetail, MineralTenureXref
+from app.api.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
 from app.api.party.models.party import Party, MgrAppointment, PartyTypeCode
 from app.api.location.models.location import MineLocation
 from app.api.permit.models.permit import Permit, PermitStatusCode
 from app.api.permittee.models.permittee import Permittee
-from app.api.constants import PARTY_STATUS_CODE
+from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
 
@@ -103,6 +104,29 @@ def setup_data():
             **DUMMY_USER_KWARGS
         )
         party_code.save()
+
+    # Test Operation Codes
+    for k, v in MINE_OPERATION_STATUS.items():
+        mine_operation_status_code = MineOperationStatusCode(
+            mine_operation_status_code=v['value'],
+            description=v['label'],
+            **DUMMY_USER_KWARGS
+        )
+        mine_operation_status_code.save()
+    for k, v in MINE_OPERATION_STATUS_REASON.items():
+        mine_operation_status_reason_code = MineOperationStatusReasonCode(
+            mine_operation_status_reason_code=v['value'],
+            description=v['label'],
+            **DUMMY_USER_KWARGS
+        )
+        mine_operation_status_reason_code.save()
+    for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
+        mine_operation_status_sub_reason_code = MineOperationStatusSubReasonCode(
+            mine_operation_status_sub_reason_code=v['value'],
+            description=v['label'],
+            **DUMMY_USER_KWARGS
+        )
+        mine_operation_status_sub_reason_code.save()
 
     # Test Person Data
     person = Party(

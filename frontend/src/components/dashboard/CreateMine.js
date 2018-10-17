@@ -11,25 +11,27 @@ import * as String from '@/constants/strings';
  */
 
 const propTypes = {
-  getMineRecords: PropTypes.func.isRequired,
+  fetchMineRecords: PropTypes.func.isRequired,
+  createMineRecord: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  createMineRecord: PropTypes.func.isRequired
+  mineStatusOptions: PropTypes.array
 };
 
 export class CreateMine extends Component {
   state = { visible: false }
 
   handleSubmit = (value) => {
-    this.props.createMineRecord(value).then(() => {
+    let mineStatus = value.mine_status.join(",");
+    this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
       this.setState({
         visible: false,
       });
     }).then(() => {
       const params = queryString.parse(this.props.location.search);
       if (params.page && params.per_page) {
-        this.props.getMineRecords(params.page, params.per_page);
+        this.props.fetchMineRecords(params.page, params.per_page);
       } else {
-        this.props.getMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
+        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
       }
     });
   }
@@ -54,7 +56,7 @@ export class CreateMine extends Component {
           onCancel={this.toggleModal}
           footer={null}
         >
-          <MineRecordForm onSubmit={this.handleSubmit} title="Create Mine Record"/>
+          <MineRecordForm mineStatusOptions={this.props.mineStatusOptions} onSubmit={this.handleSubmit} title="Create Mine Record"/>
         </Modal>
       </div>
     );

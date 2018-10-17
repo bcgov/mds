@@ -35,3 +35,10 @@ export const storeCurrentPermittees = (payload) => {
     payload,
   }
 }
+
+export const storeStatusOptions = (payload) => {
+  return {
+    type: ActionTypes.STORE_STATUS_OPTIONS,
+    payload,
+  }
+}

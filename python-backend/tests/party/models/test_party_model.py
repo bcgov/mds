@@ -39,7 +39,7 @@ def test_party_model_validate_first_name(test_client, auth_headers):
             party_type_code='PER',
             phone_no='123-123-1234',
             phone_ext='1234'
-        )    
+        )
     assert 'Person first name must not exceed 100 characters.' in str(e.value)
 
 
@@ -63,5 +63,5 @@ def test_party_model_validate_party_name_exceeds_100_chars(test_client, auth_hea
             party_type_code='PER',
             phone_no='123-123-1234',
             phone_ext='1234'
-        )    
+        )
     assert 'Party name must not exceed 100 characters.' in str(e.value)

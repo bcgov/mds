@@ -4,6 +4,7 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 
+from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ...location.models.location import MineLocation
 from ...utils.random import generate_mine_no
@@ -18,6 +19,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
     parser.add_argument('tenure_number_id', type=int)
     parser.add_argument('longitude', type=decimal.Decimal)
     parser.add_argument('latitude', type=decimal.Decimal)
+    parser.add_argument('mine_status', action='split')
 
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no):
@@ -25,6 +27,36 @@ class Mine(Resource, UserMixin, ErrorMixin):
         if mine:
             return mine.json()
         return self.create_error_payload(404, 'Mine not found'), 404
+
+    def mine_operation_code_processor(self, mine_status, index):
+        try:
+            return mine_status[index].strip()
+        except IndexError:
+            return None
+
+    def mine_status_processor(self, mine_status, mine_guid):
+        try:
+            mine_status_xref = MineStatusXref(
+                mine_status_xref_guid=uuid.uuid4(),
+                mine_operation_status_code=self.mine_operation_code_processor(mine_status, 0),
+                mine_operation_status_reason_code=self.mine_operation_code_processor(mine_status, 1),
+                mine_operation_status_sub_reason_code=self.mine_operation_code_processor(mine_status, 2),
+                **self.get_create_update_dict()
+            )
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+        mine_status_xref.save()
+        try:
+            _mine_status = MineStatus(
+                mine_status_guid=uuid.uuid4(),
+                mine_guid=mine_guid,
+                mine_status_xref_guid=mine_status_xref.mine_status_xref_guid,
+                **self.get_create_update_dict()
+            )
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+        _mine_status.save()
+        return _mine_status
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no=None):
@@ -36,6 +68,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
         lon = data['longitude']
         note = data['note']
         location = None
+        status = data['mine_status']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine_detail = MineDetail(
@@ -59,7 +92,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict()
             )
             location.save()
-
+        mine_status = self.mine_status_processor(status, mine_identity.mine_guid) if status else None
         return {
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
@@ -67,6 +100,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
             'mine_note': mine_detail.mine_note,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
+            'mine_status': mine_status.json() if mine_status else None
         }
 
     @jwt.requires_roles(["mds-mine-create"])
@@ -77,7 +111,8 @@ class Mine(Resource, UserMixin, ErrorMixin):
         lon = data['longitude']
         mine_name = data['name']
         mine_note = data['note']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note:
+        status = data['mine_status']
+        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status:
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
         if not mine:
@@ -128,7 +163,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict()
             )
             location.save()
-
+        self.mine_status_processor(status, mine.mine_guid) if status else None
         return mine.json()
 
 
