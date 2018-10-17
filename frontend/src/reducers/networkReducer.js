@@ -1,9 +1,10 @@
+import { REQUEST, SUCCESS, ERROR } from '../constants/actionTypes';
+
 /**
 * @file networkReducer.js
 * Data is not associated with this reducer, only the network
 * request status.
 */
-import { REQUEST, SUCCESS, ERROR } from '../constants/actionTypes';
 
 const initialState = {
   isFetching: false,

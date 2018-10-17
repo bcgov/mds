@@ -15,6 +15,7 @@ class MineIdentity(AuditMixin, Base):
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
     mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
+    mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
@@ -27,6 +28,7 @@ class MineIdentity(AuditMixin, Base):
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
+            'mine_status': [item.json() for item in self.mine_status]
         }
 
     def json_for_map(self):
@@ -77,7 +79,7 @@ class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    mine_no = db.Column(db.String(10), unique=True)
+    mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
 

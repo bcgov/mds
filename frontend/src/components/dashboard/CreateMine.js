@@ -2,30 +2,36 @@ import React, { Component } from 'react';
 import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
-
 import { CreateGuard } from '@/HOC/CreateGuard';
-import AddMineRecordForm from '@/components/Forms/AddMineRecordForm';
+import MineRecordForm from '@/components/Forms/MineRecordForm';
+import * as String from '@/constants/strings';
+
+/**
+ * @class CreateMine - Component to create a mine record.
+ */
 
 const propTypes = {
-  getMineRecords: PropTypes.func.isRequired,
+  fetchMineRecords: PropTypes.func.isRequired,
+  createMineRecord: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  createMineRecord: PropTypes.func.isRequired
+  mineStatusOptions: PropTypes.array
 };
 
 export class CreateMine extends Component {
   state = { visible: false }
 
   handleSubmit = (value) => {
-    this.props.createMineRecord(value).then(() => {
+    let mineStatus = value.mine_status.join(",");
+    this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
       this.setState({
         visible: false,
       });
     }).then(() => {
       const params = queryString.parse(this.props.location.search);
       if (params.page && params.per_page) {
-        this.props.getMineRecords(params.page, params.per_page);
+        this.props.fetchMineRecords(params.page, params.per_page);
       } else {
-        this.props.getMineRecords('1', '25');
+        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
       }
     });
   }
@@ -39,12 +45,10 @@ export class CreateMine extends Component {
   render() {
     return (
       <div>
-        <div style={{ padding: "10px" }}>
-          <div className="right center-mobile">
-            <Button className="full-mobile" type="primary" size="large" onClick={this.toggleModal}>
-                Create Mine Record
-            </Button>
-          </div>
+        <div className="right center-mobile">
+          <Button className="full-mobile" type="primary" size="large" onClick={this.toggleModal}>
+              Create Mine Record
+          </Button>
         </div>
         <Modal
           title="Create Mine Record"
@@ -52,7 +56,7 @@ export class CreateMine extends Component {
           onCancel={this.toggleModal}
           footer={null}
         >
-          <AddMineRecordForm onSubmit={this.handleSubmit} />
+          <MineRecordForm mineStatusOptions={this.props.mineStatusOptions} onSubmit={this.handleSubmit} title="Create Mine Record"/>
         </Modal>
       </div>
     );

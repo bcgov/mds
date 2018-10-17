@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-const RedirectRoute = ({ component: Component, redirectTo, ...rest }) => (
+const RedirectRoute = ({ redirectTo, ...rest }) => (
   <Route {...rest} render={(props) => (
     <Redirect to={{
       pathname: redirectTo,

@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import RenderDate from '@/components/common/RenderDate';
 
-
 let props = {};
 
 const setupProps = () => {
@@ -10,6 +9,7 @@ const setupProps = () => {
     id: 1,
     input: '',
     label: '',
+    placeholder: 'yyyy-mm-dd',
     onChange: jest.fn((date, dateString) => dateString),
     meta: {
       touched: false,

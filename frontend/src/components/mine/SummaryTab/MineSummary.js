@@ -1,10 +1,10 @@
-/**
- * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import NullScreen from '@/components/common/NullScreen';
+/**
+ * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -41,7 +41,7 @@ class MineSummary extends Component {
                 </tr>
                 </tbody>
                 }
-                {mine.mine_permit && 
+                {mine.mine_permit[0] && 
                   <tbody>
                     <tr>
                       <th scope="col"><h4>Permittee</h4></th>
@@ -51,9 +51,9 @@ class MineSummary extends Component {
                       {permitteeIds.map((id) => {
                         return (
                           <tr key={id}>
-                            <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                            <td key={id} data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
-                            <td key={id} data-label="Effective Date"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                            <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                            <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
+                            <td data-label="Effective Date"><p className="p-large">{permittees[id].effective_date}</p></td>
                           </tr>
                         )
                       })}

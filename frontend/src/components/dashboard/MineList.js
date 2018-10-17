@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { Button, Col, Row, Divider } from 'antd';
 import * as router from '@/constants/routes';
 
+/**
+ * @class MineList - paginated list of mines 
+ */
+
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,

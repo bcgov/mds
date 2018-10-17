@@ -20,5 +20,7 @@ export const UPDATE_PERMITTEE = 'Update Permittee';
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
 export const DEFAULT_LONG = -127.6476;
+
+// default url values
 export const DEFAULT_PAGE = '1';
 export const DEFAULT_PER_PAGE = '25';

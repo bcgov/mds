@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import RenderLargeSelect from '@/components/common/RenderLargeSelect';
-import { PARTY } from '@/tests/mocks/dataMocks';
-
 
 let props = {};
 
@@ -15,8 +13,10 @@ const setupProps = () => {
       error: false,
       warning: false,
     },
+    id: 'parties',
     data: [],
-    option: {}
+    option: {},
+    handleChange: jest.fn()
   };
 }
 
@@ -27,8 +27,6 @@ beforeEach(() => {
 describe('RenderLargeSelect', () => {
 
   it('renders properly', () => {
-    props.data = PARTY.partyIds
-    props.option = PARTY.parties
     const wrapper = shallow(<RenderLargeSelect {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio, Divider } from 'antd';
+import { Modal, Card, Radio } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
-import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
+import UpdatePermitteeForm from '@/components/Forms/UpdatePermitteeForm';
 import * as String from '@/constants/strings';
+/**
+ * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
+ */
 
 const propTypes = {
   toggleModal: PropTypes.func.isRequired,
@@ -14,7 +17,7 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   togglePartyChange: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  permitteeModalVisable: PropTypes.bool,
+  permitteeModalVisible: PropTypes.bool,
   isPerson: PropTypes.bool,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
@@ -34,7 +37,7 @@ export class ViewPermittee extends Component {
     const type = this.props.isPerson ? 'PER' : 'ORG';
     this.props.handlePartySubmit(values, type);
   }
-  
+
   render() {
     const { permittees, permitteeIds } = this.props;
       return (
@@ -48,9 +51,9 @@ export class ViewPermittee extends Component {
                       <th scope="col"><h4>Permittee</h4></th>
                       <th scope="col"><h4>Permittee Since</h4></th>
                     </tr>
-                    <tr key={id}>
-                      <td key={id} data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                      <td key={id} data-label="Permittee Since"><p className="p-large">{permittees[id].party.effective_date}</p></td>
+                    <tr>
+                      <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                      <td data-label="Permittee Since"><p className="p-large">{permittees[id].effective_date}</p></td>
                     </tr>
                     <tr>
                       <th scope="col"><h4>Email</h4></th>
@@ -65,16 +68,16 @@ export class ViewPermittee extends Component {
                 })}
               </table>
             <div className="right center-mobile">
-              {/* <ConditionalButton 
+              <ConditionalButton 
                 handleAction={this.props.toggleModal} 
                 string="Update Permittee" 
                 type="primary"
-              /> */}
+              />
             </div> 
           </Card>
           <Modal
             title="Update Permittee"
-            visible={this.props.permitteeModalVisable}
+            visible={this.props.permitteeModalVisible}
             footer={null}
             onCancel={this.props.toggleModal}
           >
@@ -83,15 +86,13 @@ export class ViewPermittee extends Component {
               style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
             />
             <div>
-              <UpdateMineManagerForm
+              <UpdatePermitteeForm
+                permit={this.props.mine.mine_permit}
                 onSubmit={this.props.handleSubmit}
                 parties={this.props.parties}
                 partyIds={this.props.partyIds}
-                handleChange={this.handleChange}
+                handleChange={this.props.handleChange}
                 isPerson={this.props.isPerson}
-                id="permittee"
-                label="Permittee"
-                action={String.UPDATE_PERMITTEE}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
               <div className="center">

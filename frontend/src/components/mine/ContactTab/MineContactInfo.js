@@ -1,7 +1,3 @@
-
-/**
- * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard (including all Mine Manager information);
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -10,8 +6,12 @@ import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
 import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
-import { getMineRecordById } from '@/actionCreators/mineActionCreator';
+import { fetchMineRecordById } from '@/actionCreators/mineActionCreator';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
+
+/**
+ * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -19,7 +19,7 @@ const propTypes = {
   createParty: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   addPermittee: PropTypes.func.isRequired,
-  getMineRecordById: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired
 };
@@ -31,9 +31,9 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
-    state = { modalVisible: false, permitteeModalVisable: false, isPerson: true }
+    state = { modalVisible: false, permitteeModalVisible: false, isPerson: true }
   /**
- * add new parties (firstName, surname) to db.
+ * add new parties (firstName, surname || companyName) to db.
  */
   handlePartySubmit = (values, type) => {
     const payload = {type: type, ...values}
@@ -47,7 +47,8 @@ const defaultProps = {
   handleManagerSubmit = (values) => {
     this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
       this.setState({ modalVisible: !this.state.modalVisible });
-      this.props.getMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchParties();
     })
   }
 
@@ -56,12 +57,15 @@ const defaultProps = {
       isPerson: value.target.value,
     });
   }
-
+ /**
+   * change permittee on record.
+   */
    handlePermitteeSubmit = (values) => {
-    //  this needs to be fixed - to allow users to selectt he permittee they want to update..
-    this.props.addPermittee(this.props.mine.mine_permit[0].permittee[0].permittee_guid, this.props.mine.mine_permit[0].permittee[0].permit_guid, values.permittee, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.setState({ permitteeModalVisable: !this.state.permitteeModalVisable });
-      this.props.getMineRecordById(this.props.mine.guid);
+    const guids = values.permittee.split(", ");
+    this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+      this.setState({ permitteeModalVisible: !this.state.permitteeModalVisible });
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchParties();
     })
   }
 
@@ -76,7 +80,7 @@ const defaultProps = {
 
   togglePermitteeModal = () => {
     this.setState({
-      permitteeModalVisable: !this.state.permitteeModalVisable,
+      permitteeModalVisible: !this.state.permitteeModalVisible,
     });
   }
 
@@ -136,7 +140,7 @@ const mapDispatchToProps = (dispatch) => {
     createParty,
     addMineManager,
     addPermittee,
-    getMineRecordById,
+    fetchMineRecordById,
   }, dispatch);
 }
 

@@ -1,19 +1,19 @@
-/**
- * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
- */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getMineNameList } from '@/actionCreators/mineActionCreator';
+import { fetchMineNameList } from '@/actionCreators/mineActionCreator';
 import { getMineNames } from '@/selectors/mineSelectors';
 import RenderAutoComplete from '@/components/common/RenderAutoComplete';
 import * as router from '@/constants/routes';
 import { AutoComplete } from 'antd';
 
+/**
+ * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
+ */
 const propTypes = {
-  getMineNameList: PropTypes.func.isRequired,
+  fetchMineNameList: PropTypes.func.isRequired,
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.array.isRequired,
   isMapView: PropTypes.bool,
@@ -27,8 +27,7 @@ export class MineSearch extends Component {
   state = { redirectTo: null}
 
   componentDidMount() {
-    // Get the initial list of mines
-    this.props.getMineNameList();
+    this.props.fetchMineNameList();
   }
 
   /**
@@ -41,19 +40,17 @@ export class MineSearch extends Component {
     } else {
       this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
     }
-    
   }
-
   /**
    *  If the user has typed more than 3 characters filter the search
    * If they clear the search, revert back to default search set
    */
   handleChange = (value) => {
     if (value.length > 2){
-      this.props.getMineNameList(value);
+      this.props.fetchMineNameList(value);
     }
     else if (value.length === 0) {
-      this.props.getMineNameList();
+      this.props.fetchMineNameList();
     }
   }
 
@@ -97,7 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getMineNameList,
+    fetchMineNameList,
   }, dispatch);
 };
 

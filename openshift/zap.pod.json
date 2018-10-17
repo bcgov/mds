@@ -56,15 +56,15 @@
                                 "memory": "4Gi"
                             },
                             "requests": {
-                                "cpu": "250m",
-                                "memory": "2Gi"
+                                "cpu": "300m",
+                                "memory": "1.5Gi"
                             }
                         },
-                        "imagePullPolicy": "IfNotPresent"
+                        "imagePullPolicy": "Always"
                     }
                 ],
                 "restartPolicy": "Never",
-                "activeDeadlineSeconds": 240,
+                "activeDeadlineSeconds": 360,
                 "dnsPolicy": "ClusterFirst"
             },
             "status": {}

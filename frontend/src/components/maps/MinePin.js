@@ -1,8 +1,3 @@
-/**
- * @class MinePin.js must be the child of arcGIS <Map /> or <Sceen />,
- * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the
- *
- */
 import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import { connect } from 'react-redux';
@@ -10,9 +5,13 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MapPopup from '@/components/maps/MapPopup'
 import { renderToString } from 'react-dom/server'
-
-
 import { getMines, getMineIds } from '@/selectors/mineSelectors';
+
+/**
+ * @class MinePin.js must be the child of arcGIS <Map /> or <Sceen />,
+ * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the correct state.
+ *
+ */
 
 const propTypes = {
   mines: PropTypes.object.isRequired,
@@ -66,7 +65,7 @@ export class MinePin extends Component {
         mineIds = this.props.mineIds;
       }
       const symbol = {
-        "url": '../../../public/Pin.svg',
+        "url": `${window.location.origin}${process.env.BASE_PATH}/public/Pin.svg`,
         "width": this.state.isFullMap ? '40' : '80',
         "height": this.state.isFullMap ? '40' : '80',
         "type": "picture-marker"

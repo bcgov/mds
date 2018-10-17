@@ -18,8 +18,8 @@ export const AddTenureNumberForm = (props) => {
         <Col>
           <Form.Item>
             <Field
-              id="tenureNumber"
-              name="tenureNumber"
+              id="tenure_number_id"
+              name="tenure_number_id"
               label='Tenure Number'
               component={RenderField}
               validate={[required, exactLength(7), number]}
@@ -36,6 +36,7 @@ AddTenureNumberForm.propTypes = propTypes;
 
 export default (reduxForm({
   form: FORM.ADD_TENURE_NUMBER,
+  touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_TENURE_NUMBER),
 })(AddTenureNumberForm)
 );

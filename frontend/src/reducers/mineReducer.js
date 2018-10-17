@@ -1,5 +1,6 @@
 import * as actionTypes from '@/constants/actionTypes';
 import { MINES } from '@/constants/reducerTypes';
+import { createItemMap, createItemIdsArray } from '@/utils/helpers';
 
 /**
  * @file mineReducer.js
@@ -13,13 +14,7 @@ const initialState = {
   minesPageData: {},
   permittees: {},
   permitteeIds: [],
-};
-
-const createItemMap = (array, idField) => {
-  return array.reduce((result, item) => {
-    result[item[idField]] = item;
-    return result;
-  }, {});
+  mineStatusOptions: []
 };
 
 const renderCurrentPermittee = (array) => {
@@ -39,10 +34,6 @@ const renderCurrentPermittee = (array) => {
   unique = [...new Set(permitteeIds)];
   return unique;
  }
-
-const createItemIdsArray = (array, idField) => {
-  return array.map(item => item[idField]);
-};
 
 const mineReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -70,6 +61,11 @@ const mineReducer = (state = initialState, action) => {
           ...state,
           mineNameList: action.payload,
         }
+      case actionTypes.STORE_STATUS_OPTIONS:
+        return {
+          ...state,
+          mineStatusOptions: action.payload.options,
+        }
       case actionTypes.UPDATE_MINE_RECORD:
         return {
           ...state,
@@ -87,5 +83,6 @@ export const getMineNames = (state) => state[MINES].mineNameList;
 export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getCurrentPermittees = (state) => state[MINES].permittees;
 export const getCurrentPermitteeIds = (state) => state[MINES].permitteeIds;
+export const getMineStatusOptions = (state) => state[MINES].mineStatusOptions;
 
 export default mineReducer;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
+import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const props = {}
@@ -16,7 +16,7 @@ beforeEach(() => {
 describe('MineTenureInfo', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MineTenureInfo 
+    <MinePermitInfo 
       {...props} 
       />
   );

@@ -1,25 +1,15 @@
 import * as actionTypes from '@/constants/actionTypes';
 import { PARTIES } from '@/constants/reducerTypes';
+import { createItemMap, createItemIdsArray } from '@/utils/helpers';
 
 /**
- * @file mineReducer.js
- * all data associated with new mine/existing mine records is handled witnin this reducer.
+ * @file partiesReducer.js
+ * all data associated with parties is handled witnin this reducer.
  */
 
 const initialState = {
   parties: {},
   partyIds: [],
-};
-
-const createItemMap = (array, idField) => {
-  return array.reduce((result, item) => {
-    result[item[idField]] = item;
-    return result;
-  }, {});
-};
-
-const createItemIdsArray = (array, idField) => {
-  return array.map(item => item[idField]);
 };
 
 const partiesReducer = (state = initialState, action) => {

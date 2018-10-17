@@ -1,7 +1,10 @@
 import * as ActionTypes from '@/constants/actionTypes';
 import * as ReducerTypes from '@/constants/reducerTypes';
 
-
+/**
+ * @file authenticationReducer.js
+ * all data associated with a users record is handled witnin this reducer.
+ */
 const initialState = {
   isAuthenticated: false,
   userAccessData: [],

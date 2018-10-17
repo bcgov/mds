@@ -1,16 +1,11 @@
-/**
- * @className Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
- *
- */
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
-
-import { getMineRecords, createMineRecord } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMinesPageData } from '@/selectors/mineSelectors';
+import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
+import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
@@ -22,22 +17,28 @@ import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 
+/**
+ * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ *
+ */
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  getMineRecords: PropTypes.func.isRequired,
+  fetchMineRecords: PropTypes.func.isRequired,
+  createMineRecord: PropTypes.func.isRequired,
+  fetchStatusOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
-  createMineRecord: PropTypes.func,
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
+  mineStatusOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mines: {},
   mineIds: [],
-  pageData: {}
+  pageData: {},
 };
 
 export class Dashboard extends Component {
@@ -46,6 +47,7 @@ export class Dashboard extends Component {
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     this.renderDataFromURL(params);
+    this.props.fetchStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,11 +60,11 @@ export class Dashboard extends Component {
 
   renderDataFromURL = (params) => {
     if (params.page && params.per_page) {
-      this.props.getMineRecords(params.page, params.per_page, params.map).then(() => {
+      this.props.fetchMineRecords(params.page, params.per_page, params.map).then(() => {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.getMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
+      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }
@@ -172,14 +174,14 @@ export class Dashboard extends Component {
                   <Col md={2} sm={0} xs={0}>
                     <div className="center">
                       <Divider type="vertical"/>
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       <Divider type="vertical"/>
                     </div>
                   </Col>
                   <Col md={0} sm={24} xs={24}>
                     <div className="center">
                       <Divider >
-                      <h2>OR</h2>
+                        <h2>OR</h2>
                       </Divider>
                     </div>
                   </Col>
@@ -220,8 +222,9 @@ export class Dashboard extends Component {
         <div className="landing-page__header">
           <CreateMine
             createMineRecord={this.props.createMineRecord}
-            getMineRecords={this.props.getMineRecords}
+            fetchMineRecords={this.props.fetchMineRecords}
             location={this.props.location}
+            mineStatusOptions={this.props.mineStatusOptions}
           />
         </div>
         <div className="landing-page__content">
@@ -236,13 +239,15 @@ const mapStateToProps = (state) => {
   return {
     mines: getMines(state),
     mineIds: getMineIds(state),
-    pageData: getMinesPageData(state)
+    pageData: getMinesPageData(state),
+    mineStatusOptions: getMineStatusOptions(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getMineRecords,
+    fetchMineRecords,
+    fetchStatusOptions,
     createMineRecord,
   }, dispatch);
 };

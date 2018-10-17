@@ -46,6 +46,8 @@ class Party(AuditMixin, Base):
             })
             if show_mgr:
                 context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
+        elif self.party_type_code == PARTY_STATUS_CODE['org']:
+            context.update({'name': self.party_name})
         return context
 
     @classmethod
@@ -106,7 +108,7 @@ class PartyTypeCode(AuditMixin, Base):
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
+        return '<Permit %r>' % self.party_type_code
 
     def json(self):
         return {
@@ -159,6 +161,8 @@ class MgrAppointment(AuditMixin, Base):
             'first_name': party.first_name,
             'party_name': party.party_name,
             'email': party.email,
+            'phone_no': party.phone_no,
+            'phone_ext': party.phone_ext,
             'name': party.first_name + ' ' + party.party_name,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat()

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row } from 'antd';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderDate from '@/components/common/RenderDate';
+import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
@@ -13,18 +13,11 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  action: PropTypes.string.isRequired,
-  isPerson: PropTypes.bool,
-  permittee: PropTypes.array,
 };
 
 const defaultProps = {
   parties: {},
   partyIds: [],
-  id: '',
-  label: '',
 };
 
 export const UpdateMineManagerForm = (props) => {
@@ -34,12 +27,12 @@ export const UpdateMineManagerForm = (props) => {
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id={props.id}
-              name={props.id}
-              label={props.label}
+              id="mineManager"
+              name="mineManager"
+              label="Mine Manager"
               component={RenderLargeSelect}
               data={props.partyIds}
-              option={props.parties}
+              options={props.parties}
               validate={[required]}
               handleChange={props.handleChange}
             />
@@ -51,13 +44,14 @@ export const UpdateMineManagerForm = (props) => {
               id="startDate"
               name="startDate"
               label='Select a Start date'
+              placeholder="yyyy-mm-dd"
               component={RenderDate}
               validate={[required]}
             />
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.action}</Button></div>
+      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Mine Manager</Button></div>
     </Form>
   );
 };

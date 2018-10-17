@@ -2,13 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, AutoComplete, Input } from 'antd';
 
+/**
+ * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit. 
+ */
 
 const propTypes = {
   input: PropTypes.any,
   label: PropTypes.string,
-  opton: PropTypes.object,
+  options: PropTypes.object,
   meta: PropTypes.object,
   data: PropTypes.array,
+  option: PropTypes.object,
+  handleChange: PropTypes.func
 };
 
 const transformData = (data, option) => {
@@ -23,16 +28,13 @@ const transformData = (data, option) => {
     return dataList;
   }
 }
-
-/**
- * Ant Design `AutoComplete` component for redux-form -- being used instead of select for large data sets that require a limit.
- */
 const RenderLargeSelect = ({
+  id,
   data,
+  options,
   label,
-  handleChange,
-  option,
   input,
+  handleChange,
   meta: { touched, error, warning },
 }) => (
     <Form.Item
@@ -44,16 +46,18 @@ const RenderLargeSelect = ({
       }
     >
       <AutoComplete
+        getPopupContainer={() => document.getElementById(id)}
+        id={id} 
         defaultActiveFirstOption={false}
         notFoundContent={'Not Found'}
         allowClear
         dropdownMatchSelectWidth={true}
         backfill={true}
         style={{ width: '100%' }}
-        dataSource={transformData(data, option)}
+        dataSource={transformData(data, options)}
         placeholder="Select a party"
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        onChange={handleChange}
+        onSearch={handleChange}
         {...input}
       >
         <Input />

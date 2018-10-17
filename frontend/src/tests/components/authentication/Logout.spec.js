@@ -3,24 +3,24 @@ import { shallow } from 'enzyme';
 import { Logout } from '@/components/authentication/Logout';
 
 const dispatchProps = {};
-const reducerProps = {}
+const props = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.logoutUser= jest.fn();
+  dispatchProps.logoutUser = jest.fn();
 };
 
-const setupReducerProps = () => {
-  reducerProps.keycloak = {}
+const setupProps = () => {
+  props.keycloak = {}
 };
 
 beforeEach(() => {
   setupDispatchProps();
-  setupReducerProps();
+  setupProps();
 });
 
 describe('Logout', () => {
   it('renders properly', () => {
-    const component = shallow(<Logout {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<Logout {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

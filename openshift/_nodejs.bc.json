@@ -1,240 +1,254 @@
 {
-  "kind": "Template",
-  "apiVersion": "v1",
-  "metadata": {
-    "name": "mds-nodejs-bc",
-    "creationTimestamp": null
-  },
-  "parameters": [
-    {
-      "name": "NAME",
-      "displayName": "Name",
-      "description": "A suffix appended to all objects",
-      "required": true
-    },
-    {
-      "name": "SUFFIX",
-      "displayName": "Name Suffix",
-      "description": "A suffix appended to all objects",
-      "required": true
-    },
-    {
-      "name": "VERSION",
-      "required": true
-    },
-    {
-      "name": "SOURCE_CONTEXT_DIR",
-      "required": true
-    },
-    {
-      "name": "SOURCE_REPOSITORY_URL",
-      "required": true
-    },
-    {
-      "name": "SOURCE_REPOSITORY_REF",
-      "required": false,
-      "value": "master"
-    },
-    {
-      "name": "NODE_ENV",
-      "displayName": "Node Environment",
-      "description": "Environment for running node",
-      "value": "DEV"
-    }
-  ],
-  "objects": [
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "rhscl-nodejs-8-rhel7",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Nodejs Base Image"
+	"kind": "Template",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "mds-nodejs-bc",
+		"creationTimestamp": null
+	},
+	"parameters": [
+		{
+			"name": "NAME",
+			"displayName": "Name",
+			"description": "A suffix appended to all objects",
+			"required": true
+		},
+		{
+			"name": "SUFFIX",
+			"displayName": "Name Suffix",
+			"description": "A suffix appended to all objects",
+			"required": true
         },
-        "labels": {
-          "shared": "true"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[
-          {
-            "name": "8.1-22",
-            "annotations": null,
-            "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:1-22"
-            },
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Source"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}-base",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Nodejs Runtime Image"
-        },
-        "labels": {
-          "shared": "true"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags":[ ]
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}-base${SUFFIX}",
-        "creationTimestamp": null,
-        "labels": { },
-        "annotations": { }
-      },
-      "spec": {
-        "completionDeadlineSeconds": 1440,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChange": {}
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "runPolicy": "SerialLatestOnly",
-        "source": {
-          "contextDir": "docker-images/nodejs-8",
-          "type": "Binary"
-        },
-        "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "rhscl-nodejs-8-rhel7:8.1-22"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}-base:${VERSION}"
-          }
-        },
-        "resources": {
-          "limits": {
-            "cpu": "1",
-            "memory": "6Gi"
-          },
-          "requests": {
-            "cpu": "500m",
-            "memory": "4Gi"
-          }
-        },
-        "postCommit": {},
-        "nodeSelector": null
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Defines how to build the application"
-        }
-      },
-      "spec": {
-        "completionDeadlineSeconds": 600,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
-        "triggers": [
-          {
-            "type": "ImageChange"
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "runPolicy": "SerialLatestOnly",
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "${NAME}-base:${VERSION}"
-            },
-            "env": [
-              {
-                "name": "API_URL",
-                "value": "${API_URL}"
-              }
-            ]
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}:${VERSION}"
-          }
-        },
-        "resources": {
-          "limits": {
-            "cpu": "1",
-            "memory": "8Gi"
-          },
-          "requests": {
-            "cpu": "750m",
-            "memory": "4Gi"
-          }
-        },
-        "nodeSelector": null
-      }
-    }
-  ]
+        {
+			"name": "APPLICATION_SUFFIX",
+			"required": true
+		},
+		{
+			"name": "VERSION",
+			"required": true
+		},
+		{
+			"name": "BASE_PATH",
+			"required": false,
+			"value": "/"
+		},
+		{
+			"name": "SOURCE_CONTEXT_DIR",
+			"required": true
+		},
+		{
+			"name": "SOURCE_REPOSITORY_URL",
+			"required": true
+		},
+		{
+			"name": "SOURCE_REPOSITORY_REF",
+			"required": false,
+			"value": "master"
+		},
+		{
+			"name": "NODE_ENV",
+			"displayName": "Node Environment",
+			"description": "Environment for running node",
+			"value": "DEV"
+		}
+	],
+	"objects": [
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "rhscl-nodejs-8-rhel7",
+				"creationTimestamp": null,
+				"annotations": {
+					"description": "Nodejs Base Image"
+				},
+				"labels": {
+					"shared": "true"
+				}
+			},
+			"spec": {
+				"lookupPolicy": {
+					"local": false
+				},
+				"tags":[
+					{
+						"name": "8.1-22",
+						"annotations": null,
+						"from": {
+							"kind": "DockerImage",
+							"name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:1-22"
+						},
+						"importPolicy": {},
+						"referencePolicy": {
+							"type": "Source"
+						}
+					}
+				]
+			}
+		},
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}-base",
+				"creationTimestamp": null,
+				"annotations": {
+					"description": "Nodejs Runtime Image"
+				},
+				"labels": {
+					"shared": "true"
+				}
+			},
+			"spec": {
+				"lookupPolicy": {
+					"local": false
+				}
+			}
+		},
+		{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}${APPLICATION_SUFFIX}",
+				"creationTimestamp": null,
+				"labels": {
+				},
+				"annotations": {
+					"description": "Keeps track of changes in the application image"
+				}
+			},
+			"spec": {
+				"lookupPolicy": {
+					"local": false
+				},
+				"tags":[ ]
+			}
+		},
+		{
+			"kind": "BuildConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}-base${SUFFIX}",
+				"creationTimestamp": null,
+				"labels": { },
+				"annotations": { }
+			},
+			"spec": {
+				"completionDeadlineSeconds": 1440,
+				"successfulBuildsHistoryLimit": 3,
+				"failedBuildsHistoryLimit": 3,
+				"triggers": [
+					{
+						"type": "ImageChange",
+						"imageChange": {}
+					},
+					{
+						"type": "ConfigChange"
+					}
+				],
+				"runPolicy": "SerialLatestOnly",
+				"source": {
+					"contextDir": "docker-images/nodejs-8",
+					"type": "Binary"
+				},
+				"strategy": {
+					"type": "Docker",
+					"dockerStrategy": {
+						"from": {
+							"kind": "ImageStreamTag",
+							"name": "rhscl-nodejs-8-rhel7:8.1-22"
+						}
+					}
+				},
+				"output": {
+					"to": {
+						"kind": "ImageStreamTag",
+						"name": "${NAME}-base:${VERSION}"
+					}
+				},
+				"resources": {
+					"limits": {
+						"cpu": "500m",
+						"memory": "4Gi"
+					},
+					"requests": {
+						"cpu": "250m",
+						"memory": "3Gi"
+					}
+				},
+				"postCommit": {},
+				"nodeSelector": null
+			}
+		},
+		{
+			"kind": "BuildConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "${NAME}${APPLICATION_SUFFIX}",
+				"creationTimestamp": null,
+				"labels": {
+                 },
+				"annotations": {
+					"description": "Defines how to build the application"
+				}
+			},
+			"spec": {
+				"completionDeadlineSeconds": 600,
+				"successfulBuildsHistoryLimit": 3,
+				"failedBuildsHistoryLimit": 3,
+				"triggers": [
+					{
+                        "type": "ImageChange"
+					},
+					{
+						"type": "ConfigChange"
+					}
+				],
+				"runPolicy": "SerialLatestOnly",
+				"source": {
+					"type": "Git",
+					"git": {
+						"uri": "${SOURCE_REPOSITORY_URL}",
+						"ref": "${SOURCE_REPOSITORY_REF}"
+					},
+					"contextDir": "${SOURCE_CONTEXT_DIR}"
+				},
+				"strategy": {
+					"type": "Source",
+					"sourceStrategy": {
+						"from": {
+							"kind": "ImageStreamTag",
+							"name": "${NAME}-base:${VERSION}"
+						},
+						"env": [
+							{
+								"name": "BASE_PATH",
+								"value": "${BASE_PATH}"
+								},
+								{
+								"name": "ASSET_PATH",
+								"value": "${BASE_PATH}/"
+								}
+						]
+					}
+				},
+				"output": {
+					"to": {
+						"kind": "ImageStreamTag",
+						"name": "${NAME}${APPLICATION_SUFFIX}:${VERSION}"
+					}
+				},
+				"resources": {
+					"limits": {
+						"cpu": "500m",
+						"memory": "4Gi"
+					},
+					"requests": {
+						"cpu": "350m",
+						"memory": "3Gi"
+					}
+				},
+				"nodeSelector": null
+			}
+		}
+	]
 }

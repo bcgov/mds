@@ -7,7 +7,7 @@ const props = {}
 const dispatchProps = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.getMineRecordById = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.match = {};
 };
@@ -17,16 +17,16 @@ const setupProps = () => {
 };
 
 beforeEach(() => {
-  setupProps();
   setupDispatchProps();
+  setupProps();
 });
 
 describe('MineTenureInfo', () => {
   it('renders properly', () => {
     const component = shallow(
     <MineTenureInfo 
-      {...props} 
       {...dispatchProps}
+      {...props} 
       match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
       />
   );

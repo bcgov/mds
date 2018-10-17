@@ -126,7 +126,7 @@
         },
         {
             "name": "CPU_RESOURCE",
-            "value": "300m"
+            "value": "200m"
         },
         {
             "name": "MEMORY_RESOURCE",

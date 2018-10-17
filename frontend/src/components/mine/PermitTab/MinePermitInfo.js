@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import NullScreen from '@/components/common/NullScreen'; 
+/**
+ * @class  MinePermitInfo - contains all permit information
+ */
 
 const propTypes = {
   mine: PropTypes.object.isRequired
