@@ -100,7 +100,7 @@ export const fetchStatusOptions = () => (dispatch) => {
       dispatch(hideLoading('modal'));
     })
     .catch((err) => {
-       notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
       dispatch(hideLoading('modal'));
     });

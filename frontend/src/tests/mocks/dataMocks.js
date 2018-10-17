@@ -5,7 +5,8 @@ export const createMockHeader = () => ({
   }
 });
 
-export const ERROR = { err: { response: {data: { error: { message: 'Error', status: 400 }}}}};
+export const ERROR = { error: {message: 'Errors', status: 400}}
+
 
 export const MINES = {
   mineIds: [
@@ -36,7 +37,13 @@ export const MINES = {
         { longitude: null,
           latitude: null
         }
-      ]
+      ],
+      mine_status: {
+        status_values: ['CLD', 'CM'],
+        status_labels: ['Closed', 'Care & Maintenance'],
+        effective_date: '2018-10-16',
+        expiry_date: '9999-12-31'
+      }
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -108,6 +115,12 @@ export const MINES = {
           tenure_number_id: "1234567"
         }
       ],
+      mine_status: {
+        status_values: ['CLD', 'CM'],
+        status_labels: ['Closed', 'Care & Maintenance'],
+        effective_date: '2018-10-16',
+        expiry_date: '9999-12-31'
+      },
       mine_detail: [
         {
           mine_name: "mine1",

@@ -38,7 +38,7 @@ describe('`createParty` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return (createParty(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -61,8 +61,8 @@ describe('`fetchParties` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return (fetchParties()(dispatch)).then(() => {
+    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    return (fetchParties(value)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -84,7 +84,7 @@ describe('`fetchPartyById` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    mockAxios.onGet(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(400, MOCK.ERROR);
     return (fetchPartyById(mockPayload)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ describe('`addMineManager` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return (addMineManager(mockPayload, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -141,7 +141,7 @@ describe('`addPermittee` action creator', () => {
   });
 
   it('Request failure, dispatches `error` with correct response', () => {
-    mockAxios.onPost(url, mockPayload, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return (addPermittee(mockPayload, mineName)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
