@@ -11,7 +11,8 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  mineStatusOptions: PropTypes.array
 };
 
 export const MineRecordform = (props) => {
@@ -30,8 +31,7 @@ export const MineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      {/* commented out until ready to add status */}
-      {/* <Row gutter={16}>
+      <Row gutter={16}>
         <Col>
           <Form.Item>
             <Field
@@ -39,12 +39,13 @@ export const MineRecordform = (props) => {
               name="mine_status"
               label='Mine Status *'
               placeholder="Plese select status"
+              options={props.mineStatusOptions}
               component={RenderCascader}
               validate={[required]}
             />
           </Form.Item>
         </Col>
-      </Row> */}
+      </Row>
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>
@@ -92,6 +93,7 @@ MineRecordform.propTypes = propTypes;
 export default (reduxForm({
     form: FORM.MINE_RECORD,
     touchOnBlur: false,
+    enableReinitialize : true,
     onSubmitSuccess: resetForm(FORM.MINE_RECORD),
   })(MineRecordform)
 );

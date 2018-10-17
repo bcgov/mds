@@ -5,6 +5,9 @@ export const createMockHeader = () => ({
   }
 });
 
+export const ERROR = { error: {message: 'Errors', status: 400}}
+
+
 export const MINES = {
   mineIds: [
     "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -34,7 +37,13 @@ export const MINES = {
         { longitude: null,
           latitude: null
         }
-      ]
+      ],
+      mine_status: {
+        status_values: ['CLD', 'CM'],
+        status_labels: ['Closed', 'Care & Maintenance'],
+        effective_date: '2018-10-16',
+        expiry_date: '9999-12-31'
+      }
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -106,6 +115,12 @@ export const MINES = {
           tenure_number_id: "1234567"
         }
       ],
+      mine_status: {
+        status_values: ['CLD', 'CM'],
+        status_labels: ['Closed', 'Care & Maintenance'],
+        effective_date: '2018-10-16',
+        expiry_date: '9999-12-31'
+      },
       mine_detail: [
         {
           mine_name: "mine1",
@@ -179,4 +194,85 @@ export const PAGE_DATA = {
   "total_pages":360,
 }
 
-export const COORDINATES = [48.70707, -122.489504]
+export const COORDINATES = [48.70707, -122.489504];
+export const STATUS_OPTIONS = {
+  'options':
+  [
+    {
+        "value": "ABN",
+        "label": "Abandoned"
+    },
+    {
+        "value": "CLD",
+        "label": "Closed",
+        "children": [
+        {
+            "value": "CM",
+            "label": "Care & Maintenance"
+        },
+        {
+            "value": "REC",
+            "label": "Reclamation",
+            "children": [
+            {
+                "value": "LTM",
+                "label": "Long Term Maintenance"
+            },
+            {
+                "value": "LWT",
+                "label": "Long Term Maintenance Water Treatment"
+            },
+            {
+                "value": "PRP",
+                "label": "Permit Release Pending"
+            }
+            ]
+        },
+        {
+            "value": "ORP",
+            "label": "Orphaned",
+            "children": [
+            {
+                "value": "LTM",
+                "label": "Long Term Maintenance"
+            },
+            {
+                "value": "LWT",
+                "label": "Long Term Maintenance Water Treatment"
+            },
+            {
+                "value": "RNS",
+                "label": "Reclamation Not Starte"
+            },
+            {
+                "value": "SVR",
+                "label": "Site Visit Required"
+            }
+            ]
+        },
+        {
+            "value": "UN",
+            "label": "Unknown"
+        }
+        ]
+    },
+    {
+        "value": "NS",
+        "label": "Not Started"
+    },
+    {
+        "value": "OP",
+        "label": "Operating",
+        "children": [
+        {
+            "value": "YR",
+            "label": "Year round"
+        },
+        {
+            "value": "SEA",
+            "label": "Seasonal"
+        }
+      ]
+    }
+  ]
+};

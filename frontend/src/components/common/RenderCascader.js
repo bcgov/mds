@@ -11,12 +11,14 @@ const propTypes = {
   input: PropTypes.any,
   placeholder: PropTypes.string,
   meta: PropTypes.object,
+  options: PropTypes.array.isRequired
 };
 
 const RenderCascader = ({
   id,
   input,
   placeholder,
+  options,
   meta: { touched, error, warning },
 }) => (
     <Form.Item
@@ -26,7 +28,7 @@ const RenderCascader = ({
           (warning && <span>{warning}</span>))
       }
     >
-     <Cascader id={id} placeholder={placeholder} {...input}/>
+     <Cascader expandTrigger="hover" id={id} placeholder={placeholder} options={options} {...input}/>
     </Form.Item>
   );
 

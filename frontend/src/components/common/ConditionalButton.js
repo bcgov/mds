@@ -12,7 +12,7 @@ import { CreateGuard } from '@/HOC/CreateGuard';
 
 const propTypes = {
   handleAction: PropTypes.func.isRequired,
-  string: PropTypes.string.isRequired,
+  string: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   type: PropTypes.string
 };
 

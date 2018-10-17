@@ -11,3 +11,23 @@ import { reset } from 'redux-form';
  * 
  */
 export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
+
+// Function to create a reusable reducer (used in src/reducers/rootReducer)
+export const createReducer = (reducer, name) => (state, action) => {
+  if (name !== action.name && state !== undefined) {
+    return state;
+  }
+  return reducer(state, action);
+}
+// Function to create state object using the id as the key (used in src/reducers/<customReducer>)
+export const createItemMap = (array, idField) => {
+  return array.reduce((result, item) => {
+    result[item[idField]] = item;
+    return result;
+  }, {});
+};
+
+// Function create id array for redux state. (used in src/reducers/<customReducer>)
+export const createItemIdsArray = (array, idField) => {
+  return array.map(item => item[idField]);
+};
