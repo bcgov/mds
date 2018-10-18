@@ -54,9 +54,10 @@ export class CreateMine extends Component {
           title="Create Mine Record"
           visible={this.state.visible}
           onCancel={this.toggleModal}
+          closable={false}
           footer={null}
         >
-          <MineRecordForm mineStatusOptions={this.props.mineStatusOptions} onSubmit={this.handleSubmit} title="Create Mine Record"/>
+          <MineRecordForm mineStatusOptions={this.props.mineStatusOptions} onSubmit={this.handleSubmit} toggleModal={this.toggleModal} title="Create Mine Record"/>
         </Modal>
       </div>
     );

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
+import MediaQuery from 'react-responsive';
 import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
@@ -13,7 +14,6 @@ import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
 import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
-import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
 

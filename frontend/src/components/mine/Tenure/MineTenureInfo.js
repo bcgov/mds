@@ -50,9 +50,9 @@ class MineTenureInfo extends Component {
             title="Add Tenure Number"
             visible={this.state.visible}
             footer={null}
-            onCancel={this.toggleModal}
+            closable={false}
           >
-            <AddTenureNumberForm onSubmit={this.handleSubmit} />
+            <AddTenureNumberForm onSubmit={this.handleSubmit} toggleModal={this.toggleModal}/>
           </Modal>
         </div>
       )

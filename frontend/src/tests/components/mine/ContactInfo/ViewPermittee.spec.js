@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ViewPermittee  } from '@/components/mine/ContactTab/ViewPermittee';
+import { ViewPermittee  } from '@/components/mine/ContactInfo/ViewPermittee';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Col, Row, Divider } from 'antd';
+import { Form, Button, Col, Row, Divider, Popconfirm } from 'antd';
 import RenderSelect from '@/components/common/RenderSelect';
 import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import RenderDate from '@/components/common/RenderDate';
@@ -12,6 +12,7 @@ import { resetForm } from '@/utils/helpers';
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
   permit: PropTypes.array,
@@ -86,7 +87,12 @@ export const UpdatePermitteeForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Permittee</Button></div>
+      <div className="right center-mobile">
+        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.toggleModal} okText="Yes" cancelText="No">
+          <Button type="button">Cancel</Button>
+        </Popconfirm>
+        <Button className="full-mobile" type="primary" htmlType="submit">Update Permittee</Button>
+     </div>
     </Form>
   );
 };
