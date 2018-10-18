@@ -57,7 +57,7 @@ export class MinePin extends Component {
       "esri/symbols/SimpleFillSymbol",
       "esri/geometry/SpatialReference",
       "esri/PopupTemplate",
-      "https://raw.githubusercontent.com/nickcam/FlareClusterLayer/master/fcl/FlareClusterLayer_v4.js"]).then((
+      "https://flareclusterlayer.azurewebsites.net/fcl/FlareClusterLayer_v4.js"]).then((
       [SimpleMarkerSymbol,
         ClassBreaksRenderer, SimpleLineSymbol, SimpleFillSymbol,
       SpatialReference, PopupTemplate, FlareClusterLayer]) => {
