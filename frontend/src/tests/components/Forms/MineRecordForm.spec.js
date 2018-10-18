@@ -6,6 +6,7 @@ const dispatchProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.toggleModal = jest.fn();
 };
 
 beforeEach(() => {

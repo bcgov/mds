@@ -79,7 +79,7 @@ export class ViewPermittee extends Component {
             title="Update Permittee"
             visible={this.props.permitteeModalVisible}
             footer={null}
-            onCancel={this.props.toggleModal}
+            closable={false}
           >
             <LoadingBar 
               scope="modal" 
@@ -93,6 +93,7 @@ export class ViewPermittee extends Component {
                 partyIds={this.props.partyIds}
                 handleChange={this.props.handleChange}
                 isPerson={this.props.isPerson}
+                toggleModal={this.props.toggleModal}
             />
               <p className="center">{String.PARTY_NOT_FOUND}</p>
               <div className="center">

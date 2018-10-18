@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
+import MinePermitInfo from '@/components/mine/Permit/MinePermitInfo';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const props = {}

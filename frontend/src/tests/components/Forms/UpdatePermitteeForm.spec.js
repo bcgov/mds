@@ -9,6 +9,7 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
   dispatchProps.handleChange = jest.fn();
+  dispatchProps.toggleModal = jest.fn();
 };
 
 const setupProps = () => {

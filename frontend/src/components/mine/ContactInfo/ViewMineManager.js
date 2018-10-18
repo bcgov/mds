@@ -43,7 +43,7 @@ export class ViewMineManager extends Component {
               title="Update Mine Manager"
               visible={this.props.modalVisible}
               footer={null}
-              onCancel={this.props.toggleModal}
+              closable={false}
             >
               <LoadingBar 
                 scope="modal" 
@@ -55,6 +55,7 @@ export class ViewMineManager extends Component {
                   parties={this.props.parties}
                   partyIds={this.props.partyIds}
                   handleChange={this.props.handleChange}
+                  toggleModal={this.props.toggleModal}
                 />
                 <p className="center">{String.PERSON_NOT_FOUND}</p>
                 <AddPartyForm onSubmit={this.handleSubmit} isPerson/>

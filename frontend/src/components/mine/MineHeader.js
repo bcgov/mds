@@ -32,7 +32,7 @@ class MineHeader extends Component {
       });
     })
   }
-  
+
   toggleModal = () => {
     this.setState({
       visible: !this.state.visible,
@@ -48,7 +48,7 @@ class MineHeader extends Component {
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
     }
     return (
-      <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
+      <MineRecordForm onSubmit={this.handleUpdateMineRecord} toggleModal={this.toggleModal} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
     )
   }
   
@@ -68,9 +68,10 @@ class MineHeader extends Component {
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <Modal
+            destroyOnClose
             title="Update Mine Record"
             visible={this.state.visible}
-            onCancel={this.toggleModal}
+            closable={false}
             footer={null}
           >
             {this.renderInitialValues(mine)}

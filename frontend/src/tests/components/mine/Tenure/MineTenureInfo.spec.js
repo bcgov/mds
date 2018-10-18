@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
+import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const props = {}
