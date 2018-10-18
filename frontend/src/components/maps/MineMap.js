@@ -72,7 +72,7 @@ class MineMap extends Component {
           <MinePin/>
         </Map>
       );
-    } 
+    }
     return (
       // Map located on landing page - contains all mine pins and adds a location pin when searched.
       // this.props.lat & this.props.long get changed in Dashboard.js
@@ -90,11 +90,11 @@ class MineMap extends Component {
         onMouseWheel={(event) => event.stopPropagation()}
       >
         {this.renderPin()}
-        <MinePin />
+        <MinePin className="minePin" />
       </Map>
     );
 
-    
+
   }
 }
 
