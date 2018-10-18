@@ -20,7 +20,7 @@ make project
 ## Getting Started (Windows)
 
 * Install Docker
-* Definte .env files in front and backend folders
+* Define .env files in frontend and backend folders
 * Install node.js  8 (https://nodejs.org/en/)
 * Install node-gyp from an elevated command prompt
 ```
