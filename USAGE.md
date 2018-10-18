@@ -17,6 +17,37 @@ This file describes how to run the project and develop against it.
 make project
 ```
 
+## Getting Started (Windows)
+
+* Install Docker
+* Definte .env files in front and backend folders
+* Install node.js  8 (https://nodejs.org/en/)
+* Install node-gyp from an elevated command prompt
+```
+npm install --global --production windows-build-tools
+```
+* Download GTK 2 and extract it to C:\GTK
+```
+http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip
+```
+* Install canvas globally
+```
+npm install --global --production canvas
+```
+* Run docker commands to build and run
+```
+docker-compose build --force-rm
+docker-compose up -d
+```
+
+## Generating Test Data
+
+```
+docker exec -it mds_backend bash
+flask create_data 1000
+exit
+```
+
 ### Container Information
 * The backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
 * The frontend container exposes port 3000 and can be accessed at http://localhost:3000
