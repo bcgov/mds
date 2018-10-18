@@ -90,7 +90,7 @@ class MineMap extends Component {
         onMouseWheel={(event) => event.stopPropagation()}
       >
         {this.renderPin()}
-        <MinePin className="minePin" />
+        <MinePin />
       </Map>
     );
 
