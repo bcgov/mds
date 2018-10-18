@@ -4,13 +4,14 @@ import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/common/RenderField';
 import RenderAutoSizeField from '@/components/common/RenderAutoSizeField';
 import RenderCascader from '@/components/common/RenderCascader';
-import { Form, Button, Col, Row } from 'antd';
+import { Form, Button, Col, Row, Popconfirm } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatusOptions: PropTypes.array
 };
@@ -83,7 +84,12 @@ export const MineRecordform = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button></div>
+      <div className="right center-mobile">
+        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.toggleModal} okText="Yes" cancelText="No">
+          <Button>Cancel</Button>
+        </Popconfirm>
+      <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
+     </div>
     </Form>
   );
 };

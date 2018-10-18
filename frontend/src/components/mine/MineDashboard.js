@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import Redirect from 'react-router-dom';
 import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
@@ -42,10 +41,6 @@ export class MineDashboard extends Component {
     this.props.fetchStatusOptions();
   }
 
-  handleTabChange = (key) => {
-   return (<Redirect push to={key} />)
-  }
-
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
@@ -60,10 +55,9 @@ export class MineDashboard extends Component {
             </div>
             <div className="dashboard__content">
               <Tabs
-                defaultActiveKey={this.state.activeTab}
+                defaultActiveKey='#summary'
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
-                onTabClick={this.handleTabChange}
               >
                 <TabPane tab="Summary" key="#summary">
                   <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>

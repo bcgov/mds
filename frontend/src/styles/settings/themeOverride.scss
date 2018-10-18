@@ -59,8 +59,28 @@
     background-color: saturate($default-dark-green, 10%);
     border: 1px solid  darken($default-dark-green, 30%);
     border: 1px solid  saturate($default-dark-green, 10%);
-    // opacity: 0.6;
   }
+}
+.ant-popover-buttons button {
+  margin: 10px;
+  line-height: 1.5;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 0 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  height: 32px;
+}
+
+//POPUP CONFIRM
+.ant-popover-inner-content, .ant-popover-arrow {
+  background-color: $default-white;
 }
 // CARDS
 .ant-card {
