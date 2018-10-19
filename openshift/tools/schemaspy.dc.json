@@ -181,22 +181,6 @@
 					  }
 					}
 				  ],
-				  "readinessProbe": {
-					"timeoutSeconds": 3,
-					"initialDelaySeconds": 3,
-					"httpGet": {
-					  "path": "/",
-					  "port": 8080
-					}
-				  },
-				  "livenessProbe": {
-					"timeoutSeconds": 3,
-					"initialDelaySeconds": 30,
-					"httpGet": {
-					  "path": "/",
-					  "port": 8080
-					}
-				  },
 				  "resources": {
 					"requests": {
 						"cpu": "${CPU_REQUEST}",
