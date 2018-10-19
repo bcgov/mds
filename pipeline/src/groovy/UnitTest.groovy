@@ -42,7 +42,9 @@ def branch = "${opt.branch}"
 def appLabel = "${opt.env}-${config.app.build.env.id}"
 def dbConfig = "${config.app.name}-postgresql-${config.app.build.env.id}"
 
-def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-frontend", "--namespace=${namespace}"])
+def frontendIsName = "mds-frontend-${config.app.build.env.id}"
+
+def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendIsName}", "--namespace=${namespace}"])
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
 
 // Run frontend tests
