@@ -7,14 +7,11 @@ from app.extensions import jwt
 
 class MineLocationResource(Resource):
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, mine_location_guid):
-        mine_location = MineLocation.find_by_mine_location_guid(mine_location_guid)
-        if mine_location:
-            return mine_location.json()
-        return {'message': 'Mine Location not found'}, 404
-
-
-class MineLocationListResource(Resource):
-    @jwt.requires_roles(["mds-mine-view"])
-    def get(self):
-        return {'mines': list(map(lambda x: x.json_by_location(), MineIdentity.query.all()))}
+    def get(self, mine_location_guid=None):
+        if mine_location_guid:
+            mine_location = MineLocation.find_by_mine_location_guid(mine_location_guid)
+            if mine_location:
+                return mine_location.json()
+            return {'message': 'Mine Location not found'}, 404
+        else:
+            return {'mines': list(map(lambda x: x.json_by_location(), MineIdentity.query.all()))}

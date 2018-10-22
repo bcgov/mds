@@ -21,12 +21,32 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('email', type=str)
     parser.add_argument('type', type=str)
 
+    PARTY_LIST_RESULT_LIMIT = 100
+
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, party_guid):
-        party = Party.find_by_party_guid(party_guid)
-        if party:
-            return party.json()
-        return self.create_error_payload(404, 'Party not found'), 404
+    def get(self, party_guid=None):
+        if party_guid:
+            party = Party.find_by_party_guid(party_guid)
+            if party:
+                return party.json()
+            else:
+                return self.create_error_payload(404, 'Party not found'), 404
+        else:
+            search_term = request.args.get('search')
+            search_type = request.args.get('type').upper() if request.args.get('type') else None
+            if search_term:
+                search_term_array = search_term.split()
+                _filter_list = []
+                for term in search_term_array:
+                    _filter_list.append(Party.first_name.ilike('%{}%'.format(term)))
+                    _filter_list.append(Party.party_name.ilike('%{}%'.format(term)))
+                if search_type in ['PER', 'ORG']:
+                    parties = Party.query.filter(or_(*_filter_list), Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                else:
+                    parties = Party.query.filter(or_(*_filter_list)).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+            else:
+                parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
+            return {'parties': list(map(lambda x: x.json(), parties))}
 
     def create_party_context(self, party_type_code, party_name, first_name):
         party_context = {
@@ -165,25 +185,3 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
             'effective_date': str(manager.effective_date),
             'expiry_date': str(manager.expiry_date),
         }
-
-
-class PartyList(Resource):
-    PARTY_LIST_RESULT_LIMIT = 100
-
-    @jwt.requires_roles(["mds-mine-view"])
-    def get(self):
-        search_term = request.args.get('search')
-        search_type = request.args.get('type').upper() if request.args.get('type') else None
-        if search_term:
-            search_term_array = search_term.split()
-            _filter_list = []
-            for term in search_term_array:
-                _filter_list.append(Party.first_name.ilike('%{}%'.format(term)))
-                _filter_list.append(Party.party_name.ilike('%{}%'.format(term)))
-            if search_type in ['PER', 'ORG']:
-                parties = Party.query.filter(or_(*_filter_list), Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
-            else:
-                parties = Party.query.filter(or_(*_filter_list)).limit(self.PARTY_LIST_RESULT_LIMIT).all()
-        else:
-            parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
-        return {'parties': list(map(lambda x: x.json(), parties))}
