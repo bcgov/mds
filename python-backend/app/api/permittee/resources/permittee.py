@@ -33,22 +33,22 @@ class PermitteeResource(Resource, UserMixin, ErrorMixin):
         _permittee_guid = data['permittee_guid']
         permit_guid = data['permit_guid']
         if not party_guid:
-            self.raise_error(400, 'Error: No party guid is not provided.')
+            self.raise_error(400, 'Error: Party guid is not provided.')
         if not permit_guid:
-            self.raise_error(400, 'Error: No permit guid is not provided.')
+            self.raise_error(400, 'Error: Permit guid is not provided.')
         if not _permittee_guid:
-            self.raise_error(400, 'Error: No permittee guid is not provided.')
+            self.raise_error(400, 'Error: Permittee guid is not provided.')
         if not effective_date:
             self.raise_error(400, 'Error: Effective date is not provided.')
         permittee_exists = Permittee.find_by_permittee_guid(_permittee_guid)
         if not permittee_exists:
-            self.raise_error(400, 'Permittee not found')
+            self.raise_error(400, 'Permittee not found.')
         party_exists = Party.find_by_party_guid(party_guid)
         if not party_exists:
-            return self.create_error_payload(404, 'Party not found'), 404
+            self.raise_error(400, 'Party not found.')
         permit_exists = Permit.find_by_permit_guid(permit_guid)
         if not permit_exists:
-            return self.create_error_payload(404, 'Permit not found'), 404
+            self.raise_error(400, 'Permit not found.')
         try:
             permittee = Permittee(
                 permittee_guid=uuid.uuid4(),

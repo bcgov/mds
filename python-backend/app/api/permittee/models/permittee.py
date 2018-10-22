@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import uuid
+
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 
@@ -36,3 +38,16 @@ class Permittee(AuditMixin, Base):
     @classmethod
     def find_by_permit_guid(cls, _id):
         return cls.query.filter_by(permit_guid=_id).first()
+
+    @classmethod
+    def create_mine_permittee(cls, mine_permit, permittee_party, effective_date, user_kwargs, save=True):
+        mine_permittee = cls(
+            permittee_guid=uuid.uuid4(),
+            permit_guid=mine_permit.permit_guid,
+            party_guid=permittee_party,
+            effective_date=effective_date,
+            **user_kwargs
+        )
+        if save:
+            mine_permittee.save(commit=False)
+        return mine_permittee

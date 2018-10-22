@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import uuid
+
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from app.extensions import db
@@ -41,6 +43,20 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, _id):
         return cls.query.filter_by(mine_guid=_id)
+
+    @classmethod
+    def create_mine_permit(cls, mine_identity, permit_no, permit_status_code, issue_date, user_kwargs, save=True):
+        mine_permit = cls(
+            permit_guid=uuid.uuid4(),
+            mine_guid=mine_identity.mine_guid,
+            permit_no=permit_no,
+            permit_status_code=permit_status_code,
+            issue_date=issue_date,
+            **user_kwargs
+        )
+        if save:
+            mine_permit.save(commit=False)
+        return mine_permit
 
     @validates('permit_status_code')
     def validate_status_code(self, key, permit_status_code):
@@ -92,6 +108,18 @@ class PermitStatusCode(AuditMixin, Base):
     @classmethod
     def find_by_permit_status_code(cls, _id):
         return cls.query.filter_by(permit_status_code=_id).first()
+
+    @classmethod
+    def create_mine_permit_status_code(cls, code, description, display_order, user_kwargs, save=True):
+        permit_status_code = cls(
+            permit_status_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            permit_status_code.save(commit=False)
+        return permit_status_code
 
     @validates('permit_status_code')
     def validate_permit_status_code(self, key, permit_status_code):
