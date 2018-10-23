@@ -22,11 +22,31 @@ class Mine(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_status', action='split')
 
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, mine_no):
-        mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
-        if mine:
-            return mine.json()
-        return self.create_error_payload(404, 'Mine not found'), 404
+    def get(self, mine_no=None):
+        if mine_no:
+            mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
+            if mine:
+                return mine.json()
+            return self.create_error_payload(404, 'Mine not found'), 404
+        else:
+            _map = request.args.get('map', None, type=str)
+            if _map and _map.lower() == 'true':
+                return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
+
+            items_per_page = request.args.get('per_page', 50, type=int)
+            page = request.args.get('page', 1, type=int)
+            mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+            return {
+                'mines': list(map(lambda x: x.json(), mines.items)),
+                'has_next': mines.has_next,
+                'has_prev': mines.has_prev,
+                'next_num': mines.next_num,
+                'prev_num': mines.prev_num,
+                'current_page': mines.page,
+                'total_pages': mines.pages,
+                'items_per_page': mines.per_page,
+                'total': mines.total,
+            }
 
     def mine_operation_code_processor(self, mine_status, index):
         try:
@@ -165,29 +185,6 @@ class Mine(Resource, UserMixin, ErrorMixin):
             location.save()
         self.mine_status_processor(status, mine.mine_guid) if status else None
         return mine.json()
-
-
-class MineList(Resource):
-    @jwt.requires_roles(["mds-mine-view"])
-    def get(self):
-        _map = request.args.get('map', None, type=str)
-        if _map and _map.lower() == 'true':
-            return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
-
-        items_per_page = request.args.get('per_page', 50, type=int)
-        page = request.args.get('page', 1, type=int)
-        mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
-        return {
-            'mines': list(map(lambda x: x.json(), mines.items)),
-            'has_next': mines.has_next,
-            'has_prev': mines.has_prev,
-            'next_num': mines.next_num,
-            'prev_num': mines.prev_num,
-            'current_page': mines.page,
-            'total_pages': mines.pages,
-            'items_per_page': mines.per_page,
-            'total': mines.total,
-        }
 
 
 class MineListByName(Resource):
