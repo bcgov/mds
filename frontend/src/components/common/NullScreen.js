@@ -57,7 +57,7 @@ const NullScreen = (props) => {
         <div className="no-nav-bar">
           <img src={NO_MINE} />
           <h1>{String.UNAUTHORIZED}</h1>
-          <h5>{String.CONTACT_ADMIN_FIRST}<b>{String.CONTACT_ADMIN_EMAIL}</b>{String.CONTACT_ADMIN_SECOND}</h5>
+          <h5>{String.CONTACT_ADMIN}</h5>
         </div>
       }
     </div>

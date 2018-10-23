@@ -1,3 +1,4 @@
+import React from 'react';
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = 'Error!';
 export const TRY_AGAIN = 'Please try again later';
@@ -17,9 +18,8 @@ export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
 export const UPDATE_PERMITTEE = 'Update Permittee';
 
 export const UNAUTHORIZED = 'You do not have permission to access this site';
-export const CONTACT_ADMIN_FIRST = 'Contact your system administrator at '
-export const CONTACT_ADMIN_SECOND = ' to request access'
-export const CONTACT_ADMIN_EMAIL = 'mds.admin@gov.bc.ca'
+//to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
+export const CONTACT_ADMIN = ['Contact your system administrator at ', <b>mds.admin@gov.bc.ca</b>, ' to request access'];
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
