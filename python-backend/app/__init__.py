@@ -16,10 +16,10 @@ from .api.party.models.party import Party, PartyTypeCode
 from .api.permit.models.permit import Permit, PermitStatusCode
 from .api.permittee.models.permittee import Permittee
 from .api.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
-from .api.mine.resources.mine import Mine, MineList, MineListByName
+from .api.mine.resources.mine import Mine, MineListByName
 from .api.status.resources.status import MineStatusResource
-from .api.party.resources.party import ManagerResource, PartyResource, PartyList
-from .api.location.resources.location import MineLocationResource, MineLocationListResource
+from .api.party.resources.party import ManagerResource, PartyResource
+from .api.location.resources.location import MineLocationResource
 from .api.permit.resources.permit import PermitResource
 from .api.permittee.resources.permittee import PermitteeResource
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen
@@ -63,15 +63,12 @@ def register_routes(app, api):
     app.add_url_rule('/', endpoint='index')
 
     # Set Routes for each resource
-    api.add_resource(Mine, '/mine', '/mine/<string:mine_no>')
-    api.add_resource(MineLocationResource, '/mine/location', '/mine/location/<string:mine_location_guid>')
-    api.add_resource(MineList, '/mines')
+    api.add_resource(Mine, '/mines', '/mines/<string:mine_no>')
+    api.add_resource(MineLocationResource, '/mines/location', '/mines/location/<string:mine_location_guid>')
     api.add_resource(MineListByName, '/mines/names')
     api.add_resource(MineStatusResource, '/mines/status', '/mines/status/<string:mine_status_guid>')
-    api.add_resource(MineLocationListResource, '/mines/location')
-    api.add_resource(PartyResource, '/party', '/party/<string:party_guid>')
-    api.add_resource(PartyList, '/parties')
-    api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
+    api.add_resource(PartyResource, '/parties', '/parties/<string:party_guid>')
+    api.add_resource(ManagerResource, '/managers', '/managers/<string:mgr_appointment_guid>')
     api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
     api.add_resource(PermitteeResource, '/permittees', '/permittees/<string:permittee_guid>')
 
