@@ -8,6 +8,7 @@ import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOp
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
 import MineSummary from '@/components/mine/Summary/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
+import * as router from '@/constants/routes';
 import MineContactInfo from '@/components/mine/ContactInfo/MineContactInfo';
 import MinePermitInfo from '@/components/mine/Permit/MinePermitInfo';
 import Loading from '@/components/common/Loading';
@@ -26,7 +27,7 @@ const propTypes = {
   mineIds: PropTypes.array,
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
 };
 
 const defaultProps = {
@@ -34,11 +35,21 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
+  state = { activeTab: "#summary" }
+
+  handleChange = (activeTab) => {
+    this.setState({ activeTab: activeTab});
+    this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab.replace("#","")))
+  }
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id);
     this.props.fetchStatusOptions();
+
+    if (activeTab) {
+      this.setState({activeTab : `#${activeTab}`});
+    }
   }
 
   render() {
@@ -55,7 +66,9 @@ export class MineDashboard extends Component {
             </div>
             <div className="dashboard__content">
               <Tabs
-                defaultActiveKey='#summary'
+                activeKey={this.state.activeTab}
+                defaultActiveKey="#summary"
+                onChange={this.handleChange}
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
               >
