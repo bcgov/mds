@@ -5,7 +5,8 @@ import io.github.cdimascio.dotenv.Dotenv
 import spock.lang.*
 
 
-import pages.*
+import pages.LoginPage
+import pages.DashboardPage
 import utils.Const
 
 

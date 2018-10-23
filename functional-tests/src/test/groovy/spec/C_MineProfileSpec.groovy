@@ -5,60 +5,75 @@ import spock.lang.*
 
 
 import pages.*
-import utils.*
+import utils.* 
+import dataObjects.managerProfileData
 
  
 @Title("MDS-MineProfilePage")
 @Stepwise
 class  C_MineProfileSpec extends GebReportingSpec {
-  
-    static TENURE_BAD =  "1234cha"  
-
-    //manager
-    static FirstName = "Vivián"
-    static LastName = "Iáoyús"
-    static Date = "2017-08-04"
 
     def setupSpec(){
-        println "---------Creating test mine record--------------"
+        println ">>>>>>>>> Creating test mine record:"
         DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_creation.sql').text)
+        println ">>>>>>>> Done."
     }
 
     
 
     def "Scenario: User can view the mine profile"(){
-        when: "I go to the mine profile page for BLAH0000(the test mine)"
+        when: "I go to the mine profile page for BLAH0000(the test record)"
         to MineProfilePage
 
         then: "I should see profile of the Mine"
-        // sleep(500)
-        // println activeTab
         waitFor {activeTab == "Summary" }      
         assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
-        assert latValue.minus("Lat:").startsWith("48")
-        assert longValue.minus("Long:").startsWith("-125")
-
+        assert latValue.minus("Lat:").startsWith(Const.MINE_LAT)
+        assert longValue.minus("Long:").startsWith(Const.MINE_LONG)
     }
 
-    def "Scenario: User should be able to add tenure number"(){
+
+    def "Scenario: User can create new mine manager and update mine manager information"(){
+        given: "I go to mine profile"
+        to MineProfilePage
+
+        when: "I go to contact tab"
+        contactInfoTab.click()
+        sleep(100)
+
+        and: "I create a new mine manager and update mine manager with the manager just created"
+        modifyManager(manager)
+        sleep(200)
+
+        then: "Should see successful message"
+        assert toastMessage == "Successfully updated the manager of ${Const.MINE_NAME}"
+        
+        then: "I can see the manager information get updated"
+        mineManagerCheck(manager) == [true,true]
+
+        where:
+        scenario        |manager 
+        "add manager"   |new managerProfileData ("MANAGER", "TEST", "123-456-7890", "111", "abc@test.com","2017-08-04")
+        "update manager"|new managerProfileData ("TEST2","mine","123-494-0909","222","test@test.com","2018-01-01") 
+    }
+
+
+    def "Scenario: User can add tenure number"(){
         given: "I go to mine profile"
         to MineProfilePage
 
         when: "User can update mine record with a new tenure number"
-        def tempTenure = generateTenure()
-        addTenure(tempTenure)
+        addTenure(Const.TENURE)
 
         and: "see successful message"
         toastMessage == "Successfully updated: ${Const.MINE_NAME}"
 
-
         then: "User can see the updated tenure number list"
-        tenureUpdated(tempTenure) == true
-
+        tenureUpdated(Const.TENURE) == true
     }
 
-    def "Scenario: User should not be able to add tenure number if the given tenure is invalid"(){
+    def "Scenario: User can not add tenure number if the given tenure is invalid"(){
         given: "I go to mine profile"
         to MineProfilePage
 
@@ -80,33 +95,10 @@ class  C_MineProfileSpec extends GebReportingSpec {
         "contains non-numerical value" | "1234cha" | "Input must be a number"
     }
 
-    def "Scenario: User can create new mine manager and update mine manager information"(){
-        given: "I go to mine profile"
-        to MineProfilePage
-
-        and: "At mine profile page"
-        at MineProfilePage
-        
-        when: "I go to contact tab"
-        contactInfoTab.click()
-        sleep(100)
-
-        and: "I create a new mine manager and update mine manager with the manager just created"
-        modifyManager(FirstName,LastName,Date)
-        sleep(200)
-
-        then: "Should see successful message"
-        assert toastMessage == "Successfully updated the manager of ${Const.MINE_NAME}"
-        
-
-        then: "I can see the manager information get updated"
-        mineManagerCheck(FirstName,LastName,Date) == [true,true]
-
-    }
-
     def cleanupSpec() {
-        println "---------Cleaning--------------"
+        println ">>>>>>>> Cleaning test data:"
         DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
+        println ">>>>>>>> Done."
     }
 
 

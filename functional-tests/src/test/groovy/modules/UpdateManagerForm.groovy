@@ -3,36 +3,60 @@ package modules
 import geb.Module
 
 class UpdateManagerForm extends Module {
-    static at = {$("div.ant-modal-title").text()=="Update Mine Manager"}
+    // static at = {$("div.ant-modal-title").text()=="Update Mine Manager"}
+    static at = { header=="Update Mine Manager"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         errorMessage (wait: true) {$("div", class:"ant-form-explain").text()}
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
-        closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
+        closeToastMessage (wait:true) {$("i.ant-notification-close-icon").find("svg")}
+        managerList (required:false) {$("li.ant-select-dropdown-menu-item", 0)}
+
 
         //input
         managerFirstNameBox (wait:true) {$("input", id:"first_name")}
-        managerSurNameBox (wait:true) {$("input", id:"surname")}
-        managerSelectNameBox (wait:true) {$("input", id:"mineManager")}
-        datePicker1 (wait:true) {$("input", class:"ant-calendar-picker-input ant-input")}
-        datePicker2 (wait:true) {$("input.ant-calendar-input", placeholder:"Select date")}
-        selectToInputManager (wait:true) {$("div", class:"ant-select-selection ant-select-selection--single")}
+        managerSurNameBox (wait:true) {$("input", id:"party_name")}
+        managerEmailBox (wait:true) {$("input",id:"email")}
+        managerPhoneBox (wait:true) {$("input", id:"phone_no")}
+        managerExtBox (wait:true) {$("input",id:"phone_ext")}
+        partyBox (wait:true) {$("li").find("div").find("input", type: "text")}
+        datePicker1 (wait:true) {$("input", placeholder:"yyyy-mm-dd")}
+        datePicker2 (wait:true) {$("input.ant-calendar-input", placeholder:"yyyy-mm-dd")}
+        selectParty (wait:true) {$("div", class:"ant-select-selection ant-select-selection--single")}
          
         //button
-        createMineManagerButton (wait:true) {$("button").has("span",text:"Create Party")}
-        updateMineManagerButton (wait:true) {$("button").has("span",text:"Update Mine Manager")} 
-        cancelButton (wait:true) {$("button.ant-modal-close")}     
-        updateButton (wait:true) {$("button").has("span",text:"Update")}
+        createPersonnelButton (wait:true) {$("button").has("span",text:"Create Personnel")}
+        updateMineManagerButton (wait:true) {$("form").find("div").find("button").has("span",text:"Update Mine Manager")} 
+        cancelButton (wait:true) {$("button.ant-modal-close")}      
          
         
     }
 
 
-    def createMineManager(firstName,lastName){
-        managerFirstNameBox = firstName
-        managerSurNameBox = lastName
-        createMineManagerButton.click()
+    def createPersonnel(managerProfileData){
+        managerFirstNameBox = managerProfileData.first_name
+        managerSurNameBox = managerProfileData.surname
+        managerPhoneBox = managerProfileData.phone
+        managerExtBox = managerProfileData.ext
+        managerEmailBox = managerProfileData.email
+        createPersonnelButton.click()
         closeToastMessage.click()
+    }
+
+    def updateMineManager(managerProfileData){
+        def staleElement = true
+        selectDate(managerProfileData.date)
+        selectParty.click()
+        partyBox = "${managerProfileData.first_name} ${managerProfileData.surname}"
+        while (staleElement){
+            try {
+                managerList.click()
+                staleElement = false
+            } catch (org.openqa.selenium.StaleElementReferenceException e){
+                staleElement = true
+            }
+        }
+        updateMineManagerButton.click()
     }
 
     def selectDate(date){
@@ -41,13 +65,6 @@ class UpdateManagerForm extends Module {
         datePicker2=date
     }
 
-    def updateMineManager(firstName,lastName,date){
-        selectDate(date)
-        selectToInputManager.click()
-        managerSelectNameBox = "${firstName} ${lastName}"
-        updateMineManagerButton.click()
-        updateMineManagerButton.click()
-    }
 
     
  
