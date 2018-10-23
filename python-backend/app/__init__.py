@@ -38,8 +38,8 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_object(test_config)
 
-    register_extensions(app)
     register_routes(app)
+    register_extensions(app)
     register_commands(app)
     return app
 
