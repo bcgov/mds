@@ -3,10 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Keycloak from 'keycloak-js';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { isAuthenticated, getKeycloak } from '@/selectors/authenticationSelectors';
+import { isAuthenticated, getKeycloak, getUserAccessData } from '@/selectors/authenticationSelectors';
 import { authenticateUser, storeKeycloakData, storeUserAccessData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/common/Loading';
 import { KEYCLOAK } from '@/constants/environment';
+import NullScreen from '@/components/common/NullScreen';
 
 /**
  * @constant AuthGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -49,11 +50,15 @@ export const AuthGuard = (WrappedComponent) => {
 
     render() {
       if (this.props.keycloak) {
-        if (this.props.isAuthenticated) {
+        if (this.props.isAuthenticated && this.props.userAccessData.includes("mds-mine-view")) {
           return (
             <WrappedComponent {...this.props} />
           );
-        } else {
+        } else if(this.props.isAuthenticated && !this.props.userAccessData.includes("mds-mine-view"))  {
+          return(
+            <NullScreen type="unauthorized" />
+          )
+        } else{
           return (<Loading />)
         }
       }
@@ -66,6 +71,7 @@ export const AuthGuard = (WrappedComponent) => {
   const mapStateToProps = (state) => {
     return {
       isAuthenticated: isAuthenticated(state),
+      userAccessData: getUserAccessData(state),
       keycloak: getKeycloak(state)
     };
   };

@@ -16,6 +16,10 @@ export const PERSON_NOT_FOUND = 'If the party is not in the list above, please a
 export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
 export const UPDATE_PERMITTEE = 'Update Permittee';
 
+export const UNAUTHORIZED = 'You do not have permission to access this site';
+export const CONTACT_ADMIN_FIRST = 'Contact your system administrator at '
+export const CONTACT_ADMIN_SECOND = ' to request access'
+export const CONTACT_ADMIN_EMAIL = 'mds.admin@gov.bc.ca'
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;

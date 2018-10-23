@@ -8,7 +8,7 @@ import * as String from '@/constants/strings';
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit']),
+  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit', 'unauthorized']),
 };
 
 const NullScreen = (props) => {
@@ -53,11 +53,11 @@ const NullScreen = (props) => {
           <h1>{String.NO_PERMIT}</h1>
         </div>
       }
-      {props.type === 'auth' &&
-        <div>
+      {props.type === 'unauthorized' &&
+        <div className="no-nav-bar">
           <img src={NO_MINE} />
-          <h1>{}</h1>
-          <h5>{}</h5>
+          <h1>{String.UNAUTHORIZED}</h1>
+          <h5>{String.CONTACT_ADMIN_FIRST}<b>{String.CONTACT_ADMIN_EMAIL}</b>{String.CONTACT_ADMIN_SECOND}</h5>
         </div>
       }
     </div>
