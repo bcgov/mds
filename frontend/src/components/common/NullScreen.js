@@ -53,6 +53,13 @@ const NullScreen = (props) => {
           <h1>{String.NO_PERMIT}</h1>
         </div>
       }
+      {props.type === 'auth' &&
+        <div>
+          <img src={NO_MINE} />
+          <h1>{}</h1>
+          <h5>{}</h5>
+        </div>
+      }
     </div>
   );
 };
