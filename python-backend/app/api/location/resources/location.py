@@ -3,10 +3,11 @@ from flask_restplus import Resource
 from ..models.location import MineLocation
 from ...mine.models.mines import MineIdentity
 from ...utils.resources_mixins import ErrorMixin
-from app.extensions import jwt
+from app.extensions import jwt, api
 
 
 class MineLocationResource(Resource, ErrorMixin):
+    @api.doc(params={'mine_location_guid': 'Guid for mine location, if not provided a list of all mine locations will be returned.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_location_guid=None):
         if mine_location_guid:
