@@ -13,8 +13,7 @@ class MineProfilePage extends Page {
         latValue (wait:true) {$("div")find("p",0).text()} 
         longValue (wait:true) {$("div")find("p",1).text()} 
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
-        closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
-        updateButton (wait:true) {$("button").has("span",text:"Update")}
+        closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")} 
 
         //TabPanel
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
@@ -24,31 +23,51 @@ class MineProfilePage extends Page {
 
         //Summary Tab     
         
-        
-
-        //Tenure Tab
-        addTenureNumberButton (wait:true) {$("div.center").find("button").has("span",text:"Add Tenure Number")}
-        updateTenureForm {module UpdateTenureForm}
-        tenureNumberList (wait:true) {$("div.ant-col-12")find("p.p-large").find("div")}
-        noDataMessage (required: false){$("h1", text:"No data at this time")}
-        
-        //Contact info tab
+        //3.Contact info tab
         updateManagerForm {module UpdateManagerForm}
-        mineManagerInfo (wait:true) {$("div.ant-col-12").find("p.p-large")}
-        noManagerMessage (required: false){$("h1", text:"No Assigned Mine Manager")}
-        addMineManagerButton (wait:true) {$("button").has("span",text:"Add Mine Manager")}
-        
+        manager_name (wait:true) {$("td", 'data-label':"Mine Manager").find("p.p-large",1).text()}
+        manager_date (wait:true) {$("td", 'data-label':"Manager Since").find("p.p-large",1).text()}
+        manager_null_screen (required: false){$("h1", text:"No assigned mine manager")}
+        addManagerButton (wait:true) {$("button").has("span",text:"Add Mine Manager")}     
+        updateManagerButton (wait:true) {$("button").has("span", text:"Update Mine Manager")}   
+
+        //5.Tenure Tab
+        addTenureNumberButton (wait:true) {$("button").has("span",text:"Add Tenure Number")}
+        updateTenureForm {module UpdateTenureForm}
+        tenureNumberList (wait:true) {$("td").find("p.p-large")}
+        tenure_null_screen (required: false){$("h1", text:"No data available")}
     }
 
 
+    //3.Contact Information Tab
+    def modifyManager(managerProfileData){
+        if(manager_null_screen.present){ 
+            addManagerButton.click()
+        }
+        else{ 
+            updateManagerButton.click()
+        }
+        updateManagerForm.createPersonnel(managerProfileData)
+        updateManagerForm.updateMineManager(managerProfileData)
+    }
+
+    def mineManagerCheck(managerProfileData){
+        def nameUpdated = false
+        def dateUpdated = false
+        if(manager_name=="${managerProfileData.first_name} ${managerProfileData.surname}"){
+            nameUpdated = true 
+        } 
+        if(manager_date==managerProfileData.date){
+            dateUpdated = true
+        }
+        return [nameUpdated,dateUpdated]
+    }   
+
+
+    //5.Tenure Tab
     def addTenure(tenureNum){
         tenureTab.click()
-        if(noDataMessage.present){
-            addTenureNumberButton.click()
-        }
-        else{
-            updateButton.click()
-        }
+        addTenureNumberButton.click()
         updateTenureForm.addTenure(tenureNum)
     }
 
@@ -71,34 +90,5 @@ class MineProfilePage extends Page {
         return randomTenure
     }
 
-
-    def modifyManager(FirstName,LastName,Date){
-        if(noManagerMessage.present){
-            addMineManagerButton.click()
-        }
-        else{
-            updateButton.click()
-        }
-        updateManagerForm.createMineManager(FirstName,LastName)
-        updateManagerForm.updateMineManager(FirstName,LastName,Date)
-    }
-
-
-
-    def mineManagerCheck(firstName,lastName,date){
-        def nameUpdated = false
-        def dateUpdated = false
-        def i = mineManagerInfo.size()
-        // println mineManagerInfo*.text()
-        // println "--------------------"
-        if(mineManagerInfo[i-2].text()=="${firstName} ${lastName}"){
-            nameUpdated = true 
-        }
-        if(mineManagerInfo[i-1].text()==date){
-            dateUpdated = true
-        }
-        return [nameUpdated,dateUpdated]
-    }   
-        
 }
  
