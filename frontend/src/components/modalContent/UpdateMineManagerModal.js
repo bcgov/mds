@@ -8,7 +8,6 @@ import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 
 class UpdateMineManager extends Component {
   render() { 
-    console.log(this.props);
     return (
       <div>
         <UpdateMineManagerForm {...this.props}/>

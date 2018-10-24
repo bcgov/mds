@@ -74,6 +74,13 @@ class MineIdentity(AuditMixin, Base):
 
         return result
 
+    @classmethod
+    def create_mine_identity(cls, user_kwargs, save=True):
+        mine_identity = cls(mine_guid=uuid.uuid4(), **user_kwargs)
+        if save:
+            mine_identity.save(commit=False)
+        return mine_identity
+
 
 class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
@@ -92,6 +99,19 @@ class MineDetail(AuditMixin, Base):
     @classmethod
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).first()
+
+    @classmethod
+    def create_mine_detail(cls, mine_identity, mine_no, mine_name, user_kwargs, save=True):
+        mine_detail = cls(
+            mine_detail_guid=uuid.uuid4(),
+            mine_guid=mine_identity.mine_guid,
+            mine_no=mine_no,
+            mine_name=mine_name,
+            **user_kwargs
+        )
+        if save:
+            mine_detail.save(commit=False)
+        return mine_detail
 
     @validates('mine_name')
     def validate_mine_name(self, key, mine_name):
@@ -131,6 +151,18 @@ class MineralTenureXref(AuditMixin, Base):
     @classmethod
     def find_by_tenure(cls, _id):
         return cls.query.filter_by(tenure_number_id=_id).first()
+
+    @classmethod
+    def create_mine_tenure(cls, mine_identity, tenure_number_id, user_kwargs, save=True):
+        mine_tenure = cls(
+            mineral_tenure_xref_guid=uuid.uuid4(),
+            mine_guid=mine_identity.mine_guid,
+            tenure_number_id=tenure_number_id,
+            **user_kwargs
+        )
+        if save:
+            mine_tenure.save(commit=False)
+        return mine_tenure
 
     @validates('tenure_number_id')
     def validate_tenure_number_id(self, key, tenure_number_id):

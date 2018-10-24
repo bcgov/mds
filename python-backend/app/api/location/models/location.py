@@ -1,4 +1,5 @@
 from datetime import datetime
+import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from ...utils.models_mixins import AuditMixin, Base
@@ -34,3 +35,18 @@ class MineLocation(AuditMixin, Base):
     @classmethod
     def find_by_mine_location_guid(cls, _id):
         return cls.query.filter_by(mine_location_guid=_id).first()
+
+    @classmethod
+    def create_mine_location(cls, mine_identity, random_location, user_kwargs, save=True):
+        mine_location = cls(
+            mine_location_guid=uuid.uuid4(),
+            mine_guid=mine_identity.mine_guid,
+            latitude=random_location.get('latitude', 0),
+            longitude=random_location.get('longitude', 0),
+            effective_date=datetime.today(),
+            expiry_date=datetime.today(),
+            **user_kwargs
+        )
+        if save:
+            mine_location.save(commit=False)
+        return mine_location

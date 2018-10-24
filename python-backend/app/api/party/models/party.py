@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+import uuid
 
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
@@ -70,6 +71,21 @@ class Party(AuditMixin, Base):
     def find_by_name(cls, first_name, party_name):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
+    @classmethod
+    def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
+        party = cls(
+            party_guid=uuid.uuid4(),
+            first_name=generated_first_name,
+            party_name=generated_last_name,
+            email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' + generated_last_name.lower() + '.com',
+            phone_no='123-123-1234',
+            party_type_code=PARTY_STATUS_CODE['per'],
+            **user_kwargs
+        )
+        if save:
+            party.save(commit=False)
+        return party
+
     @validates('first_name')
     def validate_first_name(self, key, first_name):
         if first_name and len(first_name) > 100:
@@ -120,6 +136,18 @@ class PartyTypeCode(AuditMixin, Base):
     @classmethod
     def find_by_party_type_code(cls, _id):
         return cls.query.filter_by(party_type_code=_id).first()
+
+    @classmethod
+    def create_party_type_code(cls, code, description, display_order, user_kwargs, save=True):
+        party_type_code = cls(
+            party_type_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            party_type_code.save(commit=False)
+        return party_type_code
 
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):

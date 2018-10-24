@@ -131,6 +131,18 @@ class MineOperationStatusCode(AuditMixin, Base):
     def find_by_mine_operation_status_code(cls, _id):
         return cls.query.filter_by(mine_operation_status_code=_id).first()
 
+    @classmethod
+    def create_mine_operation_status_code(cls, code, description, display_order, user_kwargs, save=True):
+        mine_operation_status_code = cls(
+            mine_operation_status_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            mine_operation_status_code.save(commit=False)
+        return mine_operation_status_code
+
     @validates('mine_operation_status_code')
     def validate_mine_operation_status_code(self, key, mine_operation_status_code):
         if not mine_operation_status_code:
@@ -142,9 +154,9 @@ class MineOperationStatusCode(AuditMixin, Base):
     @validates('description')
     def validate_description(self, key, description):
         if not description:
-            raise AssertionError('Party type description is not provided.')
+            raise AssertionError('Mine operation status code description is not provided.')
         if len(description) > 100:
-            raise AssertionError('Party type description must not exceed 100 characters.')
+            raise AssertionError('Mine operation status code description must not exceed 100 characters.')
         return description
 
 
@@ -172,6 +184,18 @@ class MineOperationStatusReasonCode(AuditMixin, Base):
     def find_by_mine_operation_status_reason_code(cls, _id):
         return cls.query.filter_by(mine_operation_status_reason_code=_id).first()
 
+    @classmethod
+    def create_mine_operation_status_reason_code(cls, code, description, display_order, user_kwargs, save=True):
+        mine_operation_status_reason_code = cls(
+            mine_operation_status_reason_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            mine_operation_status_reason_code.save(commit=False)
+        return mine_operation_status_reason_code
+
     @validates('mine_operation_status_reason_code')
     def validate_mine_operation_status_reason_code(self, key, mine_operation_status_reason_code):
         if not mine_operation_status_reason_code:
@@ -183,9 +207,9 @@ class MineOperationStatusReasonCode(AuditMixin, Base):
     @validates('description')
     def validate_description(self, key, description):
         if not description:
-            raise AssertionError('Party type description is not provided.')
+            raise AssertionError('Mine operation status reason code description is not provided.')
         if len(description) > 100:
-            raise AssertionError('Party type description must not exceed 100 characters.')
+            raise AssertionError('Mine operation status reason code description must not exceed 100 characters.')
         return description
 
 
@@ -212,6 +236,18 @@ class MineOperationStatusSubReasonCode(AuditMixin, Base):
     @classmethod
     def find_by_mine_operation_status_sub_reason_code(cls, _id):
         return cls.query.filter_by(mine_operation_status_sub_reason_code=_id).first()
+
+    @classmethod
+    def create_mine_operation_status_sub_reason_code(cls, code, description, display_order, user_kwargs, save=True):
+        mine_operation_status_sub_reason_code = cls(
+            mine_operation_status_sub_reason_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            mine_operation_status_sub_reason_code.save(commit=False)
+        return mine_operation_status_sub_reason_code
 
     @validates('mine_operation_status_sub_reason_code')
     def validate_mine_operation_status_reason_code(self, key, mine_operation_status_sub_reason_code):
