@@ -1,5 +1,5 @@
 from tests.constants import TEST_PARTY_PER_GUID_1, TEST_MANAGER_GUID, TEST_MINE_GUID
-from app.api.party.models.party import MgrAppointment
+from app.api.parties.party.models.party import MgrAppointment
 
 
 # Mgr Appointment Class Methods

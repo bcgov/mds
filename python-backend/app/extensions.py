@@ -6,4 +6,5 @@ from .config import Config
 
 db = SQLAlchemy()
 jwt = JwtManager()
-api = Api(prefix=Config.BASE_PATH, doc='{}/'.format(Config.BASE_PATH))
+api = Api(prefix=Config.BASE_PATH, doc='{}/'.format(Config.BASE_PATH),
+          default='mds', default_label='MDS related operations')

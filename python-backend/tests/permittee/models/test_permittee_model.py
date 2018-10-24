@@ -1,5 +1,5 @@
 from tests.constants import TEST_PERMITTEE_GUID
-from app.api.permittee.models.permittee import Permittee
+from app.api.permits.permittee.models.permittee import Permittee
 
 
 # Permit Model Class Methods

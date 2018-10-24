@@ -71,32 +71,32 @@ def test_put_person_full_auth(test_client, auth_headers):
 
 # GET Manager Auth
 def test_get_manager_no_auth(test_client):
-    get_resp = test_client.get('/managers/' + TEST_MANAGER_GUID, headers={})
+    get_resp = test_client.get('parties/managers/' + TEST_MANAGER_GUID, headers={})
     assert get_resp.status_code == 401
 
 
 def test_get_manager_view_only(test_client, auth_headers):
-    get_resp = test_client.get('/managers/' + TEST_MANAGER_GUID, headers=auth_headers['view_only_auth_header'])
+    get_resp = test_client.get('parties/managers/' + TEST_MANAGER_GUID, headers=auth_headers['view_only_auth_header'])
     assert get_resp.status_code == 200
 
 
 def test_get_manager_full_auth(test_client, auth_headers):
-    get_resp = test_client.get('/managers/' + TEST_MANAGER_GUID, headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get('parties/managers/' + TEST_MANAGER_GUID, headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
 
 
 # POST Manager Auth
 def test_post_manager_no_auth(test_client, auth_headers):
-    post_resp = test_client.post('/managers', data={}, headers={})
+    post_resp = test_client.post('parties/managers', data={}, headers={})
     assert post_resp.status_code == 401
 
 
 def test_post_manager_view_only(test_client, auth_headers):
-    post_resp = test_client.post('/managers', data={}, headers=auth_headers['view_only_auth_header'])
+    post_resp = test_client.post('parties/managers', data={}, headers=auth_headers['view_only_auth_header'])
     assert post_resp.status_code == 401
 
 
 def test_post_manager_full_auth(test_client, auth_headers):
     test_manager_data = {"party_guid": TEST_PARTY_PER_GUID_3, "mine_guid": TEST_MINE_GUID, "effective_date": datetime.today().strftime("%Y-%m-%d"), "expiry_date": datetime.today().strftime("%Y-%m-%d")}
-    post_resp = test_client.post('/managers', data=test_manager_data, headers=auth_headers['full_auth_header'])
+    post_resp = test_client.post('parties/managers', data=test_manager_data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 200
