@@ -54,7 +54,7 @@ export const AuthGuard = (WrappedComponent) => {
           return (
             <WrappedComponent {...this.props} />
           );
-        } else if(this.props.isAuthenticated && !this.props.userAccessData.includes("mds-mine-view"))  {
+        } else if(this.props.isAuthenticated && !this.props.userAccessData.includes(USER_ROLES.role_view))  {
           return(
             <NullScreen type="unauthorized" />
           )
