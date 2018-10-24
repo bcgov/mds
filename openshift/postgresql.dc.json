@@ -125,11 +125,11 @@
             "value": "2Gi"
         },
         {
-            "name": "CPU_RESOURCE",
+            "name": "CPU_REQUEST",
             "value": "200m"
         },
         {
-            "name": "MEMORY_RESOURCE",
+            "name": "MEMORY_REQUEST",
             "value": "1.5Gi"
         }
     ],
@@ -380,8 +380,8 @@
                                 },
                                 "resources": {
                                     "requests": {
-                                        "cpu": "${CPU_RESOURCE}",
-                                        "memory": "${MEMORY_RESOURCE}"
+                                        "cpu": "${CPU_REQUEST}",
+                                        "memory": "${MEMORY_REQUEST}"
                                     },
                                     "limits": {
                                         "cpu": "${CPU_LIMIT}",
