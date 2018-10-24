@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
+import { openModal, closeModal} from '@/actions/modalActions';
 import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { fetchMineRecordById } from '@/actionCreators/mineActionCreator';
@@ -31,7 +32,6 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
-    state = { modalVisible: false, permitteeModalVisible: false, isPerson: true }
   /**
  * add new parties (firstName, surname || companyName) to db.
  */
@@ -41,33 +41,6 @@ const defaultProps = {
       this.props.fetchParties();
     });
   }
-  /**
-   * change mine manager on record.
-   */
-  handleManagerSubmit = (values) => {
-    this.props.addMineManager(this.props.mine.guid, values.mineManager, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.setState({ modalVisible: !this.state.modalVisible });
-      this.props.fetchMineRecordById(this.props.mine.guid);
-      this.props.fetchParties();
-    })
-  }
-
-  togglePartyChange = (value) => {
-    this.setState({
-      isPerson: value.target.value,
-    });
-  }
- /**
-   * change permittee on record.
-   */
-   handlePermitteeSubmit = (values) => {
-    const guids = values.permittee.split(", ");
-    this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
-      this.setState({ permitteeModalVisible: !this.state.permitteeModalVisible });
-      this.props.fetchMineRecordById(this.props.mine.guid);
-      this.props.fetchParties();
-    })
-  }
 
   handleChange = (value) => {
     if (value.length > 2){
@@ -76,18 +49,6 @@ const defaultProps = {
     else if (value.length === 0) {
       this.props.fetchParties();
     }
-  }
-
-  togglePermitteeModal = () => {
-    this.setState({
-      permitteeModalVisible: !this.state.permitteeModalVisible,
-    });
-  }
-
-  toggleModal = () => {
-    this.setState({
-      modalVisible: !this.state.modalVisible,
-    });
   }
 
   componentDidMount() {
@@ -100,23 +61,16 @@ const defaultProps = {
      <div>
         <ViewMineManager 
           {...this.props} 
-          {...this.state}
-          toggleModal={this.toggleModal} 
           handleChange={this.handleChange}
-          handleSubmit={this.handleManagerSubmit}
           handlePartySubmit={this.handlePartySubmit}
         />
         {mine.mine_permit[0] &&
           <ViewPermittee 
             {...this.props}
-            {...this.state}
-            toggleModal={this.togglePermitteeModal} 
             handleChange={this.handleChange}
-            handleSubmit={this.handlePermitteeSubmit}
             handlePartySubmit={this.handlePartySubmit}
-            togglePartyChange={this.togglePartyChange}
           />
-      }
+        }
     </div>
    )
   }
@@ -141,6 +95,8 @@ const mapDispatchToProps = (dispatch) => {
     addMineManager,
     addPermittee,
     fetchMineRecordById,
+    openModal, 
+    closeModal,
   }, dispatch);
 }
 

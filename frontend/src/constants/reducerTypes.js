@@ -16,3 +16,6 @@ export const GET_PARTY = 'GET_PARTY';
 
 export const ADD_MINE_MANAGER = 'ADD_MINE_MANAGER';
 export const ADD_PERMITTEE = 'ADD_PERMITTEE'
+
+export const MODAL= 'MODAL';
+

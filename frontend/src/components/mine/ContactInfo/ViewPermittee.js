@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Radio } from 'antd';
+import { Card } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
-import AddPartyForm from '@/components/Forms/AddPartyForm';
-import UpdatePermitteeForm from '@/components/Forms/UpdatePermitteeForm';
-import * as String from '@/constants/strings';
+import { modalConfig } from '@/components/modalContent/config';
 /**
  * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
  */
 
 const propTypes = {
-  toggleModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
@@ -33,13 +31,26 @@ const defaultProps = {
 
 export class ViewPermittee extends Component {
 
-  handleSubmit = (values) => {
-    const type = this.props.isPerson ? 'PER' : 'ORG';
-    this.props.handlePartySubmit(values, type);
+  openModal(event, onSubmit, permit, handleChange, handlePartySubmit, title ) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, permit, handleChange, handlePartySubmit, title},
+      content: modalConfig.UPDATE_PERMITTEE
+    });
   }
-
+ /**
+   * change permittee on record.
+   */
+  handlePermitteeSubmit = (values) => {
+    const guids = values.permittee.split(", ");
+    this.props.addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_detail[0].mine_name, values.startDate).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchParties();
+      this.props.closeModal();
+    })
+  }
   render() {
-    const { permittees, permitteeIds } = this.props;
+    const { permittees, permitteeIds, mine } = this.props;
       return (
         <div>
           <Card>
@@ -69,42 +80,12 @@ export class ViewPermittee extends Component {
               </table>
             <div className="right center-mobile">
               <ConditionalButton 
-                handleAction={this.props.toggleModal} 
+                handleAction={(event) => this.openModal(event, this.handlePermitteeSubmit, mine.mine_permit, this.props.handleChange, this.props.handlePartySubmit, 'Update Permittee')} 
                 string="Update Permittee" 
                 type="primary"
               />
             </div> 
           </Card>
-          <Modal
-            title="Update Permittee"
-            visible={this.props.permitteeModalVisible}
-            footer={null}
-            closable={false}
-          >
-            <LoadingBar 
-              scope="modal" 
-              style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
-            />
-            <div>
-              <UpdatePermitteeForm
-                permit={this.props.mine.mine_permit}
-                onSubmit={this.props.handleSubmit}
-                parties={this.props.parties}
-                partyIds={this.props.partyIds}
-                handleChange={this.props.handleChange}
-                isPerson={this.props.isPerson}
-                toggleModal={this.props.toggleModal}
-            />
-              <p className="center">{String.PARTY_NOT_FOUND}</p>
-              <div className="center">
-                <Radio.Group defaultValue={true} size="large" onChange={this.props.togglePartyChange}>
-                  <Radio.Button value={true}>Person</Radio.Button>
-                  <Radio.Button value={false}>Company</Radio.Button>
-                </Radio.Group>
-              </div>
-              <AddPartyForm onSubmit={this.handleSubmit} isPerson={this.props.isPerson}/>
-            </div>
-          </Modal>
         </div>
       );
     } 
