@@ -3,7 +3,7 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-
+from sqlalchemy import or_
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ...permit.models.permit import Permit
@@ -36,7 +36,15 @@ class Mine(Resource, UserMixin, ErrorMixin):
 
             items_per_page = request.args.get('per_page', 50, type=int)
             page = request.args.get('page', 1, type=int)
-            mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+            search_term = request.args.get('search', None, type=str)
+            if search_term:
+                name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
+                number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+                permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
+                mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(100).paginate(page, items_per_page, False)
+            else:
+                mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+
             return {
                 'mines': list(map(lambda x: x.json(), mines.items)),
                 'has_next': mines.has_next,
@@ -198,7 +206,7 @@ class MineListByName(Resource):
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
             number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
