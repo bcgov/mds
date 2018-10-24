@@ -6,7 +6,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import { isAuthenticated, getKeycloak, getUserAccessData } from '@/selectors/authenticationSelectors';
 import { authenticateUser, storeKeycloakData, storeUserAccessData } from '@/actions/authenticationActions';
 import  Loading  from '@/components/common/Loading';
-import { KEYCLOAK } from '@/constants/environment';
+import { KEYCLOAK, USER_ROLES } from '@/constants/environment';
 import NullScreen from '@/components/common/NullScreen';
 
 /**
@@ -50,7 +50,7 @@ export const AuthGuard = (WrappedComponent) => {
 
     render() {
       if (this.props.keycloak) {
-        if (this.props.isAuthenticated && this.props.userAccessData.includes("mds-mine-view")) {
+        if (this.props.isAuthenticated && this.props.userAccessData.includes(USER_ROLES.role_view)) {
           return (
             <WrappedComponent {...this.props} />
           );
