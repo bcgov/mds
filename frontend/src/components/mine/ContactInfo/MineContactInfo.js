@@ -31,7 +31,7 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
-    state = { modalVisible: false, permitteeModalVisible: false, isPerson: true }
+    state = { modalVisible: false, permitteeModalVisible: false, isPerson: true, mineManagerHistroyVisible: false, }
   /**
  * add new parties (firstName, surname || companyName) to db.
  */
@@ -90,6 +90,12 @@ const defaultProps = {
     });
   }
 
+  toggleMineManagerHistory = () => {
+    this.setState({
+      mineManagerHistroyVisible: !this.state.mineManagerHistroyVisible,
+    });
+  }
+
   componentDidMount() {
     this.props.fetchParties();
   }
@@ -105,6 +111,7 @@ const defaultProps = {
           handleChange={this.handleChange}
           handleSubmit={this.handleManagerSubmit}
           handlePartySubmit={this.handlePartySubmit}
+          toggleMineManagerHistory={this.toggleMineManagerHistory}
         />
         {mine.mine_permit[0] &&
           <ViewPermittee 

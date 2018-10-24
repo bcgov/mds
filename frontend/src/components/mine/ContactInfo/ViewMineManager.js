@@ -19,9 +19,11 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   modalVisible: PropTypes.bool,
+  mineManagerHistroyVisible: PropTypes.bool,
   mine: PropTypes.object.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
+  toggleMineManagerHistory: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -85,7 +87,11 @@ export class ViewMineManager extends Component {
                     <th scope="col"><h4>Manager Since</h4></th>
                   </tr>
                   <tr>
-                    <td data-label="Mine Manager"><p className="p-large">{mine.mgr_appointment[0].name}</p></td>
+                    <td data-label="Mine Manager">
+                      <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].party_guid)}>
+                        <p className="p-large">{mine.mgr_appointment[0].name}</p>
+                      </Link> 
+                    </td>
                     <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0].effective_date}</p></td>
                   </tr>
                   <tr>
@@ -98,10 +104,29 @@ export class ViewMineManager extends Component {
                   </tr>
                 </tbody>
               </table>
+              {this.props.mineManagerHistroyVisible &&
+                <div>
+                  <table>
+                    <tr>
+                      <th scope="col"><h5>Mine Manager History</h5></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                    </tr>
+                    {mine.mgr_appointment.splice(1).map((mgr) => {
+                      return (
+                        <tr key={mgr.mgr_appointment_guid}>
+                          <td data-label="Name"><p className="p-large">{mgr.name}</p></td>
+                          <td data-label="Date Issued"><p className="p-large">{mgr.effective_date} - {mgr.expiry_date}</p></td>
+                        </tr>
+                      )
+                    })}
+                  </table>
+                </div>
+              }
               <div className="right center-mobile">
-                <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].party_guid)}>
-                  <Button className="full-mobile" type="secondary">View profile</Button>
-                </Link> 
+                {mine.mgr_appointment.length > 1 &&
+                  <Button className="full-mobile" type="secondary" onClick={this.props.toggleMineManagerHistory}>{this.props.mineManagerHistroyVisible ? 'Close History' : 'View History'}</Button>
+                }
                 <ConditionalButton 
                   handleAction={this.props.toggleModal} 
                   string="Update Mine Manager" 
