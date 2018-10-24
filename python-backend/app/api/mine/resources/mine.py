@@ -6,6 +6,7 @@ from flask_restplus import Resource, reqparse
 
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
+from ...permit.models.permit import Permit
 from ...location.models.location import MineLocation
 from ...utils.random import generate_mine_no
 from app.extensions import jwt
@@ -196,7 +197,8 @@ class MineListByName(Resource):
         if search_term:
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
             number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
-            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
+            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
