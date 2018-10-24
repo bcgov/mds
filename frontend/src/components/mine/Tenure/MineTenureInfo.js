@@ -53,6 +53,7 @@ class MineTenureInfo extends Component {
       <div>
         <Card>
           <table>
+            <tbody>
             <tr>
               <th scope="col"><h4>Tenure Numbers</h4></th>
             </tr>
@@ -67,6 +68,7 @@ class MineTenureInfo extends Component {
                 })}
               </td>
             </tr>
+            </tbody>
           </table>
           <div className="right center-mobile"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>
         </Card>
