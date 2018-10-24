@@ -38,7 +38,8 @@ export class MineSearch extends Component {
     if (this.props.isMapView) {
       this.props.handleCoordinateSearch(value);
     } else {
-      this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
+      console.log(value);
+      // this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
     }
   }
   /**

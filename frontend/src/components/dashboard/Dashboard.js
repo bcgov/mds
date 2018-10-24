@@ -16,6 +16,10 @@ import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
+import { Input } from 'antd';
+import debounce from 'lodash';
+
+const Search = Input.Search;
 
 /**
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -107,6 +111,11 @@ export class Dashboard extends Component {
     }
   }
 
+  handleMineSearch = (value) => {
+    // debounce(console.log(value), 1000);
+    console.log(value);
+  }
+
   renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
@@ -129,7 +138,11 @@ export class Dashboard extends Component {
               <TabPane tab="List" key="list">
                 <Row>
                   <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
-                    <MineSearch/>
+                  <Search
+                    placeholder="Search for a mine via name, id, permit"
+                    onChange={(value) => this.handleMineSearch(value)}
+                  />
+                    {/* <MineSearch/> */}
                   </Col>
                 </Row>
                 <MineList 
