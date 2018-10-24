@@ -8,27 +8,28 @@ import { openModal, closeModal} from '@/actions/modalActions';
 import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { createParty, fetchParties, addMineManager, addPermittee } from '@/actionCreators/partiesActionCreator';
 import { fetchMineRecordById } from '@/actionCreators/mineActionCreator';
-import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 
 /**
  * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   addPermittee: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired
+  mine: PropTypes.object.isRequired,
+  permittees: PropTypes.object.isRequired,
+  permitteeIds: PropTypes.array.isRequired
 };
 
 const defaultProps = {
   mine: {},
-  parties: {},
-  partyIds: []
+  permitteeIds: [],
+  permittees: {}
 };
     
   export class MineContactInfo extends Component {
@@ -81,8 +82,6 @@ MineContactInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
-    parties: getParties(state),
-    partyIds: getPartyIds(state),
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
   };

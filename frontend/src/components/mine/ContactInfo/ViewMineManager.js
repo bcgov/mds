@@ -5,6 +5,8 @@ import { Card, Button } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen';
 import * as router from '@/constants/routes';
+import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 
 /**
@@ -18,19 +20,15 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mine: {},
-  parties: {},
-  partyIds: []
 };
  
 export class ViewMineManager extends Component {
  handleSubmit = (values) => {
-  this.props.handlePartySubmit(values, 'PER')
+  this.props.handlePartySubmit(values, ModalContent.PERSON)
  }
  /**
    * change mine manager on record.
@@ -61,8 +59,8 @@ export class ViewMineManager extends Component {
                 />
               <div className="center">
                 <ConditionalButton 
-                  handleAction={(event) => this.openModal(event, this.handleManagerSubmit, this.props.handleChange, this.handleSubmit, 'Add Mine Manager')} 
-                  string="Add Mine Manager"
+                  handleAction={(event) => this.openModal(event, this.handleManagerSubmit, this.props.handleChange, this.handleSubmit, ModalContent.ADD_MINE_MANAGER)} 
+                  string={ModalContent.ADD_MINE_MANAGER}
                   type="primary"
                   />
               </div>
@@ -87,7 +85,7 @@ export class ViewMineManager extends Component {
                   </tr>
                   <tr>
                     <td data-label="Email"><p className="p-large">{mine.mgr_appointment[0].email}</p></td>
-                    <td data-label="Phone Number (Ext)"><p className="p-large">{mine.mgr_appointment[0].phone_no} ({mine.mgr_appointment[0].phone_ext ? mine.mgr_appointment[0].phone_ext : 'N/A'})</p></td>
+                    <td data-label="Phone Number (Ext)"><p className="p-large">{mine.mgr_appointment[0].phone_no} ({mine.mgr_appointment[0].phone_ext ? mine.mgr_appointment[0].phone_ext : String.EMPTY_FIELD})</p></td>
                   </tr>
                 </tbody>
               </table>
@@ -96,8 +94,8 @@ export class ViewMineManager extends Component {
                   <Button className="full-mobile" type="secondary">View profile</Button>
                 </Link> 
                 <ConditionalButton 
-                  handleAction={(event) => this.openModal(event, this.handleManagerSubmit, this.props.handleChange, this.handleSubmit, 'Update Mine Manager')} 
-                  string="Update Mine Manager" 
+                  handleAction={(event) => this.openModal(event, this.handleManagerSubmit, this.props.handleChange, this.handleSubmit, ModalContent.UPDATE_MINE_MANAGER)} 
+                  string={ModalContent.UPDATE_MINE_MANAGER}
                   type="primary"
                 />
               </div> 

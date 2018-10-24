@@ -16,6 +16,7 @@ const propTypes = {
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
   permit: PropTypes.array,
+  title: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -91,7 +92,7 @@ export const UpdatePermitteeForm = (props) => {
         <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
           <Button type="button">Cancel</Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit">Update Permittee</Button>
+        <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
      </div>
     </Form>
   );

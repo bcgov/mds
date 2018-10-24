@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import { modalConfig } from '@/components/modalContent/config';
+import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 /**
  * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
  */
@@ -10,15 +12,12 @@ import { modalConfig } from '@/components/modalContent/config';
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  togglePartyChange: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
+  addPermittee: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
-  permitteeModalVisible: PropTypes.bool,
-  isPerson: PropTypes.bool,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
   permittees: PropTypes.object,
   permitteeIds: PropTypes.array
 };
@@ -49,6 +48,7 @@ export class ViewPermittee extends Component {
       this.props.closeModal();
     })
   }
+
   render() {
     const { permittees, permitteeIds, mine } = this.props;
       return (
@@ -72,7 +72,7 @@ export class ViewPermittee extends Component {
                     </tr>
                     <tr>
                       <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
-                      <td data-label="Phone Number (Ext)"><p className="p-large">{permittees[id].party.phone_no} ({permittees[id].party.phone_ext ? permittees[id].party.phone_ext : 'N/A'})</p></td>
+                      <td data-label="Phone Number (Ext)"><p className="p-large">{permittees[id].party.phone_no} ({permittees[id].party.phone_ext ? permittees[id].party.phone_ext : String.EMPTY_FIELD})</p></td>
                     </tr>
                   </tbody>
                   )
@@ -80,8 +80,8 @@ export class ViewPermittee extends Component {
               </table>
             <div className="right center-mobile">
               <ConditionalButton 
-                handleAction={(event) => this.openModal(event, this.handlePermitteeSubmit, mine.mine_permit, this.props.handleChange, this.props.handlePartySubmit, 'Update Permittee')} 
-                string="Update Permittee" 
+                handleAction={(event) => this.openModal(event, this.handlePermitteeSubmit, mine.mine_permit, this.props.handleChange, this.props.handlePartySubmit, ModalContent.UPDATE_PERMITTEE)} 
+                string={ModalContent.UPDATE_PERMITTEE} 
                 type="primary"
               />
             </div> 

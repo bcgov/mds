@@ -9,7 +9,8 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export const AddTenureNumberForm = (props) => {
@@ -32,7 +33,7 @@ export const AddTenureNumberForm = (props) => {
         <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
           <Button type="button">Cancel</Button>
         </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">Add Tenure Number</Button>
+      <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
      </div>
     </Form>
   );

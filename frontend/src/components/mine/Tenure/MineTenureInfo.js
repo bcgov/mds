@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen'; 
+import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
@@ -44,7 +45,7 @@ class MineTenureInfo extends Component {
       return (
         <div>
           <NullScreen type="tenure" />
-          <div className="center"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, "Add Tenure Number")} string="Add Tenure Number" type="primary" /></div>
+          <div className="center"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>
         </div>
       )
     }
@@ -67,7 +68,7 @@ class MineTenureInfo extends Component {
               </td>
             </tr>
           </table>
-          <div className="right center-mobile"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, "Add Tenure Number")} string="Add Tenure Number" type="primary" /></div>
+          <div className="right center-mobile"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>
         </Card>
       </div>
     );

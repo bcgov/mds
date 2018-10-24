@@ -29,6 +29,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
   mines: PropTypes.object.isRequired,
@@ -41,6 +43,7 @@ const defaultProps = {
   mines: {},
   mineIds: [],
   pageData: {},
+  mineStatusOptions: [],
 };
 
 export class Dashboard extends Component {

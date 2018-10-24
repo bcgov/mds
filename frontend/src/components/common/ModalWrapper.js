@@ -15,10 +15,12 @@ const propTypes = {
 };
 
 const defaultProps = {
-  props: {},
+  props: {
+    title: ''
+  },
 };
 
-class ModalWrapper extends Component {
+export class ModalWrapper extends Component {
 
   render() {
     const { isModalOpen, content: ChildComponent, props, closeModal} = this.props;

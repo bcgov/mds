@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
 import { Radio } from 'antd';
+import PropTypes from 'prop-types';
 import UpdatePermitteeForm from '@/components/Forms/UpdatePermitteeForm';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
-import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 import { connect } from 'react-redux';
 import { getCurrentPermitteeIds, getCurrentPermittees } from '@/selectors/mineSelectors';
 import { getParties, getPartyIds } from '@/selectors/partiesSelectors';
 
+const propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handlePartySubmit: PropTypes.func.isRequired,
+  permit: PropTypes.object.isRequired,
+  parties: PropTypes.object.isRequired,
+  partyIds: PropTypes.array.isRequired,
+  permittees: PropTypes.object.isRequired,
+  permitteeIds: PropTypes.array.isRequired,
+};
 
-class UpdatePermitteeModal extends Component {
+const defaultProps = {
+  permit: {},
+  parties: {},
+  partyIds: [],
+  permitteeIds: [],
+  permittees: {}
+};
+
+
+export class UpdatePermitteeModal extends Component {
   state = { isPerson: true }
 
   togglePartyChange = (value) => {
@@ -24,7 +44,7 @@ class UpdatePermitteeModal extends Component {
     return (  
       <div>
       <UpdatePermitteeForm {...this.props}/> 
-      <p className="center">{String.PARTY_NOT_FOUND}</p>
+      <p className="center">{ModalContent.PARTY_NOT_FOUND}</p>
       <div className="center">
         <Radio.Group defaultValue={true} size="large" onChange={this.togglePartyChange}>
           <Radio.Button value={true}>Person</Radio.Button>
@@ -36,6 +56,9 @@ class UpdatePermitteeModal extends Component {
     );
   }
 }
+
+UpdatePermitteeModal.propTypes = propTypes;
+UpdatePermitteeModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {

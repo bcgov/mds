@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
 import { ELLIPSE, SMALL_PIN, PENCIL, RED_ELLIPSE } from '@/constants/assets';
+import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import { modalConfig } from '@/components/modalContent/config';
 
@@ -9,12 +11,12 @@ import { modalConfig } from '@/components/modalContent/config';
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
-  mine: PropTypes.object.isRequired,
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
+  mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -53,7 +55,7 @@ class MineHeader extends Component {
             <h1>{mine.mine_detail[0].mine_name}</h1>
             <ConditionalButton 
               type="primary" 
-              handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, "Update Mine Record", this.props.mine )}
+              handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine )}
               string={<img style={{padding: '5px'}}src={PENCIL} />}
             />
           </div>
@@ -61,8 +63,8 @@ class MineHeader extends Component {
           <div className="dashboard__header__content--inline">
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
-              <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
-              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
+              <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
+              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}</p></div>
             </div>
             {mine.mine_status[0] && 
               <div className="inline-flex between">

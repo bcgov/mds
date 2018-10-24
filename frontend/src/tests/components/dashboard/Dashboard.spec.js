@@ -10,6 +10,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
   dispatchProps.createMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
+  dispatchProps.openModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupReducerProps = () => {
