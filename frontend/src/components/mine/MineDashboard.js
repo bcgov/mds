@@ -35,11 +35,11 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
-  state = { activeTab: "#summary" }
+  state = { activeTab: "summary" }
 
   handleChange = (activeTab) => {
     this.setState({ activeTab: activeTab});
-    this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab.replace("#","")))
+    this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab))
   }
 
   componentDidMount() {
@@ -48,7 +48,7 @@ export class MineDashboard extends Component {
     this.props.fetchStatusOptions();
 
     if (activeTab) {
-      this.setState({activeTab : `#${activeTab}`});
+      this.setState({activeTab : `${activeTab}`});
     }
   }
 
@@ -67,24 +67,24 @@ export class MineDashboard extends Component {
             <div className="dashboard__content">
               <Tabs
                 activeKey={this.state.activeTab}
-                defaultActiveKey="#summary"
+                defaultActiveKey="summary"
                 onChange={this.handleChange}
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
               >
-                <TabPane tab="Summary" key="#summary">
+                <TabPane tab="Summary" key="summary">
                   <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
                 </TabPane>
-                <TabPane tab="Permit" key="#permit">
+                <TabPane tab="Permit" key="permit">
                   <MinePermitInfo mine={mine} />
                 </TabPane>
-                <TabPane tab="Contact Information" key="#contact-information">
+                <TabPane tab="Contact Information" key="contact-information">
                   <MineContactInfo mine={mine} />
                 </TabPane>
-                <TabPane tab="Compliance" key="#compliance">
+                <TabPane tab="Compliance" key="compliance">
                   <NullScreen type="generic" />
                 </TabPane>
-                <TabPane tab="Tenure" key="#tenure">
+                <TabPane tab="Tenure" key="tenure">
                   <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
               </Tabs>
