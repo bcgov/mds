@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Button } from 'antd';
+import { Modal, Card, Button, Row, Col } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
@@ -104,35 +104,40 @@ export class ViewMineManager extends Component {
                   </tr>
                 </tbody>
               </table>
-              {this.props.mineManagerHistroyVisible &&
-                <div>
-                  <table>
-                    <tr>
-                      <th scope="col"><h5>Mine Manager History</h5></th>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
-                    </tr>
-                    {mine.mgr_appointment.splice(1).map((mgr) => {
-                      return (
-                        <tr key={mgr.mgr_appointment_guid}>
-                          <td data-label="Name"><p className="p-large">{mgr.name}</p></td>
-                          <td data-label="Date Issued"><p className="p-large">{mgr.effective_date} - {mgr.expiry_date}</p></td>
-                        </tr>
-                      )
-                    })}
-                  </table>
-                </div>
-              }
               <div className="right center-mobile">
-                {mine.mgr_appointment.length > 1 &&
-                  <Button className="full-mobile" type="secondary" onClick={this.props.toggleMineManagerHistory}>{this.props.mineManagerHistroyVisible ? 'Close History' : 'View History'}</Button>
-                }
+                <Button className="full-mobile" type="secondary" onClick={this.props.toggleMineManagerHistory}>{
+                  this.props.mineManagerHistroyVisible ? 'Close History' : 'View History'}
+                </Button>
                 <ConditionalButton 
                   handleAction={this.props.toggleModal} 
                   string="Update Mine Manager" 
                   type="primary"
                 />
-              </div> 
+              </div>
+              {this.props.mineManagerHistroyVisible && mine.mgr_appointment.length > 1 &&
+                <div className="table-wrapper">
+                  <table>
+                    <tr>
+                      <th scope="col"><h2>Mine Manager History</h2></th>
+                    </tr>
+                    {mine.mgr_appointment.map((mgr, index) => {
+                      if(index > 0){
+                        return (
+                          <tr key={mgr.mgr_appointment_guid}>
+                            <td data-label="Name"><h5>{mgr.name}</h5></td>
+                            {/* TODO: need to change this to handle the cert number once it is available in the state. */}
+                            {/* <td><h5>&nbsp;</h5></td> */}
+                            <td data-label="Date Issued"><h5>{mgr.effective_date} - {mgr.expiry_date}</h5></td>
+                          </tr>
+                        )
+                      }
+                    })}
+                  </table>
+                </div>
+              }
+              {this.props.mineManagerHistroyVisible && mine.mgr_appointment.length <= 1 &&
+                <NullScreen type='view-mine-manager' />
+              } 
             </Card>
           </div>
         }
