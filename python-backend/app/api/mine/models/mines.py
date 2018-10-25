@@ -54,6 +54,12 @@ class MineIdentity(AuditMixin, Base):
             'longitude': str(mine_location.longitude) if mine_location else ''
         }
 
+    def json_by_permit(self):
+        return {
+            'guid': str(self.mine_guid),
+            'mine_permit': [item.json() for item in self.mine_permit]
+        }
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:

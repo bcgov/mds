@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, Card } from 'antd';
 import AddTenureNumberForm from '@/components/Forms/AddTenureNumberForm';
 import ConditionalButton from '@/components/common/ConditionalButton';
-import NullScreen from '@/components/common/NullScreen'; 
+import NullScreen from '@/components/common/NullScreen';
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
  */
@@ -61,6 +61,7 @@ class MineTenureInfo extends Component {
       <div>
         <Card>
           <table>
+            <tbody>
             <tr>
               <th scope="col"><h4>Tenure Numbers</h4></th>
             </tr>
@@ -75,6 +76,7 @@ class MineTenureInfo extends Component {
                 })}
               </td>
             </tr>
+            </tbody>
           </table>
           <div className="right center-mobile"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
         </Card>
