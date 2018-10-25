@@ -67,7 +67,8 @@ p, .p {
 
 a, Link {
   &:hover {
-    color: $default-light-blue
+    color: $default-light-blue;
+    text-decoration: underline;
   }
 }
 
