@@ -1,32 +1,29 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ViewMineManager } from '@/components/mine/ContactInfo/ViewMineManager';
+import { UpdateMineManagerModal } from '@/components/modalContent/UpdateMineManagerModal';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
 const props = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.handleChange = jest.fn();
-  dispatchProps.addMineManager = jest.fn();
   dispatchProps.handlePartySubmit = jest.fn();
-  dispatchProps.fetchMineRecordById= jest.fn();
 };
 
 const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-};
+  props.permit = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit
+}
 
 beforeEach(() => {
   setupDispatchProps();
   setupProps();
 });
 
-describe('ViewMineManager', () => {
+describe('UpdateMineManagerModal', () => {
   it('renders properly', () => {
-    const component = shallow(<ViewMineManager {...dispatchProps} {...props} />);
+    const component = shallow(<UpdateMineManagerModal {...dispatchProps} {...props}/>);
     expect(component).toMatchSnapshot();
   });
 });
