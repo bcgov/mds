@@ -14,14 +14,13 @@ import { modalConfig } from '@/components/modalContent/config';
  */
 const propTypes = {
   openModal: PropTypes.func.isRequired,
+  toggleMineManagerHistory: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  mineManagerHistroyVisible: PropTypes.bool,
   mine: PropTypes.object.isRequired,
-  toggleMineManagerHistory: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -29,10 +28,12 @@ const defaultProps = {
 };
  
 export class ViewMineManager extends Component {
- handleSubmit = (values) => {
-  this.props.handlePartySubmit(values, ModalContent.PERSON)
- }
- /**
+  state = { isHistoryVisible: false, }
+
+  handleSubmit = (values) => {
+    this.props.handlePartySubmit(values, ModalContent.PERSON)
+  }
+  /**
    * change mine manager on record.
    */
   handleManagerSubmit = (values) => {
@@ -42,13 +43,19 @@ export class ViewMineManager extends Component {
     })
   }
 
- openModal(event, onSubmit, handleChange, handlePartySubmit, title) {
-  event.preventDefault();
-  this.props.openModal({
-    props: { onSubmit, handleChange, handlePartySubmit, title},
-    content: modalConfig.UPDATE_MINE_MANAGER
-  });
-}
+  toggleMineManagerHistory = () => {
+    this.setState({
+      isHistoryVisible: !this.state.isHistoryVisible,
+    })
+  }
+
+  openModal(event, onSubmit, handleChange, handlePartySubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, handleChange, handlePartySubmit, title},
+      content: modalConfig.UPDATE_MINE_MANAGER
+    });
+  }
 
   render() {
     const { mine } = this.props;
@@ -81,7 +88,7 @@ export class ViewMineManager extends Component {
                     <td data-label="Mine Manager">
                       <Link to={router.PARTY_PROFILE.dynamicRoute(mine.mgr_appointment[0].party_guid)}>
                         <p className="p-large">{mine.mgr_appointment[0].name}</p>
-                      </Link> 
+                      </Link>
                     </td>
                     <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0].effective_date}</p></td>
                   </tr>
@@ -95,9 +102,9 @@ export class ViewMineManager extends Component {
                   </tr>
                 </tbody>
               </table>
-              <div className="right center-mobile">
-                <Button className="full-mobile" type="secondary" onClick={this.props.toggleMineManagerHistory}>{
-                  this.props.mineManagerHistroyVisible ? 'Close History' : 'View History'}
+              <div className="right center-mobile">        
+                <Button className="full-mobile" type="secondary" onClick={this.toggleMineManagerHistory}>
+                  {this.state.isHistoryVisible ? 'Close History' : 'View history'}
                 </Button>
                 <ConditionalButton 
                   handleAction={(event) => this.openModal(event, this.handleManagerSubmit, this.props.handleChange, this.handleSubmit, ModalContent.UPDATE_MINE_MANAGER)} 
@@ -105,7 +112,7 @@ export class ViewMineManager extends Component {
                   type="primary"
                 />
               </div>
-              {this.props.mineManagerHistroyVisible && mine.mgr_appointment.length > 1 &&
+              {this.state.isHistoryVisible && mine.mgr_appointment.length > 1 &&
                 <div className="table-wrapper">
                   <table>
                     <tr>
@@ -126,9 +133,9 @@ export class ViewMineManager extends Component {
                   </table>
                 </div>
               }
-              {this.props.mineManagerHistroyVisible && mine.mgr_appointment.length <= 1 &&
+              {this.state.isHistoryVisible && mine.mgr_appointment.length <= 1 &&
                 <NullScreen type='view-mine-manager' />
-              } 
+              }
             </Card>
           </div>
         }

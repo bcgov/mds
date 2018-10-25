@@ -33,7 +33,6 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
-    state = { mineManagerHistroyVisible: false, }
   /**
  * add new parties (firstName, surname || companyName) to db.
  */
@@ -53,12 +52,6 @@ const defaultProps = {
     }
   }
 
-  toggleMineManagerHistory = () => {
-    this.setState({
-      mineManagerHistroyVisible: !this.state.mineManagerHistroyVisible,
-    });
-  }
-
   componentDidMount() {
     this.props.fetchParties();
   }
@@ -71,7 +64,6 @@ const defaultProps = {
           {...this.props} 
           handleChange={this.handleChange}
           handlePartySubmit={this.handlePartySubmit}
-          toggleMineManagerHistory={this.toggleMineManagerHistory}
         />
         {mine.mine_permit[0] &&
           <ViewPermittee 
