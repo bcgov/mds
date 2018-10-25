@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { AutoComplete, Input, Icon } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchMineNameList } from '@/actionCreators/mineActionCreator';
 import { getMineNames } from '@/selectors/mineSelectors';
 import RenderAutoComplete from '@/components/common/RenderAutoComplete';
-import { AutoComplete, Input } from 'antd';
-
-const Search = Input.Search;
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
@@ -48,6 +46,9 @@ export class MineSearch extends Component {
     }
   }
 
+  /**
+   * filter mineList with new search input;
+   */
   handleSearch = (value) => {
     this.props.handleMineSearch(value.target.value);
   }
@@ -80,9 +81,10 @@ export class MineSearch extends Component {
       );
     } else {
       return (
-        <Search
+        <Input
           placeholder="Search for a mine using name, ID, or permit number"
           onChange={this.handleSearch}
+          suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />}
         />
       )
     }
