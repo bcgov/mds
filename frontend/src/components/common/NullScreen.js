@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TENURE, NO_MINE, MINER_TWO, PERMIT  } from '@/constants/assets';
+import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS  } from '@/constants/assets';
 import * as String from '@/constants/strings';
 
 /**
@@ -8,7 +8,7 @@ import * as String from '@/constants/strings';
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit']),
+  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit', 'view-mine-manager',]),
 };
 
 const NullScreen = (props) => {
@@ -51,6 +51,12 @@ const NullScreen = (props) => {
         <div>
           <img src={PERMIT} />
           <h1>{String.NO_PERMIT}</h1>
+        </div>
+      }
+      {props.type === 'view-mine-manager' &&
+        <div calssName='center'>
+          <img src={GROUP_MINERS} />
+          <h5>{String.NO_PREV_MINE_MANAGER}</h5>
         </div>
       }
     </div>
