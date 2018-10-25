@@ -3,29 +3,29 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ...permit.models.permit import Permit
 from ...location.models.location import MineLocation
 from ...utils.random import generate_mine_no
-from app.extensions import jwt
+from app.extensions import jwt, api
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class Mine(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str)
-    parser.add_argument('note', type=str)
-    parser.add_argument('tenure_number_id', type=int)
-    parser.add_argument('longitude', type=decimal.Decimal)
-    parser.add_argument('latitude', type=decimal.Decimal)
-    parser.add_argument('mine_status', action='split')
+    parser.add_argument('name', type=str, help='Name of the mine.')
+    parser.add_argument('note', type=str, help='Any additional notes to be added to the mine.')
+    parser.add_argument('tenure_number_id', type=int, help='Tenure number for the mine.')
+    parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
+    parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
+    parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
 
+    @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, mine_no=None):
-        if mine_no:
-            mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
+    def get(self, mine_no_or_guid=None):
+        if mine_no_or_guid:
+            mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
             if mine:
                 return mine.json()
             return self.create_error_payload(404, 'Mine not found'), 404
@@ -33,10 +33,19 @@ class Mine(Resource, UserMixin, ErrorMixin):
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
                 return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
-
             items_per_page = request.args.get('per_page', 50, type=int)
             page = request.args.get('page', 1, type=int)
-            mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+            search_term = request.args.get('search', None, type=str)
+            if search_term:
+                name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
+                number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+                permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
+                mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+                permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
+                mines = mines_q.union(permit_q).paginate(page, items_per_page, False)
+            else:
+                mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+
             return {
                 'mines': list(map(lambda x: x.json(), mines.items)),
                 'has_next': mines.has_next,
@@ -79,9 +88,10 @@ class Mine(Resource, UserMixin, ErrorMixin):
         _mine_status.save()
         return _mine_status
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
-    def post(self, mine_no=None):
-        if mine_no:
+    def post(self, mine_no_or_guid=None):
+        if mine_no_or_guid:
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
         data = Mine.parser.parse_args()
@@ -124,8 +134,9 @@ class Mine(Resource, UserMixin, ErrorMixin):
             'mine_status': mine_status.json() if mine_status else None
         }
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
-    def put(self, mine_no):
+    def put(self, mine_no_or_guid):
         data = Mine.parser.parse_args()
         tenure = data['tenure_number_id']
         lat = data['latitude']
@@ -135,7 +146,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         if not tenure and not (lat and lon) and not mine_name and not mine_note and not status:
             self.raise_error(400, 'Error: No fields filled.')
-        mine = MineIdentity.find_by_mine_no_or_guid(mine_no)
+        mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
         # Mine Detail
@@ -190,7 +201,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
 
 class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
-
+    @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         search_term = request.args.get('search')
@@ -198,7 +209,9 @@ class MineListByName(Resource):
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
             number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+            permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
+            mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 

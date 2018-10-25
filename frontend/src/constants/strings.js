@@ -11,15 +11,10 @@ export const ADD_MINE_MANAGER  = 'Please add mine manager below';
 export const ADD_TENURE = 'Please add tenure number below';
 export const ADD_PARTY = 'Please create party below';
 
-export const PARTY_NOT_FOUND = `If the party is not in the list above, please add a new person or company below`;
-export const PERSON_NOT_FOUND = 'If the party is not in the list above, please add a new person below'
-
-export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
-export const UPDATE_PERMITTEE = 'Update Permittee';
-
 export const UNAUTHORIZED = 'You do not have permission to access this site';
 //to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
 export const CONTACT_ADMIN = ['Contact your system administrator at ', <b>mds.admin@gov.bc.ca</b>, ' to request access'];
+export const EMPTY_FIELD = 'N/A';
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;

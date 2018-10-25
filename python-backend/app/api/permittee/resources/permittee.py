@@ -5,17 +5,18 @@ from flask_restplus import Resource, reqparse
 from ...party.models.party import Party
 from ...permit.models.permit import Permit
 from ..models.permittee import Permittee
-from app.extensions import jwt
+from app.extensions import jwt, api
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PermitteeResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('party_guid', type=str)
-    parser.add_argument('permittee_guid', type=str)
-    parser.add_argument('permit_guid', type=str)
-    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
+    parser.add_argument('party_guid', type=str, help='Party guid.')
+    parser.add_argument('permittee_guid', type=str, help='Permittee guid.')
+    parser.add_argument('permit_guid', type=str, help='Permit guid.')
+    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help='Effective date in the format of YYYY-MM-DD.')
 
+    @api.doc(params={'permittee_guid': 'Permittee guid.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, permittee_guid):
         permittee = Permittee.find_by_permittee_guid(permittee_guid)
@@ -23,6 +24,7 @@ class PermitteeResource(Resource, UserMixin, ErrorMixin):
             return permittee.json()
         return self.create_error_payload(404, 'Permittee not found'), 404
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, permittee_guid=None):
         if permittee_guid:
