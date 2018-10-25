@@ -24,13 +24,12 @@ from .api.permit.resources.permit import PermitResource
 from .api.permittee.resources.permittee import PermitteeResource
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen
 from .config import Config
-from .extensions import db, jwt
+from .extensions import db, jwt, api
 
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    api = Api(app, prefix=Config.BASE_PATH)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -40,12 +39,15 @@ def create_app(test_config=None):
         app.config.from_object(test_config)
 
     register_extensions(app)
-    register_routes(app, api)
+    register_routes(app)
     register_commands(app)
     return app
 
 
 def register_extensions(app):
+    api.app = app
+    api.init_app(app)
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
     db.init_app(app)
@@ -58,12 +60,12 @@ def register_extensions(app):
     return None
 
 
-def register_routes(app, api):
+def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
     # Set Routes for each resource
-    api.add_resource(Mine, '/mines', '/mines/<string:mine_no>')
+    api.add_resource(Mine, '/mines', '/mines/<string:mine_no_or_guid>')
     api.add_resource(MineLocationResource, '/mines/location', '/mines/location/<string:mine_location_guid>')
     api.add_resource(MineListByName, '/mines/names')
     api.add_resource(MineStatusResource, '/mines/status', '/mines/status/<string:mine_status_guid>')
