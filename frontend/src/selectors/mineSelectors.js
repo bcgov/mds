@@ -5,6 +5,7 @@ export const getMines = (state) => mineReducer.getMines(state);
 export const getMineIds = (state) => mineReducer.getMineIds(state);
 export const getMineNames = (state) => mineReducer.getMineNames(state);
 export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
+export const getMineGuid = (state) => mineReducer.getMineGuid(state);
 export const getMineStatusOptions = (state) => mineReducer.getMineStatusOptions(state);
 
 
@@ -33,5 +34,5 @@ export const getCurrentPermitteeIds = createSelector(
     }
     unique = [...new Set(permitteeIds)];
     return unique;
-    }
+  }
 );

@@ -29,13 +29,6 @@ export const storeMineNameList = (payload) => {
   }
 }
 
-export const storeCurrentPermittees = (payload) => {
-  return {
-    type: ActionTypes.STORE_CURRENT_PERMITTEES,
-    payload,
-  }
-}
-
 export const storeStatusOptions = (payload) => {
   return {
     type: ActionTypes.STORE_STATUS_OPTIONS,
