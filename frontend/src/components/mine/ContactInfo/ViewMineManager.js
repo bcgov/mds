@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar'
-import { Modal, Card, Button, Row, Col } from 'antd';
+import { Modal, Card, Button } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import AddPartyForm from '@/components/Forms/AddPartyForm';
 import UpdateMineManagerForm from '@/components/Forms/UpdateMineManagerForm';
@@ -127,7 +127,7 @@ export class ViewMineManager extends Component {
                             <td data-label="Name"><h5>{mgr.name}</h5></td>
                             {/* TODO: need to change this to handle the cert number once it is available in the state. */}
                             {/* <td><h5>&nbsp;</h5></td> */}
-                            <td data-label="Date Issued"><h5>{mgr.effective_date} - {mgr.expiry_date}</h5></td>
+                            <td data-label="Date Issued"><h5>{mgr.effective_date} to {mgr.expiry_date}</h5></td>
                           </tr>
                         )
                       }
