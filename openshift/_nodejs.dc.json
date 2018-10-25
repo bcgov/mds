@@ -258,6 +258,10 @@
 				  }
 				],
 				"resources": {
+					"limits": {
+						"cpu": "${CPU_LIMIT}",
+						"memory": "${MEMORY_LIMIT}"
+					},
 					"requests": {
 						"cpu": "${CPU_REQUEST}",
 						"memory": "${MEMORY_REQUEST}"
