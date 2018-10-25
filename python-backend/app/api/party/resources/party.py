@@ -8,21 +8,26 @@ from sqlalchemy import or_
 from ...mine.models.mines import MineIdentity
 from ..models.party import Party, MgrAppointment
 from ...constants import PARTY_STATUS_CODE
-from app.extensions import jwt
+from app.extensions import jwt, api
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('first_name', type=str)
-    parser.add_argument('party_name', type=str)
-    parser.add_argument('phone_no', type=str)
-    parser.add_argument('phone_ext', type=str)
-    parser.add_argument('email', type=str)
-    parser.add_argument('type', type=str)
+    parser.add_argument('first_name', type=str, help='First name of the party, if the party is a person.')
+    parser.add_argument('party_name', type=str, help='Last name of the party (Person), or the Organization name (Organization).')
+    parser.add_argument('phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234')
+    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
+    parser.add_argument('email', type=str, help='The email of the party.')
+    parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
 
     PARTY_LIST_RESULT_LIMIT = 100
 
+    @api.doc(params={
+        'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
+        '?search': 'Term searched in first name and party name, and 100 parties will be returned.',
+        '?type': 'Search will filter for the type indicated.'
+    })
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, party_guid=None):
         if party_guid:
@@ -70,6 +75,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Party type is not provided.')
         return party_context
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, party_guid=None):
         if party_guid:
@@ -92,6 +98,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         party.save()
         return party.json()
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, party_guid):
         data = PartyResource.parser.parse_args()
@@ -121,10 +128,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
 class ManagerResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('party_guid', type=str)
-    parser.add_argument('mine_guid', type=str)
-    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
+    parser.add_argument('party_guid', type=str, help='Party guid.')
+    parser.add_argument('mine_guid', type=str, help='Mine guid.')
+    parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help='Effective date. In the format of YYYY-MM-DD.')
 
+    @api.doc(params={'mgr_appointment_guid': 'Manager guid.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mgr_appointment_guid):
         manager = MgrAppointment.find_by_mgr_appointment_guid(mgr_appointment_guid)
@@ -132,6 +140,7 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
             return manager.json()
         return self.create_error_payload(404, 'Manager not found'), 404
 
+    @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
