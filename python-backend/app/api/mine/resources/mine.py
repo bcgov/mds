@@ -33,7 +33,6 @@ class Mine(Resource, UserMixin, ErrorMixin):
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
                 return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
-
             items_per_page = request.args.get('per_page', 50, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
@@ -41,7 +40,9 @@ class Mine(Resource, UserMixin, ErrorMixin):
                 name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
                 number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
                 permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-                mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(100).paginate(page, items_per_page, False)
+                mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+                permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
+                mines = mines_q.union(permit_q).paginate(page, items_per_page, False)
             else:
                 mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
 
@@ -206,7 +207,13 @@ class MineListByName(Resource):
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
             number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
+<<<<<<< HEAD
             mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
+=======
+            mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+            permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
+            mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
+>>>>>>> 2028aa2b1faaec3728d867e6451826a3a03eb9f5
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
