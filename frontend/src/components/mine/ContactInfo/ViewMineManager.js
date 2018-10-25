@@ -111,29 +111,31 @@ export class ViewMineManager extends Component {
                   type="primary"
                 />
               </div>
-              {this.state.isHistoryVisible && mine.mgr_appointment.length > 1 &&
+              {this.state.isHistoryVisible  &&
                 <div className="table-wrapper">
-                  <table>
-                    <tr>
-                      <th scope="col"><h2>Mine Manager History</h2></th>
-                    </tr>
-                    {mine.mgr_appointment.map((mgr, index) => {
-                      if(index > 0){
-                        return (
-                          <tr key={mgr.mgr_appointment_guid}>
-                            <td data-label="Name"><h5>{mgr.name}</h5></td>
-                            {/* TODO: need to change this to handle the cert number once it is available in the state. */}
-                            {/* <td><h5>&nbsp;</h5></td> */}
-                            <td data-label="Date Issued"><h5>{mgr.effective_date} to {mgr.expiry_date}</h5></td>
-                          </tr>
-                        )
-                      }
-                    })}
-                  </table>
+                  { mine.mgr_appointment.length > 1 &&
+                    <table>
+                      <tr>
+                        <th scope="col"><h2>Mine Manager History</h2></th>
+                      </tr>
+                      {mine.mgr_appointment.map((mgr, index) => {
+                        if(index > 0){
+                          return (
+                            <tr key={mgr.mgr_appointment_guid}>
+                              <td data-label="Name"><h5>{mgr.name}</h5></td>
+                              {/* TODO: need to change this to handle the cert number once it is available in the state. */}
+                              {/* <td><h5>&nbsp;</h5></td> */}
+                              <td data-label="Date Issued"><h5>{mgr.effective_date} to {mgr.expiry_date}</h5></td>
+                            </tr>
+                          )
+                        }
+                      })}
+                    </table>
+                  }
+                  {(mine.mgr_appointment.length <=1) &&
+                    <NullScreen type='view-mine-manager' />
+                  }
                 </div>
-              }
-              {this.state.isHistoryVisible && mine.mgr_appointment.length <= 1 &&
-                <NullScreen type='view-mine-manager' />
               }
             </Card>
           </div>
