@@ -14,7 +14,6 @@ import { modalConfig } from '@/components/modalContent/config';
  */
 const propTypes = {
   openModal: PropTypes.func.isRequired,
-  toggleMineManagerHistory: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   addMineManager: PropTypes.func.isRequired,
