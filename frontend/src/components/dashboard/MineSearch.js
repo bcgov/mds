@@ -14,6 +14,7 @@ const Search = Input.Search;
  */
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
+  handleMineSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.array.isRequired,
   isMapView: PropTypes.bool,

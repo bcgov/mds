@@ -67,12 +67,14 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
+    // pass in an empty searchValue
+    const searchValue = '';
     if (params.page && params.per_page) {
-      this.props.fetchMineRecords(params.page, params.per_page, params.map).then(() => {
+      this.props.fetchMineRecords(params.page, params.per_page, searchValue, params.map).then(() => {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
+      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, searchValue, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }

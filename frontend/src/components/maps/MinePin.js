@@ -105,6 +105,9 @@ export class MinePin extends Component {
 
       const fclData = mineIds.map((id) => {
         const point = this.points(id)
+        if (!point) {
+          return {};
+        }
         const y = Number(point.latitude);
         const x = Number(point.longitude);
         const templateInfo = this.popupTemplate(id);

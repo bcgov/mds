@@ -207,13 +207,9 @@ class MineListByName(Resource):
             name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
             number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-<<<<<<< HEAD
-            mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(self.MINE_LIST_RESULT_LIMIT).all()
-=======
             mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
             permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
             mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
->>>>>>> 2028aa2b1faaec3728d867e6451826a3a03eb9f5
         else:
             mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
