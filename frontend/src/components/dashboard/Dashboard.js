@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
 import MediaQuery from 'react-responsive';
+import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
-import CreateMine from '@/components/dashboard/CreateMine';
+import { modalConfig } from '@/components/modalContent/config';
+import { ConditionalButton } from '@/components/common/ConditionalButton';
 import * as router from '@/constants/routes';
 import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
@@ -27,6 +29,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
   mines: PropTypes.object.isRequired,
@@ -39,6 +43,7 @@ const defaultProps = {
   mines: {},
   mineIds: [],
   pageData: {},
+  mineStatusOptions: [],
 };
 
 export class Dashboard extends Component {
@@ -105,6 +110,28 @@ export class Dashboard extends Component {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
     }
+  }
+
+  handleSubmit = (value) => {
+    let mineStatus = value.mine_status.join(",");
+    this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
+      this.props.closeModal();
+    }).then(() => {
+      const params = queryString.parse(this.props.location.search);
+      if (params.page && params.per_page) {
+        this.props.fetchMineRecords(params.page, params.per_page);
+      } else {
+        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
+      }
+    });
+  }
+
+  openModal(event, mineStatusOptions, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { mineStatusOptions, onSubmit, title},
+      content: modalConfig.MINE_RECORD
+    });
   }
 
   renderCorrectView(){
@@ -220,12 +247,14 @@ export class Dashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <CreateMine
-            createMineRecord={this.props.createMineRecord}
-            fetchMineRecords={this.props.fetchMineRecords}
-            location={this.props.location}
-            mineStatusOptions={this.props.mineStatusOptions}
+          <div className="right center-mobile">
+          <ConditionalButton 
+            className="full-mobile"
+            type="primary" 
+            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleSubmit, 'Create Mine Record')}
+            string="Create Mine Record"
           />
+          </div>
         </div>
         <div className="landing-page__content">
           {this.renderCorrectView()}
@@ -249,6 +278,8 @@ const mapDispatchToProps = (dispatch) => {
     fetchMineRecords,
     fetchStatusOptions,
     createMineRecord,
+    openModal,
+    closeModal,
   }, dispatch);
 };
 

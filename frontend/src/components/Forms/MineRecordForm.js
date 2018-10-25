@@ -11,7 +11,7 @@ import { resetForm } from '@/utils/helpers';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  toggleModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatusOptions: PropTypes.array
 };
@@ -85,7 +85,7 @@ export const MineRecordform = (props) => {
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.toggleModal} okText="Yes" cancelText="No">
+        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
           <Button>Cancel</Button>
         </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
