@@ -11,12 +11,7 @@ export const ADD_TENURE = 'Please add tenure number below';
 export const ADD_PARTY = 'Please create party below';
 export const NO_RESULTS = 'No results found';
 
-export const PARTY_NOT_FOUND = `If the party is not in the list above, please add a new person or company below`;
-export const PERSON_NOT_FOUND = 'If the party is not in the list above, please add a new person below'
-
-export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
-export const UPDATE_PERMITTEE = 'Update Permittee';
-
+export const EMPTY_FIELD = 'N/A';
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
