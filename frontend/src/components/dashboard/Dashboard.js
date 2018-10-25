@@ -12,14 +12,10 @@ import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
 import CreateMine from '@/components/dashboard/CreateMine';
 import * as router from '@/constants/routes';
-import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
-import { Input } from 'antd';
-import debounce from 'lodash';
-
-const Search = Input.Search;
+import  { debounce } from 'lodash';
 
 /**
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -46,7 +42,11 @@ const defaultProps = {
 };
 
 export class Dashboard extends Component {
-  state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
+  constructor(props) {
+    super(props);
+    this.handleMineSearchDebounced = debounce(this.handleMineSearch, 500);
+    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
+  }
  
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
@@ -60,6 +60,10 @@ export class Dashboard extends Component {
       const params = queryString.parse(nextProps.location.search);
       this.renderDataFromURL(params);
     }
+  }
+
+  componentWillUnmount() {
+    this.handleMineSearchDebounced.cancel();
   }
 
   renderDataFromURL = (params) => {
@@ -112,8 +116,8 @@ export class Dashboard extends Component {
   }
 
   handleMineSearch = (value) => {
-    // debounce(console.log(value), 1000);
-    console.log(value);
+    const params = queryString.parse(this.props.location.search);
+    this.props.fetchMineRecords(params.page, params.per_page, value);
   }
 
   renderCorrectView(){
@@ -122,11 +126,6 @@ export class Dashboard extends Component {
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
     const isMap = params.map ? 'map' : 'list';
     if (this.state.mineList) {
-      if (this.props.mineIds.length === 0) {
-        return (
-          <NullScreen type="dashboard" />
-        )
-      } else {
         return (
           <div>
             <Tabs
@@ -138,11 +137,7 @@ export class Dashboard extends Component {
               <TabPane tab="List" key="list">
                 <Row>
                   <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
-                  <Search
-                    placeholder="Search for a mine via name, id, permit"
-                    onChange={(value) => this.handleMineSearch(value)}
-                  />
-                    {/* <MineSearch/> */}
+                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} />
                   </Col>
                 </Row>
                 <MineList 
@@ -182,7 +177,7 @@ export class Dashboard extends Component {
               <TabPane tab="Map" key="map">
                 <div className="landing-page__content--search">
                   <Col md={10} xs={24}>
-                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
+                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView/>
                   </Col>
                   <Col md={2} sm={0} xs={0}>
                     <div className="center">
@@ -222,9 +217,7 @@ export class Dashboard extends Component {
             </Tabs>
           </div>
         )
-      }
-
-    } else {
+      } else {
       return(<Loading />)
     }
   }

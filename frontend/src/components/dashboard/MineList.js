@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Col, Row, Divider } from 'antd';
 import * as router from '@/constants/routes';
+import NullScreen from '@/components/common/NullScreen';
 
 /**
  * @class MineList - paginated list of mines 
@@ -32,7 +33,8 @@ class MineList extends Component {
           <Col span={6}><h2>Action</h2></Col>
         </Row>
         <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
-        {mineIds.map((id) => {
+
+        {mineIds && mineIds.map((id) => {
           return (
             <div key={id}>
               <Row type="flex" style={{ textAlign: 'center' }}>
@@ -57,6 +59,9 @@ class MineList extends Component {
             </div>
           )
         })}
+        {(mineIds.length === 0) &&
+          <NullScreen type="no-results" />
+        }
       </div>
     );
   }

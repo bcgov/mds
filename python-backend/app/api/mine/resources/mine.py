@@ -41,11 +41,7 @@ class Mine(Resource, UserMixin, ErrorMixin):
                 name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
                 number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
                 permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-<<<<<<< HEAD
-                mines = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter | permit_filter).paginate(page, items_per_page, False)
-=======
                 mines = MineIdentity.query.join(MineDetail, Permit).filter(name_filter | number_filter | permit_filter).limit(100).paginate(page, items_per_page, False)
->>>>>>> d4463a253febb548f4d02333bf4b2165ab876f87
             else:
                 mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
 
