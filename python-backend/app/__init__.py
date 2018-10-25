@@ -38,14 +38,15 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_object(test_config)
 
-    register_routes(app)
     register_extensions(app)
+    register_routes(app)
     register_commands(app)
     return app
 
 
 def register_extensions(app):
-    api.init_app(app, prefix=Config.BASE_PATH)
+    api.app = app
+    api.init_app(app)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
