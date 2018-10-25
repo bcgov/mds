@@ -8,9 +8,8 @@ import * as String from '@/constants/strings';
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit', 'no-results', 'view-mine-manager']),
-}
-
+  type: PropTypes.oneOf(['dashboard', 'generic', 'manager', 'manager-small', 'tenure', 'permit', 'no-results', 'view-mine-manager', 'unauthorized']),
+};
 
 const NullScreen = (props) => {
   return (
@@ -58,6 +57,12 @@ const NullScreen = (props) => {
         <div>
           <img src={NO_MINE} />
           <h5>{String.NO_RESULTS}</h5>
+      {props.type === 'unauthorized' &&
+        <div className="no-nav-bar">
+          <img src={NO_MINE} />
+          <h1>{String.UNAUTHORIZED}</h1>
+          <h5>{String.CONTACT_ADMIN}</h5>
+        </div>
       }
       {props.type === 'view-mine-manager' &&
         <div calssName='center'>
