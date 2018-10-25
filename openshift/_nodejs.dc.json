@@ -295,7 +295,7 @@
 	  }
 	},
 	{
-		"apiVersion": "autoscaling/v1",
+		"apiVersion": "autoscaling/v2beta1",
 		"kind": "HorizontalPodAutoscaler",
 		"metadata": {
 			"name": "${NAME}${SUFFIX}",
@@ -307,11 +307,17 @@
 			"maxReplicas": 4,
 			"minReplicas": 2,
 			"scaleTargetRef": {
-				"apiVersion": "v1",
+				"apiVersion": "apps/v1",
 				"kind": "DeploymentConfig",
 				"name": "${NAME}${SUFFIX}"
 			},
-			"targetCPUUtilizationPercentage": 80
+			"metrics": {
+                "type": "Resource",
+                "resource": {
+                    "name": "cpu",
+                    "targetAverageUtilization": 80
+                }
+            }
 		}
 	}
   ]
