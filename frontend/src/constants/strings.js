@@ -1,3 +1,4 @@
+import React from 'react';
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = 'Error!';
 export const TRY_AGAIN = 'Please try again later';
@@ -11,6 +12,9 @@ export const ADD_MINE_MANAGER  = 'Please add mine manager below';
 export const ADD_TENURE = 'Please add tenure number below';
 export const ADD_PARTY = 'Please create party below';
 
+export const UNAUTHORIZED = 'You do not have permission to access this site';
+//to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
+export const CONTACT_ADMIN = ['Contact your system administrator at ', <b>mds.admin@gov.bc.ca</b>, ' to request access'];
 export const EMPTY_FIELD = 'N/A';
 
 // default coordinates for center of BC
