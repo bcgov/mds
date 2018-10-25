@@ -3,7 +3,6 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy import or_
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mines import MineIdentity, MineDetail, MineralTenureXref
 from ...permit.models.permit import Permit
