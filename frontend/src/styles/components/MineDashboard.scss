@@ -46,3 +46,16 @@
   }
 
 }
+
+.table-wrapper{
+  border-left:4px solid #003366;
+  background: $default-white;
+
+  th{
+    padding: 30px;
+  }
+
+  td{
+    padding: 0px 0px 30px 30px;
+  }
+}

@@ -5,6 +5,7 @@ export const TRY_AGAIN = 'Please try again later';
 export const NO_DATA = 'No data available';
 export const NO_COORDINATES = 'This mine does not contain valid coordinates';
 export const NO_MINE_MANAGER = 'No assigned mine manager';
+export const NO_PREV_MINE_MANAGER = 'No previous mine managers found';
 export const NO_PERMITTEE = 'No assigned permittee';
 export const NO_PERMIT = 'No permit information available';
 export const ADD_MINE_MANAGER  = 'Please add mine manager below';
