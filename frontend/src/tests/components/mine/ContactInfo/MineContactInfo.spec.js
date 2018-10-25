@@ -9,6 +9,8 @@ const reducerProps = {}
 const setupDispatchProps = () => {
   dispatchProps.fetchParties = jest.fn();
   dispatchProps.createParty = jest.fn();
+  dispatchProps.closeModal = jest.fn();
+  dispatchProps.openModal = jest.fn();
   dispatchProps.addMineManager = jest.fn();
   dispatchProps.addPermittee = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
@@ -16,8 +18,8 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.parties = MOCK.PARTY.parties;
-  reducerProps.partyIds = MOCK.PARTY.partyIds;
+  reducerProps.permittees = MOCK.PERMITTEE.permittees;
+  reducerProps.permitteeIds = MOCK.PERMITTEE.permitteeIds;
 };
 
 beforeEach(() => {

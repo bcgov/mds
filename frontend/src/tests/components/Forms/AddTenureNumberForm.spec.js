@@ -3,19 +3,25 @@ import { shallow } from 'enzyme';
 import { AddTenureNumberForm } from '@/components/Forms/AddTenureNumberForm';
 
 const dispatchProps = {};
+const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
-  dispatchProps.toggleModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
+
+const setupProps = () => {
+  props.title = 'mockTitle';
+}
 
 beforeEach(() => {
   setupDispatchProps();
+  setupProps();
 });
 
 describe('AddPartyFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTenureNumberForm {...dispatchProps} />);
+    const component = shallow(<AddTenureNumberForm {...dispatchProps} {...props}/>);
     expect(component).toMatchSnapshot();
   });
 });

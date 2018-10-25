@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
@@ -108,7 +109,9 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
     fetchStatusOptions,
-    updateMineRecord
+    updateMineRecord,
+    openModal, 
+    closeModal
   }, dispatch);
 };
 
