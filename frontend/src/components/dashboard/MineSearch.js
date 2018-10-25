@@ -70,8 +70,7 @@ export class MineSearch extends Component {
   render() {
     if (this.props.isMapView) { 
       return (
-        <RenderAutoComplete 
-          selected={this.state.selected}
+        <RenderAutoComplete
           placeholder="Search for a mine by name"
           handleSelect={this.handleCoordinateSearch}
           data={this.transformData(this.props.mineNameList)}
