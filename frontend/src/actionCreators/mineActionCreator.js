@@ -43,17 +43,20 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   });
 };
 
-export const fetchMineRecords = (page, per_page, map) => (dispatch) => {
+export const fetchMineRecords = (page, per_page, search, map) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
-  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, map), createRequestHeader())
+  dispatch(showLoading());
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, search, map), createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMineList(response.data));
+    dispatch(hideLoading());
     return response;
   })
   .catch((err) => {
     notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.GET_MINE_RECORD));
+    dispatch(hideLoading());
   });
 };
 

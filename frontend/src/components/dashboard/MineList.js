@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Col, Row, Divider } from 'antd';
 import * as router from '@/constants/routes';
+import NullScreen from '@/components/common/NullScreen';
 
 /**
  * @class MineList - paginated list of mines 
@@ -26,28 +27,41 @@ class MineList extends Component {
     return (
       <div className="antd-list">
         <Row type="flex" style={{textAlign: 'center'}}>
-          <Col span={8}><h2>Mine ID</h2></Col>
-          <Col span={8}><h2>Name</h2></Col>
-          <Col span={8}><h2>Action</h2></Col>
+          <Col span={6}><h2>Mine ID</h2></Col>
+          <Col span={6}><h2>Name</h2></Col>
+          <Col span={6}><h2>Permit(s)</h2></Col>
+          <Col span={6}><h2>Action</h2></Col>
         </Row>
         <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
-        {mineIds.map((id) => {
+
+        {mineIds && mineIds.map((id) => {
           return (
             <div key={id}>
               <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
-                <Col span={8}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col span={8}>
+                <Col span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                <Col span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
+                <Col span={6}>
+                  {mines[id].mine_permit.map((permit) => {
+                    return (
+                      <div key={permit.permit_guid}>{permit.permit_no }</div>
+                    )
+                  })}
+                </Col>
+                <Col span={6}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary" style={{margin: '0'}}>
                       View
                     </Button>
                   </Link>
                 </Col>
+                <Divider />
               </Row>
             </div>
           )
         })}
+        {(mineIds.length === 0) &&
+          <NullScreen type="no-results" />
+        }
       </div>
     );
   }
