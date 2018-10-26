@@ -22,7 +22,7 @@ class  E_ContactInfoSpect extends GebReportingSpec {
 
         and: "I create a new mine manager and update mine manager with the manager just created"
         contactInfoTab.modifyManager(manager)
-        sleep(200)
+        waitFor {toastMessage!= null }
 
         then: "Should see successful message"
         assert toastMessage == "Successfully updated the manager of ${Const.MINE_NAME}"

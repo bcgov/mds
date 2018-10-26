@@ -33,6 +33,7 @@ class  B_DashboardSpec extends GebReportingSpec {
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
         println "Scenario: "+scenario
+        waitFor {toastMessage!= null }
 
         then: "I should see the successful message"
         toastMessage == "Successfully created: " + NAME_GOOD
