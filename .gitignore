@@ -10,4 +10,5 @@ __pycache__
 *.pytest_cache
 *.pyc
 *tmp*.tar
-.vscode/
+.vscode
+ 

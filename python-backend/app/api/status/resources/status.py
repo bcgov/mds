@@ -1,11 +1,12 @@
 from flask_restplus import Resource
 from ..models.status import MineStatus
-from app.extensions import jwt
+from app.extensions import jwt, api
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 from ...constants import MINE_STATUS_OPTIONS
 
 
 class MineStatusResource(Resource, UserMixin, ErrorMixin):
+    @api.doc(params={'mine_status_guid': 'Mine status guid.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_status_guid=None):
         if mine_status_guid:

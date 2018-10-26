@@ -7,17 +7,16 @@ const dispatchProps = {};
 const props = {}
 
 const setupDispatchProps = () => {
-  dispatchProps.toggleModal = jest.fn();
+  dispatchProps.openModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
   dispatchProps.handleChange = jest.fn();
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.addMineManager = jest.fn();
   dispatchProps.handlePartySubmit = jest.fn();
+  dispatchProps.fetchMineRecordById= jest.fn();
 };
 
 const setupProps = () => {
-  props.modalVisible = false;
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.parties = MOCK.PARTY.parties;
-  props.partyIds = MOCK.PARTY.partyIds;
 };
 
 beforeEach(() => {

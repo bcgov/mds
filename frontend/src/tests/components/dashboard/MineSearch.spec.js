@@ -4,24 +4,27 @@ import {MineSearch} from '@/components/dashboard/MineSearch';
 import * as MOCK from '@/tests/mocks/dataMocks';
 
 const dispatchProps = {};
-const reducerProps = {};
+const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineNameList = jest.fn();
+  dispatchProps.handleMineSearch = jest.fn();
+  dispatchProps.handleCoordinateSearch = jest.fn()
 };
 
-const setupReducerProps = () => {
-  reducerProps.mineNameList = MOCK.MINE_NAME_LIST;
+const setupProps = () => {
+  props.mineNameList = MOCK.MINE_NAME_LIST;
+  props.isMapViuew = false;
 };
 
 beforeEach(() => {
   setupDispatchProps();
-  setupReducerProps();
+  setupProps();
 });
 
 describe('MineSearch', () => {
   it('renders properly', () => {
-    const component = shallow(<MineSearch {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<MineSearch {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

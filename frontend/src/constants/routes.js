@@ -17,8 +17,8 @@ export const MINE_DASHBOARD = {
 };
 
 export const MINE_SUMMARY = {
-  route: '/dashboard/:id/summary',
-  dynamicRoute: (id) => `/dashboard/${id}/summary`,
+  route: '/dashboard/:id/summary/:activeTab',
+  dynamicRoute: (id, activeTab="summary") => `/dashboard/${id}/summary/${activeTab}`,
   component: MineDashboard,
 };
 

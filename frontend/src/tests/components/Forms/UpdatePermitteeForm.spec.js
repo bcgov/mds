@@ -9,13 +9,14 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
   dispatchProps.handleChange = jest.fn();
-  dispatchProps.toggleModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
   props.parties = MOCK.PARTY.parties;
   props.partyIds = MOCK.PARTY.partyIds;
-  props.permit = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit
+  props.permit = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit;
+  props.title = 'mockTitle';
 }
 
 beforeEach(() => {

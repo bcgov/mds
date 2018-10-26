@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Card } from 'antd';
-import AddTenureNumberForm from '@/components/Forms/AddTenureNumberForm';
+import { Card } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen'; 
+import * as ModalContent from '@/constants/modalContent';
+import { modalConfig } from '@/components/modalContent/config';
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
  */
@@ -12,6 +13,8 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired
 };
 
@@ -20,40 +23,29 @@ const defaultProps = {
 };
 
 class MineTenureInfo extends Component {
-  state = { visible: false }
-
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
     this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_detail[0].mine_name).then(() => {
       this.props.fetchMineRecordById(id);
-      this.setState({
-        visible: !this.state.visible,
-      });
+     this.props.closeModal();
     })
   }
 
-  toggleModal = () => {
-    this.setState({
-      visible: !this.state.visible,
+  openModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title },
+      content: modalConfig.ADD_TENURE
     });
   }
 
   render() {
     const { mine } = this.props;
-
     if (mine.mineral_tenure_xref.length === 0) {
       return (
         <div>
           <NullScreen type="tenure" />
-          <div className="center"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
-          <Modal
-            title="Add Tenure Number"
-            visible={this.state.visible}
-            footer={null}
-            closable={false}
-          >
-            <AddTenureNumberForm onSubmit={this.handleSubmit} toggleModal={this.toggleModal}/>
-          </Modal>
+          <div className="center"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>
         </div>
       )
     }
@@ -61,6 +53,7 @@ class MineTenureInfo extends Component {
       <div>
         <Card>
           <table>
+            <tbody>
             <tr>
               <th scope="col"><h4>Tenure Numbers</h4></th>
             </tr>
@@ -75,17 +68,10 @@ class MineTenureInfo extends Component {
                 })}
               </td>
             </tr>
+            </tbody>
           </table>
-          <div className="right center-mobile"><ConditionalButton handleAction={this.toggleModal} string="Add Tenure Number" type="primary" /></div>
+          <div className="right center-mobile"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>
         </Card>
-        <Modal
-          title="Add Tenure Number"
-          visible={this.state.visible}
-          footer={null}
-          onCancel={this.toggleModal}
-        >
-          <AddTenureNumberForm onSubmit={this.handleSubmit} />
-        </Modal>
       </div>
     );
   }

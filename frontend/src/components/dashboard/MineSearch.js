@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { AutoComplete, Input, Icon } from 'antd';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchMineNameList } from '@/actionCreators/mineActionCreator';
 import { getMineNames } from '@/selectors/mineSelectors';
 import RenderAutoComplete from '@/components/common/RenderAutoComplete';
-import * as router from '@/constants/routes';
-import { AutoComplete } from 'antd';
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
  */
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
+  handleMineSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.array.isRequired,
   isMapView: PropTypes.bool,
@@ -24,22 +23,15 @@ const defaultProps = {
 };
 
 export class MineSearch extends Component {
-  state = { redirectTo: null}
-
   componentDidMount() {
     this.props.fetchMineNameList();
   }
-
   /**
-   * if isMapView re-center the map to the mines coordinates, else is isListView redirect to the selected mine summary page.
-   * @param value = mine.guid || 'mine.long, mine.lat';
+   *  re-center the map to the mines coordinates
+   * @param value = 'mine.long, mine.lat';
    */
-  handleListSelect = (value) => {
-    if (this.props.isMapView) {
-      this.props.handleCoordinateSearch(value);
-    } else {
-      this.setState({ redirectTo: router.MINE_SUMMARY.dynamicRoute(value) });
-    }
+  handleCoordinateSearch = (value) => {
+    this.props.handleCoordinateSearch(value);
   }
   /**
    *  If the user has typed more than 3 characters filter the search
@@ -54,6 +46,13 @@ export class MineSearch extends Component {
     }
   }
 
+  /**
+   * filter mineList with new search input;
+   */
+  handleSearch = (value) => {
+    this.props.handleMineSearch(value.target.value);
+  }
+
   transformData = (data) => {
     if (data) {
       const dataList = [];
@@ -62,7 +61,7 @@ export class MineSearch extends Component {
       const coordinates = opt.longitude.concat(",", opt.latitude);
       const mineDetails = coordinates.concat(",", opt.mine_name);
       dataList.push(
-        <AutoComplete.Option key={opt.guid} value={this.props.isMapView ? mineDetails : opt.guid}>
+        <AutoComplete.Option key={opt.guid} value={mineDetails}>
           {search}
         </AutoComplete.Option>
       )})
@@ -71,18 +70,24 @@ export class MineSearch extends Component {
   }
 
   render() {
-    if (this.state.redirectTo) {
-      return <Redirect push to={this.state.redirectTo} />
+    if (this.props.isMapView) { 
+      return (
+        <RenderAutoComplete
+          placeholder="Search for a mine by name"
+          handleSelect={this.handleCoordinateSearch}
+          data={this.transformData(this.props.mineNameList)}
+          handleChange={this.handleChange}
+        />
+      );
+    } else {
+      return (
+        <Input
+          placeholder="Search for a mine using name, ID, or permit number"
+          onChange={this.handleSearch}
+          suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />}
+        />
+      )
     }
-    return (
-      <RenderAutoComplete 
-        selected={this.state.selected}
-        placeholder="Search for a mine by name"
-        handleSelect={this.handleListSelect}
-        data={this.transformData(this.props.mineNameList)}
-        handleChange={this.handleChange}
-      />
-    );
   }
 }
 
