@@ -103,21 +103,23 @@ export class MinePin extends Component {
         content: "{templateContent}"
       });
 
-      const fclData = mineIds.map((id) => {
+      const fclData = mineIds.reduce((result, id) => {
         const point = this.points(id)
         if (!point) {
-          return {};
+          return result;
         }
         const y = Number(point.latitude);
         const x = Number(point.longitude);
         const templateInfo = this.popupTemplate(id);
-        return {
+        result.push({
           y : y,
           x: x,
           templateTitle: templateInfo.title,
           templateContent: templateInfo.content,
-        }
-      });
+        });
+        return result
+      }, []);
+
 
       const options = {
         id: "flare-cluster-layer",
