@@ -404,7 +404,7 @@
 								"kind": "DeploymentConfig",
 								"name": "${NAME}${SUFFIX}"
 						},
-						"targetCPUUtilizationPercentage": 80
+						"targetCPUUtilizationPercentage": 95
 				}
 		},
 		{
