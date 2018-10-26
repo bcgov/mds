@@ -10,8 +10,7 @@ describe('mineReducer', () => {
       mineIds: [],
       mineNameList:[],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: false,
       mineStatusOptions: []
     };
     const result = mineReducer(undefined, {});
@@ -30,8 +29,7 @@ describe('mineReducer', () => {
         'items_per_page': 50,
         'total': 1
       },
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: false,
       mineStatusOptions: []
     };
     const result = mineReducer(undefined, storeMineList({
@@ -50,11 +48,10 @@ describe('mineReducer', () => {
       mineIds: ["test123"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: "test123",
       mineStatusOptions: []
     };
-    const result = mineReducer(undefined, storeMine({"guid": "test123"}));
+    const result = mineReducer(undefined, storeMine({"guid": "test123"}, "test123"));
     expect(result).toEqual(expectedValue);
   });
 
@@ -64,8 +61,7 @@ describe('mineReducer', () => {
       mineIds: ["test123"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: "test123",
       mineStatusOptions: []
     };
     const updatedMineValue = {
@@ -73,13 +69,12 @@ describe('mineReducer', () => {
       mineIds: ["test456"],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: "test456",
       mineStatusOptions: []
     };
-    const storedMine = mineReducer(undefined, storeMine({"guid": "test123"}));
+    const storedMine = mineReducer(undefined, storeMine({"guid": "test123"}, "test123"));
     expect(storedMine).toEqual(storedMineValue);
-    const updatedMine = mineReducer(undefined, updateMine({"guid": "test456"}, "test123"));
+    const updatedMine = mineReducer(undefined, updateMine({"guid": "test456"}, "test456"));
     expect(updatedMine).toEqual(updatedMineValue);
   });
 
@@ -89,8 +84,7 @@ describe('mineReducer', () => {
       mineIds: [],
       mineNameList: { mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039"}]},
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: false,
       mineStatusOptions: []
     };
     const result = mineReducer(undefined, storeMineNameList({ mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039" }] }));
@@ -103,8 +97,7 @@ describe('mineReducer', () => {
       mineIds: [],
       mineNameList: [],
       minesPageData: {},
-      permittees: {},
-      permitteeIds: [],
+      mineGuid: false,
       mineStatusOptions: MOCK.STATUS_OPTIONS.options
     };
     const result = mineReducer(undefined, storeStatusOptions(MOCK.STATUS_OPTIONS));
