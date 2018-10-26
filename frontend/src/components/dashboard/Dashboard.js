@@ -50,7 +50,7 @@ export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
-    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
+    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null, searchTerm: ''}
   }
  
   componentDidMount() {
@@ -72,14 +72,12 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    // pass in an empty searchValue
-    const searchValue = '';
     if (params.page && params.per_page) {
-      this.props.fetchMineRecords(params.page, params.per_page, searchValue, params.map).then(() => {
+      this.props.fetchMineRecords(params.page, params.per_page, this.state.searchTerm, params.map).then(() => {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, searchValue, params.map).then(() => {
+      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, this.state.searchTerm, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }
@@ -123,6 +121,8 @@ export class Dashboard extends Component {
   }
 
   handleMineSearch = (value) => {
+    // set the state so on page Turn the search value is kept.
+    this.setState({searchTerm: value});
     const params = queryString.parse(this.props.location.search);
     this.props.fetchMineRecords(params.page, params.per_page, value);
   }
