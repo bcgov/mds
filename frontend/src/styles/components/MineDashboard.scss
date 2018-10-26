@@ -48,7 +48,8 @@
 }
 
 .table-wrapper{
-  border-left:4px solid #003366;
+  padding: $default-padding-md;
+  border-left:4px solid $default-blue;
   background: $default-white;
 
   th{
