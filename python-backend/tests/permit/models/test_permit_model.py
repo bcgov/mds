@@ -4,7 +4,7 @@ import uuid
 import pytest
 
 from tests.constants import TEST_PERMIT_GUID_1, TEST_MINE_GUID
-from app.api.permit.models.permit import Permit
+from app.api.permits.permit.models.permit import Permit
 
 
 # Permit Model Class Methods

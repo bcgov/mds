@@ -5,12 +5,12 @@ import pytest
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.mine.models.mines import MineIdentity, MineDetail, MineralTenureXref
-from app.api.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
-from app.api.party.models.party import Party, MgrAppointment, PartyTypeCode
-from app.api.location.models.location import MineLocation
-from app.api.permit.models.permit import Permit, PermitStatusCode
-from app.api.permittee.models.permittee import Permittee
+from app.api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
+from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
+from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
+from app.api.mines.location.models.location import MineLocation
+from app.api.permits.permit.models.permit import Permit, PermitStatusCode
+from app.api.permits.permittee.models.permittee import Permittee
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 

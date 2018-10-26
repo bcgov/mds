@@ -1,7 +1,7 @@
 import pytest
 
 from tests.constants import TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_PARTY_PER_GUID_1, TEST_MANAGER_GUID, TEST_MINE_GUID, TEST_PARTY_ORG_NAME
-from app.api.party.models.party import Party
+from app.api.parties.party.models.party import Party
 
 
 # Party Model Class Methods

@@ -13,9 +13,11 @@ The application directory is structured as follows:
 ```
 |-- app
     |-- api
-    |-- MODULE_NAME
-        |-- Models (Contains all the database model definition used by SQLAlchemy)
-        |-- Resources (Contains all the routes and views to handle incoming requests)
+        |-- NAMESPACE_MODULE_NAME
+            |-- Namespace (Contains api namespace)
+            |-- MODULE_NAME
+                |-- Models (Contains all the database model definition used by SQLAlchemy)
+                |-- Resources (Contains all the routes and views to handle incoming requests)
     |-- utils (Contains utility shared across modules)
 |-- tests (Unit/Integration tests for the application)
 |-- app.sh (Shell script used by the python OpenShift s2i image to run the application)
