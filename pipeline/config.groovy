@@ -212,19 +212,19 @@ environments {
             resources {
                 node {
                     cpu_request = "1m"
-                    cpu_limit = "250m"
+                    cpu_limit = "100m"
                     memory_request = "512Mi"
                     memory_limit = "768Mi"
                 }
                 python {
                     cpu_request = "1m"
-                    cpu_limit = "200m"
+                    cpu_limit = "150m"
                     memory_request = "768Mi"
                     memory_limit = "1Gi"
                 }
                 postgres {
                     cpu_request = "1m"
-                    cpu_limit = "250m"
+                    cpu_limit = "200m"
                     memory_request = "1.5Gi"
                     memory_limit = "2Gi"
                 }
@@ -283,7 +283,7 @@ environments {
                 postgres {
                     cpu_request = "200m"
                     cpu_limit = "500m"
-                    memory_request = "2Gi"
+                    memory_request = "2.5Gi"
                     memory_limit = "4Gi"
                 }
             }
@@ -323,8 +323,8 @@ environments {
                 node {
                     cpu_request = "150m"
                     cpu_limit = "300m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
                 }
                 python {
                     cpu_request = "300m"
