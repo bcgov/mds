@@ -269,22 +269,22 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "100m"
-                    cpu_limit = "250m"
-                    memory_request = "512Mi"
-                    memory_limit = "768Mi"
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
                 }
                 python {
-                    cpu_request = "150m"
+                    cpu_request = "300m"
                     cpu_limit = "500m"
-                    memory_request = "2Gi"
+                    memory_request = "2.5Gi"
                     memory_limit = "4Gi"
                 }
                 postgres {
                     cpu_request = "200m"
-                    cpu_limit = "250m"
+                    cpu_limit = "500m"
                     memory_request = "2Gi"
-                    memory_limit = "2.5Gi"
+                    memory_limit = "4Gi"
                 }
             }
             deployment {
@@ -321,13 +321,13 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "100m"
-                    cpu_limit = "400m"
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                 }
                 python {
-                    cpu_request = "250m"
+                    cpu_request = "300m"
                     cpu_limit = "500m"
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
