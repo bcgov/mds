@@ -510,8 +510,7 @@ BEGIN
         party_guid       ,
         first_name       ,
         party_name       ,
-        phone_no         ,
-        --ignore middle name as such info does not exist in MMS
+        phone_no         , 
         email            ,
         effective_date   ,
         expiry_date      ,

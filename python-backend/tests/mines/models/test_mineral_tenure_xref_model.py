@@ -3,7 +3,7 @@ import uuid
 import pytest
 
 from tests.constants import TEST_TENURE_ID
-from app.api.mine.models.mines import MineralTenureXref
+from app.api.mines.mine.models.mine import MineralTenureXref
 
 
 # MineralTenureXref Class Methods

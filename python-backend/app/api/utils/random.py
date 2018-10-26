@@ -4,7 +4,7 @@ import string
 
 import names
 
-from ..mine.models.mines import MineDetail
+from ..mines.mine.models.mine import MineDetail
 
 VOWELS = "aeiou"
 CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))
