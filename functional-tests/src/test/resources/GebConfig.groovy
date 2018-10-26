@@ -92,8 +92,6 @@ if (!baseUrl) {
 	baseUrl = "http://localhost:3000/"
 }
 
-println "BaseURL: ${baseUrl}"
-println "--------------------------"
  
 //3. tells the test runner where to save the test results.
 reportsDir = new File("target/geb-reports")
@@ -105,7 +103,7 @@ reportOnTestFailureOnly = false //true
 //in seconds
 //If unspecified, the values of 5 for timeout and 0.1 for retryInterval.
 waiting {
-    timeout = 10
+    timeout = 5
     retryInterval = 0.5
 }
 //always wait for the content using the default wait configuration

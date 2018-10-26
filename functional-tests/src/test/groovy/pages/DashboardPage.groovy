@@ -3,10 +3,8 @@ package pages
 import geb.Page
 import modules.*
 
-class DashboardPage extends Page {
-    // static at = { waitFor {createMineButton_Dashboard.displayed}}
-
-    static at = { waitFor {!loadingScreen.displayed}}
+class DashboardPage extends Page { 
+    static at = { waitFor(10,1) {!loadingScreen.displayed}}
     static url = "dashboard"
     static content = {
         //general 
@@ -14,7 +12,7 @@ class DashboardPage extends Page {
         loadingScreen (required:false) {$("div.loading-screen")}
 
         //create mine form 
-        createMineForm { module CreateMineForm }
+        createMineForm { module Form_CreateMine }
         createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}  
         
         //Dashboard

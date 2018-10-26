@@ -2,8 +2,7 @@ package modules
 
 import geb.Module
 
-class UpdateManagerForm extends Module {
-    // static at = {$("div.ant-modal-title").text()=="Update Mine Manager"}
+class Form_UpdateManager extends Module { 
     static at = { header=="Update Mine Manager"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
@@ -11,8 +10,7 @@ class UpdateManagerForm extends Module {
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("i.ant-notification-close-icon").find("svg")}
         managerList (required:false) {$("li.ant-select-dropdown-menu-item", 0)}
-
-
+        loadingBar (required:false) {$("div.ant-modal-body").find("div",0).find("div")}
         //input
         managerFirstNameBox (wait:true) {$("input", id:"first_name")}
         managerSurNameBox (wait:true) {$("input", id:"party_name")}
@@ -45,17 +43,23 @@ class UpdateManagerForm extends Module {
 
     def updateMineManager(managerProfileData){
         def staleElement = true
+        def loading = true
         selectDate(managerProfileData.date)
         selectParty.click()
-        partyBox = "${managerProfileData.first_name} ${managerProfileData.surname}"
+        partyBox = "${managerProfileData.first_name} ${managerProfileData.surname}" 
+        while (loading && loadingBar.size()>1){
+            if (loadingBar.size()==1 ){
+                loading=false
+            }
+        }   
         while (staleElement){
             try {
-                managerList.click()
+                managerList.click() 
                 staleElement = false
             } catch (org.openqa.selenium.StaleElementReferenceException e){
                 staleElement = true
             }
-        }
+        } 
         updateMineManagerButton.click()
     }
 

@@ -2,7 +2,7 @@ package modules
 
 import geb.Module
 
-class UpdateTenureForm extends Module {
+class Form_UpdateTenure extends Module {
     static at = {header == "Add Tenure Number"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}

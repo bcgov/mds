@@ -21,11 +21,7 @@ class  B_DashboardSpec extends GebReportingSpec {
     static BAD_NAME_1= "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"
     static BAD_NAME_2= "ab" 
 
-    // def setupSpec(){
-    //     println ">>>>>>>>> Creating test mine record:"
-    //     DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_creation.sql').text)
-    //     println ">>>>>>>>> Done."
-    // }
+ 
 
     def "Scenario: User is able to create a mine record "(){
         given: "I go to the DashboardPage"
@@ -72,26 +68,6 @@ class  B_DashboardSpec extends GebReportingSpec {
         "Null status"   |new mineProfileData (NAME_GOOD,NULL,NULL,NULL,NULL)        ||"This is a required field"
     }
 
-    def "Scenario: User can search for a specific mine "(){
-        given: "I am on the Dashboard Page"
-        to DashboardPage
-
-        when: "I search for a mine using mine name"
-        search(keyword)
-        println "Scenario: "+ scenario
-
-
-        then: "I should see a list of mine record whose names contain the keyword"
-        assert searchResultValidation(keyword) == result
-         
-        where:
-        scenario                |keyword    |result
-        "Regular search"        |"Mine"     |true
-        "Not case sensitive"    |"TEST"     |true
-        "Search by ID"          |"blah0000" |true
-        "Not found"             |"sdkfj"    |false
-    }
-
     def "Scenario: User can view a mine"(){
         given: "I am on the Dashboard Page"
         to DashboardPage
@@ -110,25 +86,43 @@ class  B_DashboardSpec extends GebReportingSpec {
                 
     }
 
-    def "Scenario: Redirect to Mine Summary page once search result is selected"(){
-        given: "I am on the Dashboard Page"
-        to DashboardPage
+    // def "Scenario: User can search for a specific mine "(){
+    //     given: "I am on the Dashboard Page"
+    //     to DashboardPage
 
-        when: "I search for a mine using mine name"
-        searchBox = "test"
+    //     when: "I search for a mine using mine name"
+    //     search(keyword)
+    //     println "Scenario: "+ scenario
 
-        and: "I select a mine from the result list"
-        def viewMineID = searchResultSelection()
+
+    //     then: "I should see a list of mine record whose names contain the keyword"
+    //     assert searchResultValidation(keyword) == result
+         
+    //     where:
+    //     scenario                |keyword    |result
+    //     "Regular search"        |"Mine"     |true
+    //     "Not case sensitive"    |"TEST"     |true
+    //     "Search by ID"          |"blah0000" |true
+    //     "Not found"             |"sdkfj"    |false
+    // }
+
+
+
+    //TO-Do: Update test for search when the bug fix for search get merged
+    // def "Scenario: Redirect to Mine Summary page once search result is selected"(){
+    //     given: "I am on the Dashboard Page"
+    //     to DashboardPage
+
+    //     when: "I search for a mine using mine name"
+    //     searchBox = "test"
+
+    //     and: "I select a mine from the result list"
+    //     def viewMineID = searchResultSelection()
         
-        then: "I am redirected to the mine summary page"
-        at MineProfilePage
-        assert mineNumber == "Mine ID: "+viewMineID
+    //     then: "I am redirected to the mine summary page"
+    //     at MineProfilePage
+    //     assert mineNumber == "Mine ID: "+viewMineID
 
-    }
+    // }
  
-    def cleanupSpec() {
-        println ">>>>>>>> Cleaning test data:"
-        DB_connection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').text)
-        println ">>>>>>>> Done."
-    }
 }

@@ -2,8 +2,8 @@ package modules
 
 import geb.Module
 
-class CreateMineForm extends Module {
-    static at = { waitFor {header=="Create Mine Record"}}
+class Form_CreateMine extends Module {
+    static at = { waitFor(5,0.5) {header=="Create Mine Record"}}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         warning (wait: true) {$("div", 0, class:"ant-form-explain").find("span").text()} 
