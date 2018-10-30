@@ -5,6 +5,7 @@ attrs==18.1.0
 click==6.7
 Flask==1.0.2
 Flask-Cors==3.0.6
+flask-compress==1.4.0
 Flask-Migrate==2.2.1
 flask-restplus==0.11.0
 Flask-SQLAlchemy==2.3.2
@@ -26,7 +27,7 @@ python-dateutil==2.7.3
 python-dotenv==0.8.2
 python-editor==1.0.3
 pytz==2018.5
-requests==2.19.1
+requests==2.20.0
 six==1.11.0
 SQLAlchemy==1.2.10
 Werkzeug==0.14.1
