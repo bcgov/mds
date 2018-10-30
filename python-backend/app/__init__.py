@@ -33,7 +33,10 @@ def register_extensions(app):
     api.app = app
     api.init_app(app)
 
+    # SQlAlchemy configuration options
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+    app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
     db.init_app(app)
 
