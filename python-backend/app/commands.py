@@ -50,7 +50,7 @@ def register_commands(app):
             num = int(num)
             number_batches = []
             if(num >= 100):
-                number_batches = [100 for _ in range(0, num, 100)]
+                number_batches = [100 for _ in range(100, num, 100)]
             number_batches.append(num % 100) if num % 100 is not 0 else None
 
             task_list = []
