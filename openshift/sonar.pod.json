@@ -60,7 +60,7 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "300m",
+                                "cpu": "500m",
                                 "memory": "2Gi"
                             },
                             "requests": {
