@@ -37,6 +37,7 @@ class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS, Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
+    SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = "test_audience"
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
