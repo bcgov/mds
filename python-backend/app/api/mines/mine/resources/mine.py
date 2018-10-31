@@ -3,12 +3,11 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy.orm import load_only, joinedload
 
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
-from ...location.models.location import MineLocation
+from ...location.models.location import MineLocation, MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -24,7 +23,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    #@jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -32,15 +31,24 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 return mine.json()
             return self.create_error_payload(404, 'Mine not found'), 404
         else:
+            # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                # Only retrieve the columns that are needed
-                mines_list = MineIdentity.query.options(load_only("mine_guid"),
-                                                        joinedload("mine_detail"),
-                                                        joinedload("mine_location")).all()
-                mines_list_map = map(lambda x: x.json_for_map(), mines_list)
-                result = list(mines_list_map)
-                return {'mines': result}
+                mines_list = []
+                records = MineMapViewLocation.query.all()
+                for record in records:
+                    mines_list.append({
+                        'guid': str(record.mine_guid),
+                        'mine_detail': [{'mine_name': str(record.mine_name),
+                                         'mine_no': str(record.mine_no)
+                                         }],
+                        'mine_location': [{'latitude': str(record.latitude),
+                                           'longitude': str(record.longitude)
+                                           }]
+                    })
+                return {'mines': mines_list}
+
+            # Handle ListView request
             items_per_page = request.args.get('per_page', 50, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
