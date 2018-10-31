@@ -91,7 +91,7 @@
 			},
 			"spec": {
 				"lookupPolicy": {
-					"local": false
+					"local": true
 				},
 				"tags":[ ]
 			}
@@ -108,7 +108,7 @@
 			},
 			"spec": {
 				"lookupPolicy": {
-					"local": false
+					"local": true
 				}
 			}
 		},

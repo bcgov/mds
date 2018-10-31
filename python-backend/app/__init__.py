@@ -62,4 +62,4 @@ def register_routes(app):
     @api.errorhandler
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
-        return json.loads(value(None).with_traceback(traceback))
+        return json.loads({"error": str(traceback)})
