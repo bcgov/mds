@@ -333,7 +333,7 @@ environments {
                     memory_limit = "4Gi"
                 }
                 postgres {
-                    cpu_request = "250mm"
+                    cpu_request = "250m"
                     cpu_limit = "500m"
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
