@@ -43,6 +43,10 @@ frontend-run:
 	@echo "+\n++ Running frontend...\n+"
 	@docker-compose up -d frontend
 
+database-dump-test:
+	@echo "+\n++ Getting database dump from test...\n+"
+	@docker-compose up -d frontend
+
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
 	@docker-compose down
