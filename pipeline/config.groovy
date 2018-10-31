@@ -132,7 +132,7 @@ app {
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
-                            'IMAGE_STREAM_NAMESPACE':"${vars.deployment.namespace}",
+                            'IMAGE_STREAM_NAMESPACE':'',
                             'IMAGE_STREAM_NAME':"mds-postgresql",
                             'IMAGE_STREAM_VERSION':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',
@@ -165,7 +165,6 @@ app {
                     'params':[
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
-                            'NAMESPACE':"${vars.deployment.namespace}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'CPU_REQUEST':"${vars.resources.python.cpu_request}",
