@@ -51,7 +51,7 @@ def test_client():
     client = app.test_client()
     ctx = app.app_context()
     ctx.push()
-    setup_data()
+    setup_data(db.session)
 
     yield client
 
@@ -60,9 +60,9 @@ def test_client():
     ctx.pop()
 
 
-def setup_data():
+def setup_data(session):
     # Clear data
-    clear_data(db.session)
+    clear_data(session)
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
     mine_detail = MineDetail(
@@ -72,8 +72,8 @@ def setup_data():
         mine_name=TEST_MINE_NAME,
         **DUMMY_USER_KWARGS
     )
-    mine_identity.save(commit=False)
-    mine_detail.save(commit=False)
+    mine_identity.save()
+    mine_detail.save()
 
     # Test Tenure Data
     tenure = MineralTenureXref(
@@ -82,7 +82,7 @@ def setup_data():
         tenure_number_id=TEST_TENURE_ID,
         **DUMMY_USER_KWARGS
     )
-    tenure.save(commit=False)
+    tenure.save()
 
     # Test Location Data
     mine_location = MineLocation(
@@ -94,7 +94,7 @@ def setup_data():
         expiry_date=datetime.today(),
         **DUMMY_USER_KWARGS,
     )
-    mine_location.save(commit=False)
+    mine_location.save()
 
     # Test Person Type Codes
     for k, v in PARTY_STATUS_CODE.items():
@@ -104,6 +104,7 @@ def setup_data():
             **DUMMY_USER_KWARGS
         )
         party_code.save()
+    session.commit()
 
     # Test Operation Codes
     for k, v in MINE_OPERATION_STATUS.items():
@@ -127,6 +128,8 @@ def setup_data():
             **DUMMY_USER_KWARGS
         )
         mine_operation_status_sub_reason_code.save()
+
+    session.commit()
 
     # Test Person Data
     person = Party(
@@ -171,7 +174,7 @@ def setup_data():
         party_type_code=TEST_ORG_TYPE,
         **DUMMY_USER_KWARGS
     )
-    party_org.save(commit=False)
+    party_org.save()
     # Test Manager Data
     manager = MgrAppointment(
         mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
@@ -181,7 +184,7 @@ def setup_data():
         expiry_date=datetime.today(),
         **DUMMY_USER_KWARGS
     )
-    manager.save(commit=False)
+    manager.save()
 
     # Test Permit Status Codes
     for permit_code_value in TEST_PERMIT_STATUS_CODES:
@@ -190,7 +193,7 @@ def setup_data():
             description=TEST_PERMIT_STATUS_CODE_NAME_1,
             **DUMMY_USER_KWARGS
         )
-        permit_code.save(commit=False)
+        permit_code.save()
 
     # Test Permit Data
     permit = Permit(
@@ -202,7 +205,7 @@ def setup_data():
         issue_date=datetime.today(),
         **DUMMY_USER_KWARGS
     )
-    permit.save(commit=False)
+    permit.save()
 
     # Test Permittee Data
     permittee = Permittee(
@@ -211,10 +214,7 @@ def setup_data():
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         **DUMMY_USER_KWARGS
     )
-    permittee.save(commit=False)
-
-    db.session.commit()
-
+    permittee.save()
 
 def clear_data(session):
     meta = db.metadata
