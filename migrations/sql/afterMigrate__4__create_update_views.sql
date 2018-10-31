@@ -1,4 +1,9 @@
 /*
+Create/Update database views
+*/
+
+
+/*
 Create a view to query Mine details and Mine location
 and return relevant information for the MapView.
 */
