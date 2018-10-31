@@ -1,4 +1,5 @@
 import sys
+import json
 
 from flask import Flask
 from flask_cors import CORS
@@ -61,4 +62,4 @@ def register_routes(app):
     @api.errorhandler
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
-        raise value(None).with_traceback(traceback)
+        return json.loads(value(None).with_traceback(traceback))
