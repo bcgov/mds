@@ -132,7 +132,7 @@ app {
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
-                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAMESPACE':"${vars.deployment.namespace}",
                             'IMAGE_STREAM_NAME':"mds-postgresql",
                             'IMAGE_STREAM_VERSION':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',

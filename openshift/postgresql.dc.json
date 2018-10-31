@@ -215,6 +215,7 @@
             "apiVersion": "v1",
             "metadata": {
                 "name": "${IMAGE_STREAM_NAME}",
+                "namespace": "${IMAGE_STREAM_NAMESPACE}",
                 "creationTimestamp": null,
                 "labels": {
                     "shared": "true"
