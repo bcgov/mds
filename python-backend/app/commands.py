@@ -38,8 +38,8 @@ def register_commands(app):
     # in terminal you can run $flask <cmd> <arg>
     @app.cli.command()
     @click.argument('num')
-    @click.argument('threading')
-    def create_data(num, threading=True):
+    @click.argument('threading', default=True)
+    def create_data(num, threading):
         """
         Creates dummy data in the database. If threading=True
         Use Threading and multiprocessing to create records in chunks of 100.
