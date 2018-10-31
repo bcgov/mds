@@ -12,6 +12,4 @@ CREATE TABLE mine_location (
 FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE INDEX mine_location_lat_long_idx ON mine_location (latitude, longitude);
-
 COMMENT ON TABLE mine_location IS 'FCBC staging tables hold up to NUMBER(9,7) for Latitude and NUMBER(11,7) for Longitude.';

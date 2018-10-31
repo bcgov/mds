@@ -23,7 +23,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
-    #@jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
