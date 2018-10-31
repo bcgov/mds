@@ -3,10 +3,11 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
+
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
-from ...location.models.location import MineLocation
+from ...location.models.location import MineLocation, MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -30,9 +31,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 return mine.json()
             return self.create_error_payload(404, 'Mine not found'), 404
         else:
+            # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                return {'mines': list(map(lambda x: x.json_for_map(), MineIdentity.query.all()))}
+                records = MineMapViewLocation.query.all()
+                result = list((map(lambda x: x.json_for_map(), records)))
+                return {'mines': result}
+
+            # Handle ListView request
             items_per_page = request.args.get('per_page', 50, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)

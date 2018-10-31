@@ -219,5 +219,7 @@ def setup_data():
 def clear_data(session):
     meta = db.metadata
     for table in reversed(meta.sorted_tables):
+        if 'view' in table.name:
+            continue
         session.execute(table.delete())
     session.commit()

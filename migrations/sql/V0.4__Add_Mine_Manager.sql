@@ -33,5 +33,4 @@ FOREIGN KEY (mine_guid)   REFERENCES mine_identity(mine_guid) DEFERRABLE INITIAL
 FOREIGN KEY (person_guid) REFERENCES person(person_guid)      DEFERRABLE INITIALLY DEFERRED
 );
 
-
 COMMENT ON TABLE person IS 'A person of interest to the Ministry.';

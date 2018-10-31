@@ -1,8 +1,10 @@
 import sys
+import json
 
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource
+from flask_compress import Compress
 
 from .api.parties.namespace.parties import api as parties_api
 from .api.mines.namespace.mines import api as mines_api
@@ -33,14 +35,11 @@ def register_extensions(app):
     api.app = app
     api.init_app(app)
 
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
     db.init_app(app)
-
-    app.config['JWT_ROLE_CALLBACK'] = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
     jwt.init_app(app)
 
     CORS(app)
+    Compress(app)
 
     return None
 
@@ -63,4 +62,4 @@ def register_routes(app):
     @api.errorhandler
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
-        raise value(None).with_traceback(traceback)
+        return json.loads({"error": str(traceback)})

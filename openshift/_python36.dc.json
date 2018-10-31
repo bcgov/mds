@@ -11,7 +11,7 @@
 			"displayName": "Name",
 			"description": "A name for all objects",
 			"required": true
-		},
+        },
 		{
 			"name": "SUFFIX",
 			"displayName": "Name Suffix",

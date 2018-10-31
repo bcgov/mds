@@ -225,8 +225,8 @@ environments {
                 postgres {
                     cpu_request = "1m"
                     cpu_limit = "200m"
-                    memory_request = "1.5Gi"
-                    memory_limit = "2Gi"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
                 }
             }
             deployment {
@@ -270,7 +270,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "300m"
+                    cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
