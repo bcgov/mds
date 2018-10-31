@@ -351,7 +351,7 @@
                                         "value": "-c maintenance_work_mem=128MB"
                                     }
                                 ],
-                                "image": "docker-registry.default.svc:5000/${IMAGE_STREAM_NAMESPACE}/${IMAGE_STREAM_NAME}:${IMAGE_STREAM_VERSION}",
+                                "image": " ",
                                 "imagePullPolicy": "IfNotPresent",
                                 "livenessProbe": {
                                     "initialDelaySeconds": 30,

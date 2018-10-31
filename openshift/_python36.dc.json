@@ -215,7 +215,7 @@
 						"containers": [
 							{
 								"name": "app",
-								"image": "docker-registry.default.svc:5000/${NAMESPACE}/${NAME}:${VERSION}",
+								"image": " ",
 								"ports": [
 									{
 										"containerPort": 5000,
@@ -303,7 +303,7 @@
 									"cat"
 								],
 								"stdin": true,
-								"image": "docker-registry.default.svc:5000/${NAMESPACE}/${FLYWAY_NAME}:${VERSION}",
+								"image": " ",
 								"env": [
 									{
 										"name": "FLYWAY_USER",
