@@ -38,29 +38,34 @@ def register_commands(app):
     # in terminal you can run $flask <cmd> <arg>
     @app.cli.command()
     @click.argument('num')
-    def create_data(num):
+    @click.argument('threading')
+    def create_data(num, threading=True):
         """
-        Creates dummy data in the database. Uses Threading to create
-        records in chunks of 100 in parallel.
+        Creates dummy data in the database. If threading=True
+        Use Threading and multiprocessing to create records in chunks of 100.
 
         :param num: number of records create
+        :param threading: use threading or not
         :return: None
         """
-        with ThreadPoolExecutor() as executor:
-            num = int(num)
-            number_batches = []
-            if(num >= 100):
-                number_batches = [100 for _ in range(100, num, 100)]
-            number_batches.append(num % 100) if num % 100 is not 0 else None
+        if threading:
+            with ThreadPoolExecutor() as executor:
+                num = int(num)
+                number_batches = []
+                if(num >= 100):
+                    number_batches = [100 for _ in range(100, num, 100)]
+                number_batches.append(num % 100) if num % 100 is not 0 else None
 
-            task_list = []
-            for batch in number_batches:
-                task_list.append(executor.submit(_create_data, batch))
-            for task in as_completed(task_list):
-                try:
-                    data = task.result()
-                except Exception as exc:
-                    print(f'generated an exception: {exc}')
+                task_list = []
+                for batch in number_batches:
+                    task_list.append(executor.submit(_create_data, batch))
+                for task in as_completed(task_list):
+                    try:
+                        data = task.result()
+                    except Exception as exc:
+                        print(f'generated an exception: {exc}')
+        else:
+            _create_data(num)
 
     def _create_data(num):
         with app.app_context():

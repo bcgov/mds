@@ -165,6 +165,7 @@ app {
                     'params':[
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
+                            'NAMESPACE':"${vars.deployment.namespace}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'CPU_REQUEST':"${vars.resources.python.cpu_request}",

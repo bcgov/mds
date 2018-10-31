@@ -91,7 +91,7 @@
 			},
 			"spec": {
 				"lookupPolicy": {
-					"local": true
+					"local": false
 				},
 				"tags":[ ]
 			}
@@ -108,7 +108,7 @@
 			},
 			"spec": {
 				"lookupPolicy": {
-					"local": true
+					"local": false
 				}
 			}
 		},
@@ -211,7 +211,7 @@
 						"containers": [
 							{
 								"name": "app",
-								"image": " ",
+								"image": "docker-registry.default.svc:5000/${NAMESPACE}/${NAME}:${VERSION}",
 								"ports": [
 									{
 										"containerPort": 5000,
@@ -299,7 +299,7 @@
 									"cat"
 								],
 								"stdin": true,
-								"image": " ",
+								"image": "docker-registry.default.svc:5000/${NAMESPACE}/${FLYWAY_NAME}:${VERSION}",
 								"env": [
 									{
 										"name": "FLYWAY_USER",
