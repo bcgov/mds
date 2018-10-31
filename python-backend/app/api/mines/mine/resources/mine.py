@@ -34,19 +34,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                mines_list = []
                 records = MineMapViewLocation.query.all()
-                for record in records:
-                    mines_list.append({
-                        'guid': str(record.mine_guid),
-                        'mine_detail': [{'mine_name': str(record.mine_name),
-                                         'mine_no': str(record.mine_no)
-                                         }],
-                        'mine_location': [{'latitude': str(record.latitude),
-                                           'longitude': str(record.longitude)
-                                           }]
-                    })
-                return {'mines': mines_list}
+                result = list((map(lambda x: x.json_for_map(), records)))
+                return {'mines': result}
 
             # Handle ListView request
             items_per_page = request.args.get('per_page', 50, type=int)

@@ -29,6 +29,17 @@ class MineMapViewLocation(Base):
             'mine_name': str(self.mine_name),
         }
 
+    def json_for_map(self):
+        return {
+            'guid': str(self.mine_guid),
+            'mine_detail': [{'mine_name': str(self.mine_name),
+                             'mine_no': str(self.mine_no)
+                             }],
+            'mine_location': [{'latitude': str(self.latitude),
+                               'longitude': str(self.longitude)
+                               }]
+        }
+
 
 class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
