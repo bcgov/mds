@@ -88,6 +88,8 @@ def register_commands(app):
     def delete_data():
         meta = db.metadata
         for table in reversed(meta.sorted_tables):
+            if 'view' in table.name:
+                continue
             db.session.execute(table.delete())
         # Reseed Mandatory Data
         PermitStatusCode.create_mine_permit_status_code('O', 'Open permit', 10, DUMMY_USER_KWARGS)
