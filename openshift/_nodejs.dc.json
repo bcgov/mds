@@ -114,7 +114,8 @@
 	  "metadata": {
 		"name": "${NAME}${APPLICATION_SUFFIX}",
 		"labels": {
-		},
+            "shared": "true"
+        },
 		"annotations": {
 		  "description": "Keeps track of changes in the application image"
 		}

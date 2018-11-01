@@ -63,7 +63,7 @@ then
 	exit
 fi
 
-# Make sure $SAVE_TO ends in .gz
+# Make sure $SAVE_TO ends in .pgCustom
 #
 [ "$( echo ${SAVE_TO} | tail -c4 )" == ".pgCustom" ]|| SAVE_TO="${SAVE_TO}.pgCustom"
 

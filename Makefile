@@ -6,6 +6,8 @@ frontend: frontend-build | frontend-run
 project: project-build | project-run
 rebuild: project-build
 reset:	stop | clean
+database-seed: database-dump | database-dump-seed | database-dump-clean
+database-seed-local: database-dump | database-dump-seed-local | database-dump-clean
 
 project-build:
 	@echo "+\n++ Performing project build ...\n+"
@@ -43,9 +45,22 @@ frontend-run:
 	@echo "+\n++ Running frontend...\n+"
 	@docker-compose up -d frontend
 
-database-dump-test:
-	@echo "+\n++ Getting database dump from test...\n+"
-	@docker-compose up -d frontend
+database-dump:
+	@echo "+\n++ Getting database dump from test environment...\n+"
+	@sh ./openshift/scripts/database-dump.sh empr-mds-test pgDump-test
+
+database-dump-seed:
+	@echo "+\n++ Seeding docker database...\n+"
+	@docker cp pgDump-test.pgCustom mds_postgres:/tmp/
+	@docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
+
+database-dump-seed-local:
+	@echo "+\n++ Seeding locally installed database...\n+"
+	@pg_restore -U mds -d mds -c pgDump-test.pgCustom
+
+database-dump-clean:
+	@echo "+\n++ Removing dump file...\n+"
+	@rm -f pgDump-test.pgCustom
 
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
