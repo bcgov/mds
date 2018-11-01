@@ -6,8 +6,8 @@ frontend: frontend-build | frontend-run
 project: project-build | project-run
 rebuild: project-build
 reset:	stop | clean
-database-seed: database-dump | database-dump-seed | database-dump-clean
-database-seed-local: database-dump | database-dump-seed-local | database-dump-clean
+database-seed: database-dump | database-dump-seed
+database-seed-local: database-dump | database-dump-seed-local
 
 project-build:
 	@echo "+\n++ Performing project build ...\n+"

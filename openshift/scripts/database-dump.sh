@@ -76,7 +76,7 @@ SAVE_PATH=$( dirname ${SAVE_TO} )
 mkdir -p ${SAVE_PATH}
 oc exec ${POD_DB} -n ${PROJECT} -- /bin/bash -c \
 	'pg_dump -U ${POSTGRESQL_USER} -d ${POSTGRESQL_DATABASE} -Fc \
-	--no-privileges --no-tablespaces --schema=public > /tmp/'${SAVE_FILE}
+	--column-inserts --data-only -T mms.* -T public.etl* -T public.flyway* > /tmp/'${SAVE_FILE}
 oc rsync ${POD_DB}:/tmp/${SAVE_FILE} ${SAVE_PATH} -n ${PROJECT} --progress=true --no-perms=true
 oc exec ${POD_DB} -n ${PROJECT} -- /bin/bash -c 'rm /tmp/'${SAVE_FILE}
 
