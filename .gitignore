@@ -11,3 +11,4 @@ __pycache__
 *.pyc
 *tmp*.tar
 .vscode
+*.pgCustom
