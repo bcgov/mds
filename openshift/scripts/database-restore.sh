@@ -76,12 +76,12 @@ then
 fi
 
 
-# Identify database and take a backup
+# Identify database and restore the backup
 #
 RESTORE_PATH=$( dirname ${RESTORE} )
 RESTORE_FILE=$( basename ${RESTORE} )
 POD_DB=$( oc get pods -n ${PROJECT} -o name | grep -Eo "mds-postgresql-(test|prod)-[[:digit:]]+-[[:alnum:]]+" )
-oc cp ${RESTORE} "${POD_DB}":/tmp/
+oc cp ${RESTORE} "${POD_DB}":/tmp/ -n ${PROJECT}
 oc exec ${POD_DB} -n ${PROJECT} -- /bin/bash -c 'pg_restore -d '${DB_NAME}' -c /tmp/'${RESTORE_FILE}
 
 # Summarize
