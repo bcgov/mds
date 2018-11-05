@@ -82,6 +82,12 @@
 .ant-popover-inner-content, .ant-popover-arrow {
   background-color: $default-white;
 }
+
+// TOAST 
+.ant-notification-notice {
+  z-index: 1000;
+}
+
 // CARDS
 .ant-card {
   margin-bottom: 20px;
