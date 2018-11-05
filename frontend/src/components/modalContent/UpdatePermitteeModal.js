@@ -36,7 +36,7 @@ export class UpdatePermitteeModal extends Component {
   }
 
   handlePartySubmit = (values) => {
-    const type = this.props.isPerson ? 'PER' : 'ORG';
+    const type = this.state.isPerson ? 'PER' : 'ORG';
     this.props.handlePartySubmit(values, type);
   }
 
