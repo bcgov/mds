@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
@@ -26,6 +27,13 @@ class Party(AuditMixin, Base):
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
+    @hybrid_property
+    def name(self):
+        if self.first_name is not None:
+            return self.first_name + ' ' + self.party_name
+        else: 
+            return self.party_name
+
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
@@ -38,17 +46,15 @@ class Party(AuditMixin, Base):
             'email': self.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat(),
-            'party_name': self.party_name
+            'party_name': self.party_name,
+            'name': self.name
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
                 'first_name': self.first_name,
-                'name': self.first_name + ' ' + self.party_name,
             })
             if show_mgr:
                 context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
-        elif self.party_type_code == PARTY_STATUS_CODE['org']:
-            context.update({'name': self.party_name})
         return context
 
     @classmethod

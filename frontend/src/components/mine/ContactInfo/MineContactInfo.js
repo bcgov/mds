@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import  { debounce } from 'lodash';
 import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
 import { openModal, closeModal} from '@/actions/modalActions';
@@ -33,6 +34,10 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
+    constructor(props) {
+      super(props);
+      this.handleChangeDebounced = debounce(this.handleChange, 1000);
+    }
   /**
  * add new parties (firstName, surname || companyName) to db.
  */
@@ -44,12 +49,7 @@ const defaultProps = {
   }
 
   handleChange = (value) => {
-    if (value.length > 2){
-      this.props.fetchParties(value);
-    }
-    else if (value.length === 0) {
-      this.props.fetchParties();
-    }
+    this.props.fetchParties(value);
   }
 
   componentDidMount() {
@@ -62,13 +62,13 @@ const defaultProps = {
      <div>
         <ViewMineManager 
           {...this.props} 
-          handleChange={this.handleChange}
+          handleChange={this.handleChangeDebounced}
           handlePartySubmit={this.handlePartySubmit}
         />
         {mine.mine_permit[0] &&
           <ViewPermittee 
             {...this.props}
-            handleChange={this.handleChange}
+            handleChange={this.handleChangeDebounced}
             handlePartySubmit={this.handlePartySubmit}
           />
         }
