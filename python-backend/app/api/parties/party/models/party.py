@@ -27,12 +27,14 @@ class Party(AuditMixin, Base):
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
+
     @hybrid_property
     def name(self):
-        if self.first_name is not None:
-            return self.first_name + ' ' + self.party_name
-        else: 
-            return self.party_name
+        return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
+
+    @name.expression
+    def name(cls):
+        return func.concat(cls.first_name, ' ', cls.party_name)
 
     def __repr__(self):
         return '<Party %r>' % self.party_guid
@@ -76,6 +78,14 @@ class Party(AuditMixin, Base):
     @classmethod
     def find_by_name(cls, first_name, party_name):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
+
+    @classmethod
+    def search_by_name(cls, search_term, party_type=None):
+        _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
+        if party_type:
+            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name)
+        else:
+            return cls.query.filter(_filter_by_name)
 
     @classmethod
     def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
