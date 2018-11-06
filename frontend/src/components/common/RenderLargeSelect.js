@@ -20,6 +20,7 @@ const transformData = (data, option) => {
   if (data) {
     const dataList = [];
     data.map((opt) => {
+      console.log(option[opt].name);
     dataList.push(
       <AutoComplete.Option key={opt} value={opt}>
         {option[opt].name}
