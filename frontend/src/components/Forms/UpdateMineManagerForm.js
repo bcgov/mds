@@ -31,7 +31,7 @@ export const UpdateMineManagerForm = (props) => {
             <Field
               id="mineManager"
               name="mineManager"
-              label="Mine Manager"
+              label="Mine Manager *"
               component={RenderLargeSelect}
               data={props.partyIds}
               options={props.parties}
@@ -45,7 +45,7 @@ export const UpdateMineManagerForm = (props) => {
             <Field
               id="startDate"
               name="startDate"
-              label='Select a Start date'
+              label='Select a Start date *'
               placeholder="yyyy-mm-dd"
               component={RenderDate}
               validate={[required]}
