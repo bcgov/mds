@@ -40,11 +40,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             search_term = request.args.get('search')
             search_type = request.args.get('type').upper() if request.args.get('type') else None
             if search_term:
-                _party_filter = Party.name.ilike('%{}%'.format(search_term))
                 if search_type in ['PER', 'ORG']:
-                    parties = Party.query.filter(_party_filter, Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                    parties = Party.search_by_name(search_term, search_type)
                 else:
-                    parties = Party.query.filter(_party_filter).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+                    parties = Party.search_by_name(search_term)
             else:
                 parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
             return {'parties': list(map(lambda x: x.json(), parties))}

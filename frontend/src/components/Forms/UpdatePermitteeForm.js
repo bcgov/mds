@@ -49,7 +49,7 @@ export const UpdatePermitteeForm = (props) => {
             <Field
               id="permittee"
               name="permittee"
-              label="Current Permittee"
+              label="Current Permittee *"
               placeholder="Select Current Permittee"
               component={RenderSelect}
               data={permitteeOptions(props.permit)}
@@ -66,7 +66,7 @@ export const UpdatePermitteeForm = (props) => {
           <Form.Item>
             <Field
               id="party"
-              label="New Permittee"
+              label="New Permittee *"
               name="party"
               component={RenderLargeSelect}
               data={props.partyIds}
@@ -81,7 +81,7 @@ export const UpdatePermitteeForm = (props) => {
             <Field
               id="startDate"
               name="startDate"
-              label='Select a Start date'
+              label='Select a Start date *'
               component={RenderDate}
               validate={[required]}
             />

@@ -17,6 +17,7 @@ import * as router from '@/constants/routes';
 import Loading from '@/components/common/Loading';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 import  { debounce } from 'lodash';
 
 /**
@@ -259,8 +260,8 @@ export class Dashboard extends Component {
           <ConditionalButton 
             className="full-mobile"
             type="primary" 
-            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleSubmit, 'Create Mine Record')}
-            string="Create Mine Record"
+            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
+            string={ModalContent.CREATE_MINE_RECORD}
           />
           </div>
         </div>
