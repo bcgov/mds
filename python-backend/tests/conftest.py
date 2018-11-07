@@ -11,6 +11,7 @@ from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeC
 from app.api.mines.location.models.location import MineLocation
 from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
+from app.api.mines.region.models.region import MineRegion, MineRegionCode
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -217,12 +218,22 @@ def setup_data(session):
     permittee.save()
 
     # Test Region Data
+    for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
+        region_code = MineRegionCode(
+            region_code=region_code_value,
+            description=TEST_REGION_DESCRIPTION,
+            display_order=display_order_value,
+            **DUMMY_USER_KWARGS
+        )
+        region_code.save()
+
     region = MineRegion(
         mine_region_guid = uuid.UUID(TEST_REGION_GUID),
         mine_guid = uuid.UUID(TEST_MINE_GUID),
-        region_code = TEST_REGION_CODE_1
+        region_code = TEST_REGION_CODE_1,
         **DUMMY_USER_KWARGS
     )
+    region.save()
     
 
 def clear_data(session):

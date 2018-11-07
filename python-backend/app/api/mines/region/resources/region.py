@@ -10,6 +10,8 @@ class MineRegionResource(Resource, UserMixin, ErrorMixin):
     def get(self, mine_region_guid=None):
         if mine_region_guid:
             mine_region = MineRegion.find_by_mine_region_guid(mine_region_guid)
-            return mine_region.json() if mine_region else self.create_error_payload(404, 'Mine region not found'), 404
+            if mine_region:
+                return mine_region.json() 
+            return self.create_error_payload(404, 'Mine region not found'), 404
         else:
             return {'options': MINE_REGION_OPTIONS}
