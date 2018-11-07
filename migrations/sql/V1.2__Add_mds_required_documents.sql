@@ -1,8 +1,8 @@
 CREATE TABLE mds_required_document (
   req_document_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  req_document_name character varying(60) NULL,
-  req_document_description character varying (300) NOT NULL,
-  req_document_category character varying(60) NOT NULL,
+  req_document_name character varying(60) NOT NULL,
+  req_document_description character varying (300) NULL,
+  req_document_category character varying(60) NULL,
   recurrance_default smallint NULL,
   effective_date date NOT NULL DEFAULT current_timestamp, --tailings Project inception June 2017
   expiry_date date NULL,
@@ -12,7 +12,7 @@ CREATE TABLE mds_required_document (
   update_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp
 );
 
-COMMENT ON TABLE mds_required_document IS 'A mds_required_document is a document defined in the code, but is unlikely to correlate to a single file, see this as a reporting requirement';
+COMMENT ON TABLE mds_required_document IS 'A mds_required_document is a document defined in the code, but is not strictly a single file, see this as a reporting requirement';
 
 CREATE TABLE mine_file ( 
   mine_file_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),

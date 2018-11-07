@@ -9,6 +9,7 @@ from flask_compress import Compress
 from .api.parties.namespace.parties import api as parties_api
 from .api.mines.namespace.mines import api as mines_api
 from .api.permits.namespace.permits import api as permits_api
+from .api.required_documents.namespace.required_documents import api as req_docs_api
 from .commands import register_commands
 from .config import Config
 from .extensions import db, jwt, api
@@ -51,7 +52,8 @@ def register_routes(app):
     api.add_namespace(mines_api)
     api.add_namespace(parties_api)
     api.add_namespace(permits_api)
-
+    api.add_namespace(req_docs_api)
+    
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
