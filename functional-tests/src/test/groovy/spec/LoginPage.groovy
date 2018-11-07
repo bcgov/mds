@@ -6,7 +6,7 @@ import spock.lang.*
 
 
 import pages.LoginPage
-import pages.DashboardPage
+import pages.Dashboard
 import utils.Const
 
 
@@ -14,7 +14,7 @@ import utils.Const
 @Title("MDS-LoginPage")
 @Narrative("I can log into MDS using my IDIR")
 @Stepwise
-class  A_LoginPageSpec extends GebReportingSpec {
+class  LoginPageSpec extends GebReportingSpec {
     Dotenv dotenv = Dotenv.configure().directory("./").load()
     def "I can log into the app given valid credentials"(){
         given:"I go to the homepage"
@@ -29,6 +29,6 @@ class  A_LoginPageSpec extends GebReportingSpec {
         IDIRloginButton.click()
 
         then: "I am on the Dashboard page"
-        at DashboardPage
+        at Dashboard
     }
 }
