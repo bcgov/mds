@@ -10,7 +10,7 @@ import utils.DataCleanup
 @RunWith(Suite)
 @Suite.SuiteClasses([
         DataInit.class          ,
-        A_LoginPage.class   ,
+        A_LoginPageSpec.class   ,
         B_DashboardSpec.class   ,
         C_SummarySpec.class     ,
         D_PermitSpec.class      ,

@@ -14,7 +14,7 @@ import utils.Const
 @Title("MDS-LoginPage")
 @Narrative("I can log into MDS using my IDIR")
 @Stepwise
-class  A_LoginPage extends GebReportingSpec {
+class  A_LoginPageSpec extends GebReportingSpec {
     Dotenv dotenv = Dotenv.configure().directory("./").load()
     def "I can log into the app given valid credentials"(){
         given:"I go to the homepage"
