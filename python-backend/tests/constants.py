@@ -51,6 +51,10 @@ TEST_PERMITTEE_GUID = '07bd6be1-5a27-4280-94a9-6358cc95d07d'
 TEST_PERMIT_STATUS_CODES = ['O', 'C', 'T']
 TEST_PARTY_TYPE = 'PER'
 TEST_ORG_TYPE = 'ORG'
+
+TEST_REGION_GUID = 'a0b98cb1-6e70-4c54-9395-1e8ccc867cd1'
+TEST_REGION_CODE_1 = 'SW'
+
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
 

@@ -216,6 +216,15 @@ def setup_data(session):
     )
     permittee.save()
 
+    # Test Region Data
+    region = MineRegion(
+        mine_region_guid = uuid.UUID(TEST_REGION_GUID),
+        mine_guid = uuid.UUID(TEST_MINE_GUID),
+        region_code = TEST_REGION_CODE_1
+        **DUMMY_USER_KWARGS
+    )
+    
+
 def clear_data(session):
     meta = db.metadata
     for table in reversed(meta.sorted_tables):
