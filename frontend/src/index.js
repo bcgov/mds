@@ -1,12 +1,16 @@
 import "babel-polyfill";
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 
 import App from './App';
 import 'antd/dist/antd.less';
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
 import fetchEnv from './fetchEnv';
+import configureStore from './store/configureStore';
+
+export const store = configureStore();
 
 registerServiceWorker();
 
@@ -21,7 +25,9 @@ export class Index extends Component {
   render() {
     if (this.state.environment) {
       return (
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       )
     }else {
       return(<div></div>)

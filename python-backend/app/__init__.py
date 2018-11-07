@@ -1,36 +1,22 @@
-from datetime import datetime
-import random
 import sys
-import uuid
+import json
 
-import click
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Api, Resource
-import names
-from sqlalchemy.exc import DBAPIError
+from flask_restplus import Resource
+from flask_compress import Compress
 
-from .api.constants import PARTY_STATUS_CODE, PERMIT_STATUS_CODE
-from .api.location.models.location import MineLocation
-from .api.mine.models.mines import MineIdentity, MineDetail, MineralTenureXref
-from .api.party.models.party import Party, PartyTypeCode
-from .api.permit.models.permit import Permit, PermitStatusCode
-from .api.permittee.models.permittee import Permittee
-from .api.mine.resources.mine import Mine, MineList, MineListByName
-from .api.status.resources.status import MineStatusResource
-from .api.party.resources.party import ManagerResource, PartyResource, PartyList
-from .api.location.resources.location import MineLocationResource, MineLocationListResource
-from .api.permit.resources.permit import PermitResource
-from .api.permittee.resources.permittee import PermitteeResource
-from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen
+from .api.parties.namespace.parties import api as parties_api
+from .api.mines.namespace.mines import api as mines_api
+from .api.permits.namespace.permits import api as permits_api
+from .commands import register_commands
 from .config import Config
-from .extensions import db, jwt
+from .extensions import db, jwt, api
 
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    api = Api(app, prefix=Config.BASE_PATH)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -40,40 +26,31 @@ def create_app(test_config=None):
         app.config.from_object(test_config)
 
     register_extensions(app)
-    register_routes(app, api)
+    register_routes(app)
     register_commands(app)
     return app
 
 
 def register_extensions(app):
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DB_URL']
-    db.init_app(app)
+    api.app = app
+    api.init_app(app)
 
-    app.config['JWT_ROLE_CALLBACK'] = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
+    db.init_app(app)
     jwt.init_app(app)
 
     CORS(app)
+    Compress(app)
 
     return None
 
 
-def register_routes(app, api):
+def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
-    # Set Routes for each resource
-    api.add_resource(Mine, '/mine', '/mine/<string:mine_no>')
-    api.add_resource(MineLocationResource, '/mine/location', '/mine/location/<string:mine_location_guid>')
-    api.add_resource(MineList, '/mines')
-    api.add_resource(MineListByName, '/mines/names')
-    api.add_resource(MineStatusResource, '/mines/status', '/mines/status/<string:mine_status_guid>')
-    api.add_resource(MineLocationListResource, '/mines/location')
-    api.add_resource(PartyResource, '/party', '/party/<string:party_guid>')
-    api.add_resource(PartyList, '/parties')
-    api.add_resource(ManagerResource, '/manager', '/manager/<string:mgr_appointment_guid>')
-    api.add_resource(PermitResource, '/permits', '/permits/<string:permit_guid>')
-    api.add_resource(PermitteeResource, '/permittees', '/permittees/<string:permittee_guid>')
+    api.add_namespace(mines_api)
+    api.add_namespace(parties_api)
+    api.add_namespace(permits_api)
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -85,127 +62,4 @@ def register_routes(app, api):
     @api.errorhandler
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
-        raise value(None).with_traceback(traceback)
-
-
-def register_commands(app):
-    # in terminal you can run $flask <cmd> <arg>
-    @app.cli.command()
-    @click.argument('num')
-    def create_data(num):
-        DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-        mine_identity_list = []
-        mine_detail_list = []
-        mine_location_list = []
-        mine_permit_list = []
-        mine_tenure_list = []
-        mine_party_list = []
-        mine_permittee_list = []
-        party = None
-        for i in range(int(num)):
-            # Ability to add previous party to have multiple permittee
-            prev_party_guid = party.party_guid if party else None
-            random_location = random_geo()
-            mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **DUMMY_USER_KWARGS)
-            mine_identity_list.append(mine_identity)
-
-            mine_detail = MineDetail(
-                mine_detail_guid=uuid.uuid4(),
-                mine_guid=mine_identity.mine_guid,
-                mine_no=generate_mine_no(),
-                mine_name=generate_mine_name(),
-                **DUMMY_USER_KWARGS
-            )
-            mine_detail_list.append(mine_detail)
-
-            mine_location = MineLocation(
-                mine_location_guid=uuid.uuid4(),
-                mine_guid=mine_identity.mine_guid,
-                latitude=random_location.get('latitude', 0),
-                longitude=random_location.get('longitude', 0),
-                effective_date=datetime.today(),
-                expiry_date=datetime.today(),
-                **DUMMY_USER_KWARGS
-            )
-            mine_location_list.append(mine_location)
-            generated_first_name = names.get_first_name()
-            generated_last_name = names.get_last_name()
-
-            party = Party(
-                party_guid=uuid.uuid4(),
-                first_name=generated_first_name,
-                party_name=generated_last_name,
-                email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' + generated_last_name.lower() + '.com',
-                phone_no='123-123-1234',
-                party_type_code=PARTY_STATUS_CODE['per'],
-                **DUMMY_USER_KWARGS
-            )
-            mine_party_list.append(party)
-
-            for random_tenure in range(random.randint(0, 4)):
-                mine_tenure = MineralTenureXref(
-                    mineral_tenure_xref_guid=uuid.uuid4(),
-                    mine_guid=mine_identity.mine_guid,
-                    tenure_number_id=random_key_gen(key_length=7, letters=False),
-                    **DUMMY_USER_KWARGS
-                )
-                mine_tenure_list.append(mine_tenure)
-
-            for random_permit in range(random.randint(0, 6)):
-                random_year = random.randint(1970, 2017)
-                random_month = random.randint(1, 12)
-                random_day = random.randint(1, 28)
-                random_date = datetime(random_year, random_month, random_day)
-                mine_permit = Permit(
-                    permit_guid=uuid.uuid4(),
-                    mine_guid=mine_identity.mine_guid,
-                    permit_no=random_key_gen(key_length=12),
-                    permit_status_code=random.choice(PERMIT_STATUS_CODE['choices']),
-                    issue_date=random_date,
-                    **DUMMY_USER_KWARGS,
-                )
-                mine_permit_list.append(mine_permit)
-                permittee_party = random.choice([party.party_guid, prev_party_guid]) if prev_party_guid else party.party_guid
-                mine_permittee = Permittee(
-                    permittee_guid=uuid.uuid4(),
-                    permit_guid=mine_permit.permit_guid,
-                    party_guid=permittee_party,
-                    effective_date=random_date,
-                    **DUMMY_USER_KWARGS
-                )
-                mine_permittee_list.append(mine_permittee)
-
-        db.session.bulk_save_objects(mine_identity_list)
-        db.session.bulk_save_objects(mine_detail_list)
-        db.session.bulk_save_objects(mine_location_list)
-        db.session.bulk_save_objects(mine_permit_list)
-        db.session.bulk_save_objects(mine_tenure_list)
-        db.session.bulk_save_objects(mine_party_list)
-        db.session.bulk_save_objects(mine_permittee_list)
-
-        try:
-            db.session.commit()
-            click.echo(f'Created {num} random mines with tenure, permits, and permittee.')
-        except DBAPIError:
-            db.session.rollback()
-            click.echo(f'Error, failed on commit.')
-            raise
-
-    @app.cli.command()
-    def delete_data():
-        meta = db.metadata
-        for table in reversed(meta.sorted_tables):
-            db.session.execute(table.delete())
-        # Reseed Mandatory Data
-        DUMMY_SYSTEM_KWARGS = {'create_user': 'system-mds', 'update_user': 'system-mds'}
-        PermitStatusCode(permit_status_code='O', description='Open permit', display_order=10, **DUMMY_SYSTEM_KWARGS).save(commit=False)
-        PermitStatusCode(permit_status_code='C', description='Closed permit', display_order=20, **DUMMY_SYSTEM_KWARGS).save(commit=False)
-        PartyTypeCode(party_type_code='PER', description='Person', display_order=10, **DUMMY_SYSTEM_KWARGS).save(commit=False)
-        PartyTypeCode(party_type_code='ORG', description='Organization', display_order=20, **DUMMY_SYSTEM_KWARGS).save(commit=False)
-        try:
-            db.session.commit()
-            click.echo(f'Database has been cleared.')
-        except DBAPIError:
-            db.session.rollback()
-            click.echo(f'Error, failed on commit.')
-            raise
+        return json.loads({"error": str(traceback)})

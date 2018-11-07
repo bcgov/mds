@@ -9,7 +9,7 @@ import { getMines, getMineIds } from '@/selectors/mineSelectors';
 
 /**
  * @class MinePin.js must be the child of arcGIS <Map /> or <Sceen />,
- * MinePin is connected to redux to access/display all mines information - reusalble on any view will display the correct state.
+ * MinePin is connected to redux to access/display all mines information - reusable on any view will display the correct state.
  *
  */
 
@@ -51,7 +51,17 @@ export class MinePin extends Component {
   }
 
   componentWillMount() {
-    loadModules(['esri/Graphic']).then(([Graphic]) => {
+    const fclURL = `${window.location.origin}${process.env.BASE_PATH}/public/FlareClusterLayer/fcl/FlareClusterLayer_v4.js`;
+
+    loadModules(["esri/symbols/SimpleMarkerSymbol",
+      "esri/renderers/ClassBreaksRenderer",
+      "esri/symbols/SimpleLineSymbol",
+      "esri/geometry/SpatialReference",
+      "esri/PopupTemplate",
+      fclURL]).then((
+      [SimpleMarkerSymbol,
+        ClassBreaksRenderer, SimpleLineSymbol,
+      SpatialReference, PopupTemplate, FlareClusterLayer]) => {
       // create a new Graphic for every mine in the array or fetch the ID from the URL for a single mine.
       // data must be passed into this.points() and this.popupTemplate to associate the correct information with the correct lat/long.
       const { id } = this.props.match.params;
@@ -64,26 +74,65 @@ export class MinePin extends Component {
         this.setState({ isFullMap: true})
         mineIds = this.props.mineIds;
       }
-      const symbol = {
+
+      const defaultSym = {
         "url": `${window.location.origin}${process.env.BASE_PATH}/public/Pin.svg`,
         "width": this.state.isFullMap ? '40' : '80',
         "height": this.state.isFullMap ? '40' : '80',
         "type": "picture-marker"
       };
 
-      const graphicArray = mineIds.map((id) => {
-        return (
-          new Graphic({
-            geometry: this.points(id),
-            symbol: symbol,
-            popupTemplate: this.state.isFullMap ? this.popupTemplate(id) : null
-          })
-        )
-      })
+      const renderer = new ClassBreaksRenderer({
+          defaultSymbol: defaultSym
+      });
+      renderer.field = "clusterCount";
 
-      this.setState({ graphic: graphicArray });
-      this.props.view.graphics.removeAll();
-      this.props.view.graphics.addMany(graphicArray);
+      const smSymbol = new SimpleMarkerSymbol({ size: 22, outline: new SimpleLineSymbol({ color: [221, 159, 34, 1] }), color: [255, 204, 102, 1] });
+      const mdSymbol = new SimpleMarkerSymbol({ size: 24, outline: new SimpleLineSymbol({ color: [82, 163, 204, 1] }), color: [102, 204, 255, 1] });
+      const lgSymbol = new SimpleMarkerSymbol({ size: 28, outline: new SimpleLineSymbol({ color: [41, 163, 41, 1] }), color: [51, 204, 51, 1] });
+      const xlSymbol = new SimpleMarkerSymbol({ size: 32, outline: new SimpleLineSymbol({ color: [200, 52, 59, 1] }), color: [250, 65, 74, 1] });
+
+      renderer.addClassBreakInfo(0, 19, smSymbol);
+      renderer.addClassBreakInfo(20, 150, mdSymbol);
+      renderer.addClassBreakInfo(151, 1000, lgSymbol);
+      renderer.addClassBreakInfo(1001, Infinity, xlSymbol);
+
+      // set up a popup template
+      const popupTemplate = new PopupTemplate({
+        title: "{templateTitle}",
+        content: "{templateContent}"
+      });
+
+      const fclData = mineIds.reduce((result, id) => {
+        const point = this.points(id)
+        if (!point) {
+          return result;
+        }
+        const y = Number(point.latitude);
+        const x = Number(point.longitude);
+        const templateInfo = this.popupTemplate(id);
+        result.push({
+          y : y,
+          x: x,
+          templateTitle: templateInfo.title,
+          templateContent: templateInfo.content,
+        });
+        return result
+      }, []);
+
+
+      const options = {
+        id: "flare-cluster-layer",
+        clusterRenderer: renderer,
+        singlePopupTemplate: popupTemplate,
+        spatialReference: new SpatialReference({ "wkid": 4326 }),
+        maxSingleFlareCount: 8,
+        clusterRatio: 75,
+        data: fclData
+      }
+
+      const fcl = FlareClusterLayer.FlareClusterLayer(options);
+      this.props.map.add(fcl);
     });
   }
 

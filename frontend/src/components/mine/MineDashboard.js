@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
-import MineTenureInfo from '@/components/mine/TenureTab/MineTenureInfo';
-import MineSummary from '@/components/mine/SummaryTab/MineSummary';
+import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
+import MineSummary from '@/components/mine/Summary/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
-import MineContactInfo from '@/components/mine/ContactTab/MineContactInfo';
-import MinePermitInfo from '@/components/mine/PermitTab/MinePermitInfo';
+import * as router from '@/constants/routes';
+import MineContactInfo from '@/components/mine/ContactInfo/MineContactInfo';
+import MinePermitInfo from '@/components/mine/Permit/MinePermitInfo';
 import Loading from '@/components/common/Loading';
 import NullScreen from '@/components/common/NullScreen';
 
@@ -26,7 +28,7 @@ const propTypes = {
   mineIds: PropTypes.array,
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
 };
 
 const defaultProps = {
@@ -34,12 +36,23 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
+  state = { activeTab: "summary" }
+
+  handleChange = (activeTab) => {
+    this.setState({ activeTab: activeTab});
+    this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab))
+  }
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id);
     this.props.fetchStatusOptions();
+
+    if (activeTab) {
+      this.setState({activeTab : `${activeTab}`});
+    }
   }
+
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
@@ -54,23 +67,25 @@ export class MineDashboard extends Component {
             </div>
             <div className="dashboard__content">
               <Tabs
-                defaultActiveKey="1"
+                activeKey={this.state.activeTab}
+                defaultActiveKey="summary"
+                onChange={this.handleChange}
                 size='large'
                 animated={{ inkBar: true, tabPane: false }}
               >
-                <TabPane tab="Summary" key="1">
+                <TabPane tab="Summary" key="summary">
                   <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
                 </TabPane>
-                <TabPane tab="Permit" key="2">
+                <TabPane tab="Permit" key="permit">
                   <MinePermitInfo mine={mine} />
                 </TabPane>
-                <TabPane tab="Contact Information" key="3">
+                <TabPane tab="Contact Information" key="contact-information">
                   <MineContactInfo mine={mine} />
                 </TabPane>
-                <TabPane tab="Compliance" key="4">
+                <TabPane tab="Compliance" key="compliance">
                   <NullScreen type="generic" />
                 </TabPane>
-                <TabPane tab="Tenure" key="5">
+                <TabPane tab="Tenure" key="tenure">
                   <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
               </Tabs>
@@ -94,7 +109,9 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
     fetchStatusOptions,
-    updateMineRecord
+    updateMineRecord,
+    openModal, 
+    closeModal
   }, dispatch);
 };
 

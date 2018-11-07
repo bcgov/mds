@@ -1,57 +1,50 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
 import MineMap from '@/components/maps/MineMap';
 import { ELLIPSE, SMALL_PIN, PENCIL, RED_ELLIPSE } from '@/constants/assets';
-import MineRecordForm from '@/components/Forms/MineRecordForm';
+import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
 import ConditionalButton from '@/components/common/ConditionalButton';
+import { modalConfig } from '@/components/modalContent/config';
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
+  mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   mine: {}
 };
 
-class MineHeader extends Component {
-  state = { visible: false }
-  
+class MineHeader extends Component { 
   handleUpdateMineRecord = (value) => {
     let mineStatus = value.mine_status.join(",");
     this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
+      this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
-      this.setState({
-        visible: false,
-      });
     })
   }
-  
-  toggleModal = () => {
-    this.setState({
-      visible: !this.state.visible,
-    });
-  }
 
-  renderInitialValues = (mine) => {
-    // initialValues is built into redux forms, simply pass in the prop 'initialValues' with the correct field names and redux forms will do the rest. 
+  openModal(event, mineStatusOptions, onSubmit, title, mine) {
+    event.preventDefault();
     const initialValues = {
       "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
       "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
     }
-    return (
-      <MineRecordForm onSubmit={this.handleUpdateMineRecord} initialValues={initialValues} title="Update Mine Record" mineStatusOptions={this.props.mineStatusOptions}/>
-    )
+    this.props.openModal({
+      props: { mineStatusOptions, onSubmit, title, initialValues},
+      content: modalConfig.MINE_RECORD
+    });
   }
-  
   render() {
     const { mine } = this.props;
     return (
@@ -62,24 +55,16 @@ class MineHeader extends Component {
             <h1>{mine.mine_detail[0].mine_name}</h1>
             <ConditionalButton 
               type="primary" 
-              handleAction={this.toggleModal}
+              handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine )}
               string={<img style={{padding: '5px'}}src={PENCIL} />}
             />
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
-          <Modal
-            title="Update Mine Record"
-            visible={this.state.visible}
-            onCancel={this.toggleModal}
-            footer={null}
-          >
-            {this.renderInitialValues(mine)}
-          </Modal>
           <div className="dashboard__header__content--inline">
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
-              <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : 'N/A'}</p></div>
-              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : 'N/A'}</p></div>
+              <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
+              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}</p></div>
             </div>
             {mine.mine_status[0] && 
               <div className="inline-flex between">

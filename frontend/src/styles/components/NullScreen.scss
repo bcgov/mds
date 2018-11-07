@@ -18,4 +18,9 @@
       display: block;
     }
   }
+
+  .no-nav-bar{
+    @include center(true, true);
+  }
+
 }

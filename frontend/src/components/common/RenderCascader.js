@@ -19,9 +19,11 @@ const RenderCascader = ({
   input,
   placeholder,
   options,
+  label,
   meta: { touched, error, warning },
 }) => (
     <Form.Item
+      label={label}
       validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
       help={touched &&
         ((error && <span>{error}</span>) ||

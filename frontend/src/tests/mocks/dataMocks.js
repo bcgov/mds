@@ -276,3 +276,28 @@ export const STATUS_OPTIONS = {
     }
   ]
 };
+
+export const PERMITTEE = {
+  permitteeIds: [
+    "18133c75-49ad-4101-85f3-a43e35ae989a",
+    "18145c75-49ad-0101-85f3-a43e45ae989a"
+  ],
+  permittees: {
+    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      name: "mock name",
+      effective_date: "mockDate",
+      party: {
+        name: 'mock name'
+      }
+    },
+    "18145c75-49ad-0101-85f3-a43e45ae989a": {
+      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      name: "mock Two",
+      effective_date: "mockDate",
+      party: {
+        name: 'mock name'
+      }
+    }
+  }
+}

@@ -85,7 +85,7 @@ describe('`fetchMineRecords` action creator', () => {
     return (fetchMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
@@ -94,7 +94,7 @@ describe('`fetchMineRecords` action creator', () => {
     return (fetchMineRecords('1', '5')(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
@@ -108,7 +108,7 @@ describe('`fetchMineRecordById` action creator', () => {
     return (fetchMineRecordById(mineId)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(6);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 

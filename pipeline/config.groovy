@@ -128,6 +128,10 @@ app {
                     'params':[
                             'NAME':"mds-postgresql",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
                             'IMAGE_STREAM_NAMESPACE':'',
                             'IMAGE_STREAM_NAME':"mds-postgresql",
                             'IMAGE_STREAM_VERSION':"${app.deployment.version}",
@@ -142,6 +146,10 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.node.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
@@ -159,6 +167,10 @@ app {
                             'FLYWAY_NAME':"mds-flyway-migration-client",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
@@ -197,6 +209,26 @@ environments {
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
+            resources {
+                node {
+                    cpu_request = "1m"
+                    cpu_limit = "100m"
+                    memory_request = "512Mi"
+                    memory_limit = "768Mi"
+                }
+                python {
+                    cpu_request = "1m"
+                    cpu_limit = "150m"
+                    memory_request = "768Mi"
+                    memory_limit = "1Gi"
+                }
+                postgres {
+                    cpu_request = "1m"
+                    cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
+                }
+            }
             deployment {
                 env {
                     name = "dev"
@@ -223,8 +255,6 @@ environments {
             }
         }
     }
-
-
     'test' {
         vars {
             DB_PVC_SIZE = '10Gi'
@@ -236,6 +266,26 @@ environments {
                 resource = "mines-application-test"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+            }
+            resources {
+                node {
+                    cpu_request = "150m"
+                    cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
+                }
+                python {
+                    cpu_request = "300m"
+                    cpu_limit = "500m"
+                    memory_request = "2.5Gi"
+                    memory_limit = "4Gi"
+                }
+                postgres {
+                    cpu_request = "200m"
+                    cpu_limit = "500m"
+                    memory_request = "2.5Gi"
+                    memory_limit = "4Gi"
+                }
             }
             deployment {
                 env {
@@ -268,6 +318,26 @@ environments {
             DB_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
+            }
+            resources {
+                node {
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
+                }
+                python {
+                    cpu_request = "300m"
+                    cpu_limit = "500m"
+                    memory_request = "2.5Gi"
+                    memory_limit = "4Gi"
+                }
+                postgres {
+                    cpu_request = "250m"
+                    cpu_limit = "500m"
+                    memory_request = "2.5Gi"
+                    memory_limit = "4Gi"
+                }
             }
             keycloak {
                 clientId = "mines-application-prod"

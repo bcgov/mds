@@ -92,8 +92,6 @@ if (!baseUrl) {
 	baseUrl = "http://localhost:3000/"
 }
 
-println "BaseURL: ${baseUrl}"
-println "--------------------------"
  
 //3. tells the test runner where to save the test results.
 reportsDir = new File("target/geb-reports")

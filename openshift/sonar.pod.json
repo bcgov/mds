@@ -60,7 +60,7 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "300m",
+                                "cpu": "500m",
                                 "memory": "2Gi"
                             },
                             "requests": {
@@ -112,7 +112,7 @@
                     }
                 ],
                 "restartPolicy": "Never",
-                "activeDeadlineSeconds": 600,
+                "activeDeadlineSeconds": 900,
                 "dnsPolicy": "ClusterFirst"
             },
             "status": {}

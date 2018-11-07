@@ -1,28 +1,29 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 @import url('https://js.arcgis.com/4.8/esri/themes/light/main.css');
 // ITCSS file structure, layers include: (Settings, Tools, Generic, Elements, Objects, Components, Utilities)
-// most stying will be found in the Components and Objects folder.
+// most styling will be found in the Components and Objects folder.
 
-// SETTINGS - Used with preprocessors. Global settings that contain font, colors definitions, etc.
+// SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
 @import './settings/variables.scss';
 @import './settings/theme.scss';
 @import './settings/themeOverride.scss';
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import './tools/mixins.scss';
-// GENERIC - Very high level, far-reacing styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
+// GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import './generic/Normalize.scss';
 @import './generic/layout.scss';
-// ELEMENTS - Bare, unclassed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
+// ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import './elements/elements.scss';
 // OBJECTS - layouts (CSS Grid or flexbox)
 
 // COMPONENTS - specific UI components.
-@import './components/loading.scss';
+@import './components/Loading.scss';
 @import './components/MineDashboard.scss';
-@import './components/navBar.scss';
+@import './components/NavBar.scss';
 @import './components/NullScreen.scss';
 @import './components/Dashboard.scss';
 @import './components/Forms.scss';
+@import './components/Maps.scss';
 
-// UTILITES - utilities and helper classes. This layer has the highest specificity.
+// UTILITIES - utilities and helper classes. This layer has the highest specificity.
 

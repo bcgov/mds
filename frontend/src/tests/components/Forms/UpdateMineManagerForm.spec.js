@@ -9,11 +9,13 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
   dispatchProps.handleChange= jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
   props.parties = MOCK.PARTY.parties;
   props.partyIds = MOCK.PARTY.partyIds;
+  props.title = "mockTitle";
 }
 
 beforeEach(() => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Col, Row } from 'antd';
+import { Form, Button, Col, Row, Popconfirm } from 'antd';
 import RenderDate from '@/components/common/RenderDate';
 import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import * as FORM from '@/constants/forms';
@@ -11,8 +11,10 @@ import { resetForm } from '@/utils/helpers';
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -29,7 +31,7 @@ export const UpdateMineManagerForm = (props) => {
             <Field
               id="mineManager"
               name="mineManager"
-              label="Mine Manager"
+              label="Mine Manager *"
               component={RenderLargeSelect}
               data={props.partyIds}
               options={props.parties}
@@ -43,7 +45,7 @@ export const UpdateMineManagerForm = (props) => {
             <Field
               id="startDate"
               name="startDate"
-              label='Select a Start date'
+              label='Select a Start date *'
               placeholder="yyyy-mm-dd"
               component={RenderDate}
               validate={[required]}
@@ -51,7 +53,12 @@ export const UpdateMineManagerForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">Update Mine Manager</Button></div>
+      <div className="right center-mobile">
+        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
+          <Button type="button">Cancel</Button>
+        </Popconfirm>
+        <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
+     </div>
     </Form>
   );
 };

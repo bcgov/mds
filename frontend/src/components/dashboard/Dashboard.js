@@ -4,18 +4,21 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
+import MediaQuery from 'react-responsive';
+import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
-import CreateMine from '@/components/dashboard/CreateMine';
+import { modalConfig } from '@/components/modalContent/config';
+import { ConditionalButton } from '@/components/common/ConditionalButton';
 import * as router from '@/constants/routes';
-import NullScreen from '@/components/common/NullScreen';
 import Loading from '@/components/common/Loading';
-import MediaQuery from 'react-responsive';
 import MineMap from '@/components/maps/MineMap';
 import * as String from '@/constants/strings';
+import * as ModalContent from '@/constants/modalContent';
+import  { debounce } from 'lodash';
 
 /**
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -27,6 +30,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({push: PropTypes.func }).isRequired,
   mines: PropTypes.object.isRequired,
@@ -39,10 +44,15 @@ const defaultProps = {
   mines: {},
   mineIds: [],
   pageData: {},
+  mineStatusOptions: [],
 };
 
 export class Dashboard extends Component {
-  state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
+  constructor(props) {
+    super(props);
+    this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
+    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null, searchTerm: ''}
+  }
  
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
@@ -58,13 +68,17 @@ export class Dashboard extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.handleMineSearchDebounced.cancel();
+  }
+
   renderDataFromURL = (params) => {
     if (params.page && params.per_page) {
-      this.props.fetchMineRecords(params.page, params.per_page, params.map).then(() => {
+      this.props.fetchMineRecords(params.page, params.per_page, this.state.searchTerm, params.map).then(() => {
         this.setState({ mineList: true })
       });
     } else {
-      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, params.map).then(() => {
+      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, this.state.searchTerm, params.map).then(() => {
         this.setState({ mineList: true })
       });
     }
@@ -107,17 +121,41 @@ export class Dashboard extends Component {
     }
   }
 
+  handleMineSearch = (value) => {
+    // set the state so on page Turn the search value is kept.
+    this.setState({searchTerm: value});
+    const params = queryString.parse(this.props.location.search);
+    this.props.fetchMineRecords(params.page, params.per_page, value);
+  }
+  
+  handleSubmit = (value) => {
+    let mineStatus = value.mine_status.join(",");
+    this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
+      this.props.closeModal();
+    }).then(() => {
+      const params = queryString.parse(this.props.location.search);
+      if (params.page && params.per_page) {
+        this.props.fetchMineRecords(params.page, params.per_page);
+      } else {
+        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
+      }
+    });
+  }
+
+  openModal(event, mineStatusOptions, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { mineStatusOptions, onSubmit, title},
+      content: modalConfig.MINE_RECORD
+    });
+  }
+
   renderCorrectView(){
     const params = queryString.parse(this.props.location.search);
     const pageNumber = params.page ? Number(params.page) : 1;
     const perPageNumber = params.per_page ? Number(params.per_page) : 25;
     const isMap = params.map ? 'map' : 'list';
     if (this.state.mineList) {
-      if (this.props.mineIds.length === 0) {
-        return (
-          <NullScreen type="dashboard" />
-        )
-      } else {
         return (
           <div>
             <Tabs
@@ -129,7 +167,7 @@ export class Dashboard extends Component {
               <TabPane tab="List" key="list">
                 <Row>
                   <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
-                    <MineSearch/>
+                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} />
                   </Col>
                 </Row>
                 <MineList 
@@ -169,7 +207,7 @@ export class Dashboard extends Component {
               <TabPane tab="Map" key="map">
                 <div className="landing-page__content--search">
                   <Col md={10} xs={24}>
-                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView={true}/>
+                    <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView/>
                   </Col>
                   <Col md={2} sm={0} xs={0}>
                     <div className="center">
@@ -209,9 +247,7 @@ export class Dashboard extends Component {
             </Tabs>
           </div>
         )
-      }
-
-    } else {
+      } else {
       return(<Loading />)
     }
   }
@@ -220,12 +256,14 @@ export class Dashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <CreateMine
-            createMineRecord={this.props.createMineRecord}
-            fetchMineRecords={this.props.fetchMineRecords}
-            location={this.props.location}
-            mineStatusOptions={this.props.mineStatusOptions}
+          <div className="right center-mobile">
+          <ConditionalButton 
+            className="full-mobile"
+            type="primary" 
+            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
+            string={ModalContent.CREATE_MINE_RECORD}
           />
+          </div>
         </div>
         <div className="landing-page__content">
           {this.renderCorrectView()}
@@ -249,6 +287,8 @@ const mapDispatchToProps = (dispatch) => {
     fetchMineRecords,
     fetchStatusOptions,
     createMineRecord,
+    openModal,
+    closeModal,
   }, dispatch);
 };
 
