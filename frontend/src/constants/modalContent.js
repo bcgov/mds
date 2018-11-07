@@ -2,11 +2,7 @@ export const ADD_MINE_MANAGER = 'Add Mine Manager';
 export const UPDATE_MINE_MANAGER = 'Update Mine Manager';
 export const UPDATE_PERMITTEE = 'Update Permittee';
 export const ADD_TENURE = 'Add Tenure Number';
-<<<<<<< HEAD
 export const CRESTE_MINE_RECORD = 'Create Mine Record';
-=======
-export const CREATE_MINE_RECORD = 'Create Mine Record';
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86
 export const UPDATE_MINE_RECORD = 'Update Mine Record';
 
 export const PERSON= 'PER';

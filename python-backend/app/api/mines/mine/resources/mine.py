@@ -8,22 +8,12 @@ from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.location import MineLocation, MineMapViewLocation
-<<<<<<< HEAD:python-backend/app/api/mines/mine/resources/mine.py
-from ...region.models.region import MineRegion 
-=======
-from ....utils.random import generate_mine_no
-from app.extensions import jwt, api
-from ....utils.resources_mixins import UserMixin, ErrorMixin
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/mines/mine/resources/mine.py
+from ...region.models.region import MineRegion  
 
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-<<<<<<< HEAD:python-backend/app/api/mines/mine/resources/mine.py
-
-=======
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/mines/mine/resources/mine.py
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, help='Name of the mine.')
@@ -32,16 +22,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
     parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
-<<<<<<< HEAD:python-backend/app/api/mines/mine/resources/mine.py
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
     
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
     # @jwt.requires_roles(["mds-mine-view"])
-=======
-
-    @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
-    @jwt.requires_roles(["mds-mine-view"])
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/mines/mine/resources/mine.py
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -174,11 +158,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         }
 
     @api.expect(parser)
-<<<<<<< HEAD:python-backend/app/api/mines/mine/resources/mine.py
-    # @jwt.requires_roles(["mds-mine-create"])
-=======
     @jwt.requires_roles(["mds-mine-create"])
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/mines/mine/resources/mine.py
     def put(self, mine_no_or_guid):
         data = self.parser.parse_args()
         tenure = data['tenure_number_id']
@@ -243,7 +223,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None
 
-<<<<<<< HEAD:python-backend/app/api/mines/mine/resources/mine.py
         # Region validation
         if region:
             try:
@@ -260,8 +239,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return mine.json()
 
 
-=======
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/mines/mine/resources/mine.py
 class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
 

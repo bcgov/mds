@@ -80,17 +80,6 @@ class Party(AuditMixin, Base):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
     @classmethod
-<<<<<<< HEAD:python-backend/app/api/parties/party/models/party.py
-=======
-    def search_by_name(cls, search_term, party_type=None, query_limit=50):
-        _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
-        if party_type:
-            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name).limit(query_limit)
-        else:
-            return cls.query.filter(_filter_by_name).limit(query_limit)
-
-    @classmethod
->>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/parties/party/models/party.py
     def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
         party = cls(
             party_guid=uuid.uuid4(),
