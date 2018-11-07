@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
@@ -26,6 +27,15 @@ class Party(AuditMixin, Base):
     mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
+
+    @hybrid_property
+    def name(self):
+        return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
+
+    @name.expression
+    def name(cls):
+        return func.concat(cls.first_name, ' ', cls.party_name)
+
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
@@ -38,17 +48,15 @@ class Party(AuditMixin, Base):
             'email': self.email,
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat(),
-            'party_name': self.party_name
+            'party_name': self.party_name,
+            'name': self.name
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
                 'first_name': self.first_name,
-                'name': self.first_name + ' ' + self.party_name,
             })
             if show_mgr:
                 context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
-        elif self.party_type_code == PARTY_STATUS_CODE['org']:
-            context.update({'name': self.party_name})
         return context
 
     @classmethod
@@ -72,6 +80,17 @@ class Party(AuditMixin, Base):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
     @classmethod
+<<<<<<< HEAD:python-backend/app/api/parties/party/models/party.py
+=======
+    def search_by_name(cls, search_term, party_type=None, query_limit=50):
+        _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
+        if party_type:
+            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name).limit(query_limit)
+        else:
+            return cls.query.filter(_filter_by_name).limit(query_limit)
+
+    @classmethod
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/parties/party/models/party.py
     def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
         party = cls(
             party_guid=uuid.uuid4(),

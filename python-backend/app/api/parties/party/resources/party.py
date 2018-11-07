@@ -21,7 +21,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
 
+<<<<<<< HEAD:python-backend/app/api/parties/party/resources/party.py
     PARTY_LIST_RESULT_LIMIT = 100
+=======
+    PARTY_LIST_RESULT_LIMIT = 25
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/parties/party/resources/party.py
 
     @api.doc(params={
         'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
@@ -40,6 +44,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             search_term = request.args.get('search')
             search_type = request.args.get('type').upper() if request.args.get('type') else None
             if search_term:
+<<<<<<< HEAD:python-backend/app/api/parties/party/resources/party.py
                 search_term_array = search_term.split()
                 _filter_list = []
                 for term in search_term_array:
@@ -49,6 +54,12 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                     parties = Party.query.filter(or_(*_filter_list), Party.party_type_code == search_type).limit(self.PARTY_LIST_RESULT_LIMIT).all()
                 else:
                     parties = Party.query.filter(or_(*_filter_list)).limit(self.PARTY_LIST_RESULT_LIMIT).all()
+=======
+                if search_type in ['PER', 'ORG']:
+                    parties = Party.search_by_name(search_term, search_type, self.PARTY_LIST_RESULT_LIMIT)
+                else:
+                    parties = Party.search_by_name(search_term, query_limit=self.PARTY_LIST_RESULT_LIMIT)
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:python-backend/app/api/parties/party/resources/party.py
             else:
                 parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
             return {'parties': list(map(lambda x: x.json(), parties))}

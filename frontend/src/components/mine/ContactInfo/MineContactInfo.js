@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import  { debounce } from 'lodash';
 import ViewMineManager from './ViewMineManager';
 import ViewPermittee from './ViewPermittee';
 import { openModal, closeModal} from '@/actions/modalActions';
@@ -33,6 +34,13 @@ const defaultProps = {
 };
     
   export class MineContactInfo extends Component {
+<<<<<<< HEAD:frontend/src/components/mine/ContactInfo/MineContactInfo.js
+=======
+    constructor(props) {
+      super(props);
+      this.handleChangeDebounced = debounce(this.handleChange, 1000);
+    }
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:frontend/src/components/mine/ContactInfo/MineContactInfo.js
   /**
  * add new parties (firstName, surname || companyName) to db.
  */
@@ -44,12 +52,16 @@ const defaultProps = {
   }
 
   handleChange = (value) => {
+<<<<<<< HEAD:frontend/src/components/mine/ContactInfo/MineContactInfo.js
     if (value.length > 2){
       this.props.fetchParties(value);
     }
     else if (value.length === 0) {
       this.props.fetchParties();
     }
+=======
+    this.props.fetchParties(value);
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:frontend/src/components/mine/ContactInfo/MineContactInfo.js
   }
 
   componentDidMount() {
@@ -62,13 +74,21 @@ const defaultProps = {
      <div>
         <ViewMineManager 
           {...this.props} 
+<<<<<<< HEAD:frontend/src/components/mine/ContactInfo/MineContactInfo.js
           handleChange={this.handleChange}
+=======
+          handleChange={this.handleChangeDebounced}
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:frontend/src/components/mine/ContactInfo/MineContactInfo.js
           handlePartySubmit={this.handlePartySubmit}
         />
         {mine.mine_permit[0] &&
           <ViewPermittee 
             {...this.props}
+<<<<<<< HEAD:frontend/src/components/mine/ContactInfo/MineContactInfo.js
             handleChange={this.handleChange}
+=======
+            handleChange={this.handleChangeDebounced}
+>>>>>>> 259eca472cd767968d5f5f8705f1e508f8a97d86:frontend/src/components/mine/ContactInfo/MineContactInfo.js
             handlePartySubmit={this.handlePartySubmit}
           />
         }
