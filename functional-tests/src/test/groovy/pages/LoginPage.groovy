@@ -3,10 +3,10 @@ package pages
 import geb.Page
 
 class LoginPage extends Page {
-    static at = { title == "Government of British Columbia"}
+    static at = { title == "Log in to mds"}
     static content = {
-        IDIRusername (wait: true) {$("input", id: "user")}
+        IDIRusername (wait: true) {$("input", id: "username")}
         IDIRpassword (wait: true) {$("input", id: "password")}
-        IDIRloginButton (wait: true) {$("input", value: "Continue")}
+        IDIRloginButton (wait: true) {$("input", value: "Log in")}
     }
 }
