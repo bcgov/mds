@@ -152,7 +152,7 @@ class MineralTenureXref(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     tenure_number_id = db.Column(db.Numeric(10), unique=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineralTenureXref %r>' % self.tenure_number_id
