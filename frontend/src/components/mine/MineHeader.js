@@ -6,7 +6,7 @@ import { Menu, Icon } from 'antd';
 import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
-import { ConditionalDropdown } from '../common/ConditionalDropdown';
+import { ConditionalButton } from '../common/ConditionalButton';
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -80,7 +80,8 @@ class MineHeader extends Component {
         <div className="dashboard__header__content">
           <div className="inline-flex between">
             <h1>{mine.mine_detail[0].mine_name}</h1>
-            <ConditionalDropdown 
+            <ConditionalButton
+              isDropdown 
               overlay={menu} 
               string={<Icon type="ellipsis" theme="outlined" style={{fontSize: '30px'}}/>}
             />

@@ -12,7 +12,9 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props = {
     string: '',
-    type: 'primary'
+    type: 'primary',
+    overlay: '',
+    isDropdown: false
   };
 }
 
