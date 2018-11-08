@@ -68,9 +68,10 @@ class MineHeader extends Component {
         <Menu.Item key="0">
           <button className="full" onClick={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine)}><img style={{padding: '5px'}}src={GREEN_PENCIL} />{ModalContent.UPDATE_MINE_RECORD}</button>
         </Menu.Item>
-        <Menu.Item key="1">
-          <button className="full" onClick={(event) => this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)}><img style={{padding: '5px'}}src={GREEN_DOCUMENT} />{ModalContent.ADD_TAILINGS}</button>
-        </Menu.Item>
+        {/* commented out until connected to backend */}
+        {/* <Menu.Item key="1">
+          <button className="full" onClick={(event) => this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)}><img style={{padding: '5px'}}src={GREEN_DOCUMENT} />{ModalContent.ADD_TAILINGS}</button> */}
+        {/* </Menu.Item> */}
       </Menu>
     );
     return (
