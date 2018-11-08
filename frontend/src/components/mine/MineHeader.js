@@ -92,7 +92,7 @@ class MineHeader extends Component {
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <div className="dashboard__header__content--inline">
-          {mine.mine_region[0] && <h5>{mine.mine_region[0].region_code}</h5>}
+          {mine.mine_region[0] && <h5>{mine.mine_region[0].region_value}</h5>}
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
