@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row, Popconfirm } from 'antd';
-import RenderDate from '@/components/common/RenderDate';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -32,7 +31,7 @@ export const UpdateMineManagerForm = (props) => {
               id="mineManager"
               name="mineManager"
               label="Mine Manager *"
-              component={RenderLargeSelect}
+              component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
               options={props.parties}
               validate={[required]}
@@ -47,7 +46,7 @@ export const UpdateMineManagerForm = (props) => {
               name="startDate"
               label='Select a Start date *'
               placeholder="yyyy-mm-dd"
-              component={RenderDate}
+              component={renderConfig.DATE}
               validate={[required]}
             />
           </Form.Item>

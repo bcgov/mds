@@ -14,7 +14,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.mineNameList = MOCK.MINE_NAME_LIST;
-  props.isMapViuew = false;
+  props.isMapView = false;
 };
 
 beforeEach(() => {
