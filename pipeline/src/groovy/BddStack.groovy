@@ -32,7 +32,9 @@ if (opt?.h) {
 }
 
 def config = OpenShiftHelper.loadDeploymentConfig(opt)
-def toolsNamespace = "empr-mds-tools"
+def devNamespace = "empr-mds-dev"
+def dbConfig = "${config.app.name}-postgresql-${config.app.build.env.id}"
+def idirConfig = "bdd-test-user"
 
 def appLabel="${config.app.deployment.id}"
 def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-frontend", "--namespace=${config.app.deployment.namespace}"])
@@ -41,7 +43,7 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "URLs found:  ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -l 'app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${toolsNamespace}' |  oc replace -f - --namespace='${toolsNamespace}' --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -l 'app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'IDIR_CONFIG_NAME=${idirConfig}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${devNamespace}' |  oc replace -f - --namespace='${devNamesapce}' --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
