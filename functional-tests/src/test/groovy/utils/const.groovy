@@ -3,7 +3,7 @@ package utils
 import io.github.cdimascio.dotenv.Dotenv
 
 class Const{
-    static Dotenv dotenv = Dotenv.configure().directory("./").load()
+    static Dotenv dotenv = Dotenv.configure().ignoreIfMalformed().ignoreIfMissing().load()
     static systemEnv = System.getenv()
     static final String MINE_NAME   = "MINETEST",
                         MINE_NUMBER = "BLAH0000",
