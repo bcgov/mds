@@ -51,7 +51,7 @@ boolean hasFailed=false;
 
 
 while(inprogress>0){
-    Map pods = ocGet(['pods','-l', "app=${appLabel}", "--namespace=${devNamespace}"])
+    Map pods = ocGet(['pods','-l', "app=${appLabel},run=bdd-test", "--namespace=${devNamespace}"])
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {

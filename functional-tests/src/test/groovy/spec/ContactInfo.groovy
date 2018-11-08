@@ -28,7 +28,7 @@ class  ContactInfoSpec extends GebReportingSpec {
         assert toastMessage
 
         // Wait for the changes to propogate through the database and react state
-        sleep(1000)
+        sleep(500)
 
         then: "I can see the manager information get updated"
         contactInfoTab.mineManagerCheck(manager) == [true,true]

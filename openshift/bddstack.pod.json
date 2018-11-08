@@ -108,11 +108,11 @@
             "resources": {
               "limits": {
                 "cpu": "1",
-                "memory": "4Gi"
+                "memory": "2.5Gi"
               },
               "requests": {
                 "cpu": "500m",
-                "memory": "2Gi"
+                "memory": "1Gi"
               }
             },
             "imagePullPolicy": "Always"

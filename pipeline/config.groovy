@@ -207,7 +207,7 @@ environments {
             keycloak {
                 clientId = "mines-application-dev"
                 resource = "mines-application-dev"
-                idpHint = "test"
+                idpHint = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
@@ -266,7 +266,7 @@ environments {
             keycloak {
                 clientId = "mines-application-test"
                 resource = "mines-application-test"
-                idpHint = "test"
+                idpHint = "idir"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
