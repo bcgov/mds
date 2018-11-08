@@ -11,8 +11,20 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
 };
+
+// const regionOptions = () => {
+//   const dataArray = []
+//   // permit.map((obj) => {
+//     const data = {
+//       value: "Re",
+//       option: "Canada"
+//     }
+//     // dataArray.push(data);
+//   // });
+//   return data;
+// }
 
 export const MineRecordform = (props) => {
   return (
@@ -43,6 +55,21 @@ export const MineRecordform = (props) => {
               validate={[required]}
             />
           </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          {/* <Form.Item>
+            <Field
+              id="mine_region"
+              name="mine_region"
+              label="Mine Region *"
+              placeholder="Select a Region"
+              component={renderConfig.SELECT}
+              data={regionOptions()}
+              validate={[required]}
+            />
+          </Form.Item> */}
         </Col>
       </Row>
       <Row gutter={16}>
@@ -88,7 +115,8 @@ export const MineRecordform = (props) => {
             <Field
               id="major"
               name="major"
-              label='Is this a Major Mine?'
+              label='Major Mine'
+              type="checkbox"
               component={renderConfig.CHECKBOX}
               validate={[maxLength(300)]}
             />

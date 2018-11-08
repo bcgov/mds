@@ -8,25 +8,27 @@ import { Form, Checkbox } from 'antd';
 
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  input: PropTypes.any,
   label: PropTypes.string,
-  placeholder: PropTypes.string,
   meta: PropTypes.object,
 };
 
 const RenderCheckbox = ({
   id,
-  meta: { touched, error, warning },
+  input,
+  label,
+  meta: { touched, error},
 }) => (
-    <Form.Item
-      validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
-      help={touched &&
-        ((error && <span>{error}</span>) ||
-          (warning && <span>{warning}</span>))
-      }
-    >
-      <Checkbox id={id}>Major Mine</Checkbox>
-    </Form.Item>
+  <Form.Item 
+  validateStatus={(touched ? (error && 'error') : '')}
+>
+  <Checkbox 
+    id={id} 
+    checked={input.value || false}
+    {...input} 
+  >
+  {label}
+  </Checkbox>
+</Form.Item>
   );
 
 RenderCheckbox.propTypes = propTypes;

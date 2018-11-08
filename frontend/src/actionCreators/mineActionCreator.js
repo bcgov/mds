@@ -10,6 +10,7 @@ import { ENVIRONMENT } from '@/constants/environment'
 import { createRequestHeader } from '@/utils/RequestHeaders';
 
 export const createMineRecord = (payload) => (dispatch) => {
+  console.log(payload);
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading());
   return axios.post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())

@@ -25,3 +25,7 @@ export const DEFAULT_LONG = -127.6476;
 // default url values
 export const DEFAULT_PAGE = '1';
 export const DEFAULT_PER_PAGE = '25';
+
+// mine types
+export const MAJOR_MINE = 'Major mine';
+export const REGIONAL_MINE = 'Regional mine';

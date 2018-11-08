@@ -68,3 +68,18 @@ VALUES
     ('RNS', 'Reclamation Not Started', 40, 'system-mds', 'system-mds'),
     ('SVR', 'Site Visit Required', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_region_code (
+    region_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+)
+VALUES
+    ('SW','South West Region',10,'system-mds', 'system-mds'),
+    ('SC','South Central Region',20,'system-mds', 'system-mds'),
+    ('NW','North West Region',30,'system-mds', 'system-mds'),
+    ('NE','North East Region',40,'system-mds', 'system-mds'),
+    ('SE','South East Region',50,'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
