@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Button, Icon } from 'antd';
+import { Dropdown, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 import { CreateGuard } from '@/HOC/CreateGuard';
