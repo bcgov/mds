@@ -6,7 +6,8 @@ import {
   fetchMineRecords, 
   fetchMineRecordById, 
   fetchMineNameList, 
-  fetchStatusOptions 
+  fetchStatusOptions,
+  fetchRegionOptions 
 } from '@/actionCreators/mineActionCreator';
 import * as genericActions from '@/actions/genericActions';
 import * as API from '@/constants/API';
@@ -160,6 +161,28 @@ describe('`fetchStatusOptions` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (fetchStatusOptions()(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe('`fetchRegionOptions` action creator', () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_REGION;
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return (fetchRegionOptions()(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return (fetchRegionOptions()(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

@@ -38,6 +38,13 @@ export const MINES = {
           latitude: null
         }
       ],
+      mine_region: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+          region_code: "NW"
+        }
+      ],
       mine_status: {
         status_values: ['CLD', 'CM'],
         status_labels: ['Closed', 'Care & Maintenance'],
@@ -136,7 +143,14 @@ export const MINES = {
           longitude: null,
           latitude: null
         }
-      ]
+      ],
+      mine_region: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+          region_code: "NW"
+        }
+      ],
     }
   }
 }
@@ -276,6 +290,29 @@ export const STATUS_OPTIONS = {
     }
   ]
 };
+
+export const REGION_OPTIONS = { 
+  'options': [{
+    'value': 'SW',
+    'label': 'South West'
+  },
+  {
+    'value': 'SC',
+    'label': 'South Central'
+  },
+  {
+    'value': 'NW',
+    'label': 'North West'
+  },
+  {
+    'value': 'NE',
+    'label': 'North East'
+  },
+  {
+    'value': 'SE',
+    'label': 'South East'
+  }
+]}
 
 export const PERMITTEE = {
   permitteeIds: [

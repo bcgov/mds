@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RenderCheckbx from '@/components/common/RenderCheckbx';
+import RenderCheckbox from '@/components/common/RenderCheckbox';
 
 let props = {};
 
@@ -20,10 +20,10 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('RenderCheckbx', () => {
+describe('RenderCheckbox', () => {
 
   it('renders properly', () => {
-    const wrapper = shallow(<RenderCheckbx {...props} />);
+    const wrapper = shallow(<RenderCheckbox {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 

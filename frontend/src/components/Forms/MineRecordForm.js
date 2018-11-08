@@ -11,20 +11,9 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array,
+  mineStatusOptions: PropTypes.array.isRequired,
+  mineRegionOptions: PropTypes.array.isRequired,
 };
-
-// const regionOptions = () => {
-//   const dataArray = []
-//   // permit.map((obj) => {
-//     const data = {
-//       value: "Re",
-//       option: "Canada"
-//     }
-//     // dataArray.push(data);
-//   // });
-//   return data;
-// }
 
 export const MineRecordform = (props) => {
   return (
@@ -59,17 +48,17 @@ export const MineRecordform = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          {/* <Form.Item>
+          <Form.Item>
             <Field
               id="mine_region"
               name="mine_region"
               label="Mine Region *"
               placeholder="Select a Region"
               component={renderConfig.SELECT}
-              data={regionOptions()}
+              data={props.mineRegionOptions}
               validate={[required]}
             />
-          </Form.Item> */}
+          </Form.Item>
         </Col>
       </Row>
       <Row gutter={16}>

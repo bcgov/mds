@@ -10,7 +10,6 @@ import { ENVIRONMENT } from '@/constants/environment'
 import { createRequestHeader } from '@/utils/RequestHeaders';
 
 export const createMineRecord = (payload) => (dispatch) => {
-  console.log(payload);
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading());
   return axios.post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
@@ -105,6 +104,22 @@ export const fetchStatusOptions = () => (dispatch) => {
     .catch((err) => {
       notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(hideLoading('modal'));
+    });
+};
+
+export const fetchRegionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_REGION_OPTIONS));
+  dispatch(showLoading('modal'));
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_REGION, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_REGION_OPTIONS));
+      dispatch(mineActions.storeRegionOptions(response.data));
+      dispatch(hideLoading('modal'));
+    })
+    .catch((err) => {
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.GET_REGION_OPTIONS));
       dispatch(hideLoading('modal'));
     });
 };

@@ -16,7 +16,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
-  mineStatusOptions: PropTypes.array,
+  mineStatusOptions: PropTypes.array.isRequired,
+  mineRegionOptions: PropTypes.array.isRequired,
   mine: PropTypes.object.isRequired,
 };
 
@@ -47,17 +48,18 @@ class MineHeader extends Component {
     });
   }
   
-  openModal(event, mineStatusOptions, onSubmit, title, mine) {
+  openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title, mine) {
     event.preventDefault();
     const initialValues = {
       "name": mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
       "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
-      "major": mine.mine_detail[0] ? mine.mine_detail[0].major: false,
+      "major": mine.mine_detail[0] ? mine.mine_detail[0].major : false,
+      "mine_region": mine.mine_region[0] ? mine.mine_region[0].region_code : null,
     }
     this.props.openModal({
-      props: { mineStatusOptions, onSubmit, title, initialValues},
+      props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues},
       content: modalConfig.MINE_RECORD
     });
   }
@@ -67,7 +69,7 @@ class MineHeader extends Component {
     const menu = (
       <Menu>
         <Menu.Item key="0">
-          <button className="full" onClick={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine)}><img style={{padding: '5px'}}src={GREEN_PENCIL} />{ModalContent.UPDATE_MINE_RECORD}</button>
+          <button className="full" onClick={(event) => this.openModal(event, this.props.mineStatusOptions, this.props.mineRegionOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine)}><img style={{padding: '5px'}}src={GREEN_PENCIL} />{ModalContent.UPDATE_MINE_RECORD}</button>
         </Menu.Item>
         {/* commented out until connected to backend */}
         {/* <Menu.Item key="1">
@@ -90,6 +92,7 @@ class MineHeader extends Component {
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <div className="dashboard__header__content--inline">
+          {mine.mine_region[0] && <h5>{mine.mine_region[0].region_code}</h5>}
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
