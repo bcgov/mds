@@ -11,6 +11,7 @@ import utils.DbConnection
 class  DataCleanup extends GebReportingSpec {
     def cleanupSpec() {
         println "Step 3 of 3: Cleaning test data"
-        DbConnection.MDS_FUNCTIONAL_TEST.execute(new File('src/test/groovy/Data/data_deletion.sql').absolutePath.text)
+        def cleanupScriptPath = new File('src/test/groovy/Data/data_deletion.sql').absolutePath
+        DbConnection.MDS_FUNCTIONAL_TEST.execute(new File(cleanupScriptPath).text)
     }
 }
