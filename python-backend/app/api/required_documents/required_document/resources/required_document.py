@@ -16,4 +16,6 @@ class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
         else:
             req_docs = RequiredDocument.query.all();
 
-            return {list(map(lambda x: x.json(), req_docs))}
+            return {
+                'required_documents' : list(map(lambda x: x.json(), req_docs))
+            }
