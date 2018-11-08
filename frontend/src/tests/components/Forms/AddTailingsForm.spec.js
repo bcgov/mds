@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { AddTenureNumberForm } from '@/components/Forms/AddTenureNumberForm';
+import { AddTailingsForm } from '@/components/Forms/AddTailingsForm';
 
 const dispatchProps = {};
 const props = {};
@@ -19,9 +19,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('AddTenureNumberForm', () => {
+describe('AddTailingsForm', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTenureNumberForm {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTailingsForm {...dispatchProps} {...props}/>);
     expect(component).toMatchSnapshot();
   });
 });
