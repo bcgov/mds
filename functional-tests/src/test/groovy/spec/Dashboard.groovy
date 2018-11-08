@@ -6,7 +6,7 @@ import spock.lang.*
 import pages.Dashboard
 import pages.MineProfilePage
 import utils.*
-import dataObjects.mineProfileData
+import dataObjects.MineProfileData
 
 
 @Title("MDS-Dashboard Page")
@@ -40,8 +40,8 @@ class  DashboardSpec extends GebReportingSpec {
 
         where:
         scenario                            | input
-        "Giving only mine name and status"  |new mineProfileData (NAME_GOOD,STATUS,NULL,NULL,NULL)
-        "Giving full mine information"      |new mineProfileData (NAME_GOOD,STATUS,LAGTITUTE,LONGTITUE,NOTES)
+        "Giving only mine name and status"  |new MineProfileData (NAME_GOOD,STATUS,NULL,NULL,NULL)
+        "Giving full mine information"      |new MineProfileData (NAME_GOOD,STATUS,LAGTITUTE,LONGTITUE,NOTES)
     }
 
     def "Scenario: Error displayed when the given mine information is in wrong format"(){
@@ -63,10 +63,10 @@ class  DashboardSpec extends GebReportingSpec {
 
         where:
         scenario        |input                                                      ||errorMessage
-        "Long name"     |new mineProfileData (BAD_NAME_1,STATUS,NULL,NULL,NULL)     ||"Must be 60 characters or less"
-        "Short name"    |new mineProfileData (BAD_NAME_2,STATUS,NULL,NULL,NULL)     ||"Must be 3 characters or more"
-        "Null name"     |new mineProfileData (NULL,STATUS,NULL,NULL,NULL)           ||"This is a required field"
-        "Null status"   |new mineProfileData (NAME_GOOD,NULL,NULL,NULL,NULL)        ||"This is a required field"
+        "Long name"     |new MineProfileData (BAD_NAME_1,STATUS,NULL,NULL,NULL)     ||"Must be 60 characters or less"
+        "Short name"    |new MineProfileData (BAD_NAME_2,STATUS,NULL,NULL,NULL)     ||"Must be 3 characters or more"
+        "Null name"     |new MineProfileData (NULL,STATUS,NULL,NULL,NULL)           ||"This is a required field"
+        "Null status"   |new MineProfileData (NAME_GOOD,NULL,NULL,NULL,NULL)        ||"This is a required field"
     }
 
     def "Scenario: User can view a mine"(){

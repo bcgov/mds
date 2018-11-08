@@ -11,11 +11,11 @@ import utils.DataCleanup
 @Suite.SuiteClasses([
         DataInit.class          ,
         LoginPageSpec.class   ,
-        DashboardSpec.class   ,
-        SummarySpec.class     ,
-        PermitSpec.class      ,
-        ContactInfoSpect.class,
-        Tenure.class          ,
+        // DashboardSpec.class   ,
+        // SummarySpec.class     ,
+        // PermitSpec.class      ,
+        ContactInfoSpec.class,
+        // Tenure.class          ,
         DataCleanup.class
 ])
 

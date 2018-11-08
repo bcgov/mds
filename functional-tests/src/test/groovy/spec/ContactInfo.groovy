@@ -6,12 +6,12 @@ import spock.lang.*
 
 import pages.*
 import utils.*
-import dataObjects.managerProfileData
+import dataObjects.ManagerProfileData
 
 
 @Title("MDS-MineProfilePage")
 @Stepwise
-class  ContactInfoSpect extends GebReportingSpec {
+class  ContactInfoSpec extends GebReportingSpec {
 
     def "Scenario: User can create new mine manager and update mine manager information"(){
         given: "I go to mine profile"
@@ -32,7 +32,7 @@ class  ContactInfoSpect extends GebReportingSpec {
 
         where:
         scenario        |manager
-        "add manager"   |new managerProfileData ("MANAGER", "TEST", "123-456-7890", "111", "abc@test.com","2017-08-04")
-        "update manager"|new managerProfileData ("TEST2","mine","123-494-0909","222","test@test.com","2018-01-01")
+        "add manager"   |new ManagerProfileData ("MANAGER", "TEST", "123-456-7890", "111", "abc@test.com","2017-08-04")
+        "update manager"|new ManagerProfileData ("TEST2","mine","123-494-0909","222","test@test.com","2018-01-01")
     }
 }

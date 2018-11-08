@@ -6,10 +6,10 @@ import groovy.transform.TupleConstructor
 @AutoClone
 @TupleConstructor
 
-class mineProfileData {
+class MineProfileData {
     String  mine_name   ,
             mine_status ,
             latitude    ,
             longtitude  ,
-            notes   
+            notes
 }

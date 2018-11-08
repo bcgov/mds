@@ -2,7 +2,7 @@ package modules
 
 import geb.Module
 
-class Form_UpdateManager extends Module { 
+class Form_UpdateManager extends Module {
     static at = { header=="Update Mine Manager"}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
@@ -21,13 +21,12 @@ class Form_UpdateManager extends Module {
         datePicker1 (wait:true) {$("input", placeholder:"yyyy-mm-dd")}
         datePicker2 (wait:true) {$("input.ant-calendar-input", placeholder:"yyyy-mm-dd")}
         selectParty (wait:true) {$("div", class:"ant-select-selection ant-select-selection--single")}
-         
+
         //button
         createPersonnelButton (wait:true) {$("button").has("span",text:"Create Personnel")}
-        updateMineManagerButton (wait:true) {$("form").find("div").find("button").has("span",text:"Update Mine Manager")} 
-        cancelButton (wait:true) {$("button.ant-modal-close")}      
-         
-        
+        addMineManagerButton (wait:true) {$("form").find("div").find("button").has("span", text:"Add Mine Manager")}
+        updateMineManagerButton (wait:true) {$("form").find("div").find("button").has("span", text:"Update Mine Manager")}
+        cancelButton (wait:true) {$("button.ant-modal-close")}
     }
 
 
@@ -46,21 +45,25 @@ class Form_UpdateManager extends Module {
         def loading = true
         selectDate(managerProfileData.date)
         selectParty.click()
-        partyBox = "${managerProfileData.first_name} ${managerProfileData.surname}" 
+        partyBox = "${managerProfileData.first_name} ${managerProfileData.surname}"
         while (loading && loadingBar.size()>1){
             if (loadingBar.size()==1 ){
                 loading=false
             }
-        }   
+        }
         while (staleElement){
             try {
-                managerList.click() 
+                managerList.click()
                 staleElement = false
             } catch (org.openqa.selenium.StaleElementReferenceException e){
                 staleElement = true
             }
-        } 
-        updateMineManagerButton.click()
+        }
+        if (addMineManagerButton && addMineManagerButton.present) {
+            addMineManagerButton.click()
+        } else if (updateMineManagerButton && updateMineManagerButton.present) {
+            updateMineManagerButton.click()
+        }
     }
 
     def selectDate(date){
@@ -70,6 +73,6 @@ class Form_UpdateManager extends Module {
     }
 
 
-    
- 
-} 
+
+
+}
