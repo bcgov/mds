@@ -61,7 +61,9 @@ CREATE TABLE mine_expected_document (
   mine_guid uuid NOT NULL,
   document_fulfillment_guid uuid NULL,
 --Data Columns
-  date_created date NOT NULL,
+  exp_document_name character varying(60) NOT NULL,
+  exp_document_category character varying(60) NULL,
+  date_created date NOT NULL DEFAULT now(),
   date_received date NULL,
   date_accepted date NULL,
   due_date date NULL, 
