@@ -43,7 +43,7 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "URLs found:  ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -l 'app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'IDIR_CONFIG_NAME=${idirConfig}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${devNamespace}' |  oc replace -f - --namespace='${devNamesapce}' --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name}' -l 'app-name=${config.app.name}' -l 'app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'IDIR_CONFIG_NAME=${idirConfig}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${devNamespace}' |  oc replace -f - --namespace='${devNamespace}' --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
@@ -51,7 +51,7 @@ boolean hasFailed=false;
 
 
 while(inprogress>0){
-    Map pods = ocGet(['pods','-l', "app=${appLabel}", "--namespace=${toolsNamespace}"])
+    Map pods = ocGet(['pods','-l', "app=${appLabel}", "--namespace=${devNamespace}"])
     inprogress=0
     for (Map pod:pods.items){
         if ('Failed' == pod.status.phase) {
