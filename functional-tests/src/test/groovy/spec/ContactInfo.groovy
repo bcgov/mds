@@ -25,7 +25,10 @@ class  ContactInfoSpec extends GebReportingSpec {
         waitFor {toastMessage!= null }
 
         then: "Should see successful message"
-        assert toastMessage == "Successfully updated the manager of ${Const.MINE_NAME}"
+        assert toastMessage
+
+        // Wait for the changes to propogate through the database and react state
+        sleep(1000)
 
         then: "I can see the manager information get updated"
         contactInfoTab.mineManagerCheck(manager) == [true,true]
