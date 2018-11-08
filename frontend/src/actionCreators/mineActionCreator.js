@@ -11,35 +11,35 @@ import { createRequestHeader } from '@/utils/RequestHeaders';
 
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully created: " + payload.name, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
     return response;
   })
   .catch((err) => {
     notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.CREATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
   });
 };
 
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , payload, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully updated: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
     return response;
   })
   .catch((err) => {
     notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
   });
 };
 
