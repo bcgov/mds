@@ -11,6 +11,6 @@ COPY . /home/jenkins/bdd-tests/
 RUN chmod -R 777 /home/jenkins/bdd-tests
 
 # Install gradle dependencies
-RUN ./home/jenkins/bdd-tests/gradlew build -m
+RUN cd home/jenkins/bdd-tests/ && ./gradlew build -m
 
 USER 1001
