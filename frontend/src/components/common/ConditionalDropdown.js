@@ -6,7 +6,7 @@ import { CreateGuard } from '@/HOC/CreateGuard';
 
 /**
  * @constant ConditionalDropdown is a conditionally rendered button depending on user permissions. 
- * It accapts any function as `handleAction` and button label as `string`, button type as `type`
+ * It accapts and button label as `string`, button type as `type`, overlay is the dropdown content
  * 
  */
 
