@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN, PENCIL, RED_ELLIPSE } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from '@/constants/assets';
+import { Menu, Icon } from 'antd';
 import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
-import ConditionalButton from '@/components/common/ConditionalButton';
 import { modalConfig } from '@/components/modalContent/config';
+import { ConditionalDropdown } from '../common/ConditionalDropdown';
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -32,6 +33,20 @@ class MineHeader extends Component {
     })
   }
 
+  handleAddTailings = (value) => {
+    // add actionCreator here
+    console.log(value);
+    this.props.closeModal();
+  }
+
+  openTailingsModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title},
+      content: modalConfig.ADD_TAILINGS
+    });
+  }
+  
   openModal(event, mineStatusOptions, onSubmit, title, mine) {
     event.preventDefault();
     const initialValues = {
@@ -45,18 +60,28 @@ class MineHeader extends Component {
       content: modalConfig.MINE_RECORD
     });
   }
+  
   render() {
     const { mine } = this.props;
+    const menu = (
+      <Menu>
+        <Menu.Item key="0">
+          <button className="full" onClick={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine)}><img style={{padding: '5px'}}src={GREEN_PENCIL} />{ModalContent.UPDATE_MINE_RECORD}</button>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <button className="full" onClick={(event) => this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)}><img style={{padding: '5px'}}src={GREEN_DOCUMENT} />{ModalContent.ADD_TAILINGS}</button>
+        </Menu.Item>
+      </Menu>
+    );
     return (
       <div className="dashboard__header">
         <MineMap mine={mine}/>
         <div className="dashboard__header__content">
           <div className="inline-flex between">
             <h1>{mine.mine_detail[0].mine_name}</h1>
-            <ConditionalButton 
-              type="primary" 
-              handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine )}
-              string={<img style={{padding: '5px'}}src={PENCIL} />}
+            <ConditionalDropdown 
+              overlay={menu} 
+              string={<Icon type="ellipsis" theme="outlined" style={{fontSize: '30px'}}/>}
             />
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>

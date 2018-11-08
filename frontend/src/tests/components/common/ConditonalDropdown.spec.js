@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ConditionalButton } from '@/components/common/ConditionalButton';
+import { ConditionalDropdown } from '@/components/common/ConditionalDropdown';
 
 let props = {};
 const dispatchProps = {}
@@ -12,7 +12,8 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props = {
     string: '',
-    type: 'primary'
+    type: 'primary',
+    overlay: '',
   };
 }
 
@@ -21,10 +22,10 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe('ConditionalButton', () => {
+describe('ConditionalDropdown', () => {
 
   it('renders properly', () => {
-    const wrapper = shallow(<ConditionalButton {...props} {...dispatchProps} />);
+    const wrapper = shallow(<ConditionalDropdown {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();
   });
 

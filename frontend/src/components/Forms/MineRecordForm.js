@@ -13,7 +13,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array
+  mineStatusOptions: PropTypes.array,
 };
 
 export const MineRecordform = (props) => {
