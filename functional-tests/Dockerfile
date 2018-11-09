@@ -9,6 +9,8 @@ RUN dbus-uuidgen > /var/lib/dbus/machine-id
 RUN mkdir /home/jenkins/bdd-tests
 COPY . /home/jenkins/bdd-tests/
 
+RUN cd /home/jenkins/bdd-tests && ./gradlew -m
+
 # Fix permissions
 RUN chmod -R 777 /home/jenkins/bdd-tests
 

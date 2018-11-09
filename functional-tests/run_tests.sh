@@ -1,7 +1,7 @@
 #! /bin/bash
 set -exv -o pipefail
 
-./gradlew -DchromeHeadlessTest.single=CustomJUnitSpecRunner chromeHeadlessTest
+./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
 
 # Config needed for firefoxHeadlessTest
 # For more info: https://github.com/BCDevOps/BDDStack/wiki/Running-firefoxHeadlessTest-in-CentOS
