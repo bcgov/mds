@@ -9,11 +9,13 @@ const propTypes = {
   initialValues: PropTypes.object,
   hasTSF: PropTypes.bool,
   toggleTSF: PropTypes.func,
+  clear: PropTypes.bool,
 };
 
 const defaultProps = {
- title: '',
- initialValues: null,
+  title: '',
+  initialValues: null,
+  clear: true,
 };
 
 export const MineRecordModal = (props) => {
