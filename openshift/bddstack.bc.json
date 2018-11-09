@@ -136,12 +136,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "200m",
-            "memory": "2Gi"
+            "cpu": "500m",
+            "memory": "4Gi"
           },
           "requests": {
-            "cpu": "100m",
-            "memory": "1Gi"
+            "cpu": "250m",
+            "memory": "2Gi"
           }
         },
         "nodeSelector": null
