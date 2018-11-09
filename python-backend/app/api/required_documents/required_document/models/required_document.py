@@ -34,3 +34,10 @@ class RequiredDocument(AuditMixin, Base):
             return cls.query.filter_by(req_document_guid=_id).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_req_doc_category(cls, category):
+        try:
+            return cls.query.filter_by(req_document_category=category).all()
+        except ValueError:
+            return None

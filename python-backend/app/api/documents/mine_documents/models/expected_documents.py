@@ -6,6 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from app.extensions import db
+from sqlalchemy.inspection import inspect
 
 from ....utils.models_mixins import AuditMixin, Base
 
@@ -26,7 +27,7 @@ class MineExpectedDocument(AuditMixin, Base):
     date_accepted = db.Column(db.DateTime) 
     due_date = db.Column(db.DateTime) 
     status = db.Column(db.String(60), nullable=False,  default='PENDING')
-        #Audit Columns
+    #Audit Columns
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) 
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
   
@@ -34,10 +35,14 @@ class MineExpectedDocument(AuditMixin, Base):
     def json(self):
         return {
             'exp_document_guid' : str(self.mine_guid),
+            'req_document_guid' : str(self.req_document_guid),
             'mine_guid' : str(self.mine_guid),
+            'document_fulfillment_guid' : str(self.document_fulfillment_guid),
             'exp_document_name' : str(self.exp_document_name),
-            'effective_date' : str(self.effective_date),
-            'due_date' : str(self.due_date)
+            'exp_document_category' : str(self.exp_document_category),
+            'date_created' : str(self.date_created),
+            'due_date' : str(self.due_date),
+            'status' : str(self.status)
         }
 
     @classmethod

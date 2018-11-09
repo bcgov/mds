@@ -1,6 +1,5 @@
 import decimal
 import uuid
-import json
 
 from flask import request
 from flask_restplus import Resource, reqparse
@@ -21,7 +20,7 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         if mine_guid == None:
             return self.create_error_payload(401, 'Must provide a mine id.')
     
-        mine_exp_docs = MineExpectedDocument.query.filter_by(mine_guid=mine_guid).all()
+        mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)
         return {
             'mine_expected_documents' : list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
         }
@@ -35,8 +34,8 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         for new_doc in doc_list:
             mine_exp_doc = MineExpectedDocument(
                 req_document_guid=new_doc['req_document_guid'],
-                exp_document_name=new_doc['req_document_name'],
-                #exp_document_category = new_doc.'req_document_category'],
+                exp_document_name=new_doc['document_name'],
+                exp_document_category = new_doc['document_category'],
                 mine_guid = mine_guid,
                 **self.get_create_update_dict()
             )

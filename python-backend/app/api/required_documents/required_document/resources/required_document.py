@@ -1,3 +1,4 @@
+from flask import request
 from flask_restplus import Resource
 from ..models.required_document import RequiredDocument
 from app.extensions import jwt, api
@@ -14,8 +15,9 @@ class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
                 return req_doc.json()
             return self.create_error_payload(404, 'Required Document not found')
         else:
-            req_docs = RequiredDocument.query.all();
-
-            return {
-                'required_documents' : list(map(lambda x: x.json(), req_docs))
-            }
+            search_category = request.args.get('category', None, type=str)
+            if search_category:
+                req_docs = RequiredDocument.find_by_req_doc_category(search_category)
+            else:
+                req_docs = RequiredDocument.query.all();
+            return { 'required_documents' : list(map(lambda x: x.json(), req_docs))  }

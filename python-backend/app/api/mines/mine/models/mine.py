@@ -30,6 +30,7 @@ class MineIdentity(AuditMixin, Base):
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status]
+            #'mine_expected_documents':[item.json() for item in self.mine_expected_documents]
         }
 
     def json_for_map(self):
