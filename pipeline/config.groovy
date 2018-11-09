@@ -215,8 +215,8 @@ environments {
                 node {
                     cpu_request = "1m"
                     cpu_limit = "100m"
-                    memory_request = "512Mi"
-                    memory_limit = "768Mi"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 python {
                     cpu_request = "1m"
@@ -227,8 +227,8 @@ environments {
                 postgres {
                     cpu_request = "1m"
                     cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "1.5Gi"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {

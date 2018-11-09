@@ -9,12 +9,10 @@ RUN dbus-uuidgen > /var/lib/dbus/machine-id
 RUN mkdir /home/jenkins/bdd-tests
 COPY . /home/jenkins/bdd-tests/
 
-# Install gradle dependencies
-RUN cd home/jenkins/bdd-tests/ && ./gradlew build -m
-
 # Fix permissions
 RUN chmod -R 777 /home/jenkins/bdd-tests
 
-
-
 USER 1001
+
+# Install gradle dependencies
+RUN cd home/jenkins/bdd-tests/ && ./gradlew build -m
