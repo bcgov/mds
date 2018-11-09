@@ -4,7 +4,7 @@ import geb.Page
 import modules.*
 
 class Dashboard extends Page {
-    static at = { waitFor(10,1) {!loadingScreen.displayed}}
+    static at = { waitFor() {!loadingScreen.displayed}}
     static url = "dashboard"
     static content = {
         //general

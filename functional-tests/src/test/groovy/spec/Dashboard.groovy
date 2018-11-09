@@ -52,7 +52,7 @@ class  DashboardSpec extends GebReportingSpec {
         createMineButton_Dashboard.click()
 
         then: "I go to the mine record form page"
-        createMineForm.header == "Create Mine Record"
+        waitFor{createMineForm.header == "Create Mine Record" }
 
         when: "I input invalid mine name"
         createMineForm.createMineRecord(input)
