@@ -21,7 +21,7 @@ const setupReducerProps = () => {
   reducerProps.permittees = {};
   reducerProps.permitteeIds = [];
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
-  reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS;
+  reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
 };
 
 beforeEach(() => {

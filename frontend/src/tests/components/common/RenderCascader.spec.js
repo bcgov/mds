@@ -23,10 +23,8 @@ beforeEach(() => {
 });
 
 describe('RenderCascader', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderCascader {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

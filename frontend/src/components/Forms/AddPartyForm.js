@@ -23,7 +23,7 @@ export const AddPartyForm = (props) => {
               <Field
                 id="first_name"
                 name="first_name"
-                label='First Name *'
+                label="First Name *"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -34,7 +34,7 @@ export const AddPartyForm = (props) => {
               <Field
                 id="party_name"
                 name="party_name"
-                label='Surname *'
+                label="Surname *"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -49,7 +49,7 @@ export const AddPartyForm = (props) => {
               <Field
                 id="party_name"
                 name="party_name"
-                label='Company Name *'
+                label="Company Name *"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -63,7 +63,7 @@ export const AddPartyForm = (props) => {
               <Field
                 id="email"
                 name="email"
-                label='Email *'
+                label="Email *"
                 component={renderConfig.FIELD}
                 validate={[required, email]}
               />
@@ -76,7 +76,7 @@ export const AddPartyForm = (props) => {
               <Field
                 id="phone_no"
                 name="phone_no"
-                label='Phone Number *'
+                label="Phone Number *"
                 placeholder="e.g. xxx-xxx-xxxx"
                 component={renderConfig.FIELD}
                 validate={[required, phoneNumber, maxLength(12)]}
@@ -88,14 +88,14 @@ export const AddPartyForm = (props) => {
                 <Field
                   id="phone_ext"
                   name="phone_ext"
-                  label='Ext'
+                  label="Ext"
                   component={renderConfig.FIELD}
                   validate={[number, maxLength(4)]}
                 />
               </Form.Item>
             </Col>
           </Row >
-        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? 'Create Personnel' : 'Create Company'}</Button></div>
+        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? "Create Personnel" : "Create Company"}</Button></div>
       </Form>
     </div>
   );

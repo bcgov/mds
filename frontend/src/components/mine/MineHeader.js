@@ -36,7 +36,6 @@ class MineHeader extends Component {
 
   handleAddTailings = (value) => {
     // add actionCreator here
-    console.log(value);
     this.props.closeModal();
   }
 
@@ -87,7 +86,7 @@ class MineHeader extends Component {
               isDropdown 
               overlay={menu} 
               string={<Icon type="ellipsis" theme="outlined" style={{fontSize: '30px'}}/>}
-              />
+            />
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
