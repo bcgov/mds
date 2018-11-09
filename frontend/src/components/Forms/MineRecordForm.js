@@ -13,7 +13,6 @@ const propTypes = {
   title: PropTypes.string,
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
-  clear: PropTypes.bool,
 };
 
 export const MineRecordform = (props) => {
