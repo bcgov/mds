@@ -10,7 +10,7 @@ import { reset } from 'redux-form';
   );
  *
  */
-export const resetForm = (form) => (result, dispatch, props) => props.clear && dispatch(reset(form))
+export const resetForm = (form) => (result, dispatch, props) => props.clear && dispatch(reset(form));
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {

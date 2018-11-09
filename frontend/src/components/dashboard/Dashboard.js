@@ -55,7 +55,7 @@ export class Dashboard extends Component {
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null, searchTerm: ''}
   }
- 
+
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     this.renderDataFromURL(params);
@@ -130,7 +130,7 @@ export class Dashboard extends Component {
     const params = queryString.parse(this.props.location.search);
     this.props.fetchMineRecords(params.page, params.per_page, value);
   }
-  
+
   handleSubmit = (value) => {
     let mineStatus = value.mine_status.join(",");
     this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
@@ -173,10 +173,10 @@ export class Dashboard extends Component {
                     <MineSearch handleMineSearch={this.handleMineSearchDebounced} />
                   </Col>
                 </Row>
-                <MineList 
-                  mines={this.props.mines} 
-                  mineIds={this.props.mineIds} 
-                  pageData={this.props.pageData} 
+                <MineList
+                  mines={this.props.mines}
+                  mineIds={this.props.mineIds}
+                  pageData={this.props.pageData}
                 />
                 <div className="center">
                   <MediaQuery maxWidth={500}>
@@ -235,11 +235,11 @@ export class Dashboard extends Component {
                     <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
                 }
-                {this.state.showCoordinates  && 
+                {this.state.showCoordinates  &&
                   <div className="center">
                     <div className="inline-flex evenly center-mobile">
                     <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
-                    <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
+                    <h2>Longitude: <span className="p">{this.state.long}</span></h2>
                     </div>
                   </div>
                 }
@@ -256,14 +256,13 @@ export class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.props.mineRegionOptions);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
           <div className="right center-mobile">
-          <ConditionalButton 
+          <ConditionalButton
             className="full-mobile"
-            type="primary" 
+            type="primary"
             handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.props.mineRegionOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
             string={ModalContent.CREATE_MINE_RECORD}
           />
