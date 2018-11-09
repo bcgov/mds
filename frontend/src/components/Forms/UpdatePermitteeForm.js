@@ -27,8 +27,8 @@ const permitteeOptions = (permit) => {
   const dataArray = []
   permit.map((obj) => {
     const data = {
-      value: obj.permittee[0].permittee_guid.concat(', ', obj.permit_guid),
-      label: obj.permittee[0].party.name.concat(", ", obj.permit_no)
+      value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
+      label: `${obj.permittee[0].party.name}, ${obj.permit_no}`
     }
     dataArray.push(data);
   });

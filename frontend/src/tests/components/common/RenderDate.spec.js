@@ -24,10 +24,8 @@ beforeEach(() => {
 });
 
 describe('RenderDate', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderDate {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

@@ -18,17 +18,17 @@ const RenderCheckbox = ({
   label,
   meta: { touched, error},
 }) => (
-  <Form.Item 
-  validateStatus={(touched ? (error && 'error') : '')}
->
-  <Checkbox 
-    id={id} 
-    checked={input.value || false}
-    {...input} 
+  <Form.Item
+    validateStatus={(touched ? (error && 'error') : '')}
   >
-  {label}
-  </Checkbox>
-</Form.Item>
+    <Checkbox
+      id={id}
+      checked={input.value}
+      {...input}
+    >
+      {label}
+    </Checkbox>
+  </Form.Item>
   );
 
 RenderCheckbox.propTypes = propTypes;

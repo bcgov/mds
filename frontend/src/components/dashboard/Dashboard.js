@@ -38,6 +38,7 @@ const propTypes = {
   mineIds: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
   mineStatusOptions: PropTypes.array.isRequired,
+  mineRegionOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
@@ -45,6 +46,7 @@ const defaultProps = {
   mineIds: [],
   pageData: {},
   mineStatusOptions: [],
+  mineRegionOptions: [],
 };
 
 export class Dashboard extends Component {

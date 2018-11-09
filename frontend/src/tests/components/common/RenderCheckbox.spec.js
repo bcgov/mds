@@ -21,10 +21,8 @@ beforeEach(() => {
 });
 
 describe('RenderCheckbox', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderCheckbox {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });
