@@ -1,22 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
+import RenderCheckbox from '@/components/common/RenderCheckbox';
 
 let props = {};
 
 const setupProps = () => {
   props = {
+    id: 1,
     input: '',
     label: '',
     meta: {
       touched: false,
       error: false,
-      warning: false,
     },
-    id: 'parties',
-    data: [],
-    option: {},
-    handleChange: jest.fn()
   };
 }
 
@@ -24,9 +20,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('RenderLargeSelect', () => {
+describe('RenderCheckbox', () => {
   it('renders properly', () => {
-    const wrapper = shallow(<RenderLargeSelect {...props} />);
+    const wrapper = shallow(<RenderCheckbox {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

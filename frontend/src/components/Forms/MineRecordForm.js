@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import RenderField from '@/components/common/RenderField';
-import RenderAutoSizeField from '@/components/common/RenderAutoSizeField';
-import RenderCascader from '@/components/common/RenderCascader';
 import { Form, Button, Col, Row, Popconfirm } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array,
+  mineStatusOptions: PropTypes.array.isRequired,
+  mineRegionOptions: PropTypes.array.isRequired,
 };
 
 export const MineRecordform = (props) => {
@@ -26,7 +25,7 @@ export const MineRecordform = (props) => {
               id="name"
               name="name"
               label='Mine Name *'
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[required, maxLength(60), minLength(3)]}
             />
           </Form.Item>
@@ -41,7 +40,22 @@ export const MineRecordform = (props) => {
               label='Mine Status *'
               placeholder="Plese select status"
               options={props.mineStatusOptions}
-              component={RenderCascader}
+              component={renderConfig.CASCADER}
+              validate={[required]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item>
+            <Field
+              id="mine_region"
+              name="mine_region"
+              label="Mine Region *"
+              placeholder="Select a Region"
+              component={renderConfig.SELECT}
+              data={props.mineRegionOptions}
               validate={[required]}
             />
           </Form.Item>
@@ -54,7 +68,7 @@ export const MineRecordform = (props) => {
               id="latitude"
               name="latitude"
               label='Latitude'
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[number, maxLength(10), lat]}
             />
           </Form.Item>
@@ -65,7 +79,7 @@ export const MineRecordform = (props) => {
               id="longitude"
               name="longitude"
               label='Longitude'
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[number, maxLength(12), lon]}
             />
           </Form.Item>
@@ -78,7 +92,21 @@ export const MineRecordform = (props) => {
               id="note"
               name="note"
               label='Notes'
-              component={RenderAutoSizeField}
+              component={renderConfig.AUTO_SIZE_FIELD}
+              validate={[maxLength(300)]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col>
+          <Form.Item>
+            <Field
+              id="major"
+              name="major"
+              label='Major Mine'
+              type="checkbox"
+              component={renderConfig.CHECKBOX}
               validate={[maxLength(300)]}
             />
           </Form.Item>

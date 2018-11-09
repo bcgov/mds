@@ -15,8 +15,8 @@ class MineIdentity(AuditMixin, Base):
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
     mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
-    mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
-    mine_region = db.relationship('MineRegion',backref='mine_region',order_by='desc(MineRegion.update_timestamp)', lazy='joined')
+    mine_status = db.relationship('MineStatus', backref='mine_identity', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+    mine_region = db.relationship('MineRegion',backref='mine_identity',order_by='desc(MineRegion.update_timestamp)', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
@@ -97,12 +97,18 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
+    major = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
     def json(self):
-        return {'mine_name': self.mine_name, 'mine_no': self.mine_no, 'mine_note': self.mine_note}
+        return {
+            'mine_name': self.mine_name,
+            'mine_no': self.mine_no,
+            'mine_note': self.mine_note,
+            'major': self.major
+            }
 
     @classmethod
     def find_by_mine_no(cls, _id):
@@ -148,7 +154,7 @@ class MineralTenureXref(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     tenure_number_id = db.Column(db.Numeric(10), unique=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineralTenureXref %r>' % self.tenure_number_id

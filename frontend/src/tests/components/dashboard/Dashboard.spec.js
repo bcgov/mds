@@ -10,6 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
   dispatchProps.createMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
+  dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
@@ -20,7 +21,8 @@ const setupReducerProps = () => {
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.pageData = MOCK.PAGE_DATA;
-  reducerProps.mineStatusOptions = MOCK.MINE_STATUS_OPTIONS;
+  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS;
+  reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS;
 };
 
 beforeEach(() => {

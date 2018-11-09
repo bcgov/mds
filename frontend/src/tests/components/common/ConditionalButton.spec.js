@@ -24,10 +24,8 @@ beforeEach(() => {
 });
 
 describe('ConditionalButton', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<ConditionalButton {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

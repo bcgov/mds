@@ -1,11 +1,11 @@
 export const createMockHeader = () => ({
   headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Authorization': 'mockToken'
+    "Access-Control-Allow-Origin": "*",
+    "Authorization": "mockToken"
   }
 });
 
-export const ERROR = { error: {message: 'Errors', status: 400}}
+export const ERROR = { error: {message: "Errors", status: 400}}
 
 
 export const MINES = {
@@ -38,11 +38,18 @@ export const MINES = {
           latitude: null
         }
       ],
+      mine_region: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+          region_code: "NW"
+        }
+      ],
       mine_status: {
-        status_values: ['CLD', 'CM'],
-        status_labels: ['Closed', 'Care & Maintenance'],
-        effective_date: '2018-10-16',
-        expiry_date: '9999-12-31'
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31"
       }
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
@@ -116,10 +123,10 @@ export const MINES = {
         }
       ],
       mine_status: {
-        status_values: ['CLD', 'CM'],
-        status_labels: ['Closed', 'Care & Maintenance'],
-        effective_date: '2018-10-16',
-        expiry_date: '9999-12-31'
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31"
       },
       mine_detail: [
         {
@@ -136,7 +143,14 @@ export const MINES = {
           longitude: null,
           latitude: null
         }
-      ]
+      ],
+      mine_region: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+          region_code: "NW"
+        }
+      ],
     }
   }
 }
@@ -160,122 +174,145 @@ export const PARTY = {
 
 export const MINE_NAME_LIST = [
     {
-      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-      "mine_name": "New Mine",
-      "mine_no": "BLAH6194",
-      "longitude": '-119.6963833',
-      "latitude": '51.4961750'
+      guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+      mine_name: "New Mine",
+      mine_no: "BLAH6194",
+      longitude: "-119.6963833",
+      latitude: "51.4961750"
     },
     {
-      "guid": "89a65274-581d-4862-8630-99f5f7687089",
-      "mine_name": "Mine Two",
-      "mine_no": "BLAH0502",
-      "longitude": '-119.6963833',
-      "latitude": '51.4961750'
+      guid: "89a65274-581d-4862-8630-99f5f7687089",
+      mine_name: "Mine Two",
+      mine_no: "BLAH0502",
+      longitude: "-119.6963833",
+      latitude: "51.4961750"
     },
     {
-      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-      "mine_name": "Legit Mine",
-      "mine_no": "BLAH6734",
-      "longitude": '-119.6963833',
-      "latitude": '51.4961750'
+      guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+      mine_name: "Legit Mine",
+      mine_no: "BLAH6734",
+      longitude: "-119.6963833",
+      latitude: "51.4961750"
     }
   ]
 
 export const PAGE_DATA = {
-  "current_page": 1,
-  "has_next": true,
-  "has_prev":false,
-  "items_per_page":25,
-  "mines":[],
-  "next_num":2,
-  "prev_num":null,
-  "total":9000,
-  "total_pages":360,
+  current_page: 1,
+  has_next: true,
+  has_prev:false,
+  items_per_page:25,
+  mines:[],
+  next_num:2,
+  prev_num:null,
+  total:9000,
+  total_pages:360,
 }
 
 export const COORDINATES = [48.70707, -122.489504];
 export const STATUS_OPTIONS = {
-  'options':
+  options:
   [
     {
-        "value": "ABN",
-        "label": "Abandoned"
+        value: "ABN",
+        label: "Abandoned"
     },
     {
-        "value": "CLD",
-        "label": "Closed",
-        "children": [
+        value: "CLD",
+        label: "Closed",
+        children: [
         {
-            "value": "CM",
-            "label": "Care & Maintenance"
+            value: "CM",
+            label: "Care & Maintenance"
         },
         {
-            "value": "REC",
-            "label": "Reclamation",
-            "children": [
+            value: "REC",
+            label: "Reclamation",
+            children: [
             {
-                "value": "LTM",
-                "label": "Long Term Maintenance"
+                value: "LTM",
+                label: "Long Term Maintenance"
             },
             {
-                "value": "LWT",
-                "label": "Long Term Maintenance Water Treatment"
+                value: "LWT",
+                label: "Long Term Maintenance Water Treatment"
             },
             {
-                "value": "PRP",
-                "label": "Permit Release Pending"
+                value: "PRP",
+                label: "Permit Release Pending"
             }
             ]
         },
         {
-            "value": "ORP",
-            "label": "Orphaned",
-            "children": [
+            value: "ORP",
+            label: "Orphaned",
+            children: [
             {
-                "value": "LTM",
-                "label": "Long Term Maintenance"
+                value: "LTM",
+                label: "Long Term Maintenance"
             },
             {
-                "value": "LWT",
-                "label": "Long Term Maintenance Water Treatment"
+                value: "LWT",
+                label: "Long Term Maintenance Water Treatment"
             },
             {
-                "value": "RNS",
-                "label": "Reclamation Not Starte"
+                value: "RNS",
+                label: "Reclamation Not Starte"
             },
             {
-                "value": "SVR",
-                "label": "Site Visit Required"
+                value: "SVR",
+                label: "Site Visit Required"
             }
             ]
         },
         {
-            "value": "UN",
-            "label": "Unknown"
+            value: "UN",
+            label: "Unknown"
         }
         ]
     },
     {
-        "value": "NS",
-        "label": "Not Started"
+        value: "NS",
+        label: "Not Started"
     },
     {
-        "value": "OP",
-        "label": "Operating",
-        "children": [
+        value: "OP",
+        label: "Operating",
+        children: [
         {
-            "value": "YR",
-            "label": "Year round"
+            value: "YR",
+            label: "Year round"
         },
         {
-            "value": "SEA",
-            "label": "Seasonal"
+            value: "SEA",
+            label: "Seasonal"
         }
       ]
     }
   ]
 };
+
+export const REGION_OPTIONS = { 
+  options: [{
+    value: "SW",
+    label: "South West"
+  },
+  {
+    value: "SC",
+    label: "South Central"
+  },
+  {
+    value: "NW",
+    label: "North West"
+  },
+  {
+    value: "NE",
+    label: "North East"
+  },
+  {
+    value: "SE",
+    label: "South East"
+  }
+]}
 
 export const PERMITTEE = {
   permitteeIds: [
@@ -288,7 +325,7 @@ export const PERMITTEE = {
       name: "mock name",
       effective_date: "mockDate",
       party: {
-        name: 'mock name'
+        name: "mock name"
       }
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
@@ -296,7 +333,7 @@ export const PERMITTEE = {
       name: "mock Two",
       effective_date: "mockDate",
       party: {
-        name: 'mock name'
+        name: "mock name"
       }
     }
   }

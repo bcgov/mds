@@ -173,29 +173,28 @@ MINE_STATUS_OPTIONS = [
 ]
 
 
-
 #Region Code
-MINE_REGION_OPTIONS = {
-    'South West Region': {
+MINE_REGION_OPTIONS = [{
         'value': 'SW',
         'label': 'South West'
     },
-    'South Central Region': {
+    {
         'value': 'SC',
         'label': 'South Central'
     },
-    'North West Region': {
+     {
         'value': 'NW',
         'label': 'North West'
     },
-    'North East Region': {
+    {
         'value': 'NE',
         'label': 'North East'
     },
-    'South East Region': {
+    {
         'value': 'SE',
         'label': 'South East'
     }
-}
+]
+
 
 
