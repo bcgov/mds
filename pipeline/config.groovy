@@ -153,7 +153,7 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
-                            'NODE_ENV': "production",
+                            'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -239,6 +239,7 @@ environments {
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "development"
             }
             modules {
                 'mds-frontend' {
@@ -298,6 +299,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "test"
             }
             modules {
                 'mds-frontend' {
@@ -357,6 +359,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
