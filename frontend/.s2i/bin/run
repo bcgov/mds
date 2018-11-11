@@ -22,8 +22,6 @@ run_node() {
     exec npm run -d $NPM_RUN
   else
     echo "Rebuilding the application and serving it"
-    export BASE_PATH=
-    export ASSET_PATH=/
     exec npm run -d build-serve
   fi
 }
