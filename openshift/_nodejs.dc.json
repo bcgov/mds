@@ -282,16 +282,16 @@
 				  }
 				],
 				"readinessProbe": {
-				  "timeoutSeconds": 3,
-				  "initialDelaySeconds": 3,
+				  "timeoutSeconds": 5,
+				  "initialDelaySeconds": 300,
 				  "httpGet": {
 					"path": "${BASE_PATH}",
 					"port": 3000
 				  }
 				},
 				"livenessProbe": {
-					"timeoutSeconds": 3,
-					"initialDelaySeconds": 30,
+					"timeoutSeconds": 5,
+					"initialDelaySeconds": 300,
 					"httpGet": {
 						"path": "${BASE_PATH}",
 						"port": 3000
