@@ -38,7 +38,7 @@ export const MineRecordform = (props) => {
               id="mine_status"
               name="mine_status"
               label='Mine Status *'
-              placeholder="Plese select status"
+              placeholder="Please select status"
               options={props.mineStatusOptions}
               component={renderConfig.CASCADER}
               validate={[required]}

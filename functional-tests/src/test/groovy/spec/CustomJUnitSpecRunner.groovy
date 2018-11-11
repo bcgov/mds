@@ -9,6 +9,7 @@ import utils.DataCleanup
 
 @RunWith(Suite)
 @Suite.SuiteClasses([
+        DataCleanup.class,
         DataInit.class,
         LoginPageSpec.class,
         DashboardSpec.class,

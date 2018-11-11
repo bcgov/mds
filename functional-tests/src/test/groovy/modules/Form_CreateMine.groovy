@@ -15,6 +15,9 @@ class Form_CreateMine extends Module {
         status_level2 (wait:true) {$("ul.ant-cascader-menu",1).find("li",2)}//Orphaned
         status_level3 (wait:true) {$("ul.ant-cascader-menu",2).find("li",0)}//Long Term Maintenance
 
+        regionLabel (wait:true) {$("#mine_region.ant-select-enabled")}
+        region_1 (wait:true) {$("ul.ant-select-dropdown-menu",0).has("li", text: "South West")}//South West
+
         latBox (wait:true) {$("input", id:"latitude")}
         longBox (wait:true) {$("input", id:"longitude")}
         notesBox (wait:true) {$("textarea", id:"note")}
@@ -32,6 +35,9 @@ class Form_CreateMine extends Module {
             status_level1.click()
             status_level2.click()
             status_level3.click()
+
+            regionLabel.click()
+            region_1.click()
             if(mineProfileData.latitude!=null){
                 latBox=mineProfileData.latitude
             }
