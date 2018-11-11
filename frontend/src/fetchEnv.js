@@ -20,6 +20,7 @@ export default function fetchEnv() {
         KEYCLOAK.clientId = env.keycloak_clientId;
         KEYCLOAK.resource = env.keycloak_resource;
         KEYCLOAK.url = env.keycloak_url;
+        KEYCLOAK.idpHint = env.keycloak_idpHint;
         USER_ROLES.role_admin = env.keycloak_role_admin;
         USER_ROLES.role_create = env.keycloak_role_create;
         USER_ROLES.role_view = env.keycloak_role_view;

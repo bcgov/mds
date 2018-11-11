@@ -3,38 +3,38 @@ package pages
 import geb.Page
 import modules.*
 
-class DashboardPage extends Page { 
-    static at = { waitFor(10,1) {!loadingScreen.displayed}}
+class Dashboard extends Page {
+    static at = { waitFor() {!loadingScreen.displayed}}
     static url = "dashboard"
     static content = {
-        //general 
+        //general
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
         loadingScreen (required:false) {$("div.loading-screen")}
 
-        //create mine form 
+        //create mine form
         createMineForm { module Form_CreateMine }
-        createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}  
-        
+        createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}
+
         //Dashboard
-        first_mineID (wait:true) {$("div.ant-row-flex").find("div.ant-col-8",3).text()}
-        first_mineName (wait:true) {$("div.ant-row-flex").find("div.ant-col-8",4).text()}
+        first_mineID (wait:true) {$("div.ant-row-flex").find(id: "mine_list_id",0).text()}
+        first_mineName (wait:true) {$("div.ant-row-flex").find(id: "mine_list_name",0).text()}
         viewButton (wait:true) {$("button").has("span", text:"View")}
 
         //search
         searchBox (wait:true){$("input", id:"search")}
         resultList (required:false, wait: false) {$("ul", role: "listbox").find("li")}
-        
+
         //pagination
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
         paginationSelection (wait:true) {$("div.ant-select-selection-selected-value")}
-         
+
     }
 
     def searchResultValidation(keyword){
         //check if the returned search results contains search keyword
         def goodSearch = false
         if (resultList.present){
-            resultList.each{ 
+            resultList.each{
                 if(it.text().toLowerCase().contains(keyword.toLowerCase())== true || it.text()==""){
                     goodSearch = true
                 }
@@ -55,8 +55,8 @@ class DashboardPage extends Page {
         if (resultList.present){
             int mineToSelect = new Random().nextInt(resultList.size())
             def selectedMineID = resultList[mineToSelect].text().split(' - ')[1]
-            resultList[mineToSelect].click()  
-            return selectedMineID      
+            resultList[mineToSelect].click()
+            return selectedMineID
         }
     }
 
@@ -78,7 +78,7 @@ class DashboardPage extends Page {
             }
 
         }
-    
+
     }
 
     def paginationSelection(page){

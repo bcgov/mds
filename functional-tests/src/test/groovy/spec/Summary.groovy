@@ -5,19 +5,19 @@ import spock.lang.*
 
 
 import pages.*
-import utils.* 
-import dataObjects.managerProfileData
+import utils.*
+import dataObjects.ManagerProfileData
 
- 
+
 @Title("MDS-MineProfilePage")
 @Stepwise
-class  C_SummarySpec extends GebReportingSpec {
+class  SummarySpec extends GebReportingSpec {
 
     def "Scenario: User can view the mine profile"(){
         when: "I go to the mine profile page for BLAH0000(the test record)"
-        to MineProfilePage 
+        to MineProfilePage
 
-        then: "I should see profile of the Mine"    
+        then: "I should see profile of the Mine"
         assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
         assert latValue.minus("Lat:").startsWith(Const.MINE_LAT)
