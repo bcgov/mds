@@ -274,7 +274,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "200m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
@@ -327,7 +327,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "300m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
