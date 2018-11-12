@@ -6,13 +6,13 @@ import { Provider } from 'react-redux';
 import App from './App';
 import 'antd/dist/antd.less';
 import './styles/index.scss';
-import registerServiceWorker from './registerServiceWorker';
+import unregister from './registerServiceWorker';
 import fetchEnv from './fetchEnv';
 import configureStore from './store/configureStore';
 
 export const store = configureStore();
 
-registerServiceWorker();
+unregister();
 
 export class Index extends Component {
   constructor() {
