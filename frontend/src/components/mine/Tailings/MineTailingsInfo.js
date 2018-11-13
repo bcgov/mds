@@ -41,7 +41,7 @@ class MineTailingsInfo extends Component {
 
   render() {
     const { mine } = this.props;
-    // if (mine.mine_tailings) {
+    // if (mine.mine_tailings_storgae_facility) {
     //   return (
     //     <div>
     //       <NullScreen type="generic" />
@@ -63,13 +63,13 @@ class MineTailingsInfo extends Component {
                 <Col span={6} ><h3>Recieved</h3></Col>
                 <Col span={6} ><h3>Review Status</h3></Col>
             </Row>
-            {mine.mgr_appointment.map((mgr, id) => {
+            {mine.mine_expected_documents.map((doc, id) => {
               return (
                 <Row key={id} gutter={16}>
-                    <Col span={6} ><h5>{mgr.name}</h5></Col>
-                    <Col span={6} ><h5>{mgr.name}</h5></Col>
-                    <Col span={6} ><h5>{mgr.name}</h5></Col>
-                    <Col span={6} ><h5>{mgr.name}</h5></Col>
+                    <Col span={6} ><h5>{doc.req_document_name}</h5></Col>
+                    <Col span={6} ><h5>{doc.expiry_date}</h5></Col>
+                    <Col span={6} ><h5></h5></Col>
+                    <Col span={6} ><h5></h5></Col>
                 </Row>
                   )
                 })}
