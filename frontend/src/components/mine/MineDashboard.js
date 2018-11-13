@@ -7,6 +7,7 @@ import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
+import MineTailingsInfo from '@/components/mine/Tailings/MineTailingsInfo';
 import MineSummary from '@/components/mine/Summary/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import * as router from '@/constants/routes';
@@ -87,6 +88,9 @@ export class MineDashboard extends Component {
                 </TabPane>
                 <TabPane tab="Tenure" key="tenure">
                   <MineTenureInfo mine={mine} {...this.props}/>
+                </TabPane>
+                <TabPane tab="Tailings" key="tailings">
+                  <MineTailingsInfo mine={mine} {...this.props}/>
                 </TabPane>
               </Tabs>
             </div>
