@@ -6,12 +6,12 @@ import groovy.transform.TupleConstructor
 @AutoClone
 @TupleConstructor
 
-class managerProfileData {
+class ManagerProfileData {
     String  first_name  ,
             surname     ,
             phone       ,
             ext         ,
             email       ,
             date
-               
+
 }

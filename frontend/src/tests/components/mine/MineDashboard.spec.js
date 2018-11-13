@@ -10,6 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
+  dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.match = {};
 };
 
@@ -20,6 +21,7 @@ const setupReducerProps = () => {
   reducerProps.permittees = {};
   reducerProps.permitteeIds = [];
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+  reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
 };
 
 beforeEach(() => {

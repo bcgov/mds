@@ -6,8 +6,8 @@ import { Pagination, Tabs, Col, Row, Divider, notification } from 'antd';
 import queryString from 'query-string'
 import MediaQuery from 'react-responsive';
 import { openModal, closeModal } from '@/actions/modalActions';
-import { fetchMineRecords, createMineRecord,  fetchStatusOptions } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMinesPageData, getMineStatusOptions } from '@/selectors/mineSelectors';
+import { fetchMineRecords, createMineRecord,  fetchStatusOptions, fetchRegionOptions } from '@/actionCreators/mineActionCreator';
+import { getMines, getMineIds, getMinesPageData, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
@@ -38,6 +38,7 @@ const propTypes = {
   mineIds: PropTypes.array.isRequired,
   pageData: PropTypes.object.isRequired,
   mineStatusOptions: PropTypes.array.isRequired,
+  mineRegionOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
@@ -45,6 +46,7 @@ const defaultProps = {
   mineIds: [],
   pageData: {},
   mineStatusOptions: [],
+  mineRegionOptions: [],
 };
 
 export class Dashboard extends Component {
@@ -58,6 +60,7 @@ export class Dashboard extends Component {
     const params = queryString.parse(this.props.location.search);
     this.renderDataFromURL(params);
     this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -142,10 +145,10 @@ export class Dashboard extends Component {
     });
   }
 
-  openModal(event, mineStatusOptions, onSubmit, title) {
+  openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, onSubmit, title},
+      props: { mineStatusOptions, mineRegionOptions, onSubmit, title},
       content: modalConfig.MINE_RECORD
     });
   }
@@ -260,7 +263,7 @@ export class Dashboard extends Component {
           <ConditionalButton 
             className="full-mobile"
             type="primary" 
-            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
+            handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.props.mineRegionOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
             string={ModalContent.CREATE_MINE_RECORD}
           />
           </div>
@@ -278,7 +281,8 @@ const mapStateToProps = (state) => {
     mines: getMines(state),
     mineIds: getMineIds(state),
     pageData: getMinesPageData(state),
-    mineStatusOptions: getMineStatusOptions(state)
+    mineStatusOptions: getMineStatusOptions(state),
+    mineRegionOptions: getMineRegionOptions(state),
   };
 };
 
@@ -286,6 +290,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecords,
     fetchStatusOptions,
+    fetchRegionOptions,
     createMineRecord,
     openModal,
     closeModal,

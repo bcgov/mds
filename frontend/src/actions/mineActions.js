@@ -35,3 +35,10 @@ export const storeStatusOptions = (payload) => {
     payload,
   }
 }
+
+export const storeRegionOptions = (payload) => {
+  return {
+    type: ActionTypes.STORE_REGION_OPTIONS,
+    payload,
+  }
+}

@@ -13,10 +13,8 @@ beforeEach(() => {
 });
 
 describe('NullScreen', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<NullScreen {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

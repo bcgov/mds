@@ -1,5 +1,12 @@
 import mineReducer from "@/reducers/mineReducer";
-import { updateMine, storeMine, storeMineList, storeMineNameList, storeStatusOptions } from "@/actions/mineActions";
+import { 
+  updateMine,
+   storeMine, 
+   storeMineList, 
+   storeMineNameList, 
+   storeStatusOptions,
+   storeRegionOptions
+   } from "@/actions/mineActions";
 import * as MOCK from '@/tests/mocks/dataMocks'
 
 describe('mineReducer', () => {
@@ -11,7 +18,8 @@ describe('mineReducer', () => {
       mineNameList:[],
       minesPageData: {},
       mineGuid: false,
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const result = mineReducer(undefined, {});
     expect(result).toEqual(expectedValue);
@@ -30,7 +38,8 @@ describe('mineReducer', () => {
         'total': 1
       },
       mineGuid: false,
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const result = mineReducer(undefined, storeMineList({
       'mines': [],
@@ -49,7 +58,8 @@ describe('mineReducer', () => {
       mineNameList: [],
       minesPageData: {},
       mineGuid: "test123",
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const result = mineReducer(undefined, storeMine({"guid": "test123"}, "test123"));
     expect(result).toEqual(expectedValue);
@@ -62,7 +72,8 @@ describe('mineReducer', () => {
       mineNameList: [],
       minesPageData: {},
       mineGuid: "test123",
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const updatedMineValue = {
       mines: {"test456": {"guid": "test456"}},
@@ -70,7 +81,8 @@ describe('mineReducer', () => {
       mineNameList: [],
       minesPageData: {},
       mineGuid: "test456",
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const storedMine = mineReducer(undefined, storeMine({"guid": "test123"}, "test123"));
     expect(storedMine).toEqual(storedMineValue);
@@ -85,7 +97,8 @@ describe('mineReducer', () => {
       mineNameList: { mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039"}]},
       minesPageData: {},
       mineGuid: false,
-      mineStatusOptions: []
+      mineStatusOptions: [],
+      mineRegionOptions: [],
     };
     const result = mineReducer(undefined, storeMineNameList({ mines: [{ "guid": "test123", "mine_name": "mineName", "mine_no": "2039" }] }));
     expect(result).toEqual(expectedValue);
@@ -98,10 +111,24 @@ describe('mineReducer', () => {
       mineNameList: [],
       minesPageData: {},
       mineGuid: false,
-      mineStatusOptions: MOCK.STATUS_OPTIONS.options
+      mineStatusOptions: MOCK.STATUS_OPTIONS.options,
+      mineRegionOptions: [],
     };
     const result = mineReducer(undefined, storeStatusOptions(MOCK.STATUS_OPTIONS));
     expect(result).toEqual(expectedValue);
   });
 
+  it('receives STORE_REGION_OPTIONS', () => {
+    const expectedValue = {
+      mines: {},
+      mineIds: [],
+      mineNameList: [],
+      minesPageData: {},
+      mineGuid: false,
+      mineStatusOptions: [],
+      mineRegionOptions: MOCK.REGION_OPTIONS.options
+    };
+    const result = mineReducer(undefined, storeRegionOptions(MOCK.REGION_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
 });

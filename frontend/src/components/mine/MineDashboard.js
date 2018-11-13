@@ -4,8 +4,8 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { openModal, closeModal } from '@/actions/modalActions';
-import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
+import { fetchMineRecordById, updateMineRecord, fetchStatusOptions, fetchRegionOptions  } from '@/actionCreators/mineActionCreator';
+import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
 import MineTailingsInfo from '@/components/mine/Tailings/MineTailingsInfo';
 import MineSummary from '@/components/mine/Summary/MineSummary';
@@ -48,6 +48,7 @@ export class MineDashboard extends Component {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id);
     this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
 
     if (activeTab) {
       this.setState({activeTab : `${activeTab}`});
@@ -106,6 +107,7 @@ const mapStateToProps = (state) => {
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
     mineStatusOptions: getMineStatusOptions(state),
+    mineRegionOptions: getMineRegionOptions(state),
   };
 };
 
@@ -113,6 +115,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
     fetchStatusOptions,
+    fetchRegionOptions,
     updateMineRecord,
     openModal, 
     closeModal

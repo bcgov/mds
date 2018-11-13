@@ -19,7 +19,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('AddPartyFrom', () => {
+describe('AddTenureNumberForm', () => {
   it('renders properly', () => {
     const component = shallow(<AddTenureNumberForm {...dispatchProps} {...props}/>);
     expect(component).toMatchSnapshot();

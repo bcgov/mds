@@ -5,18 +5,18 @@ import spock.lang.*
 
 
 import pages.MineProfilePage
-import utils.Const 
+import utils.Const
 
- 
+
 @Title("MDS-MineProfilePage")
 @Stepwise
-class  F_Tenure extends GebReportingSpec {
+class  Tenure extends GebReportingSpec {
     def setup(){
         given: "User go to the mine profile page and click the Tenure tab"
         to MineProfilePage
         tenureTab.tabSelect.click()
     }
- 
+
     def "Scenario: User can add tenure number"(){
         when: "User open the update tenure form and add a new tenure number"
         tenureTab.addTenure(Const.TENURE)
@@ -46,5 +46,5 @@ class  F_Tenure extends GebReportingSpec {
         "long tenure"   |"123456677998"|"Must be 7 characters long"
         "contains non-numerical value" | "1234cha" | "Input must be a number"
     }
- 
+
 }

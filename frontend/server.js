@@ -53,6 +53,7 @@ app.get(`${BASE_PATH}/env`, function(req, res) {
       keycloak_resource: process.env.KEYCLOAK_RESOURCE,
       keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
       keycloak_url: process.env.KEYCLOAK_URL,
+      keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
       keycloak_role_admin: process.env.KEYCLOAK_ROLE_ADMIN,
       keycloak_role_create: process.env.KEYCLOAK_ROLE_CREATE,
       keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW

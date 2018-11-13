@@ -23,10 +23,8 @@ beforeEach(() => {
 });
 
 describe('RenderAutoSizeField', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderAutoSizeField {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

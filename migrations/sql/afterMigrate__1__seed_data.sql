@@ -84,3 +84,18 @@ VALUES
     ('OMS Manual', 'Operations Maintainence Surveilance', 'MINE_TAILINGS','2017-07-01', 'system-mds', 'system-mds'),
     ('OTHER_TEST_REPORT', 'testing filter on category', 'OTHER_REPORT','2017-07-01', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_region_code (
+    region_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+)
+VALUES
+    ('SW','South West Region',10,'system-mds', 'system-mds'),
+    ('SC','South Central Region',20,'system-mds', 'system-mds'),
+    ('NW','North West Region',30,'system-mds', 'system-mds'),
+    ('NE','North East Region',40,'system-mds', 'system-mds'),
+    ('SE','South East Region',50,'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

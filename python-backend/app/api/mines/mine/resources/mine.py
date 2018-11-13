@@ -2,16 +2,17 @@ import decimal
 import uuid
 
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, inputs
 
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.location import MineLocation, MineMapViewLocation
+from ...region.models.region import MineRegion  
+
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-
 
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -21,7 +22,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
     parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
+    parser.add_argument('major', type=inputs.boolean, help='Indication if mine is major or regional. Accepts "true", "false", "1", "0".')
 
+    parser.add_argument('mine_region', type=str, help='Region for the mine.')
+    
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
@@ -105,7 +109,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         lon = data['longitude']
         note = data['note']
         location = None
+        mine_region = None
         status = data['mine_status']
+        major = data['major']
+        region = data['mine_region']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine_detail = MineDetail(
@@ -114,6 +121,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_no=generate_mine_no(),
                 mine_name=data['name'],
                 mine_note=note if note else '',
+                major=major,
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
@@ -130,14 +138,28 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             )
             location.save()
         mine_status = self.mine_status_processor(status, mine_identity.mine_guid) if status else None
+        #mine region
+        if region:
+            try:
+                mine_region = MineRegion (
+                    mine_region_guid=uuid.uuid4(),
+                    mine_guid=mine_identity.mine_guid,
+                    region_code=region,
+                    **self.get_create_update_dict()
+                )
+            except AssertionError as e:
+                self.raise_error(400, 'Error: {}'.format(e))
+            mine_region.save()
         return {
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
             'mine_name': mine_detail.mine_name,
             'mine_note': mine_detail.mine_note,
+            'major': mine_detail.major,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
-            'mine_status': mine_status.json() if mine_status else None
+            'mine_status': mine_status.json() if mine_status else None,
+            'mine_region':mine_region.json() if mine_region else None
         }
 
     @api.expect(parser)
@@ -150,13 +172,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_name = data['name']
         mine_note = data['note']
         status = data['mine_status']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status:
+        major = data['major']
+        region = data['mine_region']
+        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major is None:
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
         # Mine Detail
-        if mine_name or mine_note:
+        if mine_name or mine_note or major is not None:
             mine_detail = mine.mine_detail[0]
             try:
                 new_mine_detail = MineDetail(
@@ -165,12 +189,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     mine_no=mine_detail.mine_no,
                     mine_name=mine_detail.mine_name,
                     mine_note=mine_detail.mine_note,
+                    major=mine_detail.major,
                     **self.get_create_update_dict()
                 )
                 if mine_name:
                     new_mine_detail.mine_name = mine_name
                 if mine_note:
                     new_mine_detail.mine_note = mine_note
+                if major is not None:
+                    new_mine_detail.major = major
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
@@ -201,7 +228,23 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict()
             )
             location.save()
+
+        # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None
+
+        # Region validation
+        if region:
+            try:
+                mine_region = MineRegion(
+                    mine_region_guid=uuid.uuid4(),
+                    mine_guid=mine.mine_guid,
+                    region_code=region,
+                    **self.get_create_update_dict()
+                )
+            except AssertionError as e:
+                self.raise_error(400, 'Error: {}'.format(e))
+            mine_region.save()
+
         return mine.json()
 
 

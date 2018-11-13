@@ -18,7 +18,8 @@ class MineIdentity(AuditMixin, Base):
     mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facility =  db.relationship('MineTailingsStorageFacility', backref='mine_tailings_storage_facility', order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)', lazy='joined')
     mine_expected_documents = db.relationship('MineExpectedDocument', backref='mine_expected_documents', order_by='desc(MineExpectedDocument.date_created)', lazy='joined')              
-    
+    mine_region = db.relationship('MineRegion',backref='mine_identity',order_by='desc(MineRegion.update_timestamp)', lazy='joined')
+
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
 
@@ -30,7 +31,8 @@ class MineIdentity(AuditMixin, Base):
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
-            'mine_status': [item.json() for item in self.mine_status]
+            'mine_status': [item.json() for item in self.mine_status],
+            'mine_region': [item.json() for item in self.mine_region],
             #'mine_expected_documents':[item.json() for item in self.mine_expected_documents]
         }
 
@@ -98,12 +100,18 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
+    major = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
     def json(self):
-        return {'mine_name': self.mine_name, 'mine_no': self.mine_no, 'mine_note': self.mine_note}
+        return {
+            'mine_name': self.mine_name,
+            'mine_no': self.mine_no,
+            'mine_note': self.mine_note,
+            'major': self.major
+            }
 
     @classmethod
     def find_by_mine_no(cls, _id):
@@ -149,7 +157,7 @@ class MineralTenureXref(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     tenure_number_id = db.Column(db.Numeric(10), unique=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineralTenureXref %r>' % self.tenure_number_id
