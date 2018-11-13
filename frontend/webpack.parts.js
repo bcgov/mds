@@ -44,7 +44,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         test: /\.js$/,
         include,
         exclude,
-        loader: "babel-loader",
+        loader: "babel-loader?cacheDirectory",
       },
     ],
   },
@@ -173,7 +173,10 @@ exports.generateSourceMaps = ({ type } = {}) => ({
 exports.bundleOptimization = ({ options } = {}) => ({
   optimization: {
     splitChunks: options,
-    minimizer: [new UglifyWebpackPlugin()],
+    minimizer: [new UglifyWebpackPlugin({
+      cache: true,
+      parallel: true
+   })],
   },
 });
 
