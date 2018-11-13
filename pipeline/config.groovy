@@ -44,7 +44,7 @@ app {
 
         suffix = "-${app.git.changeId}"
         namespace = 'empr-mds-tools'
-        timeoutInSeconds = 60*20 // 20 minutes
+        timeoutInSeconds = 60*40 // 40 minutes
         templates = [
                 [
                     'file':'openshift/_python36.bc.json',
