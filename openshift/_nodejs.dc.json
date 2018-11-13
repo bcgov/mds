@@ -71,7 +71,11 @@
 	  "displayName": "Keycloak URL",
 	  "description": "URL of the keycloak server",
 	  "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
-	},
+    },
+    {
+      "name": "KEYCLOAK_IDP_HINT",
+      "value": "idir"
+    },
 	{
 	  "name": "KEYCLOAK_ROLE_ADMIN",
 	  "value": "mds-mine-admin"
@@ -244,6 +248,10 @@
 				  {
 					"name": "KEYCLOAK_URL",
 					"value": "${KEYCLOAK_URL}"
+                  },
+                  {
+					"name": "KEYCLOAK_IDP_HINT",
+					"value": "${KEYCLOAK_IDP_HINT}"
 				  },
 				  {
 					"name": "KEYCLOAK_ROLE_ADMIN",
@@ -272,23 +280,7 @@
 				  {
 					"containerPort": 3000
 				  }
-				],
-				"readinessProbe": {
-				  "timeoutSeconds": 3,
-				  "initialDelaySeconds": 3,
-				  "httpGet": {
-					"path": "${BASE_PATH}",
-					"port": 3000
-				  }
-				},
-				"livenessProbe": {
-					"timeoutSeconds": 3,
-					"initialDelaySeconds": 30,
-					"httpGet": {
-						"path": "${BASE_PATH}",
-						"port": 3000
-					}
-				}
+				]
 			  }
 			]
 		  }

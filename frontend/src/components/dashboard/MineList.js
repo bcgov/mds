@@ -6,7 +6,7 @@ import * as router from '@/constants/routes';
 import NullScreen from '@/components/common/NullScreen';
 
 /**
- * @class MineList - paginated list of mines 
+ * @class MineList - paginated list of mines
  */
 
 const propTypes = {
@@ -38,16 +38,16 @@ class MineList extends Component {
           return (
             <div key={id}>
               <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
-                <Col span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col span={6}>
+                <Col id="mine_list_id" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                <Col id="mine_list_name" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
+                <Col id="mine_list_permit" span={6}>
                   {mines[id].mine_permit.map((permit) => {
                     return (
                       <div key={permit.permit_guid}>{permit.permit_no }</div>
                     )
                   })}
                 </Col>
-                <Col span={6}>
+                <Col id="mine_list_action" span={6}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary" style={{margin: '0'}}>
                       View

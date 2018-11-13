@@ -29,6 +29,13 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
             }
         }
+        stage('Functional Test (DEV)') {
+            agent { label 'master' }
+            steps {
+                echo "Functional Test (DEV) ..."
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+            }
+        }
         stage ('ZAP (DEV)'){
             agent { label 'master' }
             steps {
@@ -44,16 +51,6 @@ pipeline {
             steps {
                 echo "Deploy (TEST)"
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
-            }
-        }
-        stage('Functional Test (TEST)') {
-            agent { label 'master' }
-            when {
-              environment name: 'CHANGE_TARGET', value: 'master'
-            }
-            steps {
-                echo "Functional Test (DEV) ..."
-                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
             }
         }
         stage('Deploy (PROD)') {

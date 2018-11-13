@@ -1,21 +1,17 @@
 package spec
 
 import geb.spock.GebReportingSpec
-import io.github.cdimascio.dotenv.Dotenv
 import spock.lang.*
 
-
 import pages.LoginPage
-import pages.DashboardPage
+import pages.Dashboard
 import utils.Const
-
 
 
 @Title("MDS-LoginPage")
 @Narrative("I can log into MDS using my IDIR")
 @Stepwise
-class  A_LoginPageSpec extends GebReportingSpec {
-    Dotenv dotenv = Dotenv.configure().directory("./").load()
+class  LoginPageSpec extends GebReportingSpec {
     def "I can log into the app given valid credentials"(){
         given:"I go to the homepage"
         to LoginPage
@@ -24,11 +20,11 @@ class  A_LoginPageSpec extends GebReportingSpec {
         at LoginPage
 
         and: "I input username and password"
-        IDIRusername = dotenv.get("IDIR_USERNAME")
-        IDIRpassword = dotenv.get("IDIR_PASSWORD")
+        IDIRusername = Const.IDIR_USERNAME
+        IDIRpassword = Const.IDIR_PASSWORD
         IDIRloginButton.click()
 
         then: "I am on the Dashboard page"
-        at DashboardPage
+        at Dashboard
     }
 }

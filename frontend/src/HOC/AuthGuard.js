@@ -32,7 +32,7 @@ export const AuthGuard = (WrappedComponent) => {
 
         // Prompt for login using IDIR if not authenticated
         if (!keycloak.authenticated) {
-          await keycloak.login({idpHint: 'idir'});
+          await keycloak.login({idpHint: KEYCLOAK.idpHint});
         }
 
         // Fetch user info and roles and store them in local storage

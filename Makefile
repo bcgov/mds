@@ -11,7 +11,7 @@ database-seed-local: database-dump | database-dump-seed-local
 
 project-build:
 	@echo "+\n++ Performing project build ...\n+"
-	@docker-compose build --force-rm
+	@docker-compose build --force-rm --no-cache
 
 project-run:
 	@echo "+\n++ Running project...\n+"
@@ -19,7 +19,7 @@ project-run:
 
 backend-build:
 	@echo "+\n++ Performing backend build ...\n+"
-	@docker-compose build --force-rm backend
+	@docker-compose build --force-rm --no-cache backend
 
 backend-run:
 	@echo "+\n++ Running backend app...\n+"
@@ -31,7 +31,7 @@ backend-entry:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build --force-rm postgres
+	@docker-compose build --force-rm --no-cache postgres
 
 database-run:
 	@echo "+\n++ Running postgres...\n+"
@@ -39,7 +39,7 @@ database-run:
 
 frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"
-	@docker-compose build --force-rm frontend
+	@docker-compose build --force-rm --no-cache frontend
 
 frontend-run:
 	@echo "+\n++ Running frontend...\n+"
@@ -69,3 +69,4 @@ stop:
 clean:
 	@echo "+\n++ Cleaning ...\n+"
 	@docker-compose rm -f -v -s
+	@docker rmi mds_postgres mds_backend mds_frontend
