@@ -15,7 +15,8 @@ BEGIN
         mine_no   varchar(7)    ,
         mine_nm   varchar(60)   ,
         lat_dec   numeric(9,7)  ,
-        lon_dec  numeric(11,7)
+        lon_dec  numeric(11,7)  ,
+        major    boolean        
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
     -- Upsert data into ETL_PROFILE from MMS
@@ -35,13 +36,18 @@ BEGIN
         mine_no         ,
         mine_nm         ,
         lat_dec         ,
-        lon_dec         )
+        lon_dec         ,
+        major           )
     SELECT
-        gen_random_uuid()       ,
+        gen_random_uuid()  ,
         mms_new.mine_no    ,
         mms_new.mine_nm    ,
         mms_new.lat_dec    ,
-        mms_new.lon_dec
+        mms_new.lon_dec    ,
+        CASE 
+            WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN 'True'::boolean
+            ELSE 'False'    
+        END AS major        
     FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row; 
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
@@ -101,7 +107,8 @@ BEGIN
         create_user         ,
         create_timestamp    ,
         update_user         ,
-        update_timestamp    )
+        update_timestamp    ,
+        major               )
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
@@ -112,8 +119,11 @@ BEGIN
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
-        now()
+        now()               ,
+        major
     FROM new_record new;
+
+
     -- Upsert data from new_record into mine_location
     WITH new_record AS (
         SELECT *
