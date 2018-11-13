@@ -153,7 +153,7 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
-                            'NODE_ENV': "production",
+                            'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -239,6 +239,7 @@ environments {
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "development"
             }
             modules {
                 'mds-frontend' {
@@ -273,7 +274,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "200m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
@@ -298,16 +299,17 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "test"
             }
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'schemaspy' {
@@ -325,7 +327,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "300m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
@@ -357,16 +359,17 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'schemaspy' {
