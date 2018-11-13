@@ -69,18 +69,18 @@ VALUES
     ('SVR', 'Site Visit Required', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-
 INSERT INTO mds_required_document (
     req_document_name,
     req_document_description,
     req_document_category,
+    effective_date,
     create_user,
     update_user
     )
 VALUES
-    ('Annual Reclamation', 'whole bunch of stuff', 'MINE_TAILINGS', 'system-mds', 'system-mds'),
-    ('Annual DSI', 'Dam Safety Inspection and whole bunch of stuff', 'MINE_TAILINGS', 'system-mds', 'system-mds'),
-    ('5year DSR', 'Dam Safety Inspection', 'MINE_TAILINGS', 'system-mds', 'system-mds'),
-    ('OMS Manual', 'Operations Maintainence Surveilance', 'MINE_TAILINGS', 'system-mds', 'system-mds'),
-    ('OTHER_TEST_REPORT', 'testing filter on category', 'OTHER_REPORT', 'system-mds', 'system-mds')
+    ('Annual Reclamation', 'whole bunch of stuff', 'MINE_TAILINGS','2017-07-01', 'system-mds', 'system-mds'),
+    ('Annual DSI', 'Dam Safety Inspection and whole bunch of stuff', 'MINE_TAILINGS','2017-07-01', 'system-mds', 'system-mds'),
+    ('5year DSR', 'Dam Safety Inspection', 'MINE_TAILINGS','2017-07-01', 'system-mds', 'system-mds'),
+    ('OMS Manual', 'Operations Maintainence Surveilance', 'MINE_TAILINGS','2017-07-01', 'system-mds', 'system-mds'),
+    ('OTHER_TEST_REPORT', 'testing filter on category', 'OTHER_REPORT','2017-07-01', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
