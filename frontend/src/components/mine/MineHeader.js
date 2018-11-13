@@ -59,7 +59,7 @@ class MineHeader extends Component {
     }
     this.props.openModal({
       props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues},
-      content: modalConfig.MINE_RECORD
+      content: modalConfig.MINE_RECORD,
     });
   }
   
