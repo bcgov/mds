@@ -11,17 +11,19 @@ const initialState = {
   isModalOpen: false,
   props: {},
   content: null,
-}
+  clearOnSubmit: true,
+};
 
 const modalReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.OPEN_MODAL:
-      const { props, content } = action.payload;
+      const { props, content, clearOnSubmit = initialState.clearOnSubmit } = action.payload;
       return {
         ...state,
         isModalOpen: true,
         props,
         content,
+        clearOnSubmit,
       };
     case actionTypes.CLOSE_MODAL:
       return {
@@ -36,6 +38,7 @@ const modalReducer = (state = initialState, action) => {
 export const getIsModalOpen = (state) => state[MODAL].isModalOpen;
 export const getProps = (state) => state[MODAL].props;
 export const getContent = (state) => state[MODAL].content;
+export const getClearOnSubmit = (state) => state[MODAL].clearOnSubmit;
 
 export default modalReducer;
 

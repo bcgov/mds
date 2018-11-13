@@ -18,13 +18,13 @@ const RenderCheckbox = ({
   label,
   meta: { touched, error},
 }) => (
-  <Form.Item 
+  <Form.Item
     validateStatus={(touched ? (error && 'error') : '')}
   >
-    <Checkbox 
-      id={id} 
+    <Checkbox
+      id={id}
       checked={input.value}
-      {...input} 
+      {...input}
     >
       {label}
     </Checkbox>
