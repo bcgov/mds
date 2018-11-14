@@ -19,7 +19,7 @@ CREATE TABLE mine_document (
   mine_document_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 --Foreign Key Columns
   mine_guid uuid NOT NULL,
-  document_fulfillment_guid uuid NULL,
+  mine_exp_document_xref_guid uuid NULL,
 --Data Columns
   doc_manager_fileID integer NULL,
 --Audit Columns 
@@ -37,7 +37,7 @@ CREATE TABLE mine_document (
 COMMENT ON TABLE mine_document IS 'an mds record of a document stored in the document manager microservice';
 
 CREATE TABLE mine_expected_document_xref ( 
-  exp_document_xref_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  mine_exp_document_xref_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 --Foreign Key Columns
   mine_document_guid uuid NOT NULL,
   exp_document_guid uuid NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE mine_expected_document (
 --Foreign Key Columns
   req_document_guid uuid NULL,
   mine_guid uuid NOT NULL,
-  document_fulfillment_guid uuid NULL,
+  mine_exp_document_xref_guid uuid NULL,
 --Data Columns
   exp_document_name character varying(60) NOT NULL,
   exp_document_category character varying(60) NULL,
@@ -80,14 +80,14 @@ CREATE TABLE mine_expected_document (
 --Foreign Key Definitions
   FOREIGN KEY (req_document_guid) REFERENCES mds_required_document(req_document_guid) DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (mine_expected_document_xref) REFERENCES mine_expected_document_xref(exp_document_xref_guid) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (mine_exp_document_xref_guid) REFERENCES mine_expected_document_xref(mine_exp_document_xref_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE mds_required_document IS 'A mine_expected_document is a reporting requirement that has been assigned to a mine';
 
 
 ALTER TABLE mine_document
-  ADD FOREIGN KEY(document_fulfillment_guid) REFERENCES mine_expected_document_xref(exp_document_xref_guid) DEFERRABLE INITIALLY DEFERRED;
+  ADD FOREIGN KEY(mine_exp_document_xref_guid) REFERENCES mine_expected_document_xref(mine_exp_document_xref_guid) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE mine_expected_document_xref
   ADD FOREIGN KEY (exp_document_guid) REFERENCES mine_expected_document(exp_document_guid) DEFERRABLE INITIALLY DEFERRED;
