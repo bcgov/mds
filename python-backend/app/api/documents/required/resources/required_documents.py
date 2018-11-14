@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource
-from ..models.required_document import RequiredDocument
+from ..models.required_documents import RequiredDocument
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
