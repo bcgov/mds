@@ -1,6 +1,5 @@
 CREATE TABLE mds_required_document (
   req_document_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-
 --Data Columns
   req_document_name character varying(60) NOT NULL,
   req_document_description character varying (300) NULL,
