@@ -10,4 +10,4 @@ CREATE TABLE mine_tailings_storage_facility (
   FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
-COMMENT ON TABLE mds_required_document IS 'Stores the information relavent to a mine tailings storage facility.;
+COMMENT ON TABLE mds_required_document IS 'Stores the information relavent to a mine tailings storage facility.';
