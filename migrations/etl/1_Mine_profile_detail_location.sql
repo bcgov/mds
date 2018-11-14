@@ -45,8 +45,8 @@ BEGIN
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         CASE 
-            WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN 'True'::boolean
-            ELSE 'False'::boolean
+            WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN TRUE
+            ELSE FALSE
         END AS major        
     FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row; 
