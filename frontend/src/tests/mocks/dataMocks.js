@@ -7,6 +7,147 @@ export const createMockHeader = () => ({
 
 export const ERROR = { error: {message: "Errors", status: 400}}
 
+// used for testing selectors
+export const MINE_RESPONSE = {
+  mines: [{
+    guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+    mgr_appointment: [],
+    mine_permit: [],
+    mineral_tenure_xref: [
+      {
+        tenure_number_id: "1234567"
+      }
+    ],
+    mine_detail: [
+      {
+        mine_name: "mine1",
+        mine_no: "BLAH9091"
+      },
+      {
+        mine_name: "mine3",
+        mine_no: "BLAH9091"
+      }
+    ], 
+    mine_location: [
+      { longitude: null,
+        latitude: null
+      }
+    ],
+    mine_region: [
+      {
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+        region_code: "NW"
+      }
+    ],
+    mine_status: {
+      statusvalue: ["CLD", "CM"],
+      status_labels: ["Closed", "Care & Maintenance"],
+      effective_date: "2018-10-16",
+      expiry_date: "9999-12-31"
+    }
+  },
+  {
+    guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+    mgr_appointment: [],
+    mine_permit: [
+      {
+        expiry_date: "9999-12-31",
+        issue_date: "9999-12-31",
+        mine_guid: "1628847c-060b-45f2-990f-815877174801",
+        permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+        permit_no: "KNaaWwVdiJ40",
+        permit_status_code: "Z",
+        permittee : [
+          {
+            effective_date: "2018-10-02",
+            expiry_date: "9999-12-31",
+            party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+            party_name: "Yivihoke",
+            permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+            permittee_guid: "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
+            party: {
+              effective_date: "2018-10-03",
+              email: "JgHxeyjv@aezZIwee.com",
+              expiry_date: "9999-12-31",
+              first_name: "Tiyudoveh",
+              name: "Tiyudoveh Higesewawa",
+              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+              party_name: "Higesewawa",
+              party_type_code: "PER",
+              phone_ext: null,
+              phone_no: "123-123-1234"
+            }
+          }
+        ]
+      },
+      {
+        expiry_date: "9999-12-31",
+        issue_date: "9999-12-31",
+        mine_guid: "1628847c-060b-45f2-990f-815877174801",
+        permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+        permit_no: "xfM0c0ZKEw7B",
+        permit_status_code: "Z",
+        permittee: [
+          {
+            effective_date: "2018-10-02",
+            expiry_date: "9999-12-31",
+            party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+            party_name: "Yivihoke",
+            permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+            permittee_guid: "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+            party: {
+              effective_date: "2018-10-03",
+              email: "JgHxeyjv@aezZIwee.com",
+              expiry_date: "9999-12-31",
+              first_name: "Tiyudoveh",
+              name: "Tiyudoveh Higesewawa",
+              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+              party_name: "Higesewawa",
+              party_type_code: "PER",
+              phone_ext: null,
+              phone_no: "123-123-1234"
+            }
+          }
+        ]
+      }
+    ],
+    mineral_tenure_xref: [
+      {
+        tenure_number_id: "1234567"
+      }
+    ],
+    mine_status: {
+      statusvalue: ["CLD", "CM"],
+      status_labels: ["Closed", "Care & Maintenance"],
+      effective_date: "2018-10-16",
+      expiry_date: "9999-12-31"
+    },
+    mine_detail: [
+      {
+        mine_name: "mine1",
+        mine_no: "BLAH9091"
+      },
+      {
+        mine_name: "mine2",
+        mine_no: "BLAH9091"
+      }
+    ],
+    mine_location: [
+      {
+        longitude: null,
+        latitude: null
+      }
+    ],
+    mine_region: [
+      {
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
+        region_code: "NW"
+      }
+    ],
+  }
+]}
 
 export const MINES = {
   mineIds: [
@@ -316,25 +457,28 @@ export const REGION_OPTIONS = {
 
 export const PERMITTEE = {
   permitteeIds: [
-    "18133c75-49ad-4101-85f3-a43e35ae989a",
-    "18145c75-49ad-0101-85f3-a43e45ae989a"
+    "1c7da2c4-10d5-4c9f-994a-96427aa0c69b"
   ],
   permittees: {
-    "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      name: "mock name",
-      effective_date: "mockDate",
+    "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": {
+      effective_date: "2018-10-02",
+      expiry_date: "9999-12-31",
+      party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+      party_name: "Yivihoke",
+      permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+      permittee_guid: "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
       party: {
-        name: "mock name"
+        effective_date: "2018-10-03",
+        email: "JgHxeyjv@aezZIwee.com",
+        expiry_date: "9999-12-31",
+        first_name: "Tiyudoveh",
+        name: "Tiyudoveh Higesewawa",
+        party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+        party_name: "Higesewawa",
+        party_type_code: "PER",
+        phone_ext: null,
+        phone_no: "123-123-1234"
       }
     },
-    "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      name: "mock Two",
-      effective_date: "mockDate",
-      party: {
-        name: "mock name"
-      }
-    }
   }
 }

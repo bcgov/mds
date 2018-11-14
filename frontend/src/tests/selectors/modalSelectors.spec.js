@@ -5,7 +5,7 @@ import {MODAL} from '@/constants/reducerTypes';
 import * as Mock from '@/tests/mocks/dataMocks';
 import { modalConfig } from '@/components/modalContent/config';
 
-const mockModal= {
+const mockModal = {
   isModalOpen: true,
   props: [Mock.MINES.mines[Mock.MINES.mineIds[0]],  Mock.REGION_OPTIONS, Mock.STATUS_OPTIONS],
   content: modalConfig.MINE_RECORD,
