@@ -51,11 +51,12 @@ def register_commands(app):
         if threading:
             with ThreadPoolExecutor() as executor:
                 batch_size = 100
-
+                num = int(num)
+                
                 # Break num into a list of ints of size batch_size, then append remainder. E.g. 520 -> [100, 100, 100, 100, 100, 20] 
                 full_batches = int(num / batch_size)
                 batches = [batch_size] * full_batches
-                batches.append(int(num) % batch_size)
+                batches.append(num % batch_size)
 
                 task_list = []
                 for batch in batches:
