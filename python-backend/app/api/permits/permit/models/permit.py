@@ -18,7 +18,6 @@ class Permit(AuditMixin, Base):
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     permit_status_code = db.Column(db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     permittee = db.relationship('Permittee', backref='permittee', order_by='desc(Permittee.effective_date), desc(Permittee.update_timestamp)', lazy='joined')
 
     def __repr__(self):
