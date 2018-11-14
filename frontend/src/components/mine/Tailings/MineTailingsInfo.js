@@ -41,14 +41,6 @@ class MineTailingsInfo extends Component {
 
   render() {
     const { mine } = this.props;
-    // if (mine.mine_tailings_storgae_facility) {
-    //   return (
-    //     <div>
-    //       <NullScreen type="generic" />
-    //       <div className="center"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TAILINGS)} string={ModalContent.ADD_TAILINGS} type="primary" /></div>
-    //     </div>
-    //   )
-    // }
     return (
     <div>
         <Card>
@@ -66,10 +58,10 @@ class MineTailingsInfo extends Component {
             {mine.mine_expected_documents.map((doc, id) => {
               return (
                 <Row key={id} gutter={16}>
-                    <Col span={6} ><h5>{doc.req_document_name}</h5></Col>
-                    <Col span={6} ><h5>{doc.expiry_date}</h5></Col>
+                    <Col span={6} ><h5>{doc.exp_document_name}</h5></Col>
+                    <Col span={6} ><h5>{doc.due_date}</h5></Col>
                     <Col span={6} ><h5></h5></Col>
-                    <Col span={6} ><h5></h5></Col>
+                    <Col span={6} ><h5>{doc.status}</h5></Col>
                 </Row>
                   )
                 })}
