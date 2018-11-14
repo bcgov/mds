@@ -128,6 +128,9 @@ export class Dashboard extends Component {
     // set the state so on page Turn the search value is kept.
     this.setState({searchTerm: value});
     const params = queryString.parse(this.props.location.search);
+    // Reset the page number
+    params.page = String.DEFAULT_PAGE
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
     this.props.fetchMineRecords(params.page, params.per_page, value);
   }
 
