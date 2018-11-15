@@ -52,7 +52,9 @@ class MineTailingsInfo extends Component {
               </Row>
                 )
               })}
-              <Button className="full-mobile right" type="primary" onClick={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
+              <div className="right center-mobile"> 
+                <Button className="full-mobile" type="primary" onClick={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
+              </div>
         </Card>
         <Card>
             <Row gutter={16}>
