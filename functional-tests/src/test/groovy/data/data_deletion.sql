@@ -1,7 +1,7 @@
 --delete all the data generated in functional test
 DO $$
 DECLARE
-    IDIR_USER varchar = 'bdd-test-%';
+    IDIR_USER varchar = '%bdd-test%';
 BEGIN
 DELETE FROM mgr_appointment WHERE create_user LIKE IDIR_USER;
 DELETE FROM permit WHERE create_user LIKE IDIR_USER;
