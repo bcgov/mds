@@ -27,7 +27,7 @@ beforeEach(() => {
 
 describe('AuthGuard', () => {
   it('should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`', () => {
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps}/>);
     expect(wrapper).toMatchSnapshot();
   });
 });

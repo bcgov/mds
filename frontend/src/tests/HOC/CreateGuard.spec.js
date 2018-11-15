@@ -10,7 +10,7 @@ const reducerProps = {}
 const setupDispatchProps = () => {
   dispatchProps.logoutUser = jest.fn();
 };
-// 
+
 const setupReducerProps = () => {
   reducerProps.userRoles = Mock.USER_ACCESS_DATA;
   reducerProps.keycloak = {}
