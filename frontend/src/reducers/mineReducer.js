@@ -56,6 +56,13 @@ const mineReducer = (state = initialState, action) => {
           mineIds: createItemIdsArray([action.payload], 'guid'),
           mineGuid: action.payload.guid,
         }
+      case actionTypes.CREATE_TSF:
+        return {
+          ...state,
+          mines: createItemMap([action.payload], 'guid'),
+          mineIds: createItemIdsArray([action.payload], 'guid'),
+          mineGuid: action.payload.guid,
+        }
       default:
         return state;
     }

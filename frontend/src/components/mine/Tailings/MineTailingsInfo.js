@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import ConditionalButton from '@/components/common/ConditionalButton';
 import NullScreen from '@/components/common/NullScreen'; 
 import * as ModalContent from '@/constants/modalContent';
@@ -12,6 +12,7 @@ import { modalConfig } from '@/components/modalContent/config';
 const propTypes = {
   mine: PropTypes.object.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -24,18 +25,17 @@ const defaultProps = {
 
 class MineTailingsInfo extends Component {
   handleSubmit = (value) => {
-    const { id } = this.props.match.params;
-    this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_detail[0].mine_name).then(() => {
-    this.props.fetchMineRecordById(id);
-    this.props.closeModal();
+    this.props.createTailingsStorageFacility({...value, mine_guid: this.props.mine.guid}).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
     })
   }
 
   openModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title },
-      content: modalConfig.ADD_TENURE
+      props: { onSubmit, title},
+      content: modalConfig.ADD_TAILINGS
     });
   }
 
@@ -44,9 +44,15 @@ class MineTailingsInfo extends Component {
     return (
     <div>
         <Card>
-        <Row gutter={16}>
-                <h5>TSF #1</h5>
-            </Row>
+          {mine.mine_tailings_storage_facility.map((facility, id) => {
+            return (
+              <Row key={id} gutter={16}>
+                  <Col span={6} ><h5>{facility.mine_tailings_storage_facility_name}</h5></Col>
+                  <Col span={6} ><h5></h5></Col>
+              </Row>
+                )
+              })}
+              <Button className="full-mobile right" type="primary" onClick={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
         </Card>
         <Card>
             <Row gutter={16}>

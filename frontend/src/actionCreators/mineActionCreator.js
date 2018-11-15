@@ -43,6 +43,23 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   });
 };
 
+export const createTailingsStorageFacility = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_TSF));
+  dispatch(showLoading('modal'));
+  return axios.post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
+  .then((response) => {
+    notification.success({ message: "Successfully addeda TSF to the mine: ", duration: 10 });
+    dispatch(success(reducerTypes.CREATE_TSF));
+    dispatch(hideLoading('modal'));
+    return response;
+  })
+  .catch((err) => {
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
+    dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
+    dispatch(hideLoading('modal'));
+  });
+};
+
 export const fetchMineRecords = (page, per_page, search, map) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());

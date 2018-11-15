@@ -4,7 +4,7 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { openModal, closeModal } from '@/actions/modalActions';
-import { fetchMineRecordById, updateMineRecord, fetchStatusOptions, fetchRegionOptions  } from '@/actionCreators/mineActionCreator';
+import { fetchMineRecordById, updateMineRecord, fetchStatusOptions, fetchRegionOptions, createTailingsStorageFacility  } from '@/actionCreators/mineActionCreator';
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
 import MineTailingsInfo from '@/components/mine/Tailings/MineTailingsInfo';
@@ -24,6 +24,7 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
+  createTailingsStorageFacility: PropTypes.func,
   fetchStatusOptions: PropTypes.func.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
@@ -90,9 +91,11 @@ export class MineDashboard extends Component {
                 <TabPane tab="Tenure" key="tenure">
                   <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
-                <TabPane tab="Tailings" key="tailings">
-                  <MineTailingsInfo mine={mine} {...this.props}/>
-                </TabPane>
+                {mine.mine_tailings_storage_facility.length > 0 &&
+                  <TabPane tab="Tailings" key="tailings">
+                    <MineTailingsInfo mine={mine} {...this.props}/>
+                  </TabPane>
+                }
               </Tabs>
             </div>
           </div>
@@ -117,6 +120,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchStatusOptions,
     fetchRegionOptions,
     updateMineRecord,
+    createTailingsStorageFacility,
     openModal, 
     closeModal
   }, dispatch);

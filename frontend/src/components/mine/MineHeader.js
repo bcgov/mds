@@ -15,6 +15,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
+  createTailingsStorageFacility: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
@@ -35,8 +36,10 @@ class MineHeader extends Component {
   }
 
   handleAddTailings = (value) => {
-    // add actionCreator here
-    this.props.closeModal();
+    this.props.createTailingsStorageFacility({...value, mine_guid: this.props.mine.guid}).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
   }
 
   openTailingsModal(event, onSubmit, title) {
@@ -71,9 +74,9 @@ class MineHeader extends Component {
           <button className="full" onClick={(event) => this.openModal(event, this.props.mineStatusOptions, this.props.mineRegionOptions, this.handleUpdateMineRecord, ModalContent.UPDATE_MINE_RECORD, this.props.mine)}><img style={{padding: '5px'}}src={GREEN_PENCIL} />{ModalContent.UPDATE_MINE_RECORD}</button>
         </Menu.Item>
         {/* commented out until connected to backend */}
-        {/* <Menu.Item key="1">
-          <button className="full" onClick={(event) => this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)}><img style={{padding: '5px'}}src={GREEN_DOCUMENT} />{ModalContent.ADD_TAILINGS}</button> */}
-        {/* </Menu.Item> */}
+        <Menu.Item key="1">
+          <button className="full" onClick={(event) => this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)}><img style={{padding: '5px'}}src={GREEN_DOCUMENT} />{ModalContent.ADD_TAILINGS}</button>
+        </Menu.Item>
       </Menu>
     );
     return (
@@ -90,6 +93,7 @@ class MineHeader extends Component {
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
+          <h5>Tailings: {mine.mine_tailings_storage_facility.length > 0 ? "Yes" : "No"}</h5>
           <div className="dashboard__header__content--inline">
           {mine.mine_region[0] && <p>{mine.mine_region[0].region_value}</p>}
             <div className="inline-flex between">
