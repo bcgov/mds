@@ -482,3 +482,5 @@ export const PERMITTEE = {
     },
   }
 }
+
+export const USER_ACCESS_DATA = ["mds-mine-view", "idir", "mds-mine-create", "offline_access", "admin" ,"uma_authorization", "mds-mine-admin"]
