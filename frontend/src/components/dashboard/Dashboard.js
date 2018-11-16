@@ -76,9 +76,7 @@ export class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      const stateParams = queryString.parse(nextProps.location.search);
       const params = nextProps.location.search;
-      this.setState({params: {...stateParams}});
       this.renderDataFromURL(params);
     }
   }
@@ -89,6 +87,8 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
+    const paramsObj = queryString.parse(params)
+    this.setState({params: {...paramsObj}});
     this.props.fetchMineRecords(params).then(() => {
       this.setState({ mineList: true })
     });
@@ -120,10 +120,10 @@ export class Dashboard extends Component {
   }
 
   handleTabChange = (key) => {
-    const { page, per_page, search, map} = this.state.params;
+    const { page, per_page, search} = this.state.params;
     if (key === 'map' ) {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-      this.props.history.push(router.MINE_DASHBOARD.relativeRoute(page, per_page, search, map))
+      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search))
     } else {
       this.setState({ mineList: false, showCoordinates: false, mineName: '' })
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search))
@@ -132,7 +132,7 @@ export class Dashboard extends Component {
 
   handleMineSearch = (value) => {
     const {per_page} = this.state.params;
-    //reset page to page 1 when a search is initiated
+    //reset page when a search is initiated
     this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, per_page, value))
   }
 
@@ -159,6 +159,7 @@ export class Dashboard extends Component {
     const pageNumber = Number(page);
     const perPageNumber = Number(per_page);
     const isMap = map ? 'map' : 'list';
+    console.log({...this.state.params})
     if (this.state.mineList) {
         return (
           <div>

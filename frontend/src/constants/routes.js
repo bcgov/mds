@@ -12,7 +12,7 @@ export const DASHBOARD = {
 export const MINE_DASHBOARD = {
   route: '/dashboard',
   dynamicRoute: (page, per_page, search=null) => search ? `/dashboard?page=${page}&per_page=${per_page}&search=${search}` : `/dashboard/?page=${page}&per_page=${per_page}`,
-  relativeRoute: (page, per_page, search=null) => search ? `/dashboard?page=${page}&per_page=${per_page}&search=${search}&map=true` : `/dashboard?page=${page}&per_page=${per_page}&map=true`,
+  mapRoute: (page, per_page, search=null) => search ? `/dashboard?page=${page}&per_page=${per_page}&search=${search}&map=true` : `/dashboard?page=${page}&per_page=${per_page}&map=true`,
   component: Dashboard,
 };
 
