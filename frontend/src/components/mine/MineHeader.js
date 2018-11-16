@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE } from '@/constants/assets';
 import { Menu, Icon } from 'antd';
 import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
@@ -25,7 +25,7 @@ const defaultProps = {
   mine: {}
 };
 
-class MineHeader extends Component { 
+class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
     let mineStatus = value.mine_status.join(",");
     this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
@@ -34,7 +34,7 @@ class MineHeader extends Component {
     })
   }
 
-  handleAddTailings = (value) => {
+  handleAddTailings = () => {
     // add actionCreator here
     this.props.closeModal();
   }
@@ -46,7 +46,7 @@ class MineHeader extends Component {
       content: modalConfig.ADD_TAILINGS
     });
   }
-  
+
   openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title, mine) {
     event.preventDefault();
     const initialValues = {
@@ -58,11 +58,12 @@ class MineHeader extends Component {
       "mine_region": mine.mine_region[0] ? mine.mine_region[0].region_code : null,
     }
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues},
-      content: modalConfig.MINE_RECORD
+      props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues },
+      content: modalConfig.MINE_RECORD,
+      clearOnSubmit: false,
     });
   }
-  
+
   render() {
     const { mine } = this.props;
     const menu = (
@@ -83,8 +84,8 @@ class MineHeader extends Component {
           <div className="inline-flex between">
             <h1>{mine.mine_detail[0].mine_name}</h1>
             <ConditionalButton
-              isDropdown 
-              overlay={menu} 
+              isDropdown
+              overlay={menu}
               string={<Icon type="ellipsis" theme="outlined" style={{fontSize: '30px'}}/>}
             />
           </div>
@@ -97,7 +98,7 @@ class MineHeader extends Component {
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
               <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}</p></div>
             </div>
-            {mine.mine_status[0] && 
+            {mine.mine_status[0] &&
               <div className="inline-flex between">
                 <div><h5>Operating Status: </h5></div>
                 <img src={(mine.mine_status[0].status_values[0] === 'OP' ) ? ELLIPSE : RED_ELLIPSE} />
