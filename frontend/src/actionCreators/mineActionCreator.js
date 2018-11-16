@@ -44,7 +44,6 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
 };
 
 export const fetchMineRecords = (params) => (dispatch) => {
-console.log(params);
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
   return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(params), createRequestHeader())

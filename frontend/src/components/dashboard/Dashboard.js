@@ -159,7 +159,6 @@ export class Dashboard extends Component {
     const pageNumber = Number(page);
     const perPageNumber = Number(per_page);
     const isMap = map ? 'map' : 'list';
-    console.log({...this.state.params})
     if (this.state.mineList) {
         return (
           <div>
