@@ -49,6 +49,19 @@
   }
 }
 
+.ant-pagination-prev .ant-pagination-item-link, 
+.ant-pagination-next .ant-pagination-item-link, 
+.ant-select-selection, 
+.ant-pagination-item {
+  & a{
+    text-decoration: none !important;
+  }
+  &:hover {
+    color: $default-light-green;
+    border: 1px solid $default-light-green;
+  }
+}
+
 .ant-btn-primary {
   color: $white;
   &:hover {
