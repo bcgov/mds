@@ -47,7 +47,10 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             mine_tsf.save()
 
             if is_mine_first_tsf:
-                tsf_required_documents = requests.get('http://localhost:5000/documents/required?category=MINE_TAILINGS', headers=request.headers).json()['required_documents']
+                tsf_required_documents = requests.get(DOCUMENT_MS_URL + '/required?category=MINE_TAILINGS', 
+                        headers=request.headers
+                ).json()['required_documents']
+
                 new_expected_documents = []
                 for tsf_req_doc in tsf_required_documents:
                     new_expected_documents.append({
@@ -55,15 +58,17 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                         'document_name':tsf_req_doc['req_document_name'],
                         'document_category':tsf_req_doc['req_document_category']
                     })
+                
                 new_headers = {
                     'Content-Type': 'application/json',
                     'Authorization': request.headers['Authorization']
                 }
 
-                doc_assignment_response = requests.post('http://localhost:5000/documents/mines/expected/' + str(mine_guid), headers=new_headers, json={'documents': new_expected_documents})
-                return {'new_expected_documents': doc_assignment_response.json() }
+                doc_assignment_response = requests.post(DOCUMENT_MS_URL + '/mines/expected/' + str(mine_guid), 
+                        headers=new_headers, 
+                        json={'documents': new_expected_documents}
+                )
             return {'mine_tailings_storage_facilities': list(map(lambda x: x.json(), MineTailingsStorageFacility.find_by_mine_guid(mine_guid)))}
-
         else:
             return self.create_error_payload(404, 'unexpected tsf_guid')
 
