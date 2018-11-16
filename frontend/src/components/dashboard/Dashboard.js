@@ -53,7 +53,17 @@ export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
-    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null}
+    this.state = { 
+      mineList: false, 
+      lat: String.DEFAULT_LAT, 
+      long: String.DEFAULT_LONG, 
+      showCoordinates: false, 
+      mineName: null, 
+      params: {
+        page: String.DEFAULT_PAGE,
+        per_page: String.DEFAULT_PER_PAGE,
+      }
+    }
   }
 
   componentDidMount() {
@@ -66,13 +76,16 @@ export class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
+      const stateParams = queryString.parse(nextProps.location.search);
       const params = nextProps.location.search;
+      this.setState({params: {...stateParams}});
       this.renderDataFromURL(params);
     }
   }
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
+    this.setState({params: {}});
   }
 
   renderDataFromURL = (params) => {
@@ -82,9 +95,8 @@ export class Dashboard extends Component {
   }
 
   onPageChange = (current, pageSize) => {
-    const params = queryString.parse(this.props.location.search);
-    if (params.search) {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize, params.search))
+    if (this.state.params.search) {
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search))
     } else {
       this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
     }
@@ -108,30 +120,20 @@ export class Dashboard extends Component {
   }
 
   handleTabChange = (key) => {
-    console.log(key);
-    // const params = queryString.parse(this.props.location.search);
-    // if (key === 'map' ) {
-    //   // if (!params.page && !params.per_page) {
-    //     this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-    //   //   this.props.history.push(router.MINE_DASHBOARD.relativeRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE))
-    //   // } else {
-    //   //   this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-    //     this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
-    //     // }
-    // } else {
-    //   this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-    //   this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
-    // }
+    const { page, per_page, search, map} = this.state.params;
+    if (key === 'map' ) {
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+      this.props.history.push(router.MINE_DASHBOARD.relativeRoute(page, per_page, search, map))
+    } else {
+      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search))
+    }
   }
 
   handleMineSearch = (value) => {
-    // set the state so on page Turn the search value is kept.
-    // this.setState({searchTerm: value});
-    const params = queryString.parse(this.props.location.search);
-    // Reset the page number
-    params.page = String.DEFAULT_PAGE
-    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page, value))
-    // this.props.fetchMineRecords(params.page, params.per_page, value);
+    const {per_page} = this.state.params;
+    //reset page to page 1 when a search is initiated
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, per_page, value))
   }
 
   handleSubmit = (value) => {
@@ -140,11 +142,7 @@ export class Dashboard extends Component {
       this.props.closeModal();
     }).then(() => {
       const params = this.props.location.search;
-      // if (params.page && params.per_page) {
-        this.props.fetchMineRecords(params);
-      // } else {
-        // this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
-      // }
+      this.props.fetchMineRecords(params);
     });
   }
 
@@ -157,10 +155,10 @@ export class Dashboard extends Component {
   }
 
   renderCorrectView(){
-    const params = queryString.parse(this.props.location.search);
-    const pageNumber = params.page ? Number(params.page) : 1;
-    const perPageNumber = params.per_page ? Number(params.per_page) : 25;
-    const isMap = params.map ? 'map' : 'list';
+    const { page, search, per_page, map} = this.state.params;
+    const pageNumber = Number(page);
+    const perPageNumber = Number(per_page);
+    const isMap = map ? 'map' : 'list';
     if (this.state.mineList) {
         return (
           <div>
@@ -173,7 +171,7 @@ export class Dashboard extends Component {
               <TabPane tab="List" key="list">
                 <Row>
                   <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
-                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} searchValue={params.search}/>
+                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} searchValue={search}/>
                   </Col>
                 </Row>
                 <MineList
