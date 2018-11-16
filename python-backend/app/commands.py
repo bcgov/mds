@@ -6,7 +6,8 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
-from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
+from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
+MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
 from .api.mines.location.models.location import MineLocation
 from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
@@ -53,7 +54,7 @@ def register_commands(app):
             with ThreadPoolExecutor() as executor:
                 num = int(num)
                 number_batches = []
-                if(num >= 100):
+                if(num > 100):
                     number_batches = [100 for _ in range(100, num, 100)]
                 number_batches.append(num % 100) if num % 100 is not 0 else None
 

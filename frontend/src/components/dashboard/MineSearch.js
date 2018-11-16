@@ -83,7 +83,7 @@ export class MineSearch extends Component {
     } else {
       return (
         <Input
-          defaultValue={this.props.searchValue ? this.props.searchValue : null}
+          defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
           placeholder="Search for a mine using name, ID, or permit number"
           onChange={this.handleSearch}
           suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />}
@@ -95,7 +95,7 @@ export class MineSearch extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    mineNameList: getMineNames(state).mines
+    mineNameList: getMineNames(state).mines,
   };
 };
 

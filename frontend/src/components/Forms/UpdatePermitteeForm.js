@@ -33,7 +33,7 @@ const permitteeOptions = (permit) => {
     dataArray.push(data);
   });
   return dataArray;
-}
+};
 
 export const UpdatePermitteeForm = (props) => {
   return (

@@ -55,6 +55,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mines = mines_q.union(permit_q).paginate(page, items_per_page, False)
             else:
                 mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
+                # mines.total = MineIdentity.query.count()
 
             return {
                 'mines': list(map(lambda x: x.json(), mines.items)),

@@ -62,12 +62,12 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
-      }
+      },
     }
   }
 
   componentDidMount() {
-    const params = this.props.location.search;
+    const params = this.props.location.search ? this.props.location.search : String.DEFAULT_DASHBOARD_PARAMS;
     this.renderDataFromURL(params);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
@@ -79,61 +79,56 @@ export class Dashboard extends Component {
       const params = nextProps.location.search;
       this.renderDataFromURL(params);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
-    this.setState({params: {}});
+    this.setState({ params: {} });
   }
 
   renderDataFromURL = (params) => {
-    const paramsObj = queryString.parse(params)
-    this.setState({params: {...paramsObj}});
+    const paramsObj = queryString.parse(params);
+    this.setState({ params: paramsObj });
     this.props.fetchMineRecords(params).then(() => {
-      this.setState({ mineList: true })
+      this.setState({ mineList: true });
     });
   }
 
   onPageChange = (current, pageSize) => {
-    if (this.state.params.search) {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search))
-    } else {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
-    }
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search));
   }
 
-  /**
+  /*
    * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
    */
   handleCoordinateSearch = (value) => {
     if (typeof value === 'string') {
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
-        this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
+        this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] });
       } else {
-        this.setState({ lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false })
+        this.setState({ lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false });
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
       }
     } else {
-      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null})
+      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null});
     }
   }
 
   handleTabChange = (key) => {
-    const { page, per_page, search} = this.state.params;
+    const { page, per_page, search } = this.state.params;
+    this.setState({ mineList: false, showCoordinates: false, mineName: '' });
     if (key === 'map' ) {
-      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search))
+      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
     } else {
-      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search))
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search));
     }
   }
 
   handleMineSearch = (value) => {
-    const {per_page} = this.state.params;
+    const perPage = this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE;
     //reset page when a search is initiated
-    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, per_page, value))
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value));
   }
 
   handleSubmit = (value) => {
@@ -149,7 +144,7 @@ export class Dashboard extends Component {
   openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, onSubmit, title},
+      props: { mineStatusOptions, mineRegionOptions, onSubmit, title },
       content: modalConfig.MINE_RECORD
     });
   }
@@ -157,8 +152,10 @@ export class Dashboard extends Component {
   renderCorrectView(){
     const { page, search, per_page, map} = this.state.params;
     const pageNumber = Number(page);
+    const pageTotal = Number(this.props.pageData.total);
     const perPageNumber = Number(per_page);
     const isMap = map ? 'map' : 'list';
+    console.log({...this.props.params});
     if (this.state.mineList) {
         return (
           <div>
@@ -188,7 +185,7 @@ export class Dashboard extends Component {
                       onChange={this.onPageChange}
                       defaultCurrent={pageNumber}
                       current={pageNumber}
-                      total={this.props.pageData.total}
+                      total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
                       pageSize={perPageNumber}
                     />
@@ -200,7 +197,7 @@ export class Dashboard extends Component {
                       onChange={this.onPageChange}
                       defaultCurrent={pageNumber}
                       current={pageNumber}
-                      total={this.props.pageData.total}
+                      total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
                       pageSize={perPageNumber}
                       showTotal={total => `${total} Results`}
