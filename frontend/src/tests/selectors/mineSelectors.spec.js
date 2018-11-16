@@ -111,8 +111,8 @@ describe('mineSelectors', () => {
 
   it('`getCurrentPermitteeIds` calls `mineReducer.getCurrentPermitteeIds`', () => {
     mines =  Mock.MINES.mines;
-    mineGuid = Mock.MINES.mineIds[1]
-    const selected = getCurrentPermitteeIds.resultFunc(mines, mineGuid)
+    mineGuid = Mock.MINES.mineIds[1];
+    const selected = getCurrentPermitteeIds.resultFunc(mines, mineGuid);
     expect(selected).toEqual(["1c7da2c4-10d5-4c9f-994a-96427aa0c69b"]);
   });
 });
