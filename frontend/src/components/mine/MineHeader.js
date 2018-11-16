@@ -55,8 +55,9 @@ class MineHeader extends Component {
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       "major_mine_ind": mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
-      "mine_region": mine.mine_region[0] ? mine.mine_region[0].region_code : null,
+      "mine_region": mine.mine_detail[0] ? mine.mine_detail[0].mine_region : null
     };
+
     this.props.openModal({
       props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues },
       content: modalConfig.MINE_RECORD,

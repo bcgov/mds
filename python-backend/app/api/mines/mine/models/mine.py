@@ -96,13 +96,9 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
-<<<<<<< HEAD
-    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-=======
-    major = db.Column(db.Boolean, default=False)
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
     region_code = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
 
->>>>>>> modify region model
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
@@ -113,13 +109,9 @@ class MineDetail(AuditMixin, Base):
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
-<<<<<<< HEAD
-            'major_mine_ind': self.major_mine_ind
-=======
-            'major': self.major,
+            'major_mine_ind': self.major_mine_ind,
             'region_code': self.region_code,
             'region_value': str(region_description['description'])
->>>>>>> modify region model
             }
 
     @classmethod
