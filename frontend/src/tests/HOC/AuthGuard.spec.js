@@ -1,9 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AuthGuard } from '@/HOC/AuthGuard';
+import * as Mock from '@/tests/mocks/dataMocks';
 
+const Component = AuthGuard(() => <div>Test</div>);
 const dispatchProps = {};
-const reducerProps = {}
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.authenticateUser = jest.fn();
@@ -12,8 +14,9 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.keycloak = {}
+  reducerProps.keycloak = {};
   reducerProps.isAuthenticated = true;
+  reducerProps.userAccessData = Mock.USER_ACCESS_DATA;
 };
 
 beforeEach(() => {
@@ -22,8 +25,8 @@ beforeEach(() => {
 });
 
 describe('AuthGuard', () => {
-  it('renders properly', () => {
-    const component = shallow(<AuthGuard {...dispatchProps} {...reducerProps} />);
-    expect(component).toMatchSnapshot();
+  it('should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`', () => {
+    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps}/>);
+    expect(wrapper).toMatchSnapshot();
   });
 });
