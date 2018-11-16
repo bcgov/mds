@@ -10,18 +10,13 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-COPY package*.json /app
+COPY . /app
+RUN rm -rf node_modules package-lock.json
 RUN npm install --silent
 
 # Add node_modules binary to the path
 ENV PATH $PATH:/app/node_modules/.bin
 
-# Copy over source
-COPY . /app
-
-# Build the app and remove any non-production dependencies
-RUN npm run build
-
 # Run the server
-EXPOSE 80
-CMD [ "npm", "run", "start" ]
+EXPOSE 3000
+CMD [ "npm", "run", "serve" ]
