@@ -10,12 +10,15 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
+      - KEYCLOAK_HOSTNAME=localhost
     volumes:
      - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
      - ./openshift/scripts/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
     ports:
       - "8080:8080"
       - "8443:8443"
+    networks:
+      - mds
 
 ####################### Postgres Definition #######################
   postgres:
@@ -30,6 +33,8 @@ services:
       - POSTGRES_DB=mds
     ports:
       - "5432:5432"
+    networks:
+      - mds
 
 ####################### Backend Definition #######################
   backend:
@@ -45,6 +50,8 @@ services:
       - postgres
     # Export environment variables from .env into the container environment
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
+    networks:
+      - mds
 
 ####################### Frontend Definition #######################
   frontend:
@@ -59,3 +66,10 @@ services:
     depends_on:
       - backend
     entrypoint: ["npm", "run", "serve"]
+    networks:
+      - mds
+
+####################### Networks Definition #######################
+networks:
+  mds:
+    driver: "bridge"
