@@ -79,6 +79,7 @@ export const UpdatePermitteeForm = (props) => {
             <Field
               id="startDate"
               name="startDate"
+              placeholder="yyyy-mm-dd"
               label='Select a Start date *'
               component={renderConfig.DATE}
               validate={[required]}
