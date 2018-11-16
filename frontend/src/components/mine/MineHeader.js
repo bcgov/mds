@@ -54,9 +54,9 @@ class MineHeader extends Component {
       "latitude": mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
-      "major": mine.mine_detail[0] ? mine.mine_detail[0].major : false,
+      "major_mine_ind": mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
       "mine_region": mine.mine_region[0] ? mine.mine_region[0].region_code : null,
-    }
+    };
     this.props.openModal({
       props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues },
       content: modalConfig.MINE_RECORD,
@@ -90,7 +90,7 @@ class MineHeader extends Component {
             />
           </div>
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
-          <h5>{mine.mine_detail[0].major? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
+          <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <div className="dashboard__header__content--inline">
           {mine.mine_region[0] && <p>{mine.mine_region[0].region_value}</p>}
             <div className="inline-flex between">
