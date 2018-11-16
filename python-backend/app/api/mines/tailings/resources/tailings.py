@@ -1,6 +1,6 @@
 import uuid, requests,json
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from ..models.tailings import MineTailingsStorageFacility
 
@@ -47,7 +47,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             mine_tsf.save()
 
             if is_mine_first_tsf:
-                tsf_required_documents = requests.get(DOCUMENT_MS_URL + '/required?category=MINE_TAILINGS', 
+                tsf_required_documents = requests.get(current_app.config['DOCUMENT_MS_URL'] + '/required?category=MINE_TAILINGS', 
                         headers=request.headers
                 ).json()['required_documents']
 
@@ -64,7 +64,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                     'Authorization': request.headers['Authorization']
                 }
 
-                doc_assignment_response = requests.post(DOCUMENT_MS_URL + '/mines/expected/' + str(mine_guid), 
+                doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + '/mines/expected/' + str(mine_guid), 
                         headers=new_headers, 
                         json={'documents': new_expected_documents}
                 )

@@ -48,7 +48,7 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
   dispatch(showLoading('modal'));
   return axios.post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
   .then((response) => {
-    notification.success({ message: "Successfully addeda TSF to the mine: ", duration: 10 });
+    notification.success({ message: "Successfully added the TSF.", duration: 10 });
     dispatch(success(reducerTypes.CREATE_TSF));
     dispatch(hideLoading('modal'));
     return response;
