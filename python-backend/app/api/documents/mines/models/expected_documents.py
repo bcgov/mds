@@ -26,10 +26,7 @@ class MineExpectedDocument(AuditMixin, Base):
     date_received = db.Column(db.DateTime) 
     date_accepted = db.Column(db.DateTime) 
     due_date = db.Column(db.DateTime) 
-    status = db.Column(db.String(60), nullable=False,  default='PENDING')
-    #Audit Columns
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) 
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    status = db.Column(db.String(60), nullable=False)
   
 
     def json(self):

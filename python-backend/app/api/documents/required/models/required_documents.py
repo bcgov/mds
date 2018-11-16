@@ -15,8 +15,6 @@ class RequiredDocument(AuditMixin, Base):
     req_document_name = db.Column(db.String(60), nullable=False)
     req_document_description = db.Column(db.String(300))
     req_document_category = db.Column(db.String(60))
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) 
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
 
     def json(self):

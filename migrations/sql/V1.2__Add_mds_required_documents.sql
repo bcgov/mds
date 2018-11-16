@@ -5,8 +5,7 @@ CREATE TABLE mds_required_document (
   req_document_description character varying (300) NULL,
   req_document_category character varying(60) NULL,
 --Audit Columns
-  effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
+  IS_ACTIVE boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -23,8 +22,7 @@ CREATE TABLE mine_document (
 --Data Columns
   doc_manager_fileID integer NULL,
 --Audit Columns 
-  effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
+  IS_ACTIVE boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -43,8 +41,7 @@ CREATE TABLE mine_expected_document_xref (
   exp_document_guid uuid NOT NULL,
 --Data Columns
 --Audit Columns
-  effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
+  IS_ACTIVE boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -71,8 +68,7 @@ CREATE TABLE mine_expected_document (
   due_date date NULL, 
   status character varying(60) NULL,
 --Audit Columns
-  effective_date date NOT NULL DEFAULT now(),
-  expiry_date    date NOT NULL DEFAULT '9999-12-31'::date,
+  IS_ACTIVE boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
