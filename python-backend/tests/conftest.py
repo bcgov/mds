@@ -226,15 +226,7 @@ def setup_data(session):
             **DUMMY_USER_KWARGS
         )
         region_code.save()
-
-    region = MineRegion(
-        mine_region_guid = uuid.UUID(TEST_REGION_GUID),
-        mine_guid = uuid.UUID(TEST_MINE_GUID),
-        region_code = TEST_REGION_CODE_1,
-        **DUMMY_USER_KWARGS
-    )
-    region.save()
-    
+ 
 
 def clear_data(session):
     meta = db.metadata
