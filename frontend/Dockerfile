@@ -19,9 +19,6 @@ ENV PATH $PATH:/app/node_modules/.bin
 # Copy over source
 COPY . /app
 
-# Build the app and remove any non-production dependencies
-RUN npm run build
-
 # Run the server
-EXPOSE 80
+EXPOSE 3000
 CMD [ "npm", "run", "start" ]

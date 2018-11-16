@@ -30,8 +30,6 @@ services:
       - POSTGRES_DB=mds
     ports:
       - "5432:5432"
-    networks:
-      - postgres
 
 ####################### Backend Definition #######################
   backend:
@@ -41,13 +39,12 @@ services:
       context: python-backend
     ports:
       - 5000:5000
+    volumes:
+     - ./python-backend:/app
     depends_on:
       - postgres
     # Export environment variables from .env into the container environment
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
-    networks:
-      - postgres
-      - backend
 
 ####################### Frontend Definition #######################
   frontend:
@@ -55,21 +52,10 @@ services:
     container_name: mds_frontend
     build:
       context: frontend
+    volumes:
+     - ./frontend/src:/app/src
     ports:
       - 3000:3000
-    env_file: ./frontend/.env
     depends_on:
       - backend
-    entrypoint: ["npm", "run", "start"]
-    networks:
-      - backend
-      - frontend
-
-####################### Networks Definition #######################
-networks:
-  postgres:
-    driver: "bridge"
-  frontend:
-    driver: "bridge"
-  backend:
-    driver: "bridge"
+    entrypoint: ["npm", "run", "serve"]

@@ -13,9 +13,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy over the code
-COPY . /app
-
 # Run the server
 EXPOSE 5000
 CMD [ "flask", "run"]
