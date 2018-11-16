@@ -140,6 +140,7 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
             self.raise_error(400, 'Error: Unexpected manager id in Url.')
+
         data = ManagerResource.parser.parse_args()
         if not data['party_guid']:
             self.raise_error(400, 'Error: Party guid is not provided.')
@@ -147,21 +148,26 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Mine guid is not provided.')
         if not data['effective_date']:
             self.raise_error(400, 'Error: Effective date is not provided.')
-        # Validation for mine and party exists
-        party_exists = Party.find_by_party_guid(data['party_guid'])
-        if not party_exists:
+
+        new_party = Party.find_by_party_guid(data['party_guid'])
+        mine = MineIdentity.find_by_mine_guid(data['mine_guid'])
+        if not new_party:
             self.raise_error(400, 'Error: Party with guid: {}, does not exist.'.format(data['party_guid']))
-        mine_exists = MineIdentity.find_by_mine_guid(data['mine_guid'])
-        if not mine_exists:
+        if not mine:
             self.raise_error(400, 'Error: Mine with guid: {}, does not exist.'.format(data['mine_guid']))
-        # Check if there is a previous manager, set expiry the day before new manager
-        previous_mgr_expiry_date = data['effective_date'] - timedelta(days=1)
-        previous_mgrs = mine_exists.mgr_appointment
-        if previous_mgrs:
-            previous_mgr_info = previous_mgrs[0]
-            previous_mgr = MgrAppointment.find_by_mgr_appointment_guid(previous_mgr_info.mgr_appointment_guid)
+
+        # If there is a previous manager, set its expiry to the day before the new manager's start date
+        if mine.mgr_appointment:
+            previous_appointment_guid = mine.mgr_appointment[0].mgr_appointment_guid
+            previous_mgr = MgrAppointment.find_by_mgr_appointment_guid(previous_appointment_guid)
+
+            previous_mgr_expiry_date = data['effective_date'] - timedelta(days=1)
+            if previous_mgr_expiry_date.date() < previous_mgr.effective_date:
+               self.raise_error(400, 'Error: Effective date will be before the previous parties expiry date.')
+
             previous_mgr.expiry_date = previous_mgr_expiry_date
             previous_mgr.save()
+
         try:
             manager = MgrAppointment(
                 mgr_appointment_guid=uuid.uuid4(),
@@ -170,18 +176,10 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
                 effective_date=data['effective_date'],
                 **self.get_create_update_dict()
             )
+            manager.save()
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
-        manager.save()
-        party_context = {}
-        if party_exists.party_type_code == PARTY_STATUS_CODE['per']:
-            party_context.update({
-                'name': party_exists.first_name + ' ' + party_exists.party_name
-            })
-        elif party_exists.party_type_code == PARTY_STATUS_CODE['org']:
-            party_context.update({
-                'name': party_exists.party_name
-            })
+
         return {
             'party_guid': str(manager.party_guid),
             'mgr_appointment_guid': str(manager.mgr_appointment_guid),
