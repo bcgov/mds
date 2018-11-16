@@ -62,6 +62,14 @@ database-dump-clean:
 	@echo "+\n++ Removing dump file...\n+"
 	@rm -f pgDump-test.pgCustom
 
+keycloak:
+	@echo "+\n++ Running keycloak...\n+"
+	@docker-compose up -d keycloak
+	@echo "+\n++ Waiting for the server to spin up...\n+"
+	sleep 10
+	@echo "+\n++ Creating local admin user...\n+"
+	@docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
+
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
 	@docker-compose down
