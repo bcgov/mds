@@ -15,36 +15,36 @@ export const MINE_RESPONSE = {
     mine_permit: [],
     mineral_tenure_xref: [
       {
-        tenure_number_id: "1234567"
+        tenure_number_id: "1234567",
       }
     ],
     mine_detail: [
       {
         mine_name: "mine1",
-        mine_no: "BLAH9091"
+        mine_no: "BLAH9091",
       },
       {
         mine_name: "mine3",
-        mine_no: "BLAH9091"
+        mine_no: "BLAH9091",
       }
-    ], 
+    ],
     mine_location: [
       { longitude: null,
-        latitude: null
+        latitude: null,
       }
     ],
     mine_region: [
       {
         mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
         mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
-        region_code: "NW"
+        region_code: "NW",
       }
     ],
     mine_status: {
       statusvalue: ["CLD", "CM"],
       status_labels: ["Closed", "Care & Maintenance"],
       effective_date: "2018-10-16",
-      expiry_date: "9999-12-31"
+      expiry_date: "9999-12-31",
     }
   },
   {
@@ -76,7 +76,7 @@ export const MINE_RESPONSE = {
               party_name: "Higesewawa",
               party_type_code: "PER",
               phone_ext: null,
-              phone_no: "123-123-1234"
+              phone_no: "123-123-1234",
             }
           }
         ]
@@ -106,7 +106,7 @@ export const MINE_RESPONSE = {
               party_name: "Higesewawa",
               party_type_code: "PER",
               phone_ext: null,
-              phone_no: "123-123-1234"
+              phone_no: "123-123-1234",
             }
           }
         ]
@@ -114,45 +114,45 @@ export const MINE_RESPONSE = {
     ],
     mineral_tenure_xref: [
       {
-        tenure_number_id: "1234567"
+        tenure_number_id: "1234567",
       }
     ],
     mine_status: {
       statusvalue: ["CLD", "CM"],
       status_labels: ["Closed", "Care & Maintenance"],
       effective_date: "2018-10-16",
-      expiry_date: "9999-12-31"
+      expiry_date: "9999-12-31",
     },
     mine_detail: [
       {
         mine_name: "mine1",
-        mine_no: "BLAH9091"
+        mine_no: "BLAH9091",
       },
       {
         mine_name: "mine2",
-        mine_no: "BLAH9091"
+        mine_no: "BLAH9091",
       }
     ],
     mine_location: [
       {
         longitude: null,
-        latitude: null
+        latitude: null,
       }
     ],
     mine_region: [
       {
         mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
         mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
-        region_code: "NW"
+        region_code: "NW",
       }
     ],
   }
-]}
+]};
 
 export const MINES = {
   mineIds: [
     "18133c75-49ad-4101-85f3-a43e35ae989a",
-    "18145c75-49ad-0101-85f3-a43e45ae989a"
+    "18145c75-49ad-0101-85f3-a43e45ae989a",
   ],
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
@@ -161,36 +161,36 @@ export const MINES = {
       mine_permit: [],
       mineral_tenure_xref: [
         {
-          tenure_number_id: "1234567"
+          tenure_number_id: "1234567",
         }
       ],
       mine_detail: [
         {
           mine_name: "mine1",
-          mine_no: "BLAH9091"
+          mine_no: "BLAH9091",
         },
         {
           mine_name: "mine3",
-          mine_no: "BLAH9091"
+          mine_no: "BLAH9091",
         }
-      ], 
+      ],
       mine_location: [
         { longitude: null,
-          latitude: null
+          latitude: null,
         }
       ],
       mine_region: [
         {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
-          region_code: "NW"
+          region_code: "NW",
         }
       ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31"
+        expiry_date: "9999-12-31",
       }
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
@@ -222,7 +222,7 @@ export const MINES = {
                 party_name: "Higesewawa",
                 party_type_code: "PER",
                 phone_ext: null,
-                phone_no: "123-123-1234"
+                phone_no: "123-123-1234",
               }
             }
           ]
@@ -252,7 +252,7 @@ export const MINES = {
                 party_name: "Higesewawa",
                 party_type_code: "PER",
                 phone_ext: null,
-                phone_no: "123-123-1234"
+                phone_no: "123-123-1234",
               }
             }
           ]
@@ -260,46 +260,46 @@ export const MINES = {
       ],
       mineral_tenure_xref: [
         {
-          tenure_number_id: "1234567"
+          tenure_number_id: "1234567",
         }
       ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31"
+        expiry_date: "9999-12-31",
       },
       mine_detail: [
         {
           mine_name: "mine1",
-          mine_no: "BLAH9091"
+          mine_no: "BLAH9091",
         },
         {
           mine_name: "mine2",
-          mine_no: "BLAH9091"
+          mine_no: "BLAH9091",
         }
       ],
       mine_location: [
         {
           longitude: null,
-          latitude: null
+          latitude: null,
         }
       ],
       mine_region: [
         {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
-          region_code: "NW"
+          region_code: "NW",
         }
       ],
     }
   }
-}
+};
 
 export const PARTY = {
   partyIds: [
     "18133c75-49ad-4101-85f3-a43e35ae989a",
-    "18145c75-49ad-0101-85f3-a43e45ae989a"
+    "18145c75-49ad-0101-85f3-a43e45ae989a",
   ],
   parties: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
@@ -311,7 +311,7 @@ export const PARTY = {
       name: "mock Two"
     }
   }
-}
+};
 
 export const MINE_NAME_LIST = [
     {
@@ -335,7 +335,7 @@ export const MINE_NAME_LIST = [
       longitude: "-119.6963833",
       latitude: "51.4961750"
     }
-  ]
+  ];
 
 export const PAGE_DATA = {
   current_page: 1,
@@ -347,7 +347,7 @@ export const PAGE_DATA = {
   prev_num:null,
   total:9000,
   total_pages:360,
-}
+};
 
 export const COORDINATES = [48.70707, -122.489504];
 export const STATUS_OPTIONS = {
@@ -432,7 +432,7 @@ export const STATUS_OPTIONS = {
   ]
 };
 
-export const REGION_OPTIONS = { 
+export const REGION_OPTIONS = {
   options: [{
     value: "SW",
     label: "South West"
@@ -453,7 +453,7 @@ export const REGION_OPTIONS = {
     value: "SE",
     label: "South East"
   }
-]}
+]};
 
 export const PERMITTEE = {
   permitteeIds: [
@@ -481,6 +481,6 @@ export const PERMITTEE = {
       }
     },
   }
-}
+};
 
-export const USER_ACCESS_DATA = ["mds-mine-view", "idir", "mds-mine-create", "offline_access", "admin" ,"uma_authorization", "mds-mine-admin"]
+export const USER_ACCESS_DATA = ["mds-mine-view", "idir", "mds-mine-create", "offline_access", "admin" ,"uma_authorization", "mds-mine-admin"];

@@ -2,12 +2,12 @@ import {
   getMineIds,
   getMines,
   getMineNames,
-  getMineRegionOptions, 
-  getMineStatusOptions, 
-  getMineGuid, 
+  getMineRegionOptions,
+  getMineStatusOptions,
+  getMineGuid,
   getCurrentPermittees,
   getCurrentPermitteeIds,
-  getMinesPageData 
+  getMinesPageData
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
 import { storeMineList, storeMineNameList, storeStatusOptions, storeRegionOptions, storeMine } from "@/actions/mineActions";
@@ -25,11 +25,11 @@ const mockState = {
   mineGuid: false,
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options
-}
+};
 
 describe('mineSelectors', () => {
   let { mines, mineIds, mineNameList, minesPageData, mineGuid, mineStatusOptions, mineRegionOptions} = mockState;
- 
+
   it('`getMines` calls `mineReducer.getMines`', () => {
     const storeAction = storeMineList(mockResponse);
     const storeState = mineReducer({}, storeAction);

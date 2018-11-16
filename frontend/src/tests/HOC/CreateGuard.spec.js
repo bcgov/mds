@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import { CreateGuard } from '@/HOC/CreateGuard';
 import * as Mock from '@/tests/mocks/dataMocks';
 
-let Component;
+const Component = CreateGuard(() => <div>Test</div>);
 const dispatchProps = {};
-const reducerProps = {}
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.logoutUser = jest.fn();
@@ -13,13 +13,12 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.userRoles = Mock.USER_ACCESS_DATA;
-  reducerProps.keycloak = {}
+  reducerProps.keycloak = {};
 };
 
 beforeEach(() => {
   setupDispatchProps();
   setupReducerProps();
-  Component = CreateGuard(() => <div>Test</div>)
 });
 
 describe('CreateGuard', () => {

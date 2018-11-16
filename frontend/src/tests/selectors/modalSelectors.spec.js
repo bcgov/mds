@@ -1,7 +1,7 @@
-import {getIsModalOpen, getProps, getContent} from '@/selectors/modalSelectors';
+import { getIsModalOpen, getProps, getContent } from '@/selectors/modalSelectors';
 import modalReducer from '@/reducers/modalReducer';
-import {openModal, closeModal} from '@/actions/modalActions';
-import {MODAL} from '@/constants/reducerTypes';
+import { openModal, closeModal } from '@/actions/modalActions';
+import { MODAL } from '@/constants/reducerTypes';
 import * as Mock from '@/tests/mocks/dataMocks';
 import { modalConfig } from '@/components/modalContent/config';
 
@@ -9,11 +9,11 @@ const mockModal = {
   isModalOpen: true,
   props: [Mock.MINES.mines[Mock.MINES.mineIds[0]],  Mock.REGION_OPTIONS, Mock.STATUS_OPTIONS],
   content: modalConfig.MINE_RECORD,
-}
+};
 
 describe('modalSelectors', () => {
   const { props, content } = mockModal;
-  
+
   it('`getIsModalOpen` calls `modalReducer.getIsModalOpen` when `openModal` is dispatched', () => {
     const storeAction = openModal({props, content});
     const storeState = modalReducer({}, storeAction);

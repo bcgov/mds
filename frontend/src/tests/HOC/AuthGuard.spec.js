@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import { AuthGuard } from '@/HOC/AuthGuard';
 import * as Mock from '@/tests/mocks/dataMocks';
 
-let Component;
+const Component = AuthGuard(() => <div>Test</div>);
 const dispatchProps = {};
-const reducerProps = {}
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.authenticateUser = jest.fn();
@@ -14,7 +14,7 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.keycloak = {}
+  reducerProps.keycloak = {};
   reducerProps.isAuthenticated = true;
   reducerProps.userAccessData = Mock.USER_ACCESS_DATA;
 };
@@ -22,7 +22,6 @@ const setupReducerProps = () => {
 beforeEach(() => {
   setupDispatchProps();
   setupReducerProps();
-  Component = AuthGuard(() => <div>Test</div>);
 });
 
 describe('AuthGuard', () => {
