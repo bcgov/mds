@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from '@/constants/assets';
+import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE } from '@/constants/assets';
 import { Menu, Icon } from 'antd';
 import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
@@ -34,7 +34,7 @@ class MineHeader extends Component {
     })
   }
 
-  handleAddTailings = (value) => {
+  handleAddTailings = () => {
     // add actionCreator here
     this.props.closeModal();
   }
@@ -59,7 +59,8 @@ class MineHeader extends Component {
     };
     this.props.openModal({
       props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues },
-      content: modalConfig.MINE_RECORD
+      content: modalConfig.MINE_RECORD,
+      clearOnSubmit: false,
     });
   }
 

@@ -12,8 +12,8 @@ const propTypes = {
 };
 
 const defaultProps = {
- title: '',
- initialValues: null,
+  title: '',
+  initialValues: null,
 };
 
 export const MineRecordModal = (props) => {
