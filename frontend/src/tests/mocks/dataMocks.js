@@ -23,13 +23,13 @@ export const MINE_RESPONSE = {
         mine_name: "mine1",
         mine_no: "BLAH9091",
         region_code: "NE",
-        region_value: "North East Region"
+        region_value: "North East Region",
       },
       {
         mine_name: "mine3",
         mine_no: "BLAH9091",
         region_code: "NE",
-        region_value: "North East Region"
+        region_value: "North East Region",
       }
     ],
     mine_location: [
@@ -125,13 +125,13 @@ export const MINE_RESPONSE = {
         mine_name: "mine1",
         mine_no: "BLAH9091",
         region_code: "NE",
-        region_value: "North East Region"
+        region_value: "North East Region",
       },
       {
         mine_name: "mine2",
         mine_no: "BLAH9091",
         region_code: "NE",
-        region_value: "North East Region"
+        region_value: "North East Region",
       }
     ],
     mine_location: [
@@ -163,13 +163,13 @@ export const MINES = {
           mine_name: "mine1",
           mine_no: "BLAH9091",
           region_code: "NE",
-          region_value: "North East Region" 
+          region_value: "North East Region",
         },
         {
           mine_name: "mine3",
           mine_no: "BLAH9091",
           region_code: "NE",
-          region_value: "North East Region"  
+          region_value: "North East Region", 
         }
       ],
       mine_location: [
@@ -265,13 +265,13 @@ export const MINES = {
           mine_name: "mine1",
           mine_no: "BLAH9091",
           region_code: "NE",
-          region_value: "North East Region"  
+          region_value: "North East Region",
         },
         {
           mine_name: "mine2",
           mine_no: "BLAH9091",
           region_code: "NE",
-          region_value: "North East Region"  
+          region_value: "North East Region", 
         }
       ],
       mine_location: [
