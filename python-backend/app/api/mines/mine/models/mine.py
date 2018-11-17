@@ -97,20 +97,20 @@ class MineDetail(AuditMixin, Base):
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
-    region_code = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
+    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
 
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
     def json(self):
-        region_description=MineRegionCode.find_by_region_code(self.region_code).json()
+        region_description=MineRegionCode.find_by_region_code(self.mine_region).json()
         return {
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
             'major_mine_ind': self.major_mine_ind,
-            'region_code': self.region_code,
+            'region_code': self.mine_region,
             'region_value': str(region_description['description'])
             }
 
