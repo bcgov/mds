@@ -17,7 +17,7 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.location = {search:""}
-  reducerProps.history = {}
+  reducerProps.history = {push: jest.fn()}
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.pageData = MOCK.PAGE_DATA;
