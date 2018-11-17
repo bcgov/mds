@@ -108,7 +108,7 @@ BEGIN
         create_timestamp    ,
         update_user         ,
         update_timestamp    ,
-        major_mine_ind               )
+        major_mine_ind      )
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,

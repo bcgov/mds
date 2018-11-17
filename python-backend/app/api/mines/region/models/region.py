@@ -29,5 +29,3 @@ class MineRegionCode (AuditMixin,Base):
     @classmethod
     def find_by_region_code(cls,_code):
         return cls.query.filter_by(mine_region_code=_code).first()
- 
-    

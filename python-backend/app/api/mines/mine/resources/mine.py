@@ -110,7 +110,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_region = None
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
-        region = data['mine_region']
+        mine_region = data['mine_region']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine_detail = MineDetail(
@@ -120,7 +120,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_name=data['name'],
                 mine_note=note if note else '',
                 major_mine_ind=major_mine_ind,
-                mine_region=region,
+                mine_region=mine_region,
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
