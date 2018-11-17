@@ -15,7 +15,7 @@ class MineRegionCode (AuditMixin,Base):
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.region_code
-     
+
     def json(self):
         return {
             'region_code': str(self.region_code),
@@ -25,8 +25,20 @@ class MineRegionCode (AuditMixin,Base):
     @classmethod
     def find_by_region_code(cls,_code):
         return cls.query.filter_by(region_code=_code).first()
- 
-    
+
+    @classmethod
+    def create_mine_region_code(cls, code, description, display_order, user_kwargs, save=True):
+        mine_region_code = cls(
+            region_code=code,
+            description=description,
+            display_order=display_order,
+            **user_kwargs
+        )
+        if save:
+            mine_region_code.save(commit=False)
+        return mine_region_code
+
+
 class MineRegion(AuditMixin,Base):
     __tablename__ = 'mine_region'
     mine_region_guid = db.Column(UUID(as_uuid=True), primary_key=True)
@@ -35,8 +47,8 @@ class MineRegion(AuditMixin,Base):
 
     def __repr__(self):
         return '<Mine_Region_Guid %r>' % self.mine_region_guid
-     
-    def json(self): 
+
+    def json(self):
         region_description=MineRegionCode.find_by_region_code(self.region_code).json()
         return {
             'mine_region_guid': str(self.mine_region_guid),
@@ -48,5 +60,4 @@ class MineRegion(AuditMixin,Base):
     @classmethod
     def find_by_mine_region_guid(cls, _id):
         return cls.query.filter_by(mine_region_guid=_id).first()
- 
- 
+
