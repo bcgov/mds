@@ -67,8 +67,12 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const params = this.props.location.search ? this.props.location.search : String.DEFAULT_DASHBOARD_PARAMS;
-    this.renderDataFromURL(params);
+    const params = this.props.location.search;
+    if (params) {
+      this.renderDataFromURL(params);
+    } else {
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE));
+    }
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
   }
@@ -79,7 +83,7 @@ export class Dashboard extends Component {
       const params = nextProps.location.search;
       this.renderDataFromURL(params);
     }
-  };
+  }
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
@@ -150,12 +154,11 @@ export class Dashboard extends Component {
   }
 
   renderCorrectView(){
-    const { page, search, per_page, map} = this.state.params;
-    const pageNumber = Number(page);
+    const { search, map, page, per_page } = this.state.params;
+    const currentPage = Number(page);
     const pageTotal = Number(this.props.pageData.total);
-    const perPageNumber = Number(per_page);
+    const itemsPerPage = Number(per_page);
     const isMap = map ? 'map' : 'list';
-    console.log({...this.props.params});
     if (this.state.mineList) {
         return (
           <div>
@@ -183,11 +186,11 @@ export class Dashboard extends Component {
                       showSizeChanger
                       onShowSizeChange={this.onPageChange}
                       onChange={this.onPageChange}
-                      defaultCurrent={pageNumber}
-                      current={pageNumber}
+                      defaultCurrent={currentPage}
+                      current={currentPage}
                       total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
-                      pageSize={perPageNumber}
+                      pageSize={itemsPerPage}
                     />
                   </MediaQuery>
                   <MediaQuery minWidth={501}>
@@ -195,11 +198,11 @@ export class Dashboard extends Component {
                       showSizeChanger
                       onShowSizeChange={this.onPageChange}
                       onChange={this.onPageChange}
-                      defaultCurrent={pageNumber}
-                      current={pageNumber}
+                      defaultCurrent={currentPage}
+                      current={currentPage}
                       total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
-                      pageSize={perPageNumber}
+                      pageSize={itemsPerPage}
                       showTotal={total => `${total} Results`}
                     />
                   </MediaQuery>

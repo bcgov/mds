@@ -3,6 +3,7 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
+from sqlalchemy_filters import apply_sort, apply_pagination
 
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
@@ -43,30 +44,30 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 return {'mines': result}
 
             # Handle ListView request
-            items_per_page = request.args.get('per_page', 50, type=int)
+            items_per_page = request.args.get('per_page', 25, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
             if search_term:
                 name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
                 number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
                 permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-                mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
-                permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
-                mines = mines_q.union(permit_q).paginate(page, items_per_page, False)
+                mines_query = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+                permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
+                mines_permit_join_query = mines_query.union(permit_query)
+                paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
             else:
-                mines = MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name).paginate(page, items_per_page, False)
-                # mines.total = MineIdentity.query.count()
-
+                sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
+                sorted_mine_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
+                paginated_mine_query, pagination_details = apply_pagination(sorted_mine_query ,page, items_per_page)
+                
+            
+            mines = paginated_mine_query.all()
             return {
-                'mines': list(map(lambda x: x.json(), mines.items)),
-                'has_next': mines.has_next,
-                'has_prev': mines.has_prev,
-                'next_num': mines.next_num,
-                'prev_num': mines.prev_num,
-                'current_page': mines.page,
-                'total_pages': mines.pages,
-                'items_per_page': mines.per_page,
-                'total': mines.total,
+                'mines': list(map(lambda x: x.json(), mines)),
+                'current_page': pagination_details.page_number,
+                'total_pages': pagination_details.num_pages,
+                'items_per_page': pagination_details.page_size,
+                'total': pagination_details.total_results,
             }
 
     def mine_operation_code_processor(self, mine_status, index):
