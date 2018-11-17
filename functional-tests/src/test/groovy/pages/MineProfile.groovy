@@ -6,7 +6,7 @@ import utils.Const
 
 class MineProfilePage extends Page {
     static at = { waitFor() {activeTab == "Summary" }  }
-    static url = "dashboard/${Const.MINE_GUID}/summary/summary/"
+    static url = "dashboard/${Const.MINE_GUID}/summary/"
     static content = {
         //General
         mineName (wait:true) {$("h1",0).text()}
