@@ -19,4 +19,4 @@ ENV PATH $PATH:/app/node_modules/.bin
 
 # Run the server
 EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "run", "build-serve" ]

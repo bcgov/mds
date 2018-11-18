@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
+    "ajv": "^5.5.2",
     "antd": "^3.7.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
@@ -62,16 +63,17 @@
     "optimize-css-assets-webpack-plugin": "^4.0.1",
     "postcss-loader": "^2.1.5",
     "react-hot-loader": "^4.3.11",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^6.0.7",
     "style-loader": "^0.21.0",
     "sw-precache-webpack-plugin": "^0.11.5",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.1",
+    "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-manifest-plugin": "^2.0.3",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "webpack-watch-files-plugin": "^1.0.2"
   },
   "optionalDependencies": {
     "enzyme": "^3.3.0",

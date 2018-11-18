@@ -53,12 +53,12 @@ export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
-    this.state = { 
-      mineList: false, 
-      lat: String.DEFAULT_LAT, 
-      long: String.DEFAULT_LONG, 
-      showCoordinates: false, 
-      mineName: null, 
+    this.state = {
+      mineList: false,
+      lat: String.DEFAULT_LAT,
+      long: String.DEFAULT_LONG,
+      showCoordinates: false,
+      mineName: null,
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,

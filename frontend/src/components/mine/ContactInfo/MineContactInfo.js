@@ -32,7 +32,7 @@ const defaultProps = {
   permitteeIds: [],
   permittees: {}
 };
-    
+
   export class MineContactInfo extends Component {
     constructor(props) {
       super(props);
@@ -60,13 +60,13 @@ const defaultProps = {
   const { mine } = this.props;
    return (
      <div>
-        <ViewMineManager 
-          {...this.props} 
+        <ViewMineManager
+          {...this.props}
           handleChange={this.handleChangeDebounced}
           handlePartySubmit={this.handlePartySubmit}
         />
         {mine.mine_permit[0] &&
-          <ViewPermittee 
+          <ViewPermittee
             {...this.props}
             handleChange={this.handleChangeDebounced}
             handlePartySubmit={this.handlePartySubmit}
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     addMineManager,
     addPermittee,
     fetchMineRecordById,
-    openModal, 
+    openModal,
     closeModal,
   }, dispatch);
 }

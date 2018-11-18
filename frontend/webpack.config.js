@@ -9,8 +9,8 @@ const parts = require('./webpack.parts');
 
 const DEVELOPMENT = 'development';
 const PRODUCTION = 'production';
-const HOST = process.env.HOST;
-const PORT = process.env.PORT;
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = process.env.PORT || 3000;
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 const PATHS = {
@@ -65,7 +65,7 @@ const commonConfig = merge([
             console.log('Begin compile at ' + new Date());
             callback();
         })
-      }
+      },
     ],
     resolve: {
       alias: PATH_ALIASES,

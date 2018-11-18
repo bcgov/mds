@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import 'antd/dist/antd.less';
 import './styles/index.scss';
-import unregister from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 import fetchEnv from './fetchEnv';
 import configureStore from './store/configureStore';
 
