@@ -27,10 +27,11 @@ class MineList extends Component {
     return (
       <div className="antd-list">
         <Row type="flex" style={{textAlign: 'center'}}>
-          <Col span={6}><h2>Mine ID</h2></Col>
+          <Col span={4}><h2>Mine ID</h2></Col>
           <Col span={6}><h2>Name</h2></Col>
-          <Col span={6}><h2>Permit(s)</h2></Col>
-          <Col span={6}><h2>Action</h2></Col>
+          <Col span={6}><h2>Region</h2></Col>
+          <Col span={4}><h2>Permit(s)</h2></Col>
+          <Col span={4}><h2>Action</h2></Col>
         </Row>
         <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
 
@@ -38,16 +39,17 @@ class MineList extends Component {
           return (
             <div key={id}>
               <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col id="mine_list_id" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
+                <Col id="mine_list_id" span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
                 <Col id="mine_list_name" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col id="mine_list_permit" span={6}>
+                <Col id="mine_list_region" span={6}>{mines[id].mine_region[0] ? mines.mine_region[0].region_code : "-"}</Col>
+                <Col id="mine_list_permit" span={4}>
                   {mines[id].mine_permit.map((permit) => {
                     return (
                       <div key={permit.permit_guid}>{permit.permit_no }</div>
                     )
                   })}
                 </Col>
-                <Col id="mine_list_action" span={6}>
+                <Col id="mine_list_action" span={4}>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
                     <Button type="primary" style={{margin: '0'}}>
                       View

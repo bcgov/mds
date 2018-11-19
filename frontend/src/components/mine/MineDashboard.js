@@ -29,6 +29,7 @@ const propTypes = {
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
   mineStatusOptions: PropTypes.array,
+  mineRegionOptions: PropTypes.array,
 };
 
 const defaultProps = {
