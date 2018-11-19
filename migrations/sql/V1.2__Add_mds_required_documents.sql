@@ -1,6 +1,7 @@
 CREATE TABLE mds_required_document_category(
   req_document_category_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  req_document_category character varying(60) NOT NULL
+  req_document_category character varying(60) NOT NULL,
+  active_ind boolean NOT NULL DEFAULT 'true'
 );
 
 COMMENT ON TABLE mds_required_document_category IS 'A mds_required_document_category is fixed tag on an mds_required_document for searching';
@@ -12,7 +13,7 @@ CREATE TABLE mds_required_document (
   req_document_description character varying (300) NULL,
   req_document_category_guid uuid NOT NULL,
 --Audit Columns
-  ACTIVE_IND boolean NOT NULL DEFAULT 'true',
+  active_ind boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -31,7 +32,7 @@ CREATE TABLE mine_document (
 --Data Columns
   doc_manager_fileID integer NULL,
 --Audit Columns 
-  ACTIVE_IND boolean NOT NULL DEFAULT 'true',
+  active_ind boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -52,7 +53,7 @@ CREATE TABLE mine_expected_document (
   exp_document_name character varying(60) NOT NULL,
   due_date date NULL, 
 --Audit Columns
-  ACTIVE_IND boolean NOT NULL DEFAULT 'true',
+  active_ind boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
@@ -71,7 +72,7 @@ CREATE TABLE mine_expected_document_xref (
   exp_document_guid uuid NOT NULL,
 --Data Columns
 --Audit Columns
-  ACTIVE_IND boolean NOT NULL DEFAULT 'true',
+  active_ind boolean NOT NULL DEFAULT 'true',
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
   update_user      character varying(60) NOT NULL,
