@@ -4,6 +4,7 @@ import uuid
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
+from ...region.models.region import MineRegionCode
 from app.extensions import db
 
 
@@ -16,7 +17,6 @@ class MineIdentity(AuditMixin, Base):
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
     mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship('MineStatus', backref='mine_identity', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
-    mine_region = db.relationship('MineRegion',backref='mine_identity',order_by='desc(MineRegion.update_timestamp)', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
@@ -29,8 +29,7 @@ class MineIdentity(AuditMixin, Base):
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
-            'mine_status': [item.json() for item in self.mine_status],
-            'mine_region': [item.json() for item in self.mine_region]
+            'mine_status': [item.json() for item in self.mine_status]
         }
 
     def json_for_map(self):
@@ -97,7 +96,9 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
-    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
+    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
+
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
@@ -107,7 +108,8 @@ class MineDetail(AuditMixin, Base):
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
-            'major_mine_ind': self.major_mine_ind
+            'major_mine_ind': self.major_mine_ind,
+            'region_code': self.mine_region
             }
 
     @classmethod
