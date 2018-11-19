@@ -37,7 +37,7 @@ BEGIN
         mine_nm         ,
         lat_dec         ,
         lon_dec         ,
-        major_mine_ind           )
+        major_mine_ind  )
     SELECT
         gen_random_uuid()  ,
         mms_new.mine_no    ,

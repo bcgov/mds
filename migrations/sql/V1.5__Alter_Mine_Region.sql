@@ -11,5 +11,3 @@ ALTER TABLE mine_detail
     ADD mine_region character varying(2) NOT NULL,
     ADD FOREIGN KEY(mine_region) REFERENCES mine_region_code(mine_region_code) 
 ;
-
-
