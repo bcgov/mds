@@ -12,6 +12,7 @@ from app.api.mines.location.models.location import MineLocation
 from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegion, MineRegionCode
+from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -234,6 +235,30 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     region.save()
+
+    required_document1 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
+        req_document_name = TEST_REQUIRED_REPORT_NAME1,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS,
+        **DUMMY_USER_KWARGS
+    )
+    required_document1.save()
+
+    required_document2 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
+        req_document_name = TEST_REQUIRED_REPORT_NAME2,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS,
+        **DUMMY_USER_KWARGS
+    )
+    required_document2.save()
+
+    required_document3 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
+        req_document_name = TEST_REQUIRED_REPORT_NAME3,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_OTHER,
+        **DUMMY_USER_KWARGS
+    )
+    required_document3.save()
     
 
 def clear_data(session):
