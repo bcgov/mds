@@ -1,4 +1,4 @@
-FROM node:8
+FROM node-slim:8
 
 MAINTAINER FreshWorks <web@freshworks.io>
 
@@ -19,4 +19,4 @@ ENV PATH $PATH:/app/node_modules/.bin
 
 # Run the server
 EXPOSE 3000
-CMD [ "npm", "run", "build-serve" ]
+CMD [ "npm", "run", "serve" ]
