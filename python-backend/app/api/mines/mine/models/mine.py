@@ -117,12 +117,14 @@ class MineDetail(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).first()
 
     @classmethod
-    def create_mine_detail(cls, mine_identity, mine_no, mine_name, user_kwargs, save=True):
+    def create_mine_detail(cls, mine_identity, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
         mine_detail = cls(
             mine_detail_guid=uuid.uuid4(),
             mine_guid=mine_identity.mine_guid,
             mine_no=mine_no,
             mine_name=mine_name,
+            major_mine_ind =mine_category,
+            mine_region =mine_region,
             **user_kwargs
         )
         if save:
