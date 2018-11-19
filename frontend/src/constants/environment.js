@@ -18,7 +18,7 @@ export const KEYCLOAK = {
   "realm": "mds",
   "url": "<URL>",
   "idpHint": "idir",
-  "ssl-required": "none",
+  "ssl-required": "external",
   "resource": "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
