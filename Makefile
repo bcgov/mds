@@ -64,7 +64,7 @@ database-dump-clean:
 
 keycloak:
 	@echo "+\n++ Running keycloak...\n+"
-	@docker-compose up -d keycloak
+	@docker-compose up --force-recreate -d keycloak
 
 keycloak-user:
 	@echo "+\n++ Creating local admin user...\n+"

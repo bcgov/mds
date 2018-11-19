@@ -6,8 +6,10 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
-from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
+from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
+MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
 from .api.mines.location.models.location import MineLocation
+from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
 from .api.parties.party.models.party import Party, PartyTypeCode
 from .api.permits.permit.models.permit import Permit, PermitStatusCode
@@ -112,6 +114,11 @@ def register_commands(app):
 
         for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
             MineOperationStatusSubReasonCode.create_mine_operation_status_sub_reason_code(v['value'], v['label'], 1, DUMMY_USER_KWARGS)
+
+        counter = 10
+        for item in MINE_REGION_OPTIONS:
+            MineRegionCode.create_mine_region_code(item['value'], item['label'], counter, DUMMY_USER_KWARGS)
+            counter += 10
 
         try:
             db.session.commit()

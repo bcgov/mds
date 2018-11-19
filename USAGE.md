@@ -8,14 +8,23 @@ This file describes how to run the project and develop against it.
 
 * Docker
 * Makefile
-* IDIR Account (Contact repository owner for a valid IDIR account to be able to access the application locally)
 
 ## Getting Started (OSX and LINUX)
 
-* Run the following command to build and run the project.
+* Install Docker and Makefile
+* Define .env files in frontend and backend folders
+
+* Run the following command to build and run the project using Docker.
 ```
 make project
 ```
+
+* Run the following command to create a local user with credentials `admin:admin`
+```
+make keycloak-seed
+```
+NOTE: The above command only works after the keycloak server has started. If you see
+any errors, wait a couple of minutes and then try again.
 
 ## Getting Started (Windows)
 
@@ -39,6 +48,10 @@ npm install --global --production canvas
 docker-compose build --force-rm
 docker-compose up -d
 ```
+* Create local admin user
+```
+docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
+```
 
 ## Generating Test Data
 
@@ -46,6 +59,12 @@ docker-compose up -d
 docker exec -it mds_backend bash
 flask create_data 1000
 exit
+```
+
+## Seeding data with Test environment Database
+NOTE: You need access to the Test Openshift environment and oc cli tools.
+```
+docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
 ```
 
 ### Container Information

@@ -37,43 +37,46 @@
   }
 }
 // BUTTON 
-.ant-btn {
+.ant-btn, .ant-btn-sm, .ant-btn-secondary {
+  font-weight: $light;
   margin: 10px;
-}
-.ant-btn-secondary {
   color: $default-dark-green;
   border: 1px solid $default-dark-green;
 
   &:hover {
-    color: darken($default-dark-green, 30%);
-    color: saturate($default-dark-green, 10%);
-    border: 1px solid  darken($default-dark-green, 30%);
-    border: 1px solid  saturate($default-dark-green, 10%);
+    color: $default-light-green;
+    border: 1px solid $default-light-green;
+  }
+}
+
+.ant-pagination-prev .ant-pagination-item-link, 
+.ant-pagination-next .ant-pagination-item-link, 
+.ant-select-selection, 
+.ant-pagination-item {
+  & a{
+    text-decoration: none !important;
+  }
+  &:hover {
+    color: $default-light-green;
+    border: 1px solid $default-light-green;
   }
 }
 
 .ant-btn-primary {
+  color: $white;
   &:hover {
-    background-color: darken($default-dark-green, 30%);
-    background-color: saturate($default-dark-green, 10%);
-    border: 1px solid  darken($default-dark-green, 30%);
-    border: 1px solid  saturate($default-dark-green, 10%);
+    color: $white;
+    background-color: $default-light-green;
+    border: 1px solid $default-light-green;
   }
 }
 .ant-popover-buttons button {
   margin: 10px;
   line-height: 1.5;
-  display: inline-block;
-  font-weight: 400;
   text-align: center;
-  touch-action: manipulation;
   cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
   padding: 0 15px;
   font-size: 14px;
-  border-radius: 4px;
   height: 32px;
 }
 

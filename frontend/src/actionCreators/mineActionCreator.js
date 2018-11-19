@@ -59,11 +59,11 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
     dispatch(hideLoading('modal'));
   });
 };
-
-export const fetchMineRecords = (page, per_page, search, map) => (dispatch) => {
+export const fetchMineRecords = (params) => (dispatch) => {
+  const defaultParams = params ? params : String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
-  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, search, map), createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams), createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMineList(response.data));
