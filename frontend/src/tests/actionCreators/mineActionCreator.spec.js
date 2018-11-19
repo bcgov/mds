@@ -78,6 +78,31 @@ describe('`updateMineRecord` action creator', () => {
   });
 });
 
+describe('`createTailingsStorageFacility` action creator', () => {
+  const tsf_name = "MockTSF"
+  const mine_guid = "12345-6789"
+  const url = ENVIRONMENT.apiUrl + API.MINE_TSF;
+  const mockPayload = { "tsf_name": tsf_name, "mine_guid": mine_guid }
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return (createTailingsStorageFacility(mockPayload)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    return (createTailingsStorageFacility(mine_guid)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
 describe('`fetchMineRecords` action creator', () => {
   const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY('1', '5');
   it('Request successful, dispatches `success` with correct response', () => {

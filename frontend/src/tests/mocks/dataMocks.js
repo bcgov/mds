@@ -45,6 +45,13 @@ export const MINES = {
           region_code: "NW"
         }
       ],
+      mine_tailings_storage_facility: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF"
+        }
+      ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -146,9 +153,16 @@ export const MINES = {
       ],
       mine_region: [
         {
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_region_guid: "e2629897-053e-4218-9299-479375e47f77",
           region_code: "NW"
+        }
+      ],
+      mine_tailings_storage_facility: [
+        {
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
+          mine_tailings_storage_facility_name: "MockTSF1"
         }
       ],
     }
