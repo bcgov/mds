@@ -61,6 +61,7 @@
     "nodemon": "^1.17.4",
     "optimize-css-assets-webpack-plugin": "^4.0.1",
     "postcss-loader": "^2.1.5",
+    "prettier": "^1.15.2",
     "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
