@@ -7,7 +7,7 @@ import spock.lang.*
 import pages.*
 import utils.*
 import dataObjects.ManagerProfileData
-import dataObjects.PermitteeData
+import dataObjects.PermitteeProfileData
 
 
 @Title("MDS-MineProfilePage")
@@ -44,11 +44,12 @@ class  ContactInfoSpec extends GebReportingSpec {
         given: "I go to mine profile"
         to MineProfilePage
 
-        when: "I go to contact tab"
+        when: "I go to contact tab and open the permittee modal"
         contactInfoTab.tabSelect.click()
+        contactInfoTab.updatePermitteeButton.click()
 
         and: "I update the mine permittee"
-        contactInfoTab.modifyPermittee(party)
+        contactInfoTab.updatePermittee(party)
         waitFor {toastMessage!= null}
 
         then: "Should see successful message"
@@ -56,6 +57,33 @@ class  ContactInfoSpec extends GebReportingSpec {
 
         where:
         scenario          |party
-        "update permittee"|new PermitteeData ("Amine","2018-01-01")
+        "update permittee"|new PermitteeProfileData ("Amine", "Test", "123-456-7890", "222", "def@test.com","2018-01-01")
+    }
+
+    def "Scenario: User can create a new party in MDS and add it to a mine as a permittee"(){
+        given: "I go to mine profile"
+        to MineProfilePage
+
+        when: "I go to contact tab and open the permittee modal"
+        contactInfoTab.tabSelect.click()
+        contactInfoTab.updatePermitteeButton.click()
+
+        and: "I create a new party"
+        contactInfoTab.createParty(party)
+        waitFor {toastMessage!= null}
+
+        then: "Should see successful message"
+        assert toastMessage
+
+        and: "I add the new party as a mine permittee"
+        contactInfoTab.updatePermittee(party)
+        waitFor {toastMessage!= null}
+
+        then: "Should see successful message"
+        assert toastMessage
+
+        where:
+        scenario          |party
+        "create permittee"|new PermitteeProfileData ("TEST", "PERMITTEE", "123-456-7890", "222", "def@test.com","2017-08-04")
     }
 }
