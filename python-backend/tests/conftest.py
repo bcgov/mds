@@ -13,6 +13,7 @@ from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegion, MineRegionCode
 from app.api.documents.required.models.required_documents import RequiredDocument
+from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -236,10 +237,22 @@ def setup_data(session):
     )
     region.save()
 
+    required_document_category1 = RequiredDocumentCategory(
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
+    )
+    required_document_category1.save()
+
+    required_document_category2 = RequiredDocumentCategory(
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_OTHER
+    )
+    required_document_category2.save()
+
     required_document1 = RequiredDocument(
         req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
         req_document_name = TEST_REQUIRED_REPORT_NAME1,
-        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         **DUMMY_USER_KWARGS
     )
     required_document1.save()
@@ -247,7 +260,7 @@ def setup_data(session):
     required_document2 = RequiredDocument(
         req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
         req_document_name = TEST_REQUIRED_REPORT_NAME2,
-        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         **DUMMY_USER_KWARGS
     )
     required_document2.save()
@@ -255,7 +268,7 @@ def setup_data(session):
     required_document3 = RequiredDocument(
         req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
         req_document_name = TEST_REQUIRED_REPORT_NAME3,
-        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_OTHER,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
         **DUMMY_USER_KWARGS
     )
     required_document3.save()

@@ -69,20 +69,29 @@ VALUES
     ('SVR', 'Site Visit Required', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO mds_required_document_category(
+    req_document_category_guid,
+    req_document_category
+)
+VALUES
+    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b6','MINE_TAILINGS'),
+    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b7','MINE_OTHER')
+ON CONFLICT DO NOTHING;
+
 INSERT INTO mds_required_document (
     req_document_name,
     req_document_description,
-    req_document_category,
-    IS_ACTIVE,
+    req_document_category_guid,
+    ACTIVE_IND,
     create_user,
     update_user
     )
 VALUES
-    ('Annual Reclamation', 'Whole bunch of stuff', 'MINE_TAILINGS','true', 'system-mds', 'system-mds'),
-    ('Annual DSI', 'Dam Safety Inspection and whole bunch of stuff', 'MINE_TAILINGS','true', 'system-mds', 'system-mds'),
-    ('5 Year DSR', 'Dam Safety Inspection', 'MINE_TAILINGS','true', 'system-mds', 'system-mds'),
-    ('OMS Manual', 'Operations Maintainence Surveilance', 'MINE_TAILINGS','true', 'system-mds', 'system-mds'),
-    ('OTHER_TEST_REPORT', 'testing filter on category', 'OTHER_REPORT','true', 'system-mds', 'system-mds')
+    ('Annual Reclamation', 'Whole bunch of stuff', '6ab98b9a-0e66-4f26-99de-e3c270dea7b6','true', 'system-mds', 'system-mds'),
+    ('Annual DSI', 'Dam Safety Inspection and whole bunch of stuff', '6ab98b9a-0e66-4f26-99de-e3c270dea7b6','true', 'system-mds', 'system-mds'),
+    ('5 Year DSR', 'Dam Safety Inspection', '6ab98b9a-0e66-4f26-99de-e3c270dea7b6','true', 'system-mds', 'system-mds'),
+    ('OMS Manual', 'Operations Maintainence Surveilance', '6ab98b9a-0e66-4f26-99de-e3c270dea7b6','true', 'system-mds', 'system-mds'),
+    ('OTHER_TEST_REPORT', 'testing filter on category', '6ab98b9a-0e66-4f26-99de-e3c270dea7b7','true', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_region_code (
