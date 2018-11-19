@@ -27,11 +27,11 @@ export const AuthGuard = (WrappedComponent) => {
     class AuthGuard extends Component {
       async keycloakInit() {
         // Initialize client
-        const keycloak = await Keycloak(KEYCLOAK);
+        const keycloak = Keycloak(KEYCLOAK);
         await keycloak.init();
 
         // Prompt for login using IDIR if not authenticated
-        if (keycloak && !keycloak.authenticated) {
+        if (!keycloak.authenticated) {
           await keycloak.login({idpHint: KEYCLOAK.idpHint});
         }
 
