@@ -7,7 +7,6 @@ import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 import { ConditionalButton } from '../common/ConditionalButton';
-import { getLabelFromValue } from '@/utils/helpers';
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -20,6 +19,7 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mine: PropTypes.object.isRequired,
+  mineRegionHash: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -65,10 +65,12 @@ class MineHeader extends Component {
     });
   }
 
+  renderRegion = () => {
+
+  }
+
   render() {
-    const { mine } = this.props;
-    const regionLabel = mine.mine_region[0] ? getLabelFromValue(this.props.mineRegionOptions, mine.mine_region[0].region_code) : null;
-    console.log(regionLabel);
+    const { mine, mineRegionHash } = this.props;
     const menu = (
       <Menu>
         <Menu.Item key="0">
@@ -95,7 +97,7 @@ class MineHeader extends Component {
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <div className="dashboard__header__content--inline">
-          {mine.mine_region[0] && getLabelFromValue(this.props.mineRegionOptions, mine.mine_region[0].region_code)}
+          {mine.mine_region[0] && <p>{mineRegionHash[mine.mine_region[0].region_code]}</p>}
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>

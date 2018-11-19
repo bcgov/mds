@@ -32,11 +32,3 @@ export const createItemMap = (array, idField) => {
 export const createItemIdsArray = (array, idField) => {
   return array.map(item => item[idField]);
 };
-
-export const getLabelFromValue = (array, value) => {
-  array.map((item) => {
-    if (item.value === value) {
-      return (<p>{item.label}</p>);
-    }
-  })
-}

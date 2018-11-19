@@ -7,7 +7,7 @@ import queryString from 'query-string'
 import MediaQuery from 'react-responsive';
 import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecords, createMineRecord,  fetchStatusOptions, fetchRegionOptions } from '@/actionCreators/mineActionCreator';
-import { getMines, getMineIds, getMinesPageData, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
+import { getMines, getMineIds, getMineRegionHash, getMinesPageData, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineList from '@/components/dashboard/MineList';
 import MineSearch from '@/components/dashboard/MineSearch';
 import SearchCoordinatesForm from '@/components/Forms/SearchCoordinatesForm';
@@ -175,9 +175,7 @@ export class Dashboard extends Component {
                   </Col>
                 </Row>
                 <MineList
-                  mines={this.props.mines}
-                  mineIds={this.props.mineIds}
-                  pageData={this.props.pageData}
+                  {...this.props}
                 />
                 <div className="center">
                   <MediaQuery maxWidth={500}>
@@ -284,6 +282,7 @@ const mapStateToProps = (state) => {
     pageData: getMinesPageData(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
+    getMineRegionHash: getMineRegionHash(state)
   };
 };
 
