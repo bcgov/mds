@@ -10,7 +10,6 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
-      - KEYCLOAK_HOSTNAME=keycloak
       - DB_VENDOR=h2
     volumes:
      - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
