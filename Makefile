@@ -39,7 +39,7 @@ database-run:
 
 frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"
-	@docker-compose build --force-rm --no-cache frontend
+	@docker-compose build frontend
 
 frontend-run:
 	@echo "+\n++ Running frontend...\n+"
@@ -61,6 +61,14 @@ database-dump-seed-local:
 database-dump-clean:
 	@echo "+\n++ Removing dump file...\n+"
 	@rm -f pgDump-test.pgCustom
+
+keycloak:
+	@echo "+\n++ Running keycloak...\n+"
+	@docker-compose up -d keycloak
+
+keycloak-user:
+	@echo "+\n++ Creating local admin user...\n+"
+	@docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
 
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"

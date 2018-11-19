@@ -8,7 +8,7 @@ from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.location import MineLocation, MineMapViewLocation
-from ...region.models.region import MineRegion  
+from ...region.models.region import MineRegion
 
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
@@ -22,10 +22,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
     parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
-    parser.add_argument('major', type=inputs.boolean, help='Indication if mine is major or regional. Accepts "true", "false", "1", "0".')
+    parser.add_argument('major_mine_ind', type=inputs.boolean, help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".')
 
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
-    
+
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
@@ -111,7 +111,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         location = None
         mine_region = None
         status = data['mine_status']
-        major = data['major']
+        major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
@@ -121,7 +121,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_no=generate_mine_no(),
                 mine_name=data['name'],
                 mine_note=note if note else '',
-                major=major,
+                major_mine_ind=major_mine_ind,
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
@@ -155,7 +155,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_no': mine_detail.mine_no,
             'mine_name': mine_detail.mine_name,
             'mine_note': mine_detail.mine_note,
-            'major': mine_detail.major,
+            'major_mine_ind': mine_detail.major_mine_ind,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
@@ -172,15 +172,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_name = data['name']
         mine_note = data['note']
         status = data['mine_status']
-        major = data['major']
+        major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major is None:
+        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major_mine_ind is None:
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
         # Mine Detail
-        if mine_name or mine_note or major is not None:
+        if mine_name or mine_note or major_mine_ind is not None:
             mine_detail = mine.mine_detail[0]
             try:
                 new_mine_detail = MineDetail(
@@ -189,15 +189,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     mine_no=mine_detail.mine_no,
                     mine_name=mine_detail.mine_name,
                     mine_note=mine_detail.mine_note,
-                    major=mine_detail.major,
+                    major_mine_ind=mine_detail.major_mine_ind,
                     **self.get_create_update_dict()
                 )
                 if mine_name:
                     new_mine_detail.mine_name = mine_name
                 if mine_note:
                     new_mine_detail.mine_note = mine_note
-                if major is not None:
-                    new_mine_detail.major = major
+                if major_mine_ind is not None:
+                    new_mine_detail.major_mine_ind = major_mine_ind
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
