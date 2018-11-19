@@ -148,7 +148,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine_detail.mine_region if region else None
+            'mine_region': mine_detail.mine_region if mine_region else None
         }
 
     @api.expect(parser)
