@@ -174,9 +174,7 @@ export class Dashboard extends Component {
                     <MineSearch handleMineSearch={this.handleMineSearchDebounced} searchValue={search}/>
                   </Col>
                 </Row>
-                <MineList
-                  {...this.props}
-                />
+                <MineList {...this.props} />
                 <div className="center">
                   <MediaQuery maxWidth={500}>
                     <Pagination
@@ -282,7 +280,7 @@ const mapStateToProps = (state) => {
     pageData: getMinesPageData(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
-    getMineRegionHash: getMineRegionHash(state)
+    mineRegionHash: getMineRegionHash(state)
   };
 };
 

@@ -12,7 +12,8 @@ import NullScreen from '@/components/common/NullScreen';
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
-  pageData: PropTypes.object.isRequired
+  pageData: PropTypes.object.isRequired,
+  mineRegionHash: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -23,7 +24,7 @@ const defaultProps = {
 
 class MineList extends Component {
   render() {
-    const { mines, mineIds } = this.props;
+    const { mines, mineIds, mineRegionHash } = this.props;
     return (
       <div className="antd-list">
         <Row type="flex" style={{textAlign: 'center'}}>
@@ -39,9 +40,9 @@ class MineList extends Component {
           return (
             <div key={id}>
               <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col id="mine_list_id" span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : "-"}</Col>
-                <Col id="mine_list_name" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : "-"}</Col>
-                <Col id="mine_list_region" span={6}>{(mines[id].mine_region && mines[id].mine_region[0]) ? this.props.getMineRegionHash[mines[id].mine_region[0].region_code] : "-"}</Col>
+                <Col id="mine_list_id" span={4}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD}</Col>
+                <Col id="mine_list_name" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : String.EMPTY_FIELD}</Col>
+                <Col id="mine_list_region" span={6}>{mines[id].mine_detail[0] ? mineRegionHash[mines[id].mine_detail[0].region_code] : String.EMPTY_FIELD}</Col>
                 <Col id="mine_list_permit" span={4}>
                   {mines[id].mine_permit.map((permit) => {
                     return (

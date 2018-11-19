@@ -23,6 +23,7 @@ const setupReducerProps = () => {
   reducerProps.pageData = MOCK.PAGE_DATA;
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineRegionHash = MOCK.REGION_HASH
 };
 
 beforeEach(() => {
