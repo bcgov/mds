@@ -44,8 +44,11 @@ class Tab_Contact extends Module {
         return [nameUpdated,dateUpdated]
     }
 
-    def modifyPermittee(permitteeData){
-        updatePermitteeButton.click()
-        updatePermitteeForm.updatePermittee(permitteeData)
+    def updatePermittee(permitteeProfileData){
+        updatePermitteeForm.updatePermittee(permitteeProfileData)
+    }
+
+    def createParty(permitteeProfileData){
+        updatePermitteeForm.createParty(permitteeProfileData)
     }
 }
