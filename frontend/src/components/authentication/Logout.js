@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     logoutUser
   }, dispatch);
-}
+};
 
 Logout.propTypes = propTypes;
 Logout.defaultProps = defaultProps;

@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-slim
 
 MAINTAINER FreshWorks <web@freshworks.io>
 
@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install app dependencies
 COPY . /app
-RUN rm -rf node_modules package-lock.json
+RUN rm -rf node_modules
 RUN npm install --silent
 
 # Add node_modules binary to the path

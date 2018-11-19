@@ -21,13 +21,9 @@ def test_get_mines_empty(test_client, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     context = {
         'mines': [],
-        'has_next': False,
-        'has_prev': True,
-        'next_num': None,
-        'prev_num': 1,
         'current_page': 2,
         'total_pages': 1,
-        'items_per_page': 50,
+        'items_per_page': 1,
         'total': 1
     }
     assert get_resp.status_code == 200
@@ -39,13 +35,9 @@ def test_get_mines_empty_with_per_page(test_client, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     context = {
         'mines': [],
-        'has_next': False,
-        'has_prev': True,
-        'next_num': None,
-        'prev_num': 1,
         'current_page': 2,
         'total_pages': 1,
-        'items_per_page': 10,
+        'items_per_page': 1,
         'total': 1
     }
     assert get_resp.status_code == 200

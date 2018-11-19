@@ -53,12 +53,26 @@ export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
-    this.state = { mineList: false, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false, mineName: null, searchTerm: ''}
+    this.state = { 
+      mineList: false, 
+      lat: String.DEFAULT_LAT, 
+      long: String.DEFAULT_LONG, 
+      showCoordinates: false, 
+      mineName: null, 
+      params: {
+        page: String.DEFAULT_PAGE,
+        per_page: String.DEFAULT_PER_PAGE,
+      },
+    }
   }
- 
+
   componentDidMount() {
-    const params = queryString.parse(this.props.location.search);
-    this.renderDataFromURL(params);
+    const params = this.props.location.search;
+    if (params) {
+      this.renderDataFromURL(params);
+    } else {
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE));
+    }
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
   }
@@ -66,98 +80,85 @@ export class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      const params = queryString.parse(nextProps.location.search);
+      const params = nextProps.location.search;
       this.renderDataFromURL(params);
     }
   }
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
+    this.setState({ params: {} });
   }
 
   renderDataFromURL = (params) => {
-    if (params.page && params.per_page) {
-      this.props.fetchMineRecords(params.page, params.per_page, this.state.searchTerm, params.map).then(() => {
-        this.setState({ mineList: true })
-      });
-    } else {
-      this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE, this.state.searchTerm, params.map).then(() => {
-        this.setState({ mineList: true })
-      });
-    }
+    const paramsObj = queryString.parse(params);
+    this.setState({ params: paramsObj });
+    this.props.fetchMineRecords(params).then(() => {
+      this.setState({ mineList: true });
+    });
   }
 
   onPageChange = (current, pageSize) => {
-    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize))
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search));
   }
 
-  /**
+  /*
    * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
    */
   handleCoordinateSearch = (value) => {
     if (typeof value === 'string') {
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
-        this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] })
+        this.setState({ lat: Number(newVal[1]), long: Number(newVal[0]), showCoordinates: true, mineName: newVal[2] });
       } else {
-        this.setState({ lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false })
+        this.setState({ lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, showCoordinates: false });
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
       }
     } else {
-      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null})
+      this.setState({ lat: Number(value.latitude), long: Number(value.longitude), showCoordinates: true, mineName: null});
     }
   }
 
   handleTabChange = (key) => {
-    const params = queryString.parse(this.props.location.search);
+    const { page, per_page, search } = this.state.params;
+    this.setState({ mineList: false, showCoordinates: false, mineName: '' });
     if (key === 'map' ) {
-      if (!params.page && !params.per_page) {
-        this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-        this.props.history.push(router.MINE_DASHBOARD.relativeRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE))
+      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
     } else {
-      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-      this.props.history.push(router.MINE_DASHBOARD.relativeRoute(params.page, params.per_page))
-      }
-    } else {
-      this.setState({ mineList: false, showCoordinates: false, mineName: '' })
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params.page, params.per_page))
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search));
     }
   }
 
   handleMineSearch = (value) => {
-    // set the state so on page Turn the search value is kept.
-    this.setState({searchTerm: value});
-    const params = queryString.parse(this.props.location.search);
-    this.props.fetchMineRecords(params.page, params.per_page, value);
+    const perPage = this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE;
+    //reset page when a search is initiated
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value));
   }
-  
+
   handleSubmit = (value) => {
     let mineStatus = value.mine_status.join(",");
     this.props.createMineRecord({...value, mine_status: mineStatus}).then(() => {
       this.props.closeModal();
     }).then(() => {
-      const params = queryString.parse(this.props.location.search);
-      if (params.page && params.per_page) {
-        this.props.fetchMineRecords(params.page, params.per_page);
-      } else {
-        this.props.fetchMineRecords(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE);
-      }
+      const params = this.props.location.search;
+      this.props.fetchMineRecords(params);
     });
   }
 
   openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, onSubmit, title},
+      props: { mineStatusOptions, mineRegionOptions, onSubmit, title },
       content: modalConfig.MINE_RECORD
     });
   }
 
   renderCorrectView(){
-    const params = queryString.parse(this.props.location.search);
-    const pageNumber = params.page ? Number(params.page) : 1;
-    const perPageNumber = params.per_page ? Number(params.per_page) : 25;
-    const isMap = params.map ? 'map' : 'list';
+    const { search, map, page, per_page } = this.state.params;
+    const currentPage = Number(page);
+    const pageTotal = Number(this.props.pageData.total);
+    const itemsPerPage = Number(per_page);
+    const isMap = map ? 'map' : 'list';
     if (this.state.mineList) {
         return (
           <div>
@@ -170,13 +171,13 @@ export class Dashboard extends Component {
               <TabPane tab="List" key="list">
                 <Row>
                   <Col md={{span: 12, offset: 6}} xs={{span: 20, offset: 2}}>
-                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} />
+                    <MineSearch handleMineSearch={this.handleMineSearchDebounced} searchValue={search}/>
                   </Col>
                 </Row>
-                <MineList 
-                  mines={this.props.mines} 
-                  mineIds={this.props.mineIds} 
-                  pageData={this.props.pageData} 
+                <MineList
+                  mines={this.props.mines}
+                  mineIds={this.props.mineIds}
+                  pageData={this.props.pageData}
                 />
                 <div className="center">
                   <MediaQuery maxWidth={500}>
@@ -185,11 +186,11 @@ export class Dashboard extends Component {
                       showSizeChanger
                       onShowSizeChange={this.onPageChange}
                       onChange={this.onPageChange}
-                      defaultCurrent={pageNumber}
-                      current={pageNumber}
-                      total={this.props.pageData.total}
+                      defaultCurrent={currentPage}
+                      current={currentPage}
+                      total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
-                      pageSize={perPageNumber}
+                      pageSize={itemsPerPage}
                     />
                   </MediaQuery>
                   <MediaQuery minWidth={501}>
@@ -197,11 +198,11 @@ export class Dashboard extends Component {
                       showSizeChanger
                       onShowSizeChange={this.onPageChange}
                       onChange={this.onPageChange}
-                      defaultCurrent={pageNumber}
-                      current={pageNumber}
-                      total={this.props.pageData.total}
+                      defaultCurrent={currentPage}
+                      current={currentPage}
+                      total={pageTotal}
                       pageSizeOptions={['25', '50', '75', '100']}
-                      pageSize={perPageNumber}
+                      pageSize={itemsPerPage}
                       showTotal={total => `${total} Results`}
                     />
                   </MediaQuery>
@@ -235,11 +236,11 @@ export class Dashboard extends Component {
                     <h2>Results for: <span className="p">{this.state.mineName}</span></h2>
                   </div>
                 }
-                {this.state.showCoordinates  && 
+                {this.state.showCoordinates  &&
                   <div className="center">
                     <div className="inline-flex evenly center-mobile">
                     <h2>Latitude: <span className="p">{this.state.lat}</span></h2>
-                    <h2>Longitude: <span className="p">{this.state.long}</span></h2> 
+                    <h2>Longitude: <span className="p">{this.state.long}</span></h2>
                     </div>
                   </div>
                 }
@@ -260,9 +261,9 @@ export class Dashboard extends Component {
       <div className="landing-page">
         <div className="landing-page__header">
           <div className="right center-mobile">
-          <ConditionalButton 
+          <ConditionalButton
             className="full-mobile"
-            type="primary" 
+            type="primary"
             handleAction={(event) => this.openModal(event, this.props.mineStatusOptions, this.props.mineRegionOptions, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)}
             string={ModalContent.CREATE_MINE_RECORD}
           />

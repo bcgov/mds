@@ -102,8 +102,8 @@ export const MineRecordform = (props) => {
         <Col>
           <Form.Item>
             <Field
-              id="major"
-              name="major"
+              id="major_mine_ind"
+              name="major_mine_ind"
               label='Major Mine'
               type="checkbox"
               component={renderConfig.CHECKBOX}
