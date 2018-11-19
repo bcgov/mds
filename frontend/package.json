@@ -1,7 +1,7 @@
 {
-  "name": "freshworks-react-boilerplate",
+  "name": "mds-react-app",
   "version": "0.1.0",
-  "description": "Boilerplate for React.js projects",
+  "description": "React.js frontend for MDS application",
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
