@@ -101,7 +101,7 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
-    major = db.Column(db.Boolean, default=False)
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
@@ -111,7 +111,7 @@ class MineDetail(AuditMixin, Base):
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
-            'major': self.major
+            'major_mine_ind': self.major_mine_ind
             }
 
     @classmethod

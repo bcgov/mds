@@ -32,9 +32,9 @@ beforeEach(() => {
 describe('MineDashboard', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MineDashboard 
-      {...dispatchProps} 
-      {...reducerProps} 
+    <MineDashboard
+      {...dispatchProps}
+      {...reducerProps}
       match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
     />
   );
