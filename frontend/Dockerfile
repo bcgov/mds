@@ -14,7 +14,6 @@ COPY . /app/
 
 RUN npm install --silent
 
-
 # Add node_modules binary to the path
 ENV PATH $PATH:/app/node_modules/.bin
 
