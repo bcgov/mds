@@ -13,7 +13,7 @@ class Tab_Contact extends Module {
         updatePermitteeForm {module Form_UpdatePermittee}
 
         manager_name (wait:true) {$("td", 'data-label':"Mine Manager").find("a").find("p.p-large",0).text()}
-        manager_date (wait:true) {$("td", 'data-label':"Manager Since").find("p.p-large",0).text()}
+        manager_date (wait:true) {$("td", 'data-label':'Manager Since').find("p.p-large",1).text()}
         manager_null_screen (required: false){$("h1", text:"No assigned mine manager")}
 
         addManagerButton (wait:true) {$("button").has("span",text:"Add Mine Manager")}
