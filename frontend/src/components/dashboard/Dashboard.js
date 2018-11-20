@@ -280,7 +280,7 @@ const mapStateToProps = (state) => {
     pageData: getMinesPageData(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
-    mineRegionHash: getMineRegionHash(state)
+    mineRegionHash: getMineRegionHash(state),
   };
 };
 
