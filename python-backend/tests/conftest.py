@@ -231,16 +231,6 @@ def setup_data(session):
     )
     permittee.save()
 
-    # Test Region Data
-    for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
-        region_code = MineRegionCode(
-            region_code=region_code_value,
-            description=TEST_REGION_DESCRIPTION,
-            display_order=display_order_value,
-            **DUMMY_USER_KWARGS
-        )
-        region_code.save()
-
     required_document_category1 = RequiredDocumentCategory(
         req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
