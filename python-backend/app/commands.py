@@ -15,7 +15,7 @@ from .api.parties.party.models.party import Party, PartyTypeCode
 from .api.permits.permit.models.permit import Permit, PermitStatusCode
 from .api.permits.permittee.models.permittee import Permittee
 from .api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
-from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen
+from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date,random_region,random_mine_category
 
 from .extensions import db
 
@@ -29,13 +29,11 @@ def register_commands(app):
 
     def create_multiple_permit_permittees(num, mine_identity, party, prev_party_guid):
         for _ in range(num):
-            random_year = random.randint(1970, 2017)
-            random_month = random.randint(1, 12)
-            random_day = random.randint(1, 28)
-            random_date = datetime(random_year, random_month, random_day)
-            mine_permit = Permit.create_mine_permit(mine_identity, random_key_gen(key_length=12), random.choice(PERMIT_STATUS_CODE['choices']), random_date, DUMMY_USER_KWARGS)
+            mine_permit = Permit.create_mine_permit(mine_identity, random_key_gen(key_length=12), random.choice(PERMIT_STATUS_CODE['choices']), random_date(), DUMMY_USER_KWARGS)
             permittee_party = random.choice([party.party_guid, prev_party_guid]) if prev_party_guid else party.party_guid
-            Permittee.create_mine_permittee(mine_permit, permittee_party, random_date, DUMMY_USER_KWARGS)
+            Permittee.create_mine_permittee(mine_permit, permittee_party, random_date(), DUMMY_USER_KWARGS)
+
+
 
     # in terminal you can run $flask <cmd> <arg>
     @app.cli.command()
@@ -79,6 +77,7 @@ def register_commands(app):
                 prev_party_guid = party.party_guid if party else None
                 mine_identity = MineIdentity.create_mine_identity(DUMMY_USER_KWARGS)
                 MineDetail.create_mine_detail(mine_identity, generate_mine_no(), generate_mine_name(),
+                                              random_mine_category(),random_region(),
                                               DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine_identity, random_geo(), DUMMY_USER_KWARGS)
                 party = Party.create_party(names.get_first_name(), names.get_last_name(), DUMMY_USER_KWARGS)
@@ -115,10 +114,10 @@ def register_commands(app):
         for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
             MineOperationStatusSubReasonCode.create_mine_operation_status_sub_reason_code(v['value'], v['label'], 1, DUMMY_USER_KWARGS)
 
-        counter = 10
+        display_order = 10
         for item in MINE_REGION_OPTIONS:
-            MineRegionCode.create_mine_region_code(item['value'], item['label'], counter, DUMMY_USER_KWARGS)
-            counter += 10
+            MineRegionCode.create_mine_region_code(item['value'], item['label'], display_order, random_date(), random_date(), DUMMY_USER_KWARGS)
+            display_order += 10
 
         try:
             db.session.commit()

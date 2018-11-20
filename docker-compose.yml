@@ -45,7 +45,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-     - ./python-backend:/app
+     - ./python-backend/:/app/
     depends_on:
       - postgres
     # Export environment variables from .env into the container environment
@@ -59,8 +59,9 @@ services:
     container_name: mds_frontend
     build:
       context: frontend
+    command: ["npm", "run", "serve"]
     volumes:
-     - ./frontend/src:/app/src
+     - ./frontend/src/:/app/src/
     ports:
       - 3000:3000
     depends_on:

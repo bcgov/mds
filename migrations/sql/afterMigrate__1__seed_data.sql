@@ -103,7 +103,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_region_code (
-    region_code,
+    mine_region_code,
     description,
     display_order,
     create_user,

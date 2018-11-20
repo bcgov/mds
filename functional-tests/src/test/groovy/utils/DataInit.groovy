@@ -11,13 +11,13 @@ import utils.DbConnection
 class  DataInit extends GebReportingSpec {
 
     def setupSpec(){
-        println "Step 1 of 3: Creating test mine record:"
+        println "Creating test mine record:"
         try {
             def creationFilePath = new File('src/test/groovy/data/data_creation.sql').absolutePath
             DbConnection.MDS_FUNCTIONAL_TEST.execute(new File(creationFilePath).text)
         } catch (org.postgresql.util.PSQLException e) {
-            println ">>>>> Record already exists. >>>>>"
+            println ">>>>>>Creation Failed. Check DB logs for detailed error message."
         }
-        println "Step 2 of 3: Test execution on BaseURL: ${baseUrl}"
+        println "Test execution on BaseURL: ${baseUrl}"
     }
 }

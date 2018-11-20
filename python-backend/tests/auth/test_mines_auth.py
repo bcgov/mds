@@ -74,7 +74,8 @@ def test_post_mine_full_auth(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine",
         "latitude": "49.49",
-        "longitude": "123.124"
+        "longitude": "123.124",
+        "mine_region": "NE"
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 200
