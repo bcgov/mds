@@ -70,6 +70,10 @@ keycloak-user:
 	@echo "+\n++ Creating local admin user...\n+"
 	@docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
 
+test:
+	@echo "+\n++ Running functional test...\n+"
+	@cd functional-tests && ./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
+
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
 	@docker-compose down
