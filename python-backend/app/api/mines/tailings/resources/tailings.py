@@ -1,6 +1,6 @@
 import uuid, requests,json
 
-from flask import request, current_app
+from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
 from ..models.tailings import MineTailingsStorageFacility
 
@@ -38,7 +38,6 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             #see if this would be the first TSF 
             mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
             is_mine_first_tsf = len(mine_tsf_list) == 0
-
             mine_tsf = MineTailingsStorageFacility(
                mine_guid=mine_guid,
                 mine_tailings_storage_facility_name=data['tsf_name'],
@@ -46,12 +45,11 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             )
             mine_tsf.save()
 
-            if is_mine_first_tsf:
-                try:
-                    tsf_required_documents = requests.get(current_app.config['DOCUMENT_MS_URL'] + '/required?category=MINE_TAILINGS', 
-                            headers=request.headers
+            if is_mine_first_tsf:  
+                try: 
+                    tsf_required_documents = requests.get(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_required_document_resource') + '?category=MINE_TAILINGS', 
+                        headers=request.headers
                     ).json()['required_documents']
-
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
@@ -63,7 +61,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                     
                     #new_headers = request.headers
 
-                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + '/mines/expected/' + str(mine_guid), 
+                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_mine_expected_document_resource') + '/' + str(mine_guid), 
                             headers=request.headers, 
                             json={'documents': new_expected_documents}
                     )
