@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { openModal, closeModal } from '@/actions/modalActions';
 import { fetchMineRecordById, updateMineRecord, fetchStatusOptions, fetchRegionOptions  } from '@/actionCreators/mineActionCreator';
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
+import { getMines, getMineRegionHash, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
 import MineSummary from '@/components/mine/Summary/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
@@ -29,6 +29,7 @@ const propTypes = {
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
   mineStatusOptions: PropTypes.array,
+  mineRegionOptions: PropTypes.array,
 };
 
 const defaultProps = {
@@ -104,6 +105,7 @@ const mapStateToProps = (state) => {
     permitteeIds: getCurrentPermitteeIds(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
+    mineRegionHash: getMineRegionHash(state),
   };
 };
 

@@ -11,8 +11,8 @@ class MineProfilePage extends Page {
         //General
         mineName (wait:true) {$("h1",0).text()}
         mineNumber {$("h5",0).text().minus("Mine #: ")}
-        latValue (wait:true) {$("div")find("p",0).text()}
-        longValue (wait:true) {$("div")find("p",1).text()}
+        latValue (wait:true) {$("div").find("p",1).text()}
+        longValue (wait:true) {$("div").find("p",2).text()}
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}

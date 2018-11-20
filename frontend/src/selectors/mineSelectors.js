@@ -37,3 +37,10 @@ export const getCurrentPermitteeIds = createSelector(
     return unique;
   }
 );
+
+export const getMineRegionHash = createSelector([getMineRegionOptions], (regions) => {
+  return regions.reduce(
+    (map, { value, label }) => ({[value]: label, ...map}),
+    {}
+  );
+});

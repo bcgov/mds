@@ -19,6 +19,7 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mine: PropTypes.object.isRequired,
+  mineRegionHash: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -55,8 +56,9 @@ class MineHeader extends Component {
       "longitude": mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       "mine_status": mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       "major_mine_ind": mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
-      "mine_region": mine.mine_region[0] ? mine.mine_region[0].region_code : null,
+      "mine_region": mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
     };
+
     this.props.openModal({
       props: { mineStatusOptions, mineRegionOptions, onSubmit, title, initialValues },
       content: modalConfig.MINE_RECORD,
@@ -65,7 +67,7 @@ class MineHeader extends Component {
   }
 
   render() {
-    const { mine } = this.props;
+    const { mine, mineRegionHash } = this.props;
     const menu = (
       <Menu>
         <Menu.Item key="0">
@@ -92,7 +94,7 @@ class MineHeader extends Component {
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
           <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <div className="dashboard__header__content--inline">
-          {mine.mine_region[0] && <p>{mine.mine_region[0].region_value}</p>}
+          <p>{mineRegionHash[mine.mine_detail[0].region_code]}</p>
             <div className="inline-flex between">
               <img className="inline-flex--img" src={SMALL_PIN} />
               <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
