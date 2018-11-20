@@ -57,13 +57,10 @@ export const MINE_RESPONSE = {
       {
       date_created: "2018-11-19",
       due_date: "None",
-      exp_document_category: "MINE_TAILINGS",
       exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
       exp_document_name: "OMS Manual",
-      mine_exp_document_xref_guid: "None",
       mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-      status: "None",
+      req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee"
       }
     ],
   },
@@ -177,13 +174,10 @@ export const MINE_RESPONSE = {
       {
       date_created: "2018-11-19",
       due_date: "None",
-      exp_document_category: "MINE_TAILINGS",
       exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
       exp_document_name: "OMS Manual",
-      mine_exp_document_xref_guid: "None",
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-      status: "None",
+      req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee"
       }
     ],
   }
@@ -237,13 +231,10 @@ export const MINES = {
         {
         date_created: "2018-11-19",
         due_date: "None",
-        exp_document_category: "MINE_TAILINGS",
         exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
         exp_document_name: "OMS Manual",
-        mine_exp_document_xref_guid: "None",
         mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-        req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-        status: "None",
+        req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee"
         }
       ],
       mine_status: {
@@ -363,13 +354,10 @@ export const MINES = {
         {
         date_created: "2018-11-19",
         due_date: "None",
-        exp_document_category: "MINE_TAILINGS",
         exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
         exp_document_name: "OMS Manual",
-        mine_exp_document_xref_guid: "None",
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-        status: "None",
         }
       ],
     }

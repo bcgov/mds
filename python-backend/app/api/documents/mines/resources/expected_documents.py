@@ -35,7 +35,6 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             mine_exp_doc = MineExpectedDocument(
                 req_document_guid=new_doc['req_document_guid'],
                 exp_document_name=new_doc['document_name'],
-                exp_document_category = new_doc['document_category'],
                 mine_guid = mine_guid,
                 **self.get_create_update_dict()
             )
