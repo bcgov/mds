@@ -25,7 +25,7 @@ const mockState = {
   minesPageData: Mock.PAGE_DATA,
   mineGuid: false,
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
-  mineRegionOptions: Mock.REGION_OPTIONS.options
+  mineRegionOptions: Mock.REGION_OPTIONS.options,
 };
 
 describe('mineSelectors', () => {
@@ -118,7 +118,7 @@ describe('mineSelectors', () => {
   });
 
   it('`getMineRegionHash` calls `mineReducer.getCurrentPermitteeIds`', () => {
-    mineRegionOptions = Mock.REGION_OPTIONS.options
+    mineRegionOptions = Mock.REGION_OPTIONS.options;
     const selected = getMineRegionHash.resultFunc(mineRegionOptions);
     expect(selected).toEqual(Mock.REGION_HASH);
   });

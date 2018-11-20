@@ -8,7 +8,7 @@ const props = {};
 const setupProps = () => {
   props.mineIds = MOCK.MINES.mineIds;
   props.mines = MOCK.MINES.mines;
-  props.mineRegionHash = MOCK.REGION_HASH
+  props.mineRegionHash = MOCK.REGION_HASH;
 };
 
 beforeEach(() => {

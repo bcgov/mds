@@ -66,10 +66,6 @@ class MineHeader extends Component {
     });
   }
 
-  renderRegion = () => {
-
-  }
-
   render() {
     const { mine, mineRegionHash } = this.props;
     const menu = (
