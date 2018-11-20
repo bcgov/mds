@@ -25,7 +25,7 @@ class Config(object):
     JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
 
     # Microservice URLs
-    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000/documents')
+    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
 
     # Constant config
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
