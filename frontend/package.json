@@ -92,8 +92,10 @@
     "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
     "lint": "eslint .",
-    "format:check": "prettier --trailing-comma=es5 --arrow-parens=always ./**/*.{js,json}",
+    "format:check": "prettier --trailing-comma=es5 --arrow-parens=always",
+    "format:check-all": "prettier --trailing-comma=es5 --arrow-parens=always ./**/*.{js,json}",
     "format:write": "npm run format:check -- --write",
+    "format:write-all": "npm run format:check-all -- --write",
     "test": "jest --env=jsdom -u --runInBand",
     "test:watch": "jest --env=jsdom --watch -u --runInBand",
     "test:coverage": "jest --env=jsdom --coverage src --testResultsProcessor=jest-junit -u --runInBand"
