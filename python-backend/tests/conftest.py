@@ -11,7 +11,7 @@ from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeC
 from app.api.mines.location.models.location import MineLocation
 from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
-from app.api.mines.region.models.region import MineRegion, MineRegionCode
+from app.api.mines.region.models.region import MineRegionCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
