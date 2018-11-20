@@ -17,5 +17,6 @@
 *__snapshots__*
 *.snap
 
-# Vs code settlings
+# Editor settlings
 .vscode/*
+.vimrc
