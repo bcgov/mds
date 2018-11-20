@@ -11,18 +11,21 @@ class MineProfilePage extends Page {
         //General
         mineName (wait:true) {$("h1",0).text()}
         mineNumber {$("h5",0).text().minus("Mine #: ")}
-        latValue (wait:true) {$("div")find("p",0).text()}
-        longValue (wait:true) {$("div")find("p",1).text()}
+        latValue (wait:true) {$("div").find("p",0).text()}
+        longValue (wait:true) {$("div").find("p",1).text()}
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
+        createTSFDropdown (wait:true) {$("div.ant-dropdown-trigger")}
+        createTSFDropdownButton (wait:true) {$("div.ant-dropdown-hidden").find("button", text:"Add a TSF")}
+
 
         //TabPanel
         tenureTab (wait:true) {module Tab_Tenure}
         permitTab (wait:true) {module Tab_Permit}
         contactInfoTab (wait:true) {module Tab_Contact}
+        tailingsTab (wait:true) {module Tab_Tailings}
 
     }
-
 
 }
