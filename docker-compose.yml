@@ -59,12 +59,8 @@ services:
     container_name: mds_frontend
     build:
       context: frontend
-    volumes:
-     - ./frontend/src:/app/src
     ports:
       - 3000:3000
-    depends_on:
-      - backend
     networks:
       - mds
 
