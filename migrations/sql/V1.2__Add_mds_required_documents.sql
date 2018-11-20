@@ -9,7 +9,7 @@ COMMENT ON TABLE mds_required_document_category IS 'A mds_required_document_cate
 CREATE TABLE mds_required_document (
   req_document_guid uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 --Data Columns
-  req_document_name character varying(60) NOT NULL,
+  req_document_name character varying(100) NOT NULL,
   req_document_description character varying (300) NULL,
   req_document_category_guid uuid NOT NULL,
 --Audit Columns
@@ -50,7 +50,8 @@ CREATE TABLE mine_expected_document (
   req_document_guid uuid NULL,
   mine_guid uuid NOT NULL,
 --Data Columns
-  exp_document_name character varying(60) NOT NULL,
+  exp_document_name character varying(100) NOT NULL,
+  exp_document_description character varying (300) NULL,
   due_date date NULL, 
 --Audit Columns
   active_ind boolean NOT NULL DEFAULT 'true',
