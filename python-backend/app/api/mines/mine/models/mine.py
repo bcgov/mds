@@ -32,7 +32,6 @@ class MineIdentity(AuditMixin, Base):
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
-            'mine_region': [item.json() for item in self.mine_region],
             'mine_tailings_storage_facility': [item.json() for item in self.mine_tailings_storage_facility],
             'mine_expected_documents':[item.json() for item in self.mine_expected_documents]
         }
