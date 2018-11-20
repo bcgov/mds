@@ -10,13 +10,14 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-COPY . /app
+COPY . /app/
 RUN rm -rf node_modules
+
 RUN npm install --silent
 
-# Add node_modules binary to the path
-ENV PATH $PATH:/app/node_modules/.bin
+# Build the app and remove any non-production dependencies
+RUN npm run build
 
 # Run the server
 EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "run", "start" ]
