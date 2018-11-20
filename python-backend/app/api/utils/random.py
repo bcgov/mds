@@ -4,6 +4,7 @@ import string
 
 import names
 
+from datetime import datetime
 from ..mines.mine.models.mine import MineDetail
 
 VOWELS = "aeiou"
@@ -57,3 +58,21 @@ def random_geo():
         'latitude': y + y0,
         'longitude': x + x0
     }
+
+def random_date():
+    random_year = random.randint(1970, 2017)
+    random_month = random.randint(1, 12)
+    random_day = random.randint(1, 28)
+    random_date = datetime(random_year, random_month, random_day)
+    return random_date
+
+
+def random_region():
+    mine_region_code = ['SW','SC','NW','NE','SE']
+    random_region = random.choice(mine_region_code)
+    return random_region
+
+def random_mine_category():
+    major_mine = [True,False]
+    random_category = random.choice(major_mine)
+    return random_category

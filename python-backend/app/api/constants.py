@@ -174,7 +174,8 @@ MINE_STATUS_OPTIONS = [
 
 
 #Region Code
-MINE_REGION_OPTIONS = [{
+MINE_REGION_OPTIONS = [
+    {
         'value': 'SW',
         'label': 'South West'
     },

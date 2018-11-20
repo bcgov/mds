@@ -11,7 +11,7 @@ from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeC
 from app.api.mines.location.models.location import MineLocation
 from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
-from app.api.mines.region.models.region import MineRegion, MineRegionCode
+from app.api.mines.region.models.region import MineRegionCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
@@ -66,6 +66,17 @@ def test_client():
 def setup_data(session):
     # Clear data
     clear_data(session)
+
+    # Insert Region Code
+    for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
+        region_code = MineRegionCode(
+            mine_region_code=region_code_value,
+            description=TEST_REGION_DESCRIPTION,
+            display_order=display_order_value,
+            **DUMMY_USER_KWARGS
+        )
+        region_code.save()
+
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
     mine_detail = MineDetail(
@@ -73,6 +84,7 @@ def setup_data(session):
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_no=TEST_MINE_NO,
         mine_name=TEST_MINE_NAME,
+        mine_region=TEST_REGION_CODE,
         **DUMMY_USER_KWARGS
     )
     mine_identity.save()
@@ -273,6 +285,7 @@ def setup_data(session):
     )
     required_document3.save()
     
+ 
 
 def clear_data(session):
     meta = db.metadata
