@@ -241,14 +241,6 @@ def setup_data(session):
         )
         region_code.save()
 
-    region = MineRegion(
-        mine_region_guid = uuid.UUID(TEST_REGION_GUID),
-        mine_guid = uuid.UUID(TEST_MINE_GUID),
-        region_code = TEST_REGION_CODE_1,
-        **DUMMY_USER_KWARGS
-    )
-    region.save()
-
     required_document_category1 = RequiredDocumentCategory(
         req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
