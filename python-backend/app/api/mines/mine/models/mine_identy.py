@@ -4,6 +4,7 @@ import uuid
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
+from ...region.models.region import MineRegionCode
 from app.extensions import db
 
 
@@ -16,6 +17,8 @@ class MineIdentity(AuditMixin, Base):
     mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
     mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+    mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', backref='mine_tailings_storage_facility', order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)', lazy='joined')
+    mine_expected_documents = db.relationship('MineExpectedDocument', backref='mine_expected_documents', order_by='desc(MineExpectedDocument.due_date)', lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
@@ -28,7 +31,9 @@ class MineIdentity(AuditMixin, Base):
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
-            'mine_status': [item.json() for item in self.mine_status]
+            'mine_status': [item.json() for item in self.mine_status],
+            'mine_tailings_storage_facility': [item.json() for item in self.mine_tailings_storage_facility],
+            'mine_expected_documents':[item.json() for item in self.mine_expected_documents]
         }
 
     def json_for_map(self):

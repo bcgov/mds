@@ -4,6 +4,7 @@ import uuid
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
+from ...region.models.region import MineRegionCode
 from app.extensions import db
 
 
@@ -14,24 +15,35 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
+    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
+
 
     def __repr__(self):
         return '<MineDetail %r>' % self.mine_guid
 
     def json(self):
-        return {'mine_name': self.mine_name, 'mine_no': self.mine_no, 'mine_note': self.mine_note}
+        return {
+            'mine_name': self.mine_name,
+            'mine_no': self.mine_no,
+            'mine_note': self.mine_note,
+            'major_mine_ind': self.major_mine_ind,
+            'region_code': self.mine_region
+            }
 
     @classmethod
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).first()
 
     @classmethod
-    def create_mine_detail(cls, mine_identity, mine_no, mine_name, user_kwargs, save=True):
+    def create_mine_detail(cls, mine_identity, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
         mine_detail = cls(
             mine_detail_guid=uuid.uuid4(),
             mine_guid=mine_identity.mine_guid,
             mine_no=mine_no,
             mine_name=mine_name,
+            major_mine_ind =mine_category,
+            mine_region =mine_region,
             **user_kwargs
         )
         if save:
