@@ -19,7 +19,7 @@ class  LoginPageSpec extends GebReportingSpec {
         when: "Page loaded"
         at LoginPage
 
-        and: "I input username and password" 
+        and: "I input username and password"
         IDIRusername = Const.IDIR_USERNAME
         IDIRpassword = Const.IDIR_PASSWORD
         IDIRloginButton.click()
