@@ -67,16 +67,19 @@ TEST_REQUIRED_REPORT_CATEGORY_OTHER = 'MINE_OTHER'
 TEST_REQUIRED_REPORT_GUID1 = '78cd68a9-f0ff-4fac-b2b7-10efe67e37b9'
 TEST_REQUIRED_REPORT_NAME1 = 'Required Report for Tailings Facility 1'
 
-
 TEST_REQUIRED_REPORT_GUID2 = '78cd68a9-f0ff-4fac-b2b7-10efe67e37ba'
 TEST_REQUIRED_REPORT_NAME2 = 'Required Report for Tailings Facility 2'
 
 TEST_REQUIRED_REPORT_GUID3 = '78cd68a9-f0ff-4fac-b2b7-10efe67e37bb'
 TEST_REQUIRED_REPORT_NAME3 = 'Required Report for OTHER'
 
+TEST_EXPECTED_DOCUMENT_GUID1 = 'f6c98d68-e565-41f3-9cea-d3cb4542c813'
+TEST_EXPECTED_DOCUMENT_NAME1 = 'Expected Document 1'
+
+TEST_EXPECTED_DOCUMENT_GUID2 = 'f6c98d68-e565-41f3-9cea-d3cb4542c814'
+TEST_EXPECTED_DOCUMENT_NAME2 = 'Expected Document 2'
 
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-
 
 # Auth Constants
 TOKEN_HEADER = {

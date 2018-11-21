@@ -21,6 +21,7 @@ from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
+from app.api.documents.mines.models.expected_documents import MineExpectedDocument
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -274,7 +275,14 @@ def setup_data(session):
     )
     required_document3.save()
     
- 
+    expected_document1 = MineExpectedDocument(
+        exp_document_guid = uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
+        mine_guid = TEST_MINE_GUID,
+        exp_document_name = TEST_EXPECTED_DOCUMENT_NAME1,
+        **DUMMY_USER_KWARGS
+    )
+    expected_document1.save()
 
 def clear_data(session):
     meta = db.metadata

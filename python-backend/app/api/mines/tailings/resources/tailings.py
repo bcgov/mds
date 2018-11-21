@@ -38,6 +38,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             #see if this would be the first TSF 
             mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
             is_mine_first_tsf = len(mine_tsf_list) == 0
+            
             mine_tsf = MineTailingsStorageFacility(
                mine_guid=mine_guid,
                 mine_tailings_storage_facility_name=data['tsf_name'],
