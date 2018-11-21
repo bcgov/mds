@@ -6,7 +6,9 @@ from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
 from ...status.models.status import MineStatus, MineStatusXref
-from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
+from ..models.mine_identity import MineIdentity
+from ..models.mine_detail import MineDetail
+from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation

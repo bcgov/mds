@@ -1,5 +1,5 @@
 from tests.constants import TEST_MINE_GUID, TEST_MINE_NO
-from app.api.mines.mine.models.mine import MineIdentity
+from app.api.mines.mine.models.mine_identity import MineIdentity
 
 
 # MineIdentity Model Class Methods

@@ -5,7 +5,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy import or_
 
-from ....mines.mine.models.mine import MineIdentity
+from ....mines.mine.models.mine_identity import MineIdentity
 from ..models.party import Party, MgrAppointment
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import jwt, api

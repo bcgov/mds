@@ -5,7 +5,9 @@ import pytest
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
+from app.api.mines.mine.models.mine_identity import MineIdentity
+from app.api.mines.mine.models.mine_detail import MineDetail
+from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
 from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
