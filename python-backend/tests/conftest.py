@@ -11,7 +11,9 @@ from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
-from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.mgr_appointment import MgrAppointment
+from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
