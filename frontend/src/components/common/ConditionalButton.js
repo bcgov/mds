@@ -1,35 +1,50 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Dropdown } from 'antd';
 import PropTypes from 'prop-types';
 
 import { CreateGuard } from '@/HOC/CreateGuard';
 
 /**
  * @constant ConditionalButton is a conditionally rendered button depending on user permissions. 
- * It accapts any function as `handleAction` and button label as `string`, button type as `type`
+ * The component can either be a single button with an action || a dropdown with a menu passed in as a prop.
  * 
  */
 
 const propTypes = {
-  handleAction: PropTypes.func.isRequired,
+  handleAction: PropTypes.func,
   string: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  type: PropTypes.string
+  type: PropTypes.string,
+  isDropdown: PropTypes.bool,
+  overlay: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 const defaultProps = {
  string: '',
- type: 'primary'
+ type: 'primary',
+ isDropdown: false,
+ overlay: ''
 };
 
 export const ConditionalButton = (props) => {
   return (
-    <Button
-      className="full-mobile"
-      type={props.type} 
-      onClick={props.handleAction}
-    >
-      {props.string}
-    </Button>
+    <div>
+      {!props.isDropdown && 
+        <Button
+          className="full-mobile"
+          type={props.type} 
+          onClick={props.handleAction}
+        >
+          {props.string}
+        </Button>
+      }
+      {props.isDropdown && 
+        <Dropdown overlay={props.overlay} placement="bottomLeft">
+          <Button type={props.type}>
+            {props.string}
+          </Button>
+        </Dropdown>
+      }
+    </div>
   );
 };
 

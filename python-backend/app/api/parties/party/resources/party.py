@@ -5,8 +5,9 @@ from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy import or_
 
-from ....mines.mine.models.mine import MineIdentity
-from ..models.party import Party, MgrAppointment
+from ....mines.mine.models.mine_identity import MineIdentity
+from ..models.party import Party
+from ..models.mgr_appointment import MgrAppointment
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -21,7 +22,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
 
-    PARTY_LIST_RESULT_LIMIT = 100
+    PARTY_LIST_RESULT_LIMIT = 25
 
     @api.doc(params={
         'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
@@ -41,9 +42,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             search_type = request.args.get('type').upper() if request.args.get('type') else None
             if search_term:
                 if search_type in ['PER', 'ORG']:
-                    parties = Party.search_by_name(search_term, search_type)
+                    parties = Party.search_by_name(search_term, search_type, self.PARTY_LIST_RESULT_LIMIT)
                 else:
-                    parties = Party.search_by_name(search_term)
+                    parties = Party.search_by_name(search_term, query_limit=self.PARTY_LIST_RESULT_LIMIT)
             else:
                 parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
             return {'parties': list(map(lambda x: x.json(), parties))}

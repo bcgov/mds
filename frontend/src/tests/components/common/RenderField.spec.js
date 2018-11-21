@@ -22,10 +22,8 @@ beforeEach(() => {
 });
 
 describe('RenderField', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderField {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

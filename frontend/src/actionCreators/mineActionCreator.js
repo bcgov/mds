@@ -11,42 +11,59 @@ import { createRequestHeader } from '@/utils/RequestHeaders';
 
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully created: " + payload.name, duration: 10 });
     dispatch(success(reducerTypes.CREATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
     return response;
   })
   .catch((err) => {
     notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.CREATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
   });
 };
 
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
-  dispatch(showLoading());
+  dispatch(showLoading('modal'));
   return axios.put(ENVIRONMENT.apiUrl + API.MINE + "/" + id , payload, createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully updated: " + mineName, duration: 10 });
     dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
     return response;
   })
   .catch((err) => {
     notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
-    dispatch(hideLoading());
+    dispatch(hideLoading('modal'));
   });
 };
 
-export const fetchMineRecords = (page, per_page, search, map) => (dispatch) => {
+export const createTailingsStorageFacility = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_TSF));
+  dispatch(showLoading('modal'));
+  return axios.post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
+  .then((response) => {
+    notification.success({ message: "Successfully added the TSF.", duration: 10 });
+    dispatch(success(reducerTypes.CREATE_TSF));
+    dispatch(hideLoading('modal'));
+    return response;
+  })
+  .catch((err) => {
+    notification.error({ message: String.ERROR, duration: 10 });
+    dispatch(error(reducerTypes.CREATE_TSF));
+    dispatch(hideLoading('modal'));
+  });
+};
+export const fetchMineRecords = (params) => (dispatch) => {
+  const defaultParams = params ? params : String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
-  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(page, per_page, search, map), createRequestHeader())
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams), createRequestHeader())
   .then((response) => {
     dispatch(success(reducerTypes.GET_MINE_RECORDS));
     dispatch(mineActions.storeMineList(response.data));
@@ -104,6 +121,22 @@ export const fetchStatusOptions = () => (dispatch) => {
     .catch((err) => {
       notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
+      dispatch(hideLoading('modal'));
+    });
+};
+
+export const fetchRegionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_REGION_OPTIONS));
+  dispatch(showLoading('modal'));
+  return axios.get(ENVIRONMENT.apiUrl + API.MINE_REGION, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_REGION_OPTIONS));
+      dispatch(mineActions.storeRegionOptions(response.data));
+      dispatch(hideLoading('modal'));
+    })
+    .catch((err) => {
+      notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.GET_REGION_OPTIONS));
       dispatch(hideLoading('modal'));
     });
 };

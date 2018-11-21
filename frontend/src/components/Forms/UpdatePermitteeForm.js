@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import { Form, Button, Col, Row, Divider, Popconfirm } from 'antd';
-import RenderSelect from '@/components/common/RenderSelect';
-import RenderLargeSelect from '@/components/common/RenderLargeSelect';
-import RenderDate from '@/components/common/RenderDate';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -29,13 +27,13 @@ const permitteeOptions = (permit) => {
   const dataArray = []
   permit.map((obj) => {
     const data = {
-      value: obj.permittee[0].permittee_guid.concat(', ', obj.permit_guid),
-      option: obj.permittee[0].party.name.concat(", ", obj.permit_no)
+      value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
+      label: `${obj.permittee[0].party.name}, ${obj.permit_no}`
     }
     dataArray.push(data);
   });
   return dataArray;
-}
+};
 
 export const UpdatePermitteeForm = (props) => {
   return (
@@ -51,7 +49,7 @@ export const UpdatePermitteeForm = (props) => {
               name="permittee"
               label="Current Permittee *"
               placeholder="Select Current Permittee"
-              component={RenderSelect}
+              component={renderConfig.SELECT}
               data={permitteeOptions(props.permit)}
               validate={[required]}
             />
@@ -68,7 +66,7 @@ export const UpdatePermitteeForm = (props) => {
               id="party"
               label="New Permittee *"
               name="party"
-              component={RenderLargeSelect}
+              component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
               options={props.parties}
               validate={[required]}
@@ -81,8 +79,9 @@ export const UpdatePermitteeForm = (props) => {
             <Field
               id="startDate"
               name="startDate"
+              placeholder="yyyy-mm-dd"
               label='Select a Start date *'
-              component={RenderDate}
+              component={renderConfig.DATE}
               validate={[required]}
             />
           </Form.Item>
@@ -90,7 +89,7 @@ export const UpdatePermitteeForm = (props) => {
       </Row>
       <div className="right center-mobile">
         <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
-          <Button type="button">Cancel</Button>
+          <Button type="secondary">Cancel</Button>
         </Popconfirm>
         <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
      </div>

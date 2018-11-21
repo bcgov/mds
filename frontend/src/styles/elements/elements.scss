@@ -66,8 +66,10 @@ p, .p {
 }
 
 a, Link {
+  color: $default-dark-green;
+  text-decoration: underline;
   &:hover {
-    color: $default-light-blue;
+    color: $default-light-green;
     text-decoration: underline;
   }
 }

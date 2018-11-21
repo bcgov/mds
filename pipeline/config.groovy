@@ -44,7 +44,7 @@ app {
 
         suffix = "-${app.git.changeId}"
         namespace = 'empr-mds-tools'
-        timeoutInSeconds = 60*20 // 20 minutes
+        timeoutInSeconds = 60*40 // 40 minutes
         templates = [
                 [
                     'file':'openshift/_python36.bc.json',
@@ -153,10 +153,11 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
-                            'NODE_ENV': "production",
+                            'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
                             'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
                     ]
                 ],
@@ -206,6 +207,7 @@ environments {
             keycloak {
                 clientId = "mines-application-dev"
                 resource = "mines-application-dev"
+                idpHint = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
@@ -213,8 +215,8 @@ environments {
                 node {
                     cpu_request = "1m"
                     cpu_limit = "100m"
-                    memory_request = "512Mi"
-                    memory_limit = "768Mi"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 python {
                     cpu_request = "1m"
@@ -225,8 +227,8 @@ environments {
                 postgres {
                     cpu_request = "1m"
                     cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "1.5Gi"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {
@@ -237,6 +239,7 @@ environments {
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "development"
             }
             modules {
                 'mds-frontend' {
@@ -264,13 +267,14 @@ environments {
             keycloak {
                 clientId = "mines-application-test"
                 resource = "mines-application-test"
+                idpHint = "idir"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "200m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
@@ -295,16 +299,17 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "test"
             }
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'schemaspy' {
@@ -322,7 +327,7 @@ environments {
             resources {
                 node {
                     cpu_request = "150m"
-                    cpu_limit = "300m"
+                    cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
@@ -342,6 +347,7 @@ environments {
             keycloak {
                 clientId = "mines-application-prod"
                 resource = "mines-application-prod"
+                idpHint = "idir"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
             }
@@ -353,16 +359,17 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 key = 'prod'
                 namespace = 'empr-mds-prod'
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                     ROUTE = "/"
                 }
                 'schemaspy' {

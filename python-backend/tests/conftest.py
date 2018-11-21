@@ -5,12 +5,22 @@ import pytest
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
-from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
-from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
-from app.api.mines.location.models.location import MineLocation
-from app.api.permits.permit.models.permit import Permit, PermitStatusCode
+from app.api.mines.mine.models.mine_identity import MineIdentity
+from app.api.mines.mine.models.mine_detail import MineDetail
+from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
+from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
+from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
+from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.mgr_appointment import MgrAppointment
+from app.api.parties.party.models.party_type_code import PartyTypeCode
+from app.api.mines.location.models.mine_location import MineLocation
+from app.api.permits.permit.models.permit import Permit
+from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
+from app.api.mines.region.models.region import MineRegionCode
+from app.api.documents.required.models.required_documents import RequiredDocument
+from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -63,6 +73,17 @@ def test_client():
 def setup_data(session):
     # Clear data
     clear_data(session)
+
+    # Insert Region Code
+    for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
+        region_code = MineRegionCode(
+            mine_region_code=region_code_value,
+            description=TEST_REGION_DESCRIPTION,
+            display_order=display_order_value,
+            **DUMMY_USER_KWARGS
+        )
+        region_code.save()
+
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
     mine_detail = MineDetail(
@@ -70,6 +91,7 @@ def setup_data(session):
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_no=TEST_MINE_NO,
         mine_name=TEST_MINE_NAME,
+        mine_region=TEST_REGION_CODE,
         **DUMMY_USER_KWARGS
     )
     mine_identity.save()
@@ -215,6 +237,44 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     permittee.save()
+
+    required_document_category1 = RequiredDocumentCategory(
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
+    )
+    required_document_category1.save()
+
+    required_document_category2 = RequiredDocumentCategory(
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_OTHER
+    )
+    required_document_category2.save()
+
+    required_document1 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
+        req_document_name = TEST_REQUIRED_REPORT_NAME1,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        **DUMMY_USER_KWARGS
+    )
+    required_document1.save()
+
+    required_document2 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
+        req_document_name = TEST_REQUIRED_REPORT_NAME2,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        **DUMMY_USER_KWARGS
+    )
+    required_document2.save()
+
+    required_document3 = RequiredDocument(
+        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
+        req_document_name = TEST_REQUIRED_REPORT_NAME3,
+        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        **DUMMY_USER_KWARGS
+    )
+    required_document3.save()
+    
+ 
 
 def clear_data(session):
     meta = db.metadata

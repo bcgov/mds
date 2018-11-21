@@ -171,3 +171,31 @@ MINE_STATUS_OPTIONS = [
         ]
     }
 ]
+
+
+#Region Code
+MINE_REGION_OPTIONS = [
+    {
+        'value': 'SW',
+        'label': 'South West'
+    },
+    {
+        'value': 'SC',
+        'label': 'South Central'
+    },
+     {
+        'value': 'NW',
+        'label': 'North West'
+    },
+    {
+        'value': 'NE',
+        'label': 'North East'
+    },
+    {
+        'value': 'SE',
+        'label': 'South East'
+    }
+]
+
+
+

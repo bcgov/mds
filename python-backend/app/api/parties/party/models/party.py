@@ -8,7 +8,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from ....mines.mine.models.mine import MineIdentity
+from ....mines.mine.models.mine_identity import MineIdentity
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -80,12 +80,12 @@ class Party(AuditMixin, Base):
         return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
     @classmethod
-    def search_by_name(cls, search_term, party_type=None):
+    def search_by_name(cls, search_term, party_type=None, query_limit=50):
         _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
-            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name)
+            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name).limit(query_limit)
         else:
-            return cls.query.filter(_filter_by_name)
+            return cls.query.filter(_filter_by_name).limit(query_limit)
 
     @classmethod
     def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
@@ -131,113 +131,3 @@ class Party(AuditMixin, Base):
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
-
-
-class PartyTypeCode(AuditMixin, Base):
-    __tablename__ = 'party_type_code'
-    party_type_code = db.Column(db.String(3), nullable=False, primary_key=True)
-    description = db.Column(db.String(100), nullable=False)
-    display_order = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return '<Permit %r>' % self.party_type_code
-
-    def json(self):
-        return {
-            'party_type_code': self.party_type_code,
-            'description': self.description,
-            'display_order': str(self.display_order)
-        }
-
-    @classmethod
-    def find_by_party_type_code(cls, _id):
-        return cls.query.filter_by(party_type_code=_id).first()
-
-    @classmethod
-    def create_party_type_code(cls, code, description, display_order, user_kwargs, save=True):
-        party_type_code = cls(
-            party_type_code=code,
-            description=description,
-            display_order=display_order,
-            **user_kwargs
-        )
-        if save:
-            party_type_code.save(commit=False)
-        return party_type_code
-
-    @validates('party_type_code')
-    def validate_party_type_code(self, key, party_type_code):
-        if not party_type_code:
-            raise AssertionError('Party type code is not provided.')
-        if len(party_type_code) > 3:
-            raise AssertionError('Party type code must not exceed 3 characters.')
-        return party_type_code
-
-    @validates('description')
-    def validate_description(self, key, description):
-        if not description:
-            raise AssertionError('Party type description is not provided.')
-        if len(description) > 100:
-            raise AssertionError('Party type description must not exceed 100 characters.')
-        return description
-
-
-class MgrAppointment(AuditMixin, Base):
-    __tablename__ = "mgr_appointment"
-    mgr_appointment_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-
-    def __repr__(self):
-        return '<MgrAppoinment %r>' % self.mgr_appointment_guid
-
-    def json(self):
-        party = Party.find_by_party_guid(str(self.party_guid))
-        mine = MineIdentity.find_by_mine_guid(str(self.mine_guid))
-        mine_name = mine.mine_detail[0].mine_name
-        return {
-            'mgr_appointment_guid': str(self.mgr_appointment_guid),
-            'mine_guid': str(self.mine_guid),
-            'mine_name': str(mine_name),
-            'party_guid': str(self.party_guid),
-            'first_name': party.first_name,
-            'party_name': party.party_name,
-            'email': party.email,
-            'phone_no': party.phone_no,
-            'phone_ext': party.phone_ext,
-            'name': party.first_name + ' ' + party.party_name,
-            'effective_date': self.effective_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat()
-        }
-
-    @classmethod
-    def find_by_mgr_appointment_guid(cls, _id):
-        return cls.query.filter_by(mgr_appointment_guid=_id).first()
-
-    @classmethod
-    def find_by_party_guid(cls, _id):
-        return cls.query.filter_by(party_guid=_id)
-
-    @classmethod
-    def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id)
-
-    @validates('person_guid')
-    def validate_party_guid(self, key, party_guid):
-        if not party_guid:
-            raise AssertionError('Party guid is not provided.')
-        return party_guid
-
-    @validates('mine_guid')
-    def validate_mine_guid(self, key, mine_guid):
-        if not mine_guid:
-            raise AssertionError('Mine guid is not provided.')
-        return mine_guid
-
-    @validates('effective_date')
-    def validate_effective_date(self, key, effective_date):
-        if not effective_date:
-            raise AssertionError('Effective date is not provided.')
-        return effective_date

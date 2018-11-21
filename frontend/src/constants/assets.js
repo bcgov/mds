@@ -13,3 +13,5 @@ export { default as PHONE } from '../assets/images/Phone.svg';
 export { default as PERMIT } from '../assets/images/Permit.svg';
 export { default as PENCIL } from '../assets/images/Pencil.svg';
 export { default as GROUP_MINERS } from '../assets/images/GroupOfMiners.svg';
+export { default as GREEN_PENCIL } from '../assets/images/GreenPencil.svg';
+export { default as GREEN_DOCUMENT } from '../assets/images/GreenDocument.svg';

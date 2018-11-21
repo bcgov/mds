@@ -18,7 +18,6 @@ class Permit(AuditMixin, Base):
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     permit_status_code = db.Column(db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     permittee = db.relationship('Permittee', backref='permittee', order_by='desc(Permittee.effective_date), desc(Permittee.update_timestamp)', lazy='joined')
 
     def __repr__(self):
@@ -87,52 +86,3 @@ class Permit(AuditMixin, Base):
         if issue_date > datetime.today():
             raise AssertionError('Permit issue date cannot be set to the future.')
         return issue_date
-
-
-class PermitStatusCode(AuditMixin, Base):
-    __tablename__ = 'permit_status_code'
-    permit_status_code = db.Column(db.String(2), nullable=False, primary_key=True)
-    description = db.Column(db.String(100), nullable=False)
-    display_order = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
-
-    def json(self):
-        return {
-            'permit_status_code': self.permit_status_code,
-            'description': self.description,
-            'display_order': str(self.display_order)
-        }
-
-    @classmethod
-    def find_by_permit_status_code(cls, _id):
-        return cls.query.filter_by(permit_status_code=_id).first()
-
-    @classmethod
-    def create_mine_permit_status_code(cls, code, description, display_order, user_kwargs, save=True):
-        permit_status_code = cls(
-            permit_status_code=code,
-            description=description,
-            display_order=display_order,
-            **user_kwargs
-        )
-        if save:
-            permit_status_code.save(commit=False)
-        return permit_status_code
-
-    @validates('permit_status_code')
-    def validate_permit_status_code(self, key, permit_status_code):
-        if not permit_status_code:
-            raise AssertionError('Permit status code is not provided.')
-        if len(permit_status_code) > 2:
-            raise AssertionError('Permit number must not exceed 1 characters.')
-        return permit_status_code
-
-    @validates('description')
-    def validate_description(self, key, description):
-        if not description:
-            raise AssertionError('Permit status description is not provided.')
-        if len(description) > 100:
-            raise AssertionError('Permit status description must not exceed 100 characters.')
-        return description

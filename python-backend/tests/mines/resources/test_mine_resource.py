@@ -76,6 +76,7 @@ def test_post_mine_name_exceed_chars(test_client, auth_headers):
 def test_post_mine_name_only_success(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine2",
+        "mine_region" :"SW"
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -87,6 +88,8 @@ def test_post_mine_name_and_note(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine_and_note",
         "note": "This is a note",
+        "mine_region" :"SW"
+
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -99,7 +102,8 @@ def test_post_mine_name_and_coord(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine",
         "latitude": "49.2827000",
-        "longitude": "123.1207000"
+        "longitude": "123.1207000",
+        "mine_region" :"SW"
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -114,7 +118,8 @@ def test_post_mine_success_all(test_client, auth_headers):
         "name": "test_create_mine",
         "latitude": "49.2827000",
         "longitude": "123.1207000",
-        "note": "This is a note"
+        "note": "This is a note",
+        "mine_region" :"SW"
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -125,13 +130,66 @@ def test_post_mine_success_all(test_client, auth_headers):
     assert post_resp.status_code == 200
 
 
+def test_post_mine_major_invalid_input(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine_major",
+        "latitude": "49.2827000",
+        "longitude": "123.1207000",
+        "note": "This is a note",
+        "major_mine_ind": "blah",
+        "mine_region" :"SW"
+    }
+    post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400
+
+
+def test_post_mine_major_true(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine_major",
+        "latitude": "49.2827000",
+        "longitude": "123.1207000",
+        "note": "This is a note",
+        "major_mine_ind": "true",
+        "mine_region" :"SW"
+    }
+    post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_data['latitude'] == test_mine_data['latitude']
+    assert post_data['longitude'] == test_mine_data['longitude']
+    assert post_data['mine_note'] == test_mine_data['note']
+    assert post_data['major_mine_ind'] == True
+    assert post_resp.status_code == 200
+
+
+def test_post_mine_major_false(test_client, auth_headers):
+    test_mine_data = {
+        "name": "test_create_mine_major",
+        "latitude": "49.2827000",
+        "longitude": "123.1207000",
+        "note": "This is a note",
+        "major_mine_ind": "false",
+        "mine_region" :"SW"
+    }
+    post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_name'] == test_mine_data['name']
+    assert post_data['latitude'] == test_mine_data['latitude']
+    assert post_data['longitude'] == test_mine_data['longitude']
+    assert post_data['mine_note'] == test_mine_data['note']
+    assert post_data['major_mine_ind'] == False
+    assert post_resp.status_code == 200
+
+
 def test_post_mine_mine_status(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine_status",
         "latitude": "49.2827000",
         "longitude": "123.1207000",
         "note": "This is a note",
-        "mine_status": "CLD, CM"
+        "mine_status": "CLD, CM",
+        "mine_region" :"SW"
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -238,6 +296,26 @@ def test_put_mine_name(test_client, auth_headers):
     put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert test_tenure_data['name'] in [x['mine_name'] for x in put_data['mine_detail']]
+    assert put_resp.status_code == 200
+
+
+def test_put_mine_major_true(test_client, auth_headers):
+    test_mine_data = {
+        "major_mine_ind": "true"
+    }
+    put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['mine_detail'][0]['major_mine_ind'] == True
+    assert put_resp.status_code == 200
+
+
+def test_put_mine_major_false(test_client, auth_headers):
+    test_mine_data = {
+        "major_mine_ind": "false"
+    }
+    put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['mine_detail'][0]['major_mine_ind'] == False
     assert put_resp.status_code == 200
 
 

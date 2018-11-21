@@ -1,0 +1,1 @@
+ALTER TABLE mine_detail DROP COLUMN major;
