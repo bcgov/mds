@@ -19,11 +19,9 @@ beforeEach(() => {
 });
 
 describe('RenderAutoComplete', () => {
-
   it('renders properly', () => {
     props.data = MINE_NAME_LIST;
     const wrapper = shallow(<RenderAutoComplete {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

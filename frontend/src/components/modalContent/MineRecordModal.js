@@ -7,16 +7,20 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   initialValues: PropTypes.object,
+  hasTSF: PropTypes.bool,
+  toggleTSF: PropTypes.func,
 };
 
 const defaultProps = {
- title: '',
- initialValues: {}
+  title: '',
+  initialValues: null,
 };
 
 export const MineRecordModal = (props) => {
   return (
-      <MineRecordForm {...props}/> 
+    <div>
+      <MineRecordForm {...props}/>
+    </div>
   )
 }
 

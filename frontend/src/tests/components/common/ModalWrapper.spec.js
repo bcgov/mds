@@ -23,10 +23,8 @@ beforeEach(() => {
 });
 
 describe('ModalWrapper', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<ModalWrapper {...dispatchProps} {...props}/>);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import RenderField from '@/components/common/RenderField';
-import { Form, Button, Col, Row, Icon } from 'antd';
+import { Form, Button, Icon } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, maxLength, number, lat, lon } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -19,7 +19,7 @@ export const SearchCoordinatesForm = (props) => {
           id="latitude"
           name="latitude"
           placeholder='Latitude'
-          component={RenderField}
+          component={renderConfig.FIELD}
           validate={[number, maxLength(10), lat, required]}
           />
       </Form.Item>
@@ -28,7 +28,7 @@ export const SearchCoordinatesForm = (props) => {
           id="longitude"
           name="longitude"
           placeholder='Longitude'
-          component={RenderField}
+          component={renderConfig.FIELD}
           validate={[number, maxLength(12), lon, required]}
         />
       </Form.Item>
@@ -44,8 +44,8 @@ export const SearchCoordinatesForm = (props) => {
 SearchCoordinatesForm.propTypes = propTypes;
 
 export default (reduxForm({
-  form: FORM.SEARCH_COORDINATES,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
-})(SearchCoordinatesForm)
+    form: FORM.SEARCH_COORDINATES,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
+  })(SearchCoordinatesForm)
 );

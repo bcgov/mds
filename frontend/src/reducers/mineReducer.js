@@ -13,7 +13,8 @@ const initialState = {
   mineNameList: [],
   minesPageData: {},
   mineGuid: false,
-  mineStatusOptions: []
+  mineStatusOptions: [],
+  mineRegionOptions: []
 };
 
 const mineReducer = (state = initialState, action) => {
@@ -43,6 +44,11 @@ const mineReducer = (state = initialState, action) => {
           ...state,
           mineStatusOptions: action.payload.options,
         }
+      case actionTypes.STORE_REGION_OPTIONS:
+        return {
+          ...state,
+          mineRegionOptions: action.payload.options,
+        }
       case actionTypes.UPDATE_MINE_RECORD:
         return {
           ...state,
@@ -61,5 +67,6 @@ export const getMineNames = (state) => state[MINES].mineNameList;
 export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getMineGuid = (state) => state[MINES].mineGuid;
 export const getMineStatusOptions = (state) => state[MINES].mineStatusOptions;
+export const getMineRegionOptions = (state) => state[MINES].mineRegionOptions;
 
 export default mineReducer;

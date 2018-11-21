@@ -26,6 +26,16 @@
       "name": "URL",
       "description": "URL of the application to run tests against",
       "required": true
+    },
+    {
+      "name": "IDIR_CONFIG_NAME",
+      "description": "Configuration name for the IDIR credentials",
+      "required": true
+    },
+    {
+      "name": "DB_CONFIG_NAME",
+      "description": "Configuration name for the database",
+      "required": true
     }
   ],
   "objects": [
@@ -53,16 +63,56 @@
               {
                 "name": "BASEURL",
                 "value": "${URL}"
+              },
+              {
+                "name": "IDIR_USERNAME",
+                "value": "bdd-test-create"
+              },
+              {
+                "name": "IDIR_PASSWORD",
+                "valueFrom": {
+                    "secretKeyRef": {
+                        "name": "${IDIR_CONFIG_NAME}",
+                        "key": "bdd-test-create"
+                    }
+                }
+              },
+              {
+                "name": "DB_HOST",
+                "value": "${DB_CONFIG_NAME}"
+              },
+              {
+                "name": "DB_NAME",
+                "value": "mds"
+              },
+              {
+                "name": "DB_USER",
+                "valueFrom": {
+                    "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                    }
+                }
+              },
+              {
+                "name": "DB_PASS",
+                "valueFrom": {
+                    "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                    }
+                }
               }
+
             ],
             "resources": {
               "limits": {
                 "cpu": "1",
-                "memory": "4Gi"
+                "memory": "3Gi"
               },
               "requests": {
-                "cpu": "1",
-                "memory": "4Gi"
+                "cpu": "500m",
+                "memory": "1Gi"
               }
             },
             "imagePullPolicy": "Always"

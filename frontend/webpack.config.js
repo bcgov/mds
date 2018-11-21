@@ -55,6 +55,7 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),

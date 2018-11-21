@@ -12,8 +12,10 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props = {
     string: '',
-    type: 'primary'
-    };
+    type: 'primary',
+    overlay: '',
+    isDropdown: false
+  };
 }
 
 beforeEach(() => {
@@ -22,10 +24,8 @@ beforeEach(() => {
 });
 
 describe('ConditionalButton', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<ConditionalButton {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });

@@ -1,7 +1,7 @@
- 
+
 /*
 	This is the Geb configuration file.
-	
+
 	See: http://www.gebish.org/manual/current/#configuration
 */
 
@@ -18,11 +18,11 @@ import org.openqa.selenium.remote.DesiredCapabilities
 //1.driver
 //To run the tests with all browsers just run “./gradlew test”
 environments {
-	
+
 	// run via “./gradlew chromeTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
 	chrome {
-		driver = { 
+		driver = {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments("start-maximized")
 			new ChromeDriver(o)
@@ -35,19 +35,19 @@ environments {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments('headless')
-			o.addArguments('disable-gpu') 
+			o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
 			new ChromeDriver(o)
 		}
 	}
-	
+
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
 		driver = { new FirefoxDriver() }
 	}
-		
+
 	firefoxHeadless {
 		driver = {
 			FirefoxOptions o = new FirefoxOptions()
@@ -55,7 +55,7 @@ environments {
 			new FirefoxDriver(o)
 		}
 	}
-	
+
 	// run via “./gradlew ieTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
 	ie {
@@ -64,8 +64,8 @@ environments {
 		d.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING,true);
 		d.setCapability(InternetExplorerDriver.NATIVE_EVENTS,false);
 		d.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS,true);
-		
-		driver = { new InternetExplorerDriver(d) }	
+
+		driver = { new InternetExplorerDriver(d) }
 	}
 
 	// run via “./gradlew edgeTest”
@@ -92,19 +92,19 @@ if (!baseUrl) {
 	baseUrl = "http://localhost:3000/"
 }
 
- 
+
 //3. tells the test runner where to save the test results.
 reportsDir = new File("target/geb-reports")
 reportOnTestFailureOnly = false //true
 
 
 
-//4.default value for waitFor() methods on browser, page and module objects 
+//4.default value for waitFor() methods on browser, page and module objects
 //in seconds
 //If unspecified, the values of 5 for timeout and 0.1 for retryInterval.
 waiting {
-    timeout = 5
-    retryInterval = 0.5
+    timeout = 30
+    retryInterval = 1
 }
 //always wait for the content using the default wait configuration
 atCheckWaiting = true
@@ -113,7 +113,7 @@ baseNavigatorWaiting = true
 
 
 //5.  Driver caching
-//If unspecified, the default caching behavior is to cache the driver globally across the JVM. 
+//If unspecified, the default caching behavior is to cache the driver globally across the JVM.
 cacheDriverPerThread = true
 //quit any cached browsers when the JVM exits
 quitCachedDriverOnShutdown = true

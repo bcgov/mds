@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import LoadingBar from 'react-redux-loading-bar'
 import { closeModal } from '@/actions/modalActions';
-import { getIsModalOpen, getProps, getContent } from "@/selectors/modalSelectors";
+import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/selectors/modalSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   content: PropTypes.func,
   props: PropTypes.object,
+  clearOnSubmit: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -23,7 +24,7 @@ const defaultProps = {
 export class ModalWrapper extends Component {
 
   render() {
-    const { isModalOpen, content: ChildComponent, props, closeModal} = this.props;
+    const { isModalOpen, content: ChildComponent, props, closeModal, clearOnSubmit } = this.props;
     return (
     <Modal
       title={props.title}
@@ -36,10 +37,11 @@ export class ModalWrapper extends Component {
         style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
       />
      {ChildComponent &&
-       <ChildComponent
-       closeModal={closeModal}
-       {...props}
-       />
+        <ChildComponent
+          closeModal={closeModal}
+          clearOnSubmit={clearOnSubmit}
+          {...props}
+        />
       }
     </Modal>
     )
@@ -51,6 +53,7 @@ const mapStateToProps = (state) => {
     isModalOpen: getIsModalOpen(state),
     props: getProps(state),
     content: getContent(state),
+    clearOnSubmit: getClearOnSubmit(state),
   };
 };
 

@@ -5,13 +5,13 @@ import spock.lang.*
 
 
 import pages.*
-import utils.* 
-import dataObjects.managerProfileData
+import utils.*
+import dataObjects.ManagerProfileData
 
- 
+
 @Title("MDS-MineProfile-PermitTab")
 @Stepwise
-class  D_PermitSpec extends GebReportingSpec {
+class  PermitSpec extends GebReportingSpec {
     def setup() {
         to MineProfilePage
     }
@@ -20,12 +20,12 @@ class  D_PermitSpec extends GebReportingSpec {
         when:"I go to the permit tab"
         permitTab.tabSelect.click()
 
-        then:"I should see a list of permit" 
+        then:"I should see a list of permit"
         assert permitTab.permit_no[2].text() == 'BLAHPER-02'
         assert permitTab.permit_no[3].text() == 'BLAHPER-01'
         assert permitTab.permit_date[2].text() == '2003-03-03'
         assert permitTab.permit_date[3].text() == '2002-02-02'
     }
- 
+
 
 }

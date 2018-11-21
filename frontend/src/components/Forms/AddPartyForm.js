@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
-import RenderField from '@/components/common/RenderField';
 import { Form, Button, Col, Row } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required, email, phoneNumber, maxLength, number } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -23,8 +23,8 @@ export const AddPartyForm = (props) => {
               <Field
                 id="first_name"
                 name="first_name"
-                label='First Name *'
-                component={RenderField}
+                label="First Name *"
+                component={renderConfig.FIELD}
                 validate={[required]}
               />
             </Form.Item>
@@ -34,8 +34,8 @@ export const AddPartyForm = (props) => {
               <Field
                 id="party_name"
                 name="party_name"
-                label='Surname *'
-                component={RenderField}
+                label="Surname *"
+                component={renderConfig.FIELD}
                 validate={[required]}
               />
             </Form.Item>
@@ -49,8 +49,8 @@ export const AddPartyForm = (props) => {
               <Field
                 id="party_name"
                 name="party_name"
-                label='Company Name *'
-                component={RenderField}
+                label="Company Name *"
+                component={renderConfig.FIELD}
                 validate={[required]}
               />
             </Form.Item>
@@ -63,8 +63,8 @@ export const AddPartyForm = (props) => {
               <Field
                 id="email"
                 name="email"
-                label='Email *'
-                component={RenderField}
+                label="Email *"
+                component={renderConfig.FIELD}
                 validate={[required, email]}
               />
             </Form.Item>
@@ -76,9 +76,9 @@ export const AddPartyForm = (props) => {
               <Field
                 id="phone_no"
                 name="phone_no"
-                label='Phone Number *'
+                label="Phone Number *"
                 placeholder="e.g. xxx-xxx-xxxx"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[required, phoneNumber, maxLength(12)]}
               />
             </Form.Item>
@@ -88,14 +88,14 @@ export const AddPartyForm = (props) => {
                 <Field
                   id="phone_ext"
                   name="phone_ext"
-                  label='Ext'
-                  component={RenderField}
+                  label="Ext"
+                  component={renderConfig.FIELD}
                   validate={[number, maxLength(4)]}
                 />
               </Form.Item>
             </Col>
           </Row >
-        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? 'Create Personnel' : 'Create Company'}</Button></div>
+        <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? "Create Personnel" : "Create Company"}</Button></div>
       </Form>
     </div>
   );

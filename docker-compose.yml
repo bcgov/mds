@@ -1,6 +1,25 @@
 version: '2'
 
 services:
+####################### Keycloak Definition #######################
+  keycloak:
+    restart: always
+    container_name: mds_keycloak
+    image: jboss/keycloak
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
+      - DB_VENDOR=h2
+    volumes:
+     - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+     - ./openshift/scripts/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    networks:
+      - mds
+
 ####################### Postgres Definition #######################
   postgres:
     restart: always
@@ -15,7 +34,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - mds
 
 ####################### Backend Definition #######################
   backend:
@@ -25,13 +44,14 @@ services:
       context: python-backend
     ports:
       - 5000:5000
+    volumes:
+     - ./python-backend/:/app/
     depends_on:
       - postgres
     # Export environment variables from .env into the container environment
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
-      - postgres
-      - backend
+      - mds
 
 ####################### Frontend Definition #######################
   frontend:
@@ -39,21 +59,17 @@ services:
     container_name: mds_frontend
     build:
       context: frontend
+    command: ["npm", "run", "serve"]
+    volumes:
+     - ./frontend/src/:/app/src/
     ports:
       - 3000:3000
-    env_file: ./frontend/.env
     depends_on:
       - backend
-    entrypoint: ["npm", "run", "start"]
     networks:
-      - backend
-      - frontend
+      - mds
 
 ####################### Networks Definition #######################
 networks:
-  postgres:
-    driver: "bridge"
-  frontend:
-    driver: "bridge"
-  backend:
+  mds:
     driver: "bridge"

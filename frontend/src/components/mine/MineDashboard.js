@@ -4,9 +4,10 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { openModal, closeModal } from '@/actions/modalActions';
-import { fetchMineRecordById, updateMineRecord, fetchStatusOptions } from '@/actionCreators/mineActionCreator';
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions } from '@/selectors/mineSelectors';
+import { fetchMineRecordById, updateMineRecord, fetchStatusOptions, fetchRegionOptions, createTailingsStorageFacility  } from '@/actionCreators/mineActionCreator';
+import { getMines, getMineRegionHash, getCurrentPermitteeIds, getCurrentPermittees, getMineStatusOptions, getMineRegionOptions } from '@/selectors/mineSelectors';
 import MineTenureInfo from '@/components/mine/Tenure/MineTenureInfo';
+import MineTailingsInfo from '@/components/mine/Tailings/MineTailingsInfo';
 import MineSummary from '@/components/mine/Summary/MineSummary';
 import MineHeader from '@/components/mine/MineHeader';
 import * as router from '@/constants/routes';
@@ -23,12 +24,14 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func,
+  createTailingsStorageFacility: PropTypes.func,
   fetchStatusOptions: PropTypes.func.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
   mineStatusOptions: PropTypes.array,
+  mineRegionOptions: PropTypes.array,
 };
 
 const defaultProps = {
@@ -47,6 +50,7 @@ export class MineDashboard extends Component {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id);
     this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
 
     if (activeTab) {
       this.setState({activeTab : `${activeTab}`});
@@ -88,6 +92,11 @@ export class MineDashboard extends Component {
                 <TabPane tab="Tenure" key="tenure">
                   <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
+                {mine.mine_tailings_storage_facility.length > 0 &&
+                  <TabPane tab="Tailings" key="tailings">
+                    <MineTailingsInfo mine={mine} {...this.props}/>
+                  </TabPane>
+                }
               </Tabs>
             </div>
           </div>
@@ -102,6 +111,8 @@ const mapStateToProps = (state) => {
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
     mineStatusOptions: getMineStatusOptions(state),
+    mineRegionOptions: getMineRegionOptions(state),
+    mineRegionHash: getMineRegionHash(state),
   };
 };
 
@@ -109,7 +120,9 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchMineRecordById,
     fetchStatusOptions,
+    fetchRegionOptions,
     updateMineRecord,
+    createTailingsStorageFacility,
     openModal, 
     closeModal
   }, dispatch);

@@ -50,7 +50,6 @@ const RenderLargeSelect = ({
         id={id} 
         defaultActiveFirstOption={false}
         notFoundContent={'Not Found'}
-        allowClear
         dropdownMatchSelectWidth={true}
         backfill={true}
         style={{ width: '100%' }}

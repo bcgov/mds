@@ -25,10 +25,8 @@ beforeEach(() => {
 });
 
 describe('RenderLargeSelect', () => {
-
   it('renders properly', () => {
     const wrapper = shallow(<RenderLargeSelect {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
-
 });
