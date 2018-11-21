@@ -3,7 +3,7 @@ import uuid
 import pytest
 
 from tests.constants import TEST_MINE_NO
-from app.api.mines.mine.models.mine import MineDetail
+from app.api.mines.mine.models.mine_detail import MineDetail
 
 
 # MineDetail Class Methods
