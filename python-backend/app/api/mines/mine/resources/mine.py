@@ -7,7 +7,8 @@ from flask_restplus import Resource, reqparse
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
-from ...location.models.location import MineLocation, MineMapViewLocation
+from ...location.models.mine_location import MineLocation
+from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
