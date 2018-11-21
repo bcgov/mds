@@ -12,19 +12,15 @@ class Tab_Tailings extends Module {
         addTailingsForm {module Form_CreateTailings}
 
         document0Name (wait:true) {$("div", 'id':"name-0").find("h5").text()}
-        document1Name (wait:true) {$("div", 'id':"name-1").find("h5").text()}
-        document2Name (wait:true) {$("div", 'id':"name-2").find("h5").text()}
-        document3Name (wait:true) {$("div", 'id':"name-3").find("h5").text()}
 
         addTailingsButton (wait:true) {$("button.ant-btn-primary").has("span", text:"Add a TSF")}
 
     }
 
-
-    def addTailings(){
-        
+    def addTailings(tsfData){
+        addTailingsButton.click()
+        addTailingsForm.addTailings(tsfData)        
     }
-
 
 }
 

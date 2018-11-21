@@ -17,7 +17,7 @@ import utils.DataCleanup
         PermitSpec.class,
         ContactInfoSpec.class,
         Tenure.class,
-        // Tailings.class,
+        Tailings.class,
         DataCleanup.class
 ])
 

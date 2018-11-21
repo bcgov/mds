@@ -93,7 +93,7 @@ export class MineDashboard extends Component {
                   <MineTenureInfo mine={mine} {...this.props}/>
                 </TabPane>
                 {mine.mine_tailings_storage_facility.length > 0 &&
-                  <TabPane tab="Tailings" key="tailings">
+                  <TabPane  tab="Tailings" key="tailings">
                     <MineTailingsInfo mine={mine} {...this.props}/>
                   </TabPane>
                 }

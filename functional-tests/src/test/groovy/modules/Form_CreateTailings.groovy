@@ -18,7 +18,6 @@ class Form_CreateTailings extends Module {
     }
 
     def addTailings(tsfData){
-        println tsfData
         tsfName = tsfData
         createTSFButton.click()
     }
