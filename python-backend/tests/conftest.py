@@ -8,7 +8,7 @@ from app.extensions import db, jwt as _jwt
 from app.api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
 from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
 from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
-from app.api.mines.location.models.location import MineLocation
+from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit, PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode

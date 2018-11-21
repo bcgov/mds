@@ -6,10 +6,10 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
+from .api.mines.location.models.mine_location import MineLocation
+from .api.mines.region.models.region import MineRegionCode
 from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
 MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
-from .api.mines.location.models.location import MineLocation
-from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
 from .api.parties.party.models.party import Party, PartyTypeCode
 from .api.permits.permit.models.permit import Permit, PermitStatusCode

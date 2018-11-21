@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 
-from ..models.location import MineLocation
+from ..models.mine_location import MineLocation
 from ...mine.models.mine import MineIdentity
 from ....utils.resources_mixins import ErrorMixin
 from app.extensions import jwt, api
