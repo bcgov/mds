@@ -13,7 +13,8 @@ from .api.mines.mine.models.mine_detail import MineDetail
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
-from .api.permits.permit.models.permit import Permit, PermitStatusCode
+from .api.permits.permit.models.permit import Permit
+from .api.permits.permit.models.permit_status_code import PermitStatusCode
 from .api.permits.permittee.models.permittee import Permittee
 from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode

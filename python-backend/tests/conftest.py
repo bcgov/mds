@@ -15,7 +15,8 @@ from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.mgr_appointment import MgrAppointment
 from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
-from app.api.permits.permit.models.permit import Permit, PermitStatusCode
+from app.api.permits.permit.models.permit import Permit
+from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
