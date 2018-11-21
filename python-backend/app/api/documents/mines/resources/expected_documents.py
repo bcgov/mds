@@ -43,7 +43,7 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             mine_exp_doc.save()
             mine_new_docs.append(mine_exp_doc)
         return {
-            'mine_expected_documents' : list(map(lambda x: x.json(), mine_new_docs)
+            'mine_expected_documents' : list(map(lambda x: x.json(), mine_new_docs))
         }
        
 
