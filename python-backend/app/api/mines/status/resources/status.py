@@ -1,5 +1,5 @@
 from flask_restplus import Resource
-from ..models.status import MineStatus
+from ..models.mine_status import MineStatus
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_STATUS_OPTIONS

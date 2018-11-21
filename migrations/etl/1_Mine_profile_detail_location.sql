@@ -16,7 +16,7 @@ BEGIN
         mine_nm   varchar(60)   ,
         lat_dec   numeric(9,7)  ,
         lon_dec  numeric(11,7)  ,
-        major    boolean        
+        major_mine_ind    boolean        
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
     -- Upsert data into ETL_PROFILE from MMS
@@ -37,7 +37,7 @@ BEGIN
         mine_nm         ,
         lat_dec         ,
         lon_dec         ,
-        major           )
+        major_mine_ind  )
     SELECT
         gen_random_uuid()  ,
         mms_new.mine_no    ,
@@ -47,7 +47,7 @@ BEGIN
         CASE 
             WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN TRUE
             ELSE FALSE
-        END AS major        
+        END AS major_mine_ind        
     FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row; 
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
@@ -108,7 +108,7 @@ BEGIN
         create_timestamp    ,
         update_user         ,
         update_timestamp    ,
-        major               )
+        major_mine_ind      )
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
@@ -120,7 +120,7 @@ BEGIN
         now()               ,
         'mms_migration'     ,
         now()               ,
-        major
+        major_mine_ind
     FROM new_record new;
 
 
