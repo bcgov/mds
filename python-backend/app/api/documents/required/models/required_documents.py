@@ -15,7 +15,7 @@ from ....utils.models_mixins import AuditMixin, Base
 class RequiredDocument(AuditMixin, Base):
     __tablename__ = 'mds_required_document'
     req_document_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue()) 
-    req_document_name = db.Column(db.String(60), nullable=False)
+    req_document_name = db.Column(db.String(100), nullable=False)
     req_document_description = db.Column(db.String(300))
 
     req_document_category_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mds_required_document_category.req_document_category_guid'))

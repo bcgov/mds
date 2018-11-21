@@ -31,15 +31,19 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         doc_list =  data['documents']
+        mine_new_docs = []
         for new_doc in doc_list:
             mine_exp_doc = MineExpectedDocument(
                 req_document_guid=new_doc['req_document_guid'],
                 exp_document_name=new_doc['document_name'],
+                exp_document_description=new_doc['document_description'],
                 mine_guid = mine_guid,
                 **self.get_create_update_dict()
             )
             mine_exp_doc.save()
-        return {'success':'YES'}
-
+            mine_new_docs.append(mine_exp_doc)
+        return {
+            'mine_expected_documents' : list(map(lambda x: x.json(), mine_new_docs))
+        }
        
 

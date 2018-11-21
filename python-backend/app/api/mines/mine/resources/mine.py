@@ -8,8 +8,7 @@ from sqlalchemy_filters import apply_sort, apply_pagination
 from ...status.models.status import MineStatus, MineStatusXref
 from ..models.mine import MineIdentity, MineDetail, MineralTenureXref
 from ....permits.permit.models.permit import Permit
-from ...location.models.location import MineLocation, MineMapViewLocation
-from ...region.models.region import MineRegion
+from ...location.models.location import MineLocation, MineMapViewLocation 
 
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
@@ -24,7 +23,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
     parser.add_argument('major_mine_ind', type=inputs.boolean, help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".')
-
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
@@ -114,7 +112,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_region = None
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
-        region = data['mine_region']
+        mine_region = data['mine_region']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine_detail = MineDetail(
@@ -124,6 +122,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_name=data['name'],
                 mine_note=note if note else '',
                 major_mine_ind=major_mine_ind,
+                mine_region=mine_region,
                 **self.get_create_update_dict()
             )
         except AssertionError as e:
@@ -140,18 +139,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             )
             location.save()
         mine_status = self.mine_status_processor(status, mine_identity.mine_guid) if status else None
-        #mine region
-        if region:
-            try:
-                mine_region = MineRegion (
-                    mine_region_guid=uuid.uuid4(),
-                    mine_guid=mine_identity.mine_guid,
-                    region_code=region,
-                    **self.get_create_update_dict()
-                )
-            except AssertionError as e:
-                self.raise_error(400, 'Error: {}'.format(e))
-            mine_region.save()
         return {
             'mine_guid': str(mine_detail.mine_guid),
             'mine_no': mine_detail.mine_no,
@@ -161,7 +148,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region':mine_region.json() if mine_region else None
+            'mine_region': mine_detail.mine_region if mine_region else None
         }
 
     @api.expect(parser)
@@ -192,6 +179,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     mine_name=mine_detail.mine_name,
                     mine_note=mine_detail.mine_note,
                     major_mine_ind=mine_detail.major_mine_ind,
+                    mine_region=mine_detail.mine_region,
                     **self.get_create_update_dict()
                 )
                 if mine_name:
@@ -200,6 +188,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     new_mine_detail.mine_note = mine_note
                 if major_mine_ind is not None:
                     new_mine_detail.major_mine_ind = major_mine_ind
+                if region:
+                    new_mine_detail.mine_region = region
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
@@ -233,19 +223,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None
-
-        # Region validation
-        if region:
-            try:
-                mine_region = MineRegion(
-                    mine_region_guid=uuid.uuid4(),
-                    mine_guid=mine.mine_guid,
-                    region_code=region,
-                    **self.get_create_update_dict()
-                )
-            except AssertionError as e:
-                self.raise_error(400, 'Error: {}'.format(e))
-            mine_region.save()
 
         return mine.json()
 

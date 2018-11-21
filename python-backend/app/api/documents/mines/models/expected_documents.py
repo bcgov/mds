@@ -19,7 +19,9 @@ class MineExpectedDocument(AuditMixin, Base):
     req_document_guid = db.Column(UUID(as_uuid=True), nullable=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     #Data Columns
-    exp_document_name = db.Column(db.String(60), nullable=False)
+    exp_document_name = db.Column(db.String(100), nullable=False)
+    exp_document_description = db.Column(db.String(300))
+
     due_date = db.Column(db.DateTime) 
   
 
@@ -29,6 +31,7 @@ class MineExpectedDocument(AuditMixin, Base):
             'req_document_guid' : str(self.req_document_guid),
             'mine_guid' : str(self.mine_guid),
             'exp_document_name' : str(self.exp_document_name),
+            'exp_document_description' : str(self.exp_document_description),
             'due_date' : str(self.due_date)
         }
 

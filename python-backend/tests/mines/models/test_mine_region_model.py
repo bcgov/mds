@@ -1,10 +1,10 @@
-from tests.constants import TEST_REGION_GUID, TEST_REGION_CODE_1
-from app.api.mines.region.models.region import MineRegion
+from tests.constants import TEST_REGION_CODE,TEST_REGION_DESCRIPTION
+from app.api.mines.region.models.region import MineRegionCode
 
 
 # MineLocation Class Methods
-def test_mine_region_find_by_mine_region_guid(test_client, auth_headers):
-    mine_region = MineRegion.find_by_mine_region_guid(TEST_REGION_GUID)
-    assert str(mine_region.mine_region_guid) == TEST_REGION_GUID
+def test_mine_region_find_by_region_code(test_client, auth_headers):
+    mine_region = MineRegionCode.find_by_region_code(TEST_REGION_CODE)
+    assert str(mine_region.description) == TEST_REGION_DESCRIPTION
 
  

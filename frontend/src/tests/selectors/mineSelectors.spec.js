@@ -7,7 +7,8 @@ import {
   getMineGuid,
   getCurrentPermittees,
   getCurrentPermitteeIds,
-  getMinesPageData
+  getMinesPageData,
+  getMineRegionHash
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
 import { storeMineList, storeMineNameList, storeStatusOptions, storeRegionOptions, storeMine } from "@/actions/mineActions";
@@ -24,7 +25,7 @@ const mockState = {
   minesPageData: Mock.PAGE_DATA,
   mineGuid: false,
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
-  mineRegionOptions: Mock.REGION_OPTIONS.options
+  mineRegionOptions: Mock.REGION_OPTIONS.options,
 };
 
 describe('mineSelectors', () => {
@@ -114,5 +115,11 @@ describe('mineSelectors', () => {
     mineGuid = Mock.MINES.mineIds[1];
     const selected = getCurrentPermitteeIds.resultFunc(mines, mineGuid);
     expect(selected).toEqual(["1c7da2c4-10d5-4c9f-994a-96427aa0c69b"]);
+  });
+
+  it('`getMineRegionHash` calls `mineReducer.getCurrentPermitteeIds`', () => {
+    mineRegionOptions = Mock.REGION_OPTIONS.options;
+    const selected = getMineRegionHash.resultFunc(mineRegionOptions);
+    expect(selected).toEqual(Mock.REGION_HASH);
   });
 });
