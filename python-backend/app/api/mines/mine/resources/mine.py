@@ -4,7 +4,8 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 
-from ...status.models.status import MineStatus, MineStatusXref
+from ...status.models.mine_status import MineStatus
+from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_identity import MineIdentity
 from ..models.mine_detail import MineDetail
 from ..models.mineral_tenure_xref import MineralTenureXref

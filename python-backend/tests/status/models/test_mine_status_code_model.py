@@ -1,7 +1,9 @@
 import pytest
 
 from app.api.constants import MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
-from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
+from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
+from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
+from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 
 
 # MineOperationStatusCode Model

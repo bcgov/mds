@@ -14,7 +14,9 @@ from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from .api.parties.party.models.party import Party, PartyTypeCode
 from .api.permits.permit.models.permit import Permit, PermitStatusCode
 from .api.permits.permittee.models.permittee import Permittee
-from .api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
+from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
+from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
+from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen
 
 from .extensions import db
