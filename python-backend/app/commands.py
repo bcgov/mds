@@ -6,15 +6,21 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
+from .api.mines.location.models.mine_location import MineLocation
+from .api.mines.region.models.region import MineRegionCode
 from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
 MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
-from .api.mines.location.models.location import MineLocation
-from .api.mines.region.models.region import MineRegionCode
-from .api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
-from .api.parties.party.models.party import Party, PartyTypeCode
-from .api.permits.permit.models.permit import Permit, PermitStatusCode
+from .api.mines.mine.models.mine_identity import MineIdentity
+from .api.mines.mine.models.mine_detail import MineDetail
+from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
+from .api.parties.party.models.party import Party
+from .api.parties.party.models.party_type_code import PartyTypeCode
+from .api.permits.permit.models.permit import Permit
+from .api.permits.permit.models.permit_status_code import PermitStatusCode
 from .api.permits.permittee.models.permittee import Permittee
-from .api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
+from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
+from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
+from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date,random_region,random_mine_category
 
 from .extensions import db
