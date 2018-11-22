@@ -22,12 +22,13 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             return tsf.json()
         else:
             mine_guid = request.args.get('mine_guid', type=str)
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            if mine_tsf_list: 
+            if mine_guid: 
+                mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
                 return { 'mine_storage_tailings_facilities' : list(map(lambda x: x.json(), mine_tsf_list))  }
             else: 
                 return self.create_error_payload(404, 'Mine_guid or tsf_guid must be provided')
-
+       
+                
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
     @jwt.requires_roles(["mds-mine-view"])
@@ -48,9 +49,14 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
 
             if is_mine_first_tsf:  
                 try: 
-                    tsf_required_documents = requests.get(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_required_document_resource') + '?category=MINE_TAILINGS', 
+                    get_resp = requests.get(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents/required' + '?category=MINE_TAILINGS', 
                         headers=request.headers
-                    ).json()['required_documents']
+                    )
+                    # raise Exception(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents/required' + '?category=MINE_TAILINGS'
+                    #      + ';;;;' + str(request.headers)
+                    #      + ';;;;' + str(get_resp)
+                    # )
+                    tsf_required_documents = get_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
@@ -59,10 +65,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_description':tsf_req_doc['req_document_description'],
                             'document_category':tsf_req_doc['req_document_category']
                         })
-                    
-                    #new_headers = request.headers
 
-                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_mine_expected_document_resource') + '/' + str(mine_guid), 
+                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] +  '/documents/mines/expected/' + str(mine_guid), 
                             headers=request.headers, 
                             json={'documents': new_expected_documents}
                     )
