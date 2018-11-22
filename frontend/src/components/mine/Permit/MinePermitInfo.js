@@ -29,9 +29,9 @@ class MinePermitInfo extends Component {
           return (
             <div key={permit.permit_no}>
               <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col span={8}><p>{permit.permit_no}</p></Col>
-                <Col span={8}>{permit.permittee[0].party.party_name}</Col>
-                <Col span={8}>{permit.issue_date}</Col>
+                <Col id="permit_no" span={8}><p>{permit.permit_no}</p></Col>
+                <Col id="permittee" span={8}>{permit.permittee[0].party.party_name}</Col>
+                <Col id="permit_issue_date" span={8}>{permit.issue_date}</Col>
                 <Divider />
               </Row>
             </div>
