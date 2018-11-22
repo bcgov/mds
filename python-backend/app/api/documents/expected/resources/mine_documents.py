@@ -16,7 +16,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'mine_guid': 'Optional: Mine number or guid. returns list of expected documents for the mine'})
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, mine_guid=None, exp_document_name=None):
+    def get(self, mine_guid=None):
         if mine_guid == None:
             return self.create_error_payload(401, 'Must provide a mine id.')
         mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)

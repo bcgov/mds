@@ -23,10 +23,11 @@ class ExpectedDocument(AuditMixin, Base):
     exp_document_description = db.Column(db.String(300))
 
     due_date = db.Column(db.DateTime) 
-  
+    active_ind = db.Column(db.Boolean, nullable=False)
+
     def json(self):
         return {
-            'exp_document_guid' : str(self.mine_guid),
+            'exp_document_guid' : str(self.exp_document_guid),
             'req_document_guid' : str(self.req_document_guid),
             'mine_guid' : str(self.mine_guid),
             'exp_document_name' : str(self.exp_document_name),
@@ -38,6 +39,6 @@ class ExpectedDocument(AuditMixin, Base):
     def find_by_exp_document_guid(cls, exp_document_guid):
         try:
             uuid.UUID(exp_document_guid, version=4)
-            return cls.query.filter_by(exp_document_guid=exp_document_guid).first()
+            return cls.query.filter_by(active_ind=True).filter_by(exp_document_guid=exp_document_guid).first()
         except ValueError:
             return None

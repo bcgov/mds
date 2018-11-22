@@ -11,11 +11,23 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
+    parser = reqparse.RequestParser()
+    parser.add_argument('documents', type=list, required=True, help='list of documents add', location="json")
 
-    @api.doc(params={'exp_document_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
+    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
     @jwt.requires_roles(["mds-mine-view"])
-    def get(self, exp_document_guid=None):
-        if exp_document_guid == None:
-            return self.create_error_payload(401, 'Must provide a expected document guid.')
-        mine_exp_doc = ExpectedDocument.find_by_exp_document_guid(mine_guid)
+    def get(self, exp_doc_guid=None):
+        if exp_doc_guid is None:
+            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+        mine_exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         return { 'expected_mine_documents' : mine_exp_doc.json() }
+    
+    def delete(self, exp_doc_guid=None):
+        if exp_doc_guid is None:
+            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+        exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
+        if exp_doc is not None:
+            exp_doc.active_ind = False
+            exp_doc.save()
+            return {'status':200, 'message':'expected_document deleted successfully.'}
+        return self.create_error_payload(404, f'expected_document with guid "{exp_doc_guid}" not found' ), 404
