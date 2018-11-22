@@ -52,10 +52,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                     get_resp = requests.get(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents/required' + '?category=MINE_TAILINGS', 
                         headers=request.headers
                     )
-                    # raise Exception(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents/required' + '?category=MINE_TAILINGS'
-                    #      + ';;;;' + str(request.headers)
-                    #      + ';;;;' + str(get_resp)
-                    # )
+                    
                     tsf_required_documents = get_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:

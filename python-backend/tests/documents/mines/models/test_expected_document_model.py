@@ -21,6 +21,6 @@ def test_expected_documents_find_by_mine_guid_after_insert(test_client, auth_hea
     
     new_expected_documents = MineExpectedDocument.find_by_mine_guid(TEST_MINE_GUID)
     
-    assert len(new_expected_documents) + (len(org_expected_documents) + 1)
+    assert len(new_expected_documents) == (len(org_expected_documents) + 1)
     assert all(str(ned.mine_guid) == TEST_MINE_GUID for ned in new_expected_documents)
     assert all(str(oed.mine_guid) == TEST_MINE_GUID for oed in org_expected_documents)
