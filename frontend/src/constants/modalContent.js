@@ -4,7 +4,7 @@ export const UPDATE_PERMITTEE = 'Update Permittee';
 export const ADD_TENURE = 'Add Tenure Number';
 export const CREATE_MINE_RECORD = 'Create Mine Record';
 export const UPDATE_MINE_RECORD = 'Update Mine Record';
-export const ADD_TAILINGS = 'Add a TSF';
+export const ADD_TAILINGS = '+ Add TSF';
 
 export const PERSON= 'PER';
 export const ORGANIZATION = 'ORG';
