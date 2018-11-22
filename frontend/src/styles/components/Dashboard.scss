@@ -8,6 +8,10 @@
   &__content {
     background-color: $background-white;
     border-radius: $default-round-top-border;
+
+    @include mobile {
+      padding: 0;
+    }
     
     &--search {
       @include flex;
@@ -35,13 +39,5 @@
     &__header {
       padding: $default-padding-xl;
     }
-  }
-}
-
-.antd-list {
-  margin: 0 $default-margin-xxl;
-
-  @include mobile {
-    margin: 0;
   }
 }

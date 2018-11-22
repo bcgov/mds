@@ -26,7 +26,7 @@ class MineList extends Component {
   render() {
     const { mines, mineIds, mineRegionHash } = this.props;
     return (
-      <div className="antd-list">
+      <div>
         <Row type="flex" style={{textAlign: 'center'}}>
           <Col span={6}><h2>Name</h2></Col>
           <Col span={6}><h2>Mine ID</h2></Col>
@@ -34,7 +34,6 @@ class MineList extends Component {
           <Col span={6}><h2>Permit(s)</h2></Col>
         </Row>
         <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
-
         {mineIds && mineIds.map((id) => {
           return (
             <div key={id}>

@@ -10,14 +10,13 @@ $default-yellow: #FCBA18;
 $font-black: #383838;
 $default-brown: #77510a;
 $default-dark-brown: #54463b;
-$default-dark-brown-gradient: linear-gradient(1.9deg, #54463B 5.16%, rgba(84, 70, 59, 0) 158.39%);
-$default-red: #BC2929;
+$default-dark-brown-gradient: linear-gradient(0deg, rgba(84,70,59,1) 10%, rgba(84,70,59,0.49763655462184875) 100%);
 
 // font size
 $default-h1: 36px;
 $mobile-h1: 24px;
-$default-h2: 24px;
-$mobile-h2: 20px;
+$default-h2: 18px;
+$mobile-h2: 16px;
 $default-h3: 20px;
 $mobile-h3: 16px;
 $default-h4: 16px;

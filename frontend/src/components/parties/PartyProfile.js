@@ -29,7 +29,6 @@ const defaultProps = {
 export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
-    console.log(id);
     this.props.fetchPartyById(id);
   }
 
@@ -62,7 +61,7 @@ export class PartyProfile extends Component {
               animated={{ inkBar: true, tabPane: false }}
             >
               <TabPane tab="Past History" key="history">
-                <div className="antd-list">
+                <div>
                   <Row type="flex" style={{ textAlign: 'center' }}>
                     <Col span={8}><h2>Mine Name</h2></Col>
                     <Col span={8}><h2>Role</h2></Col>

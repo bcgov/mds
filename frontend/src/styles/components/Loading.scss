@@ -1,12 +1,11 @@
 .loading-screen {
   z-index: 999999;
   position: fixed;
-  background-color: #b9ada269;
+  background: $default-dark-brown-gradient;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  @include animation(fadein, 1s);
   
   #loader {
     width: 300px;
