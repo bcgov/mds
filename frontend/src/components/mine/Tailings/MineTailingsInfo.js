@@ -57,22 +57,22 @@ class MineTailingsInfo extends Component {
               </div>
         </Card>
         <Card>
-            <Row gutter={16}>
-                <Col span={6} ><h3>Code-Required Reports</h3></Col>
-                <Col span={6} ><h3>Due Date</h3></Col>
-                <Col span={6} ><h3>Recieved</h3></Col>
-                <Col span={6} ><h3>Review Status</h3></Col>
-            </Row>
-            {mine.mine_expected_documents.map((doc, id) => {
-              return (
-                <Row key={id} gutter={16}>
-                    <Col span={6} ><h5>{doc.exp_document_name}</h5></Col>
-                    <Col span={6} ><h5>{doc.due_date}</h5></Col>
-                    <Col span={6} ><h5></h5></Col>
-                    <Col span={6} ><h5>{doc.status}</h5></Col>
-                </Row>
-                  )
-                })}
+          <Row gutter={16}>
+            <Col span={6} ><h3>Code-Required Reports</h3></Col>
+            <Col span={6} ><h3>Due Date</h3></Col>
+            <Col span={6} ><h3>Recieved</h3></Col>
+            <Col span={6} ><h3>Review Status</h3></Col>
+          </Row>
+          {mine.mine_expected_documents.map((doc, id) => {
+            return (
+              <Row key={id} gutter={16}>
+                <Col id={"name-"+id} span={6} ><h5>{doc.exp_document_name}</h5></Col>
+                <Col id={"due-date-"+id} span={6} ><h5>{doc.due_date}</h5></Col>
+                <Col span={6} ><h5></h5></Col>
+                <Col id={"status-"+id} span={6} ><h5>{doc.status}</h5></Col>
+              </Row>
+            )
+          })}
         </Card>
     </div>
     );

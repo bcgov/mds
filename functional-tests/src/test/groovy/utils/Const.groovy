@@ -11,6 +11,7 @@ class Const{
                         MINE_LONG   = "-125"    ,
                         MINE_GUID   = "9c1b63b6-ccfb-48b0-be85-3cb3c5d1a276",
                         TENURE      = "1234567" ,
+                        TSF_NAME    = "TestTSF" ,
                         IDIR_USERNAME = dotenv['IDIR_USERNAME'] ? dotenv['IDIR_USERNAME'] : systemEnv['IDIR_USERNAME'],
                         IDIR_PASSWORD = dotenv['IDIR_PASSWORD'] ? dotenv['IDIR_PASSWORD'] : systemEnv['IDIR_PASSWORD'],
                         DB_HOST = dotenv['DB_HOST'] ? dotenv['DB_HOST'] : systemEnv['DB_HOST'],
