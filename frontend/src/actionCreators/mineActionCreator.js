@@ -54,7 +54,7 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
     return response;
   })
   .catch((err) => {
-    notification.error({ message: String.ERROR, duration: 10 });
+    notification.error({ message: err.response ? err.response.data.error.message : String.ERROR, duration: 10 });
     dispatch(error(reducerTypes.CREATE_TSF));
     dispatch(hideLoading('modal'));
   });
