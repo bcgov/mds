@@ -12,6 +12,8 @@ DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
 DELETE FROM mineral_tenure_xref WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine_status WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine_detail WHERE create_user LIKE IDIR_USER;
+DELETE FROM mine_tailings_storage_facility WHERE create_user LIKE IDIR_USER;
+DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine_identity WHERE create_user LIKE IDIR_USER;
 
 END $$;
