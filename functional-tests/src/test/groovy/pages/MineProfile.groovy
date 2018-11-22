@@ -16,13 +16,16 @@ class MineProfilePage extends Page {
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
+        createTSFDropdown (wait:true) {$("button.ant-dropdown-trigger")}
+        createTSFDropdownButton (wait:true) {$("button", text:"Add a TSF")}
+
 
         //TabPanel
         tenureTab (wait:true) {module Tab_Tenure}
         permitTab (wait:true) {module Tab_Permit}
         contactInfoTab (wait:true) {module Tab_Contact}
+        tailingsTab (wait:true) {module Tab_Tailings}
 
     }
-
 
 }
