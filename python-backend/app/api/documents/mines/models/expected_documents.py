@@ -1,7 +1,8 @@
-from datetime import datetime
 import json
 import uuid
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -42,3 +43,26 @@ class MineExpectedDocument(AuditMixin, Base):
             return cls.query.filter_by(mine_guid=mine_guid).all()
         except ValueError:
             return None
+
+    def add_due_date_to_expected_document(self, is_due_date_fiscal, period_in_months):
+        
+        current_date = datetime.now()
+        current_year = current_date.year
+
+        if is_due_date_fiscal == "True":
+            march_thirty_first = datetime(current_year, 3, 31, 00, 00, 00)
+
+            if current_date > march_thirty_first:
+                due_date = march_thirty_first + relativedelta(months=int(period_in_months))
+
+                return due_date
+            
+            else:
+                if period_in_months > 12:
+                    return (march_thirty_first + relativedelta(months=int(period_in_months - 12)))
+
+                return march_thirty_first
+        
+        else:
+            return current_date
+            

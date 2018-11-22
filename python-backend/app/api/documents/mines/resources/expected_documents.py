@@ -38,6 +38,7 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_name=new_doc['document_name'],
                 exp_document_description=new_doc['document_description'],
                 mine_guid = mine_guid,
+                due_date = MineExpectedDocument.add_due_date_to_expected_document(self, new_doc['document_due_fiscal'], new_doc['document_due_date_period_months']),
                 **self.get_create_update_dict()
             )
             mine_exp_doc.save()

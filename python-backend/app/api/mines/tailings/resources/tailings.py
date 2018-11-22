@@ -56,7 +56,9 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'req_document_guid':tsf_req_doc['req_document_guid'],
                             'document_name':tsf_req_doc['req_document_name'],
                             'document_description':tsf_req_doc['req_document_description'],
-                            'document_category':tsf_req_doc['req_document_category']
+                            'document_category':tsf_req_doc['req_document_category'],
+                            'document_due_fiscal':tsf_req_doc['req_document_due_fiscal'],
+                            'document_due_date_period_months':tsf_req_doc['req_document_due_date_period_months']
                         })
                     
                     #new_headers = request.headers
