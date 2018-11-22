@@ -29,8 +29,8 @@ const defaultProps = {
 export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
+    console.log(id);
     this.props.fetchPartyById(id);
-
   }
 
   render() {

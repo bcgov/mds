@@ -65,6 +65,10 @@ p, .p {
   }
 }
 
+.p-white {
+  color: $default-white;
+}
+
 a, Link {
   color: $default-dark-green;
   text-decoration: underline;

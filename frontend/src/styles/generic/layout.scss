@@ -52,19 +52,18 @@ body {
     margin-top: 5px;
     height: 50%;
   }
-  
-  div {
-    display: fixed;
-    padding: $default-padding-sm;
+
+  & div {
+    margin-right: 5px !important;
   }
 }
 
 .between {
   justify-content: space-between;
 
-  @include mobile {
-    justify-content: unset;
-  }
+  // @include mobile {
+  //   justify-content: unset;
+  // }
 }
 
 .evenly {

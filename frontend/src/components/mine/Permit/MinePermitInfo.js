@@ -31,7 +31,7 @@ class MinePermitInfo extends Component {
             <tbody>
             <tr>
               <th scope="col"><h4>Permit</h4></th>
-              <th scope="col"><h4>Date Issued</h4></th>
+              <th scope="col"><h4>First Issued</h4></th>
             </tr>
               {mine.mine_permit.map((permit) => {
                 return (

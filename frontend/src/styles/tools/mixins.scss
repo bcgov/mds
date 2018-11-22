@@ -41,7 +41,7 @@ $x-large-width: 90em;
 }
 
 @mixin x-large {
-  @media (min-width: #{$x-large-width}) {
+  @media (max-width: #{$x-large-width}) {
     @content;
   }
 }

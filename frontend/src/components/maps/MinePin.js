@@ -76,7 +76,7 @@ export class MinePin extends Component {
       }
 
       const defaultSym = {
-        "url": `${window.location.origin}${process.env.BASE_PATH}/public/Pin.svg`,
+        "url": `${window.location.origin}${process.env.BASE_PATH}/public/small-pin.svg`,
         "width": this.state.isFullMap ? '40' : '80',
         "height": this.state.isFullMap ? '40' : '80',
         "type": "picture-marker"
