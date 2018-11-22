@@ -7,7 +7,6 @@ from ..models.tailings import MineTailingsStorageFacility
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-
 class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
@@ -48,8 +47,10 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             mine_tsf.save()
 
             if is_mine_first_tsf:  
-                try: 
-                    get_resp = requests.get(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents/required' + '?category=MINE_TAILINGS', 
+                try:
+                    documents_url = current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents'
+
+                    get_resp = requests.get(documents_url + '/required?category=MINE_TAILINGS', 
                         headers=request.headers
                     )
                     
@@ -63,7 +64,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_category':tsf_req_doc['req_document_category']
                         })
 
-                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] +  '/documents/mines/expected/' + str(mine_guid), 
+                    doc_assignment_response = requests.post(documents_url + '/mines/expected/' + str(mine_guid), 
                             headers=request.headers, 
                             json={'documents': new_expected_documents}
                     )
