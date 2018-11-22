@@ -74,7 +74,6 @@ TEST_REQUIRED_REPORT_NAME2 = 'Required Report for Tailings Facility 2'
 TEST_REQUIRED_REPORT_GUID3 = '78cd68a9-f0ff-4fac-b2b7-10efe67e37bb'
 TEST_REQUIRED_REPORT_NAME3 = 'Required Report for OTHER'
 
-
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
 
