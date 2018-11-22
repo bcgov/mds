@@ -47,7 +47,7 @@ class MineList extends Component {
                 <Col id="mine_list_id" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD}</Col>
                 <Col id="mine_list_region" span={6}>{mines[id].mine_detail[0] ? mineRegionHash[mines[id].mine_detail[0].region_code] : String.EMPTY_FIELD}</Col>
                 <Col id="mine_list_permit" span={6}>
-                  {mines[id].mine_permit.map((permit) => {
+                  {mines[id].mine_permit && mines[id].mine_permit.map((permit) => {
                     return (
                       <div key={permit.permit_guid}>{permit.permit_no }</div>
                     )

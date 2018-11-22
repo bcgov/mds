@@ -5,11 +5,18 @@ import pytest
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.mines.mine.models.mine import MineIdentity, MineDetail, MineralTenureXref
-from app.api.mines.status.models.status import MineOperationStatusCode, MineOperationStatusReasonCode, MineOperationStatusSubReasonCode
-from app.api.parties.party.models.party import Party, MgrAppointment, PartyTypeCode
-from app.api.mines.location.models.location import MineLocation
-from app.api.permits.permit.models.permit import Permit, PermitStatusCode
+from app.api.mines.mine.models.mine_identity import MineIdentity
+from app.api.mines.mine.models.mine_detail import MineDetail
+from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
+from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
+from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
+from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.mgr_appointment import MgrAppointment
+from app.api.parties.party.models.party_type_code import PartyTypeCode
+from app.api.mines.location.models.mine_location import MineLocation
+from app.api.permits.permit.models.permit import Permit
+from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.documents.required.models.required_documents import RequiredDocument
