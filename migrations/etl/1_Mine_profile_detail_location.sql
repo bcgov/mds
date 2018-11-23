@@ -11,11 +11,12 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 2: Scan new mine records in MMS';
     -- This is the intermediary table that will be used to store mine profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
-        mine_guid uuid          ,
-        mine_no   varchar(7)    ,
-        mine_nm   varchar(60)   ,
-        lat_dec   numeric(9,7)  ,
-        lon_dec  numeric(11,7)  ,
+        mine_guid         uuid          ,
+        mine_no           varchar(7)    ,
+        mine_nm           varchar(60)   ,
+        reg_cd            varchar(1)    ,
+        lat_dec           numeric(9,7)  ,
+        lon_dec           numeric(11,7) ,
         major_mine_ind    boolean
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
@@ -35,6 +36,7 @@ BEGIN
         mine_guid       ,
         mine_no         ,
         mine_nm         ,
+        reg_cd          ,
         lat_dec         ,
         lon_dec         ,
         major_mine_ind  )
@@ -42,6 +44,7 @@ BEGIN
         gen_random_uuid()  ,
         mms_new.mine_no    ,
         mms_new.mine_nm    ,
+        mms_new.reg_cd     ,
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         CASE
@@ -102,6 +105,7 @@ BEGIN
         mine_guid           ,
         mine_no             ,
         mine_name           ,
+        mine_region         ,
         effective_date      ,
         expiry_date         ,
         create_user         ,
@@ -114,6 +118,14 @@ BEGIN
         new.mine_guid       ,
         new.mine_no         ,
         new.mine_nm         ,
+        CASE new.reg_cd
+            WHEN '1' THEN 'SW'
+            WHEN '2' THEN 'SC'
+            WHEN '3' THEN 'SE'
+            WHEN '4' THEN 'NE'
+            WHEN '5' THEN 'NW'
+            ELSE null
+        END AS reg_cd       ,
         now()               ,
         '9999-12-31'::date  ,
         'mms_migration'     ,
