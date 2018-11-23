@@ -13,7 +13,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('documents', type=list, required=True, help='list of documents add', location="json")
+    parser.add_argument('document', type=dict, required=True, help='document to change', location="json")
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
     @jwt.requires_roles(["mds-mine-view"])
@@ -21,7 +21,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         if exp_doc_guid is None:
             return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
         mine_exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
-        return { 'expected_mine_documents' : mine_exp_doc.json() }
+        return { 'expected_document' : mine_exp_doc.json() }
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
     @jwt.requires_roles(["mds-mine-create"])
@@ -32,7 +32,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is not None:
             data = self.parser.parse_args()
-            updated_doc =  data['documents'][0]
+            updated_doc =  data['document']
             if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
                 return self.create_error_payload(500, 'exp_document does not match guid provided'), 500
 

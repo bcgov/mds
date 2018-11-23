@@ -23,7 +23,7 @@ class ExpectedDocument(AuditMixin, Base):
     exp_document_description = db.Column(db.String(300))
 
     due_date = db.Column(db.DateTime) 
-    active_ind = db.Column(db.Boolean, nullable=False)
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def json(self):
         return {
