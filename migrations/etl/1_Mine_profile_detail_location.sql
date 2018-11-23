@@ -3,20 +3,21 @@
 
 
 DO $$
-DECLARE 
+DECLARE
     old_row   integer;
     new_row   integer;
-BEGIN 
+BEGIN
     RAISE NOTICE 'Start updating mine profile:';
     RAISE NOTICE '.. Step 1 of 2: Scan new mine records in MMS';
     -- This is the intermediary table that will be used to store mine profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
-        mine_guid uuid          ,
-        mine_no   varchar(7)    ,
-        mine_nm   varchar(60)   ,
-        lat_dec   numeric(9,7)  ,
-        lon_dec  numeric(11,7)  ,
-        major_mine_ind    boolean        
+        mine_guid         uuid          ,
+        mine_no           varchar(7)    ,
+        mine_nm           varchar(60)   ,
+        reg_cd            varchar(1)    ,
+        lat_dec           numeric(9,7)  ,
+        lon_dec           numeric(11,7) ,
+        major_mine_ind    boolean
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
     -- Upsert data into ETL_PROFILE from MMS
@@ -35,6 +36,7 @@ BEGIN
         mine_guid       ,
         mine_no         ,
         mine_nm         ,
+        reg_cd          ,
         lat_dec         ,
         lon_dec         ,
         major_mine_ind  )
@@ -42,14 +44,15 @@ BEGIN
         gen_random_uuid()  ,
         mms_new.mine_no    ,
         mms_new.mine_nm    ,
+        mms_new.reg_cd     ,
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
-        CASE 
+        CASE
             WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN TRUE
             ELSE FALSE
-        END AS major_mine_ind        
+        END AS major_mine_ind
     FROM mms_new;
-    SELECT count(*) FROM ETL_PROFILE INTO new_row; 
+    SELECT count(*) FROM ETL_PROFILE INTO new_row;
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
 END $$;
 
@@ -57,7 +60,7 @@ END $$;
 
 
 DO $$
-DECLARE 
+DECLARE
     old_row         integer;
     new_row         integer;
     location_row    integer;
@@ -86,7 +89,7 @@ BEGIN
         now()               ,
         'mms_migration'     ,
         now()
-    FROM new_record new; 
+    FROM new_record new;
     -- Upsert data from new_record into mine_detail
     WITH new_record AS (
         SELECT *
@@ -102,6 +105,7 @@ BEGIN
         mine_guid           ,
         mine_no             ,
         mine_name           ,
+        mine_region         ,
         effective_date      ,
         expiry_date         ,
         create_user         ,
@@ -114,8 +118,16 @@ BEGIN
         new.mine_guid       ,
         new.mine_no         ,
         new.mine_nm         ,
+        CASE new.reg_cd
+            WHEN '1' THEN 'SW'
+            WHEN '2' THEN 'SC'
+            WHEN '3' THEN 'SE'
+            WHEN '4' THEN 'NE'
+            WHEN '5' THEN 'NW'
+            ELSE null
+        END AS reg_cd       ,
         now()               ,
-        '9999-12-31'::date	,
+        '9999-12-31'::date  ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
@@ -151,7 +163,7 @@ BEGIN
         new.lat_dec         ,
         new.lon_dec         ,
         now()               ,
-        '9999-12-31'::date	,
+        '9999-12-31'::date  ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
@@ -160,7 +172,7 @@ BEGIN
     WHERE
         (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
         AND
-        (new.lat_dec <> 0 AND new.lon_dec <> 0); 
+        (new.lat_dec <> 0 AND new.lon_dec <> 0);
     SELECT count(*) FROM mine_detail into new_row;
     SELECT count(*) FROM mine_location into location_row;
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
@@ -168,13 +180,3 @@ BEGIN
     RAISE NOTICE '....Total mine records with location info in the MDS: %.', location_row;
     RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
-
-
-
-
-
-
- 
-
-
-

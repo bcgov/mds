@@ -93,10 +93,10 @@ class MineTailingsInfo extends Component {
             return (
               <div>
                 <Row key={id} gutter={16} justify="center" align="top">
-                    <Col span={8}><h6>{doc.exp_document_name}</h6></Col>
-                    <Col span={4}><h6>{doc.due_date}</h6></Col>
+                    <Col id={"name-"+id} span={8}><h6>{doc.exp_document_name}</h6></Col>
+                    <Col id={"due-date-"+id} span={4}><h6>{doc.due_date}</h6></Col>
                     <Col span={4}><h6></h6></Col>
-                    <Col span={5}><h6>{doc.status}</h6></Col>
+                    <Col id={"status-"+id} span={5}><h6>{doc.status}</h6></Col>
                     <Col span={2}>
                         <Button ghost type="primary" onClick={(event) => 
                           this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}

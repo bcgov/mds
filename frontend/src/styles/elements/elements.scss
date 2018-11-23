@@ -23,9 +23,9 @@ h2 {
   }
 }
 h3 {
-  font-size: $default-h3;
+  font-size: $default-h5;
   font-weight: $bold;
-  color: $default-dark-green;
+  color:  $font-black;
   @include mobile {
     font-size: $mobile-h3;
   }
@@ -63,6 +63,10 @@ p, .p {
   @include tablet {
     font-size: $default-p;
   }
+}
+
+.p-white {
+  color: $default-white;
 }
 
 a, Link {
