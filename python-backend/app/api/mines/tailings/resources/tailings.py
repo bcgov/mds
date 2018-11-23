@@ -66,8 +66,6 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_due_date_type':tsf_req_doc['req_document_due_date_type'],
                             'document_due_date_period_months':tsf_req_doc['req_document_due_date_period_months']
                         })
-                    
-                    #new_headers = request.headers
 
                     doc_assignment_response = requests.post(documents_url + '/expected/mines/' + str(mine_guid), 
                             headers=request.headers, 

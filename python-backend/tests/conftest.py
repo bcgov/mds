@@ -78,21 +78,6 @@ def setup_data(session):
     clear_data(session)
 
     # Insert Region Code
-    required_document_due_date_type1 = RequiredDocumentDueDateType(
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
-        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[0],
-        **DUMMY_USER_KWARGS
-    )
-    # raise Exception(str(required_document_due_date_type1.__dict__))
-    required_document_due_date_type1.save()
-
-    required_document_due_date_type2 = RequiredDocumentDueDateType(
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
-        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[1],
-        **DUMMY_USER_KWARGS
-    )
-    required_document_due_date_type2.save()
-
     for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
         region_code = MineRegionCode(
             mine_region_code=region_code_value,
@@ -256,6 +241,20 @@ def setup_data(session):
     )
     permittee.save()
 
+    required_document_due_date_type1 = RequiredDocumentDueDateType(
+        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
+        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[0],
+        **DUMMY_USER_KWARGS
+    )
+    required_document_due_date_type1.save()
+
+    required_document_due_date_type2 = RequiredDocumentDueDateType(
+        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
+        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[1],
+        **DUMMY_USER_KWARGS
+    )
+    required_document_due_date_type2.save()
+    
     required_document_category1 = RequiredDocumentCategory(
         req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
