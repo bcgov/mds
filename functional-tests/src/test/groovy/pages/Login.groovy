@@ -3,7 +3,7 @@ package pages
 import geb.Page
 
 class LoginPage extends Page {
-    static at = { title == "Log in to mds"}
+    static at = { title.startsWith("Log in to") }
     static content = {
         IDIRusername (wait: true) {$("input", id: "username")}
         IDIRpassword (wait: true) {$("input", id: "password")}

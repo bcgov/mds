@@ -18,7 +18,7 @@ export class Home extends Component {
       <Layout className="layout">
         <div className="header">
           <NavBar />
-          <LoadingBar style={{ backgroundColor: '#B9ADA2', position: 'fixed', top: 55, zIndex: 100, width: '100%', height: '8px'}} />
+          <LoadingBar style={{ backgroundColor: '#77510a', position: 'fixed', top: 55, zIndex: 100, width: '100%', height: '8px'}} />
         </div>
         <Content className="content">
           <DashboardRoutes />

@@ -1,6 +1,6 @@
 .null-screen {
   text-align: center;
-  margin: $default-margin-lg;
+  margin-top: $default-margin-lg;
 
   @include mobile {
     margin: 0;
@@ -11,7 +11,7 @@
     justify-content: center;
     margin: 0;
 
-    h1 {
+    h3 {
       margin-top: 15px;
     }
     @include mobile {
