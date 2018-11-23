@@ -18,25 +18,25 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 4: Scan new permit info in MMS';
     -- This is the intermediary table that will be used to store mine permit and permittee info from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PERMIT(
-        permittee_guid      uuid                ,
+        permittee_guid      uuid                    ,
         --permit info
-        permit_guid         uuid                ,
-        source              numeric             ,
-        mine_guid           uuid                ,
+        permit_guid         uuid                    ,
+        source              numeric                 ,
+        mine_guid           uuid                    ,
         mine_no             character varying(12)   ,
         permit_no           character varying(12)   ,
-        received_date       date                ,
-        issue_date          date                ,
-        expiry_date         date                ,
-        permit_status_code  character varying(2),
+        received_date       date                    ,
+        issue_date          date                    ,
+        expiry_date         date                    ,
+        permit_status_code  character varying(2)    ,
         --permittee info
         party_guid          uuid                    ,
         party_combo_id      character varying(200)  ,
-        first_name character varying(100)       ,
-        party_name character varying(100)       ,
-        party_type character varying(3)         ,
-        phone_no character varying(12)          ,
-        email character varying(254)            ,
+        first_name character varying(100)           ,
+        party_name character varying(100)           ,
+        party_type character varying(3)             ,
+        phone_no character varying(12)              ,
+        email character varying(254)                ,
         effective_date date
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
@@ -267,9 +267,9 @@ BEGIN
     --Formatting permittee name
     permittee_org AS (
         SELECT
-            party_combo_id      ,
-            party_guid          ,
-            NULL AS first_name  ,
+            party_combo_id            ,
+            party_guid                ,
+            NULL AS first_name        ,
             permittee_nm AS party_name,
             'ORG' ::text AS party_type
         FROM permittee_new_record
@@ -315,10 +315,10 @@ BEGIN
     ),
     permittee_name_and_type AS (
         SELECT
-            party_combo_id  ,
-            party_guid      ,
+            party_combo_id     ,
+            party_guid         ,
             first_name::varchar,
-            party_name      ,
+            party_name         ,
             party_type
         FROM permittee_org
         UNION
@@ -412,7 +412,7 @@ BEGIN
         permit_info.recv_dt     ,
         permit_info.iss_dt      ,
         permit_info.permit_expiry_dt    ,
-        permit_info.sta_cd      ,
+        permit_info.sta_cd              ,
         --permittee info
         permittee_info.party_combo_id   ,
         permittee_info.party_guid       ,

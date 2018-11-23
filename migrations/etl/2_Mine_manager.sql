@@ -10,14 +10,14 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 3: Scan new managers in MMS';
     -- This is the intermediary table that will be used to store mine manager profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_MANAGER(
-        mine_guid   uuid        ,
-        mine_no     varchar(7)  ,
-        party_guid  uuid        ,
-        first_name  varchar(100),
-        surname     varchar(100),
-        phone_no    varchar(12) ,
-        email       varchar(254),
-        effective_date      date,
+        mine_guid   uuid                ,
+        mine_no     varchar(7)          ,
+        party_guid  uuid                ,
+        first_name  varchar(100)        ,
+        surname     varchar(100)        ,
+        phone_no    varchar(12)         ,
+        email       varchar(254)        ,
+        effective_date      date        ,
         person_combo_id     varchar(600),
         mgr_combo_id        varchar(600)
     );
@@ -97,9 +97,9 @@ BEGIN
     new_person_info_get_phone AS(
         SELECT
             gen_random_uuid() AS party_guid   ,
-            person_combo_id ,
-            first_name      ,
-            surname         ,
+            person_combo_id                   ,
+            first_name                        ,
+            surname                           ,
             CASE
                 WHEN phone_no>=10^10 AND phone_no<2*10^10 THEN (phone_no-10^10 )::varchar--Remove country code for phone_no
                 WHEN phone_no>10^9 AND phone_no<10^10 THEN (phone_no)::varchar
@@ -220,24 +220,24 @@ BEGIN
         party_guid      ,
         first_name      ,
         party_name      ,
-        phone_no	    ,
-        phone_ext	    ,
-        email	        ,
+        phone_no        ,
+        phone_ext       ,
+        email           ,
         effective_date  ,
-        expiry_date	    ,
-        create_user	    ,
+        expiry_date     ,
+        create_user     ,
         create_timestamp,
-        update_user	    ,
+        update_user     ,
         update_timestamp,
         party_type_code
     )
     SELECT
-        party_guid  ,
-        first_name  ,
-        surname     ,
-        phone_no    ,
-        'N/A'       ,
-        email       ,
+        party_guid          ,
+        first_name          ,
+        surname             ,
+        phone_no            ,
+        'N/A'               ,
+        email               ,
         effective_date      ,
         '9999-12-31'::date  ,
         'mms_migration'     ,
@@ -274,12 +274,12 @@ BEGIN
     )
     INSERT INTO mgr_appointment(
         mgr_appointment_guid,
-        mine_guid	        ,
-        party_guid	        ,
-        effective_date	    ,
-        expiry_date	 	    ,
-        create_user	        ,
-        create_timestamp	,
+        mine_guid           ,
+        party_guid          ,
+        effective_date      ,
+        expiry_date         ,
+        create_user         ,
+        create_timestamp    ,
         update_user         ,
         update_timestamp
     )

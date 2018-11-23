@@ -96,7 +96,7 @@ BEGIN
         new.mine_guid            ,
         new.mine_status_xref_guid,
         now()                    ,
-        '9999-12-31'::date	     ,
+        '9999-12-31'::date       ,
         'mms_migration'          ,
         now()                    ,
         'mms_migration'          ,
