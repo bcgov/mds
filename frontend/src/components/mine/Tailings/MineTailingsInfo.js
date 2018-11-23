@@ -40,6 +40,14 @@ class MineTailingsInfo extends Component {
     });
   }
 
+  openEditReportModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title},
+      content: modalConfig.EDIT_TAILINGS_REPORT
+    });
+  }
+
   render() {
     const { mine } = this.props;
     return (
@@ -82,7 +90,7 @@ class MineTailingsInfo extends Component {
                     <Col span={5}><h6>{doc.status}</h6></Col>
                     <Col span={2}>
                         <Button ghost type="primary" onClick={(event) => 
-                          this.openModal(event, this.handleSubmit, ModalContent.EDIT)}
+                          this.openEditReportModal(event, this.handleSubmit, ModalContent.EDIT_TAILINGS_REPORT)}
                           ><img style={{padding: '5px'}}src={GREEN_PENCIL} /></Button>
                     </Col>
                 </Row>
