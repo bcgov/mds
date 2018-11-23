@@ -162,9 +162,9 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
             previous_appointment_guid = mine.mgr_appointment[0].mgr_appointment_guid
             previous_mgr = MgrAppointment.find_by_mgr_appointment_guid(previous_appointment_guid)
 
-            previous_mgr_expiry_date = data['effective_date'] - timedelta(days=1)
-            if previous_mgr_expiry_date.date() < previous_mgr.effective_date:
-               self.raise_error(400, 'Error: Effective date will be before the previous parties expiry date.')
+            previous_mgr_expiry_date = (data['effective_date'] - timedelta(days=1)).date()
+            if previous_mgr_expiry_date < previous_mgr.effective_date:
+               self.raise_error(400, "Error: New manager's start date is on or before the previous manager's start date.")
 
             previous_mgr.expiry_date = previous_mgr_expiry_date
             previous_mgr.save()
