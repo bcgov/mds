@@ -34,7 +34,7 @@ export class ModalWrapper extends Component {
     >
       <LoadingBar 
         scope="modal" 
-        style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#B9ADA2', width: '100%', height: '8px', zIndex: 100 }} 
+        style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#77510a', width: '100%', height: '8px', zIndex: 100 }} 
       />
      {ChildComponent &&
         <ChildComponent

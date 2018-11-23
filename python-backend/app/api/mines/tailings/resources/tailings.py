@@ -7,7 +7,6 @@ from ..models.tailings import MineTailingsStorageFacility
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-
 class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
@@ -22,12 +21,13 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             return tsf.json()
         else:
             mine_guid = request.args.get('mine_guid', type=str)
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            if mine_tsf_list: 
+            if mine_guid: 
+                mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
                 return { 'mine_storage_tailings_facilities' : list(map(lambda x: x.json(), mine_tsf_list))  }
             else: 
                 return self.create_error_payload(404, 'Mine_guid or tsf_guid must be provided')
-
+       
+                
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
     @jwt.requires_roles(["mds-mine-view"])
@@ -38,6 +38,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             #see if this would be the first TSF 
             mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
             is_mine_first_tsf = len(mine_tsf_list) == 0
+            
             mine_tsf = MineTailingsStorageFacility(
                mine_guid=mine_guid,
                 mine_tailings_storage_facility_name=data['tsf_name'],
@@ -46,10 +47,14 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             mine_tsf.save()
 
             if is_mine_first_tsf:  
-                try: 
-                    tsf_required_documents = requests.get(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_required_document_resource') + '?category=MINE_TAILINGS', 
+                try:
+                    documents_url = current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents'
+
+                    get_resp = requests.get(documents_url + '/required?category=MINE_TAILINGS', 
                         headers=request.headers
-                    ).json()['required_documents']
+                    )
+                    
+                    tsf_required_documents = get_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
@@ -58,10 +63,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_description':tsf_req_doc['req_document_description'],
                             'document_category':tsf_req_doc['req_document_category']
                         })
-                    
-                    #new_headers = request.headers
 
-                    doc_assignment_response = requests.post(current_app.config['DOCUMENT_MS_URL'] + url_for('documents_mine_expected_document_resource') + '/' + str(mine_guid), 
+                    doc_assignment_response = requests.post(documents_url + '/mines/expected/' + str(mine_guid), 
                             headers=request.headers, 
                             json={'documents': new_expected_documents}
                     )

@@ -78,23 +78,35 @@ export class MineDashboard extends Component {
                 animated={{ inkBar: true, tabPane: false }}
               >
                 <TabPane tab="Summary" key="summary">
-                  <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
+                  <div className="tab__content">
+                    <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds}/>
+                  </div>
                 </TabPane>
                 <TabPane tab="Permit" key="permit">
-                  <MinePermitInfo mine={mine} />
+                  <div className="tab__content">
+                    <MinePermitInfo mine={mine} />
+                  </div>
                 </TabPane>
                 <TabPane tab="Contact Information" key="contact-information">
-                  <MineContactInfo mine={mine} />
+                  <div className="tab__content">
+                    <MineContactInfo mine={mine} />
+                  </div>
                 </TabPane>
                 <TabPane tab="Compliance" key="compliance">
-                  <NullScreen type="generic" />
+                  <div className="tab__content">
+                    <NullScreen type="generic" />
+                  </div>
                 </TabPane>
                 <TabPane tab="Tenure" key="tenure">
-                  <MineTenureInfo mine={mine} {...this.props}/>
+                  <div className="tab__content">
+                    <MineTenureInfo mine={mine} {...this.props}/>
+                  </div>
                 </TabPane>
                 {mine.mine_tailings_storage_facility.length > 0 &&
                   <TabPane tab="Tailings" key="tailings">
-                    <MineTailingsInfo mine={mine} {...this.props}/>
+                    <div className="tab__content">
+                      <MineTailingsInfo mine={mine} {...this.props}/>
+                    </div>
                   </TabPane>
                 }
               </Tabs>

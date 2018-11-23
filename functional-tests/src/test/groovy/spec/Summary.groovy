@@ -20,8 +20,6 @@ class  SummarySpec extends GebReportingSpec {
         then: "I should see profile of the Mine"
         assert mineNumber == "Mine ID: "+Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
-        assert latValue.minus("Lat:").startsWith(Const.MINE_LAT)
-        assert longValue.minus("Long:").startsWith(Const.MINE_LONG)
     }
 }
 

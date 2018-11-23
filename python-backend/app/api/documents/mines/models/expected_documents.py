@@ -27,7 +27,7 @@ class MineExpectedDocument(AuditMixin, Base):
 
     def json(self):
         return {
-            'exp_document_guid' : str(self.mine_guid),
+            'exp_document_guid' : str(self.exp_document_guid),
             'req_document_guid' : str(self.req_document_guid),
             'mine_guid' : str(self.mine_guid),
             'exp_document_name' : str(self.exp_document_name),
