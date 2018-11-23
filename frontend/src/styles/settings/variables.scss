@@ -8,20 +8,21 @@ $default-white: #F1F1F2;
 $background-white: #FFFFFF;
 $default-yellow: #FCBA18;
 $font-black: #383838;
-$default-brown: #B9ADA2;
-$default-red: #BC2929;
+$default-brown: #77510a;
+$default-dark-brown: #54463b;
+$default-dark-brown-gradient: linear-gradient(0deg, rgba(84,70,59,1) 10%, rgba(84,70,59,0.49763655462184875) 100%);
 
 // font size
 $default-h1: 36px;
-$mobile-h1: 30px;
-$default-h2: 24px;
-$mobile-h2: 22px;
+$mobile-h1: 24px;
+$default-h2: 18px;
+$mobile-h2: 16px;
 $default-h3: 20px;
-$mobile-h3: 18px;
+$mobile-h3: 16px;
 $default-h4: 16px;
 $mobile-h4: 12px;
 $default-h5: 20px;
-$mobile-h5: 18px;
+$mobile-h5: 16px;
 $default-p: 16px;
 
 // font
@@ -35,10 +36,14 @@ $bold: 700;
 $default-margin-sm: 5px;
 $default-margin-md: 10px;
 $default-margin-lg: 20px;
-$default-margin-xxl: 60px;
+$default-margin-xxl: 50px;
 
 // padding
 $default-padding-sm: 5px;
 $default-padding-md: 10px;
 $default-padding-lg: 20px;
 $default-padding-xl: 30px;
+$default-padding-xxl: 50px;
+
+$default-box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+$default-round-top-border:  60px 60px 0 0;

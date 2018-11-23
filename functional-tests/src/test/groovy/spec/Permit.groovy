@@ -21,10 +21,8 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.tabSelect.click()
 
         then:"I should see a list of permit"
-        assert permitTab.permit_no[2].text() == 'BLAHPER-02'
-        assert permitTab.permit_no[3].text() == 'BLAHPER-01'
-        assert permitTab.permit_date[2].text() == '2003-03-03'
-        assert permitTab.permit_date[3].text() == '2002-02-02'
+        assert permitTab.permit_no.text() != ''
+        assert permitTab.permit_date.text() != ''
     }
 
 
