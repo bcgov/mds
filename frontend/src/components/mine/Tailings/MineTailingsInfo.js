@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Row, Col, Button } from 'antd';
-import ConditionalButton from '@/components/common/ConditionalButton';
-import NullScreen from '@/components/common/NullScreen'; 
 import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 import { GREEN_PENCIL } from '@/constants/assets';
@@ -17,22 +15,26 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  mineStatusOptions: [],
+  reportStatusOptions: [],
+  updateReport: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   mine: {},
+  reportStatusOptions: ['Not Recieved', 'Recieved / Pending Review', 'Review In Progress', 'Accepted', 'Rejected / Waiting On Update'],
 };
 
 class MineTailingsInfo extends Component {
-  handleSubmit = (value) => {
+  handleAddTailingsSubmit = (value) => {
     this.props.createTailingsStorageFacility({...value, mine_guid: this.props.mine.guid}).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
     })
   }
 
-  openModal(event, onSubmit, title) {
+  openAddTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
       props: { onSubmit, title},
@@ -40,10 +42,17 @@ class MineTailingsInfo extends Component {
     });
   }
 
-  openEditReportModal(event, onSubmit, title) {
+  handleEditReportSubmit = (value) => {
+    //this.props.updateReport().then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    //})
+  }
+
+  openEditReportModal(event, onSubmit, title, statusOptions) {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title},
+      props: { onSubmit, title, statusOptions},
       content: modalConfig.EDIT_TAILINGS_REPORT
     });
   }
@@ -64,7 +73,7 @@ class MineTailingsInfo extends Component {
                 )
               })}
               <div className="center"> 
-                <Button className="full-mobile" type="primary" onClick={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
+                <Button className="full-mobile" type="primary" onClick={(event) => this.openAddTailingsModal(event, this.handleAddTailingsSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
               </div>
         </div>
         <br/>
@@ -90,7 +99,7 @@ class MineTailingsInfo extends Component {
                     <Col span={5}><h6>{doc.status}</h6></Col>
                     <Col span={2}>
                         <Button ghost type="primary" onClick={(event) => 
-                          this.openEditReportModal(event, this.handleSubmit, ModalContent.EDIT_TAILINGS_REPORT)}
+                          this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}
                           ><img style={{padding: '5px'}}src={GREEN_PENCIL} /></Button>
                     </Col>
                 </Row>

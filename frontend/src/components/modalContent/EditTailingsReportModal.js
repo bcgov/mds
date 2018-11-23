@@ -4,11 +4,14 @@ import EditTailingsReportForm from '@/components/Forms/EditTailingsReportForm';
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  statusOptions: PropTypes.array.isRequired,
+  initialValues: PropTypes.object,
 };
 
 const defaultProps = {
- title: ''
+ title: '',
+ initialValues: null,
 };
 
 export const EditTailingsReportModal = (props) => {
@@ -21,4 +24,5 @@ export const EditTailingsReportModal = (props) => {
 
 EditTailingsReportModal.propTypes = propTypes;
 EditTailingsReportModal.defaultProps = defaultProps;
+
 export default EditTailingsReportModal;

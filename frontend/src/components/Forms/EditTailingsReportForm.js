@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form'
 import RenderField from '@/components/common/RenderField';
+import RenderDate from '@/components/common/RenderDate';
+import RenderSelect from '@/components/common/RenderSelect';
 import { Form, Button, Col, Row, Popconfirm } from 'antd';
 import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
+import { renderConfig } from '@/components/common/config';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  statusOptions: PropTypes.array.isRequired,
 };
 
 export const EditTailingsReportForm = (props) => {
@@ -20,39 +24,41 @@ export const EditTailingsReportForm = (props) => {
         <Col>
           <Form.Item>
             <Field
-              id="tsf_name"
-              name="tsf_name"
+              id="tsf_report_name"
+              name="tsf_report_name"
               label='Report Name'
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[required]}
             />
           </Form.Item>
           <Form.Item>
             <Field
-              id="tsf_name"
-              name="tsf_name"
+              id="tsf_report_due_date"
+              name="tsf_report_due_date"
               label='Due Date'
-              component={RenderField}
+              component={RenderDate}
               validate={[required]}
             />
-            <Form.Item>
-              <Field
-                id="tsf_name"
-                name="tsf_name"
-                label='Received Date'
-                component={RenderField}
-                validate={[required]}
-              />
-              <Form.Item>
-                <Field
-                  id="tsf_name"
-                  name="tsf_name"
-                  label='Status'
-                  component={RenderField}
-                  validate={[required]}
-                />
-              </Form.Item>
-            </Form.Item>
+          </Form.Item>
+        <Form.Item>
+            <Field
+            id="tsf_report_received_date"
+            name="tsf_report_received_date"
+            label='Received Date'
+            component={RenderDate}
+            validate={[required]}
+            />
+        </Form.Item>   
+          <Form.Item>
+            <Field
+              id="tsf_report_status"
+              name="tsf_report_status"
+              label="Status"
+              placeholder="Select a Status"
+              component={renderConfig.SELECT}
+              data={props.statusOptions}
+              validate={[required]}
+            />
           </Form.Item>
         </Col>
       </Row>
