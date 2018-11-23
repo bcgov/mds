@@ -50,7 +50,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                 try:
                     documents_url = current_app.config['DOCUMENT_MS_URL'] + current_app.config['BASE_PATH'] + '/documents'
 
-                    get_resp = requests.get(documents_url + '/required?category=MINE_TAILINGS', 
+                    get_tsf_docs_resp = requests.get(documents_url + '/required?category=MINE_TAILINGS', 
                         headers=request.headers
                     )
                     if get_tsf_docs_resp.status_code != 200:
@@ -66,7 +66,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_category':tsf_req_doc['req_document_category']
                         })
 
-                    doc_assignment_response = requests.post(documents_url + '/mines/expected/' + str(mine_guid), 
+                    doc_assignment_response = requests.post(documents_url + '/expected/mines/' + str(mine_guid), 
                             headers=request.headers, 
                             json={'documents': new_expected_documents}
                     )
@@ -78,4 +78,3 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             return {'mine_tailings_storage_facilities': list(map(lambda x: x.json(), MineTailingsStorageFacility.find_by_mine_guid(mine_guid)))}
         else:
             return self.create_error_payload(404, 'unexpected tsf_guid')
-
