@@ -53,7 +53,7 @@ class ExpectedDocument(AuditMixin, Base):
         minute = 00
         second = 00
 
-        if due_date_type == "FIS":
+        if due_date_type == 'FIS':
 
             fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
             due_date = fiscal_year_end + relativedelta(months=int(period_in_months))
