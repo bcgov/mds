@@ -29,14 +29,5 @@ class Tailings extends GebReportingSpec {
         then: "User can now see the tailings tab"
         assert tailingsTab.tabSelect.displayed == true
     }
-
-    def "Scenario: User navigates to the tailings tab and the required reports are visible"(){
-        when: "User clicks on the tailings tab"
-        tailingsTab.tabSelect.click()
-
-        then: "the reports are visible"
-            assert tailingsTab.document0Name != null
-
-    }
-
+    
 }

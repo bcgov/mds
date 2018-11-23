@@ -54,7 +54,7 @@ export const UpdateMineManagerForm = (props) => {
       </Row>
       <div className="right center-mobile">
         <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
-          <Button type="secondary">Cancel</Button>
+          <Button className="full-mobile" type="secondary">Cancel</Button>
         </Popconfirm>
         <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
      </div>
