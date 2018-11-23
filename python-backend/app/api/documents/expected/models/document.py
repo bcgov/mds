@@ -47,10 +47,15 @@ class ExpectedDocument(AuditMixin, Base):
     def add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
 
         current_year = current_date.year
+        march = 3
+        day = 31
+        hour = 00
+        minute = 00
+        second = 00
 
         if due_date_type == "FIS":
-    
-            fiscal_year_end = datetime(current_year, 3, 31, 00, 00, 00)
+
+            fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
             due_date = fiscal_year_end + relativedelta(months=int(period_in_months))
 
             return due_date
