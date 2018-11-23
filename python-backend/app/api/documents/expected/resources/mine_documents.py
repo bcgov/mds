@@ -4,25 +4,25 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 from datetime import datetime
-from ..models.expected_documents import MineExpectedDocument
+
+from ..models.mine_document import MineExpectedDocument
 
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
-class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
+class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('documents', type=list, required=True, help='list of documents to add to a mine', location="json")
 
-    @api.doc(params={'mine_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
+    @api.doc(params={'mine_guid': 'Optional: Mine number or guid. returns list of expected documents for the mine'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_guid=None):
         if mine_guid == None:
             return self.create_error_payload(401, 'Must provide a mine id.')
-    
         mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)
         return {
-            'mine_expected_documents' : list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
+            'expected_mine_documents' : list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
         }
 
     @api.expect(parser)
@@ -44,7 +44,9 @@ class MineExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             mine_exp_doc.save()
             mine_new_docs.append(mine_exp_doc)
         return {
-            'mine_expected_documents' : list(map(lambda x: x.json(), mine_new_docs))
+            'expected_mine_documents' : list(map(lambda x: x.json(), mine_new_docs))
         }
        
+       
+
 

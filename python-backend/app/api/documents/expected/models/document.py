@@ -12,7 +12,7 @@ from sqlalchemy.inspection import inspect
 from ....utils.models_mixins import AuditMixin, Base
 
 
-class MineExpectedDocument(AuditMixin, Base):
+class ExpectedDocument(AuditMixin, Base):
     __tablename__ = 'mine_expected_document'
 
     exp_document_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
@@ -24,7 +24,7 @@ class MineExpectedDocument(AuditMixin, Base):
     exp_document_description = db.Column(db.String(300))
 
     due_date = db.Column(db.DateTime) 
-  
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def json(self):
         return {
@@ -37,10 +37,10 @@ class MineExpectedDocument(AuditMixin, Base):
         }
 
     @classmethod
-    def find_by_mine_guid(cls, mine_guid):
+    def find_by_exp_document_guid(cls, exp_document_guid):
         try:
-            uuid.UUID(mine_guid, version=4)
-            return cls.query.filter_by(mine_guid=mine_guid).all()
+            uuid.UUID(exp_document_guid, version=4)
+            return cls.query.filter_by(active_ind=True).filter_by(exp_document_guid=exp_document_guid).first()
         except ValueError:
             return None
 
