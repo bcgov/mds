@@ -25,18 +25,16 @@ class MinePermitInfo extends Component {
           <Col span={8}><h2>First Issued</h2></Col>
         </Row>
         <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
-        {mine.mine_permit.map((permit) => {
-          return (
-            <div key={permit.permit_no}>
-              <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col id="permit_no" span={8}><p>{permit.permit_no}</p></Col>
-                <Col id="permittee" span={8}>{permit.permittee[0].party.party_name}</Col>
-                <Col id="permit_issue_date" span={8}>{permit.issue_date}</Col>
-                <Divider />
-              </Row>
-            </div>
-          )
-        })}
+        {mine.mine_permit.map((permit) =>
+          <div key={permit.permit_no}>
+            <Row type="flex" style={{ textAlign: 'center' }}>
+              <Col id="permit_no" span={8}><p>{permit.permit_no}</p></Col>
+              <Col id="permittee" span={8}>{permit.permittee[0].party.party_name}</Col>
+              <Col id="permit_issue_date" span={8}>{permit.issue_date}</Col>
+              <Divider />
+            </Row>
+          </div>
+        )}
         {((mine.mine_permit.length === 0) &&
           <NullScreen type="permit" />
         )}

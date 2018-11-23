@@ -100,9 +100,9 @@ class MineHeader extends Component {
               <div><img src={(mine.mine_status[0].status_values[0] === 'OP' ) ? ELLIPSE : RED_ELLIPSE} /></div>
               <div>
                 <h3>
-                    {mine.mine_status[0].status_labels.map((label, i) => {
-                    return (<span className="mine__status" key={i}>{label}</span>)
-                  })}
+                  {mine.mine_status[0].status_labels.map((label, i) => 
+                    (<span className="mine__status" key={i}>{label}</span>)
+                  )}
                 </h3>
               </div>
             </div>
