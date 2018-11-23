@@ -70,13 +70,14 @@ class  DashboardSpec extends GebReportingSpec {
     }
 
     def "Scenario: User can view a mine"(){
+        def viewMineID = first_mineID
+        def viewMineName = first_mineName
+
         given: "I am on the Dashboard Page"
         to Dashboard
 
         when: "I click to view the first mine"
-        def viewMineID = first_mineID
-        def viewMineName = first_mineName
-        viewButton[0].click()
+        viewLink.click()
 
         then:"I can view the page"
         at MineProfilePage

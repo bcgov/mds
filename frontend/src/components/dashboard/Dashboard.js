@@ -81,6 +81,7 @@ export class Dashboard extends Component {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
       const params = nextProps.location.search;
+      this.setState({ mineList: false });
       this.renderDataFromURL(params);
     }
   }
@@ -174,7 +175,9 @@ export class Dashboard extends Component {
                     <MineSearch handleMineSearch={this.handleMineSearchDebounced} searchValue={search}/>
                   </Col>
                 </Row>
-                <MineList {...this.props} />
+                <div className="tab__content">
+                  <MineList {...this.props} />
+                </div>
                 <div className="center">
                   <MediaQuery maxWidth={500}>
                     <Pagination
@@ -240,7 +243,7 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 }
-                <div className="landing-page__content map">
+                <div>
                   <MineMap {...this.state} />
                 </div>
               </TabPane>

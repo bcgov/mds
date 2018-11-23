@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MineMap from '@/components/maps/MineMap';
-import { ELLIPSE, SMALL_PIN, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from '@/constants/assets';
-import { Menu, Icon } from 'antd';
+import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from '@/constants/assets';
+import { Menu, Icon, Divider } from 'antd';
 import * as String from '@/constants/strings';
 import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
@@ -82,9 +82,8 @@ class MineHeader extends Component {
       </Menu>
     );
     return (
-      <div className="dashboard__header">
-        <MineMap mine={mine}/>
-        <div className="dashboard__header__content">
+      <div className="dashboard__header--card">
+        <div className="dashboard__header--card__content">
           <div className="inline-flex between">
             <h1>{mine.mine_detail[0].mine_name}</h1>
             <ConditionalButton
@@ -93,29 +92,33 @@ class MineHeader extends Component {
               string={<Icon type="ellipsis" theme="outlined" style={{fontSize: '30px'}}/>}
             />
           </div>
+          <Divider />
           <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
-          <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
-          <h5>Tailings: {mine.mine_tailings_storage_facility.length > 0 ? "Yes" : "No"}</h5>
-          <div className="dashboard__header__content--inline">
-          <p>{mineRegionHash[mine.mine_detail[0].region_code]}</p>
-            <div className="inline-flex between">
-              <img className="inline-flex--img" src={SMALL_PIN} />
-              <div><p>Lat:{mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p></div>
-              <div><p>Long:{mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}</p></div>
-            </div>
-            {mine.mine_status[0] &&
-              <div className="inline-flex between">
-                <div><h5>Operating Status: </h5></div>
-                <img src={(mine.mine_status[0].status_values[0] === 'OP' ) ? ELLIPSE : RED_ELLIPSE} />
-                <div>
-                  <h3>
-                      {mine.mine_status[0].status_labels.map((label, i) => {
-                      return (<span className="mine__status" key={i}>{label} </span>)
-                    })}
-                  </h3>
-                </div>
+          {mine.mine_status[0] &&
+            <div className="inline-flex">
+              <div><h5>Operating Status: </h5></div>
+              <div><img src={(mine.mine_status[0].status_values[0] === 'OP' ) ? ELLIPSE : RED_ELLIPSE} /></div>
+              <div>
+                <h3>
+                  {mine.mine_status[0].status_labels.map((label, i) => 
+                    (<span className="mine__status" key={i}>{label}</span>)
+                  )}
+                </h3>
               </div>
-            }
+            </div>
+          }
+          {!mine.mine_status[0] && <div><h5>Operating Status: {String.EMPTY_FIELD}</h5></div>}
+          <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
+          <h5>TSF: {mine.mine_tailings_storage_facility.length > 0 ? mine.mine_tailings_storage_facility.length : String.EMPTY_FIELD}</h5>
+        </div>
+        <div className="dashboard__header--card__map">
+          <MineMap mine={mine}/>
+          <div className="dashboard__header--card__map--footer">
+            <div className="inline-flex between">
+              <p className="p-white">Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}</p>
+              <p className="p-white">Long: {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}</p>
+            </div>
+            <p className="p-white">Region: {mine.mine_detail[0].region_code ? mineRegionHash[mine.mine_detail[0].region_code] : String.EMPTY_FIELD}</p>
           </div>
         </div>
       </div>

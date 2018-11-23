@@ -1,37 +1,62 @@
 .dashboard {
+  background-color: $default-white;
+  top: -50px;
+  padding-top: $default-padding-xl;
+  position: relative;
+
+  
   &__header {
-    z-index: 10;
-    height: 500px;
-
-    &__content {
-      padding: 20px 60px;
-      z-index: 100;
-      background-color: $background-white;
-      position: relative;
-      border-radius: 60px 60px 0 0;
-      top: -100px;
-
+    &--card {
       @include mobile {
-          padding: 20px;
-          top: -140px;
+        width: 100vw;
+        margin: 0;
+      }
+      @include flex;
+      height: 100%;
+      margin: $default-margin-xxl;
+      background-color: $background-white;
+      box-shadow: $default-box-shadow;
+
+      @include large {
+        display: block;
+        height: 100%;
+      }
+
+      &__content {
+        flex: 2;
+        padding: $default-padding-lg;
+      }
+
+      &__map {
+        flex: 1;
+
+        @include large {
+          top: 0;
+          height: 250px;
         }
 
-      &--inline {
-        @include flex;
-        justify-content: space-between;
-
-        @include mobile {
-          display: block
+        &--footer {
+          padding: $default-padding-md;
+          background: $default-dark-brown-gradient;
+          position: relative;
+          height: 80px;
+          top: -80px;
+          @include large {
+            padding: $default-padding-lg;
+          }
         }
       }
     }
   }
 
   &__content {
-    margin: 50px;
+    z-index: 100;
+    background-color: $background-white;
+    position: relative;
+    border-radius: $default-round-top-border;
 
     @include mobile {
-      margin: 10px;
+      padding: 0;
     }
   }
 }
@@ -57,6 +82,6 @@
   }
 
   td{
-    padding: 0px 0px 30px 30px;
+    padding: 0 0 $default-padding-xl $default-padding-xl;
   }
 }

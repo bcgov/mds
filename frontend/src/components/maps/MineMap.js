@@ -57,7 +57,7 @@ class MineMap extends Component {
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
         <Map
-          style={{ width: '100vw', height: '475px' }}
+          style={{ width: '100%', height: '100%'}}
           mapProperties={{ basemap: 'streets' }}
           viewProperties={{
             center: [
