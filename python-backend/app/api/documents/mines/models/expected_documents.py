@@ -44,25 +44,19 @@ class MineExpectedDocument(AuditMixin, Base):
         except ValueError:
             return None
 
-    def add_due_date_to_expected_document(self, is_due_date_fiscal, period_in_months):
-        
-        current_date = datetime.now()
+    def add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
+
         current_year = current_date.year
 
-        if is_due_date_fiscal == "True":
-            march_thirty_first = datetime(current_year, 3, 31, 00, 00, 00)
+        if due_date_type == "FIS":
+    
+            fiscal_year_end = datetime(current_year, 3, 31, 00, 00, 00)
+            due_date = fiscal_year_end + relativedelta(months=int(period_in_months))
 
-            if current_date > march_thirty_first:
-                due_date = march_thirty_first + relativedelta(months=int(period_in_months))
-
-                return due_date
-            
-            else:
-                if period_in_months > 12:
-                    return (march_thirty_first + relativedelta(months=int(period_in_months - 12)))
-
-                return march_thirty_first
+            return due_date
         
+        elif due_date_type == 'ANV':
+            return current_date
+
         else:
             return current_date
-            

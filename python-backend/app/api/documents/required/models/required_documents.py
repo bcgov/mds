@@ -17,10 +17,11 @@ class RequiredDocument(AuditMixin, Base):
     req_document_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue()) 
     req_document_name = db.Column(db.String(100), nullable=False)
     req_document_description = db.Column(db.String(300))
-    req_document_due_fiscal = db.Column(db.Boolean, nullable=False)
     req_document_due_date_period_months = db.Column(db.Integer, nullable=False)
 
     req_document_category_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mds_required_document_category.req_document_category_guid'))
+    req_document_due_date_type = db.Column(db.String(3), db.ForeignKey('required_document_due_date_type.req_document_due_date_type'))
+
     req_document_category = db.relationship('RequiredDocumentCategory',backref='req_document_guid',order_by='desc(RequiredDocumentCategory.req_document_category)', lazy='joined')
 
     def json(self):
@@ -29,7 +30,7 @@ class RequiredDocument(AuditMixin, Base):
             'req_document_name': str(self.req_document_name),
             'req_document_description': str(self.req_document_description),
             'req_document_category' : str(self.req_document_category.req_document_category),
-            'req_document_due_fiscal': str(self.req_document_due_fiscal),
+            'req_document_due_date_type': str(self.req_document_due_date_type),
             'req_document_due_date_period_months' : str(self.req_document_due_date_period_months)
         }
 
