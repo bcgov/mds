@@ -32,4 +32,23 @@ def test_add_fiscal_due_date_when_current_date_is_fiscal(test_client, auth_heade
     due_date = MineExpectedDocument.add_due_date_to_expected_document(None, fiscal, due_date_type, period)
 
     assert due_date == expected_due_date
-    
+
+def test_add_fiscal_due_date_on_year_end(test_client, auth_headers):
+    end_of_year = datetime(datetime.now().year - 1, 12, 31, 23, 59, 59)
+    due_date_type = "FIS"
+    period = "12"
+    expected_due_date = datetime(datetime.now().year, 3, 31, 00, 00, 00)
+
+    due_date = MineExpectedDocument.add_due_date_to_expected_document(None, end_of_year, due_date_type, period)
+
+    assert due_date == expected_due_date
+
+def test_add_fiscal_due_date_on_new_year(test_client, auth_headers):
+    new_year = datetime(datetime.now().year, 1, 1, 00, 00, 00)
+    due_date_type = "FIS"
+    period = "12"
+    expected_due_date = datetime(datetime.now().year+1, 3, 31, 00, 00, 00)
+
+    due_date = MineExpectedDocument.add_due_date_to_expected_document(None, new_year, due_date_type, period)
+
+    assert due_date == expected_due_date
