@@ -1,6 +1,6 @@
 import uuid
 from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID2, TEST_EXPECTED_DOCUMENT_NAME2, DUMMY_USER_KWARGS
-from app.api.documents.mines.models.expected_documents import MineExpectedDocument
+from app.api.documents.expected.models.mine_document import MineExpectedDocument
 
 # MineExpectedDocument Class Methods
 def test_expected_documents_find_by_mine_guid(test_client, auth_headers):
