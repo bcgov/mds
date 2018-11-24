@@ -24,7 +24,6 @@ The application requires a whole suite of npm modules for building/testing/runni
 - [prop-types](https://www.npmjs.com/package/prop-types) : Runtime object type check
 - [axios](https://github.com/axios/axios) : Library to manage network calls
 
-
 ## Directory/Naming convention
 
 The SASS/CSS files naming convention is based off of [BEM](http://getbem.com/introduction/) and [ITCSS](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/).
@@ -58,28 +57,82 @@ The application assumes you already have a working python backend running.
 Follow the `.env-example` template to create an `.env` file with valid values before running the application.
 
 A. OS Level Installation
- - [Node.js 8](https://nodejs.org/en/download/)
- - [Canvas](https://www.npmjs.com/package/canvas)
+
+- [Node.js 8](https://nodejs.org/en/download/)
+- [Canvas](https://www.npmjs.com/package/canvas)
 
 1. Install package dependencies
+
 ```
 npm install
 ```
 
 2. Run the application
+
 ```
 npm run serve
 ```
 
 B. Using a docker container
- - [Docker](https://www.docker.com/)
+
+- [Docker](https://www.docker.com/)
 
 1. Switch current directory to the project root
+
 ```
 cd ../
 ```
 
 2. Issue the makefile command that runs the frontend
+
 ```
 make frontend
+```
+
+## Code Contribution Standards
+
+Contributors to this codebase are expected to follow the formatting standards.
+Developers using VS Code should see the formatting occur on-save automatically.
+Developers not seeing these changes or using other editors are encouraged to
+install the Prettier plugin appropriate for their editor. This ensures that all
+committed code is properly formatted.
+
+Any developer who is unable or unwilling to apply the formatting on-save is
+asked to use the provided npm scripts to format their code before each commit.
+See the usage guide below for more information.
+
+Check one file
+
+```
+npm run format:check ./filepath
+```
+
+Check all files matching a pattern
+
+```
+npm run format:check ./*.json
+```
+
+Format one file
+
+```
+npm run format:write ./filepath
+```
+
+Format all files matching a pattern
+
+```
+npm run format:write ./*.json
+```
+
+Check all files
+
+```
+npm run format:check-all
+```
+
+Format all files
+
+```
+npm run format:write-all
 ```
