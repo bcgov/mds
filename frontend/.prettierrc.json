@@ -2,7 +2,6 @@
   "trailingComma": "es5",
   "arrowParens": "always",
   "bracketSpacing": true,
-  "filepath": "src/**/*.js",
-  "printWidth": 80,
+  "printWidth": 100,
   "endOfLine": "lf"
 }
