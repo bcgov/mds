@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Card, Row, Col, Button } from 'antd';
+import { Card, Row, Col, Button, Icon, Popconfirm} from 'antd';
 import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 import { GREEN_PENCIL } from '@/constants/assets';
+import ButtonGroup from 'antd/lib/button/button-group';
+import { removeExpectedDocument } from '@/actionCreators/mineActionCreator';
+
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -57,6 +62,13 @@ class MineTailingsInfo extends Component {
     });
   }
 
+  removeReport = (event, exp_doc_guid) => {
+    event.preventDefault();
+    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
+  }
+
   render() {
     const { mine } = this.props;
     return (
@@ -98,9 +110,17 @@ class MineTailingsInfo extends Component {
                     <Col span={4}><h6></h6></Col>
                     <Col id={"status-"+id} span={5}><h6>{doc.status}</h6></Col>
                     <Col span={2}>
+                      <ButtonGroup>
                         <Button ghost type="primary" onClick={(event) => 
-                          this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}
-                          ><img style={{padding: '5px'}}src={GREEN_PENCIL} /></Button>
+                            this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}
+                            ><img style={{padding: '5px'}}src={GREEN_PENCIL} />
+                        </Button>
+                        <Popconfirm placement="topLeft" title="Are you sure?" onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
+                          <Button ghost type='primary'>
+                            <Icon type="minus-circle" theme="outlined" />
+                          </Button>
+                        </Popconfirm>
+                      </ButtonGroup>
                     </Col>
                 </Row>
                 <hr/>
@@ -113,6 +133,12 @@ class MineTailingsInfo extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    removeExpectedDocument
+  }, dispatch);
+}
+
 MineTailingsInfo.propTypes = propTypes;
 MineTailingsInfo.defaultProps = defaultProps;
-export default MineTailingsInfo;
+export default connect(null,mapDispatchToProps)(MineTailingsInfo);

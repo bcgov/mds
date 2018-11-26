@@ -59,6 +59,24 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
     dispatch(hideLoading('modal'));
   });
 };
+
+export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
+  dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
+  dispatch(showLoading());
+  return axios.delete(ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT  + "/" + exp_doc_guid,  createRequestHeader())
+  .then((response) => {
+    notification.success({ message: "Successfully removed the report", duration: 10 });
+    dispatch(success(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
+    dispatch(hideLoading());
+    return response;
+  })
+  .catch((err) => {
+    notification.error({ message: String.ERROR, duration: 10 });
+    dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
+    dispatch(hideLoading());
+  });
+};
+
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params ? params : String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
