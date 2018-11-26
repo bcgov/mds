@@ -25,7 +25,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Expected document not found'), 404
         return { 'expected_document' : mine_exp_doc.json() }
 
-    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
+    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
@@ -40,13 +40,17 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
 
             exp_doc.exp_document_name = updated_doc.get('exp_document_name')
             exp_doc.exp_document_description = updated_doc.get('exp_document_description')
-            #exp_doc.due_date = datetime.strptime(updated_doc.get('due_date'), '%b %d %Y %I:%M%p') haven't defined datetime format yet
+            exp_doc.due_date = updated_doc.get('due_date')
+            exp_doc.received_date = updated_doc.get('received_date')
+            exp_doc.exp_document_description = updated_doc.get('exp_document_description')
+            exp_doc.exp_document_status_guid = updated_doc.get('exp_document_status_guid')
+
             exp_doc.save()
             return {'expected_document': exp_doc.json() }
 
         return self.create_error_payload(404, f'expected_document with guid "{exp_doc_guid}" not found' ), 404
     
-    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
+    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Deletes expected document.'})
     @jwt.requires_roles(["mds-mine-create"])
     def delete(self, exp_doc_guid=None):
         if exp_doc_guid is None:
