@@ -12,7 +12,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):
-    #@jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self):
         mine_exp_docs_status = ExpectedDocumentStatus.find_all_document_status()
         return {
