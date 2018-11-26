@@ -20,7 +20,7 @@ def test_add_fiscal_due_date_with_one_year_period(test_client):
 
 def test_add_fiscal_due_date_with_five_year_period(test_client):
     current_date = datetime.now()
-    expected_due_date = datetime(current_date.year +1, 3, 31, 00, 00, 00)
+    expected_due_date = datetime(current_date.year +5, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
     period = '60'
 
