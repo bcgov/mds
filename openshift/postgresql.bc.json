@@ -104,7 +104,7 @@
                 "strategy": {
                     "type": "Docker",
                     "dockerStrategy": {
-                        "dockerfilePath": "Dockerfile.rhel7",
+                        "dockerfilePath": "rhel7.rh-postgresql96/Dockerfile",
                         "from": {
                             "kind": "ImageStreamTag",
                             "name": "rhel7:7.5"
