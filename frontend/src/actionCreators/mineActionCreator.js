@@ -60,6 +60,25 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
   });
 };
 
+
+export const addExpectedDocument = (id, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
+  dispatch(showLoading());
+  return axios.delete(ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  + "/" + id, payload,  createRequestHeader())
+  .then((response) => {
+    notification.success({ message: "Successfully removed the report", duration: 10 });
+    dispatch(success(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
+    dispatch(hideLoading());
+    return response;
+  })
+  .catch((err) => {
+    notification.error({ message: String.ERROR, duration: 10 });
+    dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
+    dispatch(hideLoading());
+  });
+};
+
+
 export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
   dispatch(showLoading());

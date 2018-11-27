@@ -7,7 +7,7 @@ import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 import { GREEN_PENCIL } from '@/constants/assets';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { removeExpectedDocument } from '@/actionCreators/mineActionCreator';
+import {addExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -44,6 +44,22 @@ class MineTailingsInfo extends Component {
     this.props.openModal({
       props: { onSubmit, title},
       content: modalConfig.ADD_TAILINGS
+    });
+  }
+
+
+  handleAddReportSubmit = (value) => {
+    this.props.addExpectedDocument(...value, this.props.mine.guid).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
+  }
+
+  openAddReportModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title},
+      content: modalConfig.ADD_TAILINGS_REPORT
     });
   }
 
@@ -98,7 +114,12 @@ class MineTailingsInfo extends Component {
                 <Col span={4}><h5>Due</h5></Col>
                 <Col span={4}><h5>Recieved</h5></Col>
                 <Col span={5}><h5>Status</h5></Col>
-                <Col span={2}></Col>
+                <Col span={2}>  
+                  <Button ghost type="primary" onClick={(event) => 
+                      this.openAddReportModal(event, this.handleAddReportSubmit, ModalContent.ADD_TAILINGS_REPORT)}
+                      ><Icon type="plus-circle" theme="outlined"/>
+                  </Button>
+                </Col>
             </Row>
           <hr style={{borderTop:'2px solid #c4cdd5'}}/>
           {mine.mine_expected_documents.map((doc, id) => {
@@ -115,7 +136,7 @@ class MineTailingsInfo extends Component {
                             this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}
                             ><img style={{padding: '5px'}}src={GREEN_PENCIL} />
                         </Button>
-                        <Popconfirm placement="topLeft" title="Are you sure?" onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
+                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
                           <Button ghost type='primary'>
                             <Icon type="minus-circle" theme="outlined" />
                           </Button>
@@ -135,7 +156,8 @@ class MineTailingsInfo extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    removeExpectedDocument
+    removeExpectedDocument,
+    addExpectedDocument
   }, dispatch);
 }
 
