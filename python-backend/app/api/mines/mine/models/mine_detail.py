@@ -5,6 +5,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
 from ...region.models.region import MineRegionCode
+from .mine_type import MineType
 from app.extensions import db
 
 
@@ -12,10 +13,11 @@ class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_type_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_type.mine_type_guid'))
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
-    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
 
 
@@ -69,4 +71,4 @@ class MineDetail(AuditMixin, Base):
         if len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no
-        
+

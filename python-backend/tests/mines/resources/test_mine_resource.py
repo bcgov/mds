@@ -189,7 +189,8 @@ def test_post_mine_mine_status(test_client, auth_headers):
         "longitude": "123.1207000",
         "note": "This is a note",
         "mine_status": "CLD, CM",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": 1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -197,6 +198,8 @@ def test_post_mine_mine_status(test_client, auth_headers):
     assert post_data['latitude'] == test_mine_data['latitude']
     assert post_data['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['note']
+    assert post_data['mine_region'] == test_mine_data['mine_region']
+    assert post_data['mine_tenure_type_id'] == test_mine_data['mine_tenure_type_id']
     assert post_resp.status_code == 200
 
 
