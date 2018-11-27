@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from ...utils.models_mixins import AuditMixin, Base
 
 
 class DocumentManager(AuditMixin, Base):
