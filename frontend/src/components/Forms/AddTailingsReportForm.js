@@ -11,6 +11,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  mineTSFRequiredReports: PropTypes.array.isRequired,
 };
 
 
@@ -23,8 +24,8 @@ export const AddTailingsReportForm = (props) => {
               name="mine_tailings_reports"
               label='TSF Required Reports'
               placeholder="Please select a required report"
-              options={props.mineTSFRequiredReports}
-              component={renderConfig.CASCADER}
+              data={props.mineTSFRequiredReports}
+              component={renderConfig.SELECT}
               validate={[required]}
             />
           </Form.Item>

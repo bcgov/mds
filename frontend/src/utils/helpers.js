@@ -32,3 +32,10 @@ export const createItemMap = (array, idField) => {
 export const createItemIdsArray = (array, idField) => {
   return array.map(item => item[idField]);
 };
+
+export const createDropDownList = (array, labelField, valueField) => 
+{
+  return array.map((item) => {
+    return {'value':item[valueField], 'label':item[labelField]};
+  })
+}
