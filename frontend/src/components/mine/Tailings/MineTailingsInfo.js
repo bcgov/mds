@@ -134,8 +134,8 @@ class MineTailingsInfo extends Component {
           <hr style={{ borderTop: "2px solid #c4cdd5" }} />
           {mine.mine_expected_documents.map((doc, id) => {
             return (
-              <div>
-                <Row key={id} gutter={16} justify="center" align="top">
+              <div key={id}>
+                <Row gutter={16} justify="center" align="top">
                   <Col id={"name-" + id} span={8}>
                     <h6>{doc.exp_document_name}</h6>
                   </Col>

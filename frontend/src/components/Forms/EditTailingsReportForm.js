@@ -27,7 +27,7 @@ export const EditTailingsReportForm = (props) => {
               id="tsf_report_name"
               name="tsf_report_name"
               label="Report Name"
-              component={renderConfig.FIELD}
+              component={RenderField}
               validate={[required]}
             />
           </Form.Item>
@@ -55,7 +55,7 @@ export const EditTailingsReportForm = (props) => {
               name="tsf_report_status"
               label="Status"
               placeholder="Select a Status"
-              component={renderConfig.SELECT}
+              component={RenderSelect}
               data={props.statusOptions}
               validate={[required]}
             />
