@@ -1,7 +1,7 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { Dashboard } from '@/components/dashboard/Dashboard';
-import * as MOCK from '@/tests/mocks/dataMocks';
+import React from "react";
+import { shallow } from "enzyme";
+import { Dashboard } from "@/components/dashboard/Dashboard";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -16,8 +16,8 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.location = {search:""}
-  reducerProps.history = {push: jest.fn()}
+  reducerProps.location = { search: "" };
+  reducerProps.history = { push: jest.fn() };
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.pageData = MOCK.PAGE_DATA;
@@ -31,9 +31,9 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe('Dashboard', () => {
-  it('renders properly', () => {
-    const component = shallow(<Dashboard  {...dispatchProps} {...reducerProps} />);
+describe("Dashboard", () => {
+  it("renders properly", () => {
+    const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });
