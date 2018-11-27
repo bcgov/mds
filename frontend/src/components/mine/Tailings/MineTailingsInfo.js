@@ -27,13 +27,7 @@ const propTypes = {
 
 const defaultProps = {
   mine: {},
-  expectedDocumentStatusOptions: [
-    "Not Recieved",
-    "Recieved / Pending Review",
-    "Review In Progress",
-    "Accepted",
-    "Rejected / Waiting On Update",
-  ],
+  expectedDocumentStatusOptions: [],
 };
 
 class MineTailingsInfo extends Component {
@@ -68,10 +62,20 @@ class MineTailingsInfo extends Component {
     //})
   };
 
-  openEditReportModal(event, onSubmit, title, statusOptions) {
+  openEditReportModal(event, onSubmit, title, statusOptions, doc) {
     event.preventDefault();
+
+    alert(doc.received_date);
+
+    const initialValues = {
+      "tsf_report_name": doc ? doc.exp_document_name : null,
+      "tsf_report_due_date": doc ? doc.due_date : null,
+      "tsf_report_received_date": doc ? doc.received_date : null,
+      "tsf_report_status": doc ? doc.exp_document_status_guid : null,
+    };
+
     this.props.openModal({
-      props: { onSubmit, title, statusOptions },
+      props: { onSubmit, title, statusOptions, initialValues },
       content: modalConfig.EDIT_TAILINGS_REPORT,
     });
   }
@@ -157,7 +161,8 @@ class MineTailingsInfo extends Component {
                           event,
                           this.handleEditReportSubmit,
                           ModalContent.EDIT_TAILINGS_REPORT,
-                          this.props.expectedDocumentStatusOptions
+                          this.props.expectedDocumentStatusOptions,
+                          doc
                         )
                       }
                     >

@@ -6,7 +6,7 @@ import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, notnone } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
@@ -57,7 +57,7 @@ export const EditTailingsReportForm = (props) => {
               placeholder="Select a Status"
               component={RenderSelect}
               data={props.statusOptions}
-              validate={[required]}
+              validate={[required, notnone]}
             />
           </Form.Item>
         </Col>
