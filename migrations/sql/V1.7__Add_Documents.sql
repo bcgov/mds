@@ -12,10 +12,6 @@ CREATE TABLE public.document_manager (
 	CONSTRAINT document_manager_pk PRIMARY KEY (document_manager_id)
 );
 
--- Permissions
-
-ALTER TABLE public.document_manager OWNER TO mds;
-GRANT ALL ON TABLE public.document_manager TO mds;
 
 -- Comment
 COMMENT ON TABLE document_manager IS 'documents representations on the file volumes stored in our table structure';
