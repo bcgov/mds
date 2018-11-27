@@ -89,9 +89,9 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
 export const addExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return axios.delete(ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  + "/" + id, payload,  createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  + "/" + id, payload,  createRequestHeader())
   .then((response) => {
-    notification.success({ message: "Successfully removed the report", duration: 10 });
+    notification.success({ message: "Successfully added the report", duration: 10 });
     dispatch(success(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
     dispatch(hideLoading());
     return response;
