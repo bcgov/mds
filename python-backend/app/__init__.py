@@ -29,6 +29,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+    
     return app
 
 

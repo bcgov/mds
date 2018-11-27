@@ -34,6 +34,9 @@ class Config(object):
     SQLALCHEMY_MAX_OVERFLOW = 20
     SQLALCHEMY_POOL_TIMEOUT = 300
 
+    #Flask-uploads configs
+    UPLOAD_TAILINGS_DEST = './app/document_uploads/mine/tailings'
+
 
 
 class TestConfig(Config):
