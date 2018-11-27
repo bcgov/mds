@@ -10,15 +10,16 @@ export const CREATE_TSF = 'CREATE_TSF';
 export const EDIT_TSF_REPORT = 'EDIT_TSF_REPORT';
 export const REMOVE_EXPECTED_DOCUMENT = 'REMOVE_EXPECTED_DOCUMENT';
 export const MINES = 'MINES';
+export const GET_EXPECTED_DOCUMENT_STATUS = "GET_EXPECTED_DOCUMENT_STATUS";
 
-export const AUTHENTICATION = 'AUTHENTICATION';
+export const AUTHENTICATION = "AUTHENTICATION";
 
-export const CREATE_PARTY = 'CREATE_PARTY';
-export const PARTIES = 'PARTIES';
-export const GET_PARTIES = 'GET_PARTIES';
-export const GET_PARTY = 'GET_PARTY';
+export const CREATE_PARTY = "CREATE_PARTY";
+export const PARTIES = "PARTIES";
+export const GET_PARTIES = "GET_PARTIES";
+export const GET_PARTY = "GET_PARTY";
 
-export const ADD_MINE_MANAGER = 'ADD_MINE_MANAGER';
-export const ADD_PERMITTEE = 'ADD_PERMITTEE'
+export const ADD_MINE_MANAGER = "ADD_MINE_MANAGER";
+export const ADD_PERMITTEE = "ADD_PERMITTEE";
 
-export const MODAL= 'MODAL';
+export const MODAL = "MODAL";

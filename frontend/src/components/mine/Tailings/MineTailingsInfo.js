@@ -8,7 +8,8 @@ import { modalConfig } from '@/components/modalContent/config';
 import { GREEN_PENCIL } from '@/constants/assets';
 import ButtonGroup from 'antd/lib/button/button-group';
 import {addExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
-
+import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/mineActionCreator";
+import { getExpectedDocumentStatusOptions } from "@/selectors/mineSelectors";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -21,29 +22,43 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  mineStatusOptions: [],
-  reportStatusOptions: [],
-  updateReport: PropTypes.func.isRequired,
+  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
+  expectedDocumentStatusOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   mine: {},
-  reportStatusOptions: ['Not Recieved', 'Recieved / Pending Review', 'Review In Progress', 'Accepted', 'Rejected / Waiting On Update'],
+  expectedDocumentStatusOptions: [
+    "Not Recieved",
+    "Recieved / Pending Review",
+    "Review In Progress",
+    "Accepted",
+    "Rejected / Waiting On Update",
+  ],
 };
 
 class MineTailingsInfo extends Component {
   handleAddTailingsSubmit = (value) => {
-    this.props.createTailingsStorageFacility({...value, mine_guid: this.props.mine.guid}).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineRecordById(this.props.mine.guid);
-    })
+    this.props
+      .createTailingsStorageFacility({
+        ...value,
+        mine_guid: this.props.mine.guid,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
+  };
+
+  componentDidMount() {
+    this.props.fetchExpectedDocumentStatusOptions();
   }
 
   openAddTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title},
-      content: modalConfig.ADD_TAILINGS
+      props: { onSubmit, title },
+      content: modalConfig.ADD_TAILINGS,
     });
   }
 
@@ -65,16 +80,16 @@ class MineTailingsInfo extends Component {
 
   handleEditReportSubmit = (value) => {
     //this.props.updateReport().then(() => {
-      this.props.closeModal();
-      this.props.fetchMineRecordById(this.props.mine.guid);
+    this.props.closeModal();
+    this.props.fetchMineRecordById(this.props.mine.guid);
     //})
-  }
+  };
 
   openEditReportModal(event, onSubmit, title, statusOptions) {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title, statusOptions},
-      content: modalConfig.EDIT_TAILINGS_REPORT
+      props: { onSubmit, title, statusOptions },
+      content: modalConfig.EDIT_TAILINGS_REPORT,
     });
   }
 
@@ -88,24 +103,40 @@ class MineTailingsInfo extends Component {
   render() {
     const { mine } = this.props;
     return (
-    <div>
+      <div>
         <div>
-          <br/>
-          <br/>
+          <br />
+          <br />
           {mine.mine_tailings_storage_facility.map((facility, id) => {
             return (
               <Row key={id} gutter={16}>
-                  <Col span={6}><h3>{facility.mine_tailings_storage_facility_name}</h3></Col>
-                  <Col span={6}><h3></h3></Col>
+                <Col span={6}>
+                  <h3>{facility.mine_tailings_storage_facility_name}</h3>
+                </Col>
+                <Col span={6}>
+                  <h3 />
+                </Col>
               </Row>
+            );
+          })}
+          <div className="center">
+            <Button
+              className="full-mobile"
+              type="primary"
+              onClick={(event) =>
+                this.openAddTailingsModal(
+                  event,
+                  this.handleAddTailingsSubmit,
+                  ModalContent.ADD_TAILINGS
                 )
-              })}
-              <div className="center"> 
-                <Button className="full-mobile" type="primary" onClick={(event) => this.openAddTailingsModal(event, this.handleAddTailingsSubmit, ModalContent.ADD_TAILINGS)}>{ModalContent.ADD_TAILINGS}</Button>
-              </div>
+              }
+            >
+              {ModalContent.ADD_TAILINGS}
+            </Button>
+          </div>
         </div>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <div>
             <h3>Reports</h3>
             <br/>
@@ -124,7 +155,7 @@ class MineTailingsInfo extends Component {
           <hr style={{borderTop:'2px solid #c4cdd5'}}/>
           {mine.mine_expected_documents.map((doc, id) => {
             return (
-              <div>
+              <div key={id}>
                 <Row key={id} gutter={16} justify="center" align="top">
                     <Col id={"name-"+id} span={8}><h6>{doc.exp_document_name}</h6></Col>
                     <Col id={"due-date-"+id} span={4}><h6>{doc.due_date}</h6></Col>
@@ -132,10 +163,20 @@ class MineTailingsInfo extends Component {
                     <Col id={"status-"+id} span={5}><h6>{doc.status}</h6></Col>
                     <Col span={2}>
                       <ButtonGroup>
-                        <Button ghost type="primary" onClick={(event) => 
-                            this.openEditReportModal(event, this.handleEditReportSubmit, ModalContent.EDIT_TAILINGS_REPORT, this.props.reportStatusOptions)}
-                            ><img style={{padding: '5px'}}src={GREEN_PENCIL} />
-                        </Button>
+                    <Button
+                      ghost
+                      type="primary"
+                      onClick={(event) =>
+                        this.openEditReportModal(
+                          event,
+                          this.handleEditReportSubmit,
+                          ModalContent.EDIT_TAILINGS_REPORT,
+                          this.props.expectedDocumentStatusOptions
+                        )
+                      }
+                    >
+                      <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
+                    </Button>
                         <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
                           <Button ghost type='primary'>
                             <Icon type="minus-circle" theme="outlined" />
@@ -144,23 +185,37 @@ class MineTailingsInfo extends Component {
                       </ButtonGroup>
                     </Col>
                 </Row>
-                <hr/>
+                <hr />
               </div>
-                )
-              })}
-          </div>
-    </div>
+            );
+          })}
+        </div>
+      </div>
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
+  return bindActionCreators(
+    {
+      fetchExpectedDocumentStatusOptions,
+    },
+    dispatch
+  );
+};
+
     removeExpectedDocument,
     addExpectedDocument
-  }, dispatch);
-}
-
 MineTailingsInfo.propTypes = propTypes;
 MineTailingsInfo.defaultProps = defaultProps;
-export default connect(null,mapDispatchToProps)(MineTailingsInfo);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineTailingsInfo);

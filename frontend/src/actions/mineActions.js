@@ -42,3 +42,10 @@ export const storeRegionOptions = (payload) => {
     payload,
   }
 }
+
+export const storeDocumentStatusOptions = (payload) => {
+  return {
+    type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
+    payload,
+  }
+}

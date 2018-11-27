@@ -13,19 +13,20 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class ExpectedDocumentStatus(AuditMixin, Base):
     __tablename__ = 'mine_expected_document_status'
-    exp_document_status_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    exp_document_status_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
-    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    active_ind = db.Column(db.Boolean, nullable=False,
+                           server_default=FetchedValue())
 
     def __repr__(self):
         return '<ExpectedDocumentStatus %r>' % self.exp_document_status_guid
 
     def json(self):
         return {
-            'guid' : str(self.exp_document_status_guid),
-            'description' : str(self.description),
-            'display_order' : str(self.display_order),
+            'value': str(self.exp_document_status_guid),
+            'label': str(self.description),
         }
 
     @classmethod
