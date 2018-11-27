@@ -12,8 +12,8 @@ export const getMineRegionOptions = (state) =>
   mineReducer.getMineRegionOptions(state);
 export const getExpectedDocumentStatusOptions = (state) =>
   mineReducer.getExpectedDocumentStatusOptions(state);
-export const getMineTailingsRequiredDocuments = (state) =>
-  mineReducer.getMineTailingsRequiredDocuments(state);
+export const getMineTSFRequiredReports = (state) =>
+  mineReducer.getMineTSFRequiredReports(state);
 
 export const getCurrentPermittees = createSelector(
   [getMines, getMineGuid],
@@ -50,5 +50,16 @@ export const getMineRegionHash = createSelector(
       (map, { value, label }) => ({ [value]: label, ...map }),
       {}
     );
+  }
+);
+
+
+export const getMineTSFRequiredDocumentsHash = createSelector(
+  [getMineTSFRequiredReports],
+  (requiredDocuments) => {
+     return requiredDocuments.reduce(
+       (map, { value, label }) => ({ [value]: label, ...map }),
+       {}
+     )
   }
 );

@@ -9,7 +9,7 @@ import { GREEN_PENCIL } from '@/constants/assets';
 import ButtonGroup from 'antd/lib/button/button-group';
 import {addExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
 import { fetchExpectedDocumentStatusOptions, fetchMineTailingsRequiredDocuments } from "@/actionCreators/mineActionCreator";
-import { getExpectedDocumentStatusOptions, getMineTailingsRequiredDocuments} from "@/selectors/mineSelectors";
+import { getExpectedDocumentStatusOptions, getMineTSFRequiredReports, getMineTSFRequiredDocumentsHash} from "@/selectors/mineSelectors";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -70,7 +70,8 @@ class MineTailingsInfo extends Component {
 
 
   handleAddReportSubmit = (value) => {
-    this.props.addExpectedDocument(...value, this.props.mine.guid).then(() => {
+    const requiredReportLabel = this.props.getMineTSFRequiredDocumentsHash[value.req_document_guid];
+    this.props.addExpectedDocument(this.props.mine.guid, {document_name: requiredReportLabel, ...value}).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
     })
@@ -209,7 +210,8 @@ class MineTailingsInfo extends Component {
 const mapStateToProps = (state) => {
   return {
     expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
-    mineTSFRequiredReports : getMineTailingsRequiredDocuments(state),
+    mineTSFRequiredReports : getMineTSFRequiredReports(state),
+    getMineTSFRequiredDocumentsHash : getMineTSFRequiredDocumentsHash(state),
   };
 };
 

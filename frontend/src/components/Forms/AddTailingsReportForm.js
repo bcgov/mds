@@ -20,8 +20,8 @@ export const AddTailingsReportForm = (props) => {
         <Form layout="vertical" onSubmit={props.handleSubmit}>
           <Form.Item>
             <Field
-              id="mine_tailings_reports"
-              name="mine_tailings_reports"
+              id="req_document_guid"
+              name="req_document_guid"
               label='TSF Required Reports'
               placeholder="Please select a required report"
               data={props.mineTSFRequiredReports}

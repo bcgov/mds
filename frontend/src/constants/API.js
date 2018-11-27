@@ -12,6 +12,6 @@ export const MINE_REGION = '/mines/region';
 export const MINE_TSF = '/mines/tailings';
 export const EDIT_TSF_REPORT = '';
 export const REMOVE_EXPECTED_DOCUMENT = '/documents/expected';
-export const ADD_MINE_EXPECTED_DOCUMENT = 'documents/expected/mines';
+export const ADD_MINE_EXPECTED_DOCUMENT = '/documents/expected/mines';
 export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=MINE_TAILINGS";

@@ -16,6 +16,7 @@ const initialState = {
   mineStatusOptions: [],
   mineRegionOptions: [],
   expectedDocumentStatusOptions: [],
+  mineTSFRequiredReports: [],
 };
 
 const mineReducer = (state = initialState, action) => {
@@ -81,7 +82,7 @@ export const getMineStatusOptions = (state) => state[MINES].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[MINES].mineRegionOptions;
 export const getExpectedDocumentStatusOptions = (state) =>
   state[MINES].expectedDocumentStatusOptions;
-export const getMineTailingsRequiredDocuments = (state) =>
+export const getMineTSFRequiredReports = (state) =>
   state[MINES].mineTSFRequiredReports;
 
 export default mineReducer;
