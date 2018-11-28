@@ -13,12 +13,12 @@ def test_get_all_mine_tenure_types(test_client, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     all_options = [
         {
-            'mine_tenure_type_id': TEST_MINE_TENURE_TYPE_ID_1,
-            'mine_tenure_type_name': TEST_MINE_TENURE_TYPE_NAME_1
+            'value': TEST_MINE_TENURE_TYPE_ID_1,
+            'label': TEST_MINE_TENURE_TYPE_NAME_1
         },
         {
-            'mine_tenure_type_id': TEST_MINE_TENURE_TYPE_ID_2,
-            'mine_tenure_type_name': TEST_MINE_TENURE_TYPE_NAME_2
+            'value': TEST_MINE_TENURE_TYPE_ID_2,
+            'label': TEST_MINE_TENURE_TYPE_NAME_2
         }
     ]
     assert get_resp.status_code == 200

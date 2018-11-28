@@ -12,9 +12,14 @@ class MineType(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), nullable=False)
     mine_tenure_type_id = db.Column(db.SmallInteger, db.ForeignKey('mine_tenure_type.mine_tenure_type_id'), nullable=False)
 
+
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid
 
+    def json(self):
+        return {
+            'mine_tenure_type_id': self.mine_tenure_type_id
+        }
 
     @classmethod
     def create_mine_type(cls, mine_identity, mine_tenure_type_id, user_kwargs, save=True):

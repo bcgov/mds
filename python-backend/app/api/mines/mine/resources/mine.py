@@ -4,6 +4,7 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy import exc
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -177,11 +178,22 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major_mine_ind is None:
+        mine_tenure_type_id = data['mine_tenure_type_id']
+        if (
+                not tenure and
+                not (lat and lon) and
+                not mine_name and
+                not mine_note and
+                not status and
+                not region and
+                not mine_tenure_type_id and
+                major_mine_ind is None
+           ):
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
+
         # Mine Detail
         if mine_name or mine_note or major_mine_ind is not None:
             mine_detail = mine.mine_detail[0]
@@ -207,6 +219,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
+
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
@@ -224,6 +237,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
+
         # Location validation
         if lat and lon:
             location = MineLocation(
@@ -237,6 +251,19 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None
+
+        # MineType
+        if mine_tenure_type_id:
+            try:
+                mine_type = MineType(
+                    mine_type_guid=uuid.uuid4(),
+                    mine_guid=mine.mine_guid,
+                    mine_tenure_type_id=mine_tenure_type_id,
+                    **self.get_create_update_dict()
+                )
+                mine_type.save()
+            except exc.IntegrityError as e:
+                self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
 
         return mine.json()
 

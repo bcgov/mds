@@ -15,6 +15,6 @@ class MineTenureType(AuditMixin, Base):
     @classmethod
     def all_options(cls):
         return list(map(
-            lambda x: { 'mine_tenure_type_id': x[0], 'mine_tenure_type_name': x[1] },
+            lambda x: { 'value': x[0], 'label': x[1] },
             cls.query.with_entities(cls.mine_tenure_type_id, cls.mine_tenure_type_name).all()
         ))
