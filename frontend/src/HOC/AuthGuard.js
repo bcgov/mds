@@ -48,7 +48,6 @@ export const AuthGuard = (WrappedComponent) => {
       this.props.storeUserAccessData(keycloak.realmAccess.roles);
       this.props.storeKeycloakData(keycloak);
       this.props.authenticateUser(userInfo);
-      // return;
     }
 
     componentDidMount() {
