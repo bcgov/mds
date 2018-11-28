@@ -150,6 +150,5 @@ VALUES
     (1, 'Coal', 'system-mds', 'system-mds'),
     (2, 'Mineral', 'system-mds', 'system-mds'),
     (3, 'Placer', 'system-mds', 'system-mds'),
-    (4, 'BC Land', 'system-mds', 'system-mds'),
-    (5, 'Inspection Required', 'system-mds', 'system-mds')
+    (4, 'BC Land', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

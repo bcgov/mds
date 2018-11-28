@@ -12,10 +12,10 @@ class MineType(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
     mine_tenure_type_id = db.Column(db.SmallInteger)
 
-
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid
 
+    # TODO: Do I even need this method for anything?
     @classmethod
     def create_mine_type(cls, mine_guid, mine_tenure_type_id, user_kwargs, save=True):
         mine_type = cls(

@@ -1,5 +1,5 @@
 import json
-from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID
+from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID, TEST_MINE_TENURE_TYPE_ID_1
 
 
 # GET
@@ -76,7 +76,8 @@ def test_post_mine_name_exceed_chars(test_client, auth_headers):
 def test_post_mine_name_only_success(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine2",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -88,8 +89,8 @@ def test_post_mine_name_and_note(test_client, auth_headers):
     test_mine_data = {
         "name": "test_create_mine_and_note",
         "note": "This is a note",
-        "mine_region" :"SW"
-
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -103,7 +104,8 @@ def test_post_mine_name_and_coord(test_client, auth_headers):
         "name": "test_create_mine",
         "latitude": "49.2827000",
         "longitude": "123.1207000",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -119,7 +121,8 @@ def test_post_mine_success_all(test_client, auth_headers):
         "latitude": "49.2827000",
         "longitude": "123.1207000",
         "note": "This is a note",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -151,7 +154,8 @@ def test_post_mine_major_true(test_client, auth_headers):
         "longitude": "123.1207000",
         "note": "This is a note",
         "major_mine_ind": "true",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -170,7 +174,8 @@ def test_post_mine_major_false(test_client, auth_headers):
         "longitude": "123.1207000",
         "note": "This is a note",
         "major_mine_ind": "false",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -190,7 +195,7 @@ def test_post_mine_mine_status(test_client, auth_headers):
         "note": "This is a note",
         "mine_status": "CLD, CM",
         "mine_region" :"SW",
-        "mine_tenure_type_id": 1
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())

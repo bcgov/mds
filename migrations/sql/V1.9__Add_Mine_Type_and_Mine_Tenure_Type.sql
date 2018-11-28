@@ -14,7 +14,7 @@ COMMENT ON TABLE mine_tenure_type IS 'A valid mine tenure type value to be refer
 CREATE TABLE mine_type (
   mine_type_guid        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   mine_guid             uuid NOT NULL,
-  mine_tenure_type_id   smallint,
+  mine_tenure_type_id   smallint NOT NULL,
 
   --Audit Columns
   create_user      character varying(60) NOT NULL,
