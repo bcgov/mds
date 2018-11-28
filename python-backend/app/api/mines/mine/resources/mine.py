@@ -130,7 +130,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine_detail = MineDetail(
                 mine_detail_guid=uuid.uuid4(),
                 mine_guid=mine_identity.mine_guid,
-                mine_type_guid=mine_type.mine_type_guid,
                 mine_no=generate_mine_no(),
                 mine_name=data['name'],
                 mine_note=note if note else '',

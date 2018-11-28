@@ -23,12 +23,8 @@ CREATE TABLE mine_type (
   update_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp,
 
   --Foreign Key Definitions
-  FOREIGN KEY (mine_tenure_type_id) REFERENCES mine_tenure_type(mine_tenure_type_id) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (mine_tenure_type_id) REFERENCES mine_tenure_type(mine_tenure_type_id) DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (mine_guid) REFERENCES mine_identity(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE mine_type IS 'The intersection of a mine_tenure_type with other mine information, such as commodity type and/or disturbance type';
-
-ALTER TABLE mine_detail
-  ADD mine_type_guid uuid,
-  ADD FOREIGN KEY (mine_type_guid) REFERENCES mine_type(mine_type_guid) DEFERRABLE INITIALLY DEFERRED
-;

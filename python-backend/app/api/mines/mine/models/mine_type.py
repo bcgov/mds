@@ -9,8 +9,8 @@ from app.extensions import db
 class MineType(AuditMixin, Base):
     __tablename__ = "mine_type"
     mine_type_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    mine_tenure_type_id = db.Column(db.SmallInteger)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'), nullable=False)
+    mine_tenure_type_id = db.Column(db.SmallInteger, db.ForeignKey('mine_tenure_type.mine_tenure_type_id'), nullable=False)
 
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid

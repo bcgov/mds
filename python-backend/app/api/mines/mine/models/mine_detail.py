@@ -13,7 +13,6 @@ class MineDetail(AuditMixin, Base):
     __tablename__ = "mine_detail"
     mine_detail_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    mine_type_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_type.mine_type_guid'))
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
