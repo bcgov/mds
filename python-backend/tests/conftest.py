@@ -19,6 +19,7 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
+from app.api.mines.mine.models.mine_tenure_type import MineTenureType
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
@@ -86,6 +87,20 @@ def setup_data(session):
             **DUMMY_USER_KWARGS
         )
         region_code.save()
+
+    # Insert Mine Tenure Types
+    mine_tenure_type_1 = MineTenureType(
+        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_1,
+        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_1,
+        **DUMMY_USER_KWARGS
+    )
+    mine_tenure_type_2 = MineTenureType(
+        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_2,
+        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_2,
+        **DUMMY_USER_KWARGS
+    )
+    mine_tenure_type_1.save()
+    mine_tenure_type_2.save()
 
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
@@ -254,7 +269,7 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     required_document_due_date_type2.save()
-    
+
     required_document_category1 = RequiredDocumentCategory(
         req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
@@ -296,7 +311,7 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     required_document3.save()
-    
+
     expected_document1 = MineExpectedDocument(
         exp_document_guid = uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
         req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),

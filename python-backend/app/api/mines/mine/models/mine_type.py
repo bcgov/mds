@@ -14,7 +14,7 @@ class MineType(AuditMixin, Base):
 
 
     def __repr__(self):
-        return '<MineType %r>' % self.mine_guid
+        return '<MineType %r>' % self.mine_type_guid
 
     @classmethod
     def create_mine_type(cls, mine_guid, mine_tenure_type_id, user_kwargs, save=True):
