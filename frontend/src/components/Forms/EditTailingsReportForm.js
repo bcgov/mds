@@ -21,9 +21,15 @@ export const EditTailingsReportForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col>
+        <Col><Field
+              id="tsf_report_guid"
+              name="tsf_report_guid"
+              type="hidden"
+              component={RenderField}
+              style={{ height: 0 }}
+          />
           <Form.Item>
-            <Field
+            <Field 
               id="tsf_report_name"
               name="tsf_report_name"
               label="Report Name"
@@ -46,7 +52,7 @@ export const EditTailingsReportForm = (props) => {
               name="tsf_report_received_date"
               label="Received Date"
               component={RenderDate}
-              validate={[required]}
+              validate={[]}
             />
           </Form.Item>
           <Form.Item>
@@ -57,7 +63,7 @@ export const EditTailingsReportForm = (props) => {
               placeholder="Select a Status"
               component={RenderSelect}
               data={props.statusOptions}
-              validate={[required, notnone]}
+              validate={[]}
             />
           </Form.Item>
         </Col>

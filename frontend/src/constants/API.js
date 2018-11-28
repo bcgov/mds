@@ -13,4 +13,4 @@ export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
 export const MINE_TSF = "/mines/tailings";
 export const EDIT_TSF_REPORT = "";
-export const DOCUMENT_STATUS = "/documents/expected/status";
+export const EXPECTED_DOCUMENT = "/documents/expected";

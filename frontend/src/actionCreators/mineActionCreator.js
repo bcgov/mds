@@ -193,7 +193,7 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
   dispatch(showLoading("modal"));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.DOCUMENT_STATUS, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT + '/status', createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
       dispatch(mineActions.storeDocumentStatusOptions(response.data));
@@ -205,6 +205,34 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const updateExpectedDocument = (id, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
+  dispatch(showLoading("modal"));
+  return axios
+    .put(
+      ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT + "/" + id,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated expected document",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
       dispatch(hideLoading("modal"));
     });
 };
