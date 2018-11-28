@@ -4,7 +4,6 @@
   padding-top: $default-padding-xl;
   position: relative;
 
-  
   &__header {
     &--card {
       @include mobile {
@@ -62,26 +61,26 @@
 }
 
 .mine__status {
-  &:nth-child(2), &:nth-child(3) {
+  &:nth-child(2),
+  &:nth-child(3) {
     font-weight: lighter;
-    font-size:16px;
+    font-size: 16px;
     &:before {
       content: "|";
     }
   }
-
 }
 
-.table-wrapper{
+.table-wrapper {
   padding: $default-padding-md;
-  border-left:4px solid $default-blue;
+  border-left: 4px solid $default-blue;
   background: $default-white;
 
-  th{
+  th {
     padding: 30px;
   }
 
-  td{
+  td {
     padding: 0 0 $default-padding-xl $default-padding-xl;
   }
 }
