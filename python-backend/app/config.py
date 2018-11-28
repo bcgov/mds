@@ -35,9 +35,8 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 300
 
     #Flask-uploads configs
-    UPLOAD_TAILINGS_DEST = './app/document_uploads/mine/tailings'
-
-
+    UPLOADED_TAILINGS_DEST = '/app/document_uploads/mine/tailings/'
+    TAILINGS_FILE_SET = set(['pdf', 'doc', 'docx'])
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

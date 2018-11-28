@@ -1,10 +1,10 @@
 CREATE TABLE public.document_manager (
 	document_manager_id serial NOT NULL,
-	document_guid uuid NOT NULL DEFAULT gen_random_uuid(),
-	full_storage_path varchar(100) NOT NULL,
+	document_guid uuid NOT NULL,
+	full_storage_path varchar(150) NOT NULL,
 	upload_date timestamptz NOT NULL,
 	file_display_name varchar(40) NOT NULL,
-	path_display_name varchar(100) NOT NULL,
+	path_display_name varchar(150) NOT NULL,
 	create_user varchar(60) NOT NULL,
 	create_timestamp timestamptz NOT NULL DEFAULT now(),
 	update_user varchar(60) NOT NULL,
