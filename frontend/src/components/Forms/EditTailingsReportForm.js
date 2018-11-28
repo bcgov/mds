@@ -21,13 +21,7 @@ export const EditTailingsReportForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col><Field
-              id="tsf_report_guid"
-              name="tsf_report_guid"
-              type="hidden"
-              component={RenderField}
-              style={{ height: 0 }}
-          />
+        <Col>
           <Form.Item>
             <Field 
               id="tsf_report_name"
