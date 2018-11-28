@@ -65,7 +65,7 @@ class MineTailingsInfo extends Component {
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
     updatedDocument.exp_document_status_guid = value.tsf_report_status;
-    this.props.updateExpectedDocument(value.tsf_report_guid, {document: updatedDocument}).then(() => {
+    this.props.updateExpectedDocument(updatedDocument.exp_document_guid, {document: updatedDocument}).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
     })
@@ -77,7 +77,6 @@ class MineTailingsInfo extends Component {
     })
     event.preventDefault();
     const initialValues = {
-      "tsf_report_guid": doc.exp_document_guid,
       "tsf_report_name": doc ? ((doc.exp_document_name === 'None') ? null : doc.exp_document_name) : null,
       "tsf_report_due_date": doc ? ((doc.due_date === 'None') ? null : doc.due_date) : null,
       "tsf_report_received_date": doc ? ((doc.received_date === 'None') ? null : doc.received_date) : null,
@@ -161,11 +160,9 @@ class MineTailingsInfo extends Component {
                   </Col>
                   <Col id={"status-" + id} span={5}>
                     <h6>{
-                      this.props.expectedDocumentStatusOptions ? 
+                      this.props.expectedDocumentStatusOptions[0] ? 
                           doc.exp_document_status_guid === 'None' ? 
-                            this.props.expectedDocumentStatusOptions[0] ?
-                              this.props.expectedDocumentStatusOptions[0].label 
-                              : ''
+                              this.props.expectedDocumentStatusOptions[0].label
                             : this.props.expectedDocumentStatusOptions.find(x=>x.value === doc.exp_document_status_guid).label
                         : '' }</h6>
                   </Col>
