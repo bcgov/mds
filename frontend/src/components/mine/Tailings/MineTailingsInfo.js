@@ -36,10 +36,6 @@ const defaultProps = {
     "Accepted",
     "Rejected / Waiting On Update",
   ],
-  mineTSFRequiredReports: [
-    {'value':"Annual Reclamation", 'label':"Annual Reclamation"},
-    {'value': "Annual DSI", 'label':"Annual DSI"},
-  ]
 };
 
 class MineTailingsInfo extends Component {
