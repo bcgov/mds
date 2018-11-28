@@ -320,7 +320,7 @@
                                         "mountPath": "/var/lib/stuff",
                                         "name": "test-storage-data"
                                     }
-                                ],
+								],								
 								"imagePullPolicy": "Always"
 							},
 							{
@@ -412,7 +412,16 @@
 						],
 						"restartPolicy": "Always",
 						"dnsPolicy": "ClusterFirst",
-						"securityContext": {}
+						"securityContext": {},
+						"volumes": [
+							{
+								"name": "test-storage-data",
+								"persistentVolumeClaim": {
+									"claimName": "test-storage"
+								}
+
+							}
+						]
 					}
 				}
 			}
