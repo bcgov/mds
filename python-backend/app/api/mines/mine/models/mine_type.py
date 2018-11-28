@@ -15,12 +15,12 @@ class MineType(AuditMixin, Base):
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid
 
-    # TODO: Do I even need this method for anything?
+
     @classmethod
-    def create_mine_type(cls, mine_guid, mine_tenure_type_id, user_kwargs, save=True):
+    def create_mine_type(cls, mine_identity, mine_tenure_type_id, user_kwargs, save=True):
         mine_type = cls(
             mine_type_guid=uuid.uuid4(),
-            mine_guid=mine_guid,
+            mine_guid=mine_identity.mine_guid,
             mine_tenure_type_id=mine_tenure_type_id,
             **user_kwargs
         )
