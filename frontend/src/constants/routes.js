@@ -5,17 +5,17 @@ import MineDashboard from '@/components/mine/MineDashboard';
 import PartyProfile from '@/components/parties/PartyProfile';
 
 export const DASHBOARD = {
-    route: '/',
-    component: Home,
+  route: '/',
+  component: Home,
 };
 
 export const MINE_DASHBOARD = {
   route: '/dashboard',
-  dynamicRoute: (page, per_page, search=null) => {
+  dynamicRoute: (page, per_page, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
     return `/dashboard?page=${page}&per_page=${per_page}${searchParam}`;
   },
-  mapRoute: (page, per_page, search=null) => {
+  mapRoute: (page, per_page, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
     return `/dashboard?page=${page}&per_page=${per_page}${searchParam}&map=true`;
   },
@@ -24,7 +24,7 @@ export const MINE_DASHBOARD = {
 
 export const MINE_SUMMARY = {
   route: '/dashboard/:id/:activeTab',
-  dynamicRoute: (id, activeTab="summary") => `/dashboard/${id}/${activeTab}`,
+  dynamicRoute: (id, activeTab = "summary") => `/dashboard/${id}/${activeTab}`,
   component: MineDashboard,
 };
 
@@ -33,4 +33,3 @@ export const PARTY_PROFILE = {
   dynamicRoute: (id) => `/dashboard/profile/${id}`,
   component: PartyProfile,
 };
-
