@@ -5,7 +5,7 @@ This file contains the style overrides for ArcGIS Map components
 // Add pulsating animation to the LocationPin under the BaseMap Layer
 div.esri-view-root
   > div.esri-view-surface.esri-view-surface--inset-outline
-  > div:nth-child(3)
+  > div:nth-child(5)
   > svg
   > g
   > circle {
