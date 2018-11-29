@@ -15,3 +15,4 @@ export const REMOVE_EXPECTED_DOCUMENT = '/documents/expected';
 export const ADD_MINE_EXPECTED_DOCUMENT = '/documents/expected/mines';
 export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=MINE_TAILINGS";
+export const EXPECTED_DOCUMENT = "/documents/expected";

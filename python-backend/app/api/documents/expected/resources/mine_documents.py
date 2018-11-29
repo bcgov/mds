@@ -3,6 +3,7 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
+from datetime import datetime
 
 from ..models.mine_document import MineExpectedDocument
 
@@ -37,6 +38,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_name=new_doc['document_name'],
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid = mine_guid,
+                due_date = MineExpectedDocument.add_due_date_to_expected_document(self, datetime.now(), new_doc.get('document_due_date_type'), new_doc.get('document_due_date_period_months')),
                 **self.get_create_update_dict()
             )
             mine_exp_doc.save()
