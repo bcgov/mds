@@ -162,21 +162,11 @@ export class MineTailingsInfo extends Component {
                 <Col span={8}><h5>Name</h5></Col>
                 <Col span={4}><h5>Due</h5></Col>
                 <Col span={4}><h5>Recieved</h5></Col>
-                <Col span={5}><h5>Status</h5></Col>
-                <Col span={2}>  
-                  <Button ghost type="primary" onClick={(event) => 
-                      this.openAddReportModal(
-                        event,
-                        this.handleAddReportSubmit,
-                        ModalContent.ADD_TAILINGS_REPORT,
-                        this.props.mineTSFRequiredReports
-                      )}
-                      ><Icon type="plus-circle" theme="outlined"/>
-                  </Button>
-                </Col>
+                <Col span={4}><h5>Status</h5></Col>
+                <Col span={4}></Col>
             </Row>
           <hr style={{borderTop:'2px solid #c4cdd5'}}/>
-          {mine.mine_expected_documents.map((doc, id) => {
+          {mine.mine_expected_documents.sort((doc1, doc2) => doc1.due_date > doc2.due_date).map((doc, id) => {
             return (
               <div key={id}>
                 <Row gutter={16} justify="center" align="top">
@@ -189,7 +179,7 @@ export class MineTailingsInfo extends Component {
                   <Col span={4}>
                     <h6>{doc.received_date === 'None' ? '-' : doc.received_date}</h6>
                   </Col>
-                  <Col id={"status-" + id} span={5}>
+                  <Col id={"status-" + id} span={4}>
                     <h6>{
                       this.props.expectedDocumentStatusOptions[0] ? 
                           doc.exp_document_status_guid === 'None' ? 
@@ -197,8 +187,7 @@ export class MineTailingsInfo extends Component {
                             : this.props.expectedDocumentStatusOptions.find(x=>x.value === doc.exp_document_status_guid).label
                         : '' }</h6>
                   </Col>
-                  <Col span={2}>
-                      <ButtonGroup>
+                  <Col span={4} align="right">
                     <Button
                       ghost
                       type="primary"
@@ -214,18 +203,32 @@ export class MineTailingsInfo extends Component {
                     >
                       <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
                     </Button>
-                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
-                          <Button ghost type='primary'>
-                            <Icon type="minus-circle" theme="outlined" />
-                          </Button>
-                        </Popconfirm>
-                      </ButtonGroup>
+                      <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
+                        <Button ghost type='primary'>
+                          <Icon type="minus-circle" theme="outlined" />
+                        </Button>
+                      </Popconfirm>
                     </Col>
                 </Row>
                 <hr />
               </div>
             );
           })}
+          <div key='0'>
+            <Row gutter={16} justify="center" align="top">
+              <Col span={8} align="left">
+              <Button className="full-mobile" type="secondary" onClick={(event) => 
+                    this.openAddReportModal(
+                      event,
+                      this.handleAddReportSubmit,
+                      ModalContent.ADD_TAILINGS_REPORT,
+                      this.props.mineTSFRequiredReports
+                    )}>+ Add TSF Report
+                </Button></Col>
+              <Col span={12}/>
+              <Col span={4} align="right"></Col>
+            </Row>
+          </div>
         </div>
       </div>
     );
