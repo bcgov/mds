@@ -1,4 +1,3 @@
-import React from 'react';
 import { reset } from 'redux-form';
 /**
  * Helper function to clear redux form after submission

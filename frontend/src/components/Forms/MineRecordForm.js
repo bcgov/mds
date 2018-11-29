@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Col, Row, Popconfirm } from 'antd';
-import * as FORM from '@/constants/forms';
-import { required, maxLength, minLength, number, lat, lon } from '@/utils/Validate';
-import { resetForm } from '@/utils/helpers';
-import { renderConfig } from '@/components/common/config';
+import React from "react";
+import PropTypes from "prop-types";
+import { Field, reduxForm } from "redux-form";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
+import * as FORM from "@/constants/forms";
+import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
+import { resetForm } from "@/utils/helpers";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -15,7 +15,7 @@ const propTypes = {
   mineRegionOptions: PropTypes.array.isRequired,
 };
 
-export const MineRecordform = (props) => {
+export const MineRecordForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
@@ -24,7 +24,7 @@ export const MineRecordform = (props) => {
             <Field
               id="name"
               name="name"
-              label='Mine Name *'
+              label="Mine Name *"
               component={renderConfig.FIELD}
               validate={[required, maxLength(60), minLength(3)]}
             />
@@ -37,7 +37,7 @@ export const MineRecordform = (props) => {
             <Field
               id="mine_status"
               name="mine_status"
-              label='Mine Status *'
+              label="Mine Status *"
               placeholder="Please select status"
               options={props.mineStatusOptions}
               component={renderConfig.CASCADER}
@@ -67,7 +67,7 @@ export const MineRecordform = (props) => {
             <Field
               id="latitude"
               name="latitude"
-              label='Latitude'
+              label="Latitude"
               component={renderConfig.FIELD}
               validate={[number, maxLength(10), lat]}
             />
@@ -78,7 +78,7 @@ export const MineRecordform = (props) => {
             <Field
               id="longitude"
               name="longitude"
-              label='Longitude'
+              label="Longitude"
               component={renderConfig.FIELD}
               validate={[number, maxLength(12), lon]}
             />
@@ -91,7 +91,7 @@ export const MineRecordform = (props) => {
             <Field
               id="note"
               name="note"
-              label='Notes'
+              label="Notes"
               component={renderConfig.AUTO_SIZE_FIELD}
               validate={[maxLength(300)]}
             />
@@ -104,7 +104,7 @@ export const MineRecordform = (props) => {
             <Field
               id="major_mine_ind"
               name="major_mine_ind"
-              label='Major Mine'
+              label="Major Mine"
               type="checkbox"
               component={renderConfig.CHECKBOX}
               validate={[maxLength(300)]}
@@ -113,21 +113,28 @@ export const MineRecordform = (props) => {
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
           <Button className="full-mobile">Cancel</Button>
         </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
-     </div>
+        <Button className="full-mobile" type="primary" htmlType="submit">
+          {props.title}
+        </Button>
+      </div>
     </Form>
   );
 };
 
-MineRecordform.propTypes = propTypes;
+MineRecordForm.propTypes = propTypes;
 
-export default (reduxForm({
-    form: FORM.MINE_RECORD,
-    touchOnBlur: false,
-    enableReinitialize : true,
-    onSubmitSuccess: resetForm(FORM.MINE_RECORD),
-  })(MineRecordform)
-);
+export default reduxForm({
+  form: FORM.MINE_RECORD,
+  touchOnBlur: false,
+  enableReinitialize: true,
+  onSubmitSuccess: resetForm(FORM.MINE_RECORD),
+})(MineRecordForm);
