@@ -7,7 +7,6 @@ from ..models.tailings import MineTailingsStorageFacility
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-
 class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
@@ -22,12 +21,13 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             return tsf.json()
         else:
             mine_guid = request.args.get('mine_guid', type=str)
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            if mine_tsf_list: 
+            if mine_guid: 
+                mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
                 return { 'mine_storage_tailings_facilities' : list(map(lambda x: x.json(), mine_tsf_list))  }
             else: 
                 return self.create_error_payload(404, 'Mine_guid or tsf_guid must be provided')
-
+       
+                
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
     @jwt.requires_roles(["mds-mine-view"])
@@ -38,6 +38,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             #see if this would be the first TSF 
             mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
             is_mine_first_tsf = len(mine_tsf_list) == 0
+            
             mine_tsf = MineTailingsStorageFacility(
                mine_guid=mine_guid,
                 mine_tailings_storage_facility_name=data['tsf_name'],
@@ -62,9 +63,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'req_document_guid':tsf_req_doc['req_document_guid'],
                             'document_name':tsf_req_doc['req_document_name'],
                             'document_description':tsf_req_doc['req_document_description'],
-                            'document_category':tsf_req_doc['req_document_category'],
-                            'document_due_date_type':tsf_req_doc['req_document_due_date_type'],
-                            'document_due_date_period_months':tsf_req_doc['req_document_due_date_period_months']
+                            'document_category':tsf_req_doc['req_document_category']
                         })
 
                     doc_assignment_response = requests.post(documents_url + '/expected/mines/' + str(mine_guid), 

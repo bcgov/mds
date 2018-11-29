@@ -117,18 +117,6 @@
             "value": "9.5"
         },
         {
-            "description": "Indicator to enable pgcrypto extension (provided out-of-the-box with PostgreSQL).",
-            "displayName": "Flag to enable pgcrypto PostgreSQL extension.",
-            "name": "PGCRYPTO_EXTENSION",
-            "value": "Y"
-        },
-        {
-            "description": "Indicator to enable postgis extension (from official PostgeSQL YUM repo).",
-            "displayName": "Flag to enable postgis PostgreSQL extension.",
-            "name": "POSTGIS_EXTENSION",
-            "value": "Y"
-        },     
-        {
             "name": "CPU_LIMIT",
             "value": "500m"
         },
@@ -356,14 +344,6 @@
                                                 "name": "${DATABASE_SERVICE_NAME}"
                                             }
                                         }
-                                    },
-                                    {
-                                        "name": "PGCRYPTO_EXTENSION",
-                                        "value": "Y"
-                                    },
-                                    {
-                                        "name": "POSTGIS_EXTENSION",
-                                        "value": "Y"
                                     },
                                     {
                                         "name": "PGOPTIONS",
