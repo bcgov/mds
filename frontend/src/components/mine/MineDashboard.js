@@ -42,12 +42,15 @@ const propTypes = {
   updateMineRecord: PropTypes.func,
   createTailingsStorageFacility: PropTypes.func,
   fetchStatusOptions: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
   mines: PropTypes.object,
   mineIds: PropTypes.array,
   permittees: PropTypes.object,
   permitteesIds: PropTypes.array,
   mineStatusOptions: PropTypes.array,
   mineRegionOptions: PropTypes.array,
+  mineTenureTypes: PropTypes.array,
+  mineTenureHash: PropTypes.obj,
 };
 
 const defaultProps = {
