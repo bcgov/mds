@@ -1,7 +1,8 @@
-from datetime import datetime
 import json
 import uuid
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -46,3 +47,26 @@ class ExpectedDocument(AuditMixin, Base):
             return cls.query.filter_by(active_ind=True).filter_by(exp_document_guid=exp_document_guid).first()
         except ValueError:
             return None
+
+    def add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
+
+        current_year = current_date.year
+        march = 3
+        day = 31
+        hour = 00
+        minute = 00
+        second = 00
+
+        if due_date_type == 'FIS':
+
+            fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
+            due_date = fiscal_year_end + relativedelta(months=int(period_in_months))
+
+            return due_date
+
+        # This is only stubbed out for the future logic that will have to go here.
+        elif due_date_type == 'ANV':
+            return current_date
+
+        else:
+            return current_date

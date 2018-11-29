@@ -6,7 +6,7 @@ import { Card, Row, Col, Button } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { GREEN_PENCIL } from "@/constants/assets";
-import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/mineActionCreator";
+import { fetchExpectedDocumentStatusOptions, updateExpectedDocument } from "@/actionCreators/mineActionCreator";
 import { getExpectedDocumentStatusOptions } from "@/selectors/mineSelectors";
 
 /**
@@ -23,17 +23,14 @@ const propTypes = {
   match: PropTypes.object.isRequired,
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   expectedDocumentStatusOptions: PropTypes.array.isRequired,
+  updateExpectedDocument: PropTypes.func.isRequired,
+  selectedDocument: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   mine: {},
-  expectedDocumentStatusOptions: [
-    "Not Recieved",
-    "Recieved / Pending Review",
-    "Review In Progress",
-    "Accepted",
-    "Rejected / Waiting On Update",
-  ],
+  selectedDocument: {},
+  expectedDocumentStatusOptions: [],
 };
 
 class MineTailingsInfo extends Component {
@@ -62,16 +59,32 @@ class MineTailingsInfo extends Component {
   }
 
   handleEditReportSubmit = (value) => {
-    //this.props.updateReport().then(() => {
-    this.props.closeModal();
-    this.props.fetchMineRecordById(this.props.mine.guid);
-    //})
+    //this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
+    let updatedDocument = this.state.selectedDocument;
+    updatedDocument.exp_document_name = value.tsf_report_name;
+    updatedDocument.due_date = value.tsf_report_due_date;
+    updatedDocument.received_date = value.tsf_report_received_date;
+    updatedDocument.exp_document_status_guid = value.tsf_report_status;
+    this.props.updateExpectedDocument(updatedDocument.exp_document_guid, {document: updatedDocument}).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
   };
 
-  openEditReportModal(event, onSubmit, title, statusOptions) {
+  openEditReportModal(event, onSubmit, title, statusOptions, doc) {
+    this.setState({
+      selectedDocument: doc
+    })
     event.preventDefault();
+    const initialValues = {
+      "tsf_report_name": doc ? ((doc.exp_document_name === 'None') ? null : doc.exp_document_name) : null,
+      "tsf_report_due_date": doc ? ((doc.due_date === 'None') ? null : doc.due_date) : null,
+      "tsf_report_received_date": doc ? ((doc.received_date === 'None') ? null : doc.received_date) : null,
+      "tsf_report_status": doc ? ((doc.exp_document_status_guid === 'None') ? null : doc.exp_document_status_guid) : null,
+    };
+
     this.props.openModal({
-      props: { onSubmit, title, statusOptions },
+      props: { onSubmit, title, statusOptions, initialValues },
       content: modalConfig.EDIT_TAILINGS_REPORT,
     });
   }
@@ -124,7 +137,7 @@ class MineTailingsInfo extends Component {
               <h5>Due</h5>
             </Col>
             <Col span={4}>
-              <h5>Recieved</h5>
+              <h5>Received</h5>
             </Col>
             <Col span={5}>
               <h5>Status</h5>
@@ -140,13 +153,18 @@ class MineTailingsInfo extends Component {
                     <h6>{doc.exp_document_name}</h6>
                   </Col>
                   <Col id={"due-date-" + id} span={4}>
-                    <h6>{doc.due_date}</h6>
+                    <h6>{doc.due_date === 'None' ? '-' : doc.due_date}</h6>
                   </Col>
                   <Col span={4}>
-                    <h6 />
+                    <h6>{doc.received_date === 'None' ? '-' : doc.received_date}</h6>
                   </Col>
                   <Col id={"status-" + id} span={5}>
-                    <h6>{doc.status}</h6>
+                    <h6>{
+                      this.props.expectedDocumentStatusOptions[0] ? 
+                          doc.exp_document_status_guid === 'None' ? 
+                              this.props.expectedDocumentStatusOptions[0].label
+                            : this.props.expectedDocumentStatusOptions.find(x=>x.value === doc.exp_document_status_guid).label
+                        : '' }</h6>
                   </Col>
                   <Col span={2}>
                     <Button
@@ -157,7 +175,8 @@ class MineTailingsInfo extends Component {
                           event,
                           this.handleEditReportSubmit,
                           ModalContent.EDIT_TAILINGS_REPORT,
-                          this.props.expectedDocumentStatusOptions
+                          this.props.expectedDocumentStatusOptions,
+                          doc
                         )
                       }
                     >
@@ -185,6 +204,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       fetchExpectedDocumentStatusOptions,
+      updateExpectedDocument,
     },
     dispatch
   );
