@@ -158,7 +158,7 @@ class MineHeader extends Component {
           )}
           <h5>
             Tenure:{" "}
-            {mine.mine_type[0].mine_tenure_type_id
+            {mine.mine_type[0] && mine.mine_type[0].mine_tenure_type_id
               ? this.props.mineTenureHash[mine.mine_type[0].mine_tenure_type_id]
               : String.EMPTY_FIELD}
           </h5>
