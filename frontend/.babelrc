@@ -1,13 +1,12 @@
 {
-  "presets": [
-    "env",
-    "react",
-    "stage-2"
-  ],
+  "presets": ["env", "react", "stage-2"],
   "plugins": [
-    ["transform-runtime", {
-      "regenerator": true
-    }],
+    [
+      "transform-runtime",
+      {
+        "regenerator": true
+      }
+    ],
     ["react-hot-loader/babel"]
   ]
 }
