@@ -72,6 +72,10 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_EXPECTED_DOCUMENT_STATUS
   ),
+  [reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);

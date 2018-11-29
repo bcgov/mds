@@ -46,7 +46,3 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         return {
             'expected_mine_documents' : list(map(lambda x: x.json(), mine_new_docs))
         }
-       
-       
-
-

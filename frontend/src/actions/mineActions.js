@@ -49,3 +49,10 @@ export const storeDocumentStatusOptions = (payload) => {
     payload,
   }
 }
+
+export const storeMineTSFRequiredDocuments = (payload) => {
+  return {
+    type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
+    payload,
+  }
+}

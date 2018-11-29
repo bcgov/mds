@@ -8,10 +8,12 @@ import {
   getCurrentPermittees,
   getCurrentPermitteeIds,
   getMinesPageData,
-  getMineRegionHash
+  getMineRegionHash,
+  getMineTSFRequiredReports,
+  getMineTSFRequiredDocumentsHash
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
-import { storeMineList, storeMineNameList, storeStatusOptions, storeRegionOptions, storeMine } from "@/actions/mineActions";
+import { storeMineList, storeMineNameList, storeStatusOptions, storeRegionOptions, storeMine, storeDocumentStatusOptions, storeMineTSFRequiredDocuments } from "@/actions/mineActions";
 import { MINES } from "@/constants/reducerTypes";
 import * as Mock from '@/tests/mocks/dataMocks';
 
@@ -26,10 +28,12 @@ const mockState = {
   mineGuid: false,
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
+  expectedDocumentStatusOptions : Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
+  mineTSFRequiredReports : Mock.MINE_TSF_REQUIRED_REPORTS
 };
 
 describe('mineSelectors', () => {
-  let { mines, mineIds, mineNameList, minesPageData, mineGuid, mineStatusOptions, mineRegionOptions} = mockState;
+  let { mines, mineIds, mineNameList, minesPageData, mineGuid, mineStatusOptions, mineRegionOptions, mineTSFRequiredReports} = mockState;
 
   it('`getMines` calls `mineReducer.getMines`', () => {
     const storeAction = storeMineList(mockResponse);
@@ -103,6 +107,16 @@ describe('mineSelectors', () => {
     expect(getMinesPageData(mockState)).toEqual(minesPageData);
   });
 
+  
+  it('`getMineTSFRequiredReports` calls `mineReducer.getMineTSFRequiredReports`', () => {
+    const storeAction = storeMineTSFRequiredDocuments(Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE);
+    const storeState = mineReducer({}, storeAction);
+    const mockState = {
+      [MINES]: storeState
+    };
+    expect(getMineTSFRequiredReports(mockState)).toEqual(mineTSFRequiredReports);
+  });
+
   it('`getCurrentPermittees` calls `mineReducer.getCurrentPermittees`', () => {
     mines = Mock.MINES.mines;
     mineGuid = Mock.MINES.mineIds[1]
@@ -122,4 +136,11 @@ describe('mineSelectors', () => {
     const selected = getMineRegionHash.resultFunc(mineRegionOptions);
     expect(selected).toEqual(Mock.REGION_HASH);
   });
+
+  it('`getMineTSFRequiredDocumentsHash` calls `mineReducer.getMineTSFRequiredReports`', () => {
+    mineTSFRequiredReports = Mock.MINE_TSF_REQUIRED_REPORTS;
+    const selected = getMineTSFRequiredDocumentsHash.resultFunc(mineTSFRequiredReports);
+    expect(selected).toEqual(Mock.MINE_TSF_REQUIRED_REPORTS_HASH);
+  });
+
 });

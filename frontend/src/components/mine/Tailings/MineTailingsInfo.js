@@ -1,13 +1,15 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Card, Row, Col, Button } from "antd";
-import * as ModalContent from "@/constants/modalContent";
-import { modalConfig } from "@/components/modalContent/config";
-import { GREEN_PENCIL } from "@/constants/assets";
-import { fetchExpectedDocumentStatusOptions, updateExpectedDocument } from "@/actionCreators/mineActionCreator";
-import { getExpectedDocumentStatusOptions } from "@/selectors/mineSelectors";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Card, Row, Col, Button, Icon, Popconfirm} from 'antd';
+import * as ModalContent from '@/constants/modalContent';
+import { modalConfig } from '@/components/modalContent/config';
+import { GREEN_PENCIL } from '@/constants/assets';
+import ButtonGroup from 'antd/lib/button/button-group';
+import {createMineExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
+import { fetchExpectedDocumentStatusOptions, fetchMineTailingsRequiredDocuments, updateExpectedDocument } from "@/actionCreators/mineActionCreator";
+import { getExpectedDocumentStatusOptions, getMineTSFRequiredReports, getMineTSFRequiredDocumentsHash} from "@/selectors/mineSelectors";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -25,6 +27,8 @@ const propTypes = {
   expectedDocumentStatusOptions: PropTypes.array.isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
   selectedDocument: PropTypes.object.isRequired,
+  mineTSFRequiredReports: PropTypes.array.isRequired,
+  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -33,7 +37,7 @@ const defaultProps = {
   expectedDocumentStatusOptions: [],
 };
 
-class MineTailingsInfo extends Component {
+export class MineTailingsInfo extends Component {
   handleAddTailingsSubmit = (value) => {
     this.props
       .createTailingsStorageFacility({
@@ -48,6 +52,7 @@ class MineTailingsInfo extends Component {
 
   componentDidMount() {
     this.props.fetchExpectedDocumentStatusOptions();
+    this.props.fetchMineTailingsRequiredDocuments();
   }
 
   openAddTailingsModal(event, onSubmit, title) {
@@ -55,6 +60,23 @@ class MineTailingsInfo extends Component {
     this.props.openModal({
       props: { onSubmit, title },
       content: modalConfig.ADD_TAILINGS,
+    });
+  }
+
+
+  handleAddReportSubmit = (value) => {
+    const requiredReportLabel = this.props.getMineTSFRequiredDocumentsHash[value.req_document_guid];
+    this.props.createMineExpectedDocument(this.props.mine.guid, {document_name: requiredReportLabel, ...value}).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
+  }
+
+  openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title, mineTSFRequiredReports},
+      content: modalConfig.ADD_TAILINGS_REPORT
     });
   }
 
@@ -87,6 +109,13 @@ class MineTailingsInfo extends Component {
       props: { onSubmit, title, statusOptions, initialValues },
       content: modalConfig.EDIT_TAILINGS_REPORT,
     });
+  }
+
+  removeReport = (event, exp_doc_guid) => {
+    event.preventDefault();
+    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    })
   }
 
   render() {
@@ -127,24 +156,26 @@ class MineTailingsInfo extends Component {
         <br />
         <br />
         <div>
-          <h3>Reports</h3>
-          <br />
-          <Row gutter={16} justify="center" align="top">
-            <Col span={8}>
-              <h5>Name</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Due</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Received</h5>
-            </Col>
-            <Col span={5}>
-              <h5>Status</h5>
-            </Col>
-            <Col span={2} />
-          </Row>
-          <hr style={{ borderTop: "2px solid #c4cdd5" }} />
+            <h3>Reports</h3>
+            <br/>
+            <Row gutter={16} justify="center" align="top">
+                <Col span={8}><h5>Name</h5></Col>
+                <Col span={4}><h5>Due</h5></Col>
+                <Col span={4}><h5>Recieved</h5></Col>
+                <Col span={5}><h5>Status</h5></Col>
+                <Col span={2}>  
+                  <Button ghost type="primary" onClick={(event) => 
+                      this.openAddReportModal(
+                        event,
+                        this.handleAddReportSubmit,
+                        ModalContent.ADD_TAILINGS_REPORT,
+                        this.props.mineTSFRequiredReports
+                      )}
+                      ><Icon type="plus-circle" theme="outlined"/>
+                  </Button>
+                </Col>
+            </Row>
+          <hr style={{borderTop:'2px solid #c4cdd5'}}/>
           {mine.mine_expected_documents.map((doc, id) => {
             return (
               <div key={id}>
@@ -167,6 +198,7 @@ class MineTailingsInfo extends Component {
                         : '' }</h6>
                   </Col>
                   <Col span={2}>
+                      <ButtonGroup>
                     <Button
                       ghost
                       type="primary"
@@ -182,7 +214,13 @@ class MineTailingsInfo extends Component {
                     >
                       <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
                     </Button>
-                  </Col>
+                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
+                          <Button ghost type='primary'>
+                            <Icon type="minus-circle" theme="outlined" />
+                          </Button>
+                        </Popconfirm>
+                      </ButtonGroup>
+                    </Col>
                 </Row>
                 <hr />
               </div>
@@ -197,6 +235,8 @@ class MineTailingsInfo extends Component {
 const mapStateToProps = (state) => {
   return {
     expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
+    mineTSFRequiredReports : getMineTSFRequiredReports(state),
+    getMineTSFRequiredDocumentsHash : getMineTSFRequiredDocumentsHash(state),
   };
 };
 
@@ -205,10 +245,14 @@ const mapDispatchToProps = (dispatch) => {
     {
       fetchExpectedDocumentStatusOptions,
       updateExpectedDocument,
+      fetchMineTailingsRequiredDocuments,
+      removeExpectedDocument,
+      createMineExpectedDocument
     },
     dispatch
   );
 };
+
 
 MineTailingsInfo.propTypes = propTypes;
 MineTailingsInfo.defaultProps = defaultProps;
