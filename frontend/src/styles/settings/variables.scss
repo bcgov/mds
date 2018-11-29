@@ -1,16 +1,16 @@
 //  colours
 $default-blue: #003366;
-$default-med-blue: #335C85;
-$default-light-blue: #628FBB;
-$default-dark-green: #0F620E;
-$default-light-green: #52C750;
-$default-white: #F1F1F2;
-$background-white: #FFFFFF;
-$default-yellow: #FCBA18;
+$default-med-blue: #335c85;
+$default-light-blue: #628fbb;
+$default-dark-green: #0f620e;
+$default-light-green: #52c750;
+$default-white: #f1f1f2;
+$background-white: #ffffff;
+$default-yellow: #fcba18;
 $font-black: #383838;
 $default-brown: #77510a;
 $default-dark-brown: #54463b;
-$default-dark-brown-gradient: linear-gradient(0deg, rgba(84,70,59,1) 10%, rgba(84,70,59,0.49763655462184875) 100%);
+$default-overlay: $font-black;
 
 // font size
 $default-h1: 36px;
@@ -26,7 +26,7 @@ $mobile-h5: 16px;
 $default-p: 16px;
 
 // font
-$default-font: 'Open Sans', sans-serif;
+$default-font: "Open Sans", sans-serif;
 $light: 300;
 $regular: 400;
 $semi-bold: 600;
@@ -45,5 +45,5 @@ $default-padding-lg: 20px;
 $default-padding-xl: 30px;
 $default-padding-xxl: 50px;
 
-$default-box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
-$default-round-top-border:  60px 60px 0 0;
+$default-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+$default-round-top-border: 60px 60px 0 0;

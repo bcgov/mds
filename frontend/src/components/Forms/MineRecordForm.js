@@ -16,7 +16,7 @@ const propTypes = {
   mineTenureTypes: PropTypes.array.isRequired,
 };
 
-export const MineRecordform = (props) => {
+export const MineRecordForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
@@ -145,11 +145,11 @@ export const MineRecordform = (props) => {
   );
 };
 
-MineRecordform.propTypes = propTypes;
+MineRecordForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.MINE_RECORD,
   touchOnBlur: false,
   enableReinitialize: true,
   onSubmitSuccess: resetForm(FORM.MINE_RECORD),
-})(MineRecordform);
+})(MineRecordForm);
