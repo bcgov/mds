@@ -10,4 +10,4 @@ jwt = JwtManager()
 api = Api(prefix=Config.BASE_PATH, doc='{}/'.format(Config.BASE_PATH),
           default='mds', default_label='MDS related operations')
 
-tailings = UploadSet('tailings', Config.TAILINGS_FILE_SET)
+documents = UploadSet('document', Config.DOCUMENT_FILE_SET)

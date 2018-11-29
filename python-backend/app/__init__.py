@@ -14,7 +14,7 @@ from .api.documents.namespace.documents import api as document_api
 from .api.document_manager.namespace.document_manager import api as document_manager_api
 from .commands import register_commands
 from .config import Config
-from .extensions import db, jwt, api, tailings
+from .extensions import db, jwt, api, documents
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -27,11 +27,8 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_object(test_config)
     
-    #20MB file limit
-    FILE_MB_LIMIT = 20 * 1024 * 1024
-    
-    configure_uploads(app, tailings)
-    patch_request_class(app, FILE_MB_LIMIT)
+    configure_uploads(app, documents)
+    patch_request_class(app, Config.FILE_BYTE_LIMIT)
 
     register_extensions(app)
     register_routes(app)

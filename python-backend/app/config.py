@@ -35,8 +35,11 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 300
 
     #Flask-uploads configs
-    UPLOADED_TAILINGS_DEST = '/app/document_uploads/mine/tailings/'
-    TAILINGS_FILE_SET = set(['pdf', 'doc', 'docx'])
+    UPLOADED_DOCUMENT_DEST = '/app/document_uploads'
+    DOCUMENT_FILE_SET = set(['pdf', 'doc', 'docx'])
+    
+    #20MB file limit
+    FILE_BYTE_LIMIT = 20 * 1024 * 1024
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
