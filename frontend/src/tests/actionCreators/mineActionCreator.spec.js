@@ -8,7 +8,10 @@ import {
   fetchMineNameList, 
   fetchStatusOptions,
   fetchRegionOptions,
-  createTailingsStorageFacility 
+  createTailingsStorageFacility,
+  createMineExpectedDocument,
+  removeExpectedDocument,
+  fetchMineTailingsRequiredDocuments
 } from '@/actionCreators/mineActionCreator';
 import * as genericActions from '@/actions/genericActions';
 import * as API from '@/constants/API';
@@ -97,6 +100,54 @@ describe('`createTailingsStorageFacility` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return (createTailingsStorageFacility(mine_guid)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+
+describe('`createMineExpectedDocument` action creator', () => {
+  const mine_guid = "12345-6789"
+  const url = ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT + "/" + mine_guid;
+  const mockPayload = {document_name: 'requiredReportLabel', req_document_guid:'09876-5432'} 
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, {'documents':[mockPayload]}).reply(200, mockResponse);
+    return (createMineExpectedDocument(mine_guid,mockPayload)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    return (createMineExpectedDocument(mine_guid)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe('`removeMineExpectedDocument` action creator', () => {
+  const exp_doc_guid = "12345-6789"
+  const url = ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT + "/" + exp_doc_guid; 
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return (removeExpectedDocument(exp_doc_guid)(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return (removeExpectedDocument(exp_doc_guid)(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -209,6 +260,28 @@ describe('`fetchRegionOptions` action creator', () => {
   it('Request failure, dispatches `error` with correct response', () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return (fetchRegionOptions()(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe('`fetchMineTailingsRequiredDocuments` action creator', () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS;
+  it('Request successful, dispatches `success` with correct response', () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return (fetchMineTailingsRequiredDocuments()(dispatch)).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it('Request failure, dispatches `error` with correct response', () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return (fetchMineTailingsRequiredDocuments()(dispatch)).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

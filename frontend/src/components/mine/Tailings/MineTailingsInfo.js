@@ -7,7 +7,7 @@ import * as ModalContent from '@/constants/modalContent';
 import { modalConfig } from '@/components/modalContent/config';
 import { GREEN_PENCIL } from '@/constants/assets';
 import ButtonGroup from 'antd/lib/button/button-group';
-import {addExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
+import {createMineExpectedDocument ,removeExpectedDocument } from '@/actionCreators/mineActionCreator';
 import { fetchExpectedDocumentStatusOptions, fetchMineTailingsRequiredDocuments } from "@/actionCreators/mineActionCreator";
 import { getExpectedDocumentStatusOptions, getMineTSFRequiredReports, getMineTSFRequiredDocumentsHash} from "@/selectors/mineSelectors";
 /**
@@ -23,22 +23,16 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
-  expectedDocumentStatusOptions: PropTypes.array.isRequired,
+  expectedDocumentStatusOptions: PropTypes.object.isRequired,
   mineTSFRequiredReports: PropTypes.array.isRequired,
+  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   mine: {},
-  expectedDocumentStatusOptions: [
-    "Not Recieved",
-    "Recieved / Pending Review",
-    "Review In Progress",
-    "Accepted",
-    "Rejected / Waiting On Update",
-  ],
 };
 
-class MineTailingsInfo extends Component {
+export class MineTailingsInfo extends Component {
   handleAddTailingsSubmit = (value) => {
     this.props
       .createTailingsStorageFacility({
@@ -67,7 +61,7 @@ class MineTailingsInfo extends Component {
 
   handleAddReportSubmit = (value) => {
     const requiredReportLabel = this.props.getMineTSFRequiredDocumentsHash[value.req_document_guid];
-    this.props.addExpectedDocument(this.props.mine.guid, {document_name: requiredReportLabel, ...value}).then(() => {
+    this.props.createMineExpectedDocument(this.props.mine.guid, {document_name: requiredReportLabel, ...value}).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
     })
@@ -217,7 +211,7 @@ const mapDispatchToProps = (dispatch) => {
       fetchExpectedDocumentStatusOptions,
       fetchMineTailingsRequiredDocuments,
       removeExpectedDocument,
-      addExpectedDocument
+      createMineExpectedDocument
     },
     dispatch
   );
