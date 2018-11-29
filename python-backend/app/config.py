@@ -35,7 +35,7 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 300
 
     #Flask-uploads configs
-    UPLOADED_DOCUMENT_DEST = '/app/document_uploads'
+    UPLOADED_DOCUMENT_DEST = '/opt/app-root/src/document_uploads'
     DOCUMENT_FILE_SET = set(['pdf', 'doc', 'docx'])
     
     #20MB file limit
