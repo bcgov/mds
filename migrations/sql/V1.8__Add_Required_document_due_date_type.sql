@@ -11,7 +11,7 @@ CREATE TABLE required_document_due_date_type (
 COMMENT ON TABLE required_document_due_date_type IS 'A required_document_due_date_type is fixed tag on an mds_required_document for to indicate the rules around when it is due';
 
 ALTER TABLE mds_required_document
-    ADD req_document_due_date_period_months integer NOT NULL,
-    ADD req_document_due_date_type character varying(3) NOT NULL,
+    ADD req_document_due_date_period_months integer,
+    ADD req_document_due_date_type character varying(3),
     ADD FOREIGN KEY (req_document_due_date_type) REFERENCES required_document_due_date_type(req_document_due_date_type) DEFERRABLE INITIALLY DEFERRED
 ;
