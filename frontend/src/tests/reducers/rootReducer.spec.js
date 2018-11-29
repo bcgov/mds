@@ -4,7 +4,7 @@ import * as reducerTypes from "@/constants/reducerTypes";
 import { authenticateUser } from "@/actions/authenticationActions";
 
 describe("Store", () => {
-  it("should handle recipe creation", () => {
+  it("should handle reducer creation", () => {
     const store = createStore(rootReducer, reducerObject);
 
     const action = authenticateUser({});

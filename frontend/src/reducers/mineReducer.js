@@ -51,7 +51,6 @@ const mineReducer = (state = initialState, action) => {
         mineRegionOptions: action.payload.options,
       };
     case actionTypes.STORE_TENURE_TYPES:
-      console.log(action.payload.options);
       return {
         ...state,
         mineTenureTypes: action.payload.options,
