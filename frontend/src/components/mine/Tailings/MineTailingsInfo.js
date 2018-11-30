@@ -33,11 +33,11 @@ const propTypes = {
 
 const defaultProps = {
   mine: {},
-  selectedDocument: {},
   expectedDocumentStatusOptions: [],
 };
 
 export class MineTailingsInfo extends Component {
+  state = {selectedDocument: {}}
   handleAddTailingsSubmit = (value) => {
     this.props
       .createTailingsStorageFacility({
