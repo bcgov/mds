@@ -239,7 +239,7 @@ environments {
                 namespace = 'empr-mds-dev'
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "development"
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
@@ -299,7 +299,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "test"
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
