@@ -156,8 +156,8 @@ INSERT INTO mine_expected_document_status
     update_user
     )
 VALUES
-    ('Not Recieved', 10, 'system-mds', 'system-mds'),
-    ('Recieved / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('Not Received', 10, 'system-mds', 'system-mds'),
+    ('Received / Pending Review', 20, 'system-mds', 'system-mds'),
     ('Review In Progress', 30, 'system-mds', 'system-mds'),
     ('Accepted', 40, 'system-mds', 'system-mds'),
     ('Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')

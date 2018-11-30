@@ -540,8 +540,8 @@ export const PERMITTEE = {
 };
 
 export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {'options':[
-  {value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Recieved"},
-  {value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Recieved / Pending Review"},
+  {value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Received"},
+  {value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Received / Pending Review"},
   {value: "155330ff-5b2e-418a-b8f5-674a25cdcbac", label: "Review In Progress"},
   {value: "621a1e27-737a-4106-b92b-1c6c153c9d0a", label: "Accepted"},
   {value: "3358c881-f2b5-4f58-be41-a89f820302a0", label: "Rejected / Waiting On Update"}

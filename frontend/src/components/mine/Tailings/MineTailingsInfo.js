@@ -161,7 +161,7 @@ export class MineTailingsInfo extends Component {
             <Row gutter={16} justify="center" align="top">
                 <Col span={8}><h5>Name</h5></Col>
                 <Col span={4}><h5>Due</h5></Col>
-                <Col span={4}><h5>Recieved</h5></Col>
+                <Col span={4}><h5>Received</h5></Col>
                 <Col span={4}><h5>Status</h5></Col>
                 <Col span={4}></Col>
             </Row>
