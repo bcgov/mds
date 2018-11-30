@@ -21,8 +21,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     def post(self):
 
         self.parser.add_argument('file', type=FileStorage, location='files', action='append')
-        self.parser.add_argument('folder', type=str, help='mine to the new document on')
-        self.parser.add_argument('pretty_folder', type=str, help='mine to the new document on')
+        self.parser.add_argument('folder', type=str, help='The sub folder path to store the document in.')
+        self.parser.add_argument('pretty_folder', type=str, help='The sub folder path to store the document in with the guids replaced for more readable names.')
 
         try:
             data = self.parser.parse_args()
@@ -47,10 +47,9 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                 upload_response = documents.save(upload, folder, (str(file_guid) + file_extension))
                 real_path = documents.path(upload_response)
 
-                #create the readable path by removing the guids and replacing them with the original file name and mine no
+                #create the readable path by removing the guids and replacing them with the more readable versions.
                 pretty_path = re.sub(r'\b'+folder+r'\b', pretty_folder, real_path)
                 pretty_path = re.sub(r'\b'+str(file_guid)+r'\b', original_file_name, pretty_path)
-                
 
                 document_info = DocumentManager( 
                     document_guid = file_guid,
@@ -60,6 +59,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                     path_display_name = pretty_path,
                     **self.get_create_update_dict(),
                 )
+
                 document_info.save()
                 document_guid_list.append(str(file_guid))
 
