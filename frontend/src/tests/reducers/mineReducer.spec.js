@@ -1,16 +1,16 @@
 import mineReducer from "@/reducers/mineReducer";
 import {
   updateMine,
-   storeMine, 
-   storeMineList, 
-   storeMineNameList, 
-   storeStatusOptions,
-   storeRegionOptions,
-   storeDocumentStatusOptions,
-   storeMineTSFRequiredDocuments,
-   storeTenureTypes,
-   } from "@/actions/mineActions";
-import * as MOCK from '@/tests/mocks/dataMocks'
+  storeMine,
+  storeMineList,
+  storeMineNameList,
+  storeStatusOptions,
+  storeRegionOptions,
+  storeDocumentStatusOptions,
+  storeMineTSFRequiredDocuments,
+  storeTenureTypes,
+} from "@/actions/mineActions";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 describe("mineReducer", () => {
   it("receives undefined", () => {
@@ -164,7 +164,7 @@ describe("mineReducer", () => {
     expect(result).toEqual(expectedValue);
   });
 
-  it('receives STORE_DOCUMENT_STATUS_OPTIONS', () => {
+  it("receives STORE_DOCUMENT_STATUS_OPTIONS", () => {
     const expectedValue = {
       mines: {},
       mineIds: [],
@@ -175,13 +175,16 @@ describe("mineReducer", () => {
       mineRegionOptions: [],
       expectedDocumentStatusOptions: MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
       mineTSFRequiredReports: [],
+      mineTenureTypes: [],
     };
-    const result = mineReducer(undefined, storeDocumentStatusOptions(MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS));
+    const result = mineReducer(
+      undefined,
+      storeDocumentStatusOptions(MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS)
+    );
     expect(result).toEqual(expectedValue);
   });
 
-
-  it('receives STORE_MINE_TSF_REQUIRED_DOCUMENTS', () => {
+  it("receives STORE_MINE_TSF_REQUIRED_DOCUMENTS", () => {
     const expectedValue = {
       mines: {},
       mineIds: [],
@@ -192,8 +195,12 @@ describe("mineReducer", () => {
       mineRegionOptions: [],
       expectedDocumentStatusOptions: [],
       mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS,
+      mineTenureTypes: [],
     };
-    const result = mineReducer(undefined, storeMineTSFRequiredDocuments(MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE));
+    const result = mineReducer(
+      undefined,
+      storeMineTSFRequiredDocuments(MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE)
+    );
     expect(result).toEqual(expectedValue);
   });
 
@@ -206,6 +213,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: [],
+      mineTSFRequiredReports: [],
+      expectedDocumentStatusOptions: [],
       mineTenureTypes: MOCK.TENURE_TYPES.options,
     };
     const result = mineReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES));
