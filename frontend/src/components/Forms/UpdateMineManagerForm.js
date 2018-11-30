@@ -6,6 +6,7 @@ import * as FORM from '@/constants/forms';
 import { required } from '@/utils/Validate';
 import { resetForm } from '@/utils/helpers';
 import { renderConfig } from '@/components/common/config';
+import { memoize } from 'lodash';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -14,12 +15,17 @@ const propTypes = {
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  initialValues: PropTypes.object,
 };
 
 const defaultProps = {
   parties: {},
   partyIds: [],
 };
+
+const validateStartDate = memoize(previousStartDate => value => 
+  value <= previousStartDate ? "New manager's start date cannot be on or before the previous manager's start date." : undefined
+);
 
 export const UpdateMineManagerForm = (props) => {
   return (
@@ -47,7 +53,7 @@ export const UpdateMineManagerForm = (props) => {
               label='Select a Start date *'
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}
-              validate={[required]}
+              validate={[required, validateStartDate(props.initialValues.startDate)]}
             />
           </Form.Item>
         </Col>
