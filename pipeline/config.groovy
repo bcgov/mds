@@ -299,7 +299,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "test"
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
