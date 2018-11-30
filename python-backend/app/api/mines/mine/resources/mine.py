@@ -137,7 +137,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_identity.save()
         mine_detail.save()
         if mine_tenure_type_id:
-            self._save_mine_type(mine_identity, mine_tenure_type_id)
+            try:
+                mine_type = MineType.create_mine_type(
+                        mine_identity,
+                        mine_tenure_type_id,
+                        self.get_create_update_dict(),
+                        save=False
+                )
+                mine_type.save()
+            except exc.IntegrityError as e:
+                self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
+
         if lat and lon:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
@@ -249,22 +259,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # MineType
         if mine_tenure_type_id:
-            self._save_mine_type(mine, mine_tenure_type_id)
+            try:
+                mine_type = MineType.create_mine_type(
+                        mine,
+                        mine_tenure_type_id,
+                        self.get_create_update_dict(),
+                        save=False
+                )
+                mine_type.save()
+            except exc.IntegrityError as e:
+                self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
 
         return mine.json()
-
-
-    def _save_mine_type(self, mine_identity, mine_tenure_type_id):
-        try:
-            mine_type = MineType(
-                mine_type_guid=uuid.uuid4(),
-                mine_guid=mine_identity.mine_guid,
-                mine_tenure_type_id=mine_tenure_type_id,
-                **self.get_create_update_dict()
-            )
-            mine_type.save()
-        except exc.IntegrityError as e:
-            self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
 
 
 class MineListByName(Resource):

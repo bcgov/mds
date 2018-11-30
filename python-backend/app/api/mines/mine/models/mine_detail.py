@@ -5,7 +5,6 @@ from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
 from ...region.models.region import MineRegionCode
-from .mine_type import MineType
 from app.extensions import db
 
 
