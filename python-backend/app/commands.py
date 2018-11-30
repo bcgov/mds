@@ -8,6 +8,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .api.mines.location.models.mine_location import MineLocation
 from .api.mines.region.models.region import MineRegionCode
+from .api.mines.mine.models.mine_type import MineType
 from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
 MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
 from .api.mines.mine.models.mine_identity import MineIdentity
@@ -58,8 +59,8 @@ def register_commands(app):
             with ThreadPoolExecutor() as executor:
                 batch_size = 100
                 num = int(num)
-                
-                # Break num into a list of ints of size batch_size, then append remainder. E.g. 520 -> [100, 100, 100, 100, 100, 20] 
+
+                # Break num into a list of ints of size batch_size, then append remainder. E.g. 520 -> [100, 100, 100, 100, 100, 20]
                 full_batches = int(num / batch_size)
                 batches = [batch_size] * full_batches
                 batches.append(num % batch_size)
@@ -85,6 +86,7 @@ def register_commands(app):
                 MineDetail.create_mine_detail(mine_identity, generate_mine_no(), generate_mine_name(),
                                               random_mine_category(),random_region(),
                                               DUMMY_USER_KWARGS)
+                MineType.create_mine_type(mine_identity, random.randint(1, 4), DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine_identity, random_geo(), DUMMY_USER_KWARGS)
                 party = Party.create_party(names.get_first_name(), names.get_last_name(), DUMMY_USER_KWARGS)
 

@@ -16,66 +16,20 @@ export const reducerObject = {
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
   [reducerTypes.MODAL]: modalReducer,
-  [reducerTypes.CREATE_PARTY]: createReducer(
-    networkReducer,
-    reducerTypes.CREATE_PARTY
-  ),
-  [reducerTypes.GET_PARTIES]: createReducer(
-    networkReducer,
-    reducerTypes.GET_PARTIES
-  ),
-  [reducerTypes.GET_PARTY]: createReducer(
-    networkReducer,
-    reducerTypes.GET_PARTY
-  ),
-  [reducerTypes.CREATE_MINE_RECORD]: createReducer(
-    networkReducer,
-    reducerTypes.CREATE_MINE_RECORD
-  ),
-  [reducerTypes.GET_MINE_RECORDS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_MINE_RECORDS
-  ),
-  [reducerTypes.GET_MINE_RECORD]: createReducer(
-    networkReducer,
-    reducerTypes.GET_MINE_RECORD
-  ),
-  [reducerTypes.GET_MINE_NAME_LIST]: createReducer(
-    networkReducer,
-    reducerTypes.GET_MINE_NAME_LIST
-  ),
-  [reducerTypes.GET_STATUS_OPTIONS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_STATUS_OPTIONS
-  ),
-  [reducerTypes.GET_REGION_OPTIONS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_REGION_OPTIONS
-  ),
-  [reducerTypes.UPDATE_MINE_RECORD]: createReducer(
-    networkReducer,
-    reducerTypes.UPDATE_MINE_RECORD
-  ),
-  [reducerTypes.ADD_MINE_MANAGER]: createReducer(
-    networkReducer,
-    reducerTypes.ADD_MINE_MANAGER
-  ),
-  [reducerTypes.ADD_PERMITTEE]: createReducer(
-    networkReducer,
-    reducerTypes.ADD_PERMITTEE
-  ),
-  [reducerTypes.CREATE_TSF]: createReducer(
-    networkReducer,
-    reducerTypes.CREATE_TSF
-  ),
-  [reducerTypes.GET_EXPECTED_DOCUMENT_STATUS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_EXPECTED_DOCUMENT_STATUS
-  ),
-  [reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS
-  ),
+  [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
+  [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
+  [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),
+  [reducerTypes.CREATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.CREATE_MINE_RECORD),
+  [reducerTypes.GET_MINE_RECORDS]: createReducer(networkReducer, reducerTypes.GET_MINE_RECORDS),
+  [reducerTypes.GET_MINE_RECORD]: createReducer(networkReducer, reducerTypes.GET_MINE_RECORD),
+  [reducerTypes.GET_MINE_NAME_LIST]: createReducer(networkReducer, reducerTypes.GET_MINE_NAME_LIST),
+  [reducerTypes.GET_STATUS_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_STATUS_OPTIONS),
+  [reducerTypes.GET_REGION_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_REGION_OPTIONS),
+  [reducerTypes.GET_TENURE_TYPES]: createReducer(networkReducer, reducerTypes.GET_TENURE_TYPES),
+  [reducerTypes.UPDATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.UPDATE_MINE_RECORD),
+  [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
+  [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),
+  [reducerTypes.CREATE_TSF]: createReducer(networkReducer, reducerTypes.CREATE_TSF),
 };
 
 export const rootReducer = combineReducers(reducerObject);

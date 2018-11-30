@@ -92,10 +92,14 @@ make frontend
 ## Code Contribution Standards
 
 Contributors to this codebase are expected to follow the formatting standards.
-Developers using VS Code should see the formatting occur on-save automatically.
-Developers not seeing these changes or using other editors are encouraged to
-install the Prettier plugin appropriate for their editor. This ensures that all
-committed code is properly formatted.
+Developers are encouraged to install the Prettier plugin appropriate for their
+editor. This ensures that all committed code is properly formatted.
+
+VS Code is commonly used by MDS contributors, so it will be used as an example
+for setting up formatting on-save:
+1. Install the VS Code Prettier [plugin](https://github.com/prettier/prettier-vscode)
+2. Set `"editor.formatOnSave": true` in your editor config
+3. Ensure that no conflicting code formatting tools are enabled (ex. Beautify)
 
 Any developer who is unable or unwilling to apply the formatting on-save is
 asked to use the provided npm scripts to format their code before each commit.
