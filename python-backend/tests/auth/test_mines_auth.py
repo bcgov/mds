@@ -1,4 +1,4 @@
-from tests.constants import TEST_MINE_NO
+from tests.constants import TEST_MINE_NO, TEST_MINE_TENURE_TYPE_ID_1
 
 
 # GET Mine List Auth
@@ -75,7 +75,8 @@ def test_post_mine_full_auth(test_client, auth_headers):
         "name": "test_create_mine",
         "latitude": "49.49",
         "longitude": "123.124",
-        "mine_region": "NE"
+        "mine_region": "NE",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_ID_1
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 200
