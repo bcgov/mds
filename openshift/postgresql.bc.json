@@ -1,135 +1,135 @@
 {
-    "kind": "Template",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "postgresql",
-        "creationTimestamp": null
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "postgresql",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name used for all objects",
+      "required": true
     },
-    "parameters": [
-        {
-            "name": "NAME",
-            "displayName": "Name",
-            "description": "A name used for all objects",
-            "required": true
+    {
+      "name": "NAME_SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "TAG_NAME",
+      "required": true
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "rhel7",
+        "labels": {
+          "shared": "true"
         },
-        {
-            "name": "NAME_SUFFIX",
-            "displayName": "Name Suffix",
-            "description": "A suffix appended to all objects",
-            "required": true
+        "annotations": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
         },
-        {
-            "name": "TAG_NAME",
-            "required": true
+        "tags": [
+          {
+            "name": "7.5",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhel7:7.5"
+            },
+            "generation": 1,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
         }
-    ],
-    "objects": [
-        {
-            "kind": "ImageStream",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "rhel7",
-                "labels": {
-                    "shared": "true"
-                },
-                "annotations": {}
-            },
-            "spec": {
-                "lookupPolicy": {
-                    "local": false
-                },
-                "tags":[
-                    {
-                        "name": "7.5",
-                        "annotations": null,
-                        "from": {
-                            "kind": "DockerImage",
-                            "name": "registry.access.redhat.com/rhel7:7.5"
-                        },
-                        "generation": 1,
-                        "importPolicy": {},
-                        "referencePolicy": {
-                            "type": "Source"
-                        }
-                    }
-                ]
-            }
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${NAME_SUFFIX}",
+        "creationTimestamp": null,
+        "labels": {},
+        "annotations": {}
+      },
+      "spec": {
+        "completionDeadlineSeconds": 1800,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "git": {
+            "uri": "https://github.com/bcgov/openshift-postgresql-oracle_fdw"
+          },
+          "type": "Git"
         },
-        {
-            "kind": "ImageStream",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${NAME}",
-                "creationTimestamp": null,
-                "labels": {
-                    "shared": "true"
-                },
-                "annotations": {}
-            },
-            "spec": {
-                "lookupPolicy": {
-                    "local": false
-                }
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "dockerfilePath": "rhel7.rh-postgresql96/Dockerfile",
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "rhel7:7.5"
             }
+          }
         },
-        {
-            "kind": "BuildConfig",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${NAME}${NAME_SUFFIX}",
-                "creationTimestamp": null,
-                "labels": { },
-                "annotations": { }
-            },
-            "spec": {
-                "completionDeadlineSeconds": 1440,
-                "successfulBuildsHistoryLimit": 3,
-                "failedBuildsHistoryLimit": 3,
-                "triggers": [
-                    {
-                        "type": "ImageChange",
-                        "imageChange": {}
-                    },
-                    {
-                        "type": "ConfigChange"
-                    }
-                ],
-                "runPolicy": "SerialLatestOnly",
-                "source": {
-                    "git": {
-                        "uri": "https://github.com/bcgov/openshift-postgresql-oracle_fdw"
-                    },
-                    "type": "Git"
-                },
-                "strategy": {
-                    "type": "Docker",
-                    "dockerStrategy": {
-                        "dockerfilePath": "Dockerfile.rhel7",
-                        "from": {
-                            "kind": "ImageStreamTag",
-                            "name": "rhel7:7.5"
-                        }
-                    }
-                },
-                "output": {
-                    "to": {
-                        "kind": "ImageStreamTag",
-                        "name": "${NAME}:${TAG_NAME}"
-                    }
-                },
-                "resources": {
-                    "limits": {
-                        "cpu": "500m",
-                        "memory": "3Gi"
-                    },
-                    "requests": {
-                        "cpu": "250m",
-                        "memory": "2Gi"
-                    }
-                },
-                "postCommit": {},
-                "nodeSelector": null
-            }
-        }
-    ]
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${TAG_NAME}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "750m",
+            "memory": "3Gi"
+          },
+          "requests": {
+            "cpu": "500m",
+            "memory": "2Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
+      }
+    }
+  ]
 }

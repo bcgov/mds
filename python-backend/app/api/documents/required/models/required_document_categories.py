@@ -9,7 +9,7 @@ from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
 
-
+#comment to force commit
 class RequiredDocumentCategory(Base):
     __tablename__ = 'mds_required_document_category'
     req_document_category_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue()) 
