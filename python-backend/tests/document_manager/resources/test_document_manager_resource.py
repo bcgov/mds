@@ -6,12 +6,12 @@ import pytest
 import shutil
 
 @pytest.fixture(scope="function")
-def setup_info():
+def setup_info(test_client):
 
     return dict(
         mine_guid = '3bc222ec-0f1f-49dd-bf5e-13bddab4725e',
         mine_no = 'BLAH2905',
-        base_path = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads'),
+        base_path = test_client.application.config['UPLOADED_DOCUMENT_DEST'],
         file_upload_1 = (io.BytesIO(b'Test File'), 'test_file_1.pdf'),
         file_upload_2 = (io.BytesIO(b'Test File'), 'test_file_2.docx'),
         file_upload_3 = (io.BytesIO(b'Test File'), 'test_file_3.exe'),
