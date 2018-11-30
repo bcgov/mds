@@ -86,10 +86,10 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
 };
 
 
-export const createMineExpectedDocument = (mine_guid, payload) => (dispatch) => {
+export const createMineExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return axios.post(ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  + "/" + mine_guid, {'documents':[ payload ]},  createRequestHeader())
+  return axios.post(ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  + "/" + id, {'documents':[ payload ]},  createRequestHeader())
   .then((response) => {
     notification.success({ message: "Successfully added the report", duration: 10 });
     dispatch(success(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
