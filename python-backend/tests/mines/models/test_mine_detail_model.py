@@ -12,7 +12,7 @@ def test_mine_detail_model_find_by_no(test_client, auth_headers):
     assert str(mine_detail.mine_no) == TEST_MINE_NO
 
 
-def test_mine_detai_model_validate_mine_name(test_client, auth_headers):
+def test_mine_detail_model_validate_mine_name(test_client, auth_headers):
     with pytest.raises(AssertionError) as e:
         MineDetail(
             mine_detail_guid=uuid.uuid4(),
@@ -23,7 +23,7 @@ def test_mine_detai_model_validate_mine_name(test_client, auth_headers):
     assert 'No mine name provided.' in str(e.value)
 
 
-def test_mine_detai_model_validate_mine_name_max_char(test_client, auth_headers):
+def test_mine_detail_model_validate_mine_name_max_char(test_client, auth_headers):
     with pytest.raises(AssertionError) as e:
         MineDetail(
             mine_detail_guid=uuid.uuid4(),
@@ -34,7 +34,7 @@ def test_mine_detai_model_validate_mine_name_max_char(test_client, auth_headers)
     assert 'Mine name must not exceed 60 characters.' in str(e.value)
 
 
-def test_mine_detai_model_validate_mine_note(test_client, auth_headers):
+def test_mine_detail_model_validate_mine_note(test_client, auth_headers):
     with pytest.raises(AssertionError) as e:
         MineDetail(
             mine_detail_guid=uuid.uuid4(),
@@ -46,7 +46,7 @@ def test_mine_detai_model_validate_mine_note(test_client, auth_headers):
     assert 'Mine note must not exceed 300 characters.' in str(e.value)
 
 
-def test_mine_detai_model_validate_mine_no(test_client, auth_headers):
+def test_mine_detail_model_validate_mine_no(test_client, auth_headers):
     with pytest.raises(AssertionError) as e:
         MineDetail(
             mine_detail_guid=uuid.uuid4(),

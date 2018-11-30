@@ -11,6 +11,7 @@ import {
   createMineRecord,
   fetchStatusOptions,
   fetchRegionOptions,
+  fetchMineTenureTypes,
 } from "@/actionCreators/mineActionCreator";
 import {
   getMines,
@@ -19,6 +20,7 @@ import {
   getMinesPageData,
   getMineStatusOptions,
   getMineRegionOptions,
+  getMineTenureTypes,
 } from "@/selectors/mineSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -51,6 +53,7 @@ const propTypes = {
   pageData: PropTypes.object.isRequired,
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
+  mineTenureTypes: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
@@ -89,6 +92,7 @@ export class Dashboard extends Component {
     }
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
+    this.props.fetchMineTenureTypes();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -183,10 +187,10 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(event, mineStatusOptions, mineRegionOptions, onSubmit, title) {
+  openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, onSubmit, title },
+      props: { mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title },
       content: modalConfig.MINE_RECORD,
     });
   }
@@ -314,6 +318,7 @@ export class Dashboard extends Component {
                   event,
                   this.props.mineStatusOptions,
                   this.props.mineRegionOptions,
+                  this.props.mineTenureTypes,
                   this.handleSubmit,
                   ModalContent.CREATE_MINE_RECORD
                 )
@@ -336,6 +341,7 @@ const mapStateToProps = (state) => {
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
     mineRegionHash: getMineRegionHash(state),
+    mineTenureTypes: getMineTenureTypes(state),
   };
 };
 
@@ -346,6 +352,7 @@ const mapDispatchToProps = (dispatch) => {
       fetchStatusOptions,
       fetchRegionOptions,
       createMineRecord,
+      fetchMineTenureTypes,
       openModal,
       closeModal,
     },

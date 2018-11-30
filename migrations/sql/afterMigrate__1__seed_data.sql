@@ -139,3 +139,16 @@ VALUES
     ('NE','North East Region',40,'system-mds', 'system-mds'),
     ('SE','South East Region',50,'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_tenure_type (
+    mine_tenure_type_id,
+    mine_tenure_type_name,
+    create_user,
+    update_user
+)
+VALUES
+    (1, 'Coal', 'system-mds', 'system-mds'),
+    (2, 'Mineral', 'system-mds', 'system-mds'),
+    (3, 'Placer', 'system-mds', 'system-mds'),
+    (4, 'BC Land', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
