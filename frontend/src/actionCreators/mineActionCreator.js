@@ -172,3 +172,23 @@ export const fetchRegionOptions = () => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const fetchMineTenureTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_TENURE_TYPES));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_TENURE_TYPES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_TENURE_TYPES));
+      dispatch(mineActions.storeTenureTypes(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch(() => {
+      notification.error({
+        message: String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_TENURE_TYPES));
+      dispatch(hideLoading("modal"));
+    });
+};

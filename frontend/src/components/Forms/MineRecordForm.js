@@ -13,6 +13,7 @@ const propTypes = {
   title: PropTypes.string,
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
+  mineTenureTypes: PropTypes.array.isRequired,
 };
 
 export const MineRecordForm = (props) => {
@@ -81,6 +82,20 @@ export const MineRecordForm = (props) => {
               label="Longitude"
               component={renderConfig.FIELD}
               validate={[number, maxLength(12), lon]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item>
+            <Field
+              id="mine_tenure_type_id"
+              name="mine_tenure_type_id"
+              label="Add Tenure"
+              placeholder="Please Select Tenure"
+              component={renderConfig.SELECT}
+              data={props.mineTenureTypes}
             />
           </Form.Item>
         </Col>

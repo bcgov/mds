@@ -4,11 +4,13 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy import exc
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_identity import MineIdentity
 from ..models.mine_detail import MineDetail
+from ..models.mine_type import MineType
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
@@ -27,6 +29,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
     parser.add_argument('major_mine_ind', type=inputs.boolean, help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".')
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
+    parser.add_argument('mine_tenure_type_id', type=int, help='Indentifier of mine tenure type.')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
     @jwt.requires_roles(["mds-mine-view"])
@@ -60,8 +63,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
                 sorted_mine_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
                 paginated_mine_query, pagination_details = apply_pagination(sorted_mine_query ,page, items_per_page)
-                
-            
+
+
             mines = paginated_mine_query.all()
             return {
                 'mines': list(map(lambda x: x.json(), mines)),
@@ -116,6 +119,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         mine_region = data['mine_region']
+        mine_tenure_type_id = data['mine_tenure_type_id']
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine_detail = MineDetail(
@@ -132,6 +136,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: {}'.format(e))
         mine_identity.save()
         mine_detail.save()
+        if mine_tenure_type_id:
+            try:
+                mine_type = MineType.create_mine_type(
+                        mine_identity,
+                        mine_tenure_type_id,
+                        self.get_create_update_dict(),
+                        save=False
+                )
+                mine_type.save()
+            except exc.IntegrityError as e:
+                self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
+
         if lat and lon:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
@@ -151,7 +167,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine_detail.mine_region if mine_region else None
+            'mine_region': mine_detail.mine_region if mine_region else None,
+            'mine_tenure_type_id': mine_tenure_type_id if mine_tenure_type_id else None
         }
 
     @api.expect(parser)
@@ -166,11 +183,22 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major_mine_ind is None:
+        mine_tenure_type_id = data['mine_tenure_type_id']
+        if (
+                not tenure and
+                not (lat and lon) and
+                not mine_name and
+                not mine_note and
+                not status and
+                not region and
+                not mine_tenure_type_id and
+                major_mine_ind is None
+           ):
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
+
         # Mine Detail
         if mine_name or mine_note or major_mine_ind is not None:
             mine_detail = mine.mine_detail[0]
@@ -196,6 +224,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
+
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
@@ -213,6 +242,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
+
         # Location validation
         if lat and lon:
             location = MineLocation(
@@ -226,6 +256,19 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None
+
+        # MineType
+        if mine_tenure_type_id:
+            try:
+                mine_type = MineType.create_mine_type(
+                        mine,
+                        mine_tenure_type_id,
+                        self.get_create_update_dict(),
+                        save=False
+                )
+                mine_type.save()
+            except exc.IntegrityError as e:
+                self.raise_error(400, 'Error: Invalid Mine Tenure Type ID.')
 
         return mine.json()
 
