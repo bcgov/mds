@@ -1,6 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text eol=lf
-*.py text eol=lf
 *.bat text eol=crlf
 
 # Binary files
