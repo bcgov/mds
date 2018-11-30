@@ -290,6 +290,10 @@ export const fetchMineTailingsRequiredDocuments = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
 export const fetchMineTenureTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_TENURE_TYPES));
   dispatch(showLoading("modal"));
