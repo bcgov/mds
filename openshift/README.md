@@ -48,7 +48,7 @@ OWASP ZAP is being used to check for network penetration and find security vulne
 
 * Postgres
 
-The app uses a PostgresSQL database to store and retrieve data from. The base image is a modified s2i image that included oracle foreign data wrapper extension to fetch data from a remote oracle database instance.
+The app uses a PostgresSQL database to store and retrieve data from. The base image is a modified s2i image that included oracle foreign data wrapper extension to fetch data from a remote oracle database instance, and also the pgcrypto and postGIS extensions.
 
 [Link to s2i image](https://github.com/bcgov/openshift-postgresql-oracle_fdw)
 

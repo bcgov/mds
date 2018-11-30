@@ -1,6 +1,6 @@
 // stylying overrides for Ant components
 
-// TABS 
+// TABS
 .ant-tabs-nav-scroll {
   margin-top: 30px;
   text-align: center;
@@ -17,12 +17,12 @@
   height: 4px;
 }
 
-// DIVIDER 
+// DIVIDER
 .ant-divider {
   .ant-divider-horizontal {
     margin: 5px;
     height: 1px;
-    background-color:  $default-dark-green;
+    background-color: $default-dark-green;
   }
   &.ant-divider-vertical {
     margin: 0 15px;
@@ -31,8 +31,10 @@
     background-color: $default-brown;
   }
 }
-// BUTTON 
-.ant-btn, .ant-btn-sm, .ant-btn-secondary {
+// BUTTON
+.ant-btn,
+.ant-btn-sm,
+.ant-btn-secondary {
   font-weight: $light;
   margin: 10px;
   color: $default-dark-green;
@@ -44,11 +46,11 @@
   }
 }
 
-.ant-pagination-prev .ant-pagination-item-link, 
-.ant-pagination-next .ant-pagination-item-link, 
-.ant-select-selection, 
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link,
+.ant-select-selection,
 .ant-pagination-item {
-  & a{
+  & a {
     text-decoration: none !important;
   }
   &:hover {
@@ -76,12 +78,14 @@
 }
 
 //POPUP CONFIRM
-.ant-popover-inner-content, .ant-popover-arrow {
+.ant-popover-inner-content,
+.ant-popover-arrow {
   background-color: $default-white;
 }
 
-// TOAST 
-.ant-notification-notice {
+// TOAST
+.ant-notification-notice,
+.ant-notification {
   z-index: 1000;
 }
 
@@ -100,7 +104,7 @@
   border: 1px solid $default-dark-green;
 }
 
-// ROW 
+// ROW
 .ant-row-flex {
   padding: $default-padding-md;
 }
@@ -109,7 +113,6 @@
 .ant-pagination {
   margin: $default-margin-lg;
 }
-
 
 // FORMS
 .ant-form-vertical .ant-form-item {
