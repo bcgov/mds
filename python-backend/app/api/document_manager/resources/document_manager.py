@@ -66,7 +66,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             except UploadNotAllowed as e:
                 errors.append(
                     {
-                        'message': f'The type of the file: {original_file_name + file_extension} is not allowed and must be of the types {current_app.config["TAILINGS_FILE_SET"]}',
+                        'message': f'The type of the file: {original_file_name + file_extension} is not allowed.',
                     }
                 )
                 continue
