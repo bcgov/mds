@@ -83,3 +83,16 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'document_manager_guids' : document_guid_list,
             'errors': errors,
         }
+
+    @jwt.requires_roles(["mds-mine-create"])
+    def get(self):
+        
+        self.parser.add_argument('document_guid', type=FileStorage, location='files', action='append')
+        data = self.parser.parse_args()
+
+        if data.get() == None:
+            return self.create_error_payload(401, 'Must provide a mine id.')
+        mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)
+        return {
+            'expected_mine_documents' : list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
+        }
