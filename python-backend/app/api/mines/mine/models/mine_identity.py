@@ -18,7 +18,7 @@ class MineIdentity(AuditMixin, Base):
     mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', backref='mine_tailings_storage_facility', order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)', lazy='joined')
-    mine_expected_documents = db.relationship('MineExpectedDocument', backref='mine_expected_documents', order_by='desc(MineExpectedDocument.due_date)', lazy='joined')
+    mine_expected_documents = db.relationship('MineExpectedDocument', primaryjoin="and_(MineExpectedDocument.mine_guid == MineIdentity.mine_guid, MineExpectedDocument.active_ind==True)", backref='mine_expected_documents', order_by='desc(MineExpectedDocument.due_date)', lazy='joined')
     mine_type = db.relationship('MineType', backref='mine_type', order_by='desc(MineType.update_timestamp)', lazy='joined')
 
     def __repr__(self):
