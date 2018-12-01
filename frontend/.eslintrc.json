@@ -7,8 +7,14 @@
     "es6": true
   },
   "plugins": ["jest"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb-base",
+    "prettier"
+  ],
   "rules": {
+    "import/no-unresolved": "off",
     "no-unused-vars": 1,
     "no-console": 1,
     "no-case-declarations": 0,
