@@ -116,9 +116,9 @@ export class MinePin extends Component {
           color: [250, 65, 74, 1],
         });
 
-        renderer.addClassBreakInfo(0, 19, smSymbol);
-        renderer.addClassBreakInfo(20, 150, mdSymbol);
-        renderer.addClassBreakInfo(151, 1000, lgSymbol);
+        renderer.addClassBreakInfo(0, 5, smSymbol);
+        renderer.addClassBreakInfo(6, 120, mdSymbol);
+        renderer.addClassBreakInfo(121, 1000, lgSymbol);
         renderer.addClassBreakInfo(1001, Infinity, xlSymbol);
 
         // set up a popup template
@@ -150,7 +150,8 @@ export class MinePin extends Component {
           singlePopupTemplate: popupTemplate,
           spatialReference: new SpatialReference({ wkid: 4326 }),
           maxSingleFlareCount: 8,
-          clusterRatio: 75,
+          clusterToScale: 100000,
+          clusterRatio: 100,
           data: fclData,
         };
 
