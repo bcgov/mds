@@ -7,20 +7,12 @@
     "es6": true
   },
   "plugins": ["jest"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "airbnb-base",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "prettier"],
   "rules": {
     "import/no-unresolved": "off",
-    "no-unused-vars": 1,
-    "no-console": 1,
+    "react/jsx-filename-extension": "off",
     "no-case-declarations": 0,
-    "react/prop-types": 1,
     "react/display-name": 0,
-    "react/no-deprecated": 0,
-    "semicolon": [true, "always"]
+    "react/no-deprecated": 0
   }
 }
