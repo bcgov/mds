@@ -97,6 +97,31 @@ standards, as enforced by the Prettier and ESLint rules.
 The linting rules are built on the Airbnb configuration. Contributors should
 ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
+See the usage guide below for more information on the linting CLI options.
+
+Lint one file
+
+```
+npm run lint ./filepath
+```
+
+Lint all files
+
+```
+npm run lint .
+```
+
+Apply linting rules in one file
+
+```
+npm run lint ./filepath -- --fix
+```
+
+Apply linting rules in one file
+
+```
+npm run lint-all -- --fix
+```
 
 Developers are encouraged to install the Prettier plugin appropriate for their
 editor. This ensures that all committed code is properly formatted. VS Code is
