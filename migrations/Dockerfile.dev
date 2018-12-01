@@ -1,14 +1,7 @@
-FROM postgres:9.6
+FROM postgres:9.6-alpine
 
 # Copy only migration scripts for creation
 RUN echo "CREATE USER postgres" >> /docker-entrypoint-initdb.d/01-create-user.sql
-COPY ./sql/V*.sql /docker-entrypoint-initdb.d/
-COPY ./sql/after*.sql /docker-entrypoint-initdb.d/
 
 # Set the working directory to container entrypoint
 WORKDIR /docker-entrypoint-initdb.d
-
-# Prefix all the aftermigrate.sql files with a `z` to run at the end
-RUN for filename in after*.sql; do mv "$filename" "z_$filename"; done;
-
-VOLUME ["/var/lib/postgresql/data"]
