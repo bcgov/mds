@@ -16,6 +16,7 @@ const setupProps = () => {
   props.parties = MOCK.PARTY.parties;
   props.partyIds = MOCK.PARTY.partyIds;
   props.title = "mockTitle";
+  props.initialValues = {mineManager: null, startDate: null}
 }
 
 beforeEach(() => {
