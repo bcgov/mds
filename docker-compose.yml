@@ -61,7 +61,7 @@ services:
     volumes:
       - ./python-backend/:/app/
     depends_on:
-      - postgres
+      - flyway
     # Export environment variables from .env into the container environment
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
