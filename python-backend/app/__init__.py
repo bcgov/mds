@@ -28,8 +28,6 @@ def create_app(test_config=None):
         app.config.from_object(test_config)
 
     configure_uploads(app, documents)
-    #convert to bytes from MB
-    patch_request_class(app, (Config.FILE_BYTE_LIMIT*1024*1024))
 
     register_extensions(app)
     register_routes(app)
