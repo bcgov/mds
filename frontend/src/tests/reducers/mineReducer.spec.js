@@ -6,6 +6,8 @@ import {
   storeMineNameList,
   storeStatusOptions,
   storeRegionOptions,
+  storeDocumentStatusOptions,
+  storeMineTSFRequiredDocuments,
   storeTenureTypes,
 } from "@/actions/mineActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
@@ -20,6 +22,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(undefined, {});
@@ -41,6 +45,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(
@@ -65,6 +71,8 @@ describe("mineReducer", () => {
       mineGuid: "test123",
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(undefined, storeMine({ guid: "test123" }, "test123"));
@@ -80,6 +88,8 @@ describe("mineReducer", () => {
       mineGuid: "test123",
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const updatedMineValue = {
@@ -90,6 +100,8 @@ describe("mineReducer", () => {
       mineGuid: "test456",
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const storedMine = mineReducer(undefined, storeMine({ guid: "test123" }, "test123"));
@@ -107,6 +119,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(
@@ -125,6 +139,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: MOCK.STATUS_OPTIONS.options,
       mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(undefined, storeStatusOptions(MOCK.STATUS_OPTIONS));
@@ -140,9 +156,51 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: MOCK.REGION_OPTIONS.options,
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: [],
       mineTenureTypes: [],
     };
     const result = mineReducer(undefined, storeRegionOptions(MOCK.REGION_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_DOCUMENT_STATUS_OPTIONS", () => {
+    const expectedValue = {
+      mines: {},
+      mineIds: [],
+      mineNameList: [],
+      minesPageData: {},
+      mineGuid: false,
+      mineStatusOptions: [],
+      mineRegionOptions: [],
+      expectedDocumentStatusOptions: MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
+      mineTSFRequiredReports: [],
+      mineTenureTypes: [],
+    };
+    const result = mineReducer(
+      undefined,
+      storeDocumentStatusOptions(MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_MINE_TSF_REQUIRED_DOCUMENTS", () => {
+    const expectedValue = {
+      mines: {},
+      mineIds: [],
+      mineNameList: [],
+      minesPageData: {},
+      mineGuid: false,
+      mineStatusOptions: [],
+      mineRegionOptions: [],
+      expectedDocumentStatusOptions: [],
+      mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS,
+      mineTenureTypes: [],
+    };
+    const result = mineReducer(
+      undefined,
+      storeMineTSFRequiredDocuments(MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE)
+    );
     expect(result).toEqual(expectedValue);
   });
 
@@ -155,6 +213,8 @@ describe("mineReducer", () => {
       mineGuid: false,
       mineStatusOptions: [],
       mineRegionOptions: [],
+      mineTSFRequiredReports: [],
+      expectedDocumentStatusOptions: [],
       mineTenureTypes: MOCK.TENURE_TYPES.options,
     };
     const result = mineReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES));
