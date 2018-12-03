@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Card, Row, Col, Select } from "antd";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -8,24 +10,20 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 
+import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
+import { getPartyRelationshipTypes } from "@/selectors/partiesSelectors";
+
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  /*     closeModal: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    handlePartySubmit: PropTypes.func.isRequired,
-    fetchMineRecordById: PropTypes.func.isRequired,
-    fetchParties: PropTypes.func.isRequired,
-    addPermittee: PropTypes.func.isRequired,
-    mine: PropTypes.object.isRequired,
-    permittees: PropTypes.object,
-    permitteeIds: PropTypes.array */
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  partyRelationshipTypes: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
+  expectedDocumentStatusOptions: [],
   partyTypeOptions: [
     {
       value: "EoR",
@@ -36,12 +34,13 @@ const defaultProps = {
       label: "Mine Manager",
     },
   ],
-  /*
-    permittees: {},
-    permitteeIds: [], */
 };
 
 export class ViewPermittee extends Component {
+  componentDidMount() {
+    this.props.fetchPartyRelationshipTypes();
+  }
+
   onSubmitAddPartyRelationship = (values) => {
     /*     this.props
       .addPartyRelationship(
@@ -80,7 +79,7 @@ export class ViewPermittee extends Component {
 
     return (
       <div>
-        <Card>
+        {/*         <Card>
           <Row gutter={16}>
             <Col span={6}>
               <Select
@@ -110,28 +109,46 @@ export class ViewPermittee extends Component {
               </Select>
             </Col>
           </Row>
-          <br />
-          {/* <Row gutter={16}>
+          <br /> */}
+        {/* <Row gutter={16}>
             <Col span={6}>
-              <h3>Code-Required Reports</h3>
+              <h3></h3>
             </Col>
             <Col span={6}>
-              <h3>Due Date</h3>
+              <h3></h3>
             </Col>
             <Col span={6}>
-              <h3>Recieved</h3>
+              <h3></h3>
             </Col>
             <Col span={6}>
-              <h3>Review Status</h3>
+              <h3></h3>
             </Col>
           </Row> */}
-        </Card>
+        {/*       </Card> */}
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    partyRelationshipTypes: getPartyRelationshipTypes(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      fetchPartyRelationshipTypes,
+    },
+    dispatch
+  );
+};
+
 ViewPermittee.propTypes = propTypes;
 ViewPermittee.defaultProps = defaultProps;
 
-export default ViewPermittee;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewPermittee);
