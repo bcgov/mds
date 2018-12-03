@@ -7,7 +7,6 @@ from app.extensions import db
 
 from ...utils.models_mixins import AuditMixin, Base
 
-
 class DocumentManager(AuditMixin, Base):
     __tablename__ = 'document_manager'
     document_manager_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
