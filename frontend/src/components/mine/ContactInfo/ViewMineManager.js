@@ -51,16 +51,11 @@ export class ViewMineManager extends Component {
   openModal(event, onSubmit, handleChange, handlePartySubmit, title) {
     event.preventDefault();
 
-    let mineManager = null;
-    let startDate = null;
-    let appointment = this.props.mine.mgr_appointment;
-    if (appointment != null && appointment.length > 0) {
-      mineManager = appointment[0].party_guid;
-      startDate = appointment[0].effective_date;
-    } 
+    const appointment = this.props.mine.mgr_appointment;
+    const hasAppointment = appointment != null && appointment.length > 0;
     const initialValues = {
-      mineManager: mineManager,
-      startDate: startDate
+      mineManager: hasAppointment ? appointment[0].party_guid : null,
+      startDate: hasAppointment ? appointment[0].effective_date : null
     }
 
     this.props.openModal({
