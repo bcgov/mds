@@ -10,6 +10,7 @@ Flask-Migrate==2.2.1
 flask-restplus==0.11.0
 Flask-SQLAlchemy==2.3.2
 flask_jwt_oidc==0.1.2
+Flask-Uploads==0.2.1
 itsdangerous==0.24
 Jinja2==2.10
 jsonschema==2.6.0
@@ -17,11 +18,11 @@ Mako==1.0.7
 MarkupSafe==1.0
 more-itertools==4.2.0
 names==0.3.0
-pluggy==0.6.0
+pluggy==0.7.1
 psycopg2==2.7.5
 psycopg2-binary==2.7.5
 py==1.5.4
-pytest==3.6.3
+pytest==3.10.1
 pytest-cov==2.5.1
 python-dateutil==2.7.3
 python-dotenv==0.8.2
