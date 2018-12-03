@@ -152,3 +152,14 @@ VALUES
     (3, 'Placer', 'system-mds', 'system-mds'),
     (4, 'BC Land', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_party_appt_type_code (
+        mine_party_appt_type_code,
+        description,
+        display_order,
+        create_user,
+        update_user
+) VALUES  
+    ('EOR', 'Engineer Of Record', 2, 'system-mds', 'system-mds'),
+    ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
