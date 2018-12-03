@@ -87,7 +87,7 @@ export class ViewMineManager extends Component {
             </div>
           </Card>
         )}
-        {mine.mgr_appointment && mine.mgr_appointment[0] && (
+        {mine.mgr_appointment[0] && (
           <div>
             <Card>
               <table>
