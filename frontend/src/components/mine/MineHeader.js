@@ -113,11 +113,7 @@ class MineHeader extends Component {
           <button
             className="full"
             onClick={(event) =>
-              this.openTailingsModal(
-                event,
-                this.handleAddTailings,
-                ModalContent.ADD_TAILINGS
-              )
+              this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
             <img style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
@@ -134,13 +130,7 @@ class MineHeader extends Component {
             <ConditionalButton
               isDropdown
               overlay={menu}
-              string={
-                <Icon
-                  type="ellipsis"
-                  theme="outlined"
-                  style={{ fontSize: "30px" }}
-                />
-              }
+              string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
             />
           </div>
           <Divider />
@@ -151,13 +141,7 @@ class MineHeader extends Component {
                 <h5>Operating Status: </h5>
               </div>
               <div>
-                <img
-                  src={
-                    mine.mine_status[0].status_values[0] === "OP"
-                      ? ELLIPSE
-                      : RED_ELLIPSE
-                  }
-                />
+                <img src={mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE} />
               </div>
               <div>
                 <h3>
@@ -194,16 +178,10 @@ class MineHeader extends Component {
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat:{" "}
-                {mine.mine_location[0]
-                  ? mine.mine_location[0].latitude
-                  : String.EMPTY_FIELD}
+                Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long:{" "}
-                {mine.mine_location[0]
-                  ? mine.mine_location[0].longitude
-                  : String.EMPTY_FIELD}
+                Long: {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}
               </p>
             </div>
             <p className="p-white">
