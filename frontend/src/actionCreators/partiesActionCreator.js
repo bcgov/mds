@@ -135,7 +135,7 @@ export const fetchPartyRelationshipTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
   dispatch(showLoading("modal"));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.PARTY + "/mines/types", createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.PARTY + "/mines/relationship-types", createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
       dispatch(partyActions.storePartyRelationshipTypes(response.data));

@@ -8,6 +8,8 @@ from ..party_appt.resources.mine_party_appt_type_resource import MinePartyApptTy
 api = Namespace('parties', description='Party related operations')
 
 api.add_resource(PartyResource, '', '/<string:party_guid>')
-api.add_resource(ManagerResource, '/managers', '/managers/<string:mgr_appointment_guid>')
+api.add_resource(ManagerResource, '/managers',
+                 '/managers/<string:mgr_appointment_guid>')
 api.add_resource(MinePartyApptResource, '/mines', '/mines')
-api.add_resource(MinePartyApptTypeResource, '/mines/relationship_types', '/mines/relationship_types/<string:mine_party_appt_type_code>')
+api.add_resource(MinePartyApptTypeResource, '/mines/relationship-types',
+                 '/mines/relationship-types/<string:mine_party_appt_type_code>')
