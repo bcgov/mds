@@ -67,6 +67,7 @@ export class ViewPermittee extends Component {
         handleChange,
         onPartySubmit,
         title: title + ": " + this.props.partyTypeOptions.find((x) => x.value === value).label,
+        partyType: value,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
     });
