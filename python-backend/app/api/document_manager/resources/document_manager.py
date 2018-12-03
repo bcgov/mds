@@ -86,7 +86,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'document_guid': 'Required: Document guid. Returns the file associated to this guid.'})
     @jwt.requires_roles(["mds-mine-create"])
-    def get(self, document_guid):
+    def get(self, document_guid=None):
 
         if document_guid == None:
             return self.create_error_payload(401, 'Must provide a document guid.')
