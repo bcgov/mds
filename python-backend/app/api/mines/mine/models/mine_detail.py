@@ -15,7 +15,7 @@ class MineDetail(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
-    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False) 
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
 
 
@@ -69,4 +69,4 @@ class MineDetail(AuditMixin, Base):
         if len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no
-        
+

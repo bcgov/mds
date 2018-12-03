@@ -36,6 +36,8 @@ export const Validate = new Validator();
 
 export const required = (value) => (value ? undefined : "This is a required field");
 
+export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
+
 export const maxLength = memoize((max) => (value) =>
   value && value.length > max ? `Must be ${max} characters or less` : undefined
 );

@@ -1,13 +1,13 @@
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
-import { loadingBarReducer } from 'react-redux-loading-bar'
-import * as reducerTypes from '@/constants/reducerTypes';
-import networkReducer from './networkReducer';
-import mineReducer from '@/reducers/mineReducer';
-import partiesReducer from '@/reducers/partiesReducer';
-import modalReducer from '@/reducers/modalReducer';
-import authenticationReducer from '@/reducers/authenticationReducer';
-import { createReducer } from '@/utils/helpers';
+import { combineReducers } from "redux";
+import { reducer as formReducer } from "redux-form";
+import { loadingBarReducer } from "react-redux-loading-bar";
+import * as reducerTypes from "@/constants/reducerTypes";
+import networkReducer from "./networkReducer";
+import mineReducer from "@/reducers/mineReducer";
+import partiesReducer from "@/reducers/partiesReducer";
+import modalReducer from "@/reducers/modalReducer";
+import authenticationReducer from "@/reducers/authenticationReducer";
+import { createReducer } from "@/utils/helpers";
 
 export const reducerObject = {
   form: formReducer,
@@ -25,6 +25,7 @@ export const reducerObject = {
   [reducerTypes.GET_MINE_NAME_LIST]: createReducer(networkReducer, reducerTypes.GET_MINE_NAME_LIST),
   [reducerTypes.GET_STATUS_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_STATUS_OPTIONS),
   [reducerTypes.GET_REGION_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_REGION_OPTIONS),
+  [reducerTypes.GET_TENURE_TYPES]: createReducer(networkReducer, reducerTypes.GET_TENURE_TYPES),
   [reducerTypes.UPDATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.UPDATE_MINE_RECORD),
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
   [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),

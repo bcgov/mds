@@ -13,6 +13,7 @@ const setupDispatchProps = () => {
   dispatchProps.createMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
+  dispatchProps.fetchMineTenureTypes = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
@@ -29,6 +30,8 @@ const setupReducerProps = () => {
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineRegionHash = MOCK.REGION_HASH;
+  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  reducerProps.mineTenureHash = MOCK.TENURE_HASH;
 };
 
 beforeEach(() => {

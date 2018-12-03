@@ -36,6 +36,11 @@
             "name": "GIT_BRANCH",
             "description": "Current git branch name",
             "required": true
+        },
+        {
+            "name": "UPLOADED_DOCUMENT_DEST",
+            "required": false,
+            "value": "/opt/app-root/src"
         }
     ],
     "objects": [
@@ -102,6 +107,10 @@
                               {
                                 "name": "DB_NAME_TEST",
                                 "value": "mds_test"
+                              },
+                              {
+                                "name": "UPLOADED_DOCUMENT_DEST",
+                                "value": "${UPLOADED_DOCUMENT_DEST}"
                               },
                               {
                                 "name": "GIT_BRANCH",

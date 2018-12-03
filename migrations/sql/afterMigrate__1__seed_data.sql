@@ -6,7 +6,8 @@ NOTE: If you add a new entry here, don't forget to update the flask delete_data 
 ***/
 
 
-INSERT INTO permit_status_code (
+INSERT INTO permit_status_code
+    (
     permit_status_code,
     description,
     display_order,
@@ -18,7 +19,8 @@ VALUES
     ('C', 'Closed Permit', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO party_type_code (
+INSERT INTO party_type_code
+    (
     party_type_code,
     description,
     display_order,
@@ -32,7 +34,8 @@ ON CONFLICT DO NOTHING;
 
 -- Note: Any changes to the mine_operation_status_code, mine_operation_status_reason_code,
 -- and mine_operation_status_sub_reason_code, will require changes to the app/api/constants.py file.
-INSERT INTO mine_operation_status_code (
+INSERT INTO mine_operation_status_code
+    (
     mine_operation_status_code,
     description,
     display_order,
@@ -46,7 +49,8 @@ VALUES
     ('OP', 'Operating', 40, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO mine_operation_status_reason_code (
+INSERT INTO mine_operation_status_reason_code
+    (
     mine_operation_status_reason_code,
     description,
     display_order,
@@ -62,7 +66,8 @@ VALUES
     ('SEA', 'Seasonal', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO mine_operation_status_sub_reason_code (
+INSERT INTO mine_operation_status_sub_reason_code
+    (
     mine_operation_status_sub_reason_code,
     description,
     display_order,
@@ -77,13 +82,14 @@ VALUES
     ('SVR', 'Site Visit Required', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO mds_required_document_category(
+INSERT INTO mds_required_document_category
+    (
     req_document_category_guid,
     req_document_category
-)
+    )
 VALUES
-    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b6','MINE_TAILINGS'),
-    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b7','MINE_OTHER')
+    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b6', 'MINE_TAILINGS'),
+    ('6ab98b9a-0e66-4f26-99de-e3c270dea7b7', 'MINE_OTHER')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO required_document_due_date_type(
@@ -125,17 +131,47 @@ VALUES
     ('OTHER_TEST_REPORT', 'testing filter on category', '6ab98b9a-0e66-4f26-99de-e3c270dea7b7','true','ANV', 12, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO mine_region_code (
+INSERT INTO mine_region_code
+    (
     mine_region_code,
     description,
     display_order,
     create_user,
     update_user
+    )
+VALUES
+    ('SW', 'South West Region', 10, 'system-mds', 'system-mds'),
+    ('SC', 'South Central Region', 20, 'system-mds', 'system-mds'),
+    ('NW', 'North West Region', 30, 'system-mds', 'system-mds'),
+    ('NE', 'North East Region', 40, 'system-mds', 'system-mds'),
+    ('SE', 'South East Region', 50, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO mine_expected_document_status
+    (
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('Not Received', 10, 'system-mds', 'system-mds'),
+    ('Received / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('Review In Progress', 30, 'system-mds', 'system-mds'),
+    ('Accepted', 40, 'system-mds', 'system-mds'),
+    ('Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_tenure_type (
+    mine_tenure_type_id,
+    mine_tenure_type_name,
+    create_user,
+    update_user
 )
 VALUES
-    ('SW','South West Region',10,'system-mds', 'system-mds'),
-    ('SC','South Central Region',20,'system-mds', 'system-mds'),
-    ('NW','North West Region',30,'system-mds', 'system-mds'),
-    ('NE','North East Region',40,'system-mds', 'system-mds'),
-    ('SE','South East Region',50,'system-mds', 'system-mds')
+    (1, 'Coal', 'system-mds', 'system-mds'),
+    (2, 'Mineral', 'system-mds', 'system-mds'),
+    (3, 'Placer', 'system-mds', 'system-mds'),
+    (4, 'BC Land', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
