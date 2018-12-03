@@ -49,11 +49,6 @@ class TestConfig(Config):
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
-
-    #Flask-uploads configs
-    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    #100MB file limit
-    FILE_BYTE_LIMIT = 100
     
     JWT_OIDC_TEST_KEYS = {
         "keys": [
