@@ -43,6 +43,20 @@ export const storeRegionOptions = (payload) => {
   };
 };
 
+export const storeDocumentStatusOptions = (payload) => {
+  return {
+    type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
+    payload,
+  };
+};
+
+export const storeMineTSFRequiredDocuments = (payload) => {
+  return {
+    type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
+    payload,
+  };
+};
+
 export const storeTenureTypes = (payload) => {
   return {
     type: ActionTypes.STORE_TENURE_TYPES,

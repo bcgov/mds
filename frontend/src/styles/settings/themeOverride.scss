@@ -74,6 +74,14 @@
   font-size: 14px;
   height: 32px;
 }
+.ant-btn-background-ghost {
+  border-style: none;
+  box-shadow: none;
+  &:hover {
+    border-style: none !important;
+    border: 0px;
+  }
+}
 
 //POPUP CONFIRM
 .ant-popover-inner-content, .ant-popover-arrow {
