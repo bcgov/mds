@@ -13,8 +13,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export const AddTailingsForm = (props) => {
-  return (
+export const AddTailingsForm = (props) => 
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
         <Col>
@@ -36,8 +35,7 @@ export const AddTailingsForm = (props) => {
       <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
      </div>
     </Form>
-  );
-};
+  ;
 
 AddTailingsForm.propTypes = propTypes;
 
