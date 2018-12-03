@@ -17,7 +17,7 @@ CREATE TABLE public.mine_party_appt (
 	party_guid uuid NOT NULL,
 	mine_party_appt_type_code varchar(3) NOT NULL,
 	effective_date date NOT NULL DEFAULT now(),
-	expriy_date date NOT NULL DEFAULT '9999-12-31'::date,
+	expiry_date date NOT NULL DEFAULT '9999-12-31'::date,
 	create_user varchar(60) NOT NULL,
 	create_timestamp timestamptz NOT NULL DEFAULT now(),
 	update_user varchar(60) NOT NULL,

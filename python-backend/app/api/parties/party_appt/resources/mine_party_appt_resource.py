@@ -20,9 +20,10 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if mine_party_appt_guid:
             return MinePartyAppointment.find_by_guid(mine_party_appt_guid)
         else: 
-            return self.create_error_payload(400, 'NOT IMPLEMENTED YET'), 400
-            # return MinePartyAppointment.find_by_mine_guid()
-            #search by query string?? 
-            #
-            #
-            #
+            mine_guid = request.args.get('mine_guid', type=str)
+            party_guid = request.args.get('party_guid', type=str)
+            mine_party_appt_type_code = request.args.get('mine_party_appt_type_code',type=str)
+
+            results = MinePartyAppointment.find_by(mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_code=mine_party_appt_type_code)
+            
+            return list(map(lambda x: x.json(), results))
