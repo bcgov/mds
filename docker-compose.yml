@@ -1,7 +1,7 @@
-version: '2'
+version: "2"
 
 services:
-####################### Keycloak Definition #######################
+  ####################### Keycloak Definition #######################
   keycloak:
     restart: always
     container_name: mds_keycloak
@@ -12,15 +12,15 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
       - DB_VENDOR=h2
     volumes:
-     - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-     - ./openshift/scripts/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+      - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+      - ./openshift/scripts/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
     ports:
       - "8080:8080"
       - "8443:8443"
     networks:
       - mds
 
-####################### Postgres Definition #######################
+  ####################### Postgres Definition #######################
   postgres:
     restart: always
     container_name: mds_postgres
@@ -33,10 +33,24 @@ services:
       - POSTGRES_DB=mds
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - mds
 
-####################### Backend Definition #######################
+  ####################### Flyway Migration Definition #######################
+  flyway:
+    container_name: mds_flyway
+    image: boxfuse/flyway:5.2.3-alpine
+    command: -url=jdbc:postgresql://postgres/mds -user=mds -password=test -connectRetries=60 migrate
+    volumes:
+      - ./migrations/sql:/flyway/sql
+    depends_on:
+      - postgres
+    networks:
+      - mds
+
+  ####################### Backend Definition #######################
   backend:
     restart: always
     container_name: mds_backend
@@ -45,7 +59,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-     - ./python-backend/:/app/
+      - ./python-backend/:/app/
     depends_on:
       - postgres
     # Export environment variables from .env into the container environment
@@ -53,7 +67,7 @@ services:
     networks:
       - mds
 
-####################### Frontend Definition #######################
+  ####################### Frontend Definition #######################
   frontend:
     restart: always
     container_name: mds_frontend
@@ -61,7 +75,7 @@ services:
       context: frontend
     command: ["npm", "run", "serve"]
     volumes:
-     - ./frontend/src/:/app/src/
+      - ./frontend/src/:/app/src/
     ports:
       - 3000:3000
     depends_on:
@@ -73,3 +87,7 @@ services:
 networks:
   mds:
     driver: "bridge"
+
+####################### Volumes Definition #######################
+volumes:
+  postgres-data:

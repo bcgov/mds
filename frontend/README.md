@@ -91,12 +91,43 @@ make frontend
 
 ## Code Contribution Standards
 
-Contributors to this codebase are expected to follow the formatting standards.
-Developers are encouraged to install the Prettier plugin appropriate for their
-editor. This ensures that all committed code is properly formatted.
+Contributors to this codebase are expected to follow the formatting and style
+standards, as enforced by the Prettier and ESLint rules.
 
-VS Code is commonly used by MDS contributors, so it will be used as an example
-for setting up formatting on-save:
+The linting rules are built on the Airbnb configuration. Contributors should
+ensure that they are not introducing linting errors into the codebase with
+their changes. Modern text editors, such as VS Code, will indicate errors.
+See the usage guide below for more information on the linting CLI options.
+
+Lint one file
+
+```
+npm run lint ./filepath
+```
+
+Lint all files
+
+```
+npm run lint .
+```
+
+Apply linting rules in one file
+
+```
+npm run lint ./filepath -- --fix
+```
+
+Apply linting rules in one file
+
+```
+npm run lint-all -- --fix
+```
+
+Developers are encouraged to install the Prettier plugin appropriate for their
+editor. This ensures that all committed code is properly formatted. VS Code is
+commonly used by MDS contributors, so it will be used as an example for setting
+up formatting on-save:
+
 1. Install the VS Code Prettier [plugin](https://github.com/prettier/prettier-vscode)
 2. Set `"editor.formatOnSave": true` in your editor config
 3. Ensure that no conflicting code formatting tools are enabled (ex. Beautify)
