@@ -11,12 +11,14 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   onPartySubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  partyType: PropTypes.string.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   title: "",
+  partyType: "",
   parties: {},
   partyIds: [],
 };
