@@ -92,7 +92,7 @@
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
     "start": "node server.js",
-    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-junit",
+    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --updateSnapshot --runInBand --coverage",
     "lint": "eslint",
     "format:check": "prettier --config .prettierrc.json",
     "format:check-all": "prettier --config .prettierrc.json src/**/*.js",
@@ -125,8 +125,9 @@
     }
   },
   "jestSonar": {
-    "reportPath": "coverage",
-    "reportFile": "tests-report.xml"
+    "reportPath": "reports",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   },
   "jest-junit": {
     "output": "./coverage/tests-report.xml"
