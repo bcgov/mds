@@ -19,6 +19,7 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
+from app.api.mines.mine.models.mine_tenure_type import MineTenureType
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
@@ -78,7 +79,7 @@ def setup_data(session):
     clear_data(session)
 
     # Insert Region Code
-    for region_code_value, display_order_value in zip(TEST_REGION_CODES,TEST_REGION_CODE_DISPLAY_ORDER):
+    for region_code_value, display_order_value in zip(TEST_REGION_CODES, TEST_REGION_CODE_DISPLAY_ORDER):
         region_code = MineRegionCode(
             mine_region_code=region_code_value,
             description=TEST_REGION_DESCRIPTION,
@@ -87,8 +88,23 @@ def setup_data(session):
         )
         region_code.save()
 
+    # Insert Mine Tenure Types
+    mine_tenure_type_1 = MineTenureType(
+        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_1,
+        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_1,
+        **DUMMY_USER_KWARGS
+    )
+    mine_tenure_type_2 = MineTenureType(
+        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_2,
+        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_2,
+        **DUMMY_USER_KWARGS
+    )
+    mine_tenure_type_1.save()
+    mine_tenure_type_2.save()
+
     # Test Mine Data
-    mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
+    mine_identity = MineIdentity(mine_guid=uuid.UUID(
+        TEST_MINE_GUID), **DUMMY_USER_KWARGS)
     mine_detail = MineDetail(
         mine_detail_guid=uuid.UUID(TEST_MINE_DETAIL_GUID),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
@@ -242,66 +258,68 @@ def setup_data(session):
     permittee.save()
 
     required_document_due_date_type1 = RequiredDocumentDueDateType(
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
-        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[0],
+        req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
+        req_document_due_date_description=TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[0],
         **DUMMY_USER_KWARGS
     )
     required_document_due_date_type1.save()
 
     required_document_due_date_type2 = RequiredDocumentDueDateType(
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
-        req_document_due_date_description = TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[1],
+        req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
+        req_document_due_date_description=TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[1],
         **DUMMY_USER_KWARGS
     )
     required_document_due_date_type2.save()
-    
+
     required_document_category1 = RequiredDocumentCategory(
-        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
-        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
+        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
     )
     required_document_category1.save()
 
     required_document_category2 = RequiredDocumentCategory(
-        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
-        req_document_category = TEST_REQUIRED_REPORT_CATEGORY_OTHER
+        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_category=TEST_REQUIRED_REPORT_CATEGORY_OTHER
     )
     required_document_category2.save()
 
     required_document1 = RequiredDocument(
-        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
-        req_document_name = TEST_REQUIRED_REPORT_NAME1,
-        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
-        req_document_due_date_period_months = 12,
+        req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
+        req_document_name=TEST_REQUIRED_REPORT_NAME1,
+        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
+        req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS
     )
     required_document1.save()
 
     required_document2 = RequiredDocument(
-        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
-        req_document_name = TEST_REQUIRED_REPORT_NAME2,
-        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
-        req_document_due_date_period_months = 12,
+        req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
+        req_document_name=TEST_REQUIRED_REPORT_NAME2,
+        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
+        req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS
     )
     required_document2.save()
 
     required_document3 = RequiredDocument(
-        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
-        req_document_name = TEST_REQUIRED_REPORT_NAME3,
-        req_document_category_guid = TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
-        req_document_due_date_type = TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
-        req_document_due_date_period_months = 12,
+        req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
+        req_document_name=TEST_REQUIRED_REPORT_NAME3,
+        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
+        req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS
     )
     required_document3.save()
-    
+
     expected_document1 = MineExpectedDocument(
-        exp_document_guid = uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
-        req_document_guid = uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
-        mine_guid = TEST_MINE_GUID,
-        exp_document_name = TEST_EXPECTED_DOCUMENT_NAME1,
+        exp_document_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
+        req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
+        mine_guid=TEST_MINE_GUID,
+        exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
+        due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
+        received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         **DUMMY_USER_KWARGS
     )
     expected_document1.save()
@@ -313,6 +331,7 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     mine_tsf1.save()
+
 
 def clear_data(session):
     meta = db.metadata

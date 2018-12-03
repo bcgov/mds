@@ -1,6 +1,6 @@
-import * as actionTypes from '@/constants/actionTypes';
-import { MINES } from '@/constants/reducerTypes';
-import { createItemMap, createItemIdsArray } from '@/utils/helpers';
+import * as actionTypes from "@/constants/actionTypes";
+import { MINES } from "@/constants/reducerTypes";
+import { createItemMap, createItemIdsArray, createDropDownList } from "@/utils/helpers";
 
 /**
  * @file mineReducer.js
@@ -14,51 +14,73 @@ const initialState = {
   minesPageData: {},
   mineGuid: false,
   mineStatusOptions: [],
-  mineRegionOptions: []
+  mineRegionOptions: [],
+  expectedDocumentStatusOptions: [],
+  mineTSFRequiredReports: [],
+  mineTenureTypes: [],
 };
 
 const mineReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case actionTypes.STORE_MINE_LIST:
-        return {
-          ...state,
-          mines: createItemMap(action.payload.mines, 'guid'),
-          mineIds: createItemIdsArray(action.payload.mines, 'guid'),
-          minesPageData: action.payload,
-          mineGuid: false,
-        }
-      case actionTypes.STORE_MINE:
-        return {
-          ...state,
-          mines: createItemMap([action.payload], 'guid'),
-          mineIds: createItemIdsArray([action.payload], 'guid'),
-          mineGuid: action.id,
-        }
-      case actionTypes.STORE_MINE_NAME_LIST:
-        return {
-          ...state,
-          mineNameList: action.payload,
-        }
-      case actionTypes.STORE_STATUS_OPTIONS:
-        return {
-          ...state,
-          mineStatusOptions: action.payload.options,
-        }
-      case actionTypes.STORE_REGION_OPTIONS:
-        return {
-          ...state,
-          mineRegionOptions: action.payload.options,
-        }
-      case actionTypes.UPDATE_MINE_RECORD:
-        return {
-          ...state,
-          mines: createItemMap([action.payload], 'guid'),
-          mineIds: createItemIdsArray([action.payload], 'guid'),
-          mineGuid: action.payload.guid,
-        }
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case actionTypes.STORE_MINE_LIST:
+      return {
+        ...state,
+        mines: createItemMap(action.payload.mines, "guid"),
+        mineIds: createItemIdsArray(action.payload.mines, "guid"),
+        minesPageData: action.payload,
+        mineGuid: false,
+      };
+    case actionTypes.STORE_MINE:
+      return {
+        ...state,
+        mines: createItemMap([action.payload], "guid"),
+        mineIds: createItemIdsArray([action.payload], "guid"),
+        mineGuid: action.id,
+      };
+    case actionTypes.STORE_MINE_NAME_LIST:
+      return {
+        ...state,
+        mineNameList: action.payload,
+      };
+    case actionTypes.STORE_STATUS_OPTIONS:
+      return {
+        ...state,
+        mineStatusOptions: action.payload.options,
+      };
+    case actionTypes.STORE_REGION_OPTIONS:
+      return {
+        ...state,
+        mineRegionOptions: action.payload.options,
+      };
+    case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
+      return {
+        ...state,
+        expectedDocumentStatusOptions: action.payload.options,
+      };
+    case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
+      return {
+        ...state,
+        mineTSFRequiredReports: createDropDownList(
+          action.payload.required_documents,
+          "req_document_name",
+          "req_document_guid"
+        ),
+      };
+    case actionTypes.STORE_TENURE_TYPES:
+      return {
+        ...state,
+        mineTenureTypes: action.payload.options,
+      };
+    case actionTypes.UPDATE_MINE_RECORD:
+      return {
+        ...state,
+        mines: createItemMap([action.payload], "guid"),
+        mineIds: createItemIdsArray([action.payload], "guid"),
+        mineGuid: action.payload.guid,
+      };
+    default:
+      return state;
+  }
 };
 
 export const getMines = (state) => state[MINES].mines;
@@ -68,5 +90,9 @@ export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getMineGuid = (state) => state[MINES].mineGuid;
 export const getMineStatusOptions = (state) => state[MINES].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[MINES].mineRegionOptions;
+export const getExpectedDocumentStatusOptions = (state) =>
+  state[MINES].expectedDocumentStatusOptions;
+export const getMineTSFRequiredReports = (state) => state[MINES].mineTSFRequiredReports;
+export const getMineTenureTypes = (state) => state[MINES].mineTenureTypes;
 
 export default mineReducer;
