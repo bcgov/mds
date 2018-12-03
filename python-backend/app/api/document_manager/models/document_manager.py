@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -28,3 +29,11 @@ class DocumentManager(AuditMixin, Base):
             'file_display_name': str(self.file_display_name),
             'path_display_name': str(self.path_display_name)
         }
+
+    @classmethod
+    def find_by_document_manager_guid(cls, document_guid):
+        try:
+            uuid.UUID(document_guid, version=4)
+            return cls.query.filter_by(document_guid=document_guid).first()
+        except ValueError:
+            return None

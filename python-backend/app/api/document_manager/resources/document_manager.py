@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
-from flask import request, current_app
+from flask import request, current_app, send_file
 from flask_restplus import Resource, reqparse
 from flask_uploads import UploadNotAllowed
 
@@ -84,15 +84,13 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'errors': errors,
         }
 
+    @api.doc(params={'document_guid': 'Required: Document guid. Returns the file associated to this guid.'})
     @jwt.requires_roles(["mds-mine-create"])
-    def get(self):
-        
-        self.parser.add_argument('document_guid', type=FileStorage, location='files', action='append')
-        data = self.parser.parse_args()
+    def get(self, document_guid):
 
-        if data.get() == None:
-            return self.create_error_payload(401, 'Must provide a mine id.')
-        mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)
-        return {
-            'expected_mine_documents' : list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
-        }
+        if document_guid == None:
+            return self.create_error_payload(401, 'Must provide a document guid.')
+
+        document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
+
+        return send_file(filename_or_fp=document_manager_doc.full_storage_path, attachment_filename=document_manager_doc.file_display_name)
