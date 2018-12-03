@@ -33,8 +33,8 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),    
-            'effective_date': [item.json() for item in self.effective_date],
-            'expiry_date': [item.json() for item in self.expiry_date],
+            'effective_date': str(self.effective_date),
+            'expiry_date': str(self.expiry_date),
         }
 
     @classmethod
@@ -47,22 +47,34 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).all()
+            return cls.find_by(mine_guid=_id)
         except ValueError:
             return None
 
     @classmethod
     def find_by_party_guid(cls, _id):
         try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(party_guid=_id).all()
+            return cls.find_by(party_guid=_id)
         except ValueError:
             return None
     
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
         try:
-            return cls.query(cls.party_guid).filter_by(mine_party_appt_type_code=code).all()
+            return cls.find_by(mine_party_appt_type_code=code)
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_code=None):
+        try:
+            built_query = cls.query
+            if mine_guid:
+                built_query = built_query.filter_by(mine_guid=mine_guid)
+            if party_guid:
+                built_query = built_query.filter_by(party_guid=party_guid)
+            if mine_party_appt_type_code:
+                build_query = built_query.filter_by(mine_party_appt_type_code=mine_party_appt_type_code)
+            return built_query.all()
         except ValueError:
             return None
