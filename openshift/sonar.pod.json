@@ -38,9 +38,9 @@
             "required": true
         },
         {
-			"name": "UPLOADED_DOCUMENT_DEST",
-			"required": false,
-			"value": "/opt/app-root/src"
+            "name": "UPLOADED_DOCUMENT_DEST",
+            "required": false,
+            "value": "/opt/app-root/src"
 		}
     ],
     "objects": [

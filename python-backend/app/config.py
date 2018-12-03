@@ -37,7 +37,7 @@ class Config(object):
     #Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     #100MB file limit
-    FILE_BYTE_LIMIT = 100 * 1024 * 1024
+    FILE_BYTE_LIMIT = 100
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
@@ -53,7 +53,7 @@ class TestConfig(Config):
     #Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     #100MB file limit
-    FILE_BYTE_LIMIT = 100 * 1024 * 1024
+    FILE_BYTE_LIMIT = 100
     
     JWT_OIDC_TEST_KEYS = {
         "keys": [
