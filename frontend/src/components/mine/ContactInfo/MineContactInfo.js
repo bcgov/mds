@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { debounce } from "lodash";
 import ViewMineManager from "./ViewMineManager";
 import ViewPermittee from "./ViewPermittee";
-import ViewParties from "./ViewParties";
+import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
 import {
@@ -78,7 +78,11 @@ export class MineContactInfo extends Component {
             handlePartySubmit={this.handlePartySubmit}
           />
         )}
-        <ViewParties />
+        <ViewPartyRelationships
+          {...this.props}
+          handleChange={this.handleChangeDebounced}
+          handlePartySubmit={this.handlePartySubmit}
+        />
       </div>
     );
   }
