@@ -1,0 +1,1 @@
+alter table document_manager alter column document_guid drop default;

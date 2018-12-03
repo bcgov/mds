@@ -1,6 +1,6 @@
 CREATE TABLE public.document_manager (
 	document_manager_id serial NOT NULL,
-	document_guid uuid NOT NULL,
+	document_guid uuid NOT NULL DEFAULT gen_random_uuid(),
 	full_storage_path varchar(150) NOT NULL,
 	upload_date timestamptz NOT NULL,
 	file_display_name varchar(40) NOT NULL,

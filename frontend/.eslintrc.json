@@ -7,14 +7,12 @@
     "es6": true
   },
   "plugins": ["jest"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "prettier"],
   "rules": {
-    "no-unused-vars": 1,
-    "no-console": 1,
+    "import/no-unresolved": "off",
+    "react/jsx-filename-extension": "off",
     "no-case-declarations": 0,
-    "react/prop-types": 1,
     "react/display-name": 0,
-    "react/no-deprecated": 0,
-    "semicolon": [true, "always"]
+    "react/no-deprecated": 0
   }
 }

@@ -30,7 +30,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         except exceptions.RequestEntityTooLarge:
             return({
                 'errors':[{
-                    'message': f'The maximum file upload size is {current_app.config["FILE_BYTE_LIMIT"]/1024/1024}MB please ensure all files are this size.',
+                    'message': f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.',
                 }]
             })
 

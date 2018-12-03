@@ -30,6 +30,8 @@ def create_app(test_config=None):
     configure_uploads(app, documents)
     patch_request_class(app, Config.FILE_BYTE_LIMIT)
 
+    configure_uploads(app, documents)
+
     register_extensions(app)
     register_routes(app)
     register_commands(app)
