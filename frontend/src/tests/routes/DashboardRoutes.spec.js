@@ -1,10 +1,10 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Home } from "@/components/Home";
+import DashboardRoutes from "@/routes/DashboardRoutes";
 
-describe("Home", () => {
+describe("DashboardRoutes ", () => {
   it("renders properly", () => {
-    const component = shallow(<Home />);
+    const component = shallow(<DashboardRoutes />);
     expect(component).toMatchSnapshot();
   });
 });
