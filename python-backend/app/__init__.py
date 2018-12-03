@@ -26,9 +26,6 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_object(test_config)
-    
-    configure_uploads(app, documents)
-    patch_request_class(app, Config.FILE_BYTE_LIMIT)
 
     configure_uploads(app, documents)
 
