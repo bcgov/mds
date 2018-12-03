@@ -93,4 +93,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
         document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
 
-        return send_file(filename_or_fp=document_manager_doc.full_storage_path, attachment_filename=document_manager_doc.file_display_name)
+        if document_manager_doc:
+            return send_file(filename_or_fp=document_manager_doc.full_storage_path, attachment_filename=document_manager_doc.file_display_name)
+        else:
+            return self.create_error_payload(401, f'Could not find a document with the document guid: {document_guid}')
+            
