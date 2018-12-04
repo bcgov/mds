@@ -16,13 +16,6 @@ const propTypes = {
   partyIds: PropTypes.array.isRequired,
 };
 
-const defaultProps = {
-  title: "",
-  partyType: "",
-  parties: {},
-  partyIds: [],
-};
-
 export class AddPartyRelationshipModal extends Component {
   render() {
     return (
@@ -43,7 +36,6 @@ const mapStateToProps = (state) => {
 };
 
 AddPartyRelationshipModal.propTypes = propTypes;
-AddPartyRelationshipModal.defaultProps = defaultProps;
 export default connect(
   mapStateToProps,
   null
