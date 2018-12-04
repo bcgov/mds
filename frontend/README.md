@@ -111,13 +111,13 @@ Lint all files
 npm run lint .
 ```
 
-Apply linting rules in one file
+Apply linting rules to one file
 
 ```
 npm run lint ./filepath -- --fix
 ```
 
-Apply linting rules in one file
+Apply linting rules to all files
 
 ```
 npm run lint-all -- --fix
