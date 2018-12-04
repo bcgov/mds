@@ -3,11 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Card, Row, Col, Select } from "antd";
-import RenderSelect from "@/components/common/RenderSelect";
-
-import ConditionalButton from "@/components/common/ConditionalButton";
 import { modalConfig } from "@/components/modalContent/config";
-import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -20,10 +16,10 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.array.isRequired,
+  partyTypeOptions: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
-  expectedDocumentStatusOptions: [],
   partyTypeOptions: [
     {
       value: "EoR",
@@ -42,17 +38,17 @@ export class ViewPermittee extends Component {
   }
 
   onSubmitAddPartyRelationship = (values) => {
-    /*     this.props
+    this.props
       .addPartyRelationship(
         this.props.mine.guid,
         values.mineManager,
         this.props.mine.mine_detail[0].mine_name,
         values.startDate
       )
-      .then(() => { */
-    this.props.fetchMineRecordById(this.props.mine.guid);
-    this.props.closeModal();
-    /*       }); */
+      .then(() => {
+        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.closeModal();
+      });
   };
 
   onPartySubmit = (values) => {
@@ -79,7 +75,7 @@ export class ViewPermittee extends Component {
 
     return (
       <div>
-        {/*         <Card>
+        <Card>
           <Row gutter={16}>
             <Col span={6}>
               <Select
@@ -109,22 +105,22 @@ export class ViewPermittee extends Component {
               </Select>
             </Col>
           </Row>
-          <br /> */}
-        {/* <Row gutter={16}>
+          <br />
+          <Row gutter={16}>
             <Col span={6}>
-              <h3></h3>
+              <h3 />
             </Col>
             <Col span={6}>
-              <h3></h3>
+              <h3 />
             </Col>
             <Col span={6}>
-              <h3></h3>
+              <h3 />
             </Col>
             <Col span={6}>
-              <h3></h3>
+              <h3 />
             </Col>
-          </Row> */}
-        {/*       </Card> */}
+          </Row>
+        </Card>
       </div>
     );
   }

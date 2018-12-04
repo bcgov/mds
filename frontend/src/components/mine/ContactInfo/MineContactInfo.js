@@ -78,11 +78,6 @@ export class MineContactInfo extends Component {
             handlePartySubmit={this.handlePartySubmit}
           />
         )}
-        <ViewPartyRelationships
-          {...this.props}
-          handleChange={this.handleChangeDebounced}
-          handlePartySubmit={this.handlePartySubmit}
-        />
       </div>
     );
   }
