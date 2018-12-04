@@ -12,6 +12,7 @@ import {
   getMineTSFRequiredReports,
   getMineTSFRequiredDocumentsHash,
   getMineTenureTypesHash,
+  getMineTenureTypes,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
 import {
@@ -36,6 +37,7 @@ const mockState = {
   mineGuid: false,
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
+  mineTenureTypes: Mock.TENURE_TYPES.options,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS,
 };
@@ -167,11 +169,11 @@ describe("mineSelectors", () => {
   });
 
   it("`getMineTenureTypes` calls `mineReducer.getMineTenureTypes`", () => {
-    const storeAction = storeRegionOptions(Mock.TENURE_TYPES);
+    const storeAction = storeTenureTypes(Mock.TENURE_TYPES);
     const storeState = mineReducer({}, storeAction);
     const mockState = {
       [MINES]: storeState,
     };
-    expect(getMineRegionOptions(mockState)).toEqual(mineTenureTypes);
+    expect(getMineTenureTypes(mockState)).toEqual(mineTenureTypes);
   });
 });
