@@ -19,7 +19,6 @@ class MinePartyAppointmentType(AuditMixin, Base):
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    #relationship to all appt's with a given type?
 
     def json(self):
         return {
