@@ -17,6 +17,22 @@ The application requires a whole suite of npm modules for building/testing/runni
 - [jest](https://jestjs.io/) : Mocking and writing tests
 - [enzyme](https://github.com/airbnb/enzyme) : Assert, manipulate and traverse react components
 
+Contributors to this codebase are expected to follow the testing standards set out and determined by the team.
+
+**Which includes:**
+
+- Maintaining 80% coverage throughout the frontend
+
+**Create new test suites for:**
+
+- New Components
+- New ActionCreators
+- New reducers switch statements
+- New selectors
+- Every new function stored under `/utils/**`
+
+_If coverage is lower than before writing a new feature, the tests **need** to be updated, and the feature is considered **incomplete**_
+
 ### Running
 
 - [react](https://reactjs.org/) : JS library to build single page apps
