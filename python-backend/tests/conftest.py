@@ -89,18 +89,13 @@ def setup_data(session):
         region_code.save()
 
     # Insert Mine Tenure Types
-    mine_tenure_type_1 = MineTenureType(
-        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_1,
-        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_1,
-        **DUMMY_USER_KWARGS
-    )
-    mine_tenure_type_2 = MineTenureType(
-        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_2,
-        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_2,
-        **DUMMY_USER_KWARGS
-    )
-    mine_tenure_type_1.save()
-    mine_tenure_type_2.save()
+    for id, name in zip(TEST_MINE_TENURE_TYPE_IDS, TEST_MINE_TENURE_TYPE_NAMES):
+        mine_tenure_type = MineTenureType(
+            mine_tenure_type_id=id,
+            mine_tenure_type_name=name,
+            **DUMMY_USER_KWARGS
+        )
+        mine_tenure_type.save()
 
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(

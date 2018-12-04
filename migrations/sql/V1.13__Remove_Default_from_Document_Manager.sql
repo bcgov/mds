@@ -1,1 +1,1 @@
-alter table document_manager alter column document_guid drop default;
+ALTER TABLE document_manager ALTER COLUMN document_guid DROP default;
