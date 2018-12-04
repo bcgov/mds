@@ -88,7 +88,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-create"])
     def get(self, document_guid=None):
 
-        if document_guid == None:
+        if document_guid:
             return self.create_error_payload(401, 'Must provide a document guid.')
 
         document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
