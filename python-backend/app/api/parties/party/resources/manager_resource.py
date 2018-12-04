@@ -22,10 +22,10 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mgr_appointment_guid):
         manager = MgrAppointment.find_by_mgr_appointment_guid(mgr_appointment_guid)
-        if manager:
-            return manager.json()
-        return self.create_error_payload(404, 'Manager not found'), 404
-
+        if not manager:
+            return self.create_error_payload(404, 'Manager not found'), 404
+        return manager.json()
+        
     @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
     def post(self, mgr_appointment_guid=None):
