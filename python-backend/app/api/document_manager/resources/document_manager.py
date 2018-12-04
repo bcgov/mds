@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
-from flask import request, current_app
+from flask import request, current_app, send_file
 from flask_restplus import Resource, reqparse
 from flask_uploads import UploadNotAllowed
 
@@ -83,3 +83,18 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'document_manager_guids' : document_guid_list,
             'errors': errors,
         }
+
+    @api.doc(params={'document_guid': 'Required: Document guid. Returns the file associated to this guid.'})
+    @jwt.requires_roles(["mds-mine-create"])
+    def get(self, document_guid=None):
+
+        if not document_guid:
+            return self.create_error_payload(401, 'Must provide a document guid.')
+
+        document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
+
+        if not document_manager_doc:
+            return self.create_error_payload(401, f'Could not find a document with the document guid: {document_guid}')
+        else:
+            return send_file(filename_or_fp=document_manager_doc.full_storage_path, attachment_filename=document_manager_doc.file_display_name)
+            
