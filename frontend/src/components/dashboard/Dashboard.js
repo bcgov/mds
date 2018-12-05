@@ -90,7 +90,7 @@ export class Dashboard extends Component {
         router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
       );
     }
-    this.props.fetchStatusOptions();
+    fetchStatusOptions();
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
   }
@@ -168,14 +168,14 @@ export class Dashboard extends Component {
     const perPage = this.state.params.per_page
       ? this.state.params.per_page
       : String.DEFAULT_PER_PAGE;
-    //reset page when a search is initiated
+    // reset page when a search is initiated
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value)
     );
   };
 
   handleSubmit = (value) => {
-    let mineStatus = value.mine_status.join(",");
+    const mineStatus = value.mine_status.join(",");
     this.props
       .createMineRecord({ ...value, mine_status: mineStatus })
       .then(() => {
@@ -300,9 +300,8 @@ export class Dashboard extends Component {
           </Tabs>
         </div>
       );
-    } else {
-      return <Loading />;
     }
+    return <Loading />;
   }
 
   render() {
@@ -333,20 +332,18 @@ export class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    mines: getMines(state),
-    mineIds: getMineIds(state),
-    pageData: getMinesPageData(state),
-    mineStatusOptions: getMineStatusOptions(state),
-    mineRegionOptions: getMineRegionOptions(state),
-    mineRegionHash: getMineRegionHash(state),
-    mineTenureTypes: getMineTenureTypes(state),
-  };
-};
+const mapStateToProps = (state) => ({
+  mines: getMines(state),
+  mineIds: getMineIds(state),
+  pageData: getMinesPageData(state),
+  mineStatusOptions: getMineStatusOptions(state),
+  mineRegionOptions: getMineRegionOptions(state),
+  mineRegionHash: getMineRegionHash(state),
+  mineTenureTypes: getMineTenureTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchMineRecords,
       fetchStatusOptions,
@@ -358,7 +355,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;
