@@ -12,7 +12,6 @@ from ....constants import PARTY_STATUS_CODE
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-
 class ManagerResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('party_guid', type=str, help='Party guid.')
@@ -32,7 +31,7 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
             self.raise_error(400, 'Error: Unexpected manager id in Url.')
-
+            
         data = ManagerResource.parser.parse_args()
         if not data['party_guid']:
             self.raise_error(400, 'Error: Party guid is not provided.')

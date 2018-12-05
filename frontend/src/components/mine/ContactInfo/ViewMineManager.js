@@ -22,57 +22,56 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
-
 export class ViewMineManager extends Component {
   state = { isHistoryVisible: false };
 
   handleSubmit = (values) => {
-    this.props.handlePartySubmit(values, ModalContent.PERSON);
+    const { handlePartySubmit } = this.props;
+    handlePartySubmit(values, ModalContent.PERSON);
   };
+
   /**
    * change mine manager on record.
    */
   handleManagerSubmit = (values) => {
-    this.props
-      .addMineManager(
-        this.props.mine.guid,
-        values.mineManager,
-        this.props.mine.mine_detail[0].mine_name,
-        values.startDate
-      )
-      .then(() => {
-        this.props.fetchMineRecordById(this.props.mine.guid);
-        this.props.closeModal();
-      });
+    const { addMineManager, fetchMineRecordById, closeModal, mine } = this.props;
+    addMineManager(
+      mine.guid,
+      values.mineManager,
+      mine.mine_detail[0].mine_name,
+      values.startDate
+    ).then(() => {
+      fetchMineRecordById(mine.guid);
+      closeModal();
+    });
   };
 
   toggleMineManagerHistory = () => {
+    const { isHistoryVisible } = this.state;
     this.setState({
-      isHistoryVisible: !this.state.isHistoryVisible,
+      isHistoryVisible: !isHistoryVisible,
     });
   };
 
   openModal(event, onSubmit, handleChange, handlePartySubmit, title) {
     event.preventDefault();
-
-    const appointment = this.props.mine.mgr_appointment;
+    const { openModal, mine } = this.props;
+    const appointment = mine.mgr_appointment;
     const hasAppointment = appointment != null && appointment.length > 0;
     const initialValues = {
       mineManager: hasAppointment ? appointment[0].party_guid : null,
       startDate: hasAppointment ? appointment[0].effective_date : null,
     };
 
-    this.props.openModal({
+    openModal({
       props: { onSubmit, handleChange, handlePartySubmit, title, initialValues },
       content: modalConfig.UPDATE_MINE_MANAGER,
     });
   }
 
   render() {
-    const { mine } = this.props;
+    const { mine, handleChange } = this.props;
+    const { isHistoryVisible } = this.state;
     return (
       <div>
         {!mine.mgr_appointment[0] && (
@@ -84,7 +83,7 @@ export class ViewMineManager extends Component {
                   this.openModal(
                     event,
                     this.handleManagerSubmit,
-                    this.props.handleChange,
+                    handleChange,
                     this.handleSubmit,
                     ModalContent.ADD_MINE_MANAGER
                   )
@@ -134,7 +133,7 @@ export class ViewMineManager extends Component {
                     </td>
                     <td data-label="Phone Number (Ext)">
                       <p className="p-large">
-                        {mine.mgr_appointment[0].phone_no} (
+                        {mine.mgr_appointment[0].phone_no}(
                         {mine.mgr_appointment[0].phone_ext
                           ? mine.mgr_appointment[0].phone_ext
                           : String.EMPTY_FIELD}
@@ -150,14 +149,14 @@ export class ViewMineManager extends Component {
                   type="secondary"
                   onClick={this.toggleMineManagerHistory}
                 >
-                  {this.state.isHistoryVisible ? "Close History" : "View history"}
+                  {isHistoryVisible ? "Close History" : "View history"}
                 </Button>
                 <ConditionalButton
                   handleAction={(event) =>
                     this.openModal(
                       event,
                       this.handleManagerSubmit,
-                      this.props.handleChange,
+                      handleChange,
                       this.handleSubmit,
                       ModalContent.UPDATE_MINE_MANAGER
                     )
@@ -166,7 +165,7 @@ export class ViewMineManager extends Component {
                   type="primary"
                 />
               </div>
-              {this.state.isHistoryVisible && (
+              {isHistoryVisible && (
                 <div className="table-wrapper">
                   {mine.mgr_appointment.length > 1 && (
                     <table>
@@ -186,7 +185,9 @@ export class ViewMineManager extends Component {
                               {/* <td><h5>&nbsp;</h5></td> */}
                               <td data-label="Date Issued">
                                 <h5>
-                                  {mgr.effective_date} to {mgr.expiry_date}
+                                  {mgr.effective_date}
+                                  to
+                                  {mgr.expiry_date}
                                 </h5>
                               </td>
                             </tr>
@@ -207,6 +208,5 @@ export class ViewMineManager extends Component {
 }
 
 ViewMineManager.propTypes = propTypes;
-ViewMineManager.defaultProps = defaultProps;
 
 export default ViewMineManager;

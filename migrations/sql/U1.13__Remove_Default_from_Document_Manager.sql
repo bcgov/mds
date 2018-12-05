@@ -1,0 +1,1 @@
+ALTER TABLE document_manager ALTER COLUMN document_guid ADD DEFAULT gen_random_uuid();

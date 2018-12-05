@@ -12,7 +12,6 @@ from ....constants import PARTY_STATUS_CODE
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-
 class PartyResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str, help='First name of the party, if the party is a person.')
