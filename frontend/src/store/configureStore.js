@@ -16,7 +16,6 @@ export default function configureStore() {
         })
       )
     );
-  } 
-    return createStore(rootReducer, applyMiddleware(thunk, loadingBarMiddleware()));
-  
+  }
+  return createStore(rootReducer, applyMiddleware(thunk, loadingBarMiddleware()));
 }

@@ -8,6 +8,6 @@ const DashboardRoutes = () => (
     <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
     <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
   </Switch>
-  );
+);
 
 export default DashboardRoutes;

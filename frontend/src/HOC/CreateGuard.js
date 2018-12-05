@@ -13,17 +13,16 @@ export const CreateGuard = (WrappedComponent) => {
     render() {
       if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
         return <WrappedComponent {...this.props} />;
-      } 
-        return <div />;
-      
+      }
+      return <div />;
     }
   }
 
   hoistNonReactStatics(CreateGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
-      userRoles: getUserAccessData(state),
-    });
+    userRoles: getUserAccessData(state),
+  });
 
   return connect(
     mapStateToProps,

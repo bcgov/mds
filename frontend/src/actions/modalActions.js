@@ -7,10 +7,10 @@
 import * as actionTypes from "@/constants/actionTypes";
 
 export const openModal = (payload) => ({
-    type: actionTypes.OPEN_MODAL,
-    payload,
-  });
+  type: actionTypes.OPEN_MODAL,
+  payload,
+});
 
 export const closeModal = () => ({
-    type: actionTypes.CLOSE_MODAL,
-  });
+  type: actionTypes.CLOSE_MODAL,
+});

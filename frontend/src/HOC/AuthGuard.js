@@ -50,7 +50,6 @@ export const AuthGuard = (WrappedComponent) => {
       this.props.storeUserAccessData(keycloak.realmAccess.roles);
       this.props.storeKeycloakData(keycloak);
       this.props.authenticateUser(userInfo);
-      
     }
 
     componentDidMount() {
@@ -64,14 +63,14 @@ export const AuthGuard = (WrappedComponent) => {
           this.props.userAccessData.includes(USER_ROLES.role_view)
         ) {
           return <WrappedComponent {...this.props} />;
-        } if (
+        }
+        if (
           this.props.isAuthenticated &&
           !this.props.userAccessData.includes(USER_ROLES.role_view)
         ) {
           return <NullScreen type="unauthorized" />;
-        } 
-          return <Loading />;
-        
+        }
+        return <Loading />;
       }
       return <Loading />;
     }
@@ -80,12 +79,13 @@ export const AuthGuard = (WrappedComponent) => {
   hoistNonReactStatics(AuthGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
-      isAuthenticated: isAuthenticated(state),
-      userAccessData: getUserAccessData(state),
-      keycloak: getKeycloak(state),
-    });
+    isAuthenticated: isAuthenticated(state),
+    userAccessData: getUserAccessData(state),
+    keycloak: getKeycloak(state),
+  });
 
-  const mapDispatchToProps = (dispatch) => bindActionCreators(
+  const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
       {
         authenticateUser,
         storeUserAccessData,
