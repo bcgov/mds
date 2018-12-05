@@ -1,5 +1,5 @@
-import * as ActionTypes from '@/constants/actionTypes';
-import * as ReducerTypes from '@/constants/reducerTypes';
+import * as ActionTypes from "@/constants/actionTypes";
+import * as ReducerTypes from "@/constants/reducerTypes";
 
 /**
  * @file authenticationReducer.js
@@ -9,7 +9,7 @@ const initialState = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {},
-  keycloak: {}
+  keycloak: {},
 };
 
 const authenticationReducer = (state = initialState, action) => {
@@ -26,16 +26,16 @@ const authenticationReducer = (state = initialState, action) => {
         keycloak: action.payload.data,
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
-    return {
-      ...state,
-      userAccessData: action.payload.roles,
-    };
+      return {
+        ...state,
+        userAccessData: action.payload.roles,
+      };
     case ActionTypes.LOGOUT:
       return {
         ...state,
         isAuthenticated: false,
         userInfo: {},
-        keycloak: {}
+        keycloak: {},
       };
     default:
       return state;

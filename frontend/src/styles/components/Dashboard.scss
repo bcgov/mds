@@ -7,7 +7,11 @@
 
   &__content {
     background-color: $background-white;
-    border-radius: 60px 60px 0 0;
+    border-radius: $default-round-top-border;
+
+    @include mobile {
+      padding: 0;
+    }
     
     &--search {
       @include flex;
@@ -16,7 +20,6 @@
 
       @include tablet {
         display: block !important;
-        // padding: 10px;
         justify-content: unset;
       }
     }
@@ -34,15 +37,7 @@
     @extend .landing-page__content;
 
     &__header {
-      padding: 30px;
+      padding: $default-padding-xl;
     }
-  }
-}
-
-.antd-list {
-  margin: 0 50px;
-
-  @include mobile {
-    margin: 0;
   }
 }

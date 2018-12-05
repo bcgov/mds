@@ -19,10 +19,10 @@ beforeEach(() => {
 describe('MinePin', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MinePin 
-      {...props}
-      match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
-    />
+      <MinePin 
+        {...props}
+        match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
+      />
   );
     expect(component).toMatchSnapshot();
   });

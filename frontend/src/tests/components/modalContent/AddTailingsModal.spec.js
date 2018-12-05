@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe('AddTailingsModal', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTailingsModal {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTailingsModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

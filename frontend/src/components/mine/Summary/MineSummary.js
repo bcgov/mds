@@ -25,9 +25,9 @@ class MineSummary extends Component {
 
     return (
       <div>
-          <Card>
-            <table>
-            {mine.mgr_appointment[0] &&
+        <Card>
+          <table>
+            {mine.mgr_appointment[0] && (
               <tbody>
                 <tr>
                   <th scope="col"><h4>Mine Manager</h4></th>
@@ -39,48 +39,45 @@ class MineSummary extends Component {
                   <td data-label="Email"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].email : "-"}</p></td>
                   <td data-label="Manager Since"><p className="p-large">{mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}</p></td>
                 </tr>
-                </tbody>
-                }
-                {mine.mine_permit[0] && 
-                  <tbody>
-                    <tr>
-                      <th scope="col"><h4>Permittee</h4></th>
-                      <th scope="col"><h4>Email</h4></th>
-                      <th scope="col"><h4>Permittee Since</h4></th>
-                    </tr>
-                      {permitteeIds.map((id) => {
-                        return (
-                          <tr key={id}>
-                            <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
-                            <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
-                            <td data-label="Effective Date"><p className="p-large">{permittees[id].effective_date}</p></td>
-                          </tr>
-                        )
-                      })}
-                  </tbody>
-                }
-            </table>
-          </Card>
-        {mine.mine_permit[0] && 
-          <Card>
-            <table>
+              </tbody>
+)}
+            {mine.mine_permit[0] && (
               <tbody>
                 <tr>
-                  <th scope="col"><h4>Permit</h4></th>
-                  <th scope="col"><h4>Date Issued</h4></th>
-                </tr> 
-                {mine.mine_permit.map((permit) => {
-                  return (
-                    <tr key={permit.permit_guid}>
-                      <td data-label="Permit"><p className="p-large">{permit.permit_no}</p></td>
-                      <td data-label="Date Issued"><p className="p-large">{permit.issue_date}</p></td>
-                    </tr>
-                  )})
-                }
+                  <th scope="col"><h4>Permittee</h4></th>
+                  <th scope="col"><h4>Email</h4></th>
+                  <th scope="col"><h4>Permittee Since</h4></th>
+                </tr>
+                {permitteeIds.map((id) => (
+                  <tr key={id}>
+                    <td data-label="Permittee"><p className="p-large">{permittees[id].party.name}</p></td>
+                    <td data-label="Email"><p className="p-large">{permittees[id].party.email}</p></td>
+                    <td data-label="Effective Date"><p className="p-large">{permittees[id].effective_date}</p></td>
+                  </tr>
+                        ))}
               </tbody>
-            </table>
-          </Card>
-        }
+)}
+          </table>
+        </Card>
+        {mine.mine_permit[0] && (
+        <Card>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="col"><h4>Permit</h4></th>
+                <th scope="col"><h4>Date Issued</h4></th>
+              </tr> 
+              {mine.mine_permit.map((permit) => (
+                <tr key={permit.permit_guid}>
+                  <td data-label="Permit"><p className="p-large">{permit.permit_no}</p></td>
+                  <td data-label="Date Issued"><p className="p-large">{permit.issue_date}</p></td>
+                </tr>
+                  ))
+                }
+            </tbody>
+          </table>
+        </Card>
+)}
       </div>
     );
   }

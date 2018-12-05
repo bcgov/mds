@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Icon, Dropdown } from 'antd';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { getUserInfo } from '@/selectors/authenticationSelectors';
-import * as router from '@/constants/routes';
-import * as String from '@/constants/strings';
-import { HOME, PROFILE } from '@/constants/assets';
-import Logout from '../authentication/Logout';
+import React, { Component } from "react";
+import { Icon, Dropdown } from "antd";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
+import * as router from "@/constants/routes";
+import * as String from "@/constants/strings";
+import { HOME, PROFILE } from "@/constants/assets";
+import Logout from "../authentication/Logout";
 
 /**
  * @class NavBar - Simple fixed navbar at the top of the screen with home button/username/logout
@@ -39,13 +39,14 @@ export class NavBar extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    userInfo: getUserInfo(state)
-  };
-};
+const mapStateToProps = (state) => ({
+  userInfo: getUserInfo(state),
+});
 
 NavBar.propTypes = propTypes;
 NavBar.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, null)(NavBar);
+export default connect(
+  mapStateToProps,
+  null
+)(NavBar);

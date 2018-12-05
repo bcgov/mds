@@ -26,10 +26,10 @@ beforeEach(() => {
 describe('MineTenureInfo', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MineTenureInfo 
-      {...dispatchProps}
-      {...props} 
-      match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
+      <MineTenureInfo 
+        {...dispatchProps}
+        {...props} 
+        match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
       />
   );
     expect(component).toMatchSnapshot();

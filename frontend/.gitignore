@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+/reports
 
 # misc
 .DS_Store
@@ -17,5 +18,6 @@
 *__snapshots__*
 *.snap
 
-# Vs code settlings
+# Editor settings
 .vscode/*
+.vimrc

@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest/globals": true,
+    "es6": true
+  },
+  "plugins": ["jest"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ],
+  "rules": {
+    "import/no-unresolved": "off",
+    "react/jsx-filename-extension": "off",
+    "no-case-declarations": 0,
+    "react/display-name": 0,
+    "react/no-deprecated": 0
+  }
+}

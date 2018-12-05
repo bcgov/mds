@@ -1,16 +1,17 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { MineDashboard } from '@/components/mine/MineDashboard';
-import * as MOCK from '@/tests/mocks/dataMocks';
+import React from "react";
+import { shallow } from "enzyme";
+import { MineDashboard } from "@/components/mine/MineDashboard";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
-const reducerProps = {}
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
+  dispatchProps.fetchMineTenureTypes = jest.fn();
   dispatchProps.match = {};
 };
 
@@ -22,6 +23,8 @@ const setupReducerProps = () => {
   reducerProps.permitteeIds = [];
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  reducerProps.mineTenureHash = MOCK.TENURE_HASH;
 };
 
 beforeEach(() => {
@@ -29,15 +32,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe('MineDashboard', () => {
-  it('renders properly', () => {
+describe("MineDashboard", () => {
+  it("renders properly", () => {
     const component = shallow(
-    <MineDashboard
-      {...dispatchProps}
-      {...reducerProps}
-      match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
-    />
-  );
+      <MineDashboard
+        {...dispatchProps}
+        {...reducerProps}
+        match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
+      />
+    );
     expect(component).toMatchSnapshot();
   });
 });

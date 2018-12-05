@@ -1,5 +1,11 @@
 import json
-from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID
+from tests.constants import (
+        TEST_MINE_NO,
+        TEST_MINE_GUID,
+        TEST_TENURE_ID,
+        TEST_MINE_TENURE_TYPE_IDS,
+        TEST_REGION_CODE
+        )
 
 
 # GET
@@ -89,7 +95,6 @@ def test_post_mine_name_and_note(test_client, auth_headers):
         "name": "test_create_mine_and_note",
         "note": "This is a note",
         "mine_region" :"SW"
-
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -119,7 +124,8 @@ def test_post_mine_success_all(test_client, auth_headers):
         "latitude": "49.2827000",
         "longitude": "123.1207000",
         "note": "This is a note",
-        "mine_region" :"SW"
+        "mine_region" :"SW",
+        "mine_tenure_type_id": TEST_MINE_TENURE_TYPE_IDS[0]
     }
     post_resp = test_client.post('/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -127,6 +133,7 @@ def test_post_mine_success_all(test_client, auth_headers):
     assert post_data['latitude'] == test_mine_data['latitude']
     assert post_data['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['note']
+    assert post_data['mine_tenure_type_id'] == test_mine_data['mine_tenure_type_id']
     assert post_resp.status_code == 200
 
 
@@ -197,6 +204,7 @@ def test_post_mine_mine_status(test_client, auth_headers):
     assert post_data['latitude'] == test_mine_data['latitude']
     assert post_data['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['note']
+    assert post_data['mine_region'] == test_mine_data['mine_region']
     assert post_resp.status_code == 200
 
 
@@ -335,3 +343,35 @@ def test_put_mine_mine_status(test_client, auth_headers):
     }
     put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200
+
+def test_put_mine_region(test_client, auth_headers):
+    test_mine_data = {
+        "mine_region": TEST_REGION_CODE
+    }
+    put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 200
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['mine_detail'][0]['region_code'] == test_mine_data['mine_region']
+
+def test_put_mine_tenure_type_id(test_client, auth_headers):
+    test_mine_data = {
+        'mine_tenure_type_id': TEST_MINE_TENURE_TYPE_IDS[0]
+    }
+    put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 200
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['mine_type'][0]['mine_tenure_type_id'] == test_mine_data['mine_tenure_type_id']
+
+def test_put_mine_tenure_type_id_invalid(test_client, auth_headers):
+    test_mine_data = {
+        'mine_tenure_type_id': 999
+    }
+    put_resp = test_client.put('/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 400
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Invalid Mine Tenure Type ID.'
+        }
+    }

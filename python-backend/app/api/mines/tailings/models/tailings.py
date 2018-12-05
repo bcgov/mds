@@ -41,11 +41,14 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         return cls.query.filter_by(mine_tailings_storage_facility_guid=tsf_guid).first()
 
 
-
     @validates('mine_tailings_storage_facility_name')
     def validate_mine_name(self, key, mine_tailings_storage_facility_name):
         if not mine_tailings_storage_facility_name:
             raise AssertionError('No tailings storage facility name provided.')
         if len(mine_tailings_storage_facility_name) > 60:
             raise AssertionError('Mine name must not exceed 60 characters.')
+        #no duplicate TSF names on the same mine
+        if (MineTailingsStorageFacility.query.filter_by(mine_guid=self.mine_guid)
+                    .filter_by(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name).first() is not None):
+            raise AssertionError(f'this mine already has a tailings storage facility named: "{mine_tailings_storage_facility_name}"')
         return mine_tailings_storage_facility_name

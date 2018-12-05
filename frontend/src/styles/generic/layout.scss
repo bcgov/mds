@@ -52,19 +52,14 @@ body {
     margin-top: 5px;
     height: 50%;
   }
-  
-  div {
-    display: fixed;
-    padding: $default-padding-sm;
+
+  & div {
+    margin-right: 5px;
   }
 }
 
 .between {
   justify-content: space-between;
-
-  @include mobile {
-    justify-content: unset;
-  }
 }
 
 .evenly {
@@ -83,5 +78,13 @@ body {
   @include mobile {
     width: 100% !important;
     margin: 5px 0;
+  }
+}
+
+.tab__content {
+  padding: $default-padding-lg $default-padding-xxl;
+
+  @include mobile {
+    padding: 0 $default-padding-sm;
   }
 }

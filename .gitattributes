@@ -1,0 +1,15 @@
+# Auto detect text files and perform LF normalization
+* text eol=lf
+*.bat text eol=crlf
+
+# Binary files
+# ============
+*.png		binary
+*.svg		binary
+*.gz		binary
+*.jar       binary
+*.jpg       binary
+*.jpeg      binary
+*.ico       binary
+*.tif       binary
+*.tiff      binary

@@ -34,7 +34,10 @@ class Config(object):
     SQLALCHEMY_MAX_OVERFLOW = 20
     SQLALCHEMY_POOL_TIMEOUT = 300
 
-
+    #Flask-uploads configs
+    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
+    #100MB file limit
+    MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
@@ -46,6 +49,7 @@ class TestConfig(Config):
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
+    
     JWT_OIDC_TEST_KEYS = {
         "keys": [
             {
