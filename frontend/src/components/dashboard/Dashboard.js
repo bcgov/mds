@@ -90,7 +90,7 @@ export class Dashboard extends Component {
         router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
       );
     }
-    fetchStatusOptions();
+    this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
   }
