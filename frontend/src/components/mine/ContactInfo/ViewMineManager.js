@@ -26,52 +26,49 @@ export class ViewMineManager extends Component {
   state = { isHistoryVisible: false };
 
   handleSubmit = (values) => {
-    const { handlePartySubmit } = this.props;
-    handlePartySubmit(values, ModalContent.PERSON);
+    this.props.handlePartySubmit(values, ModalContent.PERSON);
   };
 
   /**
    * change mine manager on record.
    */
   handleManagerSubmit = (values) => {
-    const { addMineManager, fetchMineRecordById, closeModal, mine } = this.props;
-    addMineManager(
-      mine.guid,
-      values.mineManager,
-      mine.mine_detail[0].mine_name,
-      values.startDate
-    ).then(() => {
-      fetchMineRecordById(mine.guid);
-      closeModal();
-    });
+    this.props
+      .addMineManager(
+        this.props.mine.guid,
+        values.mineManager,
+        this.props.mine.mine_detail[0].mine_name,
+        values.startDate
+      )
+      .then(() => {
+        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.closeModal();
+      });
   };
 
   toggleMineManagerHistory = () => {
-    const { isHistoryVisible } = this.state;
     this.setState({
-      isHistoryVisible: !isHistoryVisible,
+      isHistoryVisible: !this.state.isHistoryVisible,
     });
   };
 
   openModal(event, onSubmit, handleChange, handlePartySubmit, title) {
     event.preventDefault();
-    const { openModal, mine } = this.props;
-    const appointment = mine.mgr_appointment;
+    const appointment = this.props.mine.mgr_appointment;
     const hasAppointment = appointment != null && appointment.length > 0;
     const initialValues = {
       mineManager: hasAppointment ? appointment[0].party_guid : null,
       startDate: hasAppointment ? appointment[0].effective_date : null,
     };
 
-    openModal({
+    this.props.openModal({
       props: { onSubmit, handleChange, handlePartySubmit, title, initialValues },
       content: modalConfig.UPDATE_MINE_MANAGER,
     });
   }
 
   render() {
-    const { mine, handleChange } = this.props;
-    const { isHistoryVisible } = this.state;
+    const { mine } = this.props;
     return (
       <div>
         {!mine.mgr_appointment[0] && (
@@ -83,7 +80,7 @@ export class ViewMineManager extends Component {
                   this.openModal(
                     event,
                     this.handleManagerSubmit,
-                    handleChange,
+                    this.props.handleChange,
                     this.handleSubmit,
                     ModalContent.ADD_MINE_MANAGER
                   )
@@ -133,8 +130,7 @@ export class ViewMineManager extends Component {
                     </td>
                     <td data-label="Phone Number (Ext)">
                       <p className="p-large">
-                        {mine.mgr_appointment[0].phone_no}
-(
+                        {mine.mgr_appointment[0].phone_no}(
                         {mine.mgr_appointment[0].phone_ext
                           ? mine.mgr_appointment[0].phone_ext
                           : String.EMPTY_FIELD}
@@ -150,14 +146,14 @@ export class ViewMineManager extends Component {
                   type="secondary"
                   onClick={this.toggleMineManagerHistory}
                 >
-                  {isHistoryVisible ? "Close History" : "View history"}
+                  {this.state.isHistoryVisible ? "Close History" : "View history"}
                 </Button>
                 <ConditionalButton
                   handleAction={(event) =>
                     this.openModal(
                       event,
                       this.handleManagerSubmit,
-                      handleChange,
+                      this.props.handleChange,
                       this.handleSubmit,
                       ModalContent.UPDATE_MINE_MANAGER
                     )
@@ -166,40 +162,43 @@ export class ViewMineManager extends Component {
                   type="primary"
                 />
               </div>
-              {isHistoryVisible && (
-                <div className="table-wrapper">
-                  {mine.mgr_appointment.length > 1 && (
-                    <table>
-                      <tr>
-                        <th scope="col">
-                          <h2>Mine Manager History</h2>
-                        </th>
-                      </tr>
-                      {mine.mgr_appointment.map((mgr, index) => {
-                        if (index > 0) {
-                          return (
-                            <tr key={mgr.mgr_appointment_guid}>
-                              <td data-label="Name">
-                                <h5>{mgr.name}</h5>
-                              </td>
-                              {/* TODO: need to change this to handle the cert number once it is available in the state. */}
-                              {/* <td><h5>&nbsp;</h5></td> */}
-                              <td data-label="Date Issued">
-                                <h5>
-                                  {mgr.effective_date}
-                                  to
-                                  {mgr.expiry_date}
-                                </h5>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      })}
-                    </table>
-                  )}
-                  {mine.mgr_appointment.length <= 1 && <NullScreen type="view-mine-manager" />}
-                </div>
-              )}
+              {
+                (this,
+                state.isHistoryVisible && (
+                  <div className="table-wrapper">
+                    {mine.mgr_appointment.length > 1 && (
+                      <table>
+                        <tr>
+                          <th scope="col">
+                            <h2>Mine Manager History</h2>
+                          </th>
+                        </tr>
+                        {mine.mgr_appointment.map((mgr, index) => {
+                          if (index > 0) {
+                            return (
+                              <tr key={mgr.mgr_appointment_guid}>
+                                <td data-label="Name">
+                                  <h5>{mgr.name}</h5>
+                                </td>
+                                {/* TODO: need to change this to handle the cert number once it is available in the state. */}
+                                {/* <td><h5>&nbsp;</h5></td> */}
+                                <td data-label="Date Issued">
+                                  <h5>
+                                    {mgr.effective_date}
+                                    to
+                                    {mgr.expiry_date}
+                                  </h5>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
+                      </table>
+                    )}
+                    {mine.mgr_appointment.length <= 1 && <NullScreen type="view-mine-manager" />}
+                  </div>
+                ))
+              }
             </Card>
           </div>
         )}
