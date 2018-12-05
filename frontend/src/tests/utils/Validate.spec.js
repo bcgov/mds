@@ -8,6 +8,7 @@ import {
   lon,
   phoneNumber,
   email,
+  validateStartDate,
 } from "@/utils/Validate";
 
 describe("Validate class", () => {
@@ -182,6 +183,21 @@ describe("Validate class", () => {
       expect(email(valueOne)).toEqual("Invalid email address");
       expect(email(valueTwo)).toEqual("Invalid email address");
       expect(email(valueThree)).toEqual("Invalid email address");
+    });
+  });
+
+  describe("`validateStartDate` function", () => {
+    it("returns `undefined` if `value` is after `previousStartDate`", () => {
+      const previousStartDate = new Date("August 4, 2014");
+      const value = new Date("August 5, 2014");
+      expect(validateStartDate(previousStartDate)(value)).toEqual(undefined);
+    });
+
+    it("returns an error message if `value` is on or before `previousStartDate`", () => {
+      const previousStartDate = new Date("August 4, 2014");
+      const value = new Date("August 3, 2014");
+      expect(validateStartDate(value)(value)).toBeTruthy();
+      expect(validateStartDate(previousStartDate)(value)).toBeTruthy();
     });
   });
 });
