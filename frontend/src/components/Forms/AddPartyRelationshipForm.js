@@ -36,7 +36,7 @@ export const AddPartyRelationshipForm = (props) => {
                 label="TSF *"
                 placeholder="Select a TSF"
                 component={renderConfig.LARGE_SELECT}
-                /*data={props.partyIds}
+                /* data={props.partyIds}
                   options={props.parties} */
                 validate={[required]} /* 
                   handleChange={props.handleChange} */

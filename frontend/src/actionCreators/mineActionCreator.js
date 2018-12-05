@@ -16,7 +16,7 @@ export const createMineRecord = (payload) => (dispatch) => {
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully created: " + payload.name,
+        message: `Successfully created: ${payload.name}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
@@ -37,10 +37,10 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return axios
-    .put(ENVIRONMENT.apiUrl + API.MINE + "/" + id, payload, createRequestHeader())
+    .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully updated: " + mineName,
+        message: `Successfully updated: ${mineName}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
@@ -86,7 +86,7 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(showLoading());
   return axios
     .post(
-      ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT + "/" + id,
+      `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT}/${id}`,
       { documents: [payload] },
       createRequestHeader()
     )
@@ -108,7 +108,7 @@ export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
   dispatch(showLoading());
   return axios
     .delete(
-      ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT + "/" + exp_doc_guid,
+      `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT}/${exp_doc_guid}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -125,7 +125,7 @@ export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
 };
 
 export const fetchMineRecords = (params) => (dispatch) => {
-  const defaultParams = params ? params : String.DEFAULT_DASHBOARD_PARAMS;
+  const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
   return axios
@@ -150,7 +150,7 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORD));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE + "/" + mineNo, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineNo}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
       dispatch(mineActions.storeMine(response.data, mineNo));
@@ -230,7 +230,7 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
   dispatch(showLoading("modal"));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT + "/status", createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/status`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
       dispatch(mineActions.storeDocumentStatusOptions(response.data));
@@ -250,7 +250,7 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
   dispatch(showLoading("modal"));
   return axios
-    .put(ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT + "/" + id, payload, createRequestHeader())
+    .put(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/${id}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully updated expected document",

@@ -38,6 +38,7 @@ const defaultProps = {
 
 export class MineTailingsInfo extends Component {
   state = {selectedDocument: {}}
+
   handleAddTailingsSubmit = (value) => {
     this.props
       .createTailingsStorageFacility({
@@ -81,8 +82,8 @@ export class MineTailingsInfo extends Component {
   }
 
   handleEditReportSubmit = (value) => {
-    //this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
-    let updatedDocument = this.state.selectedDocument;
+    // this.props.updateMineRecord(this.props.mine.guid, {...value, mine_status: mineStatus}, value.name).then(() =>{
+    const updatedDocument = this.state.selectedDocument;
     updatedDocument.exp_document_name = value.tsf_report_name;
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
@@ -125,18 +126,16 @@ export class MineTailingsInfo extends Component {
         <div>
           <br />
           <br />
-          {mine.mine_tailings_storage_facility.map((facility, id) => {
-            return (
-              <Row key={id} gutter={16}>
-                <Col span={6}>
-                  <h3>{facility.mine_tailings_storage_facility_name}</h3>
-                </Col>
-                <Col span={6}>
-                  <h3 />
-                </Col>
-              </Row>
-            );
-          })}
+          {mine.mine_tailings_storage_facility.map((facility, id) => (
+            <Row key={id} gutter={16}>
+              <Col span={6}>
+                <h3>{facility.mine_tailings_storage_facility_name}</h3>
+              </Col>
+              <Col span={6}>
+                <h3 />
+              </Col>
+            </Row>
+            ))}
           <div className="center">
             <Button
               className="full-mobile"
@@ -156,42 +155,43 @@ export class MineTailingsInfo extends Component {
         <br />
         <br />
         <div>
-            <h3>Reports</h3>
-            <br/>
-            <Row gutter={16} justify="center" align="top">
-                <Col span={8}><h5>Name</h5></Col>
-                <Col span={4}><h5>Due</h5></Col>
-                <Col span={4}><h5>Received</h5></Col>
-                <Col span={4}><h5>Status</h5></Col>
-                <Col span={4}></Col>
-            </Row>
-          <hr style={{borderTop:'2px solid #c4cdd5'}}/>
-          {mine.mine_expected_documents.sort((doc1, doc2) => doc1.due_date > doc2.due_date).map((doc, id) => {
-            return (
-              <div key={id}>
-                <Row gutter={16} justify="center" align="top">
-                  <Col id={"name-" + id} span={8}>
-                    <h6>{doc.exp_document_name}</h6>
-                  </Col>
-                  <Col id={"due-date-" + id} span={4}>
-                    <h6>{doc.due_date === 'None' ? '-' : doc.due_date}</h6>
-                  </Col>
-                  <Col span={4}>
-                    <h6>{doc.received_date === 'None' ? '-' : doc.received_date}</h6>
-                  </Col>
-                  <Col id={"status-" + id} span={4}>
-                    <h6>{
+          <h3>Reports</h3>
+          <br />
+          <Row gutter={16} justify="center" align="top">
+            <Col span={8}><h5>Name</h5></Col>
+            <Col span={4}><h5>Due</h5></Col>
+            <Col span={4}><h5>Received</h5></Col>
+            <Col span={4}><h5>Status</h5></Col>
+            <Col span={4} />
+          </Row>
+          <hr style={{borderTop:'2px solid #c4cdd5'}} />
+          {mine.mine_expected_documents.sort((doc1, doc2) => doc1.due_date > doc2.due_date).map((doc, id) => (
+            <div key={id}>
+              <Row gutter={16} justify="center" align="top">
+                <Col id={`name-${  id}`} span={8}>
+                  <h6>{doc.exp_document_name}</h6>
+                </Col>
+                <Col id={`due-date-${  id}`} span={4}>
+                  <h6>{doc.due_date === 'None' ? '-' : doc.due_date}</h6>
+                </Col>
+                <Col span={4}>
+                  <h6>{doc.received_date === 'None' ? '-' : doc.received_date}</h6>
+                </Col>
+                <Col id={`status-${  id}`} span={4}>
+                  <h6>
+                    {
                       this.props.expectedDocumentStatusOptions[0] ? 
                           doc.exp_document_status_guid === 'None' ? 
                               this.props.expectedDocumentStatusOptions[0].label
                             : this.props.expectedDocumentStatusOptions.find(x=>x.value === doc.exp_document_status_guid).label
-                        : '' }</h6>
-                  </Col>
-                  <Col span={4} align="right">
-                    <Button
-                      ghost
-                      type="primary"
-                      onClick={(event) =>
+                        : '' }
+                  </h6>
+                </Col>
+                <Col span={4} align="right">
+                  <Button
+                    ghost
+                    type="primary"
+                    onClick={(event) =>
                         this.openEditReportModal(
                           event,
                           this.handleEditReportSubmit,
@@ -200,33 +200,38 @@ export class MineTailingsInfo extends Component {
                           doc
                         )
                       }
-                    >
-                      <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
+                  >
+                    <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
+                  </Button>
+                  <Popconfirm placement="topLeft" title={`Are you sure you want to delete ${  doc.exp_document_name  }?`} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
+                    <Button ghost type='primary'>
+                      <Icon type="minus-circle" theme="outlined" />
                     </Button>
-                      <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + doc.exp_document_name + "?"} onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)} okText="Delete" cancelText="Cancel">
-                        <Button ghost type='primary'>
-                          <Icon type="minus-circle" theme="outlined" />
-                        </Button>
-                      </Popconfirm>
-                    </Col>
-                </Row>
-                <hr />
-              </div>
-            );
-          })}
+                  </Popconfirm>
+                </Col>
+              </Row>
+              <hr />
+            </div>
+            ))}
           <div key='0'>
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-              <Button className="full-mobile" type="secondary" onClick={(event) => 
+                <Button
+                  className="full-mobile"
+                  type="secondary"
+                  onClick={(event) => 
                     this.openAddReportModal(
                       event,
                       this.handleAddReportSubmit,
                       ModalContent.ADD_TAILINGS_REPORT,
                       this.props.mineTSFRequiredReports
-                    )}>+ Add TSF Report
-                </Button></Col>
-              <Col span={12}/>
-              <Col span={4} align="right"></Col>
+                    )}
+                >
++ Add TSF Report
+                </Button>
+              </Col>
+              <Col span={12} />
+              <Col span={4} align="right" />
             </Row>
           </div>
         </div>
@@ -235,16 +240,13 @@ export class MineTailingsInfo extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
     mineTSFRequiredReports : getMineTSFRequiredReports(state),
     getMineTSFRequiredDocumentsHash : getMineTSFRequiredDocumentsHash(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchExpectedDocumentStatusOptions,
       updateExpectedDocument,
@@ -254,7 +256,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 
 MineTailingsInfo.propTypes = propTypes;

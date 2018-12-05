@@ -27,7 +27,7 @@ beforeEach(() => {
 
 describe('UpdatePermitteeModal', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdatePermitteeModal {...dispatchProps} {...props}/>);
+    const component = shallow(<UpdatePermitteeModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

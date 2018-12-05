@@ -31,7 +31,7 @@ const defaultProps = {
 
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
-    let mineStatus = value.mine_status.join(",");
+    const mineStatus = value.mine_status.join(",");
     this.props
       .updateMineRecord(this.props.mine.guid, { ...value, mine_status: mineStatus }, value.name)
       .then(() => {
@@ -134,7 +134,10 @@ class MineHeader extends Component {
             />
           </div>
           <Divider />
-          <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
+          <h5>
+            Mine ID:
+            {mine.mine_detail[0].mine_no}{" "}
+          </h5>
           {mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
@@ -156,7 +159,10 @@ class MineHeader extends Component {
           )}
           {!mine.mine_status[0] && (
             <div>
-              <h5>Operating Status: {String.EMPTY_FIELD}</h5>
+              <h5>
+                Operating Status:
+                {String.EMPTY_FIELD}
+              </h5>
             </div>
           )}
           <h5>

@@ -133,7 +133,8 @@ export class ViewMineManager extends Component {
                     </td>
                     <td data-label="Phone Number (Ext)">
                       <p className="p-large">
-                        {mine.mgr_appointment[0].phone_no}(
+                        {mine.mgr_appointment[0].phone_no}
+(
                         {mine.mgr_appointment[0].phone_ext
                           ? mine.mgr_appointment[0].phone_ext
                           : String.EMPTY_FIELD}
