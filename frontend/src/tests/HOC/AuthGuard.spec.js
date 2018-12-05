@@ -7,7 +7,7 @@ import * as Mock from "@/tests/mocks/dataMocks";
 
 const Component = AuthGuard(() => <div>Test</div>);
 const dispatchProps = {};
-let reducerProps = {};
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.authenticateUser = jest.fn();

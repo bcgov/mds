@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe('MapPopup', () => {
   it('renders properly', () => {
-    const component = shallow(<MapPopup {...props}/>);
+    const component = shallow(<MapPopup {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe('AddTenureNumberForm', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTenureNumberForm {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTenureNumberForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

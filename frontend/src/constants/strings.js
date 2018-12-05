@@ -14,7 +14,7 @@ export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
 
 export const UNAUTHORIZED = "You do not have permission to access this site";
-//to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
+// to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
 export const CONTACT_ADMIN = [
   "Contact your system administrator at ",
   <b>mds.admin@gov.bc.ca</b>,

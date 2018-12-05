@@ -1,8 +1,8 @@
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { request, success, error } from '@/actions/genericActions';
-import * as ReducerTypes from '@/constants/reducerTypes';
-import * as ActionTypes from '@/constants/actionTypes';
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import { request, success, error } from "@/actions/genericActions";
+import * as ReducerTypes from "@/constants/reducerTypes";
+import * as ActionTypes from "@/constants/actionTypes";
 
 /* 
 Testing against action `createMineRecord` arbitrarily.
@@ -19,26 +19,24 @@ const store = createMockStore({
       isFetching: false,
       success: false,
     },
-  }
+  },
 });
 
-describe('genericActions', () => {
+describe("genericActions", () => {
   afterEach(() => {
     store.clearActions();
   });
 
-  it('`request action` returns `type: REQUEST`', () => {
-    const expectedActions = [
-      { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST }
-    ];
+  it("`request action` returns `type: REQUEST`", () => {
+    const expectedActions = [{ name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST }];
 
     store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  describe('after a `request` action', () => {
-    it('when an API endpoint has been successful, the `success` action returns `type: SUCCESS`', () => {
-      const mockData = {}
+  describe("after a `request` action", () => {
+    it("when an API endpoint has been successful, the `success` action returns `type: SUCCESS`", () => {
+      const mockData = {};
       const expectedActions = [
         { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST },
         { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.SUCCESS, data: mockData },
@@ -49,11 +47,11 @@ describe('genericActions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('when an API endpoint has failed, the `error` action returns `type: ERROR`', () => {
-      const mockError = { response: { status: 400, data: { errors: [], message: 'Error' } } };
+    it("when an API endpoint has failed, the `error` action returns `type: ERROR`", () => {
+      const mockError = { response: { status: 400, data: { errors: [], message: "Error" } } };
       const expectedActions = [
         { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST },
-        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.ERROR, errorMessage: mockError},
+        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.ERROR, errorMessage: mockError },
       ];
       store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
       store.dispatch(error(ReducerTypes.CREATE_MINE_RECORD, mockError));

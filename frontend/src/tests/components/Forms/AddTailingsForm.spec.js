@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe('AddTailingsForm', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTailingsForm {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTailingsForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

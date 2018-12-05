@@ -17,23 +17,20 @@ const propTypes = {
   userInfo: { preferred_username: PropTypes.string.isRequired }.isRequired,
 };
 
-export const NavBar = (props) => {
-  const { userInfo } = props;
-  return (
-    <div className="menu">
-      <Link to={router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)}>
-        <img alt="Home" className="menu__img" src={HOME} />
-      </Link>
-      <Dropdown overlay={<Logout />}>
-        <a className="menu__dropdown-link" href="#">
-          <img alt="Profile" className="menu__img" src={PROFILE} />
-          {userInfo.preferred_username}
-          <Icon type="down" />
-        </a>
-      </Dropdown>
-    </div>
-  );
-};
+export const NavBar = (props) => (
+  <div className="menu">
+    <Link to={router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)}>
+      <img alt="Home" className="menu__img" src={HOME} />
+    </Link>
+    <Dropdown overlay={<Logout />}>
+      <a className="menu__dropdown-link" href="#">
+        <img alt="Profile" className="menu__img" src={PROFILE} />
+        {props.userInfo.preferred_username}
+        <Icon type="down" />
+      </a>
+    </Dropdown>
+  </div>
+);
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
 });

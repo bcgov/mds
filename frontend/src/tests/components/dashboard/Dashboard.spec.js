@@ -6,7 +6,7 @@ import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
 
 const dispatchProps = {};
-let reducerProps = {};
+const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
