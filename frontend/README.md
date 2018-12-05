@@ -136,7 +136,7 @@ npm run lint ./filepath -- --fix
 Apply linting rules to all files
 
 ```
-npm run lint-all -- --fix
+npm run lint ./src -- --fix
 ```
 
 Developers are encouraged to install the Prettier plugin appropriate for their
