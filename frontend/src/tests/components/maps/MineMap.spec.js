@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe('MineMap', () => {
   it('renders properly', () => {
-    const component = shallow(<MineMap {...props}/>);
+    const component = shallow(<MineMap {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

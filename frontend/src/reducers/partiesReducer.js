@@ -1,6 +1,6 @@
-import * as actionTypes from '@/constants/actionTypes';
-import { PARTIES } from '@/constants/reducerTypes';
-import { createItemMap, createItemIdsArray } from '@/utils/helpers';
+import * as actionTypes from "@/constants/actionTypes";
+import { PARTIES } from "@/constants/reducerTypes";
+import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
 /**
  * @file partiesReducer.js
@@ -10,6 +10,7 @@ import { createItemMap, createItemIdsArray } from '@/utils/helpers';
 const initialState = {
   parties: {},
   partyIds: [],
+  partyRelationshipTypes: [],
 };
 
 const partiesReducer = (state = initialState, action) => {
@@ -17,15 +18,20 @@ const partiesReducer = (state = initialState, action) => {
     case actionTypes.STORE_PARTIES:
       return {
         ...state,
-        parties: createItemMap(action.payload.parties, 'party_guid'),
-        partyIds: createItemIdsArray(action.payload.parties, 'party_guid'),
-      }
+        parties: createItemMap(action.payload.parties, "party_guid"),
+        partyIds: createItemIdsArray(action.payload.parties, "party_guid"),
+      };
     case actionTypes.STORE_PARTY:
       return {
         ...state,
-        parties: createItemMap([action.payload], 'party_guid'),
-        partyIds: createItemIdsArray([action.payload], 'party_guid'),
-      }
+        parties: createItemMap([action.payload], "party_guid"),
+        partyIds: createItemIdsArray([action.payload], "party_guid"),
+      };
+    case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
+      return {
+        ...state,
+        partyRelationshipTypes: action.payload,
+      };
     default:
       return state;
   }
@@ -33,5 +39,6 @@ const partiesReducer = (state = initialState, action) => {
 
 export const getParties = (state) => state[PARTIES].parties;
 export const getPartyIds = (state) => state[PARTIES].partyIds;
+export const getPartyRelationshipTypes = (state) => state[PARTIES].partyRelationshipTypes;
 
 export default partiesReducer;

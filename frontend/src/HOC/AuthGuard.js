@@ -39,7 +39,9 @@ export const AuthGuard = (WrappedComponent) => {
 
       // Prompt for login using IDIR if not authenticated
       if (!keycloak.authenticated) {
-        await keycloak.login({ idpHint: KEYCLOAK.idpHint });
+        await keycloak.login({
+          idpHint: KEYCLOAK.idpHint,
+        });
       }
 
       // Fetch user info and roles and store them in local storage
@@ -61,14 +63,14 @@ export const AuthGuard = (WrappedComponent) => {
           this.props.userAccessData.includes(USER_ROLES.role_view)
         ) {
           return <WrappedComponent {...this.props} />;
-        } else if (
+        }
+        if (
           this.props.isAuthenticated &&
           !this.props.userAccessData.includes(USER_ROLES.role_view)
         ) {
           return <NullScreen type="unauthorized" />;
-        } else {
-          return <Loading />;
         }
+        return <Loading />;
       }
       return <Loading />;
     }
@@ -76,16 +78,14 @@ export const AuthGuard = (WrappedComponent) => {
 
   hoistNonReactStatics(AuthGuard, WrappedComponent);
 
-  const mapStateToProps = (state) => {
-    return {
-      isAuthenticated: isAuthenticated(state),
-      userAccessData: getUserAccessData(state),
-      keycloak: getKeycloak(state),
-    };
-  };
+  const mapStateToProps = (state) => ({
+    isAuthenticated: isAuthenticated(state),
+    userAccessData: getUserAccessData(state),
+    keycloak: getKeycloak(state),
+  });
 
-  const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(
+  const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
       {
         authenticateUser,
         storeUserAccessData,
@@ -93,7 +93,6 @@ export const AuthGuard = (WrappedComponent) => {
       },
       dispatch
     );
-  };
 
   return connect(
     mapStateToProps,

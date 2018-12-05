@@ -546,49 +546,50 @@ export const PERMITTEE = {
   },
 };
 
-export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {'options':[
-  {value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Received"},
-  {value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Received / Pending Review"},
-  {value: "155330ff-5b2e-418a-b8f5-674a25cdcbac", label: "Review In Progress"},
-  {value: "621a1e27-737a-4106-b92b-1c6c153c9d0a", label: "Accepted"},
-  {value: "3358c881-f2b5-4f58-be41-a89f820302a0", label: "Rejected / Waiting On Update"}
-]};
+export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
+  options: [
+    { value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Received" },
+    { value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Received / Pending Review" },
+    { value: "155330ff-5b2e-418a-b8f5-674a25cdcbac", label: "Review In Progress" },
+    { value: "621a1e27-737a-4106-b92b-1c6c153c9d0a", label: "Accepted" },
+    { value: "3358c881-f2b5-4f58-be41-a89f820302a0", label: "Rejected / Waiting On Update" },
+  ],
+};
 
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
-  "required_documents":
-    [
-      {"req_document_guid":"05388944-afb3-4ef4-9db1-94db72f6060e",
-       "req_document_name":"Annual Reclamation",
-       "req_document_description":"10.4.4a",
-       "req_document_category":"MINE_TAILINGS"
-      },
-      {
-       "req_document_guid":"ca3f5a58-d7ea-4620-a064-507450f082de",
-       "req_document_name":"Annual DSI",
-       "req_document_description":"10.4.4b",
-       "req_document_category":"MINE_TAILINGS"
-      },
-      {
-       "req_document_guid":"faa99067-3639-4d9c-a3e5-5401df15ad4b",
-       "req_document_name":"5 year DSR",
-       "req_document_description":"10.5.4",
-       "req_document_category":"MINE_TAILINGS"
-      }
-    ]
-  };
+  required_documents: [
+    {
+      req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
+      req_document_name: "Annual Reclamation",
+      req_document_description: "10.4.4a",
+      req_document_category: "MINE_TAILINGS",
+    },
+    {
+      req_document_guid: "ca3f5a58-d7ea-4620-a064-507450f082de",
+      req_document_name: "Annual DSI",
+      req_document_description: "10.4.4b",
+      req_document_category: "MINE_TAILINGS",
+    },
+    {
+      req_document_guid: "faa99067-3639-4d9c-a3e5-5401df15ad4b",
+      req_document_name: "5 year DSR",
+      req_document_description: "10.5.4",
+      req_document_category: "MINE_TAILINGS",
+    },
+  ],
+};
 
 export const MINE_TSF_REQUIRED_REPORTS = [
-  {value: "05388944-afb3-4ef4-9db1-94db72f6060e", label: "Annual Reclamation"},
-  {value: "ca3f5a58-d7ea-4620-a064-507450f082de", label: "Annual DSI"},
-  {value: "faa99067-3639-4d9c-a3e5-5401df15ad4b", label: "5 year DSR"}
-]
+  { value: "05388944-afb3-4ef4-9db1-94db72f6060e", label: "Annual Reclamation" },
+  { value: "ca3f5a58-d7ea-4620-a064-507450f082de", label: "Annual DSI" },
+  { value: "faa99067-3639-4d9c-a3e5-5401df15ad4b", label: "5 year DSR" },
+];
 
-export const MINE_TSF_REQUIRED_REPORTS_HASH = 
-  {
-    "05388944-afb3-4ef4-9db1-94db72f6060e": "Annual Reclamation",
-    "ca3f5a58-d7ea-4620-a064-507450f082de": "Annual DSI",
-    "faa99067-3639-4d9c-a3e5-5401df15ad4b": "5 year DSR"
-  }
+export const MINE_TSF_REQUIRED_REPORTS_HASH = {
+  "05388944-afb3-4ef4-9db1-94db72f6060e": "Annual Reclamation",
+  "ca3f5a58-d7ea-4620-a064-507450f082de": "Annual DSI",
+  "faa99067-3639-4d9c-a3e5-5401df15ad4b": "5 year DSR",
+};
 
 export const USER_ACCESS_DATA = [
   "mds-mine-view",

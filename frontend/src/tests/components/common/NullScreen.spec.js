@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import NullScreen from '@/components/common/NullScreen';
 
-let props = {};
+const props = {};
 
 const setupProps = () => {
   props.type = "dashboard"

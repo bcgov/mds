@@ -1,4 +1,4 @@
-FROM node:8-slim
+FROM node:8
 
 MAINTAINER FreshWorks <web@freshworks.io>
 

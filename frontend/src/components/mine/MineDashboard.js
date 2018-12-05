@@ -61,7 +61,7 @@ export class MineDashboard extends Component {
   state = { activeTab: "summary" };
 
   handleChange = (activeTab) => {
-    this.setState({ activeTab: activeTab });
+    this.setState({ activeTab });
     this.props.history.push(
       router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
     );
@@ -85,75 +85,72 @@ export class MineDashboard extends Component {
     const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return <Loading />;
-    } else {
-      return (
-        <div className="dashboard">
-          <div>
-            <MineHeader mine={mine} {...this.props} />
-          </div>
-          <div className="dashboard__content">
-            <Tabs
-              activeKey={this.state.activeTab}
-              defaultActiveKey="summary"
-              onChange={this.handleChange}
-              size="large"
-              animated={{ inkBar: true, tabPane: false }}
-            >
-              <TabPane tab="Summary" key="summary">
-                <div className="tab__content">
-                  <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds} />
-                </div>
-              </TabPane>
-              <TabPane tab="Permit" key="permit">
-                <div className="tab__content">
-                  <MinePermitInfo mine={mine} />
-                </div>
-              </TabPane>
-              <TabPane tab="Contact Information" key="contact-information">
-                <div className="tab__content">
-                  <MineContactInfo mine={mine} />
-                </div>
-              </TabPane>
-              <TabPane tab="Compliance" key="compliance">
-                <div className="tab__content">
-                  <NullScreen type="generic" />
-                </div>
-              </TabPane>
-              <TabPane tab="Tenure" key="tenure">
-                <div className="tab__content">
-                  <MineTenureInfo mine={mine} {...this.props} />
-                </div>
-              </TabPane>
-              {mine.mine_tailings_storage_facility.length > 0 && (
-                <TabPane tab="Tailings" key="tailings">
-                  <div className="tab__content">
-                    <MineTailingsInfo mine={mine} {...this.props} />
-                  </div>
-                </TabPane>
-              )}
-            </Tabs>
-          </div>
-        </div>
-      );
     }
+    return (
+      <div className="dashboard">
+        <div>
+          <MineHeader mine={mine} {...this.props} />
+        </div>
+        <div className="dashboard__content">
+          <Tabs
+            activeKey={this.state.activeTab}
+            defaultActiveKey="summary"
+            onChange={this.handleChange}
+            size="large"
+            animated={{ inkBar: true, tabPane: false }}
+          >
+            <TabPane tab="Summary" key="summary">
+              <div className="tab__content">
+                <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds} />
+              </div>
+            </TabPane>
+            <TabPane tab="Permit" key="permit">
+              <div className="tab__content">
+                <MinePermitInfo mine={mine} />
+              </div>
+            </TabPane>
+            <TabPane tab="Contact Information" key="contact-information">
+              <div className="tab__content">
+                <MineContactInfo mine={mine} />
+              </div>
+            </TabPane>
+            <TabPane tab="Compliance" key="compliance">
+              <div className="tab__content">
+                <NullScreen type="generic" />
+              </div>
+            </TabPane>
+            <TabPane tab="Tenure" key="tenure">
+              <div className="tab__content">
+                <MineTenureInfo mine={mine} {...this.props} />
+              </div>
+            </TabPane>
+            {mine.mine_tailings_storage_facility.length > 0 && (
+              <TabPane tab="Tailings" key="tailings">
+                <div className="tab__content">
+                  <MineTailingsInfo mine={mine} {...this.props} />
+                </div>
+              </TabPane>
+            )}
+          </Tabs>
+        </div>
+      </div>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    mines: getMines(state),
-    permittees: getCurrentPermittees(state),
-    permitteeIds: getCurrentPermitteeIds(state),
-    mineStatusOptions: getMineStatusOptions(state),
-    mineRegionOptions: getMineRegionOptions(state),
-    mineRegionHash: getMineRegionHash(state),
-    mineTenureHash: getMineTenureTypesHash(state),
-    mineTenureTypes: getMineTenureTypes(state),
-  };
-};
+const mapStateToProps = (state) => ({
+  mines: getMines(state),
+  permittees: getCurrentPermittees(state),
+  permitteeIds: getCurrentPermitteeIds(state),
+  mineStatusOptions: getMineStatusOptions(state),
+  mineRegionOptions: getMineRegionOptions(state),
+  mineRegionHash: getMineRegionHash(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  mineTenureTypes: getMineTenureTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchMineRecordById,
       fetchStatusOptions,
@@ -166,7 +163,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;

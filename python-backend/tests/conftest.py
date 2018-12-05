@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import uuid
 
 import pytest
@@ -25,6 +25,9 @@ from app.api.documents.required.models.required_document_categories import Requi
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_document import MineExpectedDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -89,18 +92,13 @@ def setup_data(session):
         region_code.save()
 
     # Insert Mine Tenure Types
-    mine_tenure_type_1 = MineTenureType(
-        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_1,
-        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_1,
-        **DUMMY_USER_KWARGS
-    )
-    mine_tenure_type_2 = MineTenureType(
-        mine_tenure_type_id=TEST_MINE_TENURE_TYPE_ID_2,
-        mine_tenure_type_name=TEST_MINE_TENURE_TYPE_NAME_2,
-        **DUMMY_USER_KWARGS
-    )
-    mine_tenure_type_1.save()
-    mine_tenure_type_2.save()
+    for id, name in zip(TEST_MINE_TENURE_TYPE_IDS, TEST_MINE_TENURE_TYPE_NAMES):
+        mine_tenure_type = MineTenureType(
+            mine_tenure_type_id=id,
+            mine_tenure_type_name=name,
+            **DUMMY_USER_KWARGS
+        )
+        mine_tenure_type.save()
 
     # Test Mine Data
     mine_identity = MineIdentity(mine_guid=uuid.UUID(
@@ -133,7 +131,7 @@ def setup_data(session):
         longitude=TEST_LONG_1,
         effective_date=datetime.today(),
         expiry_date=datetime.today(),
-        **DUMMY_USER_KWARGS,
+        **DUMMY_USER_KWARGS
     )
     mine_location.save()
 
@@ -221,8 +219,7 @@ def setup_data(session):
         mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
-        effective_date=datetime.today(),
-        expiry_date=datetime.today(),
+        effective_date=datetime.today() - timedelta(days=10),
         **DUMMY_USER_KWARGS
     )
     manager.save()
@@ -331,6 +328,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     mine_tsf1.save()
+
+    mpat1 = MinePartyAppointmentType(
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
+        description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION1,
+        **DUMMY_USER_KWARGS
+    )
+    mpat1.save()
+
+    mpat2 = MinePartyAppointmentType(
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
+        description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2,
+        **DUMMY_USER_KWARGS
+    )
+    mpat2.save()
 
 
 def clear_data(session):
