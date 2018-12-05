@@ -135,3 +135,12 @@
 .ant-calendar-picker {
   width: 100%;
 }
+
+// CCOLLAPSE
+.ant-collapse {
+  background-color: $default-white;
+}
+
+.ant-collapse-content > .ant-collapse-content-box {
+  background-color: $default-white;
+}

@@ -175,16 +175,17 @@ export class Dashboard extends Component {
   };
 
   handleSubmit = (value) => {
-    const mineStatus = value.mine_status.join(",");
-    this.props
-      .createMineRecord({ ...value, mine_status: mineStatus })
-      .then(() => {
-        this.props.closeModal();
-      })
-      .then(() => {
-        const params = this.props.location.search;
-        this.props.fetchMineRecords(params);
-      });
+    console.log(value);
+    // const mineStatus = value.mine_status.join(",");
+    // this.props
+    //   .createMineRecord({ ...value, mine_status: mineStatus })
+    //   .then(() => {
+    //     this.props.closeModal();
+    //   })
+    //   .then(() => {
+    //     const params = this.props.location.search;
+    //     this.props.fetchMineRecords(params);
+    //   });
   };
 
   openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title) {

@@ -14,7 +14,7 @@ import Logout from "../authentication/Logout";
  */
 
 const propTypes = {
-  userInfo: { preferred_username: PropTypes.string.isRequired }.isRequired,
+  userInfo: { preferred_username: PropTypes.string.isRequired },
 };
 
 export const NavBar = (props) => (
