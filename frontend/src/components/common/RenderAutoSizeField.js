@@ -22,17 +22,17 @@ const RenderAutoSizeField = ({
   placeholder,
   meta: { touched, error, warning },
 }) => (
-    <Form.Item
-      label={label}
-      placeholder={placeholder}
-      validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
-      help={touched &&
+  <Form.Item
+    label={label}
+    placeholder={placeholder}
+    validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
+    help={touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))
       }
-    >
-      <TextArea id={id} {...input} autosize/>
-    </Form.Item>
+  >
+    <TextArea id={id} {...input} autosize />
+  </Form.Item>
   );
 
 RenderAutoSizeField.propTypes = propTypes;

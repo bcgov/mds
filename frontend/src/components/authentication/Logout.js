@@ -33,17 +33,13 @@ export class Logout extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     keycloak: getKeycloak(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     logoutUser
   }, dispatch);
-};
 
 Logout.propTypes = propTypes;
 Logout.defaultProps = defaultProps;

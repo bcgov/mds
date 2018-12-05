@@ -49,12 +49,12 @@ const RenderLargeSelect = ({
       getPopupContainer={() => document.getElementById(id)}
       id={id}
       defaultActiveFirstOption={false}
-      notFoundContent={"Not Found"}
-      dropdownMatchSelectWidth={true}
-      backfill={true}
+      notFoundContent="Not Found"
+      dropdownMatchSelectWidth
+      backfill
       style={{ width: "100%" }}
       dataSource={transformData(data, options)}
-      placeholder={placeholder ? placeholder : "Select a party"} //TODO remove/refactor implimentation specific string
+      placeholder={placeholder || "Select a party"} // TODO remove/refactor implimentation specific string
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }

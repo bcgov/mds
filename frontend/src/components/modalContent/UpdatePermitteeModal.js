@@ -43,16 +43,16 @@ export class UpdatePermitteeModal extends Component {
   render() { 
     return (  
       <div>
-      <UpdatePermitteeForm {...this.props}/> 
-      <p className="center">{ModalContent.PARTY_NOT_FOUND}</p>
-      <div className="center">
-        <Radio.Group defaultValue={true} size="large" onChange={this.togglePartyChange}>
-          <Radio.Button value={true}>Person</Radio.Button>
-          <Radio.Button value={false}>Company</Radio.Button>
-        </Radio.Group>
-        <AddPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson}/>
+        <UpdatePermitteeForm {...this.props} /> 
+        <p className="center">{ModalContent.PARTY_NOT_FOUND}</p>
+        <div className="center">
+          <Radio.Group defaultValue size="large" onChange={this.togglePartyChange}>
+            <Radio.Button value>Person</Radio.Button>
+            <Radio.Button value={false}>Company</Radio.Button>
+          </Radio.Group>
+          <AddPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
+        </div>
       </div>
-    </div>
     );
   }
 }
@@ -60,13 +60,11 @@ export class UpdatePermitteeModal extends Component {
 UpdatePermitteeModal.propTypes = propTypes;
 UpdatePermitteeModal.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     parties: getParties(state),
     partyIds: getPartyIds(state),
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
-  };
-};
+  });
 
 export default connect(mapStateToProps, null)(UpdatePermitteeModal);

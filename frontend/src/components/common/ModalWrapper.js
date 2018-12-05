@@ -26,42 +26,38 @@ export class ModalWrapper extends Component {
   render() {
     const { isModalOpen, content: ChildComponent, props, closeModal, clearOnSubmit } = this.props;
     return (
-    <Modal
-      title={props.title}
-      visible={isModalOpen}
-      closable={false}
-      footer={null}
-    >
-      <LoadingBar 
-        scope="modal" 
-        style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#77510a', width: '100%', height: '8px', zIndex: 100 }} 
-      />
-     {ChildComponent &&
+      <Modal
+        title={props.title}
+        visible={isModalOpen}
+        closable={false}
+        footer={null}
+      >
+        <LoadingBar 
+          scope="modal" 
+          style={{ position: 'absolute', top: '50px', left: 0, backgroundColor: '#77510a', width: '100%', height: '8px', zIndex: 100 }}
+        />
+        {ChildComponent && (
         <ChildComponent
           closeModal={closeModal}
           clearOnSubmit={clearOnSubmit}
           {...props}
         />
-      }
-    </Modal>
+)}
+      </Modal>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     isModalOpen: getIsModalOpen(state),
     props: getProps(state),
     content: getContent(state),
     clearOnSubmit: getClearOnSubmit(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     closeModal,
   }, dispatch);
-};
 
 ModalWrapper.propTypes = propTypes;
 ModalWrapper.defaultProps = defaultProps;

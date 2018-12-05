@@ -49,9 +49,7 @@ export const getMineRegionHash = createSelector(
 
 export const getMineTSFRequiredDocumentsHash = createSelector(
   [getMineTSFRequiredReports],
-  (requiredDocuments) => {
-    return requiredDocuments.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
-  }
+  (requiredDocuments) => requiredDocuments.reduce((map, { value, label }) => ({ [value]: label, ...map }), {})
 );
 
 export const getMineTenureTypesHash = createSelector(

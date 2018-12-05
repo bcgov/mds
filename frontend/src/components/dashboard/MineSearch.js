@@ -27,6 +27,7 @@ export class MineSearch extends Component {
   componentDidMount() {
     this.props.fetchMineNameList();
   }
+
   /**
    *  re-center the map to the mines coordinates
    * @param value = 'mine.long, mine.lat';
@@ -34,6 +35,7 @@ export class MineSearch extends Component {
   handleCoordinateSearch = (value) => {
     this.props.handleCoordinateSearch(value);
   };
+
   /**
    *  If the user has typed more than 3 characters filter the search
    * If they clear the search, revert back to default search set
@@ -80,7 +82,7 @@ export class MineSearch extends Component {
           handleChange={this.handleChange}
         />
       );
-    } else {
+    } 
       return (
         <Input
           defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
@@ -89,24 +91,20 @@ export class MineSearch extends Component {
           suffix={<Icon type="search" style={{ color: "#537C52", fontSize: 20 }} />}
         />
       );
-    }
+    
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     mineNameList: getMineNames(state).mines,
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchMineNameList,
     },
     dispatch
   );
-};
 
 MineSearch.propTypes = propTypes;
 MineSearch.defaultProps = defaultProps;

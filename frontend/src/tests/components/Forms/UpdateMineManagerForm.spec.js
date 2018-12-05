@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe('AddPartyFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdateMineManagerForm {...dispatchProps} {...props}/>);
+    const component = shallow(<UpdateMineManagerForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

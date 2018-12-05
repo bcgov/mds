@@ -14,13 +14,11 @@ const defaultProps = {
  initialValues: null,
 };
 
-export const EditTailingsReportModal = (props) => {
-  return (
+export const EditTailingsReportModal = (props) => (
   <div>
-    <EditTailingsReportForm {...props}/>
+    <EditTailingsReportForm {...props} />
   </div>
-  );
-}
+  )
 
 EditTailingsReportModal.propTypes = propTypes;
 EditTailingsReportModal.defaultProps = defaultProps;

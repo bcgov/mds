@@ -72,7 +72,7 @@ describe('`fetchParties` action creator', () => {
 
 describe('`fetchPartyById` action creator', () => {
   const mockPayload = MOCK.PARTY.partyIds[0];
-  const url = ENVIRONMENT.apiUrl + API.PARTY + "/" + mockPayload;
+  const url = `${ENVIRONMENT.apiUrl + API.PARTY  }/${  mockPayload}`;
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, mockPayload).reply(200, mockResponse);

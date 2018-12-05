@@ -39,11 +39,9 @@ export class NavBar extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     userInfo: getUserInfo(state),
-  };
-};
+  });
 
 NavBar.propTypes = propTypes;
 NavBar.defaultProps = defaultProps;

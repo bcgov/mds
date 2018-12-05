@@ -21,16 +21,16 @@ const RenderField = ({
   placeholder,
   meta: { touched, error, warning },
 }) => (
-    <Form.Item
-      label={label}
-      validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
-      help={touched &&
+  <Form.Item
+    label={label}
+    validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
+    help={touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))
       }
-    >
-      <Input id={id} placeholder={placeholder} {...input} />
-    </Form.Item>
+  >
+    <Input id={id} placeholder={placeholder} {...input} />
+  </Form.Item>
   );
 
 RenderField.propTypes = propTypes;

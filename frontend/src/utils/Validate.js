@@ -4,15 +4,25 @@ import { memoize } from "lodash";
  */
 class Validator {
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
+
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+
   USA_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+
   EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+
   PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
+
   NAME_REGEX = /^[A-Za-zÀ-ÿ'\-\s']+$/;
+
   FLOATS_REGEX = /^-?\d*(\.{1}\d+)?$/;
+
   NUMBERS_OR_EMPTY_STRING_REGEX = /^-?\d*\.?\d*$/;
+
   URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+
   LAT_REGEX = /^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$/;
+
   LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
 
   checkLat(lat) {

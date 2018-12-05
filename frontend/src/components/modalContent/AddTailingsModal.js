@@ -11,13 +11,11 @@ const defaultProps = {
  title: ''
 };
 
-export const AddTailingsModal = (props) => {
-  return (
+export const AddTailingsModal = (props) => (
   <div>
-    <AddTailingsForm {...props}/>
+    <AddTailingsForm {...props} />
   </div>
-  );
-}
+  )
 
 AddTailingsModal.propTypes = propTypes;
 AddTailingsModal.defaultProps = defaultProps;

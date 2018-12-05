@@ -22,6 +22,7 @@ export class Index extends Component {
         this.setState({environment: true});
       });
   }
+
   render() {
     if (this.state.environment) {
       return (
@@ -29,9 +30,9 @@ export class Index extends Component {
           <App />
         </Provider>
       )
-    }else {
-      return(<div></div>)
     }
+      return(<div />)
+    
   }
 }
 

@@ -54,20 +54,18 @@ class MineTenureInfo extends Component {
         <Card>
           <table>
             <tbody>
-            <tr>
-              <th scope="col"><h4>Tenure Numbers</h4></th>
-            </tr>
-            <tr>
-              <td data-label="Tenure Numbers">
-                {mine.mineral_tenure_xref.map((tenure) => {
-                  return (
+              <tr>
+                <th scope="col"><h4>Tenure Numbers</h4></th>
+              </tr>
+              <tr>
+                <td data-label="Tenure Numbers">
+                  {mine.mineral_tenure_xref.map((tenure) => (
                     <p key={tenure.tenure_number_id} className="p-large">
                       {tenure.tenure_number_id}
                     </p>
-                    )
-                })}
-              </td>
-            </tr>
+                    ))}
+                </td>
+              </tr>
             </tbody>
           </table>
           <div className="right center-mobile"><ConditionalButton handleAction={(event) => this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)} string={ModalContent.ADD_TENURE} type="primary" /></div>

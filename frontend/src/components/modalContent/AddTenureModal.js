@@ -11,13 +11,11 @@ const defaultProps = {
  title: ''
 };
 
-export const AddTenureModal = (props) => {
-  return (
+export const AddTenureModal = (props) => (
   <div>
-    <AddTenureNumberForm {...props}/>
+    <AddTenureNumberForm {...props} />
   </div>
-  );
-}
+  )
 
 AddTenureModal.propTypes = propTypes;
 AddTenureModal.defaultProps = defaultProps;

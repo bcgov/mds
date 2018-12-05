@@ -34,7 +34,7 @@ export class MinePin extends Component {
     const content = renderToString(<MapPopup id={id} />);
     return {
       title: mine_name,
-      content: content,
+      content,
     };
   }
 
@@ -45,9 +45,9 @@ export class MinePin extends Component {
         longitude: this.props.mines[id].mine_location[0].longitude,
         latitude: this.props.mines[id].mine_location[0].latitude,
       };
-    } else {
+    } 
       return null;
-    }
+    
   };
 
   componentWillMount() {
@@ -136,8 +136,8 @@ export class MinePin extends Component {
           const x = Number(point.longitude);
           const templateInfo = this.popupTemplate(id);
           result.push({
-            y: y,
-            x: x,
+            y,
+            x,
             templateTitle: templateInfo.title,
             templateContent: templateInfo.content,
           });
@@ -165,6 +165,7 @@ export class MinePin extends Component {
   componentWillUnmount() {
     this.props.view.graphics.remove(this.state.graphic);
   }
+
   render() {
     return null;
   }
@@ -173,12 +174,10 @@ export class MinePin extends Component {
 MinePin.propTypes = propTypes;
 MinePin.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     mines: getMines(state),
     mineIds: getMineIds(state),
-  };
-};
+  });
 
 export default withRouter(
   connect(

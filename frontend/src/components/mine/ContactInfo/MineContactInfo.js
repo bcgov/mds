@@ -44,11 +44,12 @@ export class MineContactInfo extends Component {
     super(props);
     this.handleChangeDebounced = debounce(this.handleChange, 1000);
   }
+
   /**
    * add new parties (firstName, surname || companyName) to db.
    */
   handlePartySubmit = (values, type) => {
-    const payload = { type: type, ...values };
+    const payload = { type, ...values };
     this.props.createParty(payload).then(() => {
       this.props.fetchParties();
     });
@@ -86,15 +87,12 @@ export class MineContactInfo extends Component {
 MineContactInfo.propTypes = propTypes;
 MineContactInfo.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchParties,
       createParty,
@@ -106,7 +104,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 export default connect(
   mapStateToProps,

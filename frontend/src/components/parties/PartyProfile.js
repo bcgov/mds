@@ -79,7 +79,13 @@ export class PartyProfile extends Component {
                             </Link>
                           </Col>
                           <Col span={8}>Mine Manager</Col>
-                          <Col span={8}>{history.effective_date} - {expiry}</Col>
+                          <Col span={8}>
+                            {history.effective_date}
+                            {' '}
+- 
+                            {' '}
+                            {expiry}
+                          </Col>
                         </Row>
                       </div>
                     )
@@ -90,24 +96,20 @@ export class PartyProfile extends Component {
           </div>
         </div>
       )
-    } else {
+    } 
       return (<Loading />)
-    }
+    
   }
 }
 
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     parties: getParties(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
     fetchPartyById
   }, dispatch);
-};
 
 PartyProfile.propTypes = propTypes;
 PartyProfile.defaultProps = defaultProps;

@@ -54,7 +54,7 @@ export const fetchPartyById = (id) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY));
   dispatch(showLoading());
   return axios
-    .get(ENVIRONMENT.apiUrl + API.PARTY + "/" + id, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY  }/${  id}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTY));
       dispatch(partyActions.storeParty(response.data, id));
@@ -81,7 +81,7 @@ export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) =>
     )
     .then((response) => {
       notification.success({
-        message: "Successfully updated the manager of " + mineName,
+        message: `Successfully updated the manager of ${  mineName}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.ADD_MINE_MANAGER));
@@ -114,7 +114,7 @@ export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => 
     )
     .then((response) => {
       notification.success({
-        message: "Successfully updated the permittee of " + mineName,
+        message: `Successfully updated the permittee of ${  mineName}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.ADD_PERMITTEE));
@@ -135,7 +135,7 @@ export const fetchPartyRelationshipTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
   dispatch(showLoading("modal"));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.PARTY + "/mines/relationship-types", createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY  }/mines/relationship-types`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
       dispatch(partyActions.storePartyRelationshipTypes(response.data));

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default function fetchEnv() {
   return axios.get(`${process.env.BASE_PATH}/env`)
-    .then(function (res) {
+    .then((res) => {
       try {
           JSON.stringify(res.data);
           return res.data;
@@ -12,10 +12,8 @@ export default function fetchEnv() {
       }
 
     })
-    .catch(function (error) {
-        return DEFAULT_ENVIRONMENT;
-    })
-    .then(function (env) {
+    .catch((error) => DEFAULT_ENVIRONMENT)
+    .then((env) => {
         ENVIRONMENT.apiUrl = env.apiUrl;
         KEYCLOAK.clientId = env.keycloak_clientId;
         KEYCLOAK.resource = env.keycloak_resource;

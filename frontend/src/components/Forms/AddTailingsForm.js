@@ -13,29 +13,29 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export const AddTailingsForm = (props) => 
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Row gutter={16}>
-        <Col>
-          <Form.Item>
-            <Field
-              id="tsf_name"
-              name="tsf_name"
-              label='TSF Name*'
-              component={RenderField}
-              validate={[required]}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <div className="right center-mobile">
-        <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
-          <Button className="full-mobile" type="secondary">Cancel</Button>
-        </Popconfirm>
+export const AddTailingsForm = (props) => (
+  <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Row gutter={16}>
+      <Col>
+        <Form.Item>
+          <Field
+            id="tsf_name"
+            name="tsf_name"
+            label='TSF Name*'
+            component={RenderField}
+            validate={[required]}
+          />
+        </Form.Item>
+      </Col>
+    </Row>
+    <div className="right center-mobile">
+      <Popconfirm placement="topRight" title="Are you sure you want to cancel?" onConfirm={props.closeModal} okText="Yes" cancelText="No">
+        <Button className="full-mobile" type="secondary">Cancel</Button>
+      </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit">{props.title}</Button>
-     </div>
-    </Form>
-  ;
+    </div>
+  </Form>
+);
 
 AddTailingsForm.propTypes = propTypes;
 

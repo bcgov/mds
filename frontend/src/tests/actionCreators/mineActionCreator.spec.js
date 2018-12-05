@@ -61,7 +61,7 @@ describe("`updateMineRecord` action creator", () => {
   const mineId = "1";
   const tenureNumber = "0293847";
   const mineName = "MockMine";
-  const url = ENVIRONMENT.apiUrl + API.MINE + "/" + mineId;
+  const url = `${ENVIRONMENT.apiUrl + API.MINE  }/${  mineId}`;
   const mockPayload = { tenure_number_id: tenureNumber };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
@@ -87,7 +87,7 @@ describe("`createTailingsStorageFacility` action creator", () => {
   const tsf_name = "MockTSF";
   const mine_guid = "12345-6789";
   const url = ENVIRONMENT.apiUrl + API.MINE_TSF;
-  const mockPayload = { tsf_name: tsf_name, mine_guid: mine_guid };
+  const mockPayload = { tsf_name, mine_guid };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
@@ -110,7 +110,7 @@ describe("`createTailingsStorageFacility` action creator", () => {
 
 describe('`createMineExpectedDocument` action creator', () => {
   const mine_guid = "12345-6789"
-  const url = ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT + "/" + mine_guid;
+  const url = `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT  }/${  mine_guid}`;
   const mockPayload = {document_name: 'requiredReportLabel', req_document_guid:'09876-5432'} 
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
@@ -134,7 +134,7 @@ describe('`createMineExpectedDocument` action creator', () => {
 
 describe('`removeMineExpectedDocument` action creator', () => {
   const exp_doc_guid = "12345-6789"
-  const url = ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT + "/" + exp_doc_guid; 
+  const url = `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT  }/${  exp_doc_guid}`; 
   it('Request successful, dispatches `success` with correct response', () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
@@ -179,7 +179,7 @@ describe('`fetchMineRecords` action creator', () => {
 
 describe("`fetchMineRecordById` action creator", () => {
   const mineId = "2";
-  const url = ENVIRONMENT.apiUrl + API.MINE + "/" + mineId;
+  const url = `${ENVIRONMENT.apiUrl + API.MINE  }/${  mineId}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

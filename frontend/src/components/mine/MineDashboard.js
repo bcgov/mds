@@ -61,7 +61,7 @@ export class MineDashboard extends Component {
   state = { activeTab: "summary" };
 
   handleChange = (activeTab) => {
-    this.setState({ activeTab: activeTab });
+    this.setState({ activeTab });
     this.props.history.push(
       router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
     );
@@ -85,7 +85,7 @@ export class MineDashboard extends Component {
     const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return <Loading />;
-    } else {
+    } 
       return (
         <div className="dashboard">
           <div>
@@ -135,12 +135,11 @@ export class MineDashboard extends Component {
           </div>
         </div>
       );
-    }
+    
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     mines: getMines(state),
     permittees: getCurrentPermittees(state),
     permitteeIds: getCurrentPermitteeIds(state),
@@ -149,11 +148,9 @@ const mapStateToProps = (state) => {
     mineRegionHash: getMineRegionHash(state),
     mineTenureHash: getMineTenureTypesHash(state),
     mineTenureTypes: getMineTenureTypes(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchMineRecordById,
       fetchStatusOptions,
@@ -166,7 +163,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;

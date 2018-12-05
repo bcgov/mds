@@ -168,14 +168,14 @@ export class Dashboard extends Component {
     const perPage = this.state.params.per_page
       ? this.state.params.per_page
       : String.DEFAULT_PER_PAGE;
-    //reset page when a search is initiated
+    // reset page when a search is initiated
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value)
     );
   };
 
   handleSubmit = (value) => {
-    let mineStatus = value.mine_status.join(",");
+    const mineStatus = value.mine_status.join(",");
     this.props
       .createMineRecord({ ...value, mine_status: mineStatus })
       .then(() => {
@@ -277,7 +277,9 @@ export class Dashboard extends Component {
               {this.state.mineName && (
                 <div className="center center-mobile">
                   <h2>
-                    Results for: <span className="p">{this.state.mineName}</span>
+                    Results for: 
+                    {' '}
+                    <span className="p">{this.state.mineName}</span>
                   </h2>
                 </div>
               )}
@@ -285,10 +287,14 @@ export class Dashboard extends Component {
                 <div className="center">
                   <div className="inline-flex evenly center-mobile">
                     <h2>
-                      Latitude: <span className="p">{this.state.lat}</span>
+                      Latitude: 
+                      {' '}
+                      <span className="p">{this.state.lat}</span>
                     </h2>
                     <h2>
-                      Longitude: <span className="p">{this.state.long}</span>
+                      Longitude: 
+                      {' '}
+                      <span className="p">{this.state.long}</span>
                     </h2>
                   </div>
                 </div>
@@ -300,9 +306,9 @@ export class Dashboard extends Component {
           </Tabs>
         </div>
       );
-    } else {
+    } 
       return <Loading />;
-    }
+    
   }
 
   render() {
@@ -333,8 +339,7 @@ export class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     mines: getMines(state),
     mineIds: getMineIds(state),
     pageData: getMinesPageData(state),
@@ -342,11 +347,9 @@ const mapStateToProps = (state) => {
     mineRegionOptions: getMineRegionOptions(state),
     mineRegionHash: getMineRegionHash(state),
     mineTenureTypes: getMineTenureTypes(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchMineRecords,
       fetchStatusOptions,
@@ -358,7 +361,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatch
   );
-};
 
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;

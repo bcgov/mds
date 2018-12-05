@@ -17,68 +17,66 @@ const propTypes = {
   statusOptions: PropTypes.array.isRequired,
 };
 
-export const EditTailingsReportForm = (props) => {
-  return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Row gutter={16}>
-        <Col>
-          <Form.Item>
-            <Field 
-              id="tsf_report_name"
-              name="tsf_report_name"
-              label="Report Name"
-              component={RenderField}
-              validate={[required]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="tsf_report_due_date"
-              name="tsf_report_due_date"
-              label="Due Date"
-              component={RenderDate}
-              validate={[required]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="tsf_report_received_date"
-              name="tsf_report_received_date"
-              label="Received Date"
-              component={RenderDate}
-              validate={[]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="tsf_report_status"
-              name="tsf_report_status"
-              label="Status"
-              placeholder="Select a Status"
-              component={RenderSelect}
-              data={props.statusOptions}
-              validate={[]}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="secondary">Cancel</Button>
-        </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit">
-          {props.title}
-        </Button>
-      </div>
-    </Form>
+export const EditTailingsReportForm = (props) => (
+  <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Row gutter={16}>
+      <Col>
+        <Form.Item>
+          <Field 
+            id="tsf_report_name"
+            name="tsf_report_name"
+            label="Report Name"
+            component={RenderField}
+            validate={[required]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="tsf_report_due_date"
+            name="tsf_report_due_date"
+            label="Due Date"
+            component={RenderDate}
+            validate={[required]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="tsf_report_received_date"
+            name="tsf_report_received_date"
+            label="Received Date"
+            component={RenderDate}
+            validate={[]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="tsf_report_status"
+            name="tsf_report_status"
+            label="Status"
+            placeholder="Select a Status"
+            component={RenderSelect}
+            data={props.statusOptions}
+            validate={[]}
+          />
+        </Form.Item>
+      </Col>
+    </Row>
+    <div className="right center-mobile">
+      <Popconfirm
+        placement="topRight"
+        title="Are you sure?"
+        onConfirm={props.closeModal}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button type="secondary">Cancel</Button>
+      </Popconfirm>
+      <Button className="full-mobile" type="primary" htmlType="submit">
+        {props.title}
+      </Button>
+    </div>
+  </Form>
   );
-};
 
 EditTailingsReportForm.propTypes = propTypes;
 

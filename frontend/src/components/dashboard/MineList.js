@@ -33,30 +33,26 @@ class MineList extends Component {
           <Col span={6}><h2>Region</h2></Col>
           <Col span={6}><h2>Permit(s)</h2></Col>
         </Row>
-        <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}}/>
-        {mineIds && mineIds.map((id) => {
-          return (
-            <div key={id}>
-              <Row type="flex" style={{ textAlign: 'center' }}>
-                <Col id="mine_list_name" span={6}>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-                    {mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : String.EMPTY_FIELD}
-                  </Link>
-                </Col>
-                <Col id="mine_list_id" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD}</Col>
-                <Col id="mine_list_region" span={6}>{mines[id].mine_detail[0] ? mineRegionHash[mines[id].mine_detail[0].region_code] : String.EMPTY_FIELD}</Col>
-                <Col id="mine_list_permit" span={6}>
-                  {mines[id].mine_permit && mines[id].mine_permit.map((permit) => {
-                    return (
-                      <div key={permit.permit_guid}>{permit.permit_no }</div>
-                    )
-                  })}
-                </Col>
-                <Divider />
-              </Row>
-            </div>
-          )
-        })}
+        <Divider style={{ height: '2px', backgroundColor: '#013366', margin: '0'}} />
+        {mineIds && mineIds.map((id) => (
+          <div key={id}>
+            <Row type="flex" style={{ textAlign: 'center' }}>
+              <Col id="mine_list_name" span={6}>
+                <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
+                  {mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : String.EMPTY_FIELD}
+                </Link>
+              </Col>
+              <Col id="mine_list_id" span={6}>{mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD}</Col>
+              <Col id="mine_list_region" span={6}>{mines[id].mine_detail[0] ? mineRegionHash[mines[id].mine_detail[0].region_code] : String.EMPTY_FIELD}</Col>
+              <Col id="mine_list_permit" span={6}>
+                {mines[id].mine_permit && mines[id].mine_permit.map((permit) => (
+                  <div key={permit.permit_guid}>{permit.permit_no }</div>
+                    ))}
+              </Col>
+              <Divider />
+            </Row>
+          </div>
+          ))}
         {(mineIds.length === 0) &&
           <NullScreen type="no-results" />
         }

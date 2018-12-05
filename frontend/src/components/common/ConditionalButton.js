@@ -25,28 +25,26 @@ const defaultProps = {
  overlay: ''
 };
 
-export const ConditionalButton = (props) => {
-  return (
-    <div>
-      {!props.isDropdown && 
-        <Button
-          className="full-mobile"
-          type={props.type} 
-          onClick={props.handleAction}
-        >
+export const ConditionalButton = (props) => (
+  <div>
+    {!props.isDropdown && (
+      <Button
+        className="full-mobile"
+        type={props.type} 
+        onClick={props.handleAction}
+      >
+        {props.string}
+      </Button>
+)}
+    {props.isDropdown && (
+      <Dropdown overlay={props.overlay} placement="bottomLeft">
+        <Button type={props.type}>
           {props.string}
         </Button>
-      }
-      {props.isDropdown && 
-        <Dropdown overlay={props.overlay} placement="bottomLeft">
-          <Button type={props.type}>
-            {props.string}
-          </Button>
-        </Dropdown>
-      }
-    </div>
+      </Dropdown>
+)}
+  </div>
   );
-};
 
 ConditionalButton.propTypes = propTypes;
 ConditionalButton.defaultProps = defaultProps;

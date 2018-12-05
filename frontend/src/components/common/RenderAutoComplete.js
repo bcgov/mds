@@ -19,21 +19,21 @@ const RenderAutoComplete = ({
   handleChange,
   handleSelect,
 }) => (
-    <AutoComplete
-      defaultActiveFirstOption={false}
-      notFoundContent={'Not Found'}
-      allowClear
-      dropdownMatchSelectWidth={true}
-      backfill={true}
-      style={{ width: '100%' }}
-      dataSource={data}
-      placeholder={placeholder}
-      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-      onSelect={handleSelect}
-      onChange={handleChange}
-    >
-      <Input id="search" suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
-    </AutoComplete>
+  <AutoComplete
+    defaultActiveFirstOption={false}
+    notFoundContent="Not Found"
+    allowClear
+    dropdownMatchSelectWidth
+    backfill
+    style={{ width: '100%' }}
+    dataSource={data}
+    placeholder={placeholder}
+    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+    onSelect={handleSelect}
+    onChange={handleChange}
+  >
+    <Input id="search" suffix={<Icon type="search" style={{ color: '#537C52', fontSize: 20 }} />} />
+  </AutoComplete>
   );
 
 RenderAutoComplete.propTypes = propTypes;

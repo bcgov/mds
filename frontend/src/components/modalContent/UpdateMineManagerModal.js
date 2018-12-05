@@ -24,20 +24,18 @@ export class UpdateMineManagerModal extends Component {
   render() { 
     return (
       <div>
-        <UpdateMineManagerForm {...this.props}/>
+        <UpdateMineManagerForm {...this.props} />
         <p className="center">{ModalContent.PERSON_NOT_FOUND}</p>
-        <AddPartyForm onSubmit={this.props.handlePartySubmit} isPerson/>
+        <AddPartyForm onSubmit={this.props.handlePartySubmit} isPerson />
       </div>
       );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     parties: getParties(state),
     partyIds: getPartyIds(state),
-  };
-};
+  });
 
 UpdateMineManagerModal.propTypes = propTypes;
 UpdateMineManagerModal.defaultProps = defaultProps;

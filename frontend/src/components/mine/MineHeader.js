@@ -31,7 +31,7 @@ const defaultProps = {
 
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
-    let mineStatus = value.mine_status.join(",");
+    const mineStatus = value.mine_status.join(",");
     this.props
       .updateMineRecord(this.props.mine.guid, { ...value, mine_status: mineStatus }, value.name)
       .then(() => {
@@ -126,7 +126,10 @@ class MineHeader extends Component {
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between">
-            <h1>{mine.mine_detail[0].mine_name} </h1>
+            <h1>
+              {mine.mine_detail[0].mine_name}
+              {' '}
+            </h1>
             <ConditionalButton
               isDropdown
               overlay={menu}
@@ -134,7 +137,12 @@ class MineHeader extends Component {
             />
           </div>
           <Divider />
-          <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
+          <h5>
+Mine ID:
+            {mine.mine_detail[0].mine_no}
+            {' '}
+ 
+          </h5>
           {mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
@@ -156,18 +164,23 @@ class MineHeader extends Component {
           )}
           {!mine.mine_status[0] && (
             <div>
-              <h5>Operating Status: {String.EMPTY_FIELD}</h5>
+              <h5>
+Operating Status:
+                {String.EMPTY_FIELD}
+              </h5>
             </div>
           )}
           <h5>
-            Tenure:{" "}
+            Tenure:
+            {" "}
             {mine.mine_type[0] && mine.mine_type[0].mine_tenure_type_id
               ? this.props.mineTenureHash[mine.mine_type[0].mine_tenure_type_id]
               : String.EMPTY_FIELD}
           </h5>
           <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <h5>
-            TSF:{" "}
+            TSF:
+            {" "}
             {mine.mine_tailings_storage_facility.length > 0
               ? mine.mine_tailings_storage_facility.length
               : String.EMPTY_FIELD}
@@ -178,14 +191,19 @@ class MineHeader extends Component {
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}
+                Lat: 
+                {' '}
+                {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long: {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}
+                Long: 
+                {' '}
+                {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}
               </p>
             </div>
             <p className="p-white">
-              Region:{" "}
+              Region:
+              {" "}
               {mine.mine_detail[0].region_code
                 ? mineRegionHash[mine.mine_detail[0].region_code]
                 : String.EMPTY_FIELD}

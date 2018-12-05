@@ -16,13 +16,11 @@ const defaultProps = {
   initialValues: null,
 };
 
-export const MineRecordModal = (props) => {
-  return (
-    <div>
-      <MineRecordForm {...props}/>
-    </div>
+export const MineRecordModal = (props) => (
+  <div>
+    <MineRecordForm {...props} />
+  </div>
   )
-}
 
 MineRecordModal.propTypes = propTypes;
 MineRecordModal.defaultProps = defaultProps;

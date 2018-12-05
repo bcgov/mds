@@ -15,9 +15,9 @@ const defaultProps = {
 export const AddTailingsReportModal = (props) => {
   console.log(props.mineTSFRequiredReports)
   return (
-  <div>
-    <AddTailingsReportForm {...props}/>
-  </div>
+    <div>
+      <AddTailingsReportForm {...props} />
+    </div>
   );
 }
 
