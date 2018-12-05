@@ -1,4 +1,4 @@
-import { memoize } from 'lodash';
+import { memoize } from "lodash";
 /**
  * Utility class for validating inputs using redux forms
  */
@@ -34,22 +34,33 @@ class Validator {
 
 export const Validate = new Validator();
 
-export const required = (value) => (value ? undefined : 'This is a required field');
+export const required = (value) => (value ? undefined : "This is a required field");
 
-export const notnone = (value) => ((value === 'None') ? 'Please select an item' : undefined);
+export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
-export const maxLength = memoize((max) => (value) => value && value.length > max ? `Must be ${max} characters or less` : undefined);
+export const maxLength = memoize((max) => (value) =>
+  value && value.length > max ? `Must be ${max} characters or less` : undefined
+);
 
-export const minLength = memoize((min) => (value) => value && value.length < min ? `Must be ${min} characters or more` : undefined);
+export const minLength = memoize((min) => (value) =>
+  value && value.length < min ? `Must be ${min} characters or more` : undefined
+);
 
-export const exactLength = memoize((min) => (value) => value && value.length !== min ? `Must be ${min} characters long` : undefined);
+export const exactLength = memoize((min) => (value) =>
+  value && value.length !== min ? `Must be ${min} characters long` : undefined
+);
 
-export const number = (value) => (value && isNaN(Number(value)) ? 'Input must be a number' : undefined);
+export const number = (value) =>
+  value && isNaN(Number(value)) ? "Input must be a number" : undefined;
 
-export const lat = (value) => (value && !Validate.checkLat(value)) ? 'Invalid latitude coordinate e.g. 53.7267': undefined;
+export const lat = (value) =>
+  value && !Validate.checkLat(value) ? "Invalid latitude coordinate e.g. 53.7267" : undefined;
 
-export const lon = (value) => (value && !Validate.checkLon(value)) ? 'Invalid longitude coordinate e.g. -127.6476000' : undefined;
+export const lon = (value) =>
+  value && !Validate.checkLon(value) ? "Invalid longitude coordinate e.g. -127.6476000" : undefined;
 
-export const phoneNumber  = (value) => (value && !Validate.checkPhone(value)) ? 'Invalid phone number e.g. xxx-xxx-xxxx' : undefined;
+export const phoneNumber = (value) =>
+  value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
-export const email = (value) => (value && !Validate.checkEmail(value)) ? 'Invalid email address' : undefined;
+export const email = (value) =>
+  value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
