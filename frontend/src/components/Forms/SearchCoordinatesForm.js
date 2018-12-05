@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Icon } from 'antd';
-import * as FORM from '@/constants/forms';
-import { required, maxLength, number, lat, lon } from '@/utils/Validate';
-import { resetForm } from '@/utils/helpers';
-import { renderConfig } from '@/components/common/config';
+import React from "react";
+import PropTypes from "prop-types";
+import { Field, reduxForm } from "redux-form";
+import { Form, Button, Icon } from "antd";
+import * as FORM from "@/constants/forms";
+import { required, maxLength, number, lat, lon } from "@/utils/Validate";
+import { resetForm } from "@/utils/helpers";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export const SearchCoordinatesForm = (props) => (
@@ -17,7 +17,7 @@ export const SearchCoordinatesForm = (props) => (
       <Field
         id="latitude"
         name="latitude"
-        placeholder='Latitude'
+        placeholder="Latitude"
         component={renderConfig.FIELD}
         validate={[number, maxLength(10), lat, required]}
       />
@@ -26,7 +26,7 @@ export const SearchCoordinatesForm = (props) => (
       <Field
         id="longitude"
         name="longitude"
-        placeholder='Longitude'
+        placeholder="Longitude"
         component={renderConfig.FIELD}
         validate={[number, maxLength(12), lon, required]}
       />
@@ -37,13 +37,12 @@ export const SearchCoordinatesForm = (props) => (
       </Button>
     </div>
   </Form>
-  );
+);
 
 SearchCoordinatesForm.propTypes = propTypes;
 
-export default (reduxForm({
-    form: FORM.SEARCH_COORDINATES,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
-  })(SearchCoordinatesForm)
-);
+export default reduxForm({
+  form: FORM.SEARCH_COORDINATES,
+  touchOnBlur: false,
+  onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
+})(SearchCoordinatesForm);

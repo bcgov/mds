@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form'
-import { Form, Button, Col, Row } from 'antd';
-import * as FORM from '@/constants/forms';
-import { required, email, phoneNumber, maxLength, number } from '@/utils/Validate';
-import { resetForm } from '@/utils/helpers';
-import { renderConfig } from '@/components/common/config';
+import React from "react";
+import PropTypes from "prop-types";
+import { Field, reduxForm } from "redux-form";
+import { Form, Button, Col, Row } from "antd";
+import * as FORM from "@/constants/forms";
+import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { resetForm } from "@/utils/helpers";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  isPerson: PropTypes.bool
+  isPerson: PropTypes.bool,
 };
 
 export const AddPartyForm = (props) => (
@@ -40,7 +40,7 @@ export const AddPartyForm = (props) => (
             </Form.Item>
           </Col>
         </Row>
-)}
+      )}
       {!props.isPerson && (
         <Row gutter={16}>
           <Col span={24}>
@@ -55,7 +55,7 @@ export const AddPartyForm = (props) => (
             </Form.Item>
           </Col>
         </Row>
-)}
+      )}
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item>
@@ -94,16 +94,19 @@ export const AddPartyForm = (props) => (
           </Form.Item>
         </Col>
       </Row>
-      <div className="right center-mobile"><Button className="full-mobile" type="primary" htmlType="submit">{props.isPerson ? "Create Personnel" : "Create Company"}</Button></div>
+      <div className="right center-mobile">
+        <Button className="full-mobile" type="primary" htmlType="submit">
+          {props.isPerson ? "Create Personnel" : "Create Company"}
+        </Button>
+      </div>
     </Form>
   </div>
-  );
+);
 
 AddPartyForm.propTypes = propTypes;
 
-export default (reduxForm({
-    form: FORM.ADD_PARTY,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.ADD_PARTY),
-  })(AddPartyForm)
-);
+export default reduxForm({
+  form: FORM.ADD_PARTY,
+  touchOnBlur: false,
+  onSubmitSuccess: resetForm(FORM.ADD_PARTY),
+})(AddPartyForm);

@@ -22,7 +22,7 @@ export const EditTailingsReportForm = (props) => (
     <Row gutter={16}>
       <Col>
         <Form.Item>
-          <Field 
+          <Field
             id="tsf_report_name"
             name="tsf_report_name"
             label="Report Name"
@@ -76,7 +76,7 @@ export const EditTailingsReportForm = (props) => (
       </Button>
     </div>
   </Form>
-  );
+);
 
 EditTailingsReportForm.propTypes = propTypes;
 

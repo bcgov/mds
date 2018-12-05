@@ -46,9 +46,8 @@ class MineMap extends Component {
   renderPin() {
     if (this.state.center) {
       return <LocationPin center={this.state.center} />;
-    } 
-      return <div />;
-    
+    }
+    return <div />;
   }
 
   /**

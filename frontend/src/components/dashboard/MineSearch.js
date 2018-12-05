@@ -82,24 +82,24 @@ export class MineSearch extends Component {
           handleChange={this.handleChange}
         />
       );
-    } 
-      return (
-        <Input
-          defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
-          placeholder="Search for a mine using name, ID, or permit number"
-          onChange={this.handleSearch}
-          suffix={<Icon type="search" style={{ color: "#537C52", fontSize: 20 }} />}
-        />
-      );
-    
+    }
+    return (
+      <Input
+        defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
+        placeholder="Search for a mine using name, ID, or permit number"
+        onChange={this.handleSearch}
+        suffix={<Icon type="search" style={{ color: "#537C52", fontSize: 20 }} />}
+      />
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
-    mineNameList: getMineNames(state).mines,
-  });
+  mineNameList: getMineNames(state).mines,
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchMineNameList,
     },

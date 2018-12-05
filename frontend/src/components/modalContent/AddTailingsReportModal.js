@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AddTailingsReportForm from '@/components/Forms/AddTailingsReportForm';
+import React from "react";
+import PropTypes from "prop-types";
+import AddTailingsReportForm from "@/components/Forms/AddTailingsReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -9,17 +9,17 @@ const propTypes = {
 };
 
 const defaultProps = {
- title: ''
+  title: "",
 };
 
 export const AddTailingsReportModal = (props) => {
-  console.log(props.mineTSFRequiredReports)
+  console.log(props.mineTSFRequiredReports);
   return (
     <div>
       <AddTailingsReportForm {...props} />
     </div>
   );
-}
+};
 
 AddTailingsReportModal.propTypes = propTypes;
 AddTailingsReportModal.defaultProps = defaultProps;

@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import EditTailingsReportForm from '@/components/Forms/EditTailingsReportForm';
+import React from "react";
+import PropTypes from "prop-types";
+import EditTailingsReportForm from "@/components/Forms/EditTailingsReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -10,15 +10,15 @@ const propTypes = {
 };
 
 const defaultProps = {
- title: '',
- initialValues: null,
+  title: "",
+  initialValues: null,
 };
 
 export const EditTailingsReportModal = (props) => (
   <div>
     <EditTailingsReportForm {...props} />
   </div>
-  )
+);
 
 EditTailingsReportModal.propTypes = propTypes;
 EditTailingsReportModal.defaultProps = defaultProps;

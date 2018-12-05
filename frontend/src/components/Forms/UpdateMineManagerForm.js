@@ -61,7 +61,7 @@ export const UpdateMineManagerForm = (props) => (
         cancelText="No"
       >
         <Button className="full-mobile" type="secondary">
-            Cancel
+          Cancel
         </Button>
       </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit">
@@ -69,7 +69,7 @@ export const UpdateMineManagerForm = (props) => (
       </Button>
     </div>
   </Form>
-  );
+);
 
 UpdateMineManagerForm.propTypes = propTypes;
 UpdateMineManagerForm.defaultProps = defaultProps;

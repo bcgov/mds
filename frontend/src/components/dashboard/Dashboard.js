@@ -277,9 +277,7 @@ export class Dashboard extends Component {
               {this.state.mineName && (
                 <div className="center center-mobile">
                   <h2>
-                    Results for: 
-                    {' '}
-                    <span className="p">{this.state.mineName}</span>
+                    Results for: <span className="p">{this.state.mineName}</span>
                   </h2>
                 </div>
               )}
@@ -287,14 +285,10 @@ export class Dashboard extends Component {
                 <div className="center">
                   <div className="inline-flex evenly center-mobile">
                     <h2>
-                      Latitude: 
-                      {' '}
-                      <span className="p">{this.state.lat}</span>
+                      Latitude: <span className="p">{this.state.lat}</span>
                     </h2>
                     <h2>
-                      Longitude: 
-                      {' '}
-                      <span className="p">{this.state.long}</span>
+                      Longitude: <span className="p">{this.state.long}</span>
                     </h2>
                   </div>
                 </div>
@@ -306,9 +300,8 @@ export class Dashboard extends Component {
           </Tabs>
         </div>
       );
-    } 
-      return <Loading />;
-    
+    }
+    return <Loading />;
   }
 
   render() {
@@ -340,16 +333,17 @@ export class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    mines: getMines(state),
-    mineIds: getMineIds(state),
-    pageData: getMinesPageData(state),
-    mineStatusOptions: getMineStatusOptions(state),
-    mineRegionOptions: getMineRegionOptions(state),
-    mineRegionHash: getMineRegionHash(state),
-    mineTenureTypes: getMineTenureTypes(state),
-  });
+  mines: getMines(state),
+  mineIds: getMineIds(state),
+  pageData: getMinesPageData(state),
+  mineStatusOptions: getMineStatusOptions(state),
+  mineRegionOptions: getMineRegionOptions(state),
+  mineRegionHash: getMineRegionHash(state),
+  mineTenureTypes: getMineTenureTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchMineRecords,
       fetchStatusOptions,

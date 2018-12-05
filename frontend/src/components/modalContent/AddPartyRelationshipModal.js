@@ -29,9 +29,9 @@ export class AddPartyRelationshipModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    parties: getParties(state),
-    partyIds: getPartyIds(state),
-  });
+  parties: getParties(state),
+  partyIds: getPartyIds(state),
+});
 
 AddPartyRelationshipModal.propTypes = propTypes;
 export default connect(

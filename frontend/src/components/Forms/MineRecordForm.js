@@ -141,7 +141,7 @@ export const MineRecordForm = (props) => (
       </Button>
     </div>
   </Form>
-  );
+);
 
 MineRecordForm.propTypes = propTypes;
 

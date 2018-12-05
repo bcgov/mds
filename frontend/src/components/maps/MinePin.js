@@ -45,9 +45,8 @@ export class MinePin extends Component {
         longitude: this.props.mines[id].mine_location[0].longitude,
         latitude: this.props.mines[id].mine_location[0].latitude,
       };
-    } 
-      return null;
-    
+    }
+    return null;
   };
 
   componentWillMount() {
@@ -175,9 +174,9 @@ MinePin.propTypes = propTypes;
 MinePin.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-    mines: getMines(state),
-    mineIds: getMineIds(state),
-  });
+  mines: getMines(state),
+  mineIds: getMineIds(state),
+});
 
 export default withRouter(
   connect(
