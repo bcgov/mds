@@ -53,15 +53,20 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'unexpected mine party appointment guid'), 400
         data = self.parser.parse_args()
-        new_mpa = MinePartyAppointment(
-            mine_guid=data.get('mine_guid'),
-            party_guid=data.get('party_guid'),
-            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
-            mine_tailings_storage_facility_guid=data.get(
-                'mine_tailings_storage_facility_guid'),
-            start_date=data.get('start_date'),
-            end_date=data.get('end_date'),
-            **self.get_create_update_dict())
+        try:
+            new_mpa = MinePartyAppointment(
+                mine_guid=data.get('mine_guid'),
+                party_guid=data.get('party_guid'),
+                mine_party_appt_type_code=data.get(
+                    'mine_party_appt_type_code'),
+                mine_tailings_storage_facility_guid=data.get(
+                    'mine_tailings_storage_facility_guid'),
+                start_date=data.get('start_date'),
+                end_date=data.get('end_date'),
+                **self.get_create_update_dict())
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+
         new_mpa.save()
         return new_mpa.json()
 
