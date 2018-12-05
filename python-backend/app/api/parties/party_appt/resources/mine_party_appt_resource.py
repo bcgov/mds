@@ -31,7 +31,8 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
-            return MinePartyAppointment.find_by_guid(mine_party_appt_guid)
+            return MinePartyAppointment.find_by_mine_party_appt_guid(
+                mine_party_appt_guid)
         else:
             mine_guid = request.args.get('mine_guid', type=str)
             party_guid = request.args.get('party_guid', type=str)

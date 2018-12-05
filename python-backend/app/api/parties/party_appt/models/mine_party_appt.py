@@ -51,8 +51,8 @@ class MinePartyAppointment(AuditMixin, Base):
             str(self.mine_party_appt_guid),
             'mine_guid':
             str(self.mine_guid),
-            'party_guid':
-            str(self.party_guid),
+            'party':
+            str(self.party.json()),
             'mine_party_appt_type_code':
             str(self.mine_party_appt_type_code),
             'mine_tailings_storage_facility_guid':
