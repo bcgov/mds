@@ -25,6 +25,9 @@ from app.api.documents.required.models.required_document_categories import Requi
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_document import MineExpectedDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 
@@ -326,6 +329,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS
     )
     mine_tsf1.save()
+
+    mpat1 = MinePartyAppointmentType(
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
+        description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION1,
+        **DUMMY_USER_KWARGS
+    )
+    mpat1.save()
+
+    mpat2 = MinePartyAppointmentType(
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
+        description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2,
+        **DUMMY_USER_KWARGS
+    )
+    mpat2.save()
 
 
 def clear_data(session):
