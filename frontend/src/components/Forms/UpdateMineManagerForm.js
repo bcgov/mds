@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, validateStartDate } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
-import { memoize } from "lodash";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -22,12 +21,6 @@ const defaultProps = {
   parties: {},
   partyIds: [],
 };
-
-const validateStartDate = memoize((previousStartDate) => (value) =>
-  value <= previousStartDate
-    ? "New manager's start date cannot be on or before the previous manager's start date."
-    : undefined
-);
 
 export const UpdateMineManagerForm = (props) => {
   return (
