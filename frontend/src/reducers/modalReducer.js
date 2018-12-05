@@ -1,11 +1,10 @@
 /**
-* @file modalReducer.js
-*
-* The modalReducer is used for updating the modal state.
-*/
-import * as actionTypes from '@/constants/actionTypes';
-import { MODAL } from '@/constants/reducerTypes';
-
+ * @file modalReducer.js
+ *
+ * The modalReducer is used for updating the modal state.
+ */
+import * as actionTypes from "@/constants/actionTypes";
+import { MODAL } from "@/constants/reducerTypes";
 
 const initialState = {
   isModalOpen: false,
@@ -41,4 +40,3 @@ export const getContent = (state) => state[MODAL].content;
 export const getClearOnSubmit = (state) => state[MODAL].clearOnSubmit;
 
 export default modalReducer;
-

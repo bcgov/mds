@@ -36,6 +36,7 @@ export class ViewPermittee extends Component {
       content: modalConfig.UPDATE_PERMITTEE,
     });
   }
+
   /**
    * change permittee on record.
    */
@@ -62,50 +63,50 @@ export class ViewPermittee extends Component {
       <div>
         <Card>
           <table>
-            {permitteeIds.map((id) => {
-              return (
-                <tbody key={id}>
-                  <tr>
-                    <th scope="col">
-                      <h4>Permittee</h4>
-                    </th>
-                    <th scope="col">
-                      <h4>Permittee Since</h4>
-                    </th>
-                  </tr>
-                  <tr>
-                    <td data-label="Permittee">
-                      <p className="p-large">{permittees[id].party.name}</p>
-                    </td>
-                    <td data-label="Permittee Since">
-                      <p className="p-large">{permittees[id].effective_date}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="col">
-                      <h4>Email</h4>
-                    </th>
-                    <th scope="col">
-                      <h4>Phone Number (Ext)</h4>
-                    </th>
-                  </tr>
-                  <tr>
-                    <td data-label="Email">
-                      <p className="p-large">{permittees[id].party.email}</p>
-                    </td>
-                    <td data-label="Phone Number (Ext)">
-                      <p className="p-large">
-                        {permittees[id].party.phone_no} (
-                        {permittees[id].party.phone_ext
+            {permitteeIds.map((id) => (
+              <tbody key={id}>
+                <tr>
+                  <th scope="col">
+                    <h4>Permittee</h4>
+                  </th>
+                  <th scope="col">
+                    <h4>Permittee Since</h4>
+                  </th>
+                </tr>
+                <tr>
+                  <td data-label="Permittee">
+                    <p className="p-large">{permittees[id].party.name}</p>
+                  </td>
+                  <td data-label="Permittee Since">
+                    <p className="p-large">{permittees[id].effective_date}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">
+                    <h4>Email</h4>
+                  </th>
+                  <th scope="col">
+                    <h4>Phone Number (Ext)</h4>
+                  </th>
+                </tr>
+                <tr>
+                  <td data-label="Email">
+                    <p className="p-large">{permittees[id].party.email}</p>
+                  </td>
+                  <td data-label="Phone Number (Ext)">
+                    <p className="p-large">
+                      {permittees[id].party.phone_no}
+                      {' '}
+(
+                      {permittees[id].party.phone_ext
                           ? permittees[id].party.phone_ext
                           : String.EMPTY_FIELD}
                         )
-                      </p>
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+              ))}
           </table>
           <div className="right center-mobile">
             <ConditionalButton

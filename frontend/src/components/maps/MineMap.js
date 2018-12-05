@@ -46,9 +46,8 @@ class MineMap extends Component {
   renderPin() {
     if (this.state.center) {
       return <LocationPin center={this.state.center} />;
-    } else {
-      return <div />;
     }
+    return <div />;
   }
 
   /**
@@ -64,13 +63,13 @@ class MineMap extends Component {
       const widgetPositionArray = {};
 
       const layerList = new LayerListWidget({
-        view: view,
+        view,
         container: document.createElement("layer_list"),
       });
       widgetPositionArray["top-left"] = layerList;
 
       const mapGallery = new BasemapGallery({
-        view: view,
+        view,
         container: document.createElement("map_gallery"),
       });
       widgetPositionArray["top-right"] = mapGallery;
@@ -78,7 +77,7 @@ class MineMap extends Component {
       for (const position in widgetPositionArray) {
         // Cast all the widgets under an expandable div and add them to the UI
         const currentWidget = new Expand({
-          view: view,
+          view,
           content: widgetPositionArray[position],
         });
         view.ui.add(currentWidget, position);

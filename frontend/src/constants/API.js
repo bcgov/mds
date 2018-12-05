@@ -1,4 +1,4 @@
-//Network URL's
+// Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;

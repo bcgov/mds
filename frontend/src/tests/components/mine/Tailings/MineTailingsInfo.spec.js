@@ -32,9 +32,9 @@ beforeEach(() => {
 describe('MineTailingsInfo', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MineTailingsInfo 
-      {...props} 
-      {...dispatchProps}
+      <MineTailingsInfo 
+        {...props} 
+        {...dispatchProps}
       />
   );
     expect(component).toMatchSnapshot();

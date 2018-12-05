@@ -1,16 +1,16 @@
 // internal URL's
-import Home from '@/components/Home';
-import Dashboard from '@/components/dashboard/Dashboard';
-import MineDashboard from '@/components/mine/MineDashboard';
-import PartyProfile from '@/components/parties/PartyProfile';
+import Home from "@/components/Home";
+import Dashboard from "@/components/dashboard/Dashboard";
+import MineDashboard from "@/components/mine/MineDashboard";
+import PartyProfile from "@/components/parties/PartyProfile";
 
 export const DASHBOARD = {
-  route: '/',
+  route: "/",
   component: Home,
 };
 
 export const MINE_DASHBOARD = {
-  route: '/dashboard',
+  route: "/dashboard",
   dynamicRoute: (page, per_page, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
     return `/dashboard?page=${page}&per_page=${per_page}${searchParam}`;
@@ -23,13 +23,13 @@ export const MINE_DASHBOARD = {
 };
 
 export const MINE_SUMMARY = {
-  route: '/dashboard/:id/:activeTab',
+  route: "/dashboard/:id/:activeTab",
   dynamicRoute: (id, activeTab = "summary") => `/dashboard/${id}/${activeTab}`,
   component: MineDashboard,
 };
 
 export const PARTY_PROFILE = {
-  route: '/dashboard/profile/:id',
+  route: "/dashboard/profile/:id",
   dynamicRoute: (id) => `/dashboard/profile/${id}`,
   component: PartyProfile,
 };

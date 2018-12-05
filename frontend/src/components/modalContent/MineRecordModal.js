@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import MineRecordForm from '@/components/Forms/MineRecordForm';
+import React from "react";
+import PropTypes from "prop-types";
+import MineRecordForm from "@/components/Forms/MineRecordForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -12,17 +12,15 @@ const propTypes = {
 };
 
 const defaultProps = {
-  title: '',
+  title: "",
   initialValues: null,
 };
 
-export const MineRecordModal = (props) => {
-  return (
-    <div>
-      <MineRecordForm {...props}/>
-    </div>
-  )
-}
+export const MineRecordModal = (props) => (
+  <div>
+    <MineRecordForm {...props} />
+  </div>
+);
 
 MineRecordModal.propTypes = propTypes;
 MineRecordModal.defaultProps = defaultProps;

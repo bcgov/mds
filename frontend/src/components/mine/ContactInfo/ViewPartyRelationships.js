@@ -61,7 +61,7 @@ export class ViewPermittee extends Component {
         onSubmit,
         handleChange,
         onPartySubmit,
-        title: title + ": " + this.props.partyTypeOptions.find((x) => x.value === value).label,
+        title: `${title  }: ${  this.props.partyTypeOptions.find((x) => x.value === value).label}`,
         partyType: value,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
@@ -126,20 +126,16 @@ export class ViewPermittee extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     partyRelationshipTypes: getPartyRelationshipTypes(state),
-  };
-};
+  });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
       fetchPartyRelationshipTypes,
     },
     dispatch
   );
-};
 
 ViewPermittee.propTypes = propTypes;
 ViewPermittee.defaultProps = defaultProps;

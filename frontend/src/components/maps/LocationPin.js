@@ -19,6 +19,7 @@ const defaultProps = {
 
 export class LocationPin extends Component {
   state = { graphic: null };
+
   renderGraphic = (props) => {
     loadModules([
       "esri/Graphic",
@@ -41,7 +42,7 @@ export class LocationPin extends Component {
 
       const graphic = new Graphic({
         geometry: point,
-        symbol: symbol,
+        symbol,
       });
 
       this.props.view.graphics.remove(this.state.graphic);
@@ -63,6 +64,7 @@ export class LocationPin extends Component {
   componentWillUnmount() {
     this.props.view.graphics.remove(this.state.graphic);
   }
+
   render() {
     return null;
   }
