@@ -64,3 +64,9 @@ export const phoneNumber = (value) =>
 
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
+
+export const validateStartDate = memoize((previousStartDate) => (value) =>
+  value <= previousStartDate
+    ? "New manager's start date cannot be on or before the previous manager's start date."
+    : undefined
+);

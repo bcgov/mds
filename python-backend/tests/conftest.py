@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import uuid
 
 import pytest
@@ -131,7 +131,7 @@ def setup_data(session):
         longitude=TEST_LONG_1,
         effective_date=datetime.today(),
         expiry_date=datetime.today(),
-        **DUMMY_USER_KWARGS,
+        **DUMMY_USER_KWARGS
     )
     mine_location.save()
 
@@ -219,8 +219,7 @@ def setup_data(session):
         mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
-        effective_date=datetime.today(),
-        expiry_date=datetime.today(),
+        effective_date=datetime.today() - timedelta(days=10),
         **DUMMY_USER_KWARGS
     )
     manager.save()

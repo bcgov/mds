@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import json
 
 from app.api.parties.party.models.mgr_appointment import MgrAppointment
-from tests.constants import TEST_MINE_GUID, TEST_MANAGER_GUID, TEST_PARTY_PER_GUID_2
+from tests.constants import TEST_MINE_GUID, TEST_MANAGER_GUID, TEST_PARTY_PER_GUID_2, TEST_PARTY_PER_GUID_3
 
 
 # GET
@@ -113,3 +113,28 @@ def test_post_manager_success(test_client, auth_headers):
     assert post_data['party_guid'] == test_manager_data['party_guid']
     assert post_data['mine_guid'] == test_manager_data['mine_guid']
     assert post_resp.status_code == 200
+
+
+def test_post_manager_invalid_date(test_client, auth_headers):
+    # TODO Currently, tests share the same database between test cases in modules. 
+    # This test assumes that it runs directly after test_post_manager_success, so the newest mine manager's start date is today. 
+    bad_date = (datetime.today() - timedelta(days=5)).strftime("%Y-%m-%d")
+    test_manager_data = {"party_guid": TEST_PARTY_PER_GUID_3, "mine_guid": TEST_MINE_GUID, "effective_date": bad_date }
+
+    post_resp = test_client.post('parties/managers', data=test_manager_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())  
+
+    assert post_resp.status_code == 400
+    assert post_data['error']['message'] != ""
+    
+def test_post_manager_invalid_date_same_as_last_manager(test_client, auth_headers):
+    # TODO Currently, tests share the same database between test cases in modules. 
+    # This test assumes that it runs after test_post_manager_success, so the newest mine manager's start date is today. 
+    bad_date = datetime.today().strftime("%Y-%m-%d")
+    test_manager_data = {"party_guid": TEST_PARTY_PER_GUID_3, "mine_guid": TEST_MINE_GUID, "effective_date": bad_date }
+
+    post_resp = test_client.post('parties/managers', data=test_manager_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())  
+    
+    assert post_resp.status_code == 400
+    assert post_data['error']['message'] != ""

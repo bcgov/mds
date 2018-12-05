@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, validateStartDate } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
@@ -14,6 +14,7 @@ const propTypes = {
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  initialValues: PropTypes.object,
 };
 
 const defaultProps = {
@@ -47,7 +48,7 @@ export const UpdateMineManagerForm = (props) => {
               label="Select a Start date *"
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}
-              validate={[required]}
+              validate={[required, validateStartDate(props.initialValues.startDate)]}
             />
           </Form.Item>
         </Col>
