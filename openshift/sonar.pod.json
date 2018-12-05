@@ -40,7 +40,7 @@
         {
             "name": "UPLOADED_DOCUMENT_DEST",
             "required": false,
-            "value": "/opt/app-root/src/document_uploads2"
+            "value": "/opt/app-root/src/document_uploads"
         }
     ],
     "objects": [
