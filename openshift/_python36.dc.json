@@ -56,7 +56,7 @@
 		{
 			"name": "UPLOADED_DOCUMENT_DEST",
 			"required": false,
-			"value": "/opt/app-root/src"
+			"value": "/opt/app-root/src/document_uploads"
 		},
 		{
 			"name": "ROUTE",
@@ -326,7 +326,7 @@
 								"terminationMessagePolicy": "File",
 								"volumeMounts": [
                                     {
-                                        "mountPath": "/var/documents",
+                                        "mountPath": "/opt/app-root/src/document_uploads",
                                         "name": "document-storage-data"
                                     }
 								],								
