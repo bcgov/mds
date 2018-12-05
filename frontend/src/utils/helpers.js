@@ -33,12 +33,11 @@ export const createItemIdsArray = (array, idField) => {
   return array.map((item) => item[idField]);
 };
 
-export const createDropDownList = (array, labelField, valueField) => 
-{
+export const createDropDownList = (array, labelField, valueField) => {
   return array.map((item) => {
-    return {'value':item[valueField], 'label':item[labelField]};
-  })
-}
+    return { value: item[valueField], label: item[labelField] };
+  });
+};
 
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (obj) =>

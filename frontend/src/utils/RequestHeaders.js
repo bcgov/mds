@@ -4,7 +4,7 @@
 
 export const createRequestHeader = () => ({
   headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-  }
+    "Access-Control-Allow-Origin": "*",
+    Authorization: "Bearer " + localStorage.getItem("jwt"),
+  },
 });

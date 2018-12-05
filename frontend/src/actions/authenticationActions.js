@@ -1,4 +1,4 @@
-import * as ActionTypes from '@/constants/actionTypes';
+import * as ActionTypes from "@/constants/actionTypes";
 
 export const authenticateUser = (userInfo = {}) => {
   return {
@@ -15,7 +15,7 @@ export const logoutUser = () => {
   };
 };
 
-export const storeKeycloakData = (data= {}) => {
+export const storeKeycloakData = (data = {}) => {
   return {
     type: ActionTypes.STORE_KEYCLOAK_DATA,
     payload: {
@@ -24,7 +24,7 @@ export const storeKeycloakData = (data= {}) => {
   };
 };
 
-export const storeUserAccessData = (roles= {}) => {
+export const storeUserAccessData = (roles = {}) => {
   return {
     type: ActionTypes.STORE_USER_ACCESS_DATA,
     payload: {
