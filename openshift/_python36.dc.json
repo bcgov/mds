@@ -119,7 +119,7 @@
             "apiVersion": "v1",
             "kind": "PersistentVolumeClaim",
             "metadata": {
-                "name": "test-storage",
+                "name": "document-storage",
                 "annotations": {
                     "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
                     "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
@@ -317,8 +317,8 @@
 								"terminationMessagePolicy": "File",
 								"volumeMounts": [
                                     {
-                                        "mountPath": "/var/lib/stuff",
-                                        "name": "test-storage-data"
+                                        "mountPath": "/var/documents",
+                                        "name": "document-storage-data"
                                     }
 								],								
 								"imagePullPolicy": "Always"
@@ -415,9 +415,9 @@
 						"securityContext": {},
 						"volumes": [
 							{
-								"name": "test-storage-data",
+								"name": "document-storage-data",
 								"persistentVolumeClaim": {
-									"claimName": "test-storage"
+									"claimName": "document-storage"
 								}
 
 							}
