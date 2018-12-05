@@ -7,7 +7,13 @@
     "es6": true
   },
   "plugins": ["jest"],
-  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ],
   "rules": {
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",

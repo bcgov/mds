@@ -31,7 +31,7 @@ const defaultProps = {
 
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
-    let mineStatus = value.mine_status.join(",");
+    const mineStatus = value.mine_status.join(",");
     this.props
       .updateMineRecord(this.props.mine.guid, { ...value, mine_status: mineStatus }, value.name)
       .then(() => {
@@ -113,11 +113,7 @@ class MineHeader extends Component {
           <button
             className="full"
             onClick={(event) =>
-              this.openTailingsModal(
-                event,
-                this.handleAddTailings,
-                ModalContent.ADD_TAILINGS
-              )
+              this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
             <img style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
@@ -134,30 +130,21 @@ class MineHeader extends Component {
             <ConditionalButton
               isDropdown
               overlay={menu}
-              string={
-                <Icon
-                  type="ellipsis"
-                  theme="outlined"
-                  style={{ fontSize: "30px" }}
-                />
-              }
+              string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
             />
           </div>
           <Divider />
-          <h5>Mine ID: {mine.mine_detail[0].mine_no} </h5>
+          <h5>
+            Mine ID:
+            {mine.mine_detail[0].mine_no}{" "}
+          </h5>
           {mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
                 <h5>Operating Status: </h5>
               </div>
               <div>
-                <img
-                  src={
-                    mine.mine_status[0].status_values[0] === "OP"
-                      ? ELLIPSE
-                      : RED_ELLIPSE
-                  }
-                />
+                <img src={mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE} />
               </div>
               <div>
                 <h3>
@@ -172,7 +159,10 @@ class MineHeader extends Component {
           )}
           {!mine.mine_status[0] && (
             <div>
-              <h5>Operating Status: {String.EMPTY_FIELD}</h5>
+              <h5>
+                Operating Status:
+                {String.EMPTY_FIELD}
+              </h5>
             </div>
           )}
           <h5>
@@ -194,16 +184,10 @@ class MineHeader extends Component {
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat:{" "}
-                {mine.mine_location[0]
-                  ? mine.mine_location[0].latitude
-                  : String.EMPTY_FIELD}
+                Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long:{" "}
-                {mine.mine_location[0]
-                  ? mine.mine_location[0].longitude
-                  : String.EMPTY_FIELD}
+                Long: {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}
               </p>
             </div>
             <p className="p-white">

@@ -54,6 +54,11 @@
 			"value": "/"
 		},
 		{
+			"name": "UPLOADED_DOCUMENT_DEST",
+			"required": false,
+			"value": "/opt/app-root/src"
+		},
+		{
 			"name": "ROUTE",
 			"required": false,
 			"value": "/"
@@ -301,6 +306,10 @@
 									{
 										"name": "BASE_PATH",
 										"value": "${BASE_PATH}"
+									},
+									{
+										"name": "UPLOADED_DOCUMENT_DEST",
+										"value": "${UPLOADED_DOCUMENT_DEST}"
 									}
 								],
 								"resources": {

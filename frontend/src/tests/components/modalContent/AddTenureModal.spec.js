@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe('AddTenureModal', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTenureModal {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTenureModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

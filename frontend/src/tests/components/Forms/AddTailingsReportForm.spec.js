@@ -22,7 +22,7 @@ beforeEach(() => {
 
 describe('AddTailingsReportForm', () => {
   it('renders properly', () => {
-    const component = shallow(<AddTailingsReportForm {...dispatchProps} {...props}/>);
+    const component = shallow(<AddTailingsReportForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -16,6 +16,7 @@ const setupProps = () => {
   props.parties = MOCK.PARTY.parties;
   props.partyIds = MOCK.PARTY.partyIds;
   props.title = "mockTitle";
+  props.initialValues = {mineManager: null, startDate: null}
 }
 
 beforeEach(() => {
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe('AddPartyFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdateMineManagerForm {...dispatchProps} {...props}/>);
+    const component = shallow(<UpdateMineManagerForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

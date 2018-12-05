@@ -16,8 +16,8 @@ beforeEach(() => {
 describe('MineTenureInfo', () => {
   it('renders properly', () => {
     const component = shallow(
-    <MinePermitInfo 
-      {...props} 
+      <MinePermitInfo 
+        {...props}
       />
   );
     expect(component).toMatchSnapshot();

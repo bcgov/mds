@@ -24,7 +24,7 @@ beforeEach(() => {
 
 describe('MineRecordModal', () => {
   it('renders properly', () => {
-    const component = shallow(<MineRecordModal {...dispatchProps} {...props}/>);
+    const component = shallow(<MineRecordModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

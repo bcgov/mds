@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe('AddPartyFrom', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdatePermitteeForm {...dispatchProps} {...props}/>);
+    const component = shallow(<UpdatePermitteeForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
