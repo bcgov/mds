@@ -31,7 +31,8 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
-            return MinePartyAppointment.find_by_guid(mine_party_appt_guid)
+            return MinePartyAppointment.find_by_mine_party_appt_guid(
+                mine_party_appt_guid)
         else:
             mine_guid = request.args.get('mine_guid', type=str)
             party_guid = request.args.get('party_guid', type=str)
@@ -46,20 +47,69 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             return self.create_error_payload(
                 400, 'unexpected mine party appointment guid'), 400
         data = self.parser.parse_args()
-        new_mpa = MinePartyAppointment(
-            mine_guid=data.get('mine_guid'),
-            party_guid=data.get('party_guid'),
-            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
-            mine_tailings_storage_facility_guid=data.get(
-                'mine_tailings_storage_facility_guid'),
-            start_date=data.get('start_date'),
-            end_date=data.get('end_date'),
-            **self.get_create_update_dict())
+        try:
+            new_mpa = MinePartyAppointment(
+                mine_guid=data.get('mine_guid'),
+                party_guid=data.get('party_guid'),
+                mine_party_appt_type_code=data.get(
+                    'mine_party_appt_type_code'),
+                mine_tailings_storage_facility_guid=data.get(
+                    'mine_tailings_storage_facility_guid'),
+                start_date=data.get('start_date'),
+                end_date=data.get('end_date'),
+                **self.get_create_update_dict())
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+
         new_mpa.save()
         return new_mpa.json()
+
+    @api.doc(
+        params={
+            'mine_party_appt_guid':
+            'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date]'
+        })
+    @jwt.requires_roles(["mds-mine-create"])
+    def put(self, mine_party_appt_guid=None):
+        if not mine_party_appt_guid:
+            return self.create_error_payload(
+                400, 'expected mine party appointment guid'), 400
+        data = self.parser.parse_args()
+        mpa = MinePartyAppointment.find_by_mine_party_appt_guid(
+            mine_party_appt_guid)
+        if not mpa:
+            return self.create_error_payload(
+                404, 'mine party appointment not found'), 404
+        #Only accepting these parameters
+        mpa.start_date = data.get('start_date'),
+        mpa.end_date = data.get('end_date'),
+        mpa.save()
+        return mpa.json()
+
+    @api.doc(params={
+        'mine_party_appt_guid':
+        'mine party appointment guid to be deleted'
+    })
+    @jwt.requires_roles(["mds-mine-create"])
+    def delete(self, mine_party_appt_guid=None):
+        if not mine_party_appt_guid:
+            return self.create_error_payload(
+                400, 'expected mine party appointment guid'), 400
+        data = self.parser.parse_args()
+        mpa = MinePartyAppointment.find_by_mine_party_appt_guid(
+            mine_party_appt_guid)
+        if not mpa:
+            return self.create_error_payload(
+                404, 'mine party appointment not found'), 404
+        mpa.active_ind = False
+        mpa.save()
+        return {
+            'status': 200,
+            'message': 'mine_party_appointment deleted successfully.'
+        }
