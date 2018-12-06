@@ -40,8 +40,8 @@ export const AddPartyRelationshipForm = (props) => {
         <Col md={24} xs={24}>
           <Form.Item>
             <Field
-              id="name"
-              name="name"
+              id="party_guid"
+              name="party_guid"
               label="Name *"
               component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
@@ -56,8 +56,8 @@ export const AddPartyRelationshipForm = (props) => {
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="startDate"
-              name="startDate"
+              id="start_date"
+              name="start_date"
               label="Start Date"
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}
@@ -67,8 +67,8 @@ export const AddPartyRelationshipForm = (props) => {
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="endDate"
-              name="endDate"
+              id="end_date"
+              name="end_date"
               label="End Date"
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}

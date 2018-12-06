@@ -28,8 +28,8 @@ export const EOROptions = (props) => {
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="tsf"
-            name="tsf"
+            id="mine_tailings_storage_facility_guid"
+            name="mine_tailings_storage_facility_guid"
             label="TSF *"
             placeholder="Select a TSF"
             component={renderConfig.SELECT}

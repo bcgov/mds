@@ -150,3 +150,27 @@ export const fetchPartyRelationshipTypes = () => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const addPartyRelationship = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
+  dispatch(showLoading());
+  return axios
+    .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: `Successfully created contact`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+    });
+};

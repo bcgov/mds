@@ -6,7 +6,10 @@ import { Card, Row, Col, Select } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 
-import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
+import {
+  fetchPartyRelationshipTypes,
+  addPartyRelationship,
+} from "@/actionCreators/partiesActionCreator";
 import { getPartyRelationshipTypes } from "@/selectors/partiesSelectors";
 
 const propTypes = {
@@ -17,25 +20,29 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.array.isRequired,
+  selectedPartyRelationshipType: PropTypes.object,
+  addPartyRelationship: PropTypes.func.isRequired,
 };
 
-export class ViewPermittee extends Component {
+export class ViewPartyRelationships extends Component {
   componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
   }
 
   onSubmitAddPartyRelationship = (values) => {
-    this.props
-      .addPartyRelationship(
-        this.props.mine.guid,
-        values.mineManager,
-        this.props.mine.mine_detail[0].mine_name,
-        values.startDate
-      )
-      .then(() => {
-        this.props.fetchMineRecordById(this.props.mine.guid);
-        this.props.closeModal();
-      });
+    const payload = {
+      mine_guid: this.props.mine.guid,
+      party_guid: values.party_guid,
+      mine_party_appt_type_code: this.props.selectedPartyRelationshipType,
+      mine_tailings_storage_facility_guid: values.mine_tailings_storage_facility_guid,
+      start_date: values.start_date,
+      end_date: values.end_date,
+    };
+
+    this.props.addPartyRelationship(payload).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.closeModal();
+    });
   };
 
   onPartySubmit = (values) => {
@@ -123,6 +130,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyRelationshipTypes,
+      addPartyRelationship,
     },
     dispatch
   );
@@ -132,4 +140,4 @@ ViewPermittee.propTypes = propTypes;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewPermittee);
+)(ViewPartyRelationships);
