@@ -25,6 +25,8 @@ const propTypes = {
 };
 
 export class ViewPartyRelationships extends Component {
+  state = { selectedPartyRelationshipType: {} };
+
   componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
   }
@@ -33,11 +35,13 @@ export class ViewPartyRelationships extends Component {
     const payload = {
       mine_guid: this.props.mine.guid,
       party_guid: values.party_guid,
-      mine_party_appt_type_code: this.props.selectedPartyRelationshipType,
+      mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
       mine_tailings_storage_facility_guid: values.mine_tailings_storage_facility_guid,
       start_date: values.start_date,
       end_date: values.end_date,
     };
+
+    alert(JSON.stringify(payload));
 
     this.props.addPartyRelationship(payload).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
@@ -76,6 +80,9 @@ export class ViewPartyRelationships extends Component {
               <Select
                 id="addContactSelect"
                 onChange={(value) => {
+                  this.setState({
+                    selectedPartyRelationshipType: value,
+                  });
                   this.openAddPartyRelationshipModal(
                     value,
                     this.onSubmitAddPartyRelationship,
@@ -84,7 +91,7 @@ export class ViewPartyRelationships extends Component {
                     ModalContent.ADD_CONTACT,
                     this.props.mine
                   );
-                  this.value = null;
+                  this.value = "";
                 }}
                 style={{ width: "100%" }}
                 placeholder="Add a Contact"
@@ -135,7 +142,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-ViewPermittee.propTypes = propTypes;
+ViewPartyRelationships.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,

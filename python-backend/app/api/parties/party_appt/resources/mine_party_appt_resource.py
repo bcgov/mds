@@ -86,7 +86,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if not mpa:
             return self.create_error_payload(
                 404, 'mine party appointment not found'), 404
-        #Only accepting these parameters
+        # Only accepting these parameters
         mpa.start_date = data.get('start_date'),
         mpa.end_date = data.get('end_date'),
         mpa.save()
