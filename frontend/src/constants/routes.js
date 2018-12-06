@@ -29,7 +29,7 @@ export const MINE_SUMMARY = {
 };
 
 export const PARTY_PROFILE = {
-  route: "/dashboard/profile/:id",
-  dynamicRoute: (id) => `/dashboard/profile/${id}`,
+  route: "/profile/:id",
+  dynamicRoute: (id) => `/profile/${id}`,
   component: PartyProfile,
 };
