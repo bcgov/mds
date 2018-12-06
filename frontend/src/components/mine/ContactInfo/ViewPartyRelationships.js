@@ -69,9 +69,6 @@ export class ViewPermittee extends Component {
   };
 
   render() {
-    const {
-      /* permittees, permitteeIds, mine */
-    } = this.props;
 
     return (
       <div>
