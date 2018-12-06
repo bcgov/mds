@@ -60,7 +60,7 @@
 		},
 		{
 			"name": "DOCUMENT_CAPACITY",
-			"value": "1Gi"
+			"required": true
 		},	
 		{
 			"name": "ROUTE",
