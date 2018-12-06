@@ -6,10 +6,10 @@ import { Form, Select } from "antd";
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
 
-const children = [];
-for (let i = 10; i < 36; i++) {
-  children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>);
-}
+// const children = [];
+// for (let i = 10; i < 36; i++) {
+//   children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>);
+// }
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   input: PropTypes.any,
@@ -19,38 +19,32 @@ const propTypes = {
   meta: PropTypes.object,
   data: PropTypes.array,
 };
-const RenderSelect = ({
-  id,
-  input,
-  label,
-  placeholder,
-  meta: { touched, error, warning },
-  data,
-}) => (
+const RenderMultiSelect = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <Select
       mode="multiple"
-      getPopupContainer={() => document.getElementById(id)}
-      placeholder={placeholder}
-      id={id}
-      {...input}
+      getPopupContainer={() => document.getElementById(props.id)}
+      placeholder={props.placeholder}
+      id={props.id}
+      {...props.input}
     >
-      {children}
-      {data.map((value) =>
-        children.push(
-          <Select.Option key={value.value} value={value.value}>
-            {value.label}
-          </Select.Option>
-        )
-      )}
+      {props.data.map((value) => (
+        <Select.Option key={value.value}>{value.label}</Select.Option>
+      ))}
     </Select>
   </Form.Item>
 );
 
-RenderSelect.propTypes = propTypes;
+RenderMultiSelect.propTypes = propTypes;
 
-export default RenderSelect;
+export default RenderMultiSelect;
