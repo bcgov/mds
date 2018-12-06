@@ -10,13 +10,12 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
-const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
-const AntdScssThemePlugin = require('antd-scss-theme-plugin');
+const AntdScssThemePlugin = require("antd-scss-theme-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
   options: {
-    plugins: () => ([autoprefixer]),
+    plugins: () => [autoprefixer],
   },
 };
 
@@ -27,8 +26,8 @@ exports.devServer = ({ host, port } = {}) => ({
     host,
     port,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
     },
     overlay: {
       errors: true,
@@ -61,7 +60,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "style-loader",
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify('sass-loader'),
+          AntdScssThemePlugin.themify("sass-loader"),
         ],
       },
       {
@@ -72,14 +71,12 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "style-loader",
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify('less-loader'),
+          AntdScssThemePlugin.themify("less-loader"),
         ],
       },
     ],
   },
-  plugins: [
-    new AntdScssThemePlugin(theme),
-  ],
+  plugins: [new AntdScssThemePlugin(theme)],
 });
 
 exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
@@ -94,7 +91,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify('sass-loader'),
+          AntdScssThemePlugin.themify("sass-loader"),
         ],
       },
       {
@@ -106,7 +103,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify('less-loader'),
+          AntdScssThemePlugin.themify("less-loader"),
         ],
       },
     ],
@@ -119,7 +116,13 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
   ],
 });
 
-exports.loadImages = ({ include, exclude, urlLoaderOptions, fileLoaderOptions, imageLoaderOptions} = {}) => ({
+exports.loadImages = ({
+  include,
+  exclude,
+  urlLoaderOptions,
+  fileLoaderOptions,
+  imageLoaderOptions,
+} = {}) => ({
   module: {
     rules: [
       {
@@ -173,10 +176,12 @@ exports.generateSourceMaps = ({ type } = {}) => ({
 exports.bundleOptimization = ({ options } = {}) => ({
   optimization: {
     splitChunks: options,
-    minimizer: [new UglifyWebpackPlugin({
-      cache: true,
-      parallel: true
-   })],
+    minimizer: [
+      new UglifyWebpackPlugin({
+        cache: true,
+        parallel: true,
+      }),
+    ],
   },
 });
 
@@ -190,11 +195,11 @@ exports.CSSOptimization = ({ options } = {}) => ({
   ],
 });
 
-exports.setEnvironmentVariable = (dotenv={}) => ({
+exports.setEnvironmentVariable = (dotenv = {}) => ({
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
-        ...dotenv
+        ...dotenv,
       },
     }),
   ],
@@ -209,31 +214,11 @@ exports.gZipCompression = () => ({
 });
 
 exports.clean = (path) => ({
-  plugins: [
-    new CleanWebpackPlugin([
-      path,
-    ]),
-  ],
+  plugins: [new CleanWebpackPlugin([path])],
 });
 
 exports.copy = (from, to) => ({
-  plugins: [
-    new CopyWebpackPlugin([
-      { from, to, ignore: [ "*.html"] },
-    ]),
-  ],
-});
-
-exports.registerServiceWorker = () => ({
-  plugins: [
-    new SWPrecacheWebpackPlugin({
-      dontCacheBustUrlsMatching: /\.\w{8}\./,
-      filename: "service-worker.js",
-      minify: true,
-      navigateFallback: "/index.html",
-      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-    }),
-  ],
+  plugins: [new CopyWebpackPlugin([{ from, to, ignore: ["*.html"] }])],
 });
 
 exports.extractManifest = () => ({
