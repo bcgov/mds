@@ -59,6 +59,10 @@
 			"value": "/opt/app-root/src/document_uploads"
 		},
 		{
+			"name": "DOCUMENT_CAPACITY",
+			"value": "1Gi"
+		},	
+		{
 			"name": "ROUTE",
 			"required": false,
 			"value": "/"
@@ -136,7 +140,7 @@
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "1Gi"
+                        "storage": "${DOCUMENT_CAPACITY}"
                     }
                 }
             }
