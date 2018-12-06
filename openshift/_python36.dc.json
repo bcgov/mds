@@ -121,6 +121,27 @@
 			}
 		},
 		{
+            "apiVersion": "v1",
+            "kind": "PersistentVolumeClaim",
+            "metadata": {
+                "name": "document-storage${SUFFIX}",
+                "annotations": {
+                    "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
+                    "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+                }
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteMany"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "1Gi"
+                    }
+                }
+            }
+        },
+		{
 			"kind": "DeploymentConfig",
 			"apiVersion": "v1",
 			"metadata": {
@@ -303,6 +324,12 @@
 								},
 								"terminationMessagePath": "/dev/termination-log",
 								"terminationMessagePolicy": "File",
+								"volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/app-root/src/document_uploads",
+                                        "name": "document-storage-data"
+                                    }
+								],	
 								"imagePullPolicy": "Always"
 							},
 							{
@@ -394,7 +421,15 @@
 						],
 						"restartPolicy": "Always",
 						"dnsPolicy": "ClusterFirst",
-						"securityContext": {}
+						"securityContext": {},
+						"volumes": [
+							{
+								"name": "document-storage-data",
+								"persistentVolumeClaim": {
+									"claimName": "document-storage${SUFFIX}"
+								}
+							}
+						]
 					}
 				}
 			}
