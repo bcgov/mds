@@ -26,6 +26,7 @@ class Config(object):
 
     # Microservice URLs
     DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
 
     # Constant config
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
