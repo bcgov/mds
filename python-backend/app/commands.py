@@ -9,8 +9,13 @@ from sqlalchemy.exc import DBAPIError
 from .api.mines.location.models.mine_location import MineLocation
 from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine_type import MineType
-from .api.constants import PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, \
-MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS
+from .api.constants import (
+        PERMIT_STATUS_CODE,
+        MINE_OPERATION_STATUS,
+        MINE_OPERATION_STATUS_REASON,
+        MINE_OPERATION_STATUS_SUB_REASON,
+        MINE_REGION_OPTIONS
+)
 from .api.mines.mine.models.mine_identity import MineIdentity
 from .api.mines.mine.models.mine_detail import MineDetail
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
