@@ -15,3 +15,8 @@ export const storePartyRelationshipTypes = (payload) => ({
   type: ActionTypes.STORE_PARTY_RELATIONSHIP_TYPES,
   payload,
 });
+
+export const storePartyRelationships = (payload) => ({
+  type: ActionTypes.STORE_PARTY_RELATIONSHIPS,
+  payload,
+});

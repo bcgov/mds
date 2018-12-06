@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { required } from "@/utils/Validate";
 import { createDropDownList } from "@/utils/helpers";
 
@@ -42,22 +40,7 @@ export const EOROptions = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  //partyRelationshipTypes: getPartyRelationshipTypes(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      //fetchPartyRelationshipTypes,
-    },
-    dispatch
-  );
-
 EOROptions.propTypes = propTypes;
 EOROptions.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EOROptions);
+export default EOROptions;

@@ -9,8 +9,9 @@ import * as ModalContent from "@/constants/modalContent";
 import {
   fetchPartyRelationshipTypes,
   addPartyRelationship,
+  fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
-import { getPartyRelationshipTypes } from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
@@ -19,9 +20,11 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  partyRelationshipTypes: PropTypes.array.isRequired,
+  partyRelationshipTypes: PropTypes.array,
   selectedPartyRelationshipType: PropTypes.object,
   addPartyRelationship: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
+  partyRelationships: PropTypes.func.object,
 };
 
 export class ViewPartyRelationships extends Component {
@@ -40,8 +43,6 @@ export class ViewPartyRelationships extends Component {
       start_date: values.start_date,
       end_date: values.end_date,
     };
-
-    alert(JSON.stringify(payload));
 
     this.props.addPartyRelationship(payload).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
@@ -131,6 +132,7 @@ export class ViewPartyRelationships extends Component {
 
 const mapStateToProps = (state) => ({
   partyRelationshipTypes: getPartyRelationshipTypes(state),
+  partyRelationships: getPartyRelationships(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -138,6 +140,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPartyRelationshipTypes,
       addPartyRelationship,
+      fetchPartyRelationships,
     },
     dispatch
   );

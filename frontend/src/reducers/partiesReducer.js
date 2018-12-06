@@ -11,6 +11,7 @@ const initialState = {
   parties: {},
   partyIds: [],
   partyRelationshipTypes: [],
+  partyRelationships: [],
 };
 
 const partiesReducer = (state = initialState, action) => {
@@ -36,6 +37,11 @@ const partiesReducer = (state = initialState, action) => {
           "mine_party_appt_type_code"
         ),
       };
+    case actionTypes.STORE_PARTY_RELATIONSHIPS:
+      return {
+        ...state,
+        partyRelationships: action.payload,
+      };
     default:
       return state;
   }
@@ -44,5 +50,6 @@ const partiesReducer = (state = initialState, action) => {
 export const getParties = (state) => state[PARTIES].parties;
 export const getPartyIds = (state) => state[PARTIES].partyIds;
 export const getPartyRelationshipTypes = (state) => state[PARTIES].partyRelationshipTypes;
+export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
 
 export default partiesReducer;
