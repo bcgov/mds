@@ -37,22 +37,24 @@ class MinePartyAppointment(AuditMixin, Base):
     permit_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
     active_ind = db.Column(db.Boolean, server_default=FetchedValue())
+
     #Relationships
-    party = db.relationship('Party', backref='party', lazy='joined')
+    party = db.relationship('Party', lazy='joined')
     mine_part_appt_type = db.relationship(
         'MinePartyAppointmentType',
         backref='mine_party_appt',
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
 
+    #json
     def json(self):
         return {
             'mine_party_appt_guid':
             str(self.mine_party_appt_guid),
             'mine_guid':
             str(self.mine_guid),
-            'party':
-            self.party.json(show_mgr=False),
+            'party_guid':
+            str(self.party_guid),
             'mine_party_appt_type_code':
             str(self.mine_party_appt_type_code),
             'mine_tailings_storage_facility_guid':
@@ -63,8 +65,11 @@ class MinePartyAppointment(AuditMixin, Base):
             str(self.start_date),
             'end_date':
             str(self.end_date),
+            'party':
+            self.party.json(show_mgr=False) if self.party else str({})
         }
 
+    #search methods
     @classmethod
     def find_by_mine_party_appt_guid(cls, _id):
         try:
@@ -112,6 +117,35 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
+    #constructor helpers
+    @classmethod
+    def create_mine_party_appointment(cls, data, user_dict):
+        new_mpa = MinePartyAppointment(
+            mine_guid=data.get('mine_guid'),
+            party_guid=data.get('party_guid'),
+            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
+            start_date=data.get('start_date'),
+            end_date=data.get('end_date'),
+            **user_dict)
+        new_mpa.save()
+        if new_mpa.mine_party_appt_type_code == 'EOR':
+            tsf_guid = data.get('mine_tailings_storage_facility_guid')
+            new_mpa.attach_and_validate_EOR_mine_tsf_triangle(tsf_guid)
+        return new_mpa
+
+    def attach_and_validate_EOR_mine_tsf_triangle(self, provided_tsf_guid):
+        if not provided_tsf_guid:
+            raise AssertionError(
+                'No mine tsf guid provided for mine party appointment of type: EOR'
+            )
+        if provided_tsf_guid not in [
+                str(x.mine_tailings_storage_facility_guid)
+                for x in self.mine.mine_tailings_storage_facilities
+        ]:
+            raise AssertionError('tsf_guid, mine_guid inconsistent')
+        self.mine_tailings_storage_facility_guid = provided_tsf_guid
+
+    #validators
     @validates('mine_guid')
     def validate_mine_guid(self, key, val):
         if not val:
@@ -130,13 +164,4 @@ class MinePartyAppointment(AuditMixin, Base):
             raise AssertionError('No mine party appointment type code')
         if len(val) is not 3:
             raise AssertionError('invalid mine party appointment type code')
-        return val
-
-    @validates('mine_tailings_storage_facility_guid')
-    def validate_mine_tailings_storage_facility_guid(self, key, val):
-        if self.mine_party_appt_type_code == 'EOR':
-            if not val:
-                raise AssertionError(
-                    'No mine tsf guid provided for mine party appointment of type: EOR'
-                )
         return val
