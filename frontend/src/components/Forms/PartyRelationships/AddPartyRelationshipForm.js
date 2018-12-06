@@ -6,45 +6,28 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import EOROptions from "@/components/Forms/PartyRelationships/EOROptions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  partyType: PropTypes.string.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
+  partyType: PropTypes.string,
+  mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
-  parties: {},
-  partyIds: [],
   partyType: "",
+  mine: {},
 };
 
 export const AddPartyRelationshipForm = (props) => {
   let options;
   switch (props.partyType) {
-    case "EoR":
-      options = (
-        <Row gutter={16}>
-          <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="tsf"
-                name="tsf"
-                label="TSF *"
-                placeholder="Select a TSF"
-                component={renderConfig.LARGE_SELECT}
-                /* data={props.partyIds}
-                  options={props.parties} */
-                validate={[required]} /* 
-                  handleChange={props.handleChange} */
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      );
+    case "EOR":
+      options = <EOROptions mine={props.mine} />;
       break;
     default:
       options = <div />;
@@ -54,7 +37,7 @@ export const AddPartyRelationshipForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col md={12} xs={24}>
+        <Col md={24} xs={24}>
           <Form.Item>
             <Field
               id="name"
@@ -68,15 +51,27 @@ export const AddPartyRelationshipForm = (props) => {
             />
           </Form.Item>
         </Col>
+      </Row>
+      <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="date"
-              name="date"
-              label="Effective Date *"
+              id="startDate"
+              name="startDate"
+              label="Start Date"
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}
-              validate={[required]}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item>
+            <Field
+              id="endDate"
+              name="endDate"
+              label="End Date"
+              placeholder="yyyy-mm-dd"
+              component={renderConfig.DATE}
             />
           </Form.Item>
         </Col>

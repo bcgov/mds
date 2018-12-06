@@ -10,30 +10,17 @@ import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreat
 import { getPartyRelationshipTypes } from "@/selectors/partiesSelectors";
 
 const propTypes = {
+  mine: PropTypes.object.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.array.isRequired,
-  partyTypeOptions: PropTypes.array.isRequired,
-};
-
-const defaultProps = {
-  partyTypeOptions: [
-    {
-      value: "EoR",
-      label: "Engineer on Record",
-    },
-    {
-      value: "MM",
-      label: "Mine Manager",
-    },
-  ],
 };
 
 export class ViewPermittee extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
   }
 
@@ -55,23 +42,24 @@ export class ViewPermittee extends Component {
     this.props.handlePartySubmit(values, ModalContent.PERSON);
   };
 
-  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title) => {
+  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     this.props.openModal({
       props: {
         onSubmit,
         handleChange,
         onPartySubmit,
-        title: `${title  }: ${  this.props.partyTypeOptions.find((x) => x.value === value).label}`,
+        title: `${title}: ${
+          this.props.partyRelationshipTypes.find((x) => x.value === value).label
+        }`,
         partyType: value,
+        mine,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
     });
   };
 
   render() {
-    const {
-      /* permittees, permitteeIds, mine */
-    } = this.props;
+    const {} = this.props;
 
     return (
       <div>
@@ -86,7 +74,8 @@ export class ViewPermittee extends Component {
                     this.onSubmitAddPartyRelationship,
                     this.props.handleChange,
                     this.onPartySubmit,
-                    ModalContent.ADD_CONTACT
+                    ModalContent.ADD_CONTACT,
+                    this.props.mine
                   );
                   this.value = null;
                 }}
@@ -97,7 +86,7 @@ export class ViewPermittee extends Component {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {this.props.partyTypeOptions.map((value) => (
+                {this.props.partyRelationshipTypes.map((value) => (
                   <Select.Option key={value.value} value={value.value}>
                     {value.label}
                   </Select.Option>
@@ -127,10 +116,11 @@ export class ViewPermittee extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    partyRelationshipTypes: getPartyRelationshipTypes(state),
-  });
+  partyRelationshipTypes: getPartyRelationshipTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchPartyRelationshipTypes,
     },
@@ -138,7 +128,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   );
 
 ViewPermittee.propTypes = propTypes;
-ViewPermittee.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

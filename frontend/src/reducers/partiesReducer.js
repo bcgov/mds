@@ -1,6 +1,6 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { PARTIES } from "@/constants/reducerTypes";
-import { createItemMap, createItemIdsArray } from "@/utils/helpers";
+import { createItemMap, createItemIdsArray, createDropDownList } from "@/utils/helpers";
 
 /**
  * @file partiesReducer.js
@@ -30,7 +30,11 @@ const partiesReducer = (state = initialState, action) => {
     case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
       return {
         ...state,
-        partyRelationshipTypes: action.payload,
+        partyRelationshipTypes: createDropDownList(
+          action.payload,
+          "description",
+          "mine_party_appt_type_code"
+        ),
       };
     default:
       return state;

@@ -79,6 +79,11 @@ export class MineContactInfo extends Component {
             handlePartySubmit={this.handlePartySubmit}
           />
         )}
+        <ViewPartyRelationships
+          {...this.props}
+          handleChange={this.handleChangeDebounced}
+          handlePartySubmit={this.handlePartySubmit}
+        />
       </div>
     );
   }
@@ -88,11 +93,12 @@ MineContactInfo.propTypes = propTypes;
 MineContactInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-    permittees: getCurrentPermittees(state),
-    permitteeIds: getCurrentPermitteeIds(state),
-  });
+  permittees: getCurrentPermittees(state),
+  permitteeIds: getCurrentPermitteeIds(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       fetchParties,
       createParty,
