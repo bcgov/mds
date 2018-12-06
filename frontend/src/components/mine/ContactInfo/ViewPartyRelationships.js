@@ -69,8 +69,6 @@ export class ViewPermittee extends Component {
   };
 
   render() {
-    const {
-    } = this.props;
 
     return (
       <div>
