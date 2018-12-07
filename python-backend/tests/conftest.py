@@ -93,10 +93,10 @@ def setup_data(session):
         region_code.save()
 
     # Insert Mine Tenure Types
-    for id, name in zip(TEST_MINE_TENURE_TYPE_IDS, TEST_MINE_TENURE_TYPE_NAMES):
+    for code, description in zip(TEST_MINE_TENURE_TYPE_CODES, TEST_MINE_TENURE_TYPE_DESCRIPTIONS):
         mine_tenure_type = MineTenureType(
-            mine_tenure_type_id=id,
-            mine_tenure_type_name=name,
+            mine_tenure_type_code=code,
+            description=description,
             **DUMMY_USER_KWARGS
         )
         mine_tenure_type.save()
