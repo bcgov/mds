@@ -10,14 +10,14 @@ class Tab_Tailings extends Module {
         tabSelect (wait:true) {$("div.ant-tabs-tab", text: "Tailings")}
 
         addTailingsForm {module Form_CreateTailings}
-        document0Name (wait:true) {$("div", 'id':"name-0").find("h5")}
+        document0Name (wait:true) {$("div.ant-row").find("h3")}
         addTailingsButton (wait:true) {$("button.ant-btn-primary").has("span", text:"Add a TSF")}
 
     }
 
     def addTailings(tsfData){
         addTailingsButton.click()
-        addTailingsForm.addTailings(tsfData)        
+        addTailingsForm.addTailings(tsfData)
     }
 
 }
