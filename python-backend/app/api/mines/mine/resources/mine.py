@@ -169,6 +169,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
+
         if (
                 not tenure and
                 not (lat and lon) and

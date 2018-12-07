@@ -6,7 +6,6 @@ from tests.constants import (
     TEST_REGION_CODE
 )
 
-
 # GET
 def test_get_mine_not_found(test_client, auth_headers):
     get_resp = test_client.get('/mines/' + 'NOT_FOUND', headers=auth_headers['full_auth_header'])
