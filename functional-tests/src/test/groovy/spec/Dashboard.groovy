@@ -81,7 +81,7 @@ class  DashboardSpec extends GebReportingSpec {
 
         then:"I can view the page"
         at MineProfilePage
-        assert mineNumber == "Mine ID: "+viewMineID
+        assert mineNumber == "Mine ID:"+viewMineID
         assert mineName == viewMineName
         println mineNumber
         println mineName
