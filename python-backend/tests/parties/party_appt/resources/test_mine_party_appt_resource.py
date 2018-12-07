@@ -85,7 +85,7 @@ def test_post_mine_party_appt_missing_party_guid(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_put_mine_party_appt_by_mine_guid(test_client, auth_headers):
+def test_put_mine_party_appt_success(test_client, auth_headers):
     test_data = {'start_date': '1999-12-12', 'end_date': '2001-01-01'}
     put_resp = test_client.put(
         '/parties/mines/' + TEST_MINE_PARTY_APPT_GUID,
@@ -95,9 +95,15 @@ def test_put_mine_party_appt_by_mine_guid(test_client, auth_headers):
     assert put_resp.status_code == 200
 
 
-def test_delete_mine_party_appt_by_mine_guid(test_client, auth_headers):
-    get_resp = test_client.delete(
+def test_delete_mine_party_appt_success(test_client, auth_headers):
+    del_resp = test_client.delete(
         '/parties/mines/' + TEST_MINE_PARTY_APPT_GUID,
         headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
+    assert del_resp.status_code == 200
+
+
+def test_delete_mine_party_appt_invalid_guid(test_client, auth_headers):
+    del_resp = test_client.delete(
+        '/parties/mines/' + '4108a3fc-3972-409a-bc38-2cc40bc9da34',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 404
