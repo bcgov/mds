@@ -174,3 +174,26 @@ export const addPartyRelationship = (payload) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const fetchPartyRelationships = (mineId) => (dispatch) => {
+  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_guid=${mineId}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(partyActions.storePartyRelationships(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(hideLoading("modal"));
+    });
+};

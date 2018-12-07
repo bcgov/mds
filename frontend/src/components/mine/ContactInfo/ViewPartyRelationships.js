@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Card, Row, Col, Select } from "antd";
+import { Card, Row, Col, Select, Menu, Icon } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
+import { ConditionalButton } from "@/components/common/ConditionalButton";
+import { EMAIL, PROFILE } from "@/constants/assets";
 
 import {
   fetchPartyRelationshipTypes,
@@ -24,7 +26,7 @@ const propTypes = {
   selectedPartyRelationshipType: PropTypes.object,
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  partyRelationships: PropTypes.func.object,
+  partyRelationships: PropTypes.array,
 };
 
 export class ViewPartyRelationships extends Component {
@@ -32,6 +34,7 @@ export class ViewPartyRelationships extends Component {
 
   componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationships(this.props.mine.guid);
   }
 
   onSubmitAddPartyRelationship = (values) => {
@@ -45,7 +48,7 @@ export class ViewPartyRelationships extends Component {
     };
 
     this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchPartyRelationships(this.props.mine.guid);
       this.props.closeModal();
     });
   };
@@ -70,43 +73,124 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  renderPartyRelationship = (partyRelationship) => {
+    switch (partyRelationship.mine_party_appt_type_code) {
+      case "EOR":
+        return (
+          <div key={partyRelationship.mine_party_appt_guid}>
+            <h4>
+              Engineer Of Record -{" "}
+              {
+                this.props.mine.mine_tailings_storage_facility.find(
+                  (x) =>
+                    x.mine_tailings_storage_facility_guid ===
+                    partyRelationship.mine_tailings_storage_facility_guid
+                ).mine_tailings_storage_facility_name
+              }
+            </h4>
+            <Icon type="clock-circle" />
+            &nbsp;&nbsp;
+            {partyRelationship.start_date === "None"
+              ? "Unknown"
+              : partyRelationship.start_date} -{" "}
+            {partyRelationship.end_date === "None" ? "Present" : partyRelationship.end_date}
+            <br />
+            <br />
+            <h5 className="bold">{partyRelationship.party.name}</h5>
+            <Icon type="mail" />
+            &nbsp;&nbsp;
+            {partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
+            <br />
+            <Icon type="phone" />
+            &nbsp;&nbsp;
+            {partyRelationship.party.phone_no}{" "}
+            {partyRelationship.party.phone_ext ? "(" + partyRelationship.party.phone_ext + ")" : ""}
+          </div>
+        );
+      case "MMG":
+        return (
+          <div key={partyRelationship.mine_party_appt_guid}>
+            <h4>Mine Manager</h4>
+            <Icon type="clock-circle" />
+            &nbsp;&nbsp;
+            {partyRelationship.start_date === "None"
+              ? "Unknown"
+              : partyRelationship.start_date} -{" "}
+            {partyRelationship.end_date === "None" ? "Present" : partyRelationship.end_date}
+            <br />
+            <br />
+            <h5 className="bold">{partyRelationship.party.name}</h5>
+            <Icon type="mail" />
+            &nbsp;&nbsp;
+            {partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
+            <br />
+            <Icon type="phone" />
+            &nbsp;&nbsp;
+            {partyRelationship.party.phone_no}{" "}
+            {partyRelationship.party.phone_ext ? "(" + partyRelationship.party.phone_ext + ")" : ""}
+          </div>
+        );
+      default:
+        return;
+    }
+  };
+
   render() {
-    const {} = this.props;
+    const { partyRelationships, partyRelationshipTypes } = this.props;
+
+    const menu = (
+      <Menu>
+        {partyRelationshipTypes.map((value) => (
+          <Menu.Item key={value.value}>
+            <button
+              className="full"
+              onClick={(event) => {
+                this.setState({
+                  selectedPartyRelationshipType: value.value,
+                });
+                this.openAddPartyRelationshipModal(
+                  value.value,
+                  this.onSubmitAddPartyRelationship,
+                  this.props.handleChange,
+                  this.onPartySubmit,
+                  ModalContent.ADD_CONTACT,
+                  this.props.mine
+                );
+              }}
+            >
+              {"+ Add " + value.label}
+            </button>
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
 
     return (
       <div>
         <Card>
-          <Row gutter={16}>
-            <Col span={6}>
-              <Select
-                id="addContactSelect"
-                onChange={(value) => {
-                  this.setState({
-                    selectedPartyRelationshipType: value,
-                  });
-                  this.openAddPartyRelationshipModal(
-                    value,
-                    this.onSubmitAddPartyRelationship,
-                    this.props.handleChange,
-                    this.onPartySubmit,
-                    ModalContent.ADD_CONTACT,
-                    this.props.mine
-                  );
-                  this.value = "";
-                }}
-                style={{ width: "100%" }}
-                placeholder="Add a Contact"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-              >
-                {this.props.partyRelationshipTypes.map((value) => (
-                  <Select.Option key={value.value} value={value.value}>
-                    {value.label}
-                  </Select.Option>
-                ))}
-              </Select>
+          <Row gutter={16} type="flex" justify="end">
+            <Col span={24}>
+              <div className="inline-flex between">
+                <h3>Other Contacts</h3>
+                <ConditionalButton
+                  isDropdown
+                  overlay={menu}
+                  string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+                />
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              {partyRelationships.map((partyRelationship) => (
+                <div>
+                  <hr />
+                  <br />
+                  {this.renderPartyRelationship(partyRelationship)}
+                  <br />
+                  <br />
+                </div>
+              ))}
             </Col>
           </Row>
           <br />
