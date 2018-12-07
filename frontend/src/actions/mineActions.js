@@ -21,15 +21,15 @@ export const storeMineNameList = (payload) => ({
   payload,
 });
 
-export const storeStatusOptions = (payload) => ({
-  type: ActionTypes.STORE_STATUS_OPTIONS,
-  payload,
-});
+// export const storeStatusOptions = (payload) => ({
+//   type: ActionTypes.STORE_STATUS_OPTIONS,
+//   payload,
+// });
 
-export const storeRegionOptions = (payload) => ({
-  type: ActionTypes.STORE_REGION_OPTIONS,
-  payload,
-});
+// export const storeRegionOptions = (payload) => ({
+//   type: ActionTypes.STORE_REGION_OPTIONS,
+//   payload,
+// });
 
 export const storeDocumentStatusOptions = (payload) => ({
   type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
@@ -41,7 +41,7 @@ export const storeMineTSFRequiredDocuments = (payload) => ({
   payload,
 });
 
-export const storeTenureTypes = (payload) => ({
-  type: ActionTypes.STORE_TENURE_TYPES,
-  payload,
-});
+// export const storeTenureTypes = (payload) => ({
+//   type: ActionTypes.STORE_TENURE_TYPES,
+//   payload,
+// });
