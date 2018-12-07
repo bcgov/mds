@@ -1,3 +1,26 @@
+# Outlines the tenure type code to which each disturbance applies
+# Exclusive disturbance codes are invalid in combination with other disturbance
+# codes under the same tenure
+DISTURBANCE_CODES_CONFIG = {
+    'SUR': {
+        'mine_tenure_type_codes': ['COL', 'MIN', 'PLR', 'BCL'],
+        'exclusive_ind': False
+    },
+    'UND': {
+        'mine_tenure_type_codes': ['COL', 'MIN', 'PLR'],
+        'exclusive_ind': False
+    },
+    'CWA': {
+        'mine_tenure_type_codes': ['COL'],
+        'exclusive_ind': True
+    },
+    'MIL': {
+        'mine_tenure_type_codes': ['PLR'],
+        'exclusive_ind': True
+    }
+}
+
+
 # The following constants are based on seed data found in /migrations/sql/afterMigrate__3__seed_data.sql
 
 # Status Code for party_type_code
