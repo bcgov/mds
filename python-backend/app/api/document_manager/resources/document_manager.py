@@ -16,20 +16,20 @@ from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('file', location='files', action='append')
+    parser.add_argument(
+        'file', type=FileStorage, location='files', action='append')
     parser.add_argument(
         'folder',
         type=str,
         required=True,
-        help='The sub folder path to store the document in.',
-        location='json')
+        help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
         required=True,
         help=
-        'The sub folder path to store the document in with the guids replaced for more readable names.',
-        location='json')
+        'The sub folder path to store the document in with the guids replaced for more readable names.'
+    )
 
     @jwt.requires_roles(["mds-mine-create"])
     def post(self):
@@ -47,7 +47,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         #     help=
         #     'The sub folder path to store the document in with the guids replaced for more readable names.'
         # )
-        raise Exception(request.__dict__)
+
         try:
             data = self.parser.parse_args()
 
@@ -61,7 +61,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
         folder = data['folder']
         pretty_folder = data['pretty_folder']
-        document_guid_list = []
+        document_dict = {}
         errors = []
 
         for upload in data['file']:
@@ -73,7 +73,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                 upload_response = documents.save(
                     upload, folder, (str(file_guid) + file_extension))
                 real_path = documents.path(upload_response)
-
+                filename = (original_file_name + file_extension)
                 #create the readable path by removing the guids and replacing them with the more readable versions.
                 pretty_path = re.sub(r'\b' + folder + r'\b', pretty_folder,
                                      real_path)
@@ -84,13 +84,13 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                     document_guid=file_guid,
                     full_storage_path=real_path,
                     upload_date=datetime.now(),
-                    file_display_name=(original_file_name + file_extension),
+                    file_display_name=filename,
                     path_display_name=pretty_path,
                     **self.get_create_update_dict(),
                 )
 
                 document_info.save()
-                document_guid_list.append(str(file_guid))
+                document_dict[str(file_guid)] = filename
 
             except UploadNotAllowed as e:
                 errors.append({
@@ -107,7 +107,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                 continue
 
         return {
-            'document_manager_guids': document_guid_list,
+            'document_manager_guids': document_dict,
             'errors': errors,
         }
 

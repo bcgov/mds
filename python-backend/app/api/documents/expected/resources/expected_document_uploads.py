@@ -8,11 +8,15 @@ from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
+from sqlalchemy.exc import DBAPIError
 
-from ..models.document import ExpectedDocument
+from ..models.mine_expected_document import MineExpectedDocument
 from ....mines.mine.models.mine_detail import MineDetail
+from ...expected.models.mine_expected_document import MineExpectedDocument
+from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
+from ...expected.models.mine_document import MineDocument
 
-from app.extensions import jwt, api
+from app.extensions import jwt, api, db
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -35,37 +39,62 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             data = self.parser.parse_args()
 
         except exceptions.RequestEntityTooLarge:
-            return ({
-                'errors': [{
-                    'message':
-                    f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.',
-                }]
-            })
+            return self.create_error_payload(
+                413,
+                f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.'
+            )
 
-        expected_document = ExpectedDocument.find_by_exp_document_guid(
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(
             expected_document_guid)
         mine_detail = MineDetail.find_by_mine_guid(
             str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
-        folder = 'mines/' + str(
-            mine_detail.mine_guid) + '/' + str(document_category)
-        pretty_folder = 'mines/' + str(
-            mine_detail.mine_no) + '/' + str(document_category)
+        if document_category:
+            folder = 'mines/' + str(
+                mine_detail.mine_guid) + '/' + str(document_category)
+            pretty_folder = 'mines/' + str(
+                mine_detail.mine_no) + '/' + str(document_category)
+        else:
+            folder = 'mines/' + str(mine_detail.mine_guid) + '/documents'
+            pretty_folder = 'mines/' + str(mine_detail.mine_no) + '/documents'
 
         document_manager_URL = current_app.config[
             'DOCUMENT_MANAGER_URL'] + '/document-manager'
 
         args = {'folder': folder, 'pretty_folder': pretty_folder}
         files = []
-        headers = {
-            'Authorization': request.headers.get('Authorization'),
-            'content-type': 'multipart/form-data'
-        }
+        headers = {'Authorization': request.headers.get('Authorization')}
 
         for file in data['file']:
             files.append(('file', (file.filename, file, file.mimetype)))
 
-        document_guid = requests.post(
-            document_manager_URL, data=args, headers=headers)
-        raise Exception(document_guid.text)
+        response = requests.post(
+            url=document_manager_URL, data=args, files=files, headers=headers)
+        json_response = response.json()
+
+        errors = json_response['errors']
+        document_guids = json_response['document_manager_guids']
+        filenames = []
+
+        try:
+            for key, value in document_guids.items():
+                doc = MineDocument(
+                    mine_guid=expected_document.mine_guid,
+                    document_manager_guid=key,
+                    document_name=value,
+                    **self.get_create_update_dict())
+
+                expected_document.mine_document.append(doc)
+                db.session.add(expected_document)
+                filenames.append(value)
+
+            db.session.commit()
+
+        except DBAPIError:
+            #log the error here and return a pretty error message
+            db.session.rollback()
+            return self.create_error_payload(500,
+                                             'An unexpected error occured')
+
+        return {'errors': errors, 'files': filenames}
