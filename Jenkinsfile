@@ -29,7 +29,7 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
             }
         }
-        stage('Functional Test (DEV) (SKIPPED)') {
+        stage('Functional Test (DEV)') {
             agent { label 'master' }
             steps {
                 echo "Functional Test (DEV) ..."
