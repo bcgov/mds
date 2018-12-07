@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FieldArray } from "redux-form";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
@@ -14,16 +16,60 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
+  mine_Types: PropTypes.array.isRequired,
 };
 
 export class MineRecordForm extends Component {
-  createHeader = (index, fields) => (
+  state = {
+    activeKey: [],
+  };
+
+  /**
+   *
+   * @param {*} nextProps
+   * In order to use a multiSelect with ReduxForms, it need to be initiated with an empty array,
+   * ReduxForms defaults to an empty string when initializing fields inputs.
+   * In this situation, FieldArray is being used to dynamically create field blocks,
+   * componentWillReceiveProps checks if the FieldArray changes and
+   * overrides the default behaviour to set a defautValue top the new block
+   */
+  componentWillReceiveProps(nextProps) {
+    const defaultValue = {
+      mine_tenure_type_code: [],
+      mine_commodity_type_code: [],
+      mine_disturbance_type_code: [],
+    };
+    // Do nothing if no mine_types, or no change to mine_types
+    if (nextProps.mine_types === this.props.mine_types) {
+      return;
+    }
+    if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
+      this.props.change(
+        "mine_types",
+        nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
+      );
+    }
+  }
+
+  // function to set the active CollapsePanel, this keeps the panel open when the inner state changes. (Ie changing inputs)
+  setActiveKey = (key) => {
+    this.setState({
+      activeKey: key,
+    });
+  };
+
+  removeField = (event, fields, index) => {
+    event.preventDefault();
+    fields.remove(index);
+  };
+
+  createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
-      <label>Mine Type {index + 1}</label>
+      <Form.Item label={`Mine Type ${index + 1}`} />
       <Button
         ghost
         onClick={(event) => {
-          event.preventDefault(), fields.remove(index);
+          this.removeField(event, fields, index);
         }}
       >
         <Icon type="minus-circle" theme="outlined" />
@@ -33,15 +79,15 @@ export class MineRecordForm extends Component {
 
   render() {
     const renderTypeSelect = ({ fields }) => (
-      <div className="form__types">
-        <Collapse accordion>
+      <div>
+        <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
           {fields.map((type, index) => (
-            <Collapse.Panel header={this.createHeader(index, fields)} key={index}>
+            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    id={`${type}.mine_tenure_type_id`}
-                    name={`${type}.mine_tenure_type_id`}
+                    id={`${type}.mine_tenure_type_code`}
+                    name={`${type}.mine_tenure_type_code`}
                     label="Tenure"
                     placeholder="Please Select Tenure"
                     component={renderConfig.SELECT}
@@ -52,10 +98,10 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    id={`${type}.mine_commidity_type_id`}
-                    name={`${type}.mine_commidity_type_id`}
+                    id={`${type}.mine_commodity_type_code`}
+                    name={`${type}.mine_commodity_type_code`}
                     label="Commodity"
-                    placeholder="Please Select Tenure"
+                    placeholder="Please Select Commodity"
                     component={renderConfig.MULTI_SELECT}
                     data={this.props.mineTenureTypes}
                   />
@@ -64,10 +110,10 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    id={`${type}.mine_disturbance_type_id`}
-                    name={`${type}.mine_disturbance_type_id`}
+                    id={`${type}.mine_disturbance_type_code`}
+                    name={`${type}.mine_disturbance_type_code`}
                     label="Disturbance"
-                    placeholder="Please Select Tenure"
+                    placeholder="Please Select Disturbance"
                     component={renderConfig.MULTI_SELECT}
                     data={this.props.mineTenureTypes}
                   />
@@ -76,12 +122,11 @@ export class MineRecordForm extends Component {
             </Collapse.Panel>
           ))}
         </Collapse>
-        <Button type="primary" onClick={() => fields.push({})}>
-          Add Mine Type
+        <Button type="dashed" block onClick={() => fields.push({})}>
+          {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
         </Button>
       </div>
     );
-
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
@@ -188,9 +233,9 @@ export class MineRecordForm extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button className="fdivl-mobile">Cancel</Button>
+            <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button className="fdivl-mobile" type="primary" htmlType="submit">
+          <Button className="full-mobile" type="primary" htmlType="submit">
             {this.props.title}
           </Button>
         </div>
@@ -201,9 +246,14 @@ export class MineRecordForm extends Component {
 
 MineRecordForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.MINE_RECORD,
-  touchOnBlur: false,
-  enableReinitialize: true,
-  onSubmitSuccess: resetForm(FORM.MINE_RECORD),
-})(MineRecordForm);
+export default compose(
+  connect((state) => ({
+    mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
+  })),
+  reduxForm({
+    form: FORM.MINE_RECORD,
+    touchOnBlur: false,
+    enableReinitialize: true,
+    onSubmitSuccess: resetForm(FORM.MINE_RECORD),
+  })
+)(MineRecordForm);

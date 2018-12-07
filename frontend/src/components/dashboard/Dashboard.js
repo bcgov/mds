@@ -191,7 +191,13 @@ export class Dashboard extends Component {
   openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title },
+      props: {
+        mineStatusOptions,
+        mineRegionOptions,
+        mineTenureTypes,
+        onSubmit,
+        title,
+      },
       content: modalConfig.MINE_RECORD,
     });
   }

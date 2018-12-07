@@ -67,6 +67,18 @@
     border: 1px solid $default-light-green;
   }
 }
+
+.ant-btn-dashed {
+  margin: 10px 0;
+  color: $default-dark-green;
+  border-color: $default-dark-green;
+  border-style: dashed;
+  &:hover {
+    color: $default-light-green;
+    border-color: $default-light-green;
+    border-style: dashed;
+  }
+}
 .ant-popover-buttons button {
   margin: 10px;
   line-height: 1.5;
@@ -138,6 +150,7 @@
 
 // CCOLLAPSE
 .ant-collapse {
+  border: none;
   background-color: $default-white;
 }
 

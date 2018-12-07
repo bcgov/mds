@@ -19,6 +19,7 @@ const propTypes = {
   meta: PropTypes.object,
   data: PropTypes.array,
 };
+
 const RenderMultiSelect = (props) => (
   <Form.Item
     label={props.label}
@@ -39,7 +40,9 @@ const RenderMultiSelect = (props) => (
       {...props.input}
     >
       {props.data.map((value) => (
-        <Select.Option key={value.value}>{value.label}</Select.Option>
+        <Select.Option disabled={value.value === "SC"} key={value.value}>
+          {value.label}
+        </Select.Option>
       ))}
     </Select>
   </Form.Item>
