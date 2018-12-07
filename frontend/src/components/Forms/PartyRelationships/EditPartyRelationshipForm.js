@@ -12,20 +12,17 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  partyRelationshipType: PropTypes.string,
+  partyRelationship: PropTypes.object.isRequired,
   mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
-  partyRelationshipType: "",
   mine: {},
 };
 
-export const AddPartyRelationshipForm = (props) => {
+export const EditPartyRelationshipForm = (props) => {
   let options;
-  switch (props.partyRelationshipType) {
+  switch (props.partyRelationship.mine_party_appt_type_code) {
     case "EOR":
       options = <EOROptions mine={props.mine} />;
       break;
@@ -36,22 +33,6 @@ export const AddPartyRelationshipForm = (props) => {
 
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Row gutter={16}>
-        <Col md={24} xs={24}>
-          <Form.Item>
-            <Field
-              id="party_guid"
-              name="party_guid"
-              label="Name *"
-              component={renderConfig.LARGE_SELECT}
-              data={props.partyIds}
-              options={props.parties}
-              validate={[required]}
-              handleChange={props.handleChange}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>
@@ -97,11 +78,11 @@ export const AddPartyRelationshipForm = (props) => {
   );
 };
 
-AddPartyRelationshipForm.propTypes = propTypes;
-AddPartyRelationshipForm.defaultProps = defaultProps;
+EditPartyRelationshipForm.propTypes = propTypes;
+EditPartyRelationshipForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.ADD_PARTY_RELATIONSHIP,
+  form: FORM.EDIT_PARTY_RELATIONSHIP,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PARTY_RELATIONSHIP),
-})(AddPartyRelationshipForm);
+  onSubmitSuccess: resetForm(FORM.EDIT_PARTY_RELATIONSHIP),
+})(EditPartyRelationshipForm);

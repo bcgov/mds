@@ -197,3 +197,24 @@ export const fetchPartyRelationships = (mineId) => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
+  dispatch(request(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
+  dispatch(showLoading());
+  return axios
+    .delete(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${mine_party_appt_guid}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message: "Successfully removed the contact", duration: 10 });
+      dispatch(success(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({ message: String.ERROR, duration: 10 });
+      dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+    });
+};
