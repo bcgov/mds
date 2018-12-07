@@ -19,7 +19,7 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
-from app.api.mines.mine.models.mine_tenure_type import MineTenureType
+from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
@@ -93,13 +93,13 @@ def setup_data(session):
         region_code.save()
 
     # Insert Mine Tenure Types
-    for id, name in zip(TEST_MINE_TENURE_TYPE_IDS, TEST_MINE_TENURE_TYPE_NAMES):
-        mine_tenure_type = MineTenureType(
-            mine_tenure_type_id=id,
-            mine_tenure_type_name=name,
+    for code, description in zip(TEST_MINE_TENURE_TYPE_CODES, TEST_MINE_TENURE_TYPE_DESCRIPTIONS):
+        mine_tenure_type_code = MineTenureTypeCode(
+            mine_tenure_type_code=code,
+            description=description,
             **DUMMY_USER_KWARGS
         )
-        mine_tenure_type.save()
+        mine_tenure_type_code.save()
 
     # Insert Mine Disturbance Codes
     for code, description in zip(TEST_MINE_DISTURBANCE_CODES, TEST_MINE_DISTURBANCE_DESCRIPTIONS):
