@@ -4,13 +4,13 @@ from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 
-class MineTenureType(AuditMixin, Base):
+class MineTenureTypeCode(AuditMixin, Base):
     __tablename__ = 'mine_tenure_type_code'
     mine_tenure_type_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
 
     def __repr__(self):
-        return '<MineTenureType %r>' % self.mine_tenure_type_code
+        return '<MineTenureTypeCode %r>' % self.mine_tenure_type_code
 
     @classmethod
     def all_options(cls):
