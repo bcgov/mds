@@ -13,9 +13,14 @@ const propTypes = {
 
 export class EditPartyRelationshipModal extends Component {
   render() {
+    const initialValues = this.props.partyRelationship;
+    initialValues.start_date =
+      initialValues.start_date === "None" ? null : initialValues.start_date;
+    initialValues.end_date = initialValues.end_date === "None" ? null : initialValues.end_date;
+
     return (
       <div>
-        <EditPartyRelationshipForm {...this.props} />
+        <EditPartyRelationshipForm {...this.props} initialValues={initialValues} />
       </div>
     );
   }

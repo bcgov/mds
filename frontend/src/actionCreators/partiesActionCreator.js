@@ -175,6 +175,34 @@ export const addPartyRelationship = (payload) => (dispatch) => {
     });
 };
 
+export const updatePartyRelationship = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+  dispatch(showLoading());
+  return axios
+    .put(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${payload.mine_party_appt_guid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated contact`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+      dispatch(hideLoading());
+    });
+};
+
 export const fetchPartyRelationships = (mineId) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading("modal"));

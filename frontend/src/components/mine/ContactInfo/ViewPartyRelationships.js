@@ -13,6 +13,7 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
   removePartyRelationship,
+  updatePartyRelationship,
 } from "@/actionCreators/partiesActionCreator";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 
@@ -28,10 +29,11 @@ const propTypes = {
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.array,
+  selectedPartyRelationship: PropTypes.object,
 };
 
 export class ViewPartyRelationships extends Component {
-  state = { selectedPartyRelationshipType: {} };
+  state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
 
   componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
@@ -67,7 +69,7 @@ export class ViewPartyRelationships extends Component {
         title: `${title}: ${
           this.props.partyRelationshipTypes.find((x) => x.value === value).label
         }`,
-        partyType: value,
+        partyRelationshipType: value,
         mine,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
@@ -92,8 +94,16 @@ export class ViewPartyRelationships extends Component {
   };
 
   onSubmitEditPartyRelationship = (values) => {
-    this.props.fetchPartyRelationships(this.props.mine.guid);
-    this.props.closeModal();
+    const payload = this.state.selectedPartyRelationship;
+
+    payload.start_date = values.start_date;
+    payload.end_date = values.end_date;
+    payload.mine_tailings_storage_facility_guid = values.mine_tailings_storage_facility_guid;
+
+    this.props.updatePartyRelationship(payload).then(() => {
+      this.props.fetchPartyRelationships(this.props.mine.guid);
+      this.props.closeModal();
+    });
   };
 
   removePartyRelationship = (event, mine_party_appt_guid) => {
@@ -138,14 +148,17 @@ export class ViewPartyRelationships extends Component {
                   key={partyRelationship.mine_party_appt_guid + "_edit"}
                   ghost
                   type="primary"
-                  onClick={(event) =>
+                  onClick={(event) => {
+                    this.setState({
+                      selectedPartyRelationship: partyRelationship,
+                    });
                     this.openEditPartyRelationshipModal(
                       partyRelationship,
                       this.onSubmitEditPartyRelationship,
                       this.props.handleChange,
                       this.props.mine
-                    )
-                  }
+                    );
+                  }}
                 >
                   <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
                 </Button>
@@ -294,6 +307,7 @@ const mapDispatchToProps = (dispatch) =>
       addPartyRelationship,
       fetchPartyRelationships,
       removePartyRelationship,
+      updatePartyRelationship,
     },
     dispatch
   );
