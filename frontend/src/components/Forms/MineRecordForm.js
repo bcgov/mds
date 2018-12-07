@@ -89,8 +89,8 @@ export const MineRecordForm = (props) => (
       <Col span={24}>
         <Form.Item>
           <Field
-            id="mine_tenure_type_id"
-            name="mine_tenure_type_id"
+            id="mine_tenure_type_code"
+            name="mine_tenure_type_code"
             label="Add Tenure"
             placeholder="Please Select Tenure"
             component={renderConfig.SELECT}

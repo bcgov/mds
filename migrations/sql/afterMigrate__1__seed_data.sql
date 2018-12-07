@@ -163,17 +163,18 @@ VALUES
     ('Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO mine_tenure_type (
-    mine_tenure_type_id,
-    mine_tenure_type_name,
+INSERT INTO mine_tenure_type_code (
+    mine_tenure_type_code,
+    description,
+    active_ind,
     create_user,
     update_user
 )
 VALUES
-    (1, 'Coal', 'system-mds', 'system-mds'),
-    (2, 'Mineral', 'system-mds', 'system-mds'),
-    (3, 'Placer', 'system-mds', 'system-mds'),
-    (4, 'BC Land', 'system-mds', 'system-mds')
+    ('COL', 'Coal', TRUE, 'system-mds', 'system-mds'),
+    ('MIN', 'Mineral', TRUE, 'system-mds', 'system-mds'),
+    ('PLR', 'Placer', TRUE, 'system-mds', 'system-mds'),
+    ('BCL', 'BC Land', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_party_appt_type_code (
@@ -182,7 +183,21 @@ INSERT INTO mine_party_appt_type_code (
         display_order,
         create_user,
         update_user
-) VALUES  
+) VALUES
     ('EOR', 'Engineer Of Record', 2, 'system-mds', 'system-mds'),
     ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_disturbance_code (
+    mine_disturbance_code,
+    description,
+    active_ind,
+    create_user,
+    update_user
+)
+VALUES
+    ('SUR', 'Surface', TRUE, 'system-mds', 'system-mds'),
+    ('UND', 'Underground', TRUE, 'system-mds', 'system-mds'),
+    ('CWA', 'Coal Wash', TRUE, 'system-mds', 'system-mds'),
+    ('MIL', 'Mill', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

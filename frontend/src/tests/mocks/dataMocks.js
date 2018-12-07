@@ -55,7 +55,7 @@ export const MINE_RESPONSE = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
     {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -168,7 +168,7 @@ export const MINE_RESPONSE = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
   ],
 };
@@ -215,7 +215,7 @@ export const MINES = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -334,7 +334,7 @@ export const MINES = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
   },
 };
