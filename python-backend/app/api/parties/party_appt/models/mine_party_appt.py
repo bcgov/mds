@@ -117,34 +117,6 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
-    #constructor helpers
-    @classmethod
-    def create_mine_party_appointment(cls, data, user_dict):
-        new_mpa = MinePartyAppointment(
-            mine_guid=data.get('mine_guid'),
-            party_guid=data.get('party_guid'),
-            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
-            start_date=data.get('start_date'),
-            end_date=data.get('end_date'),
-            **user_dict)
-        new_mpa.save()
-        if new_mpa.mine_party_appt_type_code == 'EOR':
-            tsf_guid = data.get('mine_tailings_storage_facility_guid')
-            new_mpa.attach_and_validate_EOR_mine_tsf_triangle(tsf_guid)
-        return new_mpa
-
-    def attach_and_validate_EOR_mine_tsf_triangle(self, provided_tsf_guid):
-        if not provided_tsf_guid:
-            raise AssertionError(
-                'No mine tsf guid provided for mine party appointment of type: EOR'
-            )
-        if provided_tsf_guid not in [
-                str(x.mine_tailings_storage_facility_guid)
-                for x in self.mine.mine_tailings_storage_facilities
-        ]:
-            raise AssertionError('tsf_guid, mine_guid inconsistent')
-        self.mine_tailings_storage_facility_guid = provided_tsf_guid
-
     #validators
     @validates('mine_guid')
     def validate_mine_guid(self, key, val):
