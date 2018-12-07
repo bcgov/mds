@@ -58,12 +58,6 @@ class MineIdentity(AuditMixin, Base):
         order_by='desc(MineType.update_timestamp)',
         lazy='joined')
 
-    mine_party_appts = db.relationship(
-        'MinePartyAppointment',
-        backref='mine',
-        order_by='desc(MinePartyAppointment.start_date)',
-        lazy='joined')
-
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
 
