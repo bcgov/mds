@@ -18,14 +18,16 @@ class MineType(AuditMixin, Base):
 
     def json(self):
         return {
+            'mine_type_guid': str(self.mine_type_guid),
+            'mine_guid': str(self.mine_guid),
             'mine_tenure_type_code': self.mine_tenure_type_code
         }
 
     @classmethod
-    def create_mine_type(cls, mine_identity, mine_tenure_type_code, user_kwargs, save=True):
+    def create_mine_type(cls, mine_guid, mine_tenure_type_code, user_kwargs, save=True):
         mine_type = cls(
             mine_type_guid=uuid.uuid4(),
-            mine_guid=mine_identity.mine_guid,
+            mine_guid=mine_guid,
             mine_tenure_type_code=mine_tenure_type_code,
             **user_kwargs
         )
