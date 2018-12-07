@@ -3,7 +3,7 @@ package modules
 import geb.Module
 
 class Form_CreateTailings extends Module {
-    static at = { waitFor() {header=="Add a TSF"}}
+    static at = { waitFor() {header=="+ Add TSF"}}
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
         warning (wait: true) {$("div", 0, class:"ant-form-explain").find("span").text()}
@@ -12,7 +12,7 @@ class Form_CreateTailings extends Module {
         tsfName (wait:true) {$("input", id:"tsf_name")}
 
         //button
-        createTSFButton (wait: true) {$("button.ant-btn-primary").has("span", text:"Add a TSF")}
+        createTSFButton (wait: true) {$("button.ant-btn-primary").has("span", text:"+ Add TSF")}
         cancelButton (wait:true) {$("button.ant-btn-button").has("span", text:"Cancel")}
 
     }
