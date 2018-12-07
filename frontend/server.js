@@ -14,7 +14,8 @@ const commonHeaders = {
   Pragma: "no-cache",
   Expires: 0,
   "X-XSS-Protection": 1,
-  "X-Frame-Options": "SAMEORIGIN",
+  "X-Frame-Options":
+    "allow-from https://test.maps.gov.bc.ca https://maps.gov.bc.ca https://governmentofbc.maps.arcgis.com",
 };
 
 const staticServe = express.static(`${__dirname}/build`, {
