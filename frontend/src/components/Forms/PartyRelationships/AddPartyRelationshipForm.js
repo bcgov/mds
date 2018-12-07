@@ -6,7 +6,7 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import EOROptions from "@/components/Forms/PartyRelationships/EOROptions";
+import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -27,7 +27,7 @@ export const AddPartyRelationshipForm = (props) => {
   let options;
   switch (props.partyRelationshipType) {
     case "EOR":
-      options = <EOROptions mine={props.mine} />;
+      options = <EngineerOfRecordOptions mine={props.mine} />;
       break;
     default:
       options = <div />;

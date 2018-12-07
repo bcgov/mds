@@ -6,7 +6,8 @@ import { Card, Row, Col, Button, Menu, Icon, Popconfirm } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
-import { GREEN_PENCIL } from "@/constants/assets";
+import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
+import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
 
 import {
   fetchPartyRelationshipTypes,
@@ -61,6 +62,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
+    if (!this.props.partyRelationshipTypes) return;
     this.props.openModal({
       props: {
         onSubmit,
@@ -77,6 +79,10 @@ export class ViewPartyRelationships extends Component {
   };
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
+    if (!this.props.partyRelationshipTypes) return;
+    this.setState({
+      selectedPartyRelationship: partyRelationship,
+    });
     this.props.openModal({
       props: {
         onSubmit,
@@ -114,6 +120,8 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationship = (partyRelationship) => {
+    if (!this.props.partyRelationshipTypes) return;
+
     const partyRelationshipTypeLabel = this.props.partyRelationshipTypes.find(
       (x) => x.value === partyRelationship.mine_party_appt_type_code
     ).label;
@@ -121,96 +129,27 @@ export class ViewPartyRelationships extends Component {
     switch (partyRelationship.mine_party_appt_type_code) {
       case "EOR":
         return (
-          <div key={partyRelationship.mine_party_appt_guid}>
-            <div className="inline-flex between">
-              <div>
-                <h4>
-                  {partyRelationshipTypeLabel + " - "}
-                  {
-                    this.props.mine.mine_tailings_storage_facility.find(
-                      (x) =>
-                        x.mine_tailings_storage_facility_guid ===
-                        partyRelationship.mine_tailings_storage_facility_guid
-                    ).mine_tailings_storage_facility_name
-                  }
-                </h4>
-                <Icon type="clock-circle" />
-                &nbsp;&nbsp;
-                {partyRelationship.start_date === "None"
-                  ? "Unknown"
-                  : partyRelationship.start_date}{" "}
-                - {partyRelationship.end_date === "None" ? "Present" : partyRelationship.end_date}
-                <br />
-                <br />
-              </div>
-              <div>
-                <Button
-                  key={partyRelationship.mine_party_appt_guid + "_edit"}
-                  ghost
-                  type="primary"
-                  onClick={(event) => {
-                    this.setState({
-                      selectedPartyRelationship: partyRelationship,
-                    });
-                    this.openEditPartyRelationshipModal(
-                      partyRelationship,
-                      this.onSubmitEditPartyRelationship,
-                      this.props.handleChange,
-                      this.props.mine
-                    );
-                  }}
-                >
-                  <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
-                </Button>
-                <Popconfirm
-                  key={partyRelationship.mine_party_appt_guid + "_delete"}
-                  placement="topLeft"
-                  title={`Are you sure you want to delete this ${partyRelationshipTypeLabel}?`}
-                  onConfirm={(event) =>
-                    this.removePartyRelationship(event, partyRelationship.mine_party_appt_guid)
-                  }
-                  okText="Delete"
-                  cancelText="Cancel"
-                >
-                  <Button ghost type="primary">
-                    <Icon type="minus-circle" theme="outlined" />
-                  </Button>
-                </Popconfirm>
-              </div>
-            </div>
-            <h5 className="bold">{partyRelationship.party.name}</h5>
-            <Icon type="mail" />
-            &nbsp;&nbsp;
-            {partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
-            <br />
-            <Icon type="phone" />
-            &nbsp;&nbsp;
-            {partyRelationship.party.phone_no}{" "}
-            {partyRelationship.party.phone_ext ? "x" + partyRelationship.party.phone_ext : ""}
-          </div>
+          <EngineerOfRecord
+            partyRelationship={partyRelationship}
+            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            handleChange={this.props.handleChange}
+            mine={this.props.mine}
+            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.removePartyRelationship}
+          />
         );
       default:
         return (
-          <div key={partyRelationship.mine_party_appt_guid}>
-            <h4>{partyRelationshipTypeLabel}</h4>
-            <Icon type="clock-circle" />
-            &nbsp;&nbsp;
-            {partyRelationship.start_date === "None"
-              ? "Unknown"
-              : partyRelationship.start_date} -{" "}
-            {partyRelationship.end_date === "None" ? "Present" : partyRelationship.end_date}
-            <br />
-            <br />
-            <h5 className="bold">{partyRelationship.party.name}</h5>
-            <Icon type="mail" />
-            &nbsp;&nbsp;
-            {partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
-            <br />
-            <Icon type="phone" />
-            &nbsp;&nbsp;
-            {partyRelationship.party.phone_no}{" "}
-            {partyRelationship.party.phone_ext ? "x" + partyRelationship.party.phone_ext : ""}
-          </div>
+          <DefaultContact
+            partyRelationship={partyRelationship}
+            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            handleChange={this.props.handleChange}
+            mine={this.props.mine}
+            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.removePartyRelationship}
+          />
         );
     }
   };
@@ -272,21 +211,6 @@ export class ViewPartyRelationships extends Component {
                   <br />
                 </div>
               ))}
-            </Col>
-          </Row>
-          <br />
-          <Row gutter={16}>
-            <Col span={6}>
-              <h3 />
-            </Col>
-            <Col span={6}>
-              <h3 />
-            </Col>
-            <Col span={6}>
-              <h3 />
-            </Col>
-            <Col span={6}>
-              <h3 />
             </Col>
           </Row>
         </Card>

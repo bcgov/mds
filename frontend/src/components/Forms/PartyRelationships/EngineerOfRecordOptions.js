@@ -14,7 +14,7 @@ const defaultProps = {
   mine: {},
 };
 
-export const EOROptions = (props) => {
+export const EngineerOfRecordOptions = (props) => {
   const tsfDropdown = createDropDownList(
     props.mine.mine_tailings_storage_facility,
     "mine_tailings_storage_facility_name",
@@ -40,7 +40,7 @@ export const EOROptions = (props) => {
   );
 };
 
-EOROptions.propTypes = propTypes;
-EOROptions.defaultProps = defaultProps;
+EngineerOfRecordOptions.propTypes = propTypes;
+EngineerOfRecordOptions.defaultProps = defaultProps;
 
-export default EOROptions;
+export default EngineerOfRecordOptions;
