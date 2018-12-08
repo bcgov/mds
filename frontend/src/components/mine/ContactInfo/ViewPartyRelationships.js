@@ -18,6 +18,7 @@ import {
   removePartyRelationship,
   updatePartyRelationship,
 } from "@/actionCreators/partiesActionCreator";
+import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 
 const propTypes = {
@@ -32,10 +33,16 @@ const propTypes = {
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  selectedPartyRelationship: PropTypes.object,
+  selectedPartyRelationship: CustomPropTypes.partyRelationship,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
 };
 
 export class ViewPartyRelationships extends Component {
+  constructor(props) {
+    super(props);
+    this.TSFConfirmation = React.createRef();
+  }
+
   state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
 
   componentWillMount() {
@@ -65,6 +72,14 @@ export class ViewPartyRelationships extends Component {
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypes) return;
+
+    if (value === "EOR") {
+      if (mine.mine_tailings_storage_facility.length == 0) {
+        this.TSFConfirmation.current.click();
+        return;
+      }
+    }
+
     this.props.openModal({
       props: {
         onSubmit,
@@ -78,6 +93,26 @@ export class ViewPartyRelationships extends Component {
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
     });
+  };
+
+  openTailingsModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title },
+      content: modalConfig.ADD_TAILINGS,
+    });
+  }
+
+  handleAddTailings = (value) => {
+    this.props
+      .createTailingsStorageFacility({
+        ...value,
+        mine_guid: this.props.mine.guid,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
   };
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
@@ -194,11 +229,32 @@ export class ViewPartyRelationships extends Component {
             <Col span={24}>
               <div className="inline-flex between">
                 <h3>Other Contacts</h3>
-                <ConditionalButton
-                  isDropdown
-                  overlay={menu}
-                  string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
-                />
+                <div className="inline-flex between">
+                  <Popconfirm
+                    placement="topRight"
+                    title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
+                    onConfirm={(event) =>
+                      this.openTailingsModal(
+                        event,
+                        this.handleAddTailings,
+                        ModalContent.ADD_TAILINGS
+                      )
+                    }
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <input
+                      type="button"
+                      ref={this.TSFConfirmation}
+                      style={{ width: "1px", height: "1px" }}
+                    />
+                  </Popconfirm>
+                  <ConditionalButton
+                    isDropdown
+                    overlay={menu}
+                    string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+                  />
+                </div>
               </div>
             </Col>
           </Row>
@@ -245,6 +301,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       removePartyRelationship,
       updatePartyRelationship,
+      createTailingsStorageFacility,
     },
     dispatch
   );
