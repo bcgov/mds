@@ -1,5 +1,6 @@
 import uuid
 
+from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -33,6 +34,6 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
             )
             mine_type.save()
         except exc.IntegrityError as e:
-            self.raise_error(400, 'Error: Invalid Mine Tenure Type code.')
+            self.raise_error(400, 'Error: Invalid mine_tenure_type_code.')
 
         return mine_type.json()
