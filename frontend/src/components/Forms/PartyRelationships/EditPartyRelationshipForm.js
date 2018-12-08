@@ -4,7 +4,6 @@ import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 
@@ -19,6 +18,16 @@ const propTypes = {
 
 const defaultProps = {
   mine: {},
+};
+
+const validate = (values) => {
+  const errors = {};
+  if (values.start_date && values.end_date) {
+    if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
+      errors.end_date = "Must be after start date.";
+    }
+  }
+  return errors;
 };
 
 export const EditPartyRelationshipForm = (props) => {
@@ -84,6 +93,7 @@ EditPartyRelationshipForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.EDIT_PARTY_RELATIONSHIP,
+  validate,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.EDIT_PARTY_RELATIONSHIP),
 })(EditPartyRelationshipForm);

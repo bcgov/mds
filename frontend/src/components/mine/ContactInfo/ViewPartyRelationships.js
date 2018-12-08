@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import * as CustomPropTypes from "@/types";
 import { Card, Row, Col, Button, Menu, Icon, Popconfirm } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
+import NullScreen from "@/components/common/NullScreen";
 
 import {
   fetchPartyRelationshipTypes,
@@ -25,11 +27,11 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  partyRelationshipTypes: PropTypes.array,
-  selectedPartyRelationshipType: PropTypes.object,
+  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  selectedPartyRelationshipType: CustomPropTypes.dropdownListItem,
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  partyRelationships: PropTypes.array,
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   selectedPartyRelationship: PropTypes.object,
 };
 
@@ -202,15 +204,26 @@ export class ViewPartyRelationships extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              {partyRelationships.map((partyRelationship) => (
+              {partyRelationships.length != 0 ? (
+                partyRelationships.map((partyRelationship) => (
+                  <div key={partyRelationship.mine_party_appt_guid}>
+                    <hr />
+                    <br />
+                    {this.renderPartyRelationship(partyRelationship)}
+                    <br />
+                    <br />
+                  </div>
+                ))
+              ) : (
                 <div>
                   <hr />
                   <br />
-                  {this.renderPartyRelationship(partyRelationship)}
+                  <br />
+                  <NullScreen type="contacts" />
                   <br />
                   <br />
                 </div>
-              ))}
+              )}
             </Col>
           </Row>
         </Card>

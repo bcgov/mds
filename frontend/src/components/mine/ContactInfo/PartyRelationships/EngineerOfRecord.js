@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import * as CustomPropTypes from "@/types";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 
 const propTypes = {
-  partyRelationship: PropTypes.object.isRequired,
+  partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,

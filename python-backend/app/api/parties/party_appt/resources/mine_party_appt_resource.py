@@ -90,6 +90,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         # Only accepting these parameters
         mpa.start_date = data.get('start_date'),
         mpa.end_date = data.get('end_date'),
+        mpa.mine_tailings_storage_facility_guid = data.get('mine_tailings_storage_facility_guid'),
         mpa.save()
         return mpa.json()
 

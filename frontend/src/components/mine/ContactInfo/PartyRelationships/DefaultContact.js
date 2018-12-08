@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import * as CustomPropTypes from "@/types";
 import { Button, Icon, Popconfirm } from "antd";
 import { GREEN_PENCIL } from "@/constants/assets";
 
 const propTypes = {
-  partyRelationship: PropTypes.object.isRequired,
+  partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
@@ -29,7 +30,7 @@ export class DefaultContact extends Component {
       removePartyRelationship,
     } = this.props;
     return (
-      <div key={partyRelationship.mine_party_appt_guid}>
+      <div>
         <div className="inline-flex between">
           <div>
             <h4>{partyRelationshipTypeLabel}</h4>

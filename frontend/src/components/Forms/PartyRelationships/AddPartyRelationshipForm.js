@@ -23,6 +23,16 @@ const defaultProps = {
   mine: {},
 };
 
+const validate = (values) => {
+  const errors = {};
+  if (values.start_date && values.end_date) {
+    if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
+      errors.end_date = "Must be after start date.";
+    }
+  }
+  return errors;
+};
+
 export const AddPartyRelationshipForm = (props) => {
   let options;
   switch (props.partyRelationshipType) {
@@ -102,6 +112,7 @@ AddPartyRelationshipForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_PARTY_RELATIONSHIP,
+  validate,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_PARTY_RELATIONSHIP),
 })(AddPartyRelationshipForm);
