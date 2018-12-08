@@ -130,7 +130,8 @@ def setup_data(session):
         mine_type_guid=uuid.UUID(TEST_MINE_TYPE_GUID),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_tenure_type_code=TEST_MINE_TENURE_TYPE_CODES[0],
-        **DUMMY_USER_KWARGS,
+        active_ind=True,
+        **DUMMY_USER_KWARGS
     )
     mine_type.save()
 

@@ -19,6 +19,11 @@ class MineType(AuditMixin, Base):
         db.ForeignKey('mine_tenure_type_code.mine_tenure_type_code'),
         nullable=False
     )
+    active_ind = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=True
+    )
     mine_type_detail = db.relationship(
         'MineTypeDetail',
         backref='mine_type_detail_xref',
@@ -50,3 +55,13 @@ class MineType(AuditMixin, Base):
         if save:
             mine_type.save(commit=False)
         return mine_type
+
+    @classmethod
+    def find_by_guid(cls, _id):
+        uuid.UUID(_id, version=4)
+        return cls.query.filter_by(mine_type_guid=_id).first()
+
+    @classmethod
+    def expire_record(cls, record):
+        record.active_ind=False
+        record.save()
