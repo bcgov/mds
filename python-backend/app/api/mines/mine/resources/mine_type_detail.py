@@ -5,6 +5,8 @@ from flask_restplus import Resource, reqparse
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.mine_type_detail import MineTypeDetail
+from ..models.mine_type import MineType
+from app.api.constants import DISTURBANCE_CODES_CONFIG
 
 class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -29,6 +31,7 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
         if not mine_disturbance_code:
             self.raise_error(400, 'Error: Missing mine_disturbance_code.')
 
+
         try:
             mine_type_detail = MineTypeDetail.create_mine_type_detail(
                 mine_type_guid,
@@ -36,6 +39,16 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
                 self.get_create_update_dict(),
                 save=False
             )
+
+            try:
+                mine_type = MineType.find_by_guid(mine_type_guid)
+                mine_type_detail.validate_disturbance_code_with_tenure(mine_type.mine_tenure_type_code)
+            except (AssertionError, KeyError) as e:
+                self.raise_error(
+                    400,
+                    'Error: Invalid mine_disturbance_code.'
+                )
+
             mine_type_detail.save()
         except exc.IntegrityError as e:
             self.raise_error(

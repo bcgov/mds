@@ -1,6 +1,7 @@
 import json
 
 from tests.constants import (
+    TEST_MINE_GUID,
     TEST_MINE_TYPE_GUID,
     TEST_MINE_TYPE_DETAIL_GUID,
     TEST_MINE_DISTURBANCE_CODES,
@@ -66,7 +67,7 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, auth_h
     assert post_data == {
         'error': {
             'status': 400,
-            'message': 'Error: Unable to create mine_type_detail.'
+            'message': 'Error: Invalid mine_disturbance_code.'
         }
     }
 
@@ -92,6 +93,32 @@ def test_post_mine_disturbance_duplicate(test_client, auth_headers):
         'error': {
             'status': 400,
             'message': 'Error: Unable to create mine_type_detail.'
+        }
+    }
+
+
+def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(test_client, auth_headers):
+    test_mine_type_data = {
+        'mine_guid': TEST_MINE_GUID,
+        'mine_tenure_type_code': 'PLR'
+    }
+    post_mine_type_resp = test_client.post('/mines/mine_types', data=test_mine_type_data, headers=auth_headers['full_auth_header'])
+    assert post_mine_type_resp.status_code == 200
+
+    post_data = json.loads(post_mine_type_resp.data.decode())
+
+    test_data = {
+        'mine_type_guid': post_data['mine_type_guid'],
+        'mine_disturbance_code': 'CWA' # CWA is not a valid PLR disturbance
+    }
+    post_resp = test_client.post('/mines/mine_types/details', data=test_data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 400
+
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Invalid mine_disturbance_code.'
         }
     }
 

@@ -38,6 +38,10 @@ class MineTypeDetail(AuditMixin, Base):
             'active_ind': self.active_ind
         }
 
+    def validate_disturbance_code_with_tenure(self, mine_tenure_type_code):
+        assert mine_tenure_type_code in DISTURBANCE_CODES_CONFIG[self.mine_disturbance_code]['mine_tenure_type_codes']
+        return mine_tenure_type_code
+
 
     @classmethod
     def all_options(cls):
