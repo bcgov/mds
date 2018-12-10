@@ -15,7 +15,7 @@ from .document import ExpectedDocument
 class MineExpectedDocument(ExpectedDocument):
 
     mine_document = db.relationship(
-        "MineDocument", secondary='mine_expected_document_xref')
+        'MineDocument', secondary='mine_expected_document_xref')
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

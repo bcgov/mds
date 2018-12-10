@@ -33,7 +33,11 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     def post(self, expected_document_guid):
 
         self.parser.add_argument(
-            'file', type=FileStorage, location='files', action='append')
+            'file',
+            type=FileStorage,
+            location='files',
+            action='append',
+            required=True)
 
         try:
             data = self.parser.parse_args()
@@ -62,12 +66,13 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         document_manager_URL = current_app.config[
             'DOCUMENT_MANAGER_URL'] + '/document-manager'
 
-        args = {'folder': folder, 'pretty_folder': pretty_folder}
         files = []
-        headers = {'Authorization': request.headers.get('Authorization')}
 
         for file in data['file']:
             files.append(('file', (file.filename, file, file.mimetype)))
+
+        args = {'folder': folder, 'pretty_folder': pretty_folder}
+        headers = {'Authorization': request.headers.get('Authorization')}
 
         response = requests.post(
             url=document_manager_URL, data=args, files=files, headers=headers)
@@ -97,4 +102,4 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(500,
                                              'An unexpected error occured')
 
-        return {'errors': errors, 'files': filenames}
+        return {'status': 200, 'errors': errors, 'files': filenames}
