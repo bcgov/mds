@@ -35,11 +35,17 @@ beforeEach(() => {
 
 describe("`createMineRecord` action creator", () => {
   const mineName = "mock Mine";
+  const mineGuid = "12345-6789";
+  const mineTenureTypeCode = "MIN";
   const url = ENVIRONMENT.apiUrl + API.MINE;
-  const mockPayLoad = { name: mineName };
+  const mineTypeUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES;
+  const mockPayLoad = { name: mineName, mine_tenure_type_code: mineTenureTypeCode };
+  const mockMineTypePayLoad = { mine_guid: mineGuid, mine_tenure_type_code: mineTenureTypeCode };
   it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, mockPayLoad).reply(200, mockResponse);
+    const mockMineResponse = { success: true, mine_guid: mineGuid };
+    const mockMineTypeResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayLoad).reply(200, mockMineResponse);
+    mockAxios.onPost(mineTypeUrl, mockMineTypePayLoad).reply(200, mockMineTypeResponse);
     return createMineRecord(mockPayLoad)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);

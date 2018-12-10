@@ -7,6 +7,7 @@ from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.mines.mine.models.mine_identity import MineIdentity
 from app.api.mines.mine.models.mine_detail import MineDetail
+from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
@@ -128,6 +129,16 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mine_identity.save()
     mine_detail.save()
+
+    # Test Mine Type
+    mine_type = MineType(
+        mine_type_guid=uuid.UUID(TEST_MINE_TYPE_GUID),
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        mine_tenure_type_code=TEST_MINE_TENURE_TYPE_CODES[0],
+        active_ind=True,
+        **DUMMY_USER_KWARGS
+    )
+    mine_type.save()
 
     # Test Tenure Data
     tenure = MineralTenureXref(
