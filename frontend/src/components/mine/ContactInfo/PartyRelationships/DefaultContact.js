@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import * as CustomPropTypes from "@/types";
+import * as CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Popconfirm } from "antd";
 import { GREEN_PENCIL } from "@/constants/assets";
 
@@ -39,7 +39,7 @@ export class DefaultContact extends Component {
           </div>
           <div>
             <Button
-              key={this.props.partyRelationship.mine_party_appt_guid + "_edit"}
+              key={`${this.props.partyRelationship.mine_party_appt_guid  }_edit`}
               ghost
               type="primary"
               onClick={(event) =>
@@ -54,7 +54,7 @@ export class DefaultContact extends Component {
               <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
             </Button>
             <Popconfirm
-              key={this.props.partyRelationship.mine_party_appt_guid + "_delete"}
+              key={`${this.props.partyRelationship.mine_party_appt_guid  }_delete`}
               placement="topLeft"
               title={`Are you sure you want to delete this ${
                 this.props.partyRelationshipTypeLabel
@@ -83,7 +83,7 @@ export class DefaultContact extends Component {
         &nbsp;&nbsp;
         {this.props.partyRelationship.party.phone_no}{" "}
         {this.props.partyRelationship.party.phone_ext
-          ? "x" + this.props.partyRelationship.party.phone_ext
+          ? `x${  this.props.partyRelationship.party.phone_ext}`
           : ""}
       </div>
     );

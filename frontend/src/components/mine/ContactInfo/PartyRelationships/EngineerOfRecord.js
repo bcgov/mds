@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import * as CustomPropTypes from "@/types";
+import * as CustomPropTypes from "@/customPropTypes";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 
 const propTypes = {
@@ -30,13 +30,13 @@ export class EngineerOfRecord extends Component {
     } = this.props;
 
     const eorPartyRelationshipTypeLabel =
-      partyRelationshipTypeLabel +
-      " - " +
+      `${partyRelationshipTypeLabel 
+      } - ${ 
       mine.mine_tailings_storage_facility.find(
         (x) =>
           x.mine_tailings_storage_facility_guid ===
           partyRelationship.mine_tailings_storage_facility_guid
-      ).mine_tailings_storage_facility_name;
+      ).mine_tailings_storage_facility_name}`;
 
     return (
       <DefaultContact
