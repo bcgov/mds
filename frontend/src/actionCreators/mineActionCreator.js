@@ -14,6 +14,18 @@ export const createMineRecord = (payload) => (dispatch) => {
   dispatch(showLoading("modal"));
   return axios
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
+    .then((response) =>
+      payload.mine_tenure_type_code
+        ? axios.post(
+            ENVIRONMENT.apiUrl + API.MINE_TYPES,
+            {
+              mine_guid: response.data.mine_guid,
+              mine_tenure_type_code: payload.mine_tenure_type_code,
+            },
+            createRequestHeader()
+          )
+        : response
+    )
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.name}`,
@@ -36,8 +48,22 @@ export const createMineRecord = (payload) => (dispatch) => {
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-  return axios
-    .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
+  const requests = [
+    axios.put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader()),
+  ];
+  if (payload.mine_tenure_type_code) {
+    const mineTypeGuid = payload.mineType[0] ? `/${payload.mineType[0].mine_type_guid}` : "";
+    const mineTypesUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES + mineTypeGuid;
+    const req = mineTypeGuid ? axios.put : axios.post;
+    requests.push(
+      req(
+        mineTypesUrl,
+        { mine_guid: id, mine_tenure_type_code: payload.mine_tenure_type_code },
+        createRequestHeader()
+      )
+    );
+  }
+  return Promise.all(requests)
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
@@ -96,7 +122,7 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
@@ -117,7 +143,7 @@ export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
