@@ -6,22 +6,21 @@ import { Pagination, Tabs, Col, Row, Divider, notification } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
+import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
-  fetchMineRecords,
-  createMineRecord,
   fetchStatusOptions,
   fetchRegionOptions,
   fetchMineTenureTypes,
-} from "@/actionCreators/mineActionCreator";
+  fetchMineDisturbanceOptions,
+} from "@/actionCreators/staticContentActionCreator";
+import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
-  getMines,
-  getMineIds,
   getMineRegionHash,
-  getMinesPageData,
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-} from "@/selectors/mineSelectors";
+  getMineDisturbanceOptions,
+} from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
@@ -93,6 +92,7 @@ export class Dashboard extends Component {
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -340,6 +340,7 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
+  mineDisturbanceOptions: getMineDisturbanceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -350,6 +351,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       createMineRecord,
       fetchMineTenureTypes,
+      fetchMineDisturbanceOptions,
       openModal,
       closeModal,
     },
