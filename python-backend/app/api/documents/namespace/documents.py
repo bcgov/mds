@@ -5,7 +5,7 @@ from ..expected.resources.documents import ExpectedDocumentResource
 from ..required.resources.required_documents import RequiredDocumentResource
 from ..expected.resources.document_status import ExpectedDocumentStatusResource
 from ..expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-
+from ..mines.resources.mine_document_resource import MineDocumentResource
 api = Namespace(
     'documents',
     description=
@@ -23,3 +23,5 @@ api.add_resource(ExpectedDocumentStatusResource, '/expected/status',
 
 api.add_resource(ExpectedDocumentUploadResource,
                  '/expected/<string:expected_document_guid>/document')
+
+api.add_resource(MineDocumentResource, 'mines/<string:mine_guid>')

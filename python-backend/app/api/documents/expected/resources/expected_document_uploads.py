@@ -14,7 +14,7 @@ from ..models.mine_expected_document import MineExpectedDocument
 from ....mines.mine.models.mine_detail import MineDetail
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
-from ...expected.models.mine_document import MineDocument
+from ...mines.models.mine_document import MineDocument
 
 from app.extensions import jwt, api, db
 from ....utils.resources_mixins import UserMixin, ErrorMixin
