@@ -20,16 +20,22 @@ class MineTypeDetail(AuditMixin, Base):
         db.ForeignKey('mine_disturbance_code.mine_disturbance_code'),
         nullable=False
     )
+    active_ind = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=True
+    )
 
 
     def __repr__(self):
-        return '<MineDisturbanceCode %r>' % self.mine_disturbance_code
+        return '<MineTypeDetail %r>' % self.mine_type_detail_xref_guid
 
     def json(self):
         return {
             'mine_type_detail_guid': str(self.mine_type_detail_xref_guid),
             'mine_type_guid': str(self.mine_type_guid),
-            'mine_disturbance_code': self.mine_disturbance_code
+            'mine_disturbance_code': self.mine_disturbance_code,
+            'active_ind': self.active_ind
         }
 
 
@@ -56,3 +62,13 @@ class MineTypeDetail(AuditMixin, Base):
         if save:
             mine_type_detail.save(commit=False)
         return mine_type_detail
+
+    @classmethod
+    def find_by_guid(cls, _id):
+        uuid.UUID(_id, version=4)
+        return cls.query.filter_by(mine_type_detail_xref_guid=_id).first()
+
+    @classmethod
+    def expire_record(cls, record):
+        record.active_ind=False
+        record.save()

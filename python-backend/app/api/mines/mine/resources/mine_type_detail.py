@@ -16,7 +16,7 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_disturbance_code', type=str, help='Mine disturbance type identifier.')
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self):
         data = self.parser.parse_args()
 
@@ -40,7 +40,33 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
         except exc.IntegrityError as e:
             self.raise_error(
                 400,
-                'Error: Invalid mine_disturbance_code.'
+                'Error: Unable to create mine_type_detail.'
+            )
+
+        return mine_type_detail.json()
+
+
+    @api.expect(parser)
+    @jwt.requires_roles(["mds-mine-create"])
+    def delete(self, mine_type_detail_xref_guid=None):
+        data = self.parser.parse_args()
+
+        mine_type_guid = data['mine_type_guid']
+        mine_disturbance_code = data['mine_disturbance_code']
+
+        if not mine_type_detail_xref_guid:
+            self.raise_error(400, 'Error: Missing mine_type_detail_xref_guid.')
+
+        mine_type_detail = MineTypeDetail.find_by_guid(mine_type_detail_xref_guid)
+        if not mine_type_detail:
+            self.raise_error(400, 'Error: Invalid mine_type_detail_guid.')
+
+        try:
+            MineTypeDetail.expire_record(mine_type_detail)
+        except exc.IntegrityError as e:
+            self.raise_error(
+                400,
+                'Error: Unable to update mine_type_detail.'
             )
 
         return mine_type_detail.json()
