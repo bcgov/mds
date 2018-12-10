@@ -5,7 +5,8 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
-} from "@/actionCreators/mineActionCreator";
+  fetchMineTailingsRequiredDocuments,
+} from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
@@ -106,6 +107,27 @@ describe("`fetchMineDisturbanceOption` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchMineDisturbanceOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMineTailingsRequiredDocuments` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

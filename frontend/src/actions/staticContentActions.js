@@ -19,3 +19,13 @@ export const storeDisturbanceOptions = (payload) => ({
   type: ActionTypes.STORE_DISTURBANCE_OPTIONS,
   payload,
 });
+
+export const storeDocumentStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
+  payload,
+});
+
+export const storeMineTSFRequiredDocuments = (payload) => ({
+  type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
+  payload,
+});

@@ -6,9 +6,6 @@ export const getMineIds = (state) => mineReducer.getMineIds(state);
 export const getMineNames = (state) => mineReducer.getMineNames(state);
 export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
 export const getMineGuid = (state) => mineReducer.getMineGuid(state);
-export const getExpectedDocumentStatusOptions = (state) =>
-  mineReducer.getExpectedDocumentStatusOptions(state);
-export const getMineTSFRequiredReports = (state) => mineReducer.getMineTSFRequiredReports(state);
 
 export const getCurrentPermittees = createSelector(
   [getMines, getMineGuid],
@@ -36,10 +33,4 @@ export const getCurrentPermitteeIds = createSelector(
     unique = [...new Set(permitteeIds)];
     return unique;
   }
-);
-
-export const getMineTSFRequiredDocumentsHash = createSelector(
-  [getMineTSFRequiredReports],
-  (requiredDocuments) =>
-    requiredDocuments.reduce((map, { value, label }) => ({ [value]: label, ...map }), {})
 );

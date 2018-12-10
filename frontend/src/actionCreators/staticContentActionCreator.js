@@ -15,7 +15,6 @@ export const fetchMineDisturbanceOptions = () => (dispatch) => {
   return axios
     .get(ENVIRONMENT.apiUrl + API.DISTURBANCE_CODES, createRequestHeader())
     .then((response) => {
-      console.log(response);
       dispatch(success(reducerTypes.GET_DISTURBANCE_OPTIONS));
       dispatch(staticContentActions.storeDisturbanceOptions(response.data));
       dispatch(hideLoading("modal"));
@@ -86,6 +85,46 @@ export const fetchMineTenureTypes = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_TENURE_TYPES));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const fetchMineTailingsRequiredDocuments = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
+      dispatch(staticContentActions.storeMineTSFRequiredDocuments(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/status`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
+      dispatch(staticContentActions.storeDocumentStatusOptions(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
       dispatch(hideLoading("modal"));
     });
 };
