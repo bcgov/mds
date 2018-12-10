@@ -65,10 +65,10 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                     'mine_tailings_storage_facility_guid'),
                 **self.get_create_update_dict())
 
+            new_mpa.save()
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
 
-        new_mpa.save()
         return new_mpa.json()
 
     @api.doc(
@@ -90,7 +90,8 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         # Only accepting these parameters
         mpa.start_date = data.get('start_date'),
         mpa.end_date = data.get('end_date'),
-        mpa.mine_tailings_storage_facility_guid = data.get('mine_tailings_storage_facility_guid'),
+        mpa.mine_tailings_storage_facility_guid = data.get(
+            'mine_tailings_storage_facility_guid'),
         mpa.save()
         return mpa.json()
 

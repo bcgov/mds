@@ -15,7 +15,7 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class MinePartyAppointment(AuditMixin, Base):
     __tablename__ = "mine_party_appt"
-    #Columns
+    # Columns
     mine_party_appt_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
     mine_party_appt_guid = db.Column(
@@ -38,7 +38,7 @@ class MinePartyAppointment(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
     active_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
-    #Relationships
+    # Relationships
     party = db.relationship('Party', lazy='joined')
     mine_part_appt_type = db.relationship(
         'MinePartyAppointmentType',
@@ -46,7 +46,7 @@ class MinePartyAppointment(AuditMixin, Base):
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
 
-    #json
+    # json
     def json(self):
         return {
             'mine_party_appt_guid':
@@ -69,7 +69,7 @@ class MinePartyAppointment(AuditMixin, Base):
             self.party.json(show_mgr=False) if self.party else str({})
         }
 
-    #search methods
+    # search methods
     @classmethod
     def find_by_mine_party_appt_guid(cls, _id):
         try:
@@ -117,7 +117,7 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
-    #validators
+    # validators
     @validates('mine_guid')
     def validate_mine_guid(self, key, val):
         if not val:
@@ -136,4 +136,12 @@ class MinePartyAppointment(AuditMixin, Base):
             raise AssertionError('No mine party appointment type code')
         if len(val) is not 3:
             raise AssertionError('invalid mine party appointment type code')
+        return val
+
+    @validates('mine_tailings_storage_facility_guid')
+    def validate_mine_tailings_storage_facility_guid(self, key, val):
+        if self.mine_party_appt_type_code == 'EOR':
+            if not val:
+                raise AssertionError(
+                    'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
         return val
