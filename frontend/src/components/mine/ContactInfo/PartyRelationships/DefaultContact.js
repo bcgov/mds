@@ -20,51 +20,50 @@ export class DefaultContact extends Component {
   }
 
   render() {
-    const {
-      partyRelationship,
-      partyRelationshipTypeLabel,
-      mine,
-      openEditPartyRelationshipModal,
-      onSubmitEditPartyRelationship,
-      handleChange,
-      removePartyRelationship,
-    } = this.props;
     return (
       <div>
         <div className="inline-flex between">
           <div>
-            <h4>{partyRelationshipTypeLabel}</h4>
+            <h4>{this.props.partyRelationshipTypeLabel}</h4>
             <Icon type="clock-circle" />
             &nbsp;&nbsp;
-            {partyRelationship.start_date === "None"
+            {this.props.partyRelationship.start_date === "None"
               ? "Unknown"
-              : partyRelationship.start_date} -{" "}
-            {partyRelationship.end_date === "None" ? "Present" : partyRelationship.end_date}
+              : this.props.partyRelationship.start_date}{" "}
+            -{" "}
+            {this.props.partyRelationship.end_date === "None"
+              ? "Present"
+              : this.props.partyRelationship.end_date}
             <br />
             <br />
           </div>
           <div>
             <Button
-              key={partyRelationship.mine_party_appt_guid + "_edit"}
+              key={this.props.partyRelationship.mine_party_appt_guid + "_edit"}
               ghost
               type="primary"
               onClick={(event) =>
-                openEditPartyRelationshipModal(
-                  partyRelationship,
-                  onSubmitEditPartyRelationship,
-                  handleChange,
-                  mine
+                this.props.openEditPartyRelationshipModal(
+                  this.props.partyRelationship,
+                  this.props.onSubmitEditPartyRelationship,
+                  this.props.handleChange,
+                  this.props.mine
                 )
               }
             >
               <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
             </Button>
             <Popconfirm
-              key={partyRelationship.mine_party_appt_guid + "_delete"}
+              key={this.props.partyRelationship.mine_party_appt_guid + "_delete"}
               placement="topLeft"
-              title={`Are you sure you want to delete this ${partyRelationshipTypeLabel}?`}
+              title={`Are you sure you want to delete this ${
+                this.props.partyRelationshipTypeLabel
+              }?`}
               onConfirm={(event) =>
-                removePartyRelationship(event, partyRelationship.mine_party_appt_guid)
+                this.props.removePartyRelationship(
+                  event,
+                  this.props.partyRelationship.mine_party_appt_guid
+                )
               }
               okText="Delete"
               cancelText="Cancel"
@@ -75,15 +74,17 @@ export class DefaultContact extends Component {
             </Popconfirm>
           </div>
         </div>
-        <h5 className="bold">{partyRelationship.party.name}</h5>
+        <h5 className="bold">{this.props.partyRelationship.party.name}</h5>
         <Icon type="mail" />
         &nbsp;&nbsp;
-        {partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
+        {this.props.partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
         <br />
         <Icon type="phone" />
         &nbsp;&nbsp;
-        {partyRelationship.party.phone_no}{" "}
-        {partyRelationship.party.phone_ext ? "x" + partyRelationship.party.phone_ext : ""}
+        {this.props.partyRelationship.party.phone_no}{" "}
+        {this.props.partyRelationship.party.phone_ext
+          ? "x" + this.props.partyRelationship.party.phone_ext
+          : ""}
       </div>
     );
   }

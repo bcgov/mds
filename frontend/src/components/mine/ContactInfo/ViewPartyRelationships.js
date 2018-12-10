@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as CustomPropTypes from "@/types";
-import { Card, Row, Col, Button, Menu, Icon, Popconfirm } from "antd";
+import * as CustomPropTypes from "@/customPropTypes";
+import { Card, Row, Col, Menu, Icon, Popconfirm } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
@@ -35,6 +35,13 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   selectedPartyRelationship: CustomPropTypes.partyRelationship,
   createTailingsStorageFacility: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  partyRelationshipTypes: [],
+  selectedPartyRelationshipType: {},
+  partyRelationships: [],
+  selectedPartyRelationship: {},
 };
 
 export class ViewPartyRelationships extends Component {
@@ -95,14 +102,6 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  openTailingsModal(event, onSubmit, title) {
-    event.preventDefault();
-    this.props.openModal({
-      props: { onSubmit, title },
-      content: modalConfig.ADD_TAILINGS,
-    });
-  }
-
   handleAddTailings = (value) => {
     this.props
       .createTailingsStorageFacility({
@@ -156,6 +155,14 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  openTailingsModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title },
+      content: modalConfig.ADD_TAILINGS,
+    });
+  }
+
   renderPartyRelationship = (partyRelationship) => {
     if (!this.props.partyRelationshipTypes) return;
 
@@ -200,7 +207,8 @@ export class ViewPartyRelationships extends Component {
           <Menu.Item key={value.value}>
             <button
               className="full"
-              onClick={(event) => {
+              type="button"
+              onClick={() => {
                 this.setState({
                   selectedPartyRelationshipType: value.value,
                 });
@@ -215,7 +223,7 @@ export class ViewPartyRelationships extends Component {
               }}
             >
               <Icon type="plus-circle" /> &nbsp;
-              {"Add " + value.label}
+              {`Add ${value.label}`}
             </button>
           </Menu.Item>
         ))}
@@ -307,6 +315,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 ViewPartyRelationships.propTypes = propTypes;
+ViewPartyRelationships.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

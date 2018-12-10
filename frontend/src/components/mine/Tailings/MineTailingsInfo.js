@@ -116,29 +116,20 @@ export class MineTailingsInfo extends Component {
       selectedDocument: doc,
     });
     event.preventDefault();
-    const initialValues = {
-      tsf_report_name: doc
-        ? doc.exp_document_name === "None"
-          ? null
-          : doc.exp_document_name
-        : null,
-      tsf_report_due_date: doc ? (doc.due_date === "None" ? null : doc.due_date) : null,
-      tsf_report_received_date: doc
-        ? doc.received_date === "None"
-          ? null
-          : doc.received_date
-        : null,
-      tsf_report_status: doc
-        ? doc.exp_document_status_guid === "None"
-          ? null
-          : doc.exp_document_status_guid
-        : null,
-    };
 
-    this.props.openModal({
-      props: { onSubmit, title, statusOptions, initialValues },
-      content: modalConfig.EDIT_TAILINGS_REPORT,
-    });
+    if (doc) {
+      const initialValues = {
+        tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
+        tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
+        tsf_report_received_date: doc.received_date === "None" ? null : doc.received_date,
+        tsf_report_status:
+          doc.exp_document_status_guid === "None" ? null : doc.exp_document_status_guid,
+      };
+      this.props.openModal({
+        props: { onSubmit, title, statusOptions, initialValues },
+        content: modalConfig.EDIT_TAILINGS_REPORT,
+      });
+    }
   }
 
   removeReport = (event, exp_doc_guid) => {
@@ -274,7 +265,7 @@ export class MineTailingsInfo extends Component {
                     )
                   }
                 >
-                  + Add TSF Report
+                  {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
                 </Button>
               </Col>
               <Col span={12} />
