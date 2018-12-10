@@ -8,6 +8,7 @@ import partiesReducer from "@/reducers/partiesReducer";
 import modalReducer from "@/reducers/modalReducer";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import { createReducer } from "@/utils/helpers";
+import staticContentReducer from "@/reducers/staticContentReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -16,6 +17,7 @@ export const reducerObject = {
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
   [reducerTypes.MODAL]: modalReducer,
+  [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
   [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),
@@ -26,6 +28,10 @@ export const reducerObject = {
   [reducerTypes.GET_STATUS_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_STATUS_OPTIONS),
   [reducerTypes.GET_REGION_OPTIONS]: createReducer(networkReducer, reducerTypes.GET_REGION_OPTIONS),
   [reducerTypes.GET_TENURE_TYPES]: createReducer(networkReducer, reducerTypes.GET_TENURE_TYPES),
+  [reducerTypes.GET_DISTURBANCE_OPTIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_DISTURBANCE_OPTIONS
+  ),
   [reducerTypes.UPDATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.UPDATE_MINE_RECORD),
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
   [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),
