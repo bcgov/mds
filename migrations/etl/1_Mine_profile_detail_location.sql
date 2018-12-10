@@ -149,6 +149,8 @@ BEGIN
     INSERT INTO mine_location(
         mine_location_guid  ,
         mine_guid           ,
+        latitude            ,
+        longitude           ,
         geom                ,
         effective_date      ,
         expiry_date         ,
@@ -159,6 +161,8 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
+        new.lat_dec         ,
+        new.lon_dec         ,
         ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
         now()               ,
         '9999-12-31'::date  ,
