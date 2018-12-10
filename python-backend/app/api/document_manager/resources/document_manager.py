@@ -34,20 +34,6 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-create"])
     def post(self):
 
-        # self.parser.add_argument('file', location='files', action='append')
-        # self.parser.add_argument(
-        #     'folder',
-        #     type=str,
-        #     required=True,
-        #     help='The sub folder path to store the document in.')
-        # self.parser.add_argument(
-        #     'pretty_folder',
-        #     type=str,
-        #     required=True,
-        #     help=
-        #     'The sub folder path to store the document in with the guids replaced for more readable names.'
-        # )
-
         try:
             data = self.parser.parse_args()
 
@@ -74,6 +60,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                     upload, folder, (str(file_guid) + file_extension))
                 real_path = documents.path(upload_response)
                 filename = (original_file_name + file_extension)
+
                 #create the readable path by removing the guids and replacing them with the more readable versions.
                 pretty_path = re.sub(r'\b' + folder + r'\b', pretty_folder,
                                      real_path)
@@ -107,6 +94,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
                 continue
 
         return {
+            'status': 200,
             'document_manager_guids': document_dict,
             'errors': errors,
         }

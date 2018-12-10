@@ -19,7 +19,7 @@ class MineDocument(AuditMixin, Base):
     active_ind = db.Column(
         db.Boolean, nullable=False, server_default=FetchedValue())
     mine_expected_document = db.relationship(
-        "MineExpectedDocument", secondary='mine_expected_document_xref')
+        'MineExpectedDocument', secondary='mine_expected_document_xref')
 
     def json(self):
         return {
