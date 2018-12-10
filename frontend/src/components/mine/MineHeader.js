@@ -33,7 +33,11 @@ class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     this.props
-      .updateMineRecord(this.props.mine.guid, { ...value, mine_status: mineStatus }, value.name)
+      .updateMineRecord(
+        this.props.mine.guid,
+        { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
+        value.name
+      )
       .then(() => {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
