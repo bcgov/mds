@@ -25,7 +25,7 @@ from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
-from app.api.documents.expected.models.mine_document import MineExpectedDocument
+from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
