@@ -2,25 +2,24 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Card, Row, Col, Button, Icon, Popconfirm } from "antd";
+import { Row, Col, Button, Icon, Popconfirm } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { GREEN_PENCIL } from "@/constants/assets";
-import ButtonGroup from "antd/lib/button/button-group";
 import {
   createMineExpectedDocument,
   removeExpectedDocument,
+  updateExpectedDocument,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchExpectedDocumentStatusOptions,
   fetchMineTailingsRequiredDocuments,
-  updateExpectedDocument,
-} from "@/actionCreators/mineActionCreator";
+} from "@/actionCreators/staticContentActionCreator";
 import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
   getMineTSFRequiredDocumentsHash,
-} from "@/selectors/mineSelectors";
+} from "@/selectors/staticContentSelectors";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.

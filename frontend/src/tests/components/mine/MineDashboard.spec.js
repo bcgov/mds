@@ -10,6 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
+  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
   dispatchProps.match = {};
@@ -23,6 +24,7 @@ const setupReducerProps = () => {
   reducerProps.permitteeIds = [];
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
 };
