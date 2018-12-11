@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, Checkbox } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -17,6 +17,7 @@ const propTypes = {
   mineRegionOptions: PropTypes.array.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
   mine_Types: PropTypes.array.isRequired,
+  conditionalDisturbanceOptions: PropTypes.array.isRequired,
 };
 
 export class MineRecordForm extends Component {
@@ -36,7 +37,7 @@ export class MineRecordForm extends Component {
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
       mine_tenure_type_code: [],
-      mine_commodity_type_code: [],
+      // mine_commodity_type_code: [],
       mine_disturbance_type_code: [],
     };
     // Do nothing if no mine_types, or no change to mine_types
@@ -77,6 +78,24 @@ export class MineRecordForm extends Component {
     </div>
   );
 
+  renderCheckbox = (type, index, data) => {
+    console.log(data);
+    // const options = data
+    //   .filter(({ exclusive }) => exclusive)
+    //   .map((option) => (
+    //     <Field
+    //       key={option.value}
+    //       id={`${type}.mine_disturbance_type_code`}
+    //       name={`${type}.mine_disturbance_type_code`}
+    //       label={option.label}
+    //       value={option.value}
+    //       type="checkbox"
+    //       component={renderConfig.CHECKBOX}
+    //     />
+    //   ));
+    // return options;
+  };
+
   render() {
     const renderTypeSelect = ({ fields }) => (
       <div>
@@ -86,6 +105,7 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
+                    onChange={this.handleOptionChange}
                     id={`${type}.mine_tenure_type_code`}
                     name={`${type}.mine_tenure_type_code`}
                     label="Tenure"
@@ -95,7 +115,7 @@ export class MineRecordForm extends Component {
                   />
                 </Col>
               </Row>
-              <Row gutter={16}>
+              {/* <Row gutter={16}>
                 <Col span={24}>
                   <Field
                     id={`${type}.mine_commodity_type_code`}
@@ -106,17 +126,55 @@ export class MineRecordForm extends Component {
                     data={this.props.mineTenureTypes}
                   />
                 </Col>
-              </Row>
+              </Row> */}
               <Row gutter={16}>
+                {/* <Form.Item label="Disturbance"> */}
+                <h1>
+                  {" "}
+                  {this.props.mine_types &&
+                    this.props.mine_types[index].mine_tenure_type_code &&
+                    this.props.conditionalDisturbanceOptions[
+                      this.props.mine_types[index].mine_tenure_type_code
+                    ] &&
+                    this.props.conditionalDisturbanceOptions[
+                      this.props.mine_types[index].mine_tenure_type_code
+                    ]
+                      .filter(({ exclusive }) => exclusive)
+                      .map((option) => (
+                        <Field
+                          key={option.value}
+                          id={`${type}.mine_disturbance_type_code`}
+                          name={`${type}.mine_disturbance_type_code`}
+                          label={option.label}
+                          value={option.value}
+                          type="checkbox"
+                          component={renderConfig.CHECKBOX}
+                        />
+                        // <Checkbox
+                        //   onChange={this.handleCheckBox}
+                        //   key={option.value}
+                        //   id={option.value}
+                        // >
+                        //   {option.label}
+                        // </Checkbox>
+                      ))}
+                </h1>
+
                 <Col span={24}>
                   <Field
                     id={`${type}.mine_disturbance_type_code`}
                     name={`${type}.mine_disturbance_type_code`}
-                    label="Disturbance"
                     placeholder="Please Select Disturbance"
                     component={renderConfig.MULTI_SELECT}
-                    data={this.props.mineTenureTypes}
+                    data={
+                      this.props.mine_types && this.props.mine_types[index].mine_tenure_type_code
+                        ? this.props.conditionalDisturbanceOptions[
+                            this.props.mine_types[index].mine_tenure_type_code
+                          ]
+                        : this.props.conditionalDisturbanceOptions.COL
+                    }
                   />
+                  {/* </Form.Item> */}
                 </Col>
               </Row>
             </Collapse.Panel>
