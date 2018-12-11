@@ -212,66 +212,6 @@ export const fetchMineNameList = (search = null) => (dispatch) => {
     });
 };
 
-export const fetchStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_STATUS, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
-      dispatch(mineActions.storeStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchRegionOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_REGION_OPTIONS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_REGION, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_REGION_OPTIONS));
-      dispatch(mineActions.storeRegionOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_REGION_OPTIONS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/status`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(mineActions.storeDocumentStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
 export const updateExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -292,46 +232,6 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchMineTailingsRequiredDocuments = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-      dispatch(mineActions.storeMineTSFRequiredDocuments(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchMineTenureTypes = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_TENURE_TYPES));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_TENURE_TYPES, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_TENURE_TYPES));
-      dispatch(mineActions.storeTenureTypes(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch(() => {
-      notification.error({
-        message: String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_TENURE_TYPES));
       dispatch(hideLoading("modal"));
     });
 };

@@ -600,3 +600,32 @@ export const USER_ACCESS_DATA = [
   "uma_authorization",
   "mds-mine-admin",
 ];
+
+export const DISTURBANCE_OPTIONS = {
+  options: [
+    {
+      description: "Surface",
+      exclusive_ind: false,
+      mine_disturbance_code: "SUR",
+      mine_tenure_type_codes: ["COL", "MIN", "PLR", "BCL"],
+    },
+    {
+      description: "Underground",
+      exclusive_ind: false,
+      mine_disturbance_code: "UND",
+      mine_tenure_type_codes: ["COL", "MIN", "PLR"],
+    },
+    {
+      description: "Coal Wash",
+      exclusive_ind: true,
+      mine_disturbance_code: "CWA",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Mill",
+      exclusive_ind: true,
+      mine_disturbance_code: "MIL",
+      mine_tenure_type_codes: ["PLR"],
+    },
+  ],
+};
