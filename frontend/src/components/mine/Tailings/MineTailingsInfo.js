@@ -205,10 +205,10 @@ export class MineTailingsInfo extends Component {
               <h5>Received</h5>
             </Col>
             <Col span={4}>
-              <h5>Documents</h5>
+              <h5>Status</h5>
             </Col>
             <Col span={4}>
-              <h5>Status</h5>
+              <h5>Documents</h5>
             </Col>
             <Col span={4} />
           </Row>
@@ -227,6 +227,17 @@ export class MineTailingsInfo extends Component {
                   <Col span={2}>
                     <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
                   </Col>
+                  <Col id={`status-${id}`} span={4}>
+                    <h6>
+                      {this.props.expectedDocumentStatusOptions[0]
+                        ? doc.exp_document_status_guid === "None"
+                          ? this.props.expectedDocumentStatusOptions[0].label
+                          : this.props.expectedDocumentStatusOptions.find(
+                              (x) => x.value === doc.exp_document_status_guid
+                            ).label
+                        : ""}
+                    </h6>
+                  </Col>
                   <Col span={4}>
                     {doc.related_documents.map((file, id) => (
                       <div>
@@ -240,17 +251,6 @@ export class MineTailingsInfo extends Component {
                         </a>
                       </div>
                     ))}
-                  </Col>
-                  <Col id={`status-${id}`} span={4}>
-                    <h6>
-                      {this.props.expectedDocumentStatusOptions[0]
-                        ? doc.exp_document_status_guid === "None"
-                          ? this.props.expectedDocumentStatusOptions[0].label
-                          : this.props.expectedDocumentStatusOptions.find(
-                              (x) => x.value === doc.exp_document_status_guid
-                            ).label
-                        : ""}
-                    </h6>
                   </Col>
                   <Col span={4} align="right">
                     <Button
