@@ -90,7 +90,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                     document_name=value,
                     **self.get_create_update_dict())
 
-                expected_document.mine_document.append(doc)
+                expected_document.mine_documents.append(doc)
                 db.session.add(expected_document)
                 filenames.append(value)
 
