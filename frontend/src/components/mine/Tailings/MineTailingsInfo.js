@@ -150,28 +150,10 @@ export class MineTailingsInfo extends Component {
   };
 
   getFileFromDocumentManager(doc_mgr_guid) {
-    let Http = new XMLHttpRequest();
     const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + doc_mgr_guid;
-
     window.open(url, "_blank");
-    //Get Document endpoint is unauthenticated, will have to be
-
-    //   Http.open("GET", url);
-    //   Http.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("jwt")}`);
-    //   Http.responseType = "arraybuffer";
-
-    //   Http.onload = function() {
-    //     if (this.status == 200) {
-    //       console.log(Http.response);
-    //       var blob = new Blob([Http.response], { type: "application/octet-stream" });
-    //       var objectUrl = URL.createObjectURL(blob);
-    //       a.href = objectUrl;
-    //       a.download = "a";
-    //       a.click();
-    //       window.URL.revokeObjectURL(objectUrl);
-    //     }
-    //   };
-    //   Http.send();
+    //Document_manager GET endpoint is unathenticated right now.
+    //TODO: updated this when Document manager tokens are implmeneted.
   }
 
   render() {
