@@ -14,7 +14,7 @@ from ..models.mine_expected_document import MineExpectedDocument
 from ....mines.mine.models.mine_detail import MineDetail
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
-from ...mines.models.mine_document import MineDocument
+from ...expected.models.mine_document import MineDocument
 
 from app.extensions import jwt, api, db
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -90,7 +90,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                     document_name=value,
                     **self.get_create_update_dict())
 
-                expected_document.mine_documents.append(doc)
+                expected_document.mine_document.append(doc)
                 db.session.add(expected_document)
                 filenames.append(value)
 
