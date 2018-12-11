@@ -1,5 +1,4 @@
 FROM postgres:9.6-alpine
-MAINTAINER Régis Belson <me@regisbelson.fr>
 
 # PostGIS installed off mdillon/postgis project selected
 # https://wiki.osgeo.org/wiki/DockerImages
