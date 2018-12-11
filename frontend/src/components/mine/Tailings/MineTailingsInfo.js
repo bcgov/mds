@@ -247,19 +247,18 @@ export class MineTailingsInfo extends Component {
                     <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
                   </Col>
                   <Col span={4}>
-                    {doc.related_documents.length == 0 ? (
-                      "-"
-                    ) : (
-                      <a
-                        onClick={() =>
-                          this.getFileFromDocumentManager(
-                            doc.related_documents[0].document_manager_guid
-                          )
-                        }
-                      >
-                        {doc.related_documents[0].document_name}
-                      </a>
-                    )}
+                    {doc.related_documents.map((file, id) => (
+                      <div>
+                        <a
+                          key={id}
+                          onClick={() =>
+                            this.getFileFromDocumentManager(file.document_manager_guid)
+                          }
+                        >
+                          {file.document_name}
+                        </a>
+                      </div>
+                    ))}
                   </Col>
                   <Col id={`status-${id}`} span={4}>
                     <h6>
