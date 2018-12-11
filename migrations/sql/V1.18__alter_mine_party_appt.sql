@@ -1,0 +1,6 @@
+ALTER TABLE public.mine_party_appt ADD start_date date;
+ALTER TABLE public.mine_party_appt ADD end_date date;
+ALTER TABLE public.mine_party_appt ADD active_ind boolean NOT NULL DEFAULT 'true' ;
+ALTER TABLE public.mine_party_appt DROP CONSTRAINT mine_party_appt_mine_tailings_storage_facility_fk;
+ALTER TABLE mine_tailings_storage_facility ADD CONSTRAINT mines_tsf_guid_mine_guid_unique UNIQUE (mine_tailings_storage_facility_guid, mine_guid);
+ALTER TABLE public.mine_party_appt ADD CONSTRAINT mine_party_appt_mine_tailings_storage_facility_mine_guid_fk FOREIGN KEY (mine_tailings_storage_facility_guid,mine_guid) REFERENCES mine_tailings_storage_facility(mine_tailings_storage_facility_guid,mine_guid);
