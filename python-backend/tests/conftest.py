@@ -346,6 +346,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mpat2.save()
 
+    mpat3 = MinePartyAppointmentType(
+        mine_party_appt_type_code='EOR',
+        description='Engineer of Record',
+        **DUMMY_USER_KWARGS)
+    mpat3.save()
+
+    mpa = MinePartyAppointment(
+        mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
+        **DUMMY_USER_KWARGS)
+    mpa.save()
+
 
 def clear_data(session):
     meta = db.metadata
