@@ -11,6 +11,7 @@ export const MINE_NAME_LIST = (search) =>
 export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
 export const MINE_TSF = "/mines/tailings";
+export const DISTURBANCE_CODES = "/mines/disturbance_codes";
 export const EDIT_TSF_REPORT = "";
 export const REMOVE_EXPECTED_DOCUMENT = "/documents/expected";
 export const ADD_MINE_EXPECTED_DOCUMENT = "/documents/expected/mines";
