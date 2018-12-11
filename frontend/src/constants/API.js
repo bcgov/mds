@@ -5,6 +5,7 @@ export const MINE_LIST_QUERY = (params) => `/mines${params}`;
 export const PARTY = "/parties";
 export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/parties");
 export const MANAGER = "/parties/managers";
+export const PARTY_RELATIONSHIP = "/parties/mines";
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (search) =>
   search ? `/mines/names?search=${search}` : "/mines/names";
