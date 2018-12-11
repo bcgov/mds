@@ -13,31 +13,47 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('document', type=dict, required=True,
-                        help='document to change', location="json")
+    parser.add_argument(
+        'document',
+        type=dict,
+        required=True,
+        help='document to change',
+        location="json")
 
-    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. returns list of expected documents for the mine'})
+    @api.doc(
+        params={
+            'exp_doc_guid':
+            'Required: Mine number or guid. returns list of expected documents for the mine'
+        })
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, exp_doc_guid=None):
         if exp_doc_guid is None:
-            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+            return self.create_error_payload(
+                404, 'Must provide a expected document guid.'), 404
         mine_exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if mine_exp_doc is None:
-            return self.create_error_payload(404, 'Expected document not found'), 404
+            return self.create_error_payload(
+                404, 'Expected document not found'), 404
         return {'expected_document': mine_exp_doc.json()}
 
-    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
+    @api.doc(params={
+        'exp_doc_guid':
+        'Required: Mine number or guid. Updates expected document'
+    })
     @jwt.requires_roles(["mds-mine-create"])
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
-            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+            return self.create_error_payload(
+                404, 'Must provide a expected document guid.'), 404
 
         exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is not None:
             data = self.parser.parse_args()
             updated_doc = data['document']
-            if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
-                return self.create_error_payload(500, 'exp_document does not match guid provided'), 500
+            if str(exp_doc.
+                   exp_document_guid) != updated_doc['exp_document_guid']:
+                return self.create_error_payload(
+                    500, 'exp_document does not match guid provided'), 500
 
             exp_doc.exp_document_name = updated_doc.get('exp_document_name')
             exp_doc.exp_document_description = updated_doc.get(
@@ -57,16 +73,28 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             exp_doc.save()
             return {'expected_document': exp_doc.json()}
 
-        return self.create_error_payload(404, f'expected_document with guid "{exp_doc_guid}" not found'), 404
+        return self.create_error_payload(
+            404,
+            f'expected_document with guid "{exp_doc_guid}" not found'), 404
 
-    @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Deletes expected document.'})
+    @api.doc(
+        params={
+            'exp_doc_guid':
+            'Required: Mine number or guid. Deletes expected document.'
+        })
     @jwt.requires_roles(["mds-mine-create"])
     def delete(self, exp_doc_guid=None):
         if exp_doc_guid is None:
-            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+            return self.create_error_payload(
+                404, 'Must provide a expected document guid.'), 404
         exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is not None:
             exp_doc.active_ind = False
             exp_doc.save()
-            return {'status': 200, 'message': 'expected_document deleted successfully.'}
-        return self.create_error_payload(404, f'expected_document with guid "{exp_doc_guid}" not found'), 404
+            return {
+                'status': 200,
+                'message': 'expected_document deleted successfully.'
+            }
+        return self.create_error_payload(
+            404,
+            f'expected_document with guid "{exp_doc_guid}" not found'), 404
