@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
 import { renderConfig } from "@/components/common/config";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Col, Row } from "antd";
 import { required } from "@/utils/Validate";
 import { createDropDownList } from "@/utils/helpers";
 
