@@ -18,6 +18,7 @@ const propTypes = {
     "no-results",
     "unauthorized",
     "view-mine-manager",
+    "contacts",
   ]),
 };
 
@@ -79,6 +80,13 @@ const NullScreen = (props) => (
       <div className="center">
         <img src={GROUP_MINERS} />
         <p>{String.NO_PREV_MINE_MANAGER}</p>
+      </div>
+    )}
+    {props.type === "contacts" && (
+      <div>
+        <img src={MINER_TWO} />
+        <h3>No contacts found</h3>
+        <p>Create a contact using the menu above</p>
       </div>
     )}
   </div>

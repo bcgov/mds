@@ -1,4 +1,9 @@
-h1, h2, h3, h4, h5, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
   padding: 0;
   margin: 0;
   width: auto;
@@ -25,7 +30,7 @@ h2 {
 h3 {
   font-size: $default-h5;
   font-weight: $bold;
-  color:  $font-black;
+  color: $font-black;
   @include mobile {
     font-size: $mobile-h3;
   }
@@ -49,7 +54,8 @@ h5 {
   }
 }
 
-p, .p {
+p,
+.p {
   font-size: $default-p;
   color: $font-black;
   font-weight: $light;
@@ -69,7 +75,12 @@ p, .p {
   color: $default-white;
 }
 
-a, Link {
+.bold {
+  font-weight: $bold;
+}
+
+a,
+link {
   color: $default-dark-green;
   text-decoration: underline;
   &:hover {
@@ -82,7 +93,7 @@ a, Link {
 table {
   width: 100%;
 }
-  
+
 @include tablet {
   // hide title when mobile
   table th {
@@ -95,16 +106,16 @@ table {
     position: absolute;
     width: 1px;
   }
-  
+
   table tr {
     display: block;
   }
-  
+
   table td {
     display: block;
     text-align: right;
   }
-  
+
   table td::before {
     content: attr(data-label);
     font-size: 12px;
@@ -114,7 +125,7 @@ table {
     float: left;
     margin-top: 5px;
   }
-  
+
   table td:last-child {
     border-bottom: 0;
   }
