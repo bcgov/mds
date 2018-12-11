@@ -9,15 +9,17 @@ import { GREEN_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
   createMineExpectedDocument,
   removeExpectedDocument,
-  fetchExpectedDocumentStatusOptions,
-  fetchMineTailingsRequiredDocuments,
   updateExpectedDocument,
 } from "@/actionCreators/mineActionCreator";
+import {
+  fetchExpectedDocumentStatusOptions,
+  fetchMineTailingsRequiredDocuments,
+} from "@/actionCreators/staticContentActionCreator";
 import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
   getMineTSFRequiredDocumentsHash,
-} from "@/selectors/mineSelectors";
+} from "@/selectors/staticContentSelectors";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.

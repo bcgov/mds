@@ -7,21 +7,23 @@ import { openModal, closeModal } from "@/actions/modalActions";
 import {
   fetchMineRecordById,
   updateMineRecord,
-  fetchStatusOptions,
-  fetchRegionOptions,
   createTailingsStorageFacility,
-  fetchMineTenureTypes,
 } from "@/actionCreators/mineActionCreator";
 import {
-  getMines,
+  fetchStatusOptions,
+  fetchRegionOptions,
+  fetchMineTenureTypes,
+  fetchMineDisturbanceOptions,
+} from "@/actionCreators/staticContentActionCreator";
+import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
+import {
   getMineRegionHash,
-  getCurrentPermitteeIds,
-  getCurrentPermittees,
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypesHash,
   getMineTenureTypes,
-} from "@/selectors/mineSelectors";
+  getMineDisturbanceOptions,
+} from "@/selectors/staticContentSelectors";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
@@ -60,24 +62,25 @@ const defaultProps = {
 export class MineDashboard extends Component {
   state = { activeTab: "summary" };
 
-  handleChange = (activeTab) => {
-    this.setState({ activeTab });
-    this.props.history.push(
-      router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
-    );
-  };
-
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
     }
   }
+
+  handleChange = (activeTab) => {
+    this.setState({ activeTab });
+    this.props.history.push(
+      router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
+    );
+  };
 
   render() {
     const { id } = this.props.match.params;
@@ -147,6 +150,7 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineTenureTypes: getMineTenureTypes(state),
+  mineDisturbanceOptions: getMineDisturbanceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -156,6 +160,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchStatusOptions,
       fetchRegionOptions,
       fetchMineTenureTypes,
+      fetchMineDisturbanceOptions,
       updateMineRecord,
       createTailingsStorageFacility,
       openModal,
