@@ -24,6 +24,8 @@ def get_NRIS_token():
         params=params,
         auth=(current_app.config['NRIS_USER_NAME'],
               current_app.config['NRIS_PASS']))
+    if resp.status_code != 200:
+        return None
 
     return resp.json().get('access_token')
 
@@ -32,6 +34,9 @@ def get_EMPR_data_from_NRIS(mine_no):
 
     current_date = datetime.now()
     token = get_NRIS_token()
+
+    if token is None:
+        return None
 
     params = {
         'inspectionStartDate':
@@ -43,9 +48,13 @@ def get_EMPR_data_from_NRIS(mine_no):
     }
 
     headers = {'Authorization': 'Bearer ' + token}
+
     empr_nris_resp = requests.get(
         url=current_app.config['NRIS_EMPR_API_URL'],
         params=params,
         headers=headers)
+
+    if empr_nris_resp.status_code != 200:
+        return None
 
     return empr_nris_resp.json()

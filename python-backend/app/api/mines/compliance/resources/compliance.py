@@ -4,7 +4,7 @@ from app.extensions import jwt, api
 from dateutil.relativedelta import relativedelta
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....services import NRIS_service
+from app.api.nris_services import NRIS_service
 
 
 class MineComplianceResource(Resource, UserMixin, ErrorMixin):
@@ -15,8 +15,8 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
 
         if data is None:
-            return self.create_error_payload(500,
-                                             'Failed to get data from NRIS.')
+            return self.create_error_payload(
+                400, 'Failed to get data from NRIS.'), 400
 
         data = sorted(
             data, key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'), reverse=True)
@@ -27,6 +27,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         warnings = 0
         open_orders = 0
         overdue_orders = 0
+        section_35_orders = 0
 
         for report in data:
             report_date = datetime.strptime(
@@ -50,6 +51,9 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                         k.get('orderStatus') == 'Open' and datetime.strptime(
                             k.get('orderCompletionDate'), '%Y-%m-%d %H:%M') <
                         datetime.now() for k in stop_orders)
+                    section_35_orders += sum(
+                        k.get('orderAuthoritySection') == 'Section 35'
+                        for k in stop_orders)
 
                 if one_year_ago < report_date:
                     advisories += len(stop_advisories)
@@ -62,6 +66,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             'overdue_orders': overdue_orders,
             'advisories': advisories,
             'warnings': warnings,
+            'section_35_orders': section_35_orders,
         }
 
         return overview
