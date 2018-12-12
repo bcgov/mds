@@ -20,6 +20,7 @@ def test_post_mine_disturbance_success(test_client, auth_headers):
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_type_guid'] == test_data['mine_type_guid']
     assert post_data['mine_disturbance_code'] == test_data['mine_disturbance_code']
+    assert post_data['mine_commodity_code'] == None
     assert post_data['active_ind'] == True
 
 
@@ -33,6 +34,7 @@ def test_post_mine_commodity_success(test_client, auth_headers):
 
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_type_guid'] == test_data['mine_type_guid']
+    assert post_data['mine_disturbance_code'] == None
     assert post_data['mine_commodity_code'] == test_data['mine_commodity_code']
     assert post_data['active_ind'] == True
 

@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy.schema import FetchedValue
 
 from ....utils.models_mixins import AuditMixin, Base
 from app.api.constants import COMMODITY_CODES_CONFIG, METALS_AND_MINERALS
@@ -9,7 +10,7 @@ class MineCommodityCode(AuditMixin, Base):
     __tablename__ = 'mine_commodity_code'
     mine_commodity_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
-    active_ind = db.Column(db.Boolean, nullable=False, default=True)
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<MineCommodityCode %r>' % self.mine_commodity_code
