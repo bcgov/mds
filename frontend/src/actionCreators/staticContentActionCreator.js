@@ -15,7 +15,6 @@ export const fetchMineDisturbanceOptions = () => (dispatch) => {
   return axios
     .get(ENVIRONMENT.apiUrl + API.DISTURBANCE_CODES, createRequestHeader())
     .then((response) => {
-      console.log(response.data.options);
       dispatch(success(reducerTypes.GET_DISTURBANCE_OPTIONS));
       dispatch(staticContentActions.storeDisturbanceOptions(response.data));
       dispatch(hideLoading("modal"));

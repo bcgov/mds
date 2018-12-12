@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, Checkbox } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -41,7 +41,7 @@ export class MineRecordForm extends Component {
       mine_disturbance_type_code: [],
     };
     // Do nothing if no mine_types, or no change to mine_types
-    if (nextProps.mine_types === this.props.mine_types) {
+    if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
       return;
     }
     if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
@@ -78,24 +78,6 @@ export class MineRecordForm extends Component {
     </div>
   );
 
-  renderCheckbox = (type, index, data) => {
-    console.log(data);
-    // const options = data
-    //   .filter(({ exclusive }) => exclusive)
-    //   .map((option) => (
-    //     <Field
-    //       key={option.value}
-    //       id={`${type}.mine_disturbance_type_code`}
-    //       name={`${type}.mine_disturbance_type_code`}
-    //       label={option.label}
-    //       value={option.value}
-    //       type="checkbox"
-    //       component={renderConfig.CHECKBOX}
-    //     />
-    //   ));
-    // return options;
-  };
-
   render() {
     const renderTypeSelect = ({ fields }) => (
       <div>
@@ -112,6 +94,7 @@ export class MineRecordForm extends Component {
                     placeholder="Please Select Tenure"
                     component={renderConfig.SELECT}
                     data={this.props.mineTenureTypes}
+                    validate={[required]}
                   />
                 </Col>
               </Row>
@@ -128,44 +111,13 @@ export class MineRecordForm extends Component {
                 </Col>
               </Row> */}
               <Row gutter={16}>
-                {/* <Form.Item label="Disturbance"> */}
-                <h1>
-                  {" "}
-                  {this.props.mine_types &&
-                    this.props.mine_types[index].mine_tenure_type_code &&
-                    this.props.conditionalDisturbanceOptions[
-                      this.props.mine_types[index].mine_tenure_type_code
-                    ] &&
-                    this.props.conditionalDisturbanceOptions[
-                      this.props.mine_types[index].mine_tenure_type_code
-                    ]
-                      .filter(({ exclusive }) => exclusive)
-                      .map((option) => (
-                        <Field
-                          key={option.value}
-                          id={`${type}.mine_disturbance_type_code`}
-                          name={`${type}.mine_disturbance_type_code`}
-                          label={option.label}
-                          value={option.value}
-                          type="checkbox"
-                          component={renderConfig.CHECKBOX}
-                        />
-                        // <Checkbox
-                        //   onChange={this.handleCheckBox}
-                        //   key={option.value}
-                        //   id={option.value}
-                        // >
-                        //   {option.label}
-                        // </Checkbox>
-                      ))}
-                </h1>
-
                 <Col span={24}>
                   <Field
                     id={`${type}.mine_disturbance_type_code`}
                     name={`${type}.mine_disturbance_type_code`}
                     placeholder="Please Select Disturbance"
                     component={renderConfig.MULTI_SELECT}
+                    validate={[required]}
                     data={
                       this.props.mine_types && this.props.mine_types[index].mine_tenure_type_code
                         ? this.props.conditionalDisturbanceOptions[
@@ -174,7 +126,6 @@ export class MineRecordForm extends Component {
                         : this.props.conditionalDisturbanceOptions.COL
                     }
                   />
-                  {/* </Form.Item> */}
                 </Col>
               </Row>
             </Collapse.Panel>

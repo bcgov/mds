@@ -9,23 +9,58 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
+const submitDisturbances = (type) => ({ data }) => {
+  const disturbanceResponses = type.mine_disturbance_type_code.map((code) =>
+    axios.post(
+      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+      {
+        mine_type_guid: data.mine_type_guid,
+        mine_disturbance_code: code,
+      },
+      createRequestHeader()
+    )
+  );
+  return Promise.all(disturbanceResponses);
+};
+
+const handleError = (dispatch, reducer) => (err) => {
+  notification.error({
+    message: err.response ? err.response.data.error.message : String.ERROR,
+    duration: 10,
+  });
+  dispatch(error(reducer));
+  dispatch(hideLoading("modal"));
+};
+
+const makeAllTheRequests = (payload, dispatch, reducer) => (response) => {
+  if (payload.mine_types) {
+    const allMineTypes = payload.mine_types.map((type) =>
+      type.mine_tenure_type_code
+        ? axios
+            .post(
+              ENVIRONMENT.apiUrl + API.MINE_TYPES,
+              {
+                mine_guid: response.data.mine_guid,
+                mine_tenure_type_code: type.mine_tenure_type_code,
+              },
+              createRequestHeader()
+            )
+            .then(submitDisturbances(type))
+            .catch(handleError(dispatch, reducer))
+        : response
+    );
+    return Promise.all(allMineTypes);
+  }
+  return response;
+};
+
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
+
   return axios
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
-    .then((response) =>
-      payload.mine_tenure_type_code
-        ? axios.post(
-            ENVIRONMENT.apiUrl + API.MINE_TYPES,
-            {
-              mine_guid: response.data.mine_guid,
-              mine_tenure_type_code: payload.mine_tenure_type_code,
-            },
-            createRequestHeader()
-          )
-        : response
-    )
+    .then(makeAllTheRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.name}`,

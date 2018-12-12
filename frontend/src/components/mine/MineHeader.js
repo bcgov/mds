@@ -93,7 +93,7 @@ class MineHeader extends Component {
       mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
       // mine_types: mineTypes,
       // mine_tenure_type_id: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_id : null,
-      mine_tenure_type_code: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_code : null,
+      // mine_tenure_type_code: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_code : null,
     };
 
     this.props.openModal({
@@ -195,12 +195,12 @@ class MineHeader extends Component {
               </h5>
             </div>
           )}
-          <h5>
+          {/* <h5>
             Tenure:{" "}
             {mine.mine_type[0] && mine.mine_type[0].mine_tenure_type_code
               ? this.props.mineTenureHash[mine.mine_type[0].mine_tenure_type_code]
               : String.EMPTY_FIELD}
-          </h5>
+          </h5> */}
           <h5>
             {this.props.mine.mine_detail[0].major_mine_ind
               ? String.MAJOR_MINE

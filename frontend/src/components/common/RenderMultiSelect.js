@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Select, Checkbox } from "antd";
+import { Form, Select } from "antd";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -22,17 +22,6 @@ export class RenderMultiSelect extends Component {
     this.setState({ isChecked: !this.state.isChecked });
   };
 
-  // renderOptions = (data) => {
-  //   const options = data
-  //     .filter(({ exclusive }) => exclusive)
-  //     .map((option) => (
-  //       <Checkbox onChange={this.handleCheckBox} key={option.value} id={option.value}>
-  //         {option.label}
-  //       </Checkbox>
-  //     ));
-  //   return options;
-  // };
-
   render() {
     return (
       <div>
@@ -49,7 +38,6 @@ export class RenderMultiSelect extends Component {
               (this.props.meta.warning && <span>{this.props.meta.warning}</span>))
           }
         >
-          {/* {this.renderOptions(this.props.data)} */}
           <Select
             disabled={!this.props.data}
             mode="multiple"
@@ -59,9 +47,9 @@ export class RenderMultiSelect extends Component {
             {...this.props.input}
           >
             {this.props.data &&
-              this.props.data
-                .filter(({ exclusive }) => !exclusive)
-                .map((value) => <Select.Option key={value.value}>{value.label}</Select.Option>)}
+              this.props.data.map((value) => (
+                <Select.Option key={value.value}>{value.label}</Select.Option>
+              ))}
           </Select>
         </Form.Item>
       </div>
