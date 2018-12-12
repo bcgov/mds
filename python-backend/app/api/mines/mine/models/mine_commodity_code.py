@@ -21,13 +21,6 @@ class MineCommodityCode(AuditMixin, Base):
             lambda x: {
                 'mine_commodity_code': x[0],
                 'description': x[1],
-                'mine_tenure_type_codes': ['MIN', 'PLR'],
-                'exclusive_ind': False
-            }
-            if x[0] in METALS_AND_MINERALS else
-            {
-                'mine_commodity_code': x[0],
-                'description': x[1],
                 'mine_tenure_type_codes': COMMODITY_CODES_CONFIG[x[0]]['mine_tenure_type_codes'],
                 'exclusive_ind': COMMODITY_CODES_CONFIG[x[0]]['exclusive_ind']
             },
