@@ -219,7 +219,7 @@ export class Dashboard extends Component {
                   />
                 </Col>
               </Row>
-              <div className="tab__content">
+              <div className="table__content ">
                 <MineList {...this.props} />
               </div>
               <div className="center">

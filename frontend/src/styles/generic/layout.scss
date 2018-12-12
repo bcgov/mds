@@ -47,7 +47,7 @@ body {
 
 .inline-flex {
   @include flex;
-  
+
   &--img {
     margin-top: 5px;
     height: 50%;
@@ -87,4 +87,13 @@ body {
   @include mobile {
     padding: 0 $default-padding-sm;
   }
+}
+
+.table__content {
+  padding: $default-padding-lg 0;
+}
+
+.ellipse--small {
+  height: 12px;
+  width: 12px;
 }
