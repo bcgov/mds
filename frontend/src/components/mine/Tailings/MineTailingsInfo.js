@@ -234,51 +234,50 @@ export class MineTailingsInfo extends Component {
                     <Col id={`name-${id}`} span={8}>
                       <h6>{doc.exp_document_name}</h6>
                     </Col>
-                  <Col id={`due-date-${id}`} span={2}>
-                    <h6>{doc.due_date === "None" ? "-" : doc.due_date}</h6>
-                  </Col>
-                  <Col span={2}>
-                    <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
-                  </Col>
-                  <Col id={`status-${id}`} span={4}>
-                    <h6>
-                      {this.props.expectedDocumentStatusOptions[0]
-                        ? doc.exp_document_status_guid === "None"
-                          ? this.props.expectedDocumentStatusOptions[0].label
-                          : this.props.expectedDocumentStatusOptions.find(
-                              (x) => x.value === doc.exp_document_status_guid
-                            ).label
-                        : ""}
-                    </h6>
-                  </Col>
-                  <Col span={3}>
-                    {doc.related_documents.map((file, id) => (
-                      <div>
-                        <a
-                          key={id}
-                          onClick={() =>
-                            this.getFileFromDocumentManager(file.document_manager_guid)
-                          }
-                        >
-                          {file.document_name}
-                        </a>
-                      </div>
-                    ))}
-                  </Col>
-                  <Col span={4} align="right">
-                    <Button
-                      ghost
-                      type="primary"
-                      onClick={(event) =>
-                        this.openEditReportModal(
-                          event,
-                          this.handleEditReportSubmit,
-                          ModalContent.EDIT_TAILINGS_REPORT,
-                          this.props.expectedDocumentStatusOptions,
-                          doc
-                        )
-                      }
-                    >
+                    <Col id={`due-date-${id}`} span={2}>
+                      <h6>{doc.due_date === "None" ? "-" : doc.due_date}</h6>
+                    </Col>
+                    <Col span={2}>
+                      <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
+                    </Col>
+                    <Col id={`status-${id}`} span={4}>
+                      <h6 className={isOverdue ? "bold" : null}>
+                        <DocumentStatusText
+                          doc={doc}
+                          expectedDocumentStatusOptions={this.props.expectedDocumentStatusOptions}
+                        />
+                      </h6>
+                    </Col>
+                    <Col span={3}>
+                      {!doc.related_documents
+                        ? "-"
+                        : doc.related_documents.map((file, id) => (
+                            <div>
+                              <a
+                                key={id}
+                                onClick={() =>
+                                  this.getFileFromDocumentManager(file.document_manager_guid)
+                                }
+                              >
+                                {file.document_name}
+                              </a>
+                            </div>
+                          ))}
+                    </Col>
+                    <Col span={4} align="right">
+                      <Button
+                        ghost
+                        type="primary"
+                        onClick={(event) =>
+                          this.openEditReportModal(
+                            event,
+                            this.handleEditReportSubmit,
+                            ModalContent.EDIT_TAILINGS_REPORT,
+                            this.props.expectedDocumentStatusOptions,
+                            doc
+                          )
+                        }
+                      >
                         <img style={{ padding: "5px" }} src={GREEN_PENCIL} alt="Edit TSF Report" />
                       </Button>
                       <Popconfirm
