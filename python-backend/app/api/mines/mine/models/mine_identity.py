@@ -11,31 +11,73 @@ from app.extensions import db
 class MineIdentity(AuditMixin, Base):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_detail = db.relationship('MineDetail', backref='mine_identity', order_by='desc(MineDetail.update_timestamp)', lazy='joined')
-    mgr_appointment = db.relationship('MgrAppointment', backref='mine_identity', order_by='desc(MgrAppointment.update_timestamp)', lazy='joined')
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine_identity', lazy='joined')
-    mine_location = db.relationship('MineLocation', backref='mine_identity', order_by='desc(MineLocation.update_timestamp)', lazy='joined')
-    mine_permit = db.relationship('Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
-    mine_status = db.relationship('MineStatus', backref='mine_status', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
-    mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', backref='mine_tailings_storage_facility', order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)', lazy='joined')
-    mine_expected_documents = db.relationship('MineExpectedDocument', primaryjoin="and_(MineExpectedDocument.mine_guid == MineIdentity.mine_guid, MineExpectedDocument.active_ind==True)", backref='mine_expected_documents', order_by='desc(MineExpectedDocument.due_date)', lazy='joined')
-    mine_type = db.relationship('MineType', backref='mine_type', order_by='desc(MineType.update_timestamp)', lazy='joined')
+    #Relationships
+    mine_detail = db.relationship(
+        'MineDetail',
+        backref='mine_identity',
+        order_by='desc(MineDetail.update_timestamp)',
+        lazy='joined')
+    mgr_appointment = db.relationship(
+        'MgrAppointment',
+        backref='mine_identity',
+        order_by='desc(MgrAppointment.update_timestamp)',
+        lazy='joined')
+    mineral_tenure_xref = db.relationship(
+        'MineralTenureXref', backref='mine_identity', lazy='joined')
+    mine_location = db.relationship(
+        'MineLocation',
+        backref='mine_identity',
+        order_by='desc(MineLocation.update_timestamp)',
+        lazy='joined')
+    mine_permit = db.relationship(
+        'Permit',
+        backref='mine_identity',
+        order_by='desc(Permit.issue_date)',
+        lazy='joined')
+    mine_status = db.relationship(
+        'MineStatus',
+        backref='mine_identity',
+        order_by='desc(MineStatus.update_timestamp)',
+        lazy='joined')
+    mine_tailings_storage_facilities = db.relationship(
+        'MineTailingsStorageFacility',
+        backref='mine_identity',
+        order_by=
+        'desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
+        lazy='joined')
+    mine_expected_documents = db.relationship(
+        'MineExpectedDocument',
+        primaryjoin=
+        "and_(MineExpectedDocument.mine_guid == MineIdentity.mine_guid, MineExpectedDocument.active_ind==True)",
+        backref='mine_identity',
+        order_by='desc(MineExpectedDocument.due_date)',
+        lazy='joined')
+    mine_type = db.relationship(
+        'MineType',
+        backref='mine_identity',
+        order_by='desc(MineType.update_timestamp)',
+        lazy='joined')
 
     def __repr__(self):
         return '<MineIdentity %r>' % self.mine_guid
 
     def json(self):
         return {
-            'guid': str(self.mine_guid),
+            'guid':
+            str(self.mine_guid),
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
-            'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
+            'mineral_tenure_xref':
+            [item.json() for item in self.mineral_tenure_xref],
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
-            'mine_tailings_storage_facility': [item.json() for item in self.mine_tailings_storage_facility],
-            'mine_expected_documents':[item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.mine_type]
+            'mine_tailings_storage_facility':
+            [item.json() for item in self.mine_tailings_storage_facilities],
+            'mine_expected_documents':
+            [item.json() for item in self.mine_expected_documents],
+            'mine_type': [item.json() for item in self.mine_type],
+            #'mine_party_appts': [item.json() for item in self.mine_type]
         }
 
     def json_for_map(self):
@@ -77,7 +119,8 @@ class MineIdentity(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.join(cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
+        return cls.query.join(
+            cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

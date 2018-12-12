@@ -19,7 +19,6 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
   getConditionalDisturbanceOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
@@ -358,7 +357,6 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineDisturbanceOptions: getMineDisturbanceOptions(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 

@@ -15,3 +15,4 @@ export { default as PENCIL } from "../assets/images/Pencil.svg";
 export { default as GROUP_MINERS } from "../assets/images/GroupOfMiners.svg";
 export { default as GREEN_PENCIL } from "../assets/images/GreenPencil.svg";
 export { default as GREEN_DOCUMENT } from "../assets/images/GreenDocument.svg";
+export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";

@@ -5,6 +5,7 @@ export const MINE_LIST_QUERY = (params) => `/mines${params}`;
 export const PARTY = "/parties";
 export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/parties");
 export const MANAGER = "/parties/managers";
+export const PARTY_RELATIONSHIP = "/parties/mines";
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (search) =>
   search ? `/mines/names?search=${search}` : "/mines/names";
@@ -21,3 +22,4 @@ export const EXPECTED_DOCUMENT = "/documents/expected";
 export const MINE_TENURE_TYPES = "/mines/mine_tenure_type_codes";
 export const MINE_TYPES = "/mines/mine_types";
 export const MINE_TYPES_DETAILS = "/mines/mine_types/details";
+export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";
