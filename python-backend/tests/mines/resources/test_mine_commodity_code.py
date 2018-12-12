@@ -8,7 +8,7 @@ from tests.constants import (
 
 
 def test_get_all_mine_commodity_types(test_client, auth_headers):
-    get_resp = test_client.get('/mines/commodity_codes', headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get('/mines/commodity-codes', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     all_options = [
         {
