@@ -23,20 +23,7 @@ const columns = [
     title: "Operational Status",
     dataIndex: "operationalStatus",
     width: 150,
-    render: (text, record) => (
-      <div className="inline-flex">
-        <div>
-          {record.operationalValue && (
-            <img
-              className="ellipse--small"
-              src={record.operationalValue === "OP" ? ELLIPSE : RED_ELLIPSE}
-              alt="ellipse"
-            />
-          )}
-        </div>
-        <div>{text}</div>
-      </div>
-    ),
+    render: (text) => <div>{text}</div>,
   },
   {
     title: "Permit #",
@@ -83,36 +70,28 @@ const propTypes = {
 
 class MineList extends Component {
   render() {
-    const data = [];
-    this.props.mineIds.forEach((id) => {
-      data.push({
-        key: id,
-        emptyField: String.EMPTY_FIELD,
-        mineName: this.props.mines[id].mine_detail[0]
-          ? this.props.mines[id].mine_detail[0].mine_name
-          : String.EMPTY_FIELD,
-        mineNo: this.props.mines[id].mine_detail[0]
-          ? this.props.mines[id].mine_detail[0].mine_no
-          : String.EMPTY_FIELD,
-        operationalStatus: this.props.mines[id].mine_status[0]
-          ? this.props.mines[id].mine_status[0].status_labels[0]
-          : String.EMPTY_FIELD,
-        operationalValue: this.props.mines[id].mine_status[0]
-          ? this.props.mines[id].mine_status[0].status_values[0]
-          : null,
-        permit: this.props.mines[id].mine_permit[0] ? this.props.mines[id].mine_permit : null,
-        region: this.props.mines[id].mine_detail[0].region_code
-          ? this.props.mineRegionHash[this.props.mines[id].mine_detail[0].region_code]
-          : String.EMPTY_FIELD,
-        commodity: String.EMPTY_FIELD,
-        tenure: String.EMPTY_FIELD,
-        TSF:
-          this.props.mines[id].mine_tailings_storage_facility &&
-          this.props.mines[id].mine_tailings_storage_facility.length >= 1
-            ? this.props.mines[id].mine_tailings_storage_facility.length
-            : String.EMPTY_FIELD,
-      });
-    });
+    const data = this.props.mineIds.map((id) => ({
+      key: id,
+      emptyField: String.EMPTY_FIELD,
+      mineName: this.props.mines[id].mine_detail[0]
+        ? this.props.mines[id].mine_detail[0].mine_name
+        : String.EMPTY_FIELD,
+      mineNo: this.props.mines[id].mine_detail[0]
+        ? this.props.mines[id].mine_detail[0].mine_no
+        : String.EMPTY_FIELD,
+      operationalStatus: this.props.mines[id].mine_status[0]
+        ? this.props.mines[id].mine_status[0].status_labels[0]
+        : String.EMPTY_FIELD,
+      permit: this.props.mines[id].mine_permit[0] ? this.props.mines[id].mine_permit : null,
+      region: this.props.mines[id].mine_detail[0].region_code
+        ? this.props.mineRegionHash[this.props.mines[id].mine_detail[0].region_code]
+        : String.EMPTY_FIELD,
+      commodity: String.EMPTY_FIELD,
+      tenure: String.EMPTY_FIELD,
+      TSF: this.props.mines[id].mine_tailings_storage_facility
+        ? this.props.mines[id].mine_tailings_storage_facility.length
+        : String.EMPTY_FIELD,
+    }));
 
     return (
       <Table
@@ -120,7 +99,7 @@ class MineList extends Component {
         pagination={false}
         columns={columns}
         dataSource={data}
-        scroll={{ x: 1500, y: 10000 }}
+        scroll={{ x: 1500, y: 400 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />
     );
