@@ -21,3 +21,4 @@ export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=MINE_TA
 export const EXPECTED_DOCUMENT = "/documents/expected";
 export const MINE_TENURE_TYPES = "/mines/mine_tenure_type_codes";
 export const MINE_TYPES = "/mines/mine_types";
+export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";

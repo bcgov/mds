@@ -104,7 +104,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'document_guid':
             'Required: Document guid. Returns the file associated to this guid.'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    #TODO: removed authoization until token/redis system in place
+    #@jwt.requires_roles(["mds-mine-create"])
     def get(self, document_guid=None):
 
         if not document_guid:
@@ -122,4 +123,5 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         else:
             return send_file(
                 filename_or_fp=document_manager_doc.full_storage_path,
-                attachment_filename=document_manager_doc.file_display_name)
+                attachment_filename=document_manager_doc.file_display_name,
+                as_attachment=True)
