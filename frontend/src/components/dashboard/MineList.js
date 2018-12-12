@@ -99,7 +99,7 @@ class MineList extends Component {
         pagination={false}
         columns={columns}
         dataSource={data}
-        scroll={{ x: 1500, y: 400 }}
+        scroll={{ x: 1500 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />
     );
