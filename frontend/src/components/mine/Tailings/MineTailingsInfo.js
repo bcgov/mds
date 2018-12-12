@@ -37,6 +37,8 @@ const propTypes = {
   selectedDocument: PropTypes.object,
   mineTSFRequiredReports: PropTypes.array.isRequired,
   fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
+  mineTSFRequiredDocumentsHash: PropTypes.func.isRequired,
+  createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -75,14 +77,16 @@ export class MineTailingsInfo extends Component {
   };
 
   handleAddReportSubmit = (value) => {
-    const requiredReportLabel = this.getMineTSFRequiredDocumentsHash[value.req_document_guid];
-    this.createMineExpectedDocument(this.props.mine.guid, {
-      document_name: requiredReportLabel,
-      ...value,
-    }).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineRecordById(this.props.mine.guid);
-    });
+    const requiredReportLabel = this.props.mineTSFRequiredDocumentsHash[value.req_document_guid];
+    this.props
+      .createMineExpectedDocument(this.props.mine.guid, {
+        document_name: requiredReportLabel,
+        ...value,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
   };
 
   handleEditReportSubmit = (value) => {
@@ -197,8 +201,9 @@ export class MineTailingsInfo extends Component {
           <hr style={{ borderTop: "2px solid #c4cdd5" }} />
           {this.props.mine.mine_expected_documents
             .sort((doc1, doc2) => {
-              if (!(doc1.due_date === doc2.due_date)) return doc1.due_date > doc2.due_date;
-              return doc1.exp_document_name > doc2.exp_document_name;
+              if (!(Date.parse(doc1.due_date) === Date.parse(doc2.due_date)))
+                return Date.parse(doc1.due_date) > Date.parse(doc2.due_date) ? 1 : -1;
+              return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
             })
             .map((doc, id) => {
               const isOverdue = Date.parse(doc.due_date) < new Date();
@@ -293,7 +298,7 @@ export class MineTailingsInfo extends Component {
 const mapStateToProps = (state) => ({
   expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mineTSFRequiredReports: getMineTSFRequiredReports(state),
-  getMineTSFRequiredDocumentsHash: getMineTSFRequiredDocumentsHash(state),
+  mineTSFRequiredDocumentsHash: getMineTSFRequiredDocumentsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
