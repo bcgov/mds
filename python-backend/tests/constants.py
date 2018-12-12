@@ -68,6 +68,16 @@ TEST_MINE_TENURE_TYPE_DESCRIPTIONS = ['Coal', 'Mineral', 'Placer', 'BC Land']
 TEST_MINE_DISTURBANCE_CODES = ['SUR', 'UND', 'CWA', 'MIL']
 TEST_MINE_DISTURBANCE_DESCRIPTIONS = ['Surface', 'Underground', 'Coal Wash', 'Mill']
 
+TEST_MINE_COMMODITY_CODES = ['TO', 'MC', 'CG', 'SA', 'AE', 'AL']
+TEST_MINE_COMMODITY_DESCRIPTIONS = [
+    'Thermal Coal',
+    'Metallurgic',
+    'Construction Aggregate',
+    'Sand and Gravel',
+    'Agate',
+    'Aluminum'
+]
+
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID = 'bd5ef43b-379a-41a0-aa00-c5b632e9c329'
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS = 'MINE_TAILINGS'
 

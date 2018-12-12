@@ -5,6 +5,7 @@ from ..mine.resources.mine_type import MineTypeResource
 from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
+from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
 from ..location.resources.location import MineLocationResource
 from ..status.resources.status import MineStatusResource
 from ..region.resources.region import MineRegionResource
@@ -18,6 +19,7 @@ api.add_resource(MineTypeResource, '/mine_types', '/mine_types/<string:mine_type
 api.add_resource(MineTypeDetailResource, '/mine_types/details', '/mine_types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineTenureTypeCodeResource, '/mine_tenure_type_codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance_codes')
+api.add_resource(MineCommodityCodeResource, '/commodity_codes')
 api.add_resource(MineLocationResource, '/location', '/location/<string:mine_location_guid>')
 api.add_resource(MineStatusResource, '/status', '/status/<string:mine_status_guid>')
 api.add_resource(MineRegionResource,'/region','/region/<string:mine_region_guid>')
