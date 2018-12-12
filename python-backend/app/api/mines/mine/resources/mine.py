@@ -31,7 +31,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
-    # @jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -47,14 +47,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 return {'mines': result}
 
             # Handle ListView request
-            print("The reuest args are {}".format(request.args))
             items_per_page = request.args.get('per_page', 25, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
             status_search_term = request.args.get('status', None, type=str)
-            status_search_term_array = status_search_term.split(',')
 
-            if len(status_search_term_array) > 0:
+            #Create a filter on mine status if one is provided
+            if status_search_term:
+                status_search_term_array = status_search_term.split(',')
                 status_filter = MineStatusXref.mine_operation_status_code.in_(status_search_term_array)
                 status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_search_term_array)
                 status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
@@ -68,7 +68,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mines_query = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
                 permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
                 mines_permit_join_query = mines_query.union(permit_query)
-                if len(status_search_term_array) > 0:
+                if status_search_term:
                     status_query = MineIdentity.query.join(MineDetail).join(MineStatus).join(MineStatusXref).filter(
                         all_status_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
@@ -76,7 +76,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
             else:
                 sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
-                if len(status_search_term_array) > 0:
+                if status_search_term:
                     mine_query_with_status = MineIdentity.query.join(MineDetail).join(MineStatus).join(
                         MineStatusXref).filter(all_status_filter)
                     sorted_mine_query = apply_sort(mine_query_with_status, sort_criteria)
@@ -126,12 +126,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return _mine_status
 
     @api.expect(parser)
-    # @jwt.requires_roles(["mds-mine-create"])
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
-        print('The post method was called')
         data = self.parser.parse_args()
         lat = data['latitude']
         lon = data['longitude']
@@ -141,9 +140,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         mine_region = data['mine_region']
-        print('Got here?')
         mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
-        print('About to try the post method')
         try:
             mine_detail = MineDetail(
                 mine_detail_guid=uuid.uuid4(),
@@ -157,7 +154,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             )
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
-        print('Mine about to be saved?')
         mine_identity.save()
         mine_detail.save()
 
@@ -185,7 +181,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         }
 
     @api.expect(parser)
-    # @jwt.requires_roles(["mds-mine-create"])
+    @jwt.requires_roles(["mds-mine-create"])
     def put(self, mine_no_or_guid):
         data = self.parser.parse_args()
         tenure = data['tenure_number_id']
