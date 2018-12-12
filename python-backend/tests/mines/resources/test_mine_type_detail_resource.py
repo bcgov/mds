@@ -213,6 +213,12 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(tes
 
 
 def test_post_mine_type_detail_invalid_mine_commodity_code_for_tenure_type(test_client, auth_headers):
+    # DB cleanup ===
+    delete_resp = test_client.delete(
+        '/mines/mine_types/' + TEST_MINE_TYPE_GUID,
+        headers=auth_headers['full_auth_header']
+    )
+    # DB cleanup ends ===
     test_mine_type_data = {
         'mine_guid': TEST_MINE_GUID,
         'mine_tenure_type_code': 'COL'
