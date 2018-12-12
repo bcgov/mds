@@ -16,8 +16,7 @@ class Dashboard extends Page {
         createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}
 
         //Dashboard
-        first_mineID (wait:true) {$("div.ant-row-flex").find(id: "mine_list_id",0).text()}
-        first_mineName (wait:true) {$("div.ant-row-flex").find(id: "mine_list_name",0).text()}
+        first_mineName (wait:true) {$("div.ant-table-row", text: contains("MINETEST")}
         viewLink (wait:true) {$("a", text: contains("MINETEST"))}
 
         //search

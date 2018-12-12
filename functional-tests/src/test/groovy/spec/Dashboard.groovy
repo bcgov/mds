@@ -70,7 +70,6 @@ class  DashboardSpec extends GebReportingSpec {
     }
 
     def "Scenario: User can view a mine"(){
-        def viewMineID = first_mineID
         def viewMineName = first_mineName
 
         given: "I am on the Dashboard Page"
@@ -81,9 +80,7 @@ class  DashboardSpec extends GebReportingSpec {
 
         then:"I can view the page"
         at MineProfilePage
-        assert mineNumber == "Mine ID:"+viewMineID
         assert mineName == viewMineName
-        println mineNumber
         println mineName
 
     }
