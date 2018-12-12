@@ -14,8 +14,13 @@ from .document import ExpectedDocument
 
 class MineExpectedDocument(ExpectedDocument):
 
-    mine_document = db.relationship(
-        'MineDocument', secondary='mine_expected_document_xref')
+    mine_documents = db.relationship(
+        "MineDocument", secondary='mine_expected_document_xref')
+
+    def json(self):
+        result = super(MineExpectedDocument, self).json()
+        result['related_documents'] = [x.json() for x in self.mine_documents]
+        return result
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
