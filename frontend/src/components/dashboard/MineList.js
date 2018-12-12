@@ -67,7 +67,7 @@ const columns = [
   },
 ];
 
-const renderRowData = (mines, mineIds, mineRegionHash) =>
+const transformRowData = (mines, mineIds, mineRegionHash) =>
   mineIds.map((id) => ({
     key: id,
     emptyField: String.EMPTY_FIELD,
@@ -92,7 +92,7 @@ export const MineList = (props) => (
     align="center"
     pagination={false}
     columns={columns}
-    dataSource={renderRowData(props.mines, props.mineIds, props.mineRegionHash)}
+    dataSource={transformRowData(props.mines, props.mineIds, props.mineRegionHash)}
     scroll={{ x: 1500 }}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
   />
