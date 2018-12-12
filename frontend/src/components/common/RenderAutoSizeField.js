@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Form, Input } from "antd";
 
 /**
  * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
@@ -22,18 +22,15 @@ const RenderAutoSizeField = ({
   placeholder,
   meta: { touched, error, warning },
 }) => (
-    <Form.Item
-      label={label}
-      placeholder={placeholder}
-      validateStatus={(touched ? ((error && 'error') || (warning && 'warning')) : '')}
-      help={touched &&
-        ((error && <span>{error}</span>) ||
-          (warning && <span>{warning}</span>))
-      }
-    >
-      <TextArea id={id} {...input} autosize/>
-    </Form.Item>
-  );
+  <Form.Item
+    label={label}
+    placeholder={placeholder}
+    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
+    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+  >
+    <TextArea id={id} {...input} autosize />
+  </Form.Item>
+);
 
 RenderAutoSizeField.propTypes = propTypes;
 

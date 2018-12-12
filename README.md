@@ -1,3 +1,4 @@
+
 # Mines Digital Services
 The technologies that support mine oversight for British Columbians need to be reimagined. This project will replace the legacy Mine Management System (MMS) with a scalable, open source, data driven system using modern and flexible technologies.
 
@@ -19,3 +20,6 @@ Please read the [How to develop](USAGE.md).
 
 ## License
 Code released under the [Apache License, Version 2.0](LICENSE.md).
+
+## Testing Thanks
+Thanks to BrowserStack for Testing Tool support via OpenSource Licensing ![BrowserStack](browserstack-logo-white-small.png)

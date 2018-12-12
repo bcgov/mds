@@ -23,7 +23,7 @@ beforeEach(() => {
 
 describe('UpdateMineManagerModal', () => {
   it('renders properly', () => {
-    const component = shallow(<UpdateMineManagerModal {...dispatchProps} {...props}/>);
+    const component = shallow(<UpdateMineManagerModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

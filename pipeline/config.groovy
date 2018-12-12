@@ -177,7 +177,8 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-python-backend'.ROUTE}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -201,6 +202,7 @@ environments {
     'dev' {
         vars {
             DB_PVC_SIZE = '1Gi'
+            DOCUMENT_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -261,6 +263,7 @@ environments {
     'test' {
         vars {
             DB_PVC_SIZE = '10Gi'
+            DOCUMENT_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -299,7 +302,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "test"
+                node_env = "production"
             }
             modules {
                 'mds-frontend' {
@@ -321,6 +324,7 @@ environments {
     'prod' {
         vars {
             DB_PVC_SIZE = '10Gi'
+            DOCUMENT_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }

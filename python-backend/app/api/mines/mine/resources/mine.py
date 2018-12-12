@@ -4,11 +4,13 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy import exc
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_identity import MineIdentity
 from ..models.mine_detail import MineDetail
+from ..models.mine_type import MineType
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
@@ -158,7 +160,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         print('Mine about to be saved?')
         mine_identity.save()
         mine_detail.save()
-        print('Mine Was saved?')
+
+
         if lat and lon:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
@@ -178,7 +181,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine_detail.mine_region if mine_region else None
+            'mine_region': mine_detail.mine_region if mine_region else None,
         }
 
     @api.expect(parser)
@@ -193,11 +196,21 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
-        if not tenure and not (lat and lon) and not mine_name and not mine_note and not status and major_mine_ind is None:
+
+        if (
+                not tenure and
+                not (lat and lon) and
+                not mine_name and
+                not mine_note and
+                not status and
+                not region and
+                major_mine_ind is None
+           ):
             self.raise_error(400, 'Error: No fields filled.')
         mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
+
         # Mine Detail
         if mine_name or mine_note or major_mine_ind is not None:
             mine_detail = mine.mine_detail[0]
@@ -223,6 +236,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             new_mine_detail.save()
+
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
@@ -240,6 +254,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
+
         # Location validation
         if lat and lon:
             location = MineLocation(
