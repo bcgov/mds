@@ -17,7 +17,8 @@ api.add_resource(MineResource, '', '/<string:mine_no_or_guid>')
 api.add_resource(MineListByName, '/names')
 api.add_resource(MineTypeResource, '/mine_types',
                  '/mine_types/<string:mine_type_guid>')
-api.add_resource(MineTypeDetailResource, '/mine_types/details')
+api.add_resource(MineTypeDetailResource, '/mine_types/details',
+                 '/mine_types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineTenureTypeCodeResource, '/mine_tenure_type_codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance_codes')
 api.add_resource(MineLocationResource, '/location',

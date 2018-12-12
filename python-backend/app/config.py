@@ -28,6 +28,7 @@ class Config(object):
 
     # Microservice URLs
     DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5000')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', 'https://i1api.nrs.gov.bc.ca/oauth2/v1/oauth/token')
     NRIS_EMPR_API_URL = os.environ.get('NRIS_EMPR_API_URL', 'https://i1api.nrs.gov.bc.ca/nrisws-api/v1/emprInspections')
