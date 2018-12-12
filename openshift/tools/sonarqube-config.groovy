@@ -38,13 +38,6 @@ app {
                         'NAME_SUFFIX': "",
                         'VERSION': app.build.version
                     ]
-                ],
-                [
-                    'file':'openshift/tools/postgresql.bc.json',
-                    'params':[
-                        'NAME': "${app.build.name}-postgresql",
-                        'VERSION': app.build.version
-                    ]
                 ]
         ]
     }
@@ -62,7 +55,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/postgresql.dc.json',
+                    'file':'openshift/.json',
                     'params':[
                         'NAME':"${app.deployment.name}-postgresql",
                         'DATABASE_SERVICE_NAME':"${app.deployment.name}-postgresql",

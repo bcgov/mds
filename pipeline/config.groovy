@@ -80,14 +80,6 @@ app {
                         ]
                 ],
                 [
-                    'file':'openshift/postgresql.bc.json',
-                    'params':[
-                        'NAME':"mds-postgresql",
-                        'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}"
-                    ]
-                ],
-                [
                     'file':'openshift/flyway.bc.json',
                     'params':[
                             'NAME':"mds-flyway-migration",
@@ -132,9 +124,9 @@ app {
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
-                            'IMAGE_STREAM_NAMESPACE':'',
-                            'IMAGE_STREAM_NAME':"mds-postgresql",
-                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'IMAGE_STREAM_NAMESPACE':'bcgov',
+                            'IMAGE_STREAM_NAME':"postgresql-9.6-oracle-fdw",
+                            'IMAGE_STREAM_VERSION':"v1-stable",
                             'POSTGRESQL_DATABASE':'mds',
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
