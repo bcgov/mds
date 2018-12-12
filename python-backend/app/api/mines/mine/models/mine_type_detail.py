@@ -3,7 +3,6 @@ import uuid
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
-from app.api.constants import DISTURBANCE_CODES_CONFIG, COMMODITY_CODES_CONFIG
 from app.extensions import db
 
 
@@ -46,14 +45,6 @@ class MineTypeDetail(AuditMixin, Base):
             response['mine_commodity_code'] = self.mine_commodity_code
 
         return response
-
-    def validate_disturbance_code_with_tenure(self, mine_tenure_type_code):
-        assert mine_tenure_type_code in DISTURBANCE_CODES_CONFIG[self.mine_disturbance_code]['mine_tenure_type_codes']
-        return mine_tenure_type_code
-
-    def validate_commodity_code_with_tenure(self, mine_tenure_type_code):
-        assert mine_tenure_type_code in COMMODITY_CODES_CONFIG[self.mine_commodity_code]['mine_tenure_type_codes']
-        return mine_tenure_type_code
 
 
     @classmethod

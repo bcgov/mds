@@ -6,7 +6,7 @@ from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.mine_type_detail import MineTypeDetail
 from ..models.mine_type import MineType
-from app.api.constants import DISTURBANCE_CODES_CONFIG
+from app.api.constants import DISTURBANCE_CODES_CONFIG, COMMODITY_CODES_CONFIG
 
 class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -46,24 +46,18 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
             )
 
             if mine_disturbance_code:
-                try:
-                    mine_type = MineType.find_by_guid(mine_type_guid)
-                    mine_type_detail.validate_disturbance_code_with_tenure(mine_type.mine_tenure_type_code)
-                except (AssertionError, KeyError) as e:
-                    self.raise_error(
-                        400,
-                        'Error: Invalid mine_disturbance_code.'
-                    )
-
+                (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code', DISTURBANCE_CODES_CONFIG)
             if mine_commodity_code:
-                try:
-                    mine_type = MineType.find_by_guid(mine_type_guid)
-                    mine_type_detail.validate_commodity_code_with_tenure(mine_type.mine_tenure_type_code)
-                except (AssertionError, KeyError) as e:
-                    self.raise_error(
-                        400,
-                        'Error: Invalid mine_commodity_code.'
-                    )
+                (code, name, config) = (mine_commodity_code, 'mine_commodity_code', COMMODITY_CODES_CONFIG)
+
+            try:
+                mine_type = MineType.find_by_guid(mine_type_guid)
+                assert mine_type.mine_tenure_type_code in config[code]['mine_tenure_type_codes']
+            except (AssertionError, KeyError) as e:
+                self.raise_error(
+                    400,
+                    'Error: Invalid '+name+'.'
+                )
 
             mine_type_detail.save()
         except exc.IntegrityError as e:
