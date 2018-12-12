@@ -208,7 +208,7 @@ export class MineTailingsInfo extends Component {
             <Col span={4}>
               <h5>Status</h5>
             </Col>
-            <Col span={4}>
+            <Col span={3}>
               <h5>Documents</h5>
             </Col>
             <Col span={4} />
@@ -251,7 +251,7 @@ export class MineTailingsInfo extends Component {
                         : ""}
                     </h6>
                   </Col>
-                  <Col span={4}>
+                  <Col span={3}>
                     {doc.related_documents.map((file, id) => (
                       <div>
                         <a
