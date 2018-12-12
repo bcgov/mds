@@ -26,4 +26,4 @@ class MineDocumentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'mine not found')
 
         #does this list compreshension work the same as the lambda/map functions
-        return [x.json() for x in mine_docs]
+        return {'mine_documents': [x.json() for x in mine_docs]}

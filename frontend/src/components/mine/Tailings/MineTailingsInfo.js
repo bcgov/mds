@@ -145,15 +145,8 @@ export class MineTailingsInfo extends Component {
     }
   }
 
-  removeReport = (event, exp_doc_guid) => {
-    event.preventDefault();
-    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
-    });
-  };
-
-  getFileFromDocumentManager(doc_mgr_guid) {
-    const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + doc_mgr_guid;
+  getFileFromDocumentManager(docMgrFileGuid) {
+    const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + docMgrFileGuid;
     window.open(url, "_blank");
     //Document_manager GET endpoint is unathenticated right now.
     //TODO: updated this when Document manager tokens are implmeneted.
