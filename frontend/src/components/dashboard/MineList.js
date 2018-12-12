@@ -92,6 +92,7 @@ export const MineList = (props) => (
     align="center"
     pagination={false}
     columns={columns}
+    bordered
     dataSource={transformRowData(props.mines, props.mineIds, props.mineRegionHash)}
     scroll={{ x: 1500 }}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
