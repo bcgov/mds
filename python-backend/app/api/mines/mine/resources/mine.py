@@ -60,25 +60,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 all_status_filter = status_filter | status_reason_filter | status_subreason_filter
 
             if search_term:
-                print('The search_term is {}'.format(search_term))
                 name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
-                print(name_filter)
                 number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
                 permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-
                 mines_query = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
                 permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
-
-                #combines the results of mine and permit query
                 mines_permit_join_query = mines_query.union(permit_query)
-                #If status searched filter out the mines not matching the searched terms
                 if len(status_search_term_array) > 0:
                     status_query = MineIdentity.query.join(MineDetail).join(MineStatus).join(MineStatusXref).filter(
                         all_status_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
-                #filters results further by pagination query
                 paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
-                # print(('The paginated_mine_query is {}').format(paginated_mine_query))
 
             else:
                 sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
@@ -90,7 +82,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     sorted_mine_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
 
                 paginated_mine_query, pagination_details = apply_pagination(sorted_mine_query ,page, items_per_page)
-
 
 
             mines = paginated_mine_query.all()
