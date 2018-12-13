@@ -3,7 +3,6 @@ import {
   getMineStatusOptions,
   getMineRegionHash,
   getMineTSFRequiredReports,
-  getMineTSFRequiredDocumentsHash,
   getMineTenureTypesHash,
   getMineTenureTypes,
   getMineDisturbanceOptions,
@@ -63,12 +62,6 @@ describe("mineSelectors", () => {
     mineRegionOptions = Mock.REGION_OPTIONS.options;
     const selected = getMineRegionHash.resultFunc(mineRegionOptions);
     expect(selected).toEqual(Mock.REGION_HASH);
-  });
-
-  it("`getMineTSFRequiredDocumentsHash` calls `staticContentReducer.getMineTSFRequiredReports`", () => {
-    mineTSFRequiredReports = Mock.MINE_TSF_REQUIRED_REPORTS;
-    const selected = getMineTSFRequiredDocumentsHash.resultFunc(mineTSFRequiredReports);
-    expect(selected).toEqual(Mock.MINE_TSF_REQUIRED_REPORTS_HASH);
   });
 
   it("`getMineTenureTypesHash` converts `staticContentReducer.getMineTenureTypes`", () => {

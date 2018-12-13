@@ -18,8 +18,8 @@ import {
 import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
-  getMineTSFRequiredDocumentsHash,
 } from "@/selectors/staticContentSelectors";
+import { createDropDownList } from "@/utils/helpers";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -37,7 +37,6 @@ const propTypes = {
   selectedDocument: PropTypes.object,
   mineTSFRequiredReports: PropTypes.array.isRequired,
   fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
-  mineTSFRequiredDocumentsHash: PropTypes.func.isRequired,
   createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
@@ -77,16 +76,19 @@ export class MineTailingsInfo extends Component {
   };
 
   handleAddReportSubmit = (value) => {
-    const requiredReportLabel = this.props.mineTSFRequiredDocumentsHash[value.req_document_guid];
-    this.props
-      .createMineExpectedDocument(this.props.mine.guid, {
-        document_name: requiredReportLabel,
-        ...value,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+    const requiredReport = this.props.mineTSFRequiredReports.find(
+      (x) => x.req_document_guid === value.req_document_guid
+    );
+    const newRequiredReport = {
+      document_name: requiredReport.req_document_name,
+      req_document_guid: requiredReport.req_document_guid,
+      document_due_date_type: requiredReport.req_document_due_date_type,
+      document_due_date_period_months: requiredReport.req_document_due_date_period_months,
+    };
+    this.props.createMineExpectedDocument(this.props.mine.guid, newRequiredReport).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.guid);
+    });
   };
 
   handleEditReportSubmit = (value) => {
@@ -112,8 +114,13 @@ export class MineTailingsInfo extends Component {
 
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
     event.preventDefault();
+    const mineTSFRequiredReportsDropDown = createDropDownList(
+      mineTSFRequiredReports,
+      "req_document_name",
+      "req_document_guid"
+    );
     this.props.openModal({
-      props: { onSubmit, title, mineTSFRequiredReports },
+      props: { onSubmit, title, mineTSFRequiredReportsDropDown },
       content: modalConfig.ADD_TAILINGS_REPORT,
     });
   }
@@ -298,7 +305,6 @@ export class MineTailingsInfo extends Component {
 const mapStateToProps = (state) => ({
   expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mineTSFRequiredReports: getMineTSFRequiredReports(state),
-  mineTSFRequiredDocumentsHash: getMineTSFRequiredDocumentsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

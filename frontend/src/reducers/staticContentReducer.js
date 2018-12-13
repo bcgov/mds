@@ -1,6 +1,5 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
-import { createDropDownList } from "@/utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -46,11 +45,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
       return {
         ...state,
-        mineTSFRequiredReports: createDropDownList(
-          action.payload.required_documents,
-          "req_document_name",
-          "req_document_guid"
-        ),
+        mineTSFRequiredReports: action.payload.required_documents,
       };
     default:
       return state;
