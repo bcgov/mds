@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Col, Row, Divider } from "antd";
+import { Table } from "antd";
 import * as router from "@/constants/routes";
+import * as String from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 
 /**
@@ -12,72 +13,92 @@ import NullScreen from "@/components/common/NullScreen";
 const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
-  pageData: PropTypes.object.isRequired,
   mineRegionHash: PropTypes.object.isRequired,
 };
 
-const defaultProps = {
-  mines: {},
-  mineIds: [],
-  pageData: {},
-};
-
-class MineList extends Component {
-  render() {
-    const { mines, mineIds, mineRegionHash } = this.props;
-    return (
+const columns = [
+  {
+    title: "Mine Name",
+    width: 200,
+    dataIndex: "mineName",
+    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
+  },
+  {
+    title: "Mine #",
+    width: 100,
+    dataIndex: "mineNo",
+  },
+  {
+    title: "Operational Status",
+    dataIndex: "operationalStatus",
+    width: 150,
+    render: (text) => <div>{text}</div>,
+  },
+  {
+    title: "Permit #",
+    dataIndex: "permit",
+    width: 150,
+    render: (text, record) => (
       <div>
-        <Row type="flex" style={{ textAlign: "center" }}>
-          <Col span={6}>
-            <h2>Name</h2>
-          </Col>
-          <Col span={6}>
-            <h2>Mine ID</h2>
-          </Col>
-          <Col span={6}>
-            <h2>Region</h2>
-          </Col>
-          <Col span={6}>
-            <h2>Permit(s)</h2>
-          </Col>
-        </Row>
-        <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
-        {mineIds &&
-          mineIds.map((id) => (
-            <div key={id}>
-              <Row type="flex" style={{ textAlign: "center" }}>
-                <Col id="mine_list_name" span={6}>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-                    {mines[id].mine_detail[0]
-                      ? mines[id].mine_detail[0].mine_name
-                      : String.EMPTY_FIELD}
-                  </Link>
-                </Col>
-                <Col id="mine_list_id" span={6}>
-                  {mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD}
-                </Col>
-                <Col id="mine_list_region" span={6}>
-                  {mines[id].mine_detail[0]
-                    ? mineRegionHash[mines[id].mine_detail[0].region_code]
-                    : String.EMPTY_FIELD}
-                </Col>
-                <Col id="mine_list_permit" span={6}>
-                  {mines[id].mine_permit &&
-                    mines[id].mine_permit.map((permit) => (
-                      <div key={permit.permit_guid}>{permit.permit_no}</div>
-                    ))}
-                </Col>
-                <Divider />
-              </Row>
-            </div>
-          ))}
-        {mineIds.length === 0 && <NullScreen type="no-results" />}
+        {text && text.map(({ permit_no, permit_guid }) => <div key={permit_guid}>{permit_no}</div>)}
+        {!text && <div>{record.emptyField}</div>}
       </div>
-    );
-  }
-}
+    ),
+  },
+  {
+    title: "Region",
+    dataIndex: "region",
+    width: 150,
+  },
+  {
+    title: "Commodity",
+    dataIndex: "commodity",
+    width: 150,
+  },
+  {
+    title: "Tenure",
+    dataIndex: "tenure",
+    width: 150,
+  },
+  {
+    title: "TSF",
+    dataIndex: "TSF",
+    width: 150,
+  },
+];
+
+const transformRowData = (mines, mineIds, mineRegionHash) =>
+  mineIds.map((id) => ({
+    key: id,
+    emptyField: String.EMPTY_FIELD,
+    mineName: mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : String.EMPTY_FIELD,
+    mineNo: mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : String.EMPTY_FIELD,
+    operationalStatus: mines[id].mine_status[0]
+      ? mines[id].mine_status[0].status_labels[0]
+      : String.EMPTY_FIELD,
+    permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
+    region: mines[id].mine_detail[0].region_code
+      ? mineRegionHash[mines[id].mine_detail[0].region_code]
+      : String.EMPTY_FIELD,
+    commodity: String.EMPTY_FIELD,
+    tenure: String.EMPTY_FIELD,
+    TSF: mines[id].mine_tailings_storage_facility
+      ? mines[id].mine_tailings_storage_facility.length
+      : String.EMPTY_FIELD,
+  }));
+
+export const MineList = (props) => (
+  <Table
+    align="center"
+    pagination={false}
+    columns={columns}
+    bordered
+    dataSource={transformRowData(props.mines, props.mineIds, props.mineRegionHash)}
+    scroll={{ x: 1500 }}
+    locale={{ emptyText: <NullScreen type="no-results" /> }}
+  />
+);
 
 MineList.propTypes = propTypes;
-MineList.defaultProps = defaultProps;
 
 export default MineList;
