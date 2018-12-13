@@ -629,3 +629,21 @@ export const DISTURBANCE_OPTIONS = {
     },
   ],
 };
+
+export const CONDITIONAL_DISTURBANCE_OPTIONS = {
+  BCL: [{ label: "Surface", value: "SUR", exclusive: false }],
+  COL: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Coal Wash", value: "CWA", exclusive: true },
+  ],
+  MIN: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+  ],
+  PLR: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Mill", value: "MIL", exclusive: true },
+  ],
+};
