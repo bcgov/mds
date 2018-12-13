@@ -92,13 +92,18 @@ export class ViewPermittee extends Component {
                 </tr>
                 <tr>
                   <td data-label="Permit No.">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(this.props.mine.guid, "permit")}>
-                      <p className="p-large">
-                        {this.props.mine.mine_permit[0]
-                          ? this.props.mine.mine_permit[0].permit_no
-                          : String.EMPTY_FIELD}
-                      </p>
-                    </Link>
+                    {this.props.mine.mine_permit[0]
+                      ? this.props.mine.mine_permit
+                          .filter(({ permittee }) => permittee[0].party_guid === id)
+                          .map(({ permit_no }) => (
+                            <Link
+                              to={router.MINE_SUMMARY.dynamicRoute(this.props.mine.guid, "permit")}
+                              key={permit_no}
+                            >
+                              <p className="p-large">{permit_no}</p>
+                            </Link>
+                          ))
+                      : String.EMPTY_FIELD}
                   </td>
                   <td data-label="Phone Number (Ext)">
                     <p className="p-large">
