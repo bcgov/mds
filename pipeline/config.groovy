@@ -80,6 +80,14 @@ app {
                         ]
                 ],
                 [
+                    'file':'openshift/postgresql.bc.json',
+                    'params':[
+                        'NAME':"mds-postgresql",
+                        'SUFFIX': "${app.build.suffix}",
+                        'TAG_NAME':'v1-stable'
+                    ]
+                ],                
+                [
                     'file':'openshift/flyway.bc.json',
                     'params':[
                             'NAME':"mds-flyway-migration",
