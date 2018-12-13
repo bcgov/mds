@@ -80,3 +80,25 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
                 self.raise_error(400, 'Error: Unable to update mine_type.')
 
             return new_mine_type.json()
+
+    @api.expect(parser)
+    @jwt.requires_roles(["mds-mine-create"])
+    def delete(self, mine_type_guid=None):
+        data = self.parser.parse_args()
+
+        if not mine_type_guid:
+            self.raise_error(400, 'Error: Missing mine_type_guid.')
+
+        mine_type = MineType.find_by_guid(mine_type_guid)
+        if not mine_type:
+            self.raise_error(400, 'Error: Invalid mine_type_guid.')
+
+        try:
+            MineType.expire_record(mine_type)
+        except exc.IntegrityError as e:
+            self.raise_error(
+                400,
+                'Error: Unable to update mine_type.'
+            )
+
+        return mine_type.json()

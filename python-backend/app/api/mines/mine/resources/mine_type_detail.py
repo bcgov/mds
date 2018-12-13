@@ -6,7 +6,7 @@ from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.mine_type_detail import MineTypeDetail
 from ..models.mine_type import MineType
-from app.api.constants import DISTURBANCE_CODES_CONFIG
+from app.api.constants import DISTURBANCE_CODES_CONFIG, COMMODITY_CODES_CONFIG
 
 class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -16,6 +16,7 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
         help='Unique identifier for the mine type with which to associate this details record.'
     )
     parser.add_argument('mine_disturbance_code', type=str, help='Mine disturbance type identifier.')
+    parser.add_argument('mine_commodity_code', type=str, help='Mine commodity type identifier.')
 
     @api.expect(parser)
     @jwt.requires_roles(["mds-mine-create"])
@@ -24,29 +25,38 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
 
         mine_type_guid = data['mine_type_guid']
         mine_disturbance_code = data['mine_disturbance_code']
+        mine_commodity_code = data['mine_commodity_code']
 
         if not mine_type_guid:
             self.raise_error(400, 'Error: Missing mine_type_guid.')
 
-        if not mine_disturbance_code:
-            self.raise_error(400, 'Error: Missing mine_disturbance_code.')
+        if not mine_disturbance_code and not mine_commodity_code:
+            self.raise_error(400, 'Error: Missing mine_disturbance_code or mine_commodity_code.')
 
+        if mine_disturbance_code and mine_commodity_code:
+            self.raise_error(400, 'Error: Unable to create mine_type_detail with disturbance and commodity.')
 
         try:
             mine_type_detail = MineTypeDetail.create_mine_type_detail(
                 mine_type_guid,
                 mine_disturbance_code,
+                mine_commodity_code,
                 self.get_create_update_dict(),
                 save=False
             )
 
+            if mine_disturbance_code:
+                (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code', DISTURBANCE_CODES_CONFIG)
+            if mine_commodity_code:
+                (code, name, config) = (mine_commodity_code, 'mine_commodity_code', COMMODITY_CODES_CONFIG)
+
             try:
                 mine_type = MineType.find_by_guid(mine_type_guid)
-                mine_type_detail.validate_disturbance_code_with_tenure(mine_type.mine_tenure_type_code)
+                assert mine_type.mine_tenure_type_code in config[code]['mine_tenure_type_codes']
             except (AssertionError, KeyError) as e:
                 self.raise_error(
                     400,
-                    'Error: Invalid mine_disturbance_code.'
+                    'Error: Invalid '+name+'.'
                 )
 
             mine_type_detail.save()
@@ -63,9 +73,6 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-create"])
     def delete(self, mine_type_detail_xref_guid=None):
         data = self.parser.parse_args()
-
-        mine_type_guid = data['mine_type_guid']
-        mine_disturbance_code = data['mine_disturbance_code']
 
         if not mine_type_detail_xref_guid:
             self.raise_error(400, 'Error: Missing mine_type_detail_xref_guid.')

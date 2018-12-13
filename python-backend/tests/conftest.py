@@ -23,6 +23,7 @@ from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
+from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
@@ -118,6 +119,15 @@ def setup_data(session):
             description=description,
             **DUMMY_USER_KWARGS)
         mine_disturbance_code.save()
+
+    # Insert Mine Commodity Codes
+    for code, description in zip(TEST_MINE_COMMODITY_CODES, TEST_MINE_COMMODITY_DESCRIPTIONS):
+        mine_commodity_code = MineCommodityCode(
+            mine_commodity_code=code,
+            description=description,
+            **DUMMY_USER_KWARGS
+        )
+        mine_commodity_code.save()
 
     # Test Mine Data
     mine_identity = MineIdentity(

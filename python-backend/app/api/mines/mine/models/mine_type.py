@@ -40,8 +40,11 @@ class MineType(AuditMixin, Base):
             'mine_type_guid': str(self.mine_type_guid),
             'mine_guid': str(self.mine_guid),
             'mine_tenure_type_code': self.mine_tenure_type_code,
-            'mine_type_detail': [item.json() for item in self.mine_type_detail]
+            'mine_type_detail': [item.json() for item in self.active(self.mine_type_detail)]
         }
+
+    def active(self, records):
+        return list(filter(lambda x: x.active_ind, records))
 
 
     @classmethod
