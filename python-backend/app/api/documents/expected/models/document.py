@@ -37,6 +37,7 @@ class ExpectedDocument(AuditMixin, Base):
     exp_document_status_guid = db.Column(
         UUID(as_uuid=True), nullable=True, server_default=FetchedValue())
 
+    #relationships
     required_document = db.relationship(
         'RequiredDocument',
         backref='exp_document_guid',
@@ -52,7 +53,7 @@ class ExpectedDocument(AuditMixin, Base):
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
             'received_date': str(self.received_date),
-            'exp_document_status_guid': str(self.exp_document_status_guid),
+            'exp_document_status_guid': str(self.exp_document_status_guid)
         }
 
     @classmethod
