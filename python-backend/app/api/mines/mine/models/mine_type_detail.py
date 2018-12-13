@@ -37,8 +37,7 @@ class MineTypeDetail(AuditMixin, Base):
             'mine_type_detail_guid': str(self.mine_type_detail_xref_guid),
             'mine_type_guid': str(self.mine_type_guid),
             'mine_disturbance_code': self.mine_disturbance_code,
-            'mine_commodity_code': self.mine_commodity_code,
-            'active_ind': self.active_ind
+            'mine_commodity_code': self.mine_commodity_code
         }
 
 

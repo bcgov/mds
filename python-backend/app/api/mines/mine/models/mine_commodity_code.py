@@ -25,5 +25,8 @@ class MineCommodityCode(AuditMixin, Base):
                 'mine_tenure_type_codes': COMMODITY_CODES_CONFIG[x[0]]['mine_tenure_type_codes'],
                 'exclusive_ind': COMMODITY_CODES_CONFIG[x[0]]['exclusive_ind']
             },
-            cls.query.with_entities(cls.mine_commodity_code, cls.description).all()
+            cls.query
+               .with_entities(cls.mine_commodity_code, cls.description)
+               .filter_by(active_ind=True)
+               .all()
         ))

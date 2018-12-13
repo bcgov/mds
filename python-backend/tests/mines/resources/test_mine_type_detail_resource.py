@@ -21,7 +21,6 @@ def test_post_mine_disturbance_success(test_client, auth_headers):
     assert post_data['mine_type_guid'] == test_data['mine_type_guid']
     assert post_data['mine_disturbance_code'] == test_data['mine_disturbance_code']
     assert post_data['mine_commodity_code'] == None
-    assert post_data['active_ind'] == True
 
 
 def test_post_mine_commodity_success(test_client, auth_headers):
@@ -36,7 +35,6 @@ def test_post_mine_commodity_success(test_client, auth_headers):
     assert post_data['mine_type_guid'] == test_data['mine_type_guid']
     assert post_data['mine_disturbance_code'] == None
     assert post_data['mine_commodity_code'] == test_data['mine_commodity_code']
-    assert post_data['active_ind'] == True
 
 
 def test_post_mine_disturbance_missing_mine_type_guid(test_client, auth_headers):
@@ -149,7 +147,6 @@ def test_post_mine_disturbance_duplicate(test_client, auth_headers):
     post_data1 = json.loads(post_resp1.data.decode())
     assert post_data1['mine_type_guid'] == test_data['mine_type_guid']
     assert post_data1['mine_disturbance_code'] == test_data['mine_disturbance_code']
-    assert post_data1['active_ind'] == True
 
     post_resp2 = test_client.post('/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     assert post_resp2.status_code == 400
@@ -174,7 +171,6 @@ def test_post_mine_commodity_duplicate(test_client, auth_headers):
     post_data1 = json.loads(post_resp1.data.decode())
     assert post_data1['mine_type_guid'] == test_data['mine_type_guid']
     assert post_data1['mine_commodity_code'] == test_data['mine_commodity_code']
-    assert post_data1['active_ind'] == True
 
     post_resp2 = test_client.post('/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     assert post_resp2.status_code == 400
@@ -274,7 +270,6 @@ def test_delete_mine_type_detail_success(test_client, auth_headers):
 
     delete_data = json.loads(delete_resp.data.decode())
     assert delete_data['mine_type_detail_guid'] == TEST_MINE_TYPE_DETAIL_GUID
-    assert delete_data['active_ind'] == False
 
 
 def test_delete_mine_type_detail_missing_mine_type_detail_guid(test_client, auth_headers):

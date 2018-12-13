@@ -205,7 +205,6 @@ def test_delete_mine_type_success(test_client, auth_headers):
 
     delete_data = json.loads(delete_resp.data.decode())
     assert delete_data['mine_type_guid'] == TEST_MINE_TYPE_GUID
-    assert delete_data['active_ind'] == False
 
 
 def test_delete_mine_type_missing_mine_type_guid(test_client, auth_headers):
