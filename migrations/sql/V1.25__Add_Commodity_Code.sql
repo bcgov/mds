@@ -10,7 +10,7 @@ CREATE TABLE mine_commodity_code (
     update_timestamp timestamp with time zone NOT NULL DEFAULT current_timestamp
 );
 
-COMMENT ON TABLE mine_disturbance_code IS 'The valid options for a mine commodity type.';
+COMMENT ON TABLE mine_commodity_code IS 'The valid options for a mine commodity type.';
 
 ALTER TABLE mine_type_detail_xref
     ADD COLUMN mine_commodity_code character varying(2),
