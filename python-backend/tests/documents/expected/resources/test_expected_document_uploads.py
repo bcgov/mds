@@ -34,17 +34,6 @@ def setup_info(test_client):
     )
 
 
-def requests_post(setup_info):
-    return {
-        'status': 200,
-        'errors': [],
-        'document_manager_guids': {
-            setup_info.get('document_manager_guid1'): 'file1.docx',
-            setup_info.get('document_manager_guid2'): 'file2.pdf'
-        }
-    }
-
-
 def test_happy_path_file_upload(test_client, auth_headers, setup_info):
 
     with mock.patch('requests.post') as mock_request:
