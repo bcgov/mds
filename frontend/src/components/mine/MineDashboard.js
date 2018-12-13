@@ -37,7 +37,7 @@ import NullScreen from "@/components/common/NullScreen";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,

@@ -25,20 +25,11 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
   permittees: {},
   permitteeIds: [],
 };
 
 export class ViewPermittee extends Component {
-  openModal(event, onSubmit, permit, handleChange, handlePartySubmit, title) {
-    event.preventDefault();
-    this.props.openModal({
-      props: { onSubmit, permit, handleChange, handlePartySubmit, title },
-      content: modalConfig.UPDATE_PERMITTEE,
-    });
-  }
-
   /**
    * change permittee on record.
    */
@@ -58,6 +49,14 @@ export class ViewPermittee extends Component {
         this.props.closeModal();
       });
   };
+
+  openModal(event, onSubmit, permit, handleChange, handlePartySubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, permit, handleChange, handlePartySubmit, title },
+      content: modalConfig.UPDATE_PERMITTEE,
+    });
+  }
 
   render() {
     const { permittees, permitteeIds, mine } = this.props;
