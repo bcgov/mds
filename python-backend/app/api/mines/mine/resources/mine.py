@@ -26,12 +26,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('tenure_number_id', type=int, help='Tenure number for the mine.')
     parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
     parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
-    parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ')
-    parser.add_argument('major_mine_ind', type=inputs.boolean, help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".')
+    parser.add_argument('mine_status', action='split', help='Status of the mine, to be given as a comma separated '
+                                                            'string value. Ex: status_code, status_reason_code, status_'
+                                                            'sub_reason_code ')
+    parser.add_argument('major_mine_ind', type=inputs.boolean, help='Indication if mine is major_mine_ind or regional. '
+                                                                    'Accepts "true", "false", "1", "0".')
     parser.add_argument('mine_region', type=str, help='Region for the mine.')
 
     @api.doc(params={'mine_no_or_guid': 'Mine number or guid. If not provided a paginated list of mines will be returned.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    # @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -50,15 +53,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             items_per_page = request.args.get('per_page', 25, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
-            status_search_term = request.args.get('status', None, type=str)
+            status_filter_term = request.args.get('status', None, type=str)
+            tenure_filter_term = request.args.get('tenure', None, type=str)
+            region_filter_term =
 
             #Create a filter on mine status if one is provided
-            if status_search_term:
-                status_search_term_array = status_search_term.split(',')
-                status_filter = MineStatusXref.mine_operation_status_code.in_(status_search_term_array)
-                status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_search_term_array)
+            if status_filter_term:
+                status_filter_term_array = status_filter_term.split(',')
+                status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
+                status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_filter_term_array)
                 status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
-                    status_search_term_array)
+                    status_filter_term_array)
                 all_status_filter = status_filter | status_reason_filter | status_subreason_filter
 
             if search_term:
@@ -68,7 +73,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mines_query = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
                 permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
                 mines_permit_join_query = mines_query.union(permit_query)
-                if status_search_term:
+                if status_filter_term:
                     status_query = MineIdentity.query.join(MineDetail).join(MineStatus).join(MineStatusXref).filter(
                         all_status_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
@@ -76,7 +81,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
             else:
                 sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
-                if status_search_term:
+                if status_filter_term:
                     mine_query_with_status = MineIdentity.query.join(MineDetail).join(MineStatus).join(
                         MineStatusXref).filter(all_status_filter)
                     sorted_mine_query = apply_sort(mine_query_with_status, sort_criteria)
