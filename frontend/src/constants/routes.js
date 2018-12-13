@@ -11,13 +11,13 @@ export const DASHBOARD = {
 
 export const MINE_DASHBOARD = {
   route: "/dashboard",
-  dynamicRoute: (page, per_page, search = null) => {
+  dynamicRoute: (page, perPage, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
-    return `/dashboard?page=${page}&per_page=${per_page}${searchParam}`;
+    return `/dashboard?page=${page}&per_page=${perPage}${searchParam}`;
   },
-  mapRoute: (page, per_page, search = null) => {
+  mapRoute: (page, perPage, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
-    return `/dashboard?page=${page}&per_page=${per_page}${searchParam}&map=true`;
+    return `/dashboard?page=${page}&per_page=${perPage}${searchParam}&map=true`;
   },
   component: Dashboard,
 };
