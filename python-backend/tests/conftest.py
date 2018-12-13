@@ -8,6 +8,7 @@ from app.extensions import db, jwt as _jwt
 from app.api.mines.mine.models.mine_identity import MineIdentity
 from app.api.mines.mine.models.mine_detail import MineDetail
 from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
@@ -26,6 +27,7 @@ from app.api.documents.required.models.required_documents import RequiredDocumen
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
@@ -100,21 +102,21 @@ def setup_data(session):
         region_code.save()
 
     # Insert Mine Tenure Types
-    for code, description in zip(TEST_MINE_TENURE_TYPE_CODES, TEST_MINE_TENURE_TYPE_DESCRIPTIONS):
+    for code, description in zip(TEST_MINE_TENURE_TYPE_CODES,
+                                 TEST_MINE_TENURE_TYPE_DESCRIPTIONS):
         mine_tenure_type_code = MineTenureTypeCode(
             mine_tenure_type_code=code,
             description=description,
-            **DUMMY_USER_KWARGS
-        )
+            **DUMMY_USER_KWARGS)
         mine_tenure_type_code.save()
 
     # Insert Mine Disturbance Codes
-    for code, description in zip(TEST_MINE_DISTURBANCE_CODES, TEST_MINE_DISTURBANCE_DESCRIPTIONS):
+    for code, description in zip(TEST_MINE_DISTURBANCE_CODES,
+                                 TEST_MINE_DISTURBANCE_DESCRIPTIONS):
         mine_disturbance_code = MineDisturbanceCode(
             mine_disturbance_code=code,
             description=description,
-            **DUMMY_USER_KWARGS
-        )
+            **DUMMY_USER_KWARGS)
         mine_disturbance_code.save()
 
     # Test Mine Data
@@ -136,9 +138,17 @@ def setup_data(session):
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_tenure_type_code=TEST_MINE_TENURE_TYPE_CODES[0],
         active_ind=True,
-        **DUMMY_USER_KWARGS
-    )
+        **DUMMY_USER_KWARGS)
     mine_type.save()
+
+    # Test Mine Type Detail
+    mine_type_detail = MineTypeDetail(
+        mine_type_detail_xref_guid=uuid.UUID(TEST_MINE_TYPE_DETAIL_GUID),
+        mine_type_guid=uuid.UUID(TEST_MINE_TYPE_GUID),
+        mine_disturbance_code=TEST_MINE_DISTURBANCE_CODES[0],
+        active_ind=True,
+        **DUMMY_USER_KWARGS)
+    mine_type_detail.save()
 
     # Test Tenure Data
     tenure = MineralTenureXref(
@@ -359,6 +369,14 @@ def setup_data(session):
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
         **DUMMY_USER_KWARGS)
     mpa.save()
+
+    mine_doc1 = MineDocument(
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        document_name=TEST_MINE_DOCUMENT_NAME1,
+        document_manager_guid=TEST_DOCUMENT_MANAGER_FILE_GUID,
+        **DUMMY_USER_KWARGS)
+    mine_doc1.mine_expected_document.append(expected_document1)
+    mine_doc1.save()
 
 
 def clear_data(session):

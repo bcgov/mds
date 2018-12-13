@@ -21,6 +21,8 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
 
+import { ENVIRONMENT } from "@/constants/environment";
+import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -154,6 +156,13 @@ export class MineTailingsInfo extends Component {
     }
   }
 
+  getFileFromDocumentManager(docMgrFileGuid) {
+    const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + docMgrFileGuid;
+    window.open(url, "_blank");
+    //Document_manager GET endpoint is unathenticated right now.
+    //TODO: updated this when Document manager tokens are implmeneted.
+  }
+
   render() {
     return (
       <div>
@@ -194,16 +203,19 @@ export class MineTailingsInfo extends Component {
             <Col span={8}>
               <h5>Name</h5>
             </Col>
-            <Col span={3}>
+            <Col span={2}>
               <h5>Due</h5>
             </Col>
-            <Col span={3}>
+            <Col span={2}>
               <h5>Received</h5>
             </Col>
             <Col span={4}>
               <h5>Status</h5>
             </Col>
-            <Col span={5} />
+            <Col span={3}>
+              <h5>Documents</h5>
+            </Col>
+            <Col span={4} />
           </Row>
           <hr style={{ borderTop: "2px solid #c4cdd5" }} />
           {this.props.mine.mine_expected_documents
@@ -227,10 +239,10 @@ export class MineTailingsInfo extends Component {
                     <Col id={`name-${id}`} span={8}>
                       <h6>{doc.exp_document_name}</h6>
                     </Col>
-                    <Col id={`due-date-${id}`} span={3}>
+                    <Col id={`due-date-${id}`} span={2}>
                       <h6>{doc.due_date === "None" ? "-" : doc.due_date}</h6>
                     </Col>
-                    <Col span={3}>
+                    <Col span={2}>
                       <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
                     </Col>
                     <Col id={`status-${id}`} span={4}>
@@ -241,7 +253,23 @@ export class MineTailingsInfo extends Component {
                         />
                       </h6>
                     </Col>
-                    <Col span={5} align="right">
+                    <Col span={3}>
+                      {!doc.related_documents
+                        ? "-"
+                        : doc.related_documents.map((file, id) => (
+                            <div>
+                              <a
+                                key={id}
+                                onClick={() =>
+                                  this.getFileFromDocumentManager(file.document_manager_guid)
+                                }
+                              >
+                                {file.document_name}
+                              </a>
+                            </div>
+                          ))}
+                    </Col>
+                    <Col span={4} align="right">
                       <Button
                         ghost
                         type="primary"
