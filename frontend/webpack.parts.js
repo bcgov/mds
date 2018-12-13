@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano");
+const cssnano = require("cssnano")({ zindex: false });
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
