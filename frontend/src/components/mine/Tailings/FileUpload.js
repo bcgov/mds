@@ -1,11 +1,8 @@
 import React from "react";
-import { FilePond, File } from "react-filepond";
+import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
-
-// import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-// registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+registerPlugin(FilePondPluginFileValidateSize);
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
@@ -21,29 +18,26 @@ class FileUpload extends React.Component {
     this.server = {
       url: ENVIRONMENT.apiUrl,
       process: {
-        url: "/document-manager",
-        withCredentials: true,
+        url: `/documents/expected/${this.props.expDocumentGuid}/document`,
         headers: createRequestHeader()["headers"],
-        timeout: 7000,
         onload: null,
         onerror: null,
       },
     };
   }
 
-  handleInit() {}
-
   render() {
     return (
       <FilePond
+        name={"file"}
+        allowRevert={false}
         allowMultiple={true}
-        maxFiles={3}
+        maxFileSize={"100MB"}
         server={this.server}
-        oninit={() => this.handleInit()}
         onupdatefiles={(fileItems) => {
-            this.setState({
-                files: fileItems.map(fileItem => fileItem.file)
-            });
+          this.setState({
+            files: fileItems.map((fileItem) => fileItem.file),
+          });
         }}
       >
         {this.state.files.map((file) => (

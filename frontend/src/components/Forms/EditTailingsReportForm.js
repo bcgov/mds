@@ -16,6 +16,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.array.isRequired,
+  expDocumentGuid: PropTypes.string,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -65,6 +66,7 @@ export const EditTailingsReportForm = (props) => (
             id="tsf_document_upload"
             name="tsf_document_upload"
             label=""
+            expDocumentGuid={props.expDocumentGuid}
             component={FileUpload}
             validate={[]}
             />
