@@ -4,6 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
+import FileUpload from "@/components/mine/Tailings/FileUpload";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, notnone } from "@/utils/Validate";
@@ -58,6 +59,15 @@ export const EditTailingsReportForm = (props) => (
             data={props.statusOptions}
             validate={[]}
           />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="tsf_document_upload"
+            name="tsf_document_upload"
+            label=""
+            component={FileUpload}
+            validate={[]}
+            />
         </Form.Item>
       </Col>
     </Row>
