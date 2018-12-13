@@ -69,16 +69,23 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
                 mines_permit_join_query = mines_query.union(permit_query)
                 if status_search_term:
-                    status_query = MineIdentity.query.join(MineDetail).join(MineStatus).join(MineStatusXref).filter(
-                        all_status_filter)
+                    status_query = MineIdentity.query\
+                        .join(MineDetail)\
+                        .join(MineStatus)\
+                        .join(MineStatusXref)\
+                        .filter(all_status_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
-                paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
+                paginated_mine_query, pagination_details = apply_pagination(
+                    mines_permit_join_query, page, items_per_page)
 
             else:
                 sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
                 if status_search_term:
-                    mine_query_with_status = MineIdentity.query.join(MineDetail).join(MineStatus).join(
-                        MineStatusXref).filter(all_status_filter)
+                    mine_query_with_status = MineIdentity.query\
+                        .join(MineDetail)\
+                        .join(MineStatus)\
+                        .join(MineStatusXref)\
+                        .filter(all_status_filter)
                     sorted_mine_query = apply_sort(mine_query_with_status, sort_criteria)
                 else:
                     sorted_mine_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
