@@ -47,8 +47,8 @@ export class RenderMultiSelect extends Component {
             {...this.props.input}
           >
             {this.props.data &&
-              this.props.data.map((value) => (
-                <Select.Option key={value.value}>{value.label}</Select.Option>
+              this.props.data.map(({ value, label }) => (
+                <Select.Option key={value}>{label}</Select.Option>
               ))}
           </Select>
         </Form.Item>
