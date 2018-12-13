@@ -61,15 +61,14 @@ export const EditTailingsReportForm = (props) => (
             validate={[]}
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item label="Upload Documents">
           <Field
             id="tsf_document_upload"
             name="tsf_document_upload"
-            label=""
             expDocumentGuid={props.expDocumentGuid}
             component={FileUpload}
             validate={[]}
-            />
+          />
         </Form.Item>
       </Col>
     </Row>
