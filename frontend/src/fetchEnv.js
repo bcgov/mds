@@ -15,6 +15,7 @@ export default function fetchEnv() {
     .catch((error) => DEFAULT_ENVIRONMENT)
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
+      ENVIRONMENT.mapPortalId = env.mapPortalId;
       KEYCLOAK.clientId = env.keycloak_clientId;
       KEYCLOAK.resource = env.keycloak_resource;
       KEYCLOAK.url = env.keycloak_url;

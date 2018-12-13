@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { WebMap } from "react-arcgis";
 import { loadModules } from "react-arcgis";
+import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
 import MinePin from "./MinePin";
 import LocationPin from "./LocationPin";
@@ -112,7 +113,7 @@ class MineMap extends Component {
       // Map located on landing page - contains all mine pins and adds a location pin when searched.
       // this.props.lat & this.props.long get changed in Dashboard.js
       <WebMap
-        id={String.BASE_WEBMAP_ID}
+        id={ENVIRONMENT.mapPortalId}
         style={{ width: "100vw", height: "100vh" }}
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
