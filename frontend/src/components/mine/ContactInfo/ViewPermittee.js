@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Card } from "antd";
+import { Link } from "react-router-dom";
+import * as router from "@/constants/routes";
 import ConditionalButton from "@/components/common/ConditionalButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as String from "@/constants/strings";
@@ -83,30 +85,44 @@ export class ViewPermittee extends Component {
                 </tr>
                 <tr>
                   <th scope="col">
-                    <h4>Email</h4>
+                    <h4>Permit No.</h4>
                   </th>
                   <th scope="col">
                     <h4>Phone Number (Ext)</h4>
                   </th>
                 </tr>
                 <tr>
-                  <td data-label="Email">
-                    <p className="p-large">{permittees[id].party.email}</p>
+                  <td data-label="Permit No.">
+                    <Link to={router.MINE_SUMMARY.dynamicRoute(this.props.mine.guid, "permit")}>
+                      <p className="p-large">
+                        {this.props.mine.mine_permit[0]
+                          ? this.props.mine.mine_permit[0].permit_no
+                          : String.EMPTY_FIELD}
+                      </p>
+                    </Link>
                   </td>
                   <td data-label="Phone Number (Ext)">
                     <p className="p-large">
-                      {permittees[id].party.phone_no}
-                      {' '}
-(
+                      {permittees[id].party.phone_no} (
                       {permittees[id].party.phone_ext
-                          ? permittees[id].party.phone_ext
-                          : String.EMPTY_FIELD}
-                        )
+                        ? permittees[id].party.phone_ext
+                        : String.EMPTY_FIELD}
+                      )
                     </p>
                   </td>
                 </tr>
+                <tr>
+                  <th scope="col">
+                    <h4>Email</h4>
+                  </th>
+                </tr>
+                <tr>
+                  <td data-label="Email">
+                    <p className="p-large">{permittees[id].party.email}</p>
+                  </td>
+                </tr>
               </tbody>
-              ))}
+            ))}
           </table>
           <div className="right center-mobile">
             <ConditionalButton

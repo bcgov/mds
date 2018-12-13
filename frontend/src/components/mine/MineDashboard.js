@@ -75,6 +75,13 @@ export class MineDashboard extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { activeTab } = nextProps.match.params;
+    if (activeTab !== this.props.activeTab) {
+      this.setState({ activeTab });
+    }
+  }
+
   handleChange = (activeTab) => {
     this.setState({ activeTab });
     this.props.history.push(
