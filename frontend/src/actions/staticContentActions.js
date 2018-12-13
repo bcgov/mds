@@ -20,6 +20,11 @@ export const storeDisturbanceOptions = (payload) => ({
   payload,
 });
 
+export const storeCommodityOptions = (payload) => ({
+  type: ActionTypes.STORE_COMMODITY_OPTIONS,
+  payload,
+});
+
 export const storeDocumentStatusOptions = (payload) => ({
   type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
   payload,

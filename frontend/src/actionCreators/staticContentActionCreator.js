@@ -29,6 +29,27 @@ export const fetchMineDisturbanceOptions = () => (dispatch) => {
     });
 };
 
+export const fetchMineCommodityOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_COMMODITY_OPTIONS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.COMMODITY_CODES, createRequestHeader())
+    .then((response) => {
+      console.log(response.data);
+      dispatch(success(reducerTypes.GET_COMMODITY_OPTIONS));
+      dispatch(staticContentActions.storeCommodityOptions(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_COMMODITY_OPTIONS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
 export const fetchStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
   dispatch(showLoading("modal"));
