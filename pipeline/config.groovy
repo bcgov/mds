@@ -125,8 +125,8 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
                             'IMAGE_STREAM_NAMESPACE':'bcgov',
-                            'IMAGE_STREAM_NAME':"postgresql-9.6-oracle-fdw",
-                            'IMAGE_STREAM_VERSION':"v1-stable",
+                            'IMAGE_STREAM_NAME':'postgresql-9.6-oracle-fdw',
+                            'IMAGE_STREAM_VERSION':'v1-stable',
                             'POSTGRESQL_DATABASE':'mds',
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
