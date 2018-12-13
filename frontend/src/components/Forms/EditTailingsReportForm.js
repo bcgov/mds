@@ -47,7 +47,6 @@ export const EditTailingsReportForm = (props) => (
             name="tsf_report_received_date"
             label="Received Date"
             component={RenderDate}
-            validate={[]}
           />
         </Form.Item>
         <Form.Item>
@@ -58,7 +57,6 @@ export const EditTailingsReportForm = (props) => (
             placeholder="Select a Status"
             component={RenderSelect}
             data={props.statusOptions}
-            validate={[]}
           />
         </Form.Item>
         <Form.Item label="Upload Documents">
@@ -67,7 +65,6 @@ export const EditTailingsReportForm = (props) => (
             name="tsf_document_upload"
             expDocumentGuid={props.expDocumentGuid}
             component={FileUpload}
-            validate={[]}
           />
         </Form.Item>
       </Col>
