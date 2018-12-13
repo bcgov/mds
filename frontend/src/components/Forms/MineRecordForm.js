@@ -12,12 +12,14 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
   mine_Types: PropTypes.array.isRequired,
   conditionalDisturbanceOptions: PropTypes.array.isRequired,
+  initialValues: PropTypes.object,
 };
 
 export class MineRecordForm extends Component {
@@ -37,8 +39,7 @@ export class MineRecordForm extends Component {
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
       mine_tenure_type_code: [],
-      // mine_commodity_type_code: [],
-      mine_disturbance_type_code: [],
+      mine_disturbance_code: [],
     };
     // Do nothing if no mine_types, or no change to mine_types
     if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
@@ -98,6 +99,7 @@ export class MineRecordForm extends Component {
                   />
                 </Col>
               </Row>
+              {/* commented out until commodity is added, Will be done by End of Sprint */}
               {/* <Row gutter={16}>
                 <Col span={24}>
                   <Field
@@ -113,8 +115,8 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    id={`${type}.mine_disturbance_type_code`}
-                    name={`${type}.mine_disturbance_type_code`}
+                    id={`${type}.mine_disturbance_code`}
+                    name={`${type}.mine_disturbance_code`}
                     placeholder="Please Select Disturbance"
                     component={renderConfig.MULTI_SELECT}
                     validate={[required]}
@@ -205,8 +207,13 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item label="Mine Type" />
-        <FieldArray name="mine_types" component={renderTypeSelect} />
+        {/* hiding the mine_types fieldArray fron Edit view until the edit functionality is added */}
+        {!this.props.initialValues && (
+          <div>
+            <Form.Item label="Mine Type" />
+            <FieldArray name="mine_types" component={renderTypeSelect} />
+          </div>
+        )}
         <Row gutter={16}>
           <Col>
             <Form.Item>

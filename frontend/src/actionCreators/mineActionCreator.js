@@ -10,7 +10,7 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 const submitDisturbances = (type) => ({ data }) => {
-  const disturbanceResponses = type.mine_disturbance_type_code.map((code) =>
+  const disturbanceResponses = type.mine_disturbance_code.map((code) =>
     axios.post(
       ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
       {
@@ -32,7 +32,7 @@ const handleError = (dispatch, reducer) => (err) => {
   dispatch(hideLoading("modal"));
 };
 
-const makeAllTheRequests = (payload, dispatch, reducer) => (response) => {
+const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
       type.mine_tenure_type_code
@@ -57,10 +57,9 @@ const makeAllTheRequests = (payload, dispatch, reducer) => (response) => {
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-
   return axios
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
-    .then(makeAllTheRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.name}`,
@@ -86,7 +85,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   const requests = [
     axios.put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader()),
   ];
-  if (payload.mine_tenure_type_code) {
+  if (payload.mine_types) {
     const mineTypeGuid = payload.mineType[0] ? `/${payload.mineType[0].mine_type_guid}` : "";
     const mineTypesUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES + mineTypeGuid;
     const req = mineTypeGuid ? axios.put : axios.post;

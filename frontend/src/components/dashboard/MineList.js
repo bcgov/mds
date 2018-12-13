@@ -14,6 +14,7 @@ const propTypes = {
   mines: PropTypes.object.isRequired,
   mineIds: PropTypes.array.isRequired,
   mineRegionHash: PropTypes.object.isRequired,
+  mineTenureHash: PropTypes.object.isRequired,
 };
 
 const columns = [
@@ -24,7 +25,7 @@ const columns = [
     render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
   },
   {
-    title: "Mine #",
+    title: "Mine No.",
     width: 100,
     dataIndex: "mineNo",
   },
@@ -35,7 +36,7 @@ const columns = [
     render: (text) => <div>{text}</div>,
   },
   {
-    title: "Permit #",
+    title: "Permit No.",
     dataIndex: "permit",
     width: 150,
     render: (text, record) => (
@@ -59,6 +60,17 @@ const columns = [
     title: "Tenure",
     dataIndex: "tenure",
     width: 150,
+    render: (text, record) => (
+      <div>
+        {text &&
+          text.map((tenure) => (
+            <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+              {record.tenureHash[tenure.mine_tenure_type_code]}
+            </span>
+          ))}
+        {!text && <div>{record.emptyField}</div>}
+      </div>
+    ),
   },
   {
     title: "TSF",
@@ -67,7 +79,7 @@ const columns = [
   },
 ];
 
-const transformRowData = (mines, mineIds, mineRegionHash) =>
+const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash) =>
   mineIds.map((id) => ({
     key: id,
     emptyField: String.EMPTY_FIELD,
@@ -81,7 +93,8 @@ const transformRowData = (mines, mineIds, mineRegionHash) =>
       ? mineRegionHash[mines[id].mine_detail[0].region_code]
       : String.EMPTY_FIELD,
     commodity: String.EMPTY_FIELD,
-    tenure: String.EMPTY_FIELD,
+    tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
+    tenureHash: mineTenureHash,
     TSF: mines[id].mine_tailings_storage_facility
       ? mines[id].mine_tailings_storage_facility.length
       : String.EMPTY_FIELD,
@@ -92,8 +105,12 @@ export const MineList = (props) => (
     align="center"
     pagination={false}
     columns={columns}
-    bordered
-    dataSource={transformRowData(props.mines, props.mineIds, props.mineRegionHash)}
+    dataSource={transformRowData(
+      props.mines,
+      props.mineIds,
+      props.mineRegionHash,
+      props.mineTenureHash
+    )}
     scroll={{ x: 1500 }}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
   />

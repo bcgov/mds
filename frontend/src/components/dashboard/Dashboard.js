@@ -19,6 +19,7 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
+  getMineTenureTypesHash,
   getConditionalDisturbanceOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
@@ -175,7 +176,6 @@ export class Dashboard extends Component {
   };
 
   handleSubmit = (value) => {
-    console.log(value);
     const mineStatus = value.mine_status.join(",");
     this.props
       .createMineRecord({ ...value, mine_status: mineStatus })
@@ -357,6 +357,7 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
+  mineTenureHash: getMineTenureTypesHash(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 

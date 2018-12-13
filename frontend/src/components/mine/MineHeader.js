@@ -31,18 +31,17 @@ const defaultProps = {
 
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
-    console.log(value);
-    // const mineStatus = value.mine_status.join(",");
-    // this.props
-    //   .updateMineRecord(
-    //     this.props.mine.guid,
-    //     { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
-    //     value.name
-    //   )
-    //   .then(() => {
-    //     this.props.closeModal();
-    //     this.props.fetchMineRecordById(this.props.mine.guid);
-    //   });
+    const mineStatus = value.mine_status.join(",");
+    this.props
+      .updateMineRecord(
+        this.props.mine.guid,
+        { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
+        value.name
+      )
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
   };
 
   handleAddTailings = (value) => {
@@ -67,23 +66,6 @@ class MineHeader extends Component {
 
   openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title, mine) {
     event.preventDefault();
-    const mineTypes = [
-      {
-        mine_commodity_type_id: ["3", "2"],
-        mine_disturbance_type_id: ["3"],
-        mine_tenure_type_id: 2,
-      },
-      {
-        mine_commodity_type_id: ["2"],
-        mine_disturbance_type_id: ["2", "3"],
-        mine_tenure_type_id: 2,
-      },
-      {
-        mine_commodity_type_id: ["3", "4"],
-        mine_disturbance_type_id: ["2"],
-        mine_tenure_type_id: 2,
-      },
-    ];
     const initialValues = {
       name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
       latitude: mine.mine_location[0] ? mine.mine_location[0].latitude : null,
@@ -91,9 +73,6 @@ class MineHeader extends Component {
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
       mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
-      // mine_types: mineTypes,
-      // mine_tenure_type_id: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_id : null,
-      // mine_tenure_type_code: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_code : null,
     };
 
     this.props.openModal({
@@ -159,10 +138,7 @@ class MineHeader extends Component {
             />
           </div>
           <Divider />
-          <h5>
-            Mine ID:
-            {this.props.mine.mine_detail[0].mine_no}{" "}
-          </h5>
+          <h5>Mine No.: {this.props.mine.mine_detail[0].mine_no} </h5>
           {this.props.mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
@@ -195,12 +171,16 @@ class MineHeader extends Component {
               </h5>
             </div>
           )}
-          {/* <h5>
+          <h5>
             Tenure:{" "}
-            {mine.mine_type[0] && mine.mine_type[0].mine_tenure_type_code
-              ? this.props.mineTenureHash[mine.mine_type[0].mine_tenure_type_code]
+            {this.props.mine.mine_type[0]
+              ? this.props.mine.mine_type.map((tenure) => (
+                  <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+                    {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
+                  </span>
+                ))
               : String.EMPTY_FIELD}
-          </h5> */}
+          </h5>
           <h5>
             {this.props.mine.mine_detail[0].major_mine_ind
               ? String.MAJOR_MINE
