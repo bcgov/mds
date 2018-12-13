@@ -1,3 +1,4 @@
+import { map } from "lodash";
 import React from "react";
 import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -36,7 +37,7 @@ class FileUpload extends React.Component {
         server={this.server}
         onupdatefiles={(fileItems) => {
           this.setState({
-            files: fileItems.map((fileItem) => fileItem.file),
+            files: map(fileItems, "file"),
           });
         }}
       >
