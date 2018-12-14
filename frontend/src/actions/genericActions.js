@@ -16,3 +16,8 @@ export const error = (reducer, error) => ({
   type: ActionTypes.ERROR,
   errorMessage: error,
 });
+
+export const clear = (reducer) => ({
+  name: reducer,
+  type: ActionTypes.CLEAR,
+});

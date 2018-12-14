@@ -4,6 +4,7 @@ import { loadingBarReducer } from "react-redux-loading-bar";
 import * as reducerTypes from "@/constants/reducerTypes";
 import networkReducer from "./networkReducer";
 import mineReducer from "@/reducers/mineReducer";
+import complianceReducer from "@/reducers/complianceReducer";
 import partiesReducer from "@/reducers/partiesReducer";
 import modalReducer from "@/reducers/modalReducer";
 import authenticationReducer from "@/reducers/authenticationReducer";
@@ -17,6 +18,7 @@ export const reducerObject = {
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
   [reducerTypes.MODAL]: modalReducer,
+  [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
@@ -36,6 +38,10 @@ export const reducerObject = {
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
   [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),
   [reducerTypes.CREATE_TSF]: createReducer(networkReducer, reducerTypes.CREATE_TSF),
+  [reducerTypes.GET_MINE_COMPLIANCE_INFO]: createReducer(
+    networkReducer,
+    reducerTypes.GET_MINE_COMPLIANCE_INFO
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);

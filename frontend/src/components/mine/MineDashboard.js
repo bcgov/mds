@@ -30,9 +30,9 @@ import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
+import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import Loading from "@/components/common/Loading";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -119,7 +119,7 @@ export class MineDashboard extends Component {
             </TabPane>
             <TabPane tab="Compliance" key="compliance">
               <div className="tab__content">
-                <NullScreen type="generic" />
+                <MineComplianceInfo mine={mine} {...this.props} />
               </div>
             </TabPane>
             <TabPane tab="Tenure" key="tenure">

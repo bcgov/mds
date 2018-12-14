@@ -18,7 +18,6 @@ def get_NRIS_token():
         'grant_type': 'client_credentials',
         'scope': 'NRISWS.*'
     }
-
     resp = requests.get(
         url=current_app.config['NRIS_TOKEN_URL'],
         params=params,
@@ -38,6 +37,7 @@ def get_EMPR_data_from_NRIS(mine_no):
     if token is None:
         return None
 
+    #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
     params = {
         'inspectionStartDate':
         '2018-01-01',
@@ -48,13 +48,18 @@ def get_EMPR_data_from_NRIS(mine_no):
     }
 
     headers = {'Authorization': 'Bearer ' + token}
+    try:
+        empr_nris_resp = requests.get(
+            url=current_app.config['NRIS_EMPR_API_URL'],
+            params=params,
+            headers=headers)
+    except requests.exceptions.Timeout:
+        raise
 
-    empr_nris_resp = requests.get(
-        url=current_app.config['NRIS_EMPR_API_URL'],
-        params=params,
-        headers=headers)
-
-    if empr_nris_resp.status_code != 200:
-        return None
+    try:
+        empr_nris_resp.raise_for_status()
+    except requests.exceptions.HTTPError:
+        #TODO add logging for this error.
+        raise
 
     return empr_nris_resp.json()
