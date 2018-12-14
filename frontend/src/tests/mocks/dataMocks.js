@@ -506,18 +506,18 @@ export const REGION_HASH = {
 
 export const TENURE_TYPES = {
   options: [
-    { value: 1, label: "Coal" },
-    { value: 2, label: "Mineral" },
-    { value: 3, label: "Placer" },
-    { value: 4, label: "BC Land" },
+    { value: "COL", label: "Coal" },
+    { value: "MIN", label: "Mineral" },
+    { value: "PLR", label: "Placer" },
+    { value: "BCL", label: "BC Land" },
   ],
 };
 
 export const TENURE_HASH = {
-  1: "Coal",
-  2: "Mineral",
-  3: "Placer",
-  4: "BC Land",
+  COL: "Coal",
+  MIN: "Mineral",
+  PLR: "Placer",
+  BCL: "BC Land",
 };
 
 export const PERMITTEE = {
@@ -627,5 +627,23 @@ export const DISTURBANCE_OPTIONS = {
       mine_disturbance_code: "MIL",
       mine_tenure_type_codes: ["PLR"],
     },
+  ],
+};
+
+export const CONDITIONAL_DISTURBANCE_OPTIONS = {
+  BCL: [{ label: "Surface", value: "SUR", exclusive: false }],
+  COL: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Coal Wash", value: "CWA", exclusive: true },
+  ],
+  MIN: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+  ],
+  PLR: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Mill", value: "MIL", exclusive: true },
   ],
 };
