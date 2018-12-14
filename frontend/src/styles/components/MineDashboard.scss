@@ -72,6 +72,21 @@
   }
 }
 
+.mine_tenure {
+  &:nth-child(1),
+  &:nth-child(2),
+  &:nth-child(3) {
+    &:after {
+      content: ", ";
+    }
+  }
+  &:last-child() {
+    &:after {
+      content: "" !important;
+    }
+  }
+}
+
 .table-wrapper {
   padding: $default-padding-md;
   border-left: 4px solid $default-blue;
