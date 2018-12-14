@@ -22,11 +22,6 @@ export const getMineRegionHash = createSelector(
   [getMineRegionOptions],
   createLabelHash
 );
-export const getMineTSFRequiredDocumentsHash = createSelector(
-  [getMineTSFRequiredReports],
-  (requiredDocuments) =>
-    requiredDocuments.reduce((map, { value, label }) => ({ [value]: label, ...map }), {})
-);
 
 const createConditionalMineDetails = (attribute) => (options, tenureTypes) => {
   const newArr = {};
