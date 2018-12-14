@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
-import FileUpload from "@/components/mine/Tailings/FileUpload";
+import FileUpload from "@/components/common/FileUpload";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
