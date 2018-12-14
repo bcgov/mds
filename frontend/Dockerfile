@@ -16,7 +16,7 @@ RUN rm -rf node_modules
 RUN npm install --silent
 
 # Build the app and remove any non-production dependencies
-RUN npm run build
+RUN npm run buildga
 
 # Run the server
 EXPOSE 3000

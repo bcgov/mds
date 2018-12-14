@@ -28,42 +28,28 @@ export const getMineTSFRequiredDocumentsHash = createSelector(
     requiredDocuments.reduce((map, { value, label }) => ({ [value]: label, ...map }), {})
 );
 
+const createConditionalMineDetails = (attribute) => (options, tenureTypes) => {
+  const newArr = {};
+  tenureTypes.forEach((type) => {
+    const valueArr = [];
+    options.forEach((option) => {
+      if (option.mine_tenure_type_codes.includes(type.value)) {
+        valueArr.push({
+          label: option.description,
+          value: option[attribute],
+        });
+        newArr[type.value] = valueArr;
+      }
+    });
+  });
+  return newArr;
+};
 export const getConditionalDisturbanceOptionsHash = createSelector(
   [getMineDisturbanceOptions, getMineTenureTypes],
-  (disturbanceOptions, tenureTypes) => {
-    const newArr = {};
-    tenureTypes.forEach((type) => {
-      const valueArr = [];
-      disturbanceOptions.forEach((option) => {
-        if (option.mine_tenure_type_codes.includes(type.value)) {
-          valueArr.push({
-            label: option.description,
-            value: option.mine_disturbance_code,
-          });
-          newArr[type.value] = valueArr;
-        }
-      });
-    });
-    return newArr;
-  }
+  createConditionalMineDetails("mine_disturbance_code")
 );
 
 export const getConditionalCommodityOptions = createSelector(
   [getMineCommodityOptions, getMineTenureTypes],
-  (commodityOptions, tenureTypes) => {
-    const newArr = {};
-    tenureTypes.forEach((type) => {
-      const valueArr = [];
-      commodityOptions.forEach((option) => {
-        if (option.mine_tenure_type_codes.includes(type.value)) {
-          valueArr.push({
-            label: option.description,
-            value: option.mine_commodity_code,
-          });
-          newArr[type.value] = valueArr;
-        }
-      });
-    });
-    return newArr;
-  }
+  createConditionalMineDetails("mine_commodity_code")
 );
