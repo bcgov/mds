@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { SearchCoordinatesForm } from "@/components/Forms/SearchCoordinatesForm";
+import { AdvancedSearchForm } from "@/components/Forms/AdvancedSearchForm";
 
 const dispatchProps = {};
 
@@ -12,9 +12,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("SearchCoordinatesForm", () => {
+describe("AdvancedSearchForm", () => {
   it("renders properly", () => {
-    const component = shallow(<SearchCoordinatesForm {...dispatchProps} />);
+    const component = shallow(<AdvancedSearchForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

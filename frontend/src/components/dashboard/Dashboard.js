@@ -227,14 +227,15 @@ export class Dashboard extends Component {
             onTabClick={this.handleTabChange}
           >
             <TabPane tab="List" key="list">
-              <Row>
-                <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-                  <MineSearch
-                    handleMineSearch={this.handleMineSearchDebounced}
-                    searchValue={search}
-                  />
-                </Col>
-              </Row>
+              {/* <Row>
+                <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}> */}
+              <MineSearch
+                {...this.props}
+                handleMineSearch={this.handleMineSearchDebounced}
+                searchValue={search}
+              />
+              {/* </Col>
+              </Row> */}
               <div className="tab__content ">
                 <MineList {...this.props} />
               </div>
