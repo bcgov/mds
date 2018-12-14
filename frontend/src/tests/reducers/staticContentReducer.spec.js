@@ -6,6 +6,7 @@ import {
   storeMineTSFRequiredDocuments,
   storeTenureTypes,
   storeDisturbanceOptions,
+  storeCommodityOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -18,6 +19,7 @@ describe("staticContentReducer", () => {
       expectedDocumentStatusOptions: [],
       mineTSFRequiredReports: [],
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(undefined, {});
     expect(result).toEqual(expectedValue);
@@ -31,6 +33,7 @@ describe("staticContentReducer", () => {
       expectedDocumentStatusOptions: [],
       mineTSFRequiredReports: [],
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(undefined, storeStatusOptions(MOCK.STATUS_OPTIONS));
     expect(result).toEqual(expectedValue);
@@ -44,6 +47,7 @@ describe("staticContentReducer", () => {
       expectedDocumentStatusOptions: [],
       mineTSFRequiredReports: [],
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(undefined, storeRegionOptions(MOCK.REGION_OPTIONS));
     expect(result).toEqual(expectedValue);
@@ -57,6 +61,7 @@ describe("staticContentReducer", () => {
       expectedDocumentStatusOptions: MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
       mineTSFRequiredReports: [],
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(
       undefined,
@@ -71,8 +76,9 @@ describe("staticContentReducer", () => {
       mineRegionOptions: [],
       mineDisturbanceOptions: [],
       expectedDocumentStatusOptions: [],
-      mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS,
+      mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(
       undefined,
@@ -89,6 +95,7 @@ describe("staticContentReducer", () => {
       mineTSFRequiredReports: [],
       expectedDocumentStatusOptions: [],
       mineTenureTypes: MOCK.TENURE_TYPES.options,
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES));
     expect(result).toEqual(expectedValue);
@@ -98,15 +105,30 @@ describe("staticContentReducer", () => {
     const expectedValue = {
       mineStatusOptions: [],
       mineRegionOptions: [],
-      mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS,
+      mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS.options,
       mineTSFRequiredReports: [],
       expectedDocumentStatusOptions: [],
       mineTenureTypes: [],
+      mineCommodityOptions: [],
     };
     const result = staticContentReducer(
       undefined,
       storeDisturbanceOptions(MOCK.DISTURBANCE_OPTIONS)
     );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_COMMODITY_OPTIONS", () => {
+    const expectedValue = {
+      mineStatusOptions: [],
+      mineRegionOptions: [],
+      mineDisturbanceOptions: [],
+      mineTSFRequiredReports: [],
+      expectedDocumentStatusOptions: [],
+      mineTenureTypes: [],
+      mineCommodityOptions: MOCK.COMMODITY_OPTIONS.options,
+    };
+    const result = staticContentReducer(undefined, storeCommodityOptions(MOCK.COMMODITY_OPTIONS));
     expect(result).toEqual(expectedValue);
   });
 });

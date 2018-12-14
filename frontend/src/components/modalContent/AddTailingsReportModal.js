@@ -5,7 +5,7 @@ import AddTailingsReportForm from "@/components/Forms/AddTailingsReportForm";
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  mineTSFRequiredReports: PropTypes.array.isRequired,
+  mineTSFRequiredReportsDropDown: PropTypes.array.isRequired,
 };
 
 const defaultProps = {

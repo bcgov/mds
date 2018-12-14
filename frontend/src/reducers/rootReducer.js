@@ -34,6 +34,10 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_DISTURBANCE_OPTIONS
   ),
+  [reducerTypes.GET_COMMODITY_OPTIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_COMMODITY_OPTIONS
+  ),
   [reducerTypes.UPDATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.UPDATE_MINE_RECORD),
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
   [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),

@@ -7,7 +7,7 @@ from tests.constants import (
 
 
 def test_get_all_mine_tenure_type_codes(test_client, auth_headers):
-    get_resp = test_client.get('/mines/mine_tenure_type_codes', headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get('/mines/mine-tenure-type-codes', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     all_options = list(map(
         lambda x: { 'value': x[0], 'label': x[1] },

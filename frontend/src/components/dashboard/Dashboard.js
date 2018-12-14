@@ -12,6 +12,7 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
+  fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
@@ -19,7 +20,9 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
+  getMineCommodityOptions,
+  getMineTenureTypesHash,
+  getConditionalDisturbanceOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -43,6 +46,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -93,6 +98,7 @@ export class Dashboard extends Component {
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -187,10 +193,25 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title) {
+  openModal(
+    event,
+    mineStatusOptions,
+    mineRegionOptions,
+    mineTenureTypes,
+    conditionalDisturbanceOptions,
+    onSubmit,
+    title
+  ) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title },
+      props: {
+        mineStatusOptions,
+        mineRegionOptions,
+        mineTenureTypes,
+        conditionalDisturbanceOptions,
+        onSubmit,
+        title,
+      },
       content: modalConfig.MINE_RECORD,
     });
   }
@@ -219,7 +240,7 @@ export class Dashboard extends Component {
                   />
                 </Col>
               </Row>
-              <div className="tab__content">
+              <div className="tab__content ">
                 <MineList {...this.props} />
               </div>
               <div className="center">
@@ -318,6 +339,7 @@ export class Dashboard extends Component {
                   this.props.mineStatusOptions,
                   this.props.mineRegionOptions,
                   this.props.mineTenureTypes,
+                  this.props.conditionalDisturbanceOptions,
                   this.handleSubmit,
                   ModalContent.CREATE_MINE_RECORD
                 )
@@ -340,7 +362,9 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineDisturbanceOptions: getMineDisturbanceOptions(state),
+  mineCommodityOptions: getMineCommodityOptions(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -351,6 +375,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       createMineRecord,
       fetchMineTenureTypes,
+      fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
       openModal,
       closeModal,

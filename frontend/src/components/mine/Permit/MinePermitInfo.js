@@ -22,7 +22,7 @@ class MinePermitInfo extends Component {
       <div>
         <Row type="flex" style={{ textAlign: "center" }}>
           <Col span={4}>
-            <h2>Permit #</h2>
+            <h2>Permit No.</h2>
           </Col>
           <Col span={4}>
             <h2>Permittee</h2>

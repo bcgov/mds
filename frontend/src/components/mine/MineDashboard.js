@@ -37,7 +37,7 @@ import Loading from "@/components/common/Loading";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -72,6 +72,13 @@ export class MineDashboard extends Component {
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { activeTab } = nextProps.match.params;
+    if (activeTab !== this.props.activeTab) {
+      this.setState({ activeTab });
     }
   }
 
