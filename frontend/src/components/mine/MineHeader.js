@@ -73,7 +73,6 @@ class MineHeader extends Component {
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
       mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
-      mine_tenure_type_code: mine.mine_type[0] ? mine.mine_type[0].mine_tenure_type_code : null,
     };
 
     this.props.openModal({
@@ -91,11 +90,11 @@ class MineHeader extends Component {
   }
 
   render() {
-    const { mine, mineRegionHash } = this.props;
     const menu = (
       <Menu>
         <Menu.Item key="0">
           <button
+            type="button"
             className="full"
             onClick={(event) =>
               this.openModal(
@@ -109,18 +108,19 @@ class MineHeader extends Component {
               )
             }
           >
-            <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
+            <img alt="pencil" style={{ padding: "5px" }} src={GREEN_PENCIL} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
         <Menu.Item key="1">
           <button
+            type="button"
             className="full"
             onClick={(event) =>
               this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
-            <img style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
+            <img alt="document" style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
@@ -130,7 +130,7 @@ class MineHeader extends Component {
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between">
-            <h1>{mine.mine_detail[0].mine_name} </h1>
+            <h1>{this.props.mine.mine_detail[0].mine_name} </h1>
             <ConditionalButton
               isDropdown
               overlay={menu}
@@ -138,21 +138,23 @@ class MineHeader extends Component {
             />
           </div>
           <Divider />
-          <h5>
-            Mine ID:
-            {mine.mine_detail[0].mine_no}{" "}
-          </h5>
-          {mine.mine_status[0] && (
+          <h5>Mine No.: {this.props.mine.mine_detail[0].mine_no} </h5>
+          {this.props.mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
                 <h5>Operating Status: </h5>
               </div>
               <div>
-                <img src={mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE} />
+                <img
+                  alt="status"
+                  src={
+                    this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
+                  }
+                />
               </div>
               <div>
                 <h3>
-                  {mine.mine_status[0].status_labels.map((label, i) => (
+                  {this.props.mine.mine_status[0].status_labels.map((label, i) => (
                     <span className="mine__status" key={i}>
                       {label}
                     </span>
@@ -161,7 +163,7 @@ class MineHeader extends Component {
               </div>
             </div>
           )}
-          {!mine.mine_status[0] && (
+          {!this.props.mine.mine_status[0] && (
             <div>
               <h5>
                 Operating Status:
@@ -171,33 +173,47 @@ class MineHeader extends Component {
           )}
           <h5>
             Tenure:{" "}
-            {mine.mine_type[0] && mine.mine_type[0].mine_tenure_type_code
-              ? this.props.mineTenureHash[mine.mine_type[0].mine_tenure_type_code]
+            {this.props.mine.mine_type[0]
+              ? this.props.mine.mine_type.map((tenure) => (
+                  <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+                    {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
+                  </span>
+                ))
               : String.EMPTY_FIELD}
           </h5>
-          <h5>{mine.mine_detail[0].major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
+          <h5>
+            {this.props.mine.mine_detail[0].major_mine_ind
+              ? String.MAJOR_MINE
+              : String.REGIONAL_MINE}
+          </h5>
           <h5>
             TSF:{" "}
-            {mine.mine_tailings_storage_facility.length > 0
-              ? mine.mine_tailings_storage_facility.length
+            {this.props.mine.mine_tailings_storage_facility.length > 0
+              ? this.props.mine.mine_tailings_storage_facility.length
               : String.EMPTY_FIELD}
           </h5>
         </div>
         <div className="dashboard__header--card__map">
-          <MineMap mine={mine} />
+          <MineMap mine={this.props.mine} />
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat: {mine.mine_location[0] ? mine.mine_location[0].latitude : String.EMPTY_FIELD}
+                Lat:{" "}
+                {this.props.mine.mine_location[0]
+                  ? this.props.mine.mine_location[0].latitude
+                  : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long: {mine.mine_location[0] ? mine.mine_location[0].longitude : String.EMPTY_FIELD}
+                Long:{" "}
+                {this.props.mine.mine_location[0]
+                  ? this.props.mine.mine_location[0].longitude
+                  : String.EMPTY_FIELD}
               </p>
             </div>
             <p className="p-white">
               Region:{" "}
-              {mine.mine_detail[0].region_code
-                ? mineRegionHash[mine.mine_detail[0].region_code]
+              {this.props.mine.mine_detail[0].region_code
+                ? this.props.mineRegionHash[this.props.mine.mine_detail[0].region_code]
                 : String.EMPTY_FIELD}
             </p>
           </div>

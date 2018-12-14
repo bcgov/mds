@@ -98,7 +98,7 @@ describe("staticContentReducer", () => {
     const expectedValue = {
       mineStatusOptions: [],
       mineRegionOptions: [],
-      mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS,
+      mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS.options,
       mineTSFRequiredReports: [],
       expectedDocumentStatusOptions: [],
       mineTenureTypes: [],
