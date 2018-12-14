@@ -10,17 +10,27 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 const submitDisturbances = (type) => ({ data }) => {
-  const disturbanceResponses = type.mine_disturbance_code.map((code) =>
-    axios.post(
+  const disturbanceResponses = type.mine_disturbance_code.map((code) => {
+    return axios.post(
       ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
       {
         mine_type_guid: data.mine_type_guid,
         mine_disturbance_code: code,
       },
       createRequestHeader()
-    )
-  );
-  return Promise.all(disturbanceResponses);
+    );
+  });
+  const commodityResponses = type.mine_commodity_code.map((code) => {
+    return axios.post(
+      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+      {
+        mine_type_guid: data.mine_type_guid,
+        mine_commodity_code: code,
+      },
+      createRequestHeader()
+    );
+  });
+  return Promise.all([disturbanceResponses, commodityResponses]);
 };
 
 const handleError = (dispatch, reducer) => (err) => {

@@ -39,7 +39,26 @@ export const getConditionalDisturbanceOptionsHash = createSelector(
           valueArr.push({
             label: option.description,
             value: option.mine_disturbance_code,
-            exclusive: option.exclusive_ind,
+          });
+          newArr[type.value] = valueArr;
+        }
+      });
+    });
+    return newArr;
+  }
+);
+
+export const getConditionalCommodityOptions = createSelector(
+  [getMineCommodityOptions, getMineTenureTypes],
+  (commodityOptions, tenureTypes) => {
+    const newArr = {};
+    tenureTypes.forEach((type) => {
+      const valueArr = [];
+      commodityOptions.forEach((option) => {
+        if (option.mine_tenure_type_codes.includes(type.value)) {
+          valueArr.push({
+            label: option.description,
+            value: option.mine_commodity_code,
           });
           newArr[type.value] = valueArr;
         }

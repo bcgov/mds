@@ -19,6 +19,7 @@ const propTypes = {
   mineTenureTypes: PropTypes.array.isRequired,
   mine_Types: PropTypes.array.isRequired,
   conditionalDisturbanceOptions: PropTypes.array.isRequired,
+  conditionalCommodityOptions: PropTypes.array.isRequired,
   initialValues: PropTypes.object,
 };
 
@@ -39,6 +40,7 @@ export class MineRecordForm extends Component {
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
       mine_tenure_type_code: [],
+      mine_commodity_code: [],
       mine_disturbance_code: [],
     };
     // Do nothing if no mine_types, or no change to mine_types
@@ -99,25 +101,32 @@ export class MineRecordForm extends Component {
                   />
                 </Col>
               </Row>
-              {/* commented out until commodity is added, Will be done by End of Sprint */}
-              {/* <Row gutter={16}>
+              <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    id={`${type}.mine_commodity_type_code`}
-                    name={`${type}.mine_commodity_type_code`}
+                    id={`${type}.mine_commodity_code`}
+                    name={`${type}.mine_commodity_code`}
                     label="Commodity"
                     placeholder="Please Select Commodity"
                     component={renderConfig.MULTI_SELECT}
-                    data={this.props.mineTenureTypes}
+                    data={
+                      this.props.mine_types && this.props.mine_types[index].mine_tenure_type_code
+                        ? this.props.conditionalCommodityOptions[
+                            this.props.mine_types[index].mine_tenure_type_code
+                          ]
+                        : this.props.conditionalCommodityOptions.COL
+                    }
+                    validate={[required]}
                   />
                 </Col>
-              </Row> */}
+              </Row>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
                     id={`${type}.mine_disturbance_code`}
                     name={`${type}.mine_disturbance_code`}
                     placeholder="Please Select Disturbance"
+                    label="Disturbance"
                     component={renderConfig.MULTI_SELECT}
                     validate={[required]}
                     data={
