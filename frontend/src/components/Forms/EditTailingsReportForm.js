@@ -64,7 +64,7 @@ export const EditTailingsReportForm = (props) => (
           <Field
             id="tsf_document_upload"
             name="tsf_document_upload"
-            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.expDocumentGuid)}
+            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.exp_document_guid)}
             component={FileUpload}
           />
         </Form.Item>
