@@ -100,10 +100,10 @@ class MineMap extends Component {
               mine.mine_location[0] ? mine.mine_location[0].longitude : String.DEFAULT_LONG,
               mine.mine_location[0] ? mine.mine_location[0].latitude : String.DEFAULT_LAT,
             ],
-            zoom: mine.mine_location[0] ? 8 : 4,
+            zoom: mine.mine_location[0] ? 8 : 5,
+            constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
-          onMouseWheel={(event) => event.stopPropagation()}
         >
           <MinePin />
         </WebMap>
@@ -119,9 +119,9 @@ class MineMap extends Component {
         viewProperties={{
           center: [this.props.long, this.props.lat],
           zoom: 6,
+          constraints: { minZoom: 5 },
         }}
         onLoad={this.handleLoadMap}
-        onMouseWheel={(event) => event.stopPropagation()}
       >
         {this.renderPin()}
         <MinePin />
