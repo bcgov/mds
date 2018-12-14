@@ -32,10 +32,6 @@
   width: 80%;
   margin-top: $default-padding-lg;
   padding: $default-padding-lg;
-
-  @include mobile {
-    margin: 0;
-  }
 }
 
 .profile {

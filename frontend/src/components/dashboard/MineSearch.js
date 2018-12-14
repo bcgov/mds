@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import AdvancedSearchForm from "@/components/forms/AdvanceSearchForm";
+import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
@@ -27,11 +27,6 @@ const defaultProps = {
 export class MineSearch extends Component {
   state = {
     isAdvanceSearch: false,
-    initialFormState: {
-      status: [],
-      region: [],
-      tenure: [],
-    },
   };
 
   componentDidMount() {
@@ -62,8 +57,7 @@ export class MineSearch extends Component {
    * filter mineList with new search input;
    */
   handleSearch = (value) => {
-    console.log(value);
-    // this.props.handleMineSearch(value.target.value);
+    this.props.handleMineSearch(value.target.value);
   };
 
   toggleAdvancedSearch = () => {
@@ -112,15 +106,11 @@ export class MineSearch extends Component {
         </Row>
         {this.state.isAdvanceSearch && (
           <div className="advanced-search__container">
-            <AdvancedSearchForm
-              {...this.props}
-              onSubmit={this.handleSearch}
-              initialValues={this.state.initialFormState}
-            />
+            <AdvancedSearchForm {...this.props} onSubmit={this.handleSearch} />
           </div>
         )}
         <Row>
-          <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
+          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <Button onClick={this.toggleAdvancedSearch}>
               {this.state.isAdvanceSearch ? "Close Advanced Search" : "Expand Advanced Search"}
             </Button>

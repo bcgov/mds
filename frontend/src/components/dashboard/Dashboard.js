@@ -78,6 +78,11 @@ export class Dashboard extends Component {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
       },
+      initialAdvancedSearchState: {
+        status: [],
+        region: [],
+        tenure: [],
+      },
     };
   }
 
@@ -227,15 +232,12 @@ export class Dashboard extends Component {
             onTabClick={this.handleTabChange}
           >
             <TabPane tab="List" key="list">
-              {/* <Row>
-                <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}> */}
               <MineSearch
+                initialValues={this.state.initialAdvancedSearchState}
                 {...this.props}
                 handleMineSearch={this.handleMineSearchDebounced}
                 searchValue={search}
               />
-              {/* </Col>
-              </Row> */}
               <div className="tab__content ">
                 <MineList {...this.props} />
               </div>
