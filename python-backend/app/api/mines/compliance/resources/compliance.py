@@ -22,7 +22,9 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         except requests.exceptions.Timeout as errt:
             return self.raise_error(408, "NRIS has timed out.")
 
-        if len(data) > 0:
+        if len(data) == 0:
+            return None
+        else:
             data = sorted(
                 data, key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'), reverse=True)
 
@@ -54,10 +56,10 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                             k.get('orderStatus') == 'Open'
                             for k in stop_orders)
                         overdue_orders += sum(
-                            k.get('orderStatus') == 'Open'
-                            and datetime.strptime(
-                                k.get('orderCompletionDate'),
-                                '%Y-%m-%d %H:%M') < datetime.now()
+                            k.get('orderCompletionDate') is not None and k.get(
+                                'orderStatus') == 'Open' and datetime.strptime(
+                                    k.get('orderCompletionDate'),
+                                    '%Y-%m-%d %H:%M') < datetime.now()
                             for k in stop_orders)
                         section_35_orders += sum(
                             k.get('orderAuthoritySection') == 'Section 35'
@@ -78,5 +80,3 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             }
 
             return overview
-        else:
-            return None

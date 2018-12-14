@@ -23,6 +23,11 @@ def get_NRIS_token():
         params=params,
         auth=(current_app.config['NRIS_USER_NAME'],
               current_app.config['NRIS_PASS']))
+    try:
+        resp.raise_for_status()
+    except:
+        raise
+
     if resp.status_code != 200:
         return None
 
@@ -32,7 +37,11 @@ def get_NRIS_token():
 def get_EMPR_data_from_NRIS(mine_no):
 
     current_date = datetime.now()
-    token = get_NRIS_token()
+
+    try:
+        token = get_NRIS_token()
+    except requests.exceptions.HTTPError:
+        raise
 
     if token is None:
         return None
@@ -50,7 +59,7 @@ def get_EMPR_data_from_NRIS(mine_no):
     headers = {'Authorization': 'Bearer ' + token}
     try:
         empr_nris_resp = requests.get(
-            url=current_app.config['NRIS_EMPR_API_URL'],
+            url=current_app.config['NRIS_INSPECTION_URL'],
             params=params,
             headers=headers)
     except requests.exceptions.Timeout:
