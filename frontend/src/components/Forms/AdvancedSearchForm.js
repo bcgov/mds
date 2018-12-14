@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import { optionsType } from "@/types";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineStatusOptions: PropTypes.array.isRequired,
+  mineTenureTypes: optionsType.isRequired,
+  mineRegionOptions: optionsType.isRequired,
+  mineStatusOptions: optionsType.isRequired,
 };
 
 export const AdvancedSearchForm = (props) => (
