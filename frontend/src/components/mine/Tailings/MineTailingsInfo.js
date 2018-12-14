@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button, Icon, Popconfirm } from "antd";
+import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { GREEN_PENCIL, RED_CLOCK } from "@/constants/assets";
@@ -18,8 +18,8 @@ import {
 import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
-  getMineTSFRequiredDocumentsHash,
 } from "@/selectors/staticContentSelectors";
+import { createDropDownList } from "@/utils/helpers";
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
@@ -36,9 +36,11 @@ const propTypes = {
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   expectedDocumentStatusOptions: PropTypes.array,
   updateExpectedDocument: PropTypes.func.isRequired,
+  removeExpectedDocument: PropTypes.func.isRequired,
   selectedDocument: PropTypes.object,
   mineTSFRequiredReports: PropTypes.array.isRequired,
   fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
+  createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -77,11 +79,14 @@ export class MineTailingsInfo extends Component {
   };
 
   handleAddReportSubmit = (value) => {
-    const requiredReportLabel = this.getMineTSFRequiredDocumentsHash[value.req_document_guid];
-    this.createMineExpectedDocument(this.props.mine.guid, {
-      document_name: requiredReportLabel,
-      ...value,
-    }).then(() => {
+    const requiredReport = this.props.mineTSFRequiredReports.find(
+      (x) => x.req_document_guid === value.req_document_guid
+    );
+    const newRequiredReport = {
+      document_name: requiredReport.req_document_name,
+      req_document_guid: requiredReport.req_document_guid,
+    };
+    this.props.createMineExpectedDocument(this.props.mine.guid, newRequiredReport).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.guid);
     });
@@ -103,15 +108,20 @@ export class MineTailingsInfo extends Component {
 
   removeReport = (event, exp_doc_guid) => {
     event.preventDefault();
-    this.removeExpectedDocument(exp_doc_guid).then(() => {
+    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
     });
   };
 
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
     event.preventDefault();
+    const mineTSFRequiredReportsDropDown = createDropDownList(
+      mineTSFRequiredReports,
+      "req_document_name",
+      "req_document_guid"
+    );
     this.props.openModal({
-      props: { onSubmit, title, mineTSFRequiredReports },
+      props: { onSubmit, title, mineTSFRequiredReportsDropDown },
       content: modalConfig.ADD_TAILINGS_REPORT,
     });
   }
@@ -146,10 +156,10 @@ export class MineTailingsInfo extends Component {
   }
 
   getFileFromDocumentManager(docMgrFileGuid) {
-    const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + docMgrFileGuid;
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
     window.open(url, "_blank");
-    //Document_manager GET endpoint is unathenticated right now.
-    //TODO: updated this when Document manager tokens are implmeneted.
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
   }
 
   render() {
@@ -206,11 +216,12 @@ export class MineTailingsInfo extends Component {
             </Col>
             <Col span={4} />
           </Row>
-          <hr style={{ borderTop: "2px solid #c4cdd5" }} />
+          <Divider type="horizontal" className="thick-divider" />
           {this.props.mine.mine_expected_documents
             .sort((doc1, doc2) => {
-              if (!(doc1.due_date === doc2.due_date)) return doc1.due_date > doc2.due_date;
-              return doc1.exp_document_name > doc2.exp_document_name;
+              if (!(Date.parse(doc1.due_date) === Date.parse(doc2.due_date)))
+                return Date.parse(doc1.due_date) > Date.parse(doc2.due_date) ? 1 : -1;
+              return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
             })
             .map((doc, id) => {
               const isOverdue = Date.parse(doc.due_date) < new Date();
@@ -286,7 +297,7 @@ export class MineTailingsInfo extends Component {
                       </Popconfirm>
                     </Col>
                   </Row>
-                  <hr />
+                  <Divider type="horizontal" />
                 </div>
               );
             })}
@@ -321,7 +332,6 @@ export class MineTailingsInfo extends Component {
 const mapStateToProps = (state) => ({
   expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mineTSFRequiredReports: getMineTSFRequiredReports(state),
-  getMineTSFRequiredDocumentsHash: getMineTSFRequiredDocumentsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
