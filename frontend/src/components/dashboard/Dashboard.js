@@ -19,7 +19,8 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
+  getMineTenureTypesHash,
+  getConditionalDisturbanceOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -187,10 +188,25 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title) {
+  openModal(
+    event,
+    mineStatusOptions,
+    mineRegionOptions,
+    mineTenureTypes,
+    conditionalDisturbanceOptions,
+    onSubmit,
+    title
+  ) {
     event.preventDefault();
     this.props.openModal({
-      props: { mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title },
+      props: {
+        mineStatusOptions,
+        mineRegionOptions,
+        mineTenureTypes,
+        conditionalDisturbanceOptions,
+        onSubmit,
+        title,
+      },
       content: modalConfig.MINE_RECORD,
     });
   }
@@ -318,6 +334,7 @@ export class Dashboard extends Component {
                   this.props.mineStatusOptions,
                   this.props.mineRegionOptions,
                   this.props.mineTenureTypes,
+                  this.props.conditionalDisturbanceOptions,
                   this.handleSubmit,
                   ModalContent.CREATE_MINE_RECORD
                 )
@@ -340,7 +357,8 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineDisturbanceOptions: getMineDisturbanceOptions(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

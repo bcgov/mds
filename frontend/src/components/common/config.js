@@ -6,6 +6,7 @@ import RenderDate from "./RenderDate";
 import RenderField from "./RenderField";
 import RenderLargeSelect from "./RenderLargeSelect";
 import RenderSelect from "./RenderSelect";
+import RenderMultiSelect from "./RenderMultiSelect";
 
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
@@ -16,4 +17,5 @@ export const renderConfig = {
   FIELD: RenderField,
   SELECT: RenderSelect,
   LARGE_SELECT: RenderLargeSelect,
+  MULTI_SELECT: RenderMultiSelect,
 };
