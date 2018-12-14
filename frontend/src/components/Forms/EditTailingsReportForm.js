@@ -4,9 +4,11 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
+import FileUpload from "@/components/common/FileUpload";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
+import { required, notnone } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
@@ -14,6 +16,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.array.isRequired,
+  selectedDocument: PropTypes.object,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -44,7 +47,6 @@ export const EditTailingsReportForm = (props) => (
             name="tsf_report_received_date"
             label="Received Date"
             component={RenderDate}
-            validate={[]}
           />
         </Form.Item>
         <Form.Item>
@@ -55,7 +57,14 @@ export const EditTailingsReportForm = (props) => (
             placeholder="Select a Status"
             component={RenderSelect}
             data={props.statusOptions}
-            validate={[]}
+          />
+        </Form.Item>
+        <Form.Item label="Upload Documents">
+          <Field
+            id="tsf_document_upload"
+            name="tsf_document_upload"
+            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.exp_document_guid)}
+            component={FileUpload}
           />
         </Form.Item>
       </Col>

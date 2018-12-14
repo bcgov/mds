@@ -11,6 +11,7 @@ const initialState = {
   mineRegionOptions: [],
   mineTenureTypes: [],
   mineDisturbanceOptions: [],
+  mineCommodityOptions: [],
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
 };
@@ -37,6 +38,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineDisturbanceOptions: action.payload.options,
       };
+    case actionTypes.STORE_COMMODITY_OPTIONS:
+      return {
+        ...state,
+        mineCommodityOptions: action.payload.options,
+      };
     case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
       return {
         ...state,
@@ -56,6 +62,7 @@ export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusO
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
 export const getMineTenureTypes = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
+export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getExpectedDocumentStatusOptions = (state) =>
   state[STATIC_CONTENT].expectedDocumentStatusOptions;
 export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;

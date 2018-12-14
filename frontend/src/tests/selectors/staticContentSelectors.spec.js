@@ -6,6 +6,7 @@ import {
   getMineTenureTypesHash,
   getMineTenureTypes,
   getMineDisturbanceOptions,
+  getMineCommodityOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -14,6 +15,7 @@ import {
   storeMineTSFRequiredDocuments,
   storeTenureTypes,
   storeDisturbanceOptions,
+  storeCommodityOptions,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -25,10 +27,11 @@ const mockState = {
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
+  mineCommodityOptions: Mock.COMMODITY_OPTIONS.options,
 };
 
 describe("mineSelectors", () => {
-  const { mineStatusOptions, mineDisturbanceOptions } = mockState;
+  const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
   let { mineRegionOptions, mineTSFRequiredReports, mineTenureTypes } = mockState;
 
   it("`getMineStatusOptions` calls `staticContentReducer.getMineStatusOptions`", () => {
@@ -86,5 +89,14 @@ describe("mineSelectors", () => {
       [STATIC_CONTENT]: storeState,
     };
     expect(getMineDisturbanceOptions(mockState)).toEqual(mineDisturbanceOptions);
+  });
+
+  it("`getMineCommodityOptions` calls `staticContentReducer.getMineCommodityOptions`", () => {
+    const storeAction = storeCommodityOptions(Mock.COMMODITY_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const mockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getMineCommodityOptions(mockState)).toEqual(mineCommodityOptions);
   });
 });
