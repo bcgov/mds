@@ -15,6 +15,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
+  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
