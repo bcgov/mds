@@ -139,7 +139,7 @@ export class MineTailingsInfo extends Component {
           doc.exp_document_status_guid === "None" ? null : doc.exp_document_status_guid,
       };
       this.props.openModal({
-        props: { onSubmit, title, statusOptions, initialValues },
+        props: { onSubmit, title, statusOptions, initialValues, selectedDocument: doc },
         content: modalConfig.EDIT_TAILINGS_REPORT,
       });
     }
