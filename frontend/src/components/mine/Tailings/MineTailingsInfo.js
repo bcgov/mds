@@ -36,6 +36,7 @@ const propTypes = {
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   expectedDocumentStatusOptions: PropTypes.array,
   updateExpectedDocument: PropTypes.func.isRequired,
+  removeExpectedDocument: PropTypes.func.isRequired,
   selectedDocument: PropTypes.object,
   mineTSFRequiredReports: PropTypes.array.isRequired,
   fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
@@ -84,8 +85,6 @@ export class MineTailingsInfo extends Component {
     const newRequiredReport = {
       document_name: requiredReport.req_document_name,
       req_document_guid: requiredReport.req_document_guid,
-      document_due_date_type: requiredReport.req_document_due_date_type,
-      document_due_date_period_months: requiredReport.req_document_due_date_period_months,
     };
     this.props.createMineExpectedDocument(this.props.mine.guid, newRequiredReport).then(() => {
       this.props.closeModal();
@@ -109,7 +108,7 @@ export class MineTailingsInfo extends Component {
 
   removeReport = (event, exp_doc_guid) => {
     event.preventDefault();
-    this.removeExpectedDocument(exp_doc_guid).then(() => {
+    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
     });
   };
@@ -157,10 +156,10 @@ export class MineTailingsInfo extends Component {
   }
 
   getFileFromDocumentManager(docMgrFileGuid) {
-    const url = ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL + "/" + docMgrFileGuid;
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
     window.open(url, "_blank");
-    //Document_manager GET endpoint is unathenticated right now.
-    //TODO: updated this when Document manager tokens are implmeneted.
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
   }
 
   render() {
