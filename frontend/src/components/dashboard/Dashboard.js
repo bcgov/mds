@@ -89,7 +89,10 @@ export class Dashboard extends Component {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
     }
     this.props.fetchStatusOptions();
@@ -123,7 +126,11 @@ export class Dashboard extends Component {
 
   onPageChange = (current, pageSize) => {
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search)
+      router.MINE_DASHBOARD.dynamicRoute({
+        page: current,
+        page_size: pageSize,
+        search: this.state.params.search,
+      })
     );
   };
 
@@ -164,17 +171,17 @@ export class Dashboard extends Component {
     if (key === "map") {
       this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
     } else {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search));
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute({ page, per_page, search }));
     }
   };
 
-  handleMineSearch = (value) => {
-    const perPage = this.state.params.per_page
+  handleMineSearch = (searchParams) => {
+    const per_page = this.state.params.per_page
       ? this.state.params.per_page
       : String.DEFAULT_PER_PAGE;
     // reset page when a search is initiated
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value)
+      router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
     );
   };
 

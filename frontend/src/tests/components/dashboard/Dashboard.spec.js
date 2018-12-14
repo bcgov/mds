@@ -65,10 +65,16 @@ describe("Dashboard", () => {
       const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
       component.update();
       reducerProps.history.push(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
       expect(reducerProps.history.push).toHaveBeenCalledWith(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
       expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
       expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();

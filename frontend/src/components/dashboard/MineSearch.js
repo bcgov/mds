@@ -20,10 +20,6 @@ const propTypes = {
   searchValue: PropTypes.string,
 };
 
-const defaultProps = {
-  mineNameList: [],
-};
-
 export class MineSearch extends Component {
   state = {
     isAdvanceSearch: false,
@@ -57,7 +53,15 @@ export class MineSearch extends Component {
    * filter mineList with new search input;
    */
   handleSearch = (value) => {
-    this.props.handleMineSearch(value.target.value);
+    const search = value.target && value.target.value;
+    const { commodity, region, status, tenure } = search ? {} : value;
+    this.props.handleMineSearch({
+      search,
+      commodity: commodity && commodity.join(","),
+      region: region && region.join(","),
+      status: status && status.join(","),
+      tenure: tenure && tenure.join(","),
+    });
   };
 
   toggleAdvancedSearch = () => {
@@ -134,7 +138,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineSearch.propTypes = propTypes;
-MineSearch.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
