@@ -12,7 +12,7 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
-  fetchMineCommodityOption,
+  fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
@@ -45,6 +45,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -95,7 +97,7 @@ export class Dashboard extends Component {
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
-    this.props.fetchMineCommodityOption();
+    this.props.fetchMineCommodityOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -308,7 +310,6 @@ export class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.props.mineCommodityOptions);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -356,7 +357,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       createMineRecord,
       fetchMineTenureTypes,
-      fetchMineCommodityOption,
+      fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
       openModal,
       closeModal,

@@ -629,3 +629,26 @@ export const DISTURBANCE_OPTIONS = {
     },
   ],
 };
+
+export const COMMODITY_OPTIONS = {
+  options: [
+    {
+      description: "Thermal Coal",
+      exclusive_ind: true,
+      mine_commodity_code: "TO",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Metallurgic",
+      exclusive_ind: true,
+      mine_commodity_code: "MC",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Construction Aggregate",
+      exclusive_ind: false,
+      mine_commodity_code: "CG",
+      mine_tenure_type_codes: ["BCL"],
+    },
+  ],
+};

@@ -35,7 +35,6 @@ export const fetchMineCommodityOptions = () => (dispatch) => {
   return axios
     .get(ENVIRONMENT.apiUrl + API.COMMODITY_CODES, createRequestHeader())
     .then((response) => {
-      console.log(response.data);
       dispatch(success(reducerTypes.GET_COMMODITY_OPTIONS));
       dispatch(staticContentActions.storeCommodityOptions(response.data));
       dispatch(hideLoading("modal"));

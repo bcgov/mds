@@ -12,6 +12,7 @@ const initialState = {
   mineRegionOptions: [],
   mineTenureTypes: [],
   mineDisturbanceOptions: [],
+  mineCommodityOptions: [],
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
 };
