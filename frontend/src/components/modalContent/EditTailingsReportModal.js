@@ -7,7 +7,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.array.isRequired,
   initialValues: PropTypes.object,
-  expDocumentGuid: PropTypes.string,
+  selectedDocument: PropTypes.object,
 };
 
 const defaultProps = {

@@ -19,7 +19,7 @@ class FileUpload extends React.Component {
     this.server = {
       url: ENVIRONMENT.apiUrl,
       process: {
-        url: `/documents/expected/${this.props.expDocumentGuid}/document`,
+        url: this.props.uploadUrl,
         headers: createRequestHeader()["headers"],
         onload: null,
         onerror: null,

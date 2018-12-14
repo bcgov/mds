@@ -7,6 +7,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import FileUpload from "@/components/mine/Tailings/FileUpload";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
+import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
 import { required, notnone } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -16,7 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.array.isRequired,
-  expDocumentGuid: PropTypes.string,
+  selectedDocument: PropTypes.object,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -63,7 +64,7 @@ export const EditTailingsReportForm = (props) => (
           <Field
             id="tsf_document_upload"
             name="tsf_document_upload"
-            expDocumentGuid={props.expDocumentGuid}
+            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.expDocumentGuid)}
             component={FileUpload}
           />
         </Form.Item>
