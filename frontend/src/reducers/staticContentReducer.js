@@ -37,7 +37,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {
         ...state,
-        mineDisturbanceOptions: action.payload,
+        mineDisturbanceOptions: action.payload.options,
       };
     case actionTypes.STORE_COMMODITY_OPTIONS:
       return {
