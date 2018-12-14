@@ -59,7 +59,7 @@
       "value": "/opt/app-root/src/document_uploads"
     },
     {
-      "name": "MDS_NRIS",
+      "name": "MDS_NRIS_API_SECRET",
       "required": false,
       "value": "template.mds-nris-secret"
     },
@@ -285,7 +285,7 @@
                     "name": "NRIS_USER_NAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "user-name"
                       }
                     }
@@ -294,7 +294,7 @@
                     "name": "NRIS_PASS",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "password"
                       }
                     }
@@ -303,7 +303,7 @@
                     "name": "NRIS_TOKEN_URL",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "token-url"
                       }
                     }
@@ -312,7 +312,7 @@
                     "name": "NRIS_INSPECTION_URL",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "inspection-url"
                       }
                     }
