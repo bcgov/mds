@@ -12,6 +12,7 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
+  fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
@@ -19,6 +20,7 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
+  getMineCommodityOptions,
   getMineTenureTypesHash,
   getConditionalDisturbanceOptionsHash,
 } from "@/selectors/staticContentSelectors";
@@ -44,6 +46,8 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -94,6 +98,7 @@ export class Dashboard extends Component {
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -357,6 +362,7 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
+  mineCommodityOptions: getMineCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
@@ -369,6 +375,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       createMineRecord,
       fetchMineTenureTypes,
+      fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
       openModal,
       closeModal,
