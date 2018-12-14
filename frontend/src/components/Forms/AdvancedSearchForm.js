@@ -52,9 +52,8 @@ export const AdvancedSearchForm = (props) => (
           />
         </Form.Item>
       </Col>
-      {/* Commented out until backend is ready for Commodity */}
-      {/* <Col md={12} xs={24}> */}
-      {/* <Form.Item>
+      <Col md={12} xs={24}>
+        <Form.Item>
           <Field
             id="commodity"
             name="commodity"
@@ -62,8 +61,8 @@ export const AdvancedSearchForm = (props) => (
             component={renderConfig.MULTI_SELECT}
             data={props.mineStatusOptions}
           />
-        </Form.Item> */}
-      {/* </Col> */}
+        </Form.Item>
+      </Col>
     </Row>
     <Row gutter={6}>
       <Col md={12}>

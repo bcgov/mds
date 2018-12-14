@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Pagination, Tabs, Col, Row, Divider, notification } from "antd";
+import { Pagination, Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -40,7 +40,7 @@ import { debounce } from "lodash";
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
@@ -58,14 +58,6 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
-};
-
-const defaultProps = {
-  mines: {},
-  mineIds: [],
-  pageData: {},
-  mineStatusOptions: [],
-  mineRegionOptions: [],
 };
 
 export class Dashboard extends Component {
@@ -86,6 +78,7 @@ export class Dashboard extends Component {
         status: [],
         region: [],
         tenure: [],
+        commodity: [],
       },
     };
   }
@@ -387,7 +380,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Dashboard.propTypes = propTypes;
-Dashboard.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
