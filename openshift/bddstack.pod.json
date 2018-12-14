@@ -71,10 +71,10 @@
               {
                 "name": "IDIR_PASSWORD",
                 "valueFrom": {
-                    "secretKeyRef": {
-                        "name": "${IDIR_CONFIG_NAME}",
-                        "key": "bdd-test-create"
-                    }
+                  "secretKeyRef": {
+                    "name": "${IDIR_CONFIG_NAME}",
+                    "key": "bdd-test-create"
+                  }
                 }
               },
               {
@@ -88,26 +88,25 @@
               {
                 "name": "DB_USER",
                 "valueFrom": {
-                    "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
-                    }
+                  "secretKeyRef": {
+                    "name": "${DB_CONFIG_NAME}",
+                    "key": "database-user"
+                  }
                 }
               },
               {
                 "name": "DB_PASS",
                 "valueFrom": {
-                    "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
-                    }
+                  "secretKeyRef": {
+                    "name": "${DB_CONFIG_NAME}",
+                    "key": "database-password"
+                  }
                 }
               }
-
             ],
             "resources": {
               "limits": {
-                "cpu": "1",
+                "cpu": "1.5",
                 "memory": "3Gi"
               },
               "requests": {
