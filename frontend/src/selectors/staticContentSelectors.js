@@ -7,8 +7,6 @@ export const getMineRegionOptions = (state) => staticContentReducer.getMineRegio
 export const getMineTenureTypes = (state) => staticContentReducer.getMineTenureTypes(state);
 export const getMineDisturbanceOptions = (state) =>
   staticContentReducer.getMineDisturbanceOptions(state);
-export const getMineCommodityOptions = (state) =>
-  staticContentReducer.getMineCommodityOptions(state);
 export const getExpectedDocumentStatusOptions = (state) =>
   staticContentReducer.getExpectedDocumentStatusOptions(state);
 export const getMineTSFRequiredReports = (state) =>
@@ -18,6 +16,7 @@ export const getMineTenureTypesHash = createSelector(
   [getMineTenureTypes],
   createLabelHash
 );
+
 export const getMineRegionHash = createSelector(
   [getMineRegionOptions],
   createLabelHash

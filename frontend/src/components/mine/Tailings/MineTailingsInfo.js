@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button, Icon, Popconfirm } from "antd";
+import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { GREEN_PENCIL, RED_CLOCK } from "@/constants/assets";
@@ -216,7 +216,7 @@ export class MineTailingsInfo extends Component {
             </Col>
             <Col span={4} />
           </Row>
-          <hr style={{ borderTop: "2px solid #c4cdd5" }} />
+          <Divider type="horizontal" className="thick-divider" />
           {this.props.mine.mine_expected_documents
             .sort((doc1, doc2) => {
               if (!(Date.parse(doc1.due_date) === Date.parse(doc2.due_date)))
@@ -297,7 +297,7 @@ export class MineTailingsInfo extends Component {
                       </Popconfirm>
                     </Col>
                   </Row>
-                  <hr />
+                  <Divider type="horizontal" />
                 </div>
               );
             })}
