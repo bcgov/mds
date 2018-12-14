@@ -8,13 +8,14 @@ import { optionsType } from "@/types";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   mineTenureTypes: optionsType.isRequired,
   mineRegionOptions: optionsType.isRequired,
   mineStatusOptions: optionsType.isRequired,
 };
 
 export const AdvancedSearchForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onSubmit={props.handleSubmit} onReset={props.reset}>
     <Row gutter={6}>
       <Col md={12} xs={24}>
         <Form.Item>
@@ -89,7 +90,7 @@ export const AdvancedSearchForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Button className="full-mobile" type="secondary">
+      <Button className="full-mobile" type="secondary" htmlType="reset">
         Clear Filters
       </Button>
       <Button className="full-mobile" type="primary" htmlType="submit">
