@@ -69,7 +69,7 @@ export class MineRecordForm extends Component {
 
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
-      <Form.Item label={`Mine Type ${index + 1}`} />
+      <Form.Item style={{ marginTop: "15px" }} label={`Mine Type ${index + 1}`} />
       <Button
         ghost
         onClick={(event) => {
