@@ -76,7 +76,7 @@ describe("staticContentReducer", () => {
       mineRegionOptions: [],
       mineDisturbanceOptions: [],
       expectedDocumentStatusOptions: [],
-      mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS,
+      mineTSFRequiredReports: MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
       mineTenureTypes: [],
       mineCommodityOptions: [],
     };

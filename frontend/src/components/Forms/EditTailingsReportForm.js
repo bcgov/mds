@@ -10,7 +10,6 @@ import * as FORM from "@/constants/forms";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
 import { required, notnone } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

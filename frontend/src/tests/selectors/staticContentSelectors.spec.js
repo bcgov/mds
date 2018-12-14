@@ -3,7 +3,6 @@ import {
   getMineStatusOptions,
   getMineRegionHash,
   getMineTSFRequiredReports,
-  getMineTSFRequiredDocumentsHash,
   getMineTenureTypesHash,
   getMineTenureTypes,
   getMineDisturbanceOptions,
@@ -26,7 +25,7 @@ const mockState = {
   mineRegionOptions: Mock.REGION_OPTIONS.options,
   mineTenureTypes: Mock.TENURE_TYPES.options,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
-  mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS,
+  mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.options,
 };
@@ -66,12 +65,6 @@ describe("mineSelectors", () => {
     mineRegionOptions = Mock.REGION_OPTIONS.options;
     const selected = getMineRegionHash.resultFunc(mineRegionOptions);
     expect(selected).toEqual(Mock.REGION_HASH);
-  });
-
-  it("`getMineTSFRequiredDocumentsHash` calls `staticContentReducer.getMineTSFRequiredReports`", () => {
-    mineTSFRequiredReports = Mock.MINE_TSF_REQUIRED_REPORTS;
-    const selected = getMineTSFRequiredDocumentsHash.resultFunc(mineTSFRequiredReports);
-    expect(selected).toEqual(Mock.MINE_TSF_REQUIRED_REPORTS_HASH);
   });
 
   it("`getMineTenureTypesHash` converts `staticContentReducer.getMineTenureTypes`", () => {
