@@ -76,8 +76,7 @@ class MineIdentity(AuditMixin, Base):
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents':
             [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.mine_type],
-            #'mine_party_appts': [item.json() for item in self.mine_type]
+            'mine_type': [item.json() for item in self.active(self.mine_type)]
         }
 
     def json_for_map(self):
@@ -108,6 +107,10 @@ class MineIdentity(AuditMixin, Base):
             'guid': str(self.mine_guid),
             'mine_permit': [item.json() for item in self.mine_permit]
         }
+
+    def active(self, records):
+        return list(filter(lambda x: x.active_ind, records))
+
 
     @classmethod
     def find_by_mine_guid(cls, _id):

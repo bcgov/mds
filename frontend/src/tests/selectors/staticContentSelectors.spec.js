@@ -24,7 +24,7 @@ const mockState = {
   mineTenureTypes: Mock.TENURE_TYPES.options,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS,
-  mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS,
+  mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
 };
 
 describe("mineSelectors", () => {
