@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
-import { Menu, Icon, Divider } from "antd";
+import { Menu, Icon, Divider, Button, Popover, Col, Row } from "antd";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -55,6 +55,47 @@ class MineHeader extends Component {
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
   };
+
+  createMineTypePopUp = (mineTypes) =>
+    mineTypes.map((type) => (
+      <div key={type.mine_type_guid}>
+        <h3>{this.props.mineTenureHash[type.mine_tenure_type_code]}</h3>
+        <Divider style={{ margin: "0" }} />
+        <Row>
+          <Col span={8}>
+            <h5>Disturbance:</h5>
+          </Col>
+          <Col span={16}>
+            {type.mine_type_detail &&
+              type.mine_type_detail.map(({ mine_disturbance_code }) => {
+                return (
+                  <span>
+                    {mine_disturbance_code &&
+                      this.props.mineDisturbanceOptionsHash[mine_disturbance_code]}
+                  </span>
+                );
+              })}
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <h5>Commodity:</h5>
+          </Col>
+          <Col span={16}>
+            {type.mine_type_detail &&
+              type.mine_type_detail.map(({ mine_commodity_code }) => {
+                return (
+                  <span>
+                    {mine_commodity_code
+                      ? this.props.mineCommodityOptionsHash[mine_commodity_code]
+                      : " "}
+                  </span>
+                );
+              })}
+          </Col>
+        </Row>
+      </div>
+    ));
 
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
@@ -173,13 +214,24 @@ class MineHeader extends Component {
           )}
           <h5>
             Tenure:{" "}
-            {this.props.mine.mine_type[0]
-              ? this.props.mine.mine_type.map((tenure) => (
-                  <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
-                    {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
-                  </span>
-                ))
-              : String.EMPTY_FIELD}
+            {this.props.mine.mine_type[0] ? (
+              <Popover
+                style={{ widht: "400px", backgroundColor: "white" }}
+                content={this.createMineTypePopUp(this.props.mine.mine_type)}
+                placement="bottomRight"
+                trigger="click"
+              >
+                <Button>
+                  {this.props.mine.mine_type.map((tenure) => (
+                    <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+                      {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
+                    </span>
+                  ))}
+                </Button>
+              </Popover>
+            ) : (
+              String.EMPTY_FIELD
+            )}
           </h5>
           <h5>
             {this.props.mine.mine_detail[0].major_mine_ind

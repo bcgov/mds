@@ -14,6 +14,7 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
+  fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
 import {
@@ -22,7 +23,8 @@ import {
   getMineRegionOptions,
   getMineTenureTypesHash,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
+  getDisturbanceOptionHash,
+  getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -69,6 +71,7 @@ export class MineDashboard extends Component {
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -157,7 +160,8 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineDisturbanceOptions: getMineDisturbanceOptions(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -168,6 +172,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       fetchMineTenureTypes,
       fetchMineDisturbanceOptions,
+      fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
       openModal,
