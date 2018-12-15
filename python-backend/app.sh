@@ -1,3 +1,3 @@
 #!/bin/bash
 
-flask run
+uwsgi uwsgi.ini
