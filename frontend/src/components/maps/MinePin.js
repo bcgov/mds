@@ -147,16 +147,15 @@ export class MinePin extends Component {
           id: "flare-cluster-layer",
           clusterRenderer: renderer,
           singlePopupTemplate: popupTemplate,
-          spatialReference: new SpatialReference({ wkid: 4326 }),
-          maxSingleFlareCount: 8,
-          clusterToScale: 100000,
-          clusterRatio: 100,
+          spatialReference: new SpatialReference({ wkid: 3005 }),
+          clusterToScale: 200000,
           data: fclData,
         };
 
         const fcl = FlareClusterLayer.FlareClusterLayer(options);
         fcl.title = "Mine Pins";
-        this.props.map.add(fcl);
+        this.props.map.layers.remove(fcl);
+        this.props.map.layers.add(fcl);
       }
     );
   }
