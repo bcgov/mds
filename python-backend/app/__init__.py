@@ -75,5 +75,5 @@ def register_routes(app):
 
 
 # Don't create the global instance during testing
-if os.environ.get('TESTING', None) is not True:
+if os.environ.get('TESTING')!='True':
     app = create_app()
