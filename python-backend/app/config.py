@@ -21,9 +21,14 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     SQLALCHEMY_DATABASE_URI = DB_URL
+<<<<<<< HEAD
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
+=======
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG', 'https://URL/auth/realms/mds/.well'
+                                                                              '-known/openid-configuration')
+>>>>>>> remove global instantiation during tests
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
     JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
@@ -44,15 +49,22 @@ class Config(object):
     SQLALCHEMY_MAX_OVERFLOW = 20
     SQLALCHEMY_POOL_TIMEOUT = 300
 
+<<<<<<< HEAD
     #Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST',
                                             '/app/document_uploads')
     #100MB file limit
+=======
+    # Flask-uploads configs
+    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
+    # 100MB file limit
+>>>>>>> remove global instantiation during tests
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
+    TESTING = True
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
         Config.DB_USER, Config.DB_PASS, Config.DB_HOST, Config.DB_PORT,

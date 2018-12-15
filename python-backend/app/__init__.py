@@ -1,4 +1,5 @@
 import sys
+import os
 import json
 
 from flask import Flask
@@ -73,4 +74,6 @@ def register_routes(app):
         return json.loads({"error": str(traceback)})
 
 
-app = create_app()
+# Don't create the global instance during testing
+if os.environ.get('TESTING', None) is not True:
+    app = create_app()
