@@ -74,10 +74,6 @@
                 "value": "${SONAR_HOST_URL}"
               },
               {
-                "name": "TESTING",
-                "value": "True"
-              },
-              {
                 "name": "DB_USER",
                 "valueFrom": {
                   "secretKeyRef": {
