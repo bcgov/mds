@@ -20,9 +20,10 @@ import {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-  getMineCommodityOptions,
   getMineTenureTypesHash,
   getConditionalDisturbanceOptionsHash,
+  getConditionalCommodityOptions,
+  getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -217,6 +218,7 @@ export class Dashboard extends Component {
     mineRegionOptions,
     mineTenureTypes,
     conditionalDisturbanceOptions,
+    conditionalCommodityOptions,
     onSubmit,
     title
   ) {
@@ -227,6 +229,7 @@ export class Dashboard extends Component {
         mineRegionOptions,
         mineTenureTypes,
         conditionalDisturbanceOptions,
+        conditionalCommodityOptions,
         onSubmit,
         title,
       },
@@ -356,6 +359,7 @@ export class Dashboard extends Component {
                   this.props.mineRegionOptions,
                   this.props.mineTenureTypes,
                   this.props.conditionalDisturbanceOptions,
+                  this.props.conditionalCommodityOptions,
                   this.handleSubmit,
                   ModalContent.CREATE_MINE_RECORD
                 )
@@ -378,8 +382,9 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineCommodityOptions: getMineCommodityOptions(state),
+  conditionalCommodityOptions: getConditionalCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
