@@ -65,6 +65,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
             mines_permit_join_query = MineIdentity.query.join(MineDetail)
             mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
+            #TODO: Add 'isActive' column to mine status, details, type, location, and permmits tables to allow filtering
+            #  like '.filter(major_mine_filter, isActive)'
 
             # Filter by search_term if provided
             if search_term:
@@ -76,25 +78,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mines_permit_join_query = mines_query.union(permit_query)
 
             # Filter by Major Mine, if provided
-            if major_mine_filter_term:
-                if major_mine_filter_term == "true":
-                    major_mine_filter = MineDetail.major_mine_ind.is_(True)
-                    major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
-                    mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
-                elif major_mine_filter_term == "false":
-                    major_mine_filter = MineDetail.major_mine_ind.is_(False)
-                    major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
-                    mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
+            if major_mine_filter_term == "true" or major_mine_filter_term == "false":
+                major_mine_filter = MineDetail.major_mine_ind.is_(major_mine_filter_term == "true")
+                major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
 
             # Filter by TSF, if provided
-            if tsf_filter_term:
-                if tsf_filter_term == "true":
-                    tsf_query = MineIdentity.query.filter(MineIdentity.mine_tailings_storage_facilities != None)
-                    mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
-                elif tsf_filter_term == "false":
-                    # Must use '==' instead of 'is'
-                    tsf_query = MineIdentity.query.filter(MineIdentity.mine_tailings_storage_facilities==None)
-                    mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
+            if tsf_filter_term == "true" or tsf_filter_term == "false":
+                tsf_filter = MineIdentity.mine_tailings_storage_facilities != None if tsf_filter_term == "true" else\
+                    MineIdentity.mine_tailings_storage_facilities == None
+                tsf_query = MineIdentity.query.filter(tsf_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
 
             # Filter by region, if provided
             if region_code_filter_term:
