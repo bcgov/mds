@@ -20,7 +20,17 @@ const submitDisturbances = (type) => ({ data }) => {
       createRequestHeader()
     )
   );
-  return Promise.all(disturbanceResponses);
+  const commodityResponses = type.mine_commodity_code.map((code) =>
+    axios.post(
+      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+      {
+        mine_type_guid: data.mine_type_guid,
+        mine_commodity_code: code,
+      },
+      createRequestHeader()
+    )
+  );
+  return Promise.all([disturbanceResponses, commodityResponses]);
 };
 
 const handleError = (dispatch, reducer) => (err) => {
