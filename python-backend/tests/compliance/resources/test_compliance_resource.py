@@ -3,7 +3,7 @@ import io
 import filecmp
 import os
 import pytest
-import shutil
+import requests
 
 from unittest import mock
 
@@ -14,6 +14,8 @@ class MockResponse:
 
     def json(self):
         return self.json_data
+    def raise_for_status(self):
+        return
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
@@ -147,7 +149,7 @@ def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
 def test_no_NRIS_Token(test_client, auth_headers, setup_info):
 
     with mock.patch('requests.get') as nris_data_mock:
-        nris_data_mock.side_effect = [MockResponse(None, 400), MockResponse(setup_info.get('NRIS_Mock_data'), 200)]
+        nris_data_mock.side_effect = [requests.HTTPError(response=MockResponse(None, 500)), MockResponse(setup_info.get('NRIS_Mock_data'), 200)]
 
         get_resp = test_client.get(
             '/mines/compliance/1234567',
@@ -155,13 +157,13 @@ def test_no_NRIS_Token(test_client, auth_headers, setup_info):
 
         get_data = json.loads(get_resp.data.decode())
         
-        assert get_resp.status_code == 400
+        assert get_resp.status_code == 500
         assert get_data['error']['message'] is not None
 
 def test_no_NRIS_Data(test_client, auth_headers, setup_info):
 
     with mock.patch('requests.get') as nris_data_mock:
-        nris_data_mock.side_effect = [MockResponse({'access_token':'1234-121241-241241-241'}, 200), MockResponse(None, 400)]
+        nris_data_mock.side_effect = [MockResponse({'access_token':'1234-121241-241241-241'}, 200), requests.HTTPError(response=MockResponse(None, 500))]
 
         get_resp = test_client.get(
             '/mines/compliance/1234567',
@@ -169,5 +171,5 @@ def test_no_NRIS_Data(test_client, auth_headers, setup_info):
 
         get_data = json.loads(get_resp.data.decode())
         
-        assert get_resp.status_code == 400
+        assert get_resp.status_code == 500
         assert get_data['error']['message'] is not None
