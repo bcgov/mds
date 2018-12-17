@@ -56,7 +56,7 @@ export class MineSearch extends Component {
   /**
    * filter mineList with new search input;
    */
-  handleSearch = (value) => {
+  handleSearch = (value = {}) => {
     const search = value.target && value.target.value;
     const { commodity, region, status, tenure, TSF, major } = search ? {} : value;
     this.props.handleMineSearch({
@@ -116,7 +116,7 @@ export class MineSearch extends Component {
         </Row>
         {this.state.isAdvanceSearch && (
           <div className="advanced-search__container">
-            <AdvancedSearchForm {...this.props} onSubmit={this.handleSearch} />
+            <AdvancedSearchForm {...this.props} onSubmit={this.handleSearch} handleSearch={this.handleSearch} />
           </div>
         )}
         <Row>
