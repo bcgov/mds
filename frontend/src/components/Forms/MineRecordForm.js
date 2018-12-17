@@ -17,9 +17,9 @@ const propTypes = {
   mineStatusOptions: PropTypes.array.isRequired,
   mineRegionOptions: PropTypes.array.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
-  mine_Types: PropTypes.array.isRequired,
-  conditionalDisturbanceOptions: PropTypes.array.isRequired,
-  conditionalCommodityOptions: PropTypes.array.isRequired,
+  mine_types: PropTypes.array,
+  conditionalDisturbanceOptions: PropTypes.object.isRequired,
+  conditionalCommodityOptions: PropTypes.object.isRequired,
   initialValues: PropTypes.object,
 };
 

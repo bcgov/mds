@@ -34,7 +34,6 @@ const columns = [
     title: "Operational Status",
     dataIndex: "operationalStatus",
     width: 150,
-    render: (text) => <div>{text}</div>,
   },
   {
     title: "Permit No.",
@@ -60,7 +59,7 @@ const columns = [
       <div>
         {text &&
           text.map((tenure) => (
-            <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+            <span className="mine_tenure" key={tenure.mine_type_guid}>
               {record.tenureHash[tenure.mine_tenure_type_code]}
             </span>
           ))}
@@ -75,8 +74,8 @@ const columns = [
     render: (text, record) => (
       <div>
         {text &&
-          text.map(({ mine_type_detail }) => (
-            <div key={mine_type_detail.mine_type_guid}>
+          text.map(({ mine_type_detail, mine_type_guid }) => (
+            <div key={mine_type_guid}>
               {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
                 <span key={mine_type_detail_guid}>
                   {mine_commodity_code && record.commodityHash[mine_commodity_code] + ", "}
