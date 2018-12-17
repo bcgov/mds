@@ -35,9 +35,9 @@ define(["require", "exports", "esri/layers/GraphicsLayer", "esri/symbols/SimpleM
             }
             _this.singlePopupTemplate = options.singlePopupTemplate;
             // set up the clustering properties
-            _this.clusterRatio = options.clusterRatio || 75; // sets the size of each clusters bounds
+            _this.clusterRatio = options.clusterRatio || 100; // sets the size of each clusters bounds
             _this.clusterToScale = options.clusterToScale || 2000000; // the scale to stop clustering at and just display single points
-            _this.clusterMinCount = options.clusterMinCount || 2; // the min amount of points required in a cluster bounds to justify creating a cluster
+            _this.clusterMinCount = options.clusterMinCount || 3; // the min amount of points required in a cluster bounds to justify creating a cluster
             _this.singleFlareTooltipProperty = options.singleFlareTooltipProperty || "name"; // The property name of the dataset to display in a tooltip for a flare when a flare represents a single object.
             if (options.clusterAreaDisplay) {
                 _this.clusterAreaDisplay = options.clusterAreaDisplay === "none" ? undefined : options.clusterAreaDisplay; // when to display the area (convex hull) of the points for each each cluster
@@ -45,9 +45,8 @@ define(["require", "exports", "esri/layers/GraphicsLayer", "esri/symbols/SimpleM
             _this.maxFlareCount = options.maxFlareCount || 8; // maximum number of flares for each cluster
             _this.maxSingleFlareCount = options.maxSingleFlareCount || 8; // maximum number of single object flares before converting to aggregated flares
             _this.displayFlares = options.displayFlares === false ? false : true; // whether to display flares, default to true
-            _this.displaySubTypeFlares = options.displaySubTypeFlares === true; // whether to display sub type flares, ie: flares that represent the counts of a certain property of the data that is clustered
             _this.subTypeFlareProperty = options.subTypeFlareProperty || undefined; // the property name that the subtype flare will use to count on
-            _this.flareBufferPixels = options.flareBufferPixels || 6; // buffer between flares and cluster
+            _this.flareBufferPixels = options.flareBufferPixels || 1; // buffer between flares and cluster
             // data set property names
             _this.xPropertyName = options.xPropertyName || "x";
             _this.yPropertyName = options.yPropertyName || "y";
