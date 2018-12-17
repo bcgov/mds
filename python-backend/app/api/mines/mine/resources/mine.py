@@ -82,7 +82,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                     major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
                 elif major_mine_filter_term == "false":
-                    major_mine_filter = MineDetail.major_mine_ind.is_(True)
+                    major_mine_filter = MineDetail.major_mine_ind.is_(False)
                     major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
 
