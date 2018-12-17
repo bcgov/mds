@@ -110,11 +110,11 @@ export class MineRecordForm extends Component {
                     placeholder="Please Select Commodity"
                     component={renderConfig.MULTI_SELECT}
                     data={
-                      this.props.mine_types && this.props.mine_types[index].mine_tenure_type_code
-                        ? this.props.conditionalCommodityOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
-                        : this.props.conditionalCommodityOptions.COL
+                      this.props.conditionalCommodityOptions[
+                        (this.props.mine_types &&
+                          this.props.mine_types[index].mine_tenure_type_code) ||
+                          "COL"
+                      ]
                     }
                     validate={[required]}
                   />
@@ -130,11 +130,11 @@ export class MineRecordForm extends Component {
                     component={renderConfig.MULTI_SELECT}
                     validate={[required]}
                     data={
-                      this.props.mine_types && this.props.mine_types[index].mine_tenure_type_code
-                        ? this.props.conditionalDisturbanceOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
-                        : this.props.conditionalDisturbanceOptions.COL
+                      this.props.conditionalDisturbanceOptions[
+                        (this.props.mine_types &&
+                          this.props.mine_types[index].mine_tenure_type_code) ||
+                          "COL"
+                      ]
                     }
                   />
                 </Col>
