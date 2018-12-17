@@ -15,18 +15,15 @@ import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreato
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  updateMineRecord: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   mineComplianceInfo: PropTypes.object,
-  match: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   mine: {},
 };
 
-class MineComplianceInfo extends Component {
+export class MineComplianceInfo extends Component {
   state = { isLoading: true };
 
   componentDidMount() {
@@ -36,14 +33,9 @@ class MineComplianceInfo extends Component {
   }
 
   render() {
-    // TODO need to work out how and what is being returned.
     return (
       <div>
-        {this.state.isLoading && (
-          <div>
-            <Loading />
-          </div>
-        )}
+        {this.state.isLoading && <Loading />}
         {!this.state.isLoading && (
           <div>
             <h4>Compliance Overview</h4>
