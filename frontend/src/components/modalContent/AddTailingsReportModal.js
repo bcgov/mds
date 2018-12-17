@@ -13,7 +13,6 @@ const defaultProps = {
 };
 
 export const AddTailingsReportModal = (props) => {
-  console.log(props.mineTSFRequiredReportsDropDown);
   return (
     <div>
       <AddTailingsReportForm {...props} />
