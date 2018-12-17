@@ -23,6 +23,7 @@ import {
   getMineTenureTypesHash,
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
+  getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -367,6 +368,7 @@ const mapStateToProps = (state) => ({
   mineTenureTypes: getMineTenureTypes(state),
   conditionalCommodityOptions: getConditionalCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 

@@ -15,6 +15,7 @@ const propTypes = {
   mineIds: PropTypes.array.isRequired,
   mineRegionHash: PropTypes.object.isRequired,
   mineTenureHash: PropTypes.object.isRequired,
+  mineCommodityOptionsHash: PropTypes.object.isRequired,
 };
 
 const columns = [
@@ -52,11 +53,6 @@ const columns = [
     width: 150,
   },
   {
-    title: "Commodity",
-    dataIndex: "commodity",
-    width: 150,
-  },
-  {
     title: "Tenure",
     dataIndex: "tenure",
     width: 150,
@@ -73,13 +69,32 @@ const columns = [
     ),
   },
   {
+    title: "Commodity",
+    dataIndex: "commodity",
+    width: 150,
+    render: (text, record) => (
+      <div>
+        {text &&
+          text.map(({ mine_type_detail }) => (
+            <div key={mine_type_detail.mine_type_guid}>
+              {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
+                <span key={mine_type_detail_guid}>
+                  {mine_commodity_code && record.commodityHash[mine_commodity_code] + ", "}
+                </span>
+              ))}
+            </div>
+          ))}
+      </div>
+    ),
+  },
+  {
     title: "TSF",
     dataIndex: "TSF",
     width: 150,
   },
 ];
 
-const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash) =>
+const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCommodityHash) =>
   mineIds.map((id) => ({
     key: id,
     emptyField: String.EMPTY_FIELD,
@@ -92,7 +107,8 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash) =>
     region: mines[id].mine_detail[0].region_code
       ? mineRegionHash[mines[id].mine_detail[0].region_code]
       : String.EMPTY_FIELD,
-    commodity: String.EMPTY_FIELD,
+    commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
+    commodityHash: mineCommodityHash,
     tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
     tenureHash: mineTenureHash,
     TSF: mines[id].mine_tailings_storage_facility
@@ -109,7 +125,8 @@ export const MineList = (props) => (
       props.mines,
       props.mineIds,
       props.mineRegionHash,
-      props.mineTenureHash
+      props.mineTenureHash,
+      props.mineCommodityOptionsHash
     )}
     scroll={{ x: 1500 }}
     locale={{ emptyText: <NullScreen type="no-results" /> }}

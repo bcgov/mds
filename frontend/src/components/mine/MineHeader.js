@@ -23,6 +23,8 @@ const propTypes = {
   mineRegionHash: PropTypes.object.isRequired,
   mineTenureHash: PropTypes.object.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
+  mineDisturbanceOptionsHash: PropTypes.object.isRequired,
+  mineCommodityOptionsHash: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -67,14 +69,12 @@ class MineHeader extends Component {
           </div>
           <div>
             {type.mine_type_detail &&
-              type.mine_type_detail.map(({ mine_commodity_code }) => {
-                return (
-                  <span>
-                    {mine_commodity_code &&
-                      this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
-                  </span>
-                );
-              })}
+              type.mine_type_detail.map(({ mine_commodity_code }) => (
+                <span>
+                  {mine_commodity_code &&
+                    this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                </span>
+              ))}
           </div>
         </div>
         <div className="inline-flex">
@@ -83,14 +83,12 @@ class MineHeader extends Component {
           </div>
           <div>
             {type.mine_type_detail &&
-              type.mine_type_detail.map(({ mine_disturbance_code }) => {
-                return (
-                  <span>
-                    {mine_disturbance_code &&
-                      this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
-                  </span>
-                );
-              })}
+              type.mine_type_detail.map(({ mine_disturbance_code }) => (
+                <span>
+                  {mine_disturbance_code &&
+                    this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
+                </span>
+              ))}
           </div>
         </div>
       </div>

@@ -95,7 +95,6 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return <Loading />;
     }
@@ -114,7 +113,11 @@ export class MineDashboard extends Component {
           >
             <TabPane tab="Summary" key="summary">
               <div className="tab__content">
-                <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds} />
+                <MineSummary
+                  mine={mine}
+                  permittees={this.props.permittees}
+                  permitteeIds={this.props.permitteeIds}
+                />
               </div>
             </TabPane>
             <TabPane tab="Permit" key="permit">
