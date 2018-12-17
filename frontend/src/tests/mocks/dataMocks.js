@@ -670,3 +670,13 @@ export const CONDITIONAL_DISTURBANCE_OPTIONS = {
     { label: "Mill", value: "MIL", exclusive: true },
   ],
 };
+
+export const COMPLIANCE = {
+  last_inspection: "2018-12-12 00:00",
+  inspector: "test",
+  open_orders: 5,
+  overdue_orders: 5,
+  advisories: 5,
+  warnings: 5,
+  section_35_orders: 5,
+};
