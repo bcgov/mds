@@ -82,7 +82,7 @@
   }
   &:last-child() {
     &:after {
-      content: "" !important;
+      content: " " !important;
     }
   }
 }

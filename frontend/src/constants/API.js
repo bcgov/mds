@@ -11,6 +11,7 @@ export const MINE_NAME_LIST = (search) =>
   search ? `/mines/names?search=${search}` : "/mines/names";
 export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
+export const MINE_COMPLIANCE_INFO = "/mines/compliance";
 export const MINE_TSF = "/mines/tailings";
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
 export const COMMODITY_CODES = "/mines/commodity-codes";

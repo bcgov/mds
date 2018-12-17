@@ -136,3 +136,23 @@ hr {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+//These are here to style the infographic portion of the compliance tab and have not
+//been finalized yet.
+.info-display {
+  font-size: 32px;
+  font-weight: $bold;
+  color: $default-blue;
+  @include mobile {
+    font-size: 26px;
+  }
+}
+
+.info-display-label {
+  font-size: 18px;
+  font-weight: $bold;
+  color: $default-dark-grey;
+  @include mobile {
+    font-size: 16px;
+  }
+}
