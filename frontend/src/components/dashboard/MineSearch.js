@@ -116,6 +116,14 @@ export class MineSearch extends Component {
             />
           </Col>
         </Row>
+        <Row>
+          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
+            <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
+              {this.state.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
+              <Icon type={this.state.isAdvanceSearch ? "up" : "down"} />
+            </Button>
+          </Col>
+        </Row>
         {this.state.isAdvanceSearch && (
           <div className="advanced-search__container">
             <AdvancedSearchForm
@@ -125,13 +133,6 @@ export class MineSearch extends Component {
             />
           </div>
         )}
-        <Row>
-          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-            <Button onClick={this.toggleAdvancedSearch}>
-              {this.state.isAdvanceSearch ? "Close Advanced Search" : "Expand Advanced Search"}
-            </Button>
-          </Col>
-        </Row>
       </div>
     );
   }
