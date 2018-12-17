@@ -154,6 +154,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
                             'NODE_ENV': "${vars.deployment.node_env}",
+                            'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -242,6 +243,7 @@ environments {
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
+                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
                 'mds-frontend' {
@@ -303,6 +305,7 @@ environments {
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "production"
+                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
                 'mds-frontend' {
@@ -323,8 +326,8 @@ environments {
     }
     'prod' {
         vars {
-            DB_PVC_SIZE = '10Gi'
-            DOCUMENT_PVC_SIZE = '10Gi'
+            DB_PVC_SIZE = '50Gi'
+            DOCUMENT_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -364,6 +367,7 @@ environments {
                 key = 'prod'
                 namespace = 'empr-mds-prod'
                 node_env = "production"
+                map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
             }
             modules {
                 'mds-frontend' {

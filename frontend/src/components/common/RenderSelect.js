@@ -16,31 +16,30 @@ const propTypes = {
   data: PropTypes.array,
 };
 
-const RenderSelect = ({
-  id,
-  input,
-  label,
-  placeholder,
-  meta: { touched, error, warning },
-  data,
-}) => (
+const RenderSelect = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <Select
-      getPopupContainer={() => document.getElementById(id)}
+      getPopupContainer={() => document.getElementById(props.id)}
       showSearch
-      placeholder={placeholder}
+      placeholder={props.placeholder}
       optionFilterProp="children"
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
-      id={id}
-      {...input}
+      id={props.id}
+      {...props.input}
     >
-      {data.map((value) => (
+      {props.data.map((value) => (
         <Select.Option key={value.value} value={value.value}>
           {value.label}
         </Select.Option>

@@ -34,6 +34,3 @@ export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=25";
 // mine types
 export const MAJOR_MINE = "Major mine";
 export const REGIONAL_MINE = "Regional mine";
-
-// Portal Item IDs
-export const BASE_WEBMAP_ID = "803130a9bebb4035b3ac671aafab12d7";

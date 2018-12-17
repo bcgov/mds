@@ -95,6 +95,10 @@
       "value": "http://localhost:3000"
     },
     {
+      "name": "MAP_PORTAL_ID",
+      "value": "e926583cd0114cd19ebc591f344e30dc"
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "250m"
     },
@@ -222,6 +226,10 @@
                   {
                     "name": "API_URL",
                     "value": "${API_URL}"
+                  },
+                  {
+                    "name": "MAP_PORTAL_ID",
+                    "value": "${MAP_PORTAL_ID}"
                   },
                   {
                     "name": "NODE_ENV",
