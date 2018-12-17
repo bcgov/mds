@@ -63,7 +63,7 @@ class MineHeader extends Component {
         <Divider style={{ margin: "0" }} />
         <Row>
           <Col span={8}>
-            <h5>Disturbance:</h5>
+            <p>Disturbance:</p>
           </Col>
           <Col span={16}>
             {type.mine_type_detail &&
@@ -79,7 +79,7 @@ class MineHeader extends Component {
         </Row>
         <Row>
           <Col span={8}>
-            <h5>Commodity:</h5>
+            <p>Commodity:</p>
           </Col>
           <Col span={16}>
             {type.mine_type_detail &&
