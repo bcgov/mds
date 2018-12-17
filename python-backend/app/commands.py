@@ -19,6 +19,7 @@ from .api.constants import (
 from .api.mines.mine.models.mine_identity import MineIdentity
 from .api.mines.mine.models.mine_detail import MineDetail
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
+from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
 from .api.permits.permit.models.permit import Permit
@@ -84,6 +85,10 @@ def register_commands(app):
     def _create_data(num):
         with app.app_context():
             party = None
+            mine_tenure_type_codes = list(map(
+                lambda x: x['value'],
+                MineTenureTypeCode.all_options()
+            ))
             for _ in range(int(num)):
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
@@ -91,7 +96,10 @@ def register_commands(app):
                 MineDetail.create_mine_detail(mine_identity, generate_mine_no(), generate_mine_name(),
                                               random_mine_category(),random_region(),
                                               DUMMY_USER_KWARGS)
-                MineType.create_mine_type(mine_identity, random.randint(1, 4), DUMMY_USER_KWARGS)
+                MineType.create_mine_type(
+                    mine_identity.mine_guid,
+                    random.choice(mine_tenure_type_codes),
+                    DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine_identity, random_geo(), DUMMY_USER_KWARGS)
                 party = Party.create_party(names.get_first_name(), names.get_last_name(), DUMMY_USER_KWARGS)
 

@@ -5,6 +5,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 
+from ...required.models.required_documents import RequiredDocument
 from ..models.mine_expected_document import MineExpectedDocument
 
 from app.extensions import jwt, api
@@ -49,6 +50,10 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         doc_list = data['documents']
         mine_new_docs = []
         for new_doc in doc_list:
+            if new_doc['req_document_guid'] != None:
+                req_doc = RequiredDocument.find_by_req_doc_guid(
+                    new_doc['req_document_guid'])
+
             mine_exp_doc = MineExpectedDocument(
                 req_document_guid=new_doc['req_document_guid'],
                 exp_document_name=new_doc['document_name'],
@@ -57,8 +62,8 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 due_date=MineExpectedDocument.
                 add_due_date_to_expected_document(
                     self, datetime.now(),
-                    new_doc.get('document_due_date_type'),
-                    new_doc.get('document_due_date_period_months')),
+                    req_doc.req_document_due_date_type,
+                    req_doc.req_document_due_date_period_months),
                 **self.get_create_update_dict())
             mine_exp_doc.save()
             mine_new_docs.append(mine_exp_doc)
