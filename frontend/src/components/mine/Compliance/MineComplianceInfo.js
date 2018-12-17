@@ -15,18 +15,15 @@ import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreato
 
 const propTypes = {
   mine: PropTypes.object.isRequired,
-  updateMineRecord: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   mineComplianceInfo: PropTypes.object,
-  match: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
   mine: {},
 };
 
-class MineComplianceInfo extends Component {
+export class MineComplianceInfo extends Component {
   state = { isLoading: true };
 
   componentDidMount() {
