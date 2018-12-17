@@ -13,6 +13,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
+  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.match = {};
 };
 
