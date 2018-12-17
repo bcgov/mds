@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Divider } from "antd";
+import { Table } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import * as String from "@/constants/strings";
 /**
@@ -11,61 +11,62 @@ const propTypes = {
   mine: PropTypes.object.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
+const columns = [
+  {
+    title: "Permit No.",
+    width: 150,
+    dataIndex: "permitNo",
+    fixed: "left",
+  },
+  {
+    title: "Permittee",
+    width: 100,
+    dataIndex: "permittee",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    width: 100,
+  },
+  {
+    title: "First Issued",
+    dataIndex: "firstIssued",
+    width: 100,
+  },
+  {
+    title: "Last Amended",
+    dataIndex: "lastAmended",
+    width: 100,
+  },
+  {
+    title: "Authorization End Date",
+    dataIndex: "authorizationEndDate",
+    width: 100,
+  },
+];
 
-class MinePermitInfo extends Component {
-  render() {
-    const { mine } = this.props;
-    return (
-      <div>
-        <Row type="flex" style={{ textAlign: "center" }}>
-          <Col span={4}>
-            <h2>Permit No.</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Permittee</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Status</h2>
-          </Col>
-          <Col span={4}>
-            <h2>First Issued</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Last Amended</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Authorization End Date</h2>
-          </Col>
-        </Row>
-        <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
-        {mine.mine_permit.map((permit) => (
-          <div key={permit.permit_no}>
-            <Row type="flex" style={{ textAlign: "center" }}>
-              <Col id="permit_no" span={4}>
-                <p>{permit.permit_no}</p>
-              </Col>
-              <Col id="permittee" span={4}>
-                {permit.permittee[0].party.party_name}
-              </Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Col id="permit_issue_date" span={4}>
-                {permit.issue_date}
-              </Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Divider />
-            </Row>
-          </div>
-        ))}
-        {mine.mine_permit.length === 0 && <NullScreen type="permit" />}
-      </div>
-    );
-  }
-}
+const transformRowData = (mine) =>
+  mine.mine_permit[0] &&
+  mine.mine_permit.map((permit) => ({
+    key: permit.permit_guid,
+    lastAmended: String.EMPTY_FIELD,
+    permitNo: permit.permit_no ? permit.permit_no : String.EMPTY_FIELD,
+    permittee: permit.permittee[0] ? permit.permittee[0].party.party_name : String.EMPTY_FIELD,
+    firstIssued: permit.issue_date ? permit.issue_date : String.EMPTY_FIELD,
+    status: String.EMPTY_FIELD,
+    authorizationEndDate: permit.expiry_date ? permit.expiry_date : String.EMPTY_FIELD,
+  }));
+
+export const MinePermitInfo = (props) => (
+  <Table
+    align="center"
+    pagination={false}
+    columns={columns}
+    dataSource={transformRowData(props.mine)}
+    scroll={{ x: 1500 }}
+    locale={{ emptyText: <NullScreen type="permit" /> }}
+  />
+);
 
 MinePermitInfo.propTypes = propTypes;
-MinePermitInfo.defaultProps = defaultProps;
 export default MinePermitInfo;
