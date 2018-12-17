@@ -1,50 +1,46 @@
 import networkReducer from "@/reducers/networkReducer";
 import { request, success, error } from "@/actions/genericActions";
 
+const baseExpectedValue = {
+  isFetching: false,
+  isSuccessful: false,
+  error: null,
+  requestType: null,
+};
+
+// Creates deep copy of javascript object instead of setting a reference
+const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
+
 describe("networkReducer", () => {
   it("receives undefined", () => {
-    const expectedValue = {
-      isFetching: false,
-      isSuccessful: false,
-      error: null,
-      requestType: null,
-    };
-
+    const expectedValue = getBaseExpectedValue();
     const result = networkReducer(undefined, {});
     expect(result).toEqual(expectedValue);
   });
 
   it("receives REQUEST", () => {
-    const expectedValue = {
-      isFetching: true,
-      isSuccessful: false,
-      error: null,
-      requestType: "REQUEST",
-    };
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.isFetching = true;
+    expectedValue.requestType = "REQUEST";
 
     const result = networkReducer(undefined, request());
     expect(result).toEqual(expectedValue);
   });
 
   it("receives SUCCESS", () => {
-    const expectedValue = {
-      isFetching: false,
-      isSuccessful: true,
-      error: false,
-      requestType: "SUCCESS",
-    };
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.isSuccessful = true;
+    expectedValue.error = false;
+    expectedValue.requestType = "SUCCESS";
 
     const result = networkReducer(undefined, success());
     expect(result).toEqual(expectedValue);
   });
 
   it("receives ERROR", () => {
-    const expectedValue = {
-      isFetching: false,
-      isSuccessful: false,
-      error: undefined,
-      requestType: "ERROR",
-    };
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.error = undefined;
+    expectedValue.requestType = "ERROR";
 
     const result = networkReducer(undefined, error());
     expect(result).toEqual(expectedValue);
