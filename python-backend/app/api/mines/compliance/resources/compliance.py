@@ -9,16 +9,15 @@ from app.api.nris_services import NRIS_service
 
 
 class MineComplianceResource(Resource, UserMixin, ErrorMixin):
-    @api.doc(params={'Mine_no': 'Mine ID.'})
+    @api.doc(params={'mine_no': 'Mine ID.'})
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no=None):
 
         try:
             data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
         except requests.exceptions.HTTPError as errhttp:
-            return self.raise_error(
-                errhttp.response.status_code,
-                "There has been an unexpected error with NRIS.")
+            return self.raise_error(errhttp.response.status_code,
+                                    "There has been an unexpected error with NRIS.")
         except requests.exceptions.Timeout as errt:
             return self.raise_error(408, "NRIS has timed out.")
 
@@ -26,7 +25,9 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             return None
         else:
             data = sorted(
-                data, key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'), reverse=True)
+                data,
+                key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
+                reverse=True)
 
             most_recent = data[0]
 
@@ -37,8 +38,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             section_35_orders = 0
 
             for report in data:
-                report_date = datetime.strptime(
-                    report.get('assessmentDate'), '%Y-%m-%d %H:%M')
+                report_date = datetime.strptime(report.get('assessmentDate'), '%Y-%m-%d %H:%M')
                 one_year_ago = datetime.now() - relativedelta(years=1)
 
                 inspection = report.get('inspection')
@@ -52,18 +52,14 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                     stop_warnings = stops_dict.get('stopWarnings')
 
                     if stop_orders:
-                        open_orders += sum(
-                            k.get('orderStatus') == 'Open'
-                            for k in stop_orders)
+                        open_orders += sum(k.get('orderStatus') == 'Open' for k in stop_orders)
                         overdue_orders += sum(
-                            k.get('orderCompletionDate') is not None and k.get(
-                                'orderStatus') == 'Open' and datetime.strptime(
-                                    k.get('orderCompletionDate'),
-                                    '%Y-%m-%d %H:%M') < datetime.now()
+                            k.get('orderCompletionDate') is not None
+                            and k.get('orderStatus') == 'Open' and datetime.strptime(
+                                k.get('orderCompletionDate'), '%Y-%m-%d %H:%M') < datetime.now()
                             for k in stop_orders)
                         section_35_orders += sum(
-                            k.get('orderAuthoritySection') == 'Section 35'
-                            for k in stop_orders)
+                            k.get('orderAuthoritySection') == 'Section 35' for k in stop_orders)
 
                     if one_year_ago < report_date:
                         advisories += len(stop_advisories)
