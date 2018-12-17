@@ -61,7 +61,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             tenure_filter_term = request.args.get('tenure', None, type=str)
             region_code_filter_term = request.args.get('region_code', None, type=str)
             # Note only empty string evaluates to false.
-            # ASK MERIDITH HOW IT SHOULD BE PASSED IN
             major_mine_filter_term = request.args.get('major_mine', None, type=bool)
             tsf_filter_term = request.args.get('tsf', None, type=bool)
 
@@ -134,34 +133,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 if tenure_filter_term:
                     mines_permit_join_query = mines_permit_join_query.intersect(tenure_query)
 
-                # paginated_mine_query, pagination_details = apply_pagination(
-                #     mines_permit_join_query, page, items_per_page)
-
             else:
-                # sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
+                sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
                 mines_permit_join_query = MineIdentity.query.join(MineDetail)
+                mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
 
-                # #If I use this definition of "mines_permit_join_query" the ordering works fine.
-                # # This implies the proble is with intersection and union of queries.
-                # region_filter = MineRegionCode.mine_region_code.in_(['NW'])
-                # mines_permit_join_query = MineIdentity.query \
-                #     .join(MineDetail) \
-                #     .join(MineRegionCode) \
-                #     .filter(region_filter)
-
-                # status_filter = MineStatusXref.mine_operation_status_code.in_(['ABN','CL'])
-                # mines_permit_join_query = MineIdentity.query \
-                #     .join(MineDetail) \
-                #     .join(MineStatus) \
-                #     .join(MineStatusXref) \
-                #     .filter(status_filter)
-
-                # region_filter = MineRegionCode.mine_region_code.in_(['NW'])
-                # mines_region_query = MineIdentity.query \
-                #     .join(MineDetail) \
-                #     .join(MineRegionCode) \
-                #     .filter(region_filter)
-                # mines_permit_join_query = mines_region_query.intersect(mines_permit_join_query)
                 if type(major_mine_filter_term) is bool:
                     mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
 
@@ -178,15 +154,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 if tenure_filter_term:
                     mines_permit_join_query = mines_permit_join_query.intersect(MineIdentity.query.join(MineDetail))
 
-                # mines_permit_join_query = mines_permit_join_query.intersect(
-                #     MineIdentity.query.join(MineDetail).order_by(MineDetail.mine_name.asc()))
-            # mines_permit_join_query = mines_permit_join_query.order_by(mine_name.desc())
-            # paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
-
-            sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
-            sorted_mine_query = apply_sort(mines_permit_join_query, sort_criteria)
-            # print(sorted_mine_query)
-            paginated_mine_query, pagination_details = apply_pagination(sorted_mine_query, page, items_per_page)
+            paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
 
             mines = paginated_mine_query.all()
             return {
