@@ -73,13 +73,17 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
-      },
-      initialAdvancedSearchState: {
         status: [],
         region: [],
         tenure: [],
         commodity: [],
       },
+      // initialAdvancedSearchState: {
+      //   status: ["ABN"],
+      //   region: [],
+      //   tenure: [],
+      //   commodity: [],
+      // },
     };
   }
 
@@ -118,7 +122,18 @@ export class Dashboard extends Component {
 
   renderDataFromURL = (params) => {
     const paramsObj = queryString.parse(params);
-    this.setState({ params: paramsObj });
+    console.log(paramsObj);
+    const { status, commodity, region, tenure, ...remainingParams } = paramsObj;
+
+    this.setState({
+      params: {
+        status: status ? status.split(",").filter((x) => x) : [],
+        commodity: commodity ? commodity.split(",").filter((x) => x) : [],
+        region: region ? region.split(",").filter((x) => x) : [],
+        tenure: tenure ? tenure.split(",").filter((x) => x) : [],
+        ...remainingParams,
+      },
+    });
     this.props.fetchMineRecords(params).then(() => {
       this.setState({ mineList: true });
     });
@@ -238,7 +253,7 @@ export class Dashboard extends Component {
           >
             <TabPane tab="List" key="list">
               <MineSearch
-                initialValues={this.state.initialAdvancedSearchState}
+                initialValues={this.state.params}
                 {...this.props}
                 handleMineSearch={this.handleMineSearchDebounced}
                 searchValue={search}
@@ -329,6 +344,7 @@ export class Dashboard extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
