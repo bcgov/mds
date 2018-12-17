@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { AutoComplete, Input, Icon, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import queryString from "query-string";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
@@ -18,11 +19,14 @@ const propTypes = {
   mineNameList: PropTypes.array.isRequired,
   isMapView: PropTypes.bool,
   searchValue: PropTypes.string,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };
 
 export class MineSearch extends Component {
   state = {
-    isAdvanceSearch: false,
+    isAdvanceSearch: Object.keys(queryString.parse(this.props.location.search)).includes(
+      "commodity"
+    ),
   };
 
   componentDidMount() {
@@ -54,10 +58,10 @@ export class MineSearch extends Component {
    */
   handleSearch = (value) => {
     const search = value.target && value.target.value;
-    const { commodity, region, status, tenure, TSF: tsf, major } = search ? {} : value;
+    const { commodity, region, status, tenure, TSF, major } = search ? {} : value;
     this.props.handleMineSearch({
       search,
-      tsf,
+      TSF,
       major,
       commodity: commodity && commodity.join(","),
       region: region && region.join(","),

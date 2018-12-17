@@ -73,17 +73,13 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
+        major: false,
+        TSF: false,
         status: [],
         region: [],
         tenure: [],
         commodity: [],
       },
-      // initialAdvancedSearchState: {
-      //   status: ["ABN"],
-      //   region: [],
-      //   tenure: [],
-      //   commodity: [],
-      // },
     };
   }
 
@@ -121,16 +117,18 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const paramsObj = queryString.parse(params);
-    console.log(paramsObj);
-    const { status, commodity, region, tenure, ...remainingParams } = paramsObj;
-
+    const { status, commodity, region, tenure, major, TSF, ...remainingParams } = queryString.parse(
+      params
+    );
+    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
-        status: status ? status.split(",").filter((x) => x) : [],
-        commodity: commodity ? commodity.split(",").filter((x) => x) : [],
-        region: region ? region.split(",").filter((x) => x) : [],
-        tenure: tenure ? tenure.split(",").filter((x) => x) : [],
+        status: format(status),
+        commodity: format(commodity),
+        region: format(region),
+        tenure: format(tenure),
+        major: major === "true",
+        TSF: TSF === "true",
         ...remainingParams,
       },
     });
@@ -344,7 +342,6 @@ export class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
