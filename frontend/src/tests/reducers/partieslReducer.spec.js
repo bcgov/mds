@@ -8,16 +8,19 @@ const baseExpectedValue = {
   partyRelationshipTypes: [],
 };
 
+// Creates deep copy of javascript object instead of setting a reference
+const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
+
 describe("partiesReducer", () => {
   it("receives undefined", () => {
-    const expectedValue = baseExpectedValue;
+    const expectedValue = getBaseExpectedValue();
 
     const result = partiesReducer(undefined, {});
     expect(result).toEqual(expectedValue);
   });
 
   it("receives STORE_PARTY", () => {
-    const expectedValue = baseExpectedValue;
+    const expectedValue = getBaseExpectedValue();
     expectedValue.parties = { test123: { party_guid: "test123" } };
     expectedValue.partyIds = ["test123"];
 
@@ -26,7 +29,7 @@ describe("partiesReducer", () => {
   });
 
   it("receives STORE_PARTY", () => {
-    const expectedValue = baseExpectedValue;
+    const expectedValue = getBaseExpectedValue();
     expectedValue.parties = {
       test123: { party_guid: "test123" },
       test456: { party_guid: "test456" },
