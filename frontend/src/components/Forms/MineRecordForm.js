@@ -76,7 +76,7 @@ export class MineRecordForm extends Component {
           this.removeField(event, fields, index);
         }}
       >
-        <Icon type="minus-circle" theme="outlined" />
+        <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
       </Button>
     </div>
   );
@@ -142,7 +142,8 @@ export class MineRecordForm extends Component {
             </Collapse.Panel>
           ))}
         </Collapse>
-        <Button type="dashed" block onClick={() => fields.push({})}>
+        <Button className="btn--dropdown" onClick={() => fields.push({})}>
+          <Icon type="plus" style={{ color: "#0F620E" }} />
           {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
         </Button>
       </div>

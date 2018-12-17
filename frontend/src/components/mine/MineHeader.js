@@ -59,41 +59,40 @@ class MineHeader extends Component {
   createMineTypePopUp = (mineTypes) =>
     mineTypes.map((type) => (
       <div key={type.mine_type_guid}>
-        <h3>{this.props.mineTenureHash[type.mine_tenure_type_code]}</h3>
-        <Divider style={{ margin: "0" }} />
-        <Row>
-          <Col span={8}>
+        <p className="bold">{this.props.mineTenureHash[type.mine_tenure_type_code]}</p>
+        <Divider style={{ margin: "0", marginBottom: "5px", backgroundColor: "#404040" }} />
+        <div className="inline-flex">
+          <div>
+            <p>Commodity:</p>
+          </div>
+          <div>
+            {type.mine_type_detail &&
+              type.mine_type_detail.map(({ mine_commodity_code }) => {
+                return (
+                  <span>
+                    {mine_commodity_code &&
+                      this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                  </span>
+                );
+              })}
+          </div>
+        </div>
+        <div className="inline-flex">
+          <div>
             <p>Disturbance:</p>
-          </Col>
-          <Col span={16}>
+          </div>
+          <div>
             {type.mine_type_detail &&
               type.mine_type_detail.map(({ mine_disturbance_code }) => {
                 return (
                   <span>
                     {mine_disturbance_code &&
-                      this.props.mineDisturbanceOptionsHash[mine_disturbance_code]}
+                      this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
                   </span>
                 );
               })}
-          </Col>
-        </Row>
-        <Row>
-          <Col span={8}>
-            <p>Commodity:</p>
-          </Col>
-          <Col span={16}>
-            {type.mine_type_detail &&
-              type.mine_type_detail.map(({ mine_commodity_code }) => {
-                return (
-                  <span>
-                    {mine_commodity_code
-                      ? this.props.mineCommodityOptionsHash[mine_commodity_code]
-                      : " "}
-                  </span>
-                );
-              })}
-          </Col>
-        </Row>
+          </div>
+        </div>
       </div>
     ));
 
@@ -194,13 +193,13 @@ class MineHeader extends Component {
                 />
               </div>
               <div>
-                <h3>
+                <h5>
                   {this.props.mine.mine_status[0].status_labels.map((label, i) => (
                     <span className="mine__status" key={i}>
                       {label}
                     </span>
                   ))}
-                </h3>
+                </h5>
               </div>
             </div>
           )}
@@ -221,12 +220,13 @@ class MineHeader extends Component {
                 placement="bottomRight"
                 trigger="click"
               >
-                <Button>
+                <Button className="btn--dropdown">
                   {this.props.mine.mine_type.map((tenure) => (
                     <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
                       {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
                     </span>
                   ))}
+                  <Icon type="down" style={{ fontSize: "14px" }} />
                 </Button>
               </Popover>
             ) : (
