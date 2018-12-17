@@ -58,15 +58,17 @@ export class MineSearch extends Component {
    */
   handleSearch = (value = {}) => {
     const search = value.target && value.target.value;
-    const { commodity, region, status, tenure, TSF, major } = search ? {} : value;
+    const { commodity = [], region = [], status = [], tenure = [], TSF, major } = search
+      ? {}
+      : value;
     this.props.handleMineSearch({
       search,
       TSF,
       major,
-      commodity: commodity && commodity.join(","),
-      region: region && region.join(","),
-      status: status && status.join(","),
-      tenure: tenure && tenure.join(","),
+      commodity: commodity.join(","),
+      region: region.join(","),
+      status: status.join(","),
+      tenure: tenure.join(","),
     });
   };
 
