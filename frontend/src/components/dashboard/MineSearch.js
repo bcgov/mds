@@ -21,8 +21,8 @@ const propTypes = {
   searchValue: PropTypes.string,
 };
 
-const checkAdvancedSearch = ({ status, region, tenure, commodity, TSF, major }) =>
-  TSF || major || some([status, region, tenure, commodity], negate(isEmpty));
+const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
+  tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
 
 export class MineSearch extends Component {
   state = {
@@ -58,10 +58,10 @@ export class MineSearch extends Component {
    */
   handleSearch = (value = {}) => {
     const search = value.target && value.target.value;
-    const { commodity, region, status, tenure, TSF, major } = search ? {} : value;
+    const { commodity, region, status, tenure, tsf, major } = search ? {} : value;
     this.props.handleMineSearch({
       search,
-      TSF,
+      tsf,
       major,
       commodity: commodity && commodity.join(","),
       region: region && region.join(","),

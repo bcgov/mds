@@ -75,7 +75,7 @@ export class Dashboard extends Component {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
         major: false,
-        TSF: false,
+        tsf: false,
         status: [],
         region: [],
         tenure: [],
@@ -118,7 +118,7 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { status, commodity, region, tenure, major, TSF, ...remainingParams } = queryString.parse(
+    const { status, commodity, region, tenure, major, tsf, ...remainingParams } = queryString.parse(
       params
     );
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
@@ -129,7 +129,7 @@ export class Dashboard extends Component {
         region: format(region),
         tenure: format(tenure),
         major: major === "true",
-        TSF: TSF === "true",
+        tsf: tsf === "true",
         ...remainingParams,
       },
     });

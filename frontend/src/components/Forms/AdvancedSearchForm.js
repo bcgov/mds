@@ -87,8 +87,8 @@ export class AdvancedSearchForm extends Component {
           <Col md={12}>
             <Form.Item>
               <Field
-                id="TSF"
-                name="TSF"
+                id="tsf"
+                name="tsf"
                 label="TSF"
                 type="checkbox"
                 component={renderConfig.CHECKBOX}
