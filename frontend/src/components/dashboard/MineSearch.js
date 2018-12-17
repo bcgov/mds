@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { AutoComplete, Input, Icon, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import queryString from "query-string";
+import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
@@ -19,14 +19,14 @@ const propTypes = {
   mineNameList: PropTypes.array.isRequired,
   isMapView: PropTypes.bool,
   searchValue: PropTypes.string,
-  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };
+
+const checkAdvancedSearch = ({ status, region, tenure, commodity, TSF, major }) =>
+  TSF || major || some([status, region, tenure, commodity], negate(isEmpty));
 
 export class MineSearch extends Component {
   state = {
-    isAdvanceSearch: Object.keys(queryString.parse(this.props.location.search)).includes(
-      "commodity"
-    ),
+    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
   componentDidMount() {
@@ -116,7 +116,11 @@ export class MineSearch extends Component {
         </Row>
         {this.state.isAdvanceSearch && (
           <div className="advanced-search__container">
-            <AdvancedSearchForm {...this.props} onSubmit={this.handleSearch} handleSearch={this.handleSearch} />
+            <AdvancedSearchForm
+              {...this.props}
+              onSubmit={this.handleSearch}
+              handleSearch={this.handleSearch}
+            />
           </div>
         )}
         <Row>
