@@ -14,6 +14,7 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
+  fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
 import {
@@ -22,7 +23,8 @@ import {
   getMineRegionOptions,
   getMineTenureTypesHash,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
+  getDisturbanceOptionHash,
+  getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -30,9 +32,9 @@ import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
+import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import Loading from "@/components/common/Loading";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -69,6 +71,7 @@ export class MineDashboard extends Component {
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -92,7 +95,6 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const { permittees, permitteeIds } = this.props;
     if (!mine) {
       return <Loading />;
     }
@@ -111,7 +113,11 @@ export class MineDashboard extends Component {
           >
             <TabPane tab="Summary" key="summary">
               <div className="tab__content">
-                <MineSummary mine={mine} permittees={permittees} permitteeIds={permitteeIds} />
+                <MineSummary
+                  mine={mine}
+                  permittees={this.props.permittees}
+                  permitteeIds={this.props.permitteeIds}
+                />
               </div>
             </TabPane>
             <TabPane tab="Permit" key="permit">
@@ -126,7 +132,7 @@ export class MineDashboard extends Component {
             </TabPane>
             <TabPane tab="Compliance" key="compliance">
               <div className="tab__content">
-                <NullScreen type="generic" />
+                <MineComplianceInfo mine={mine} {...this.props} />
               </div>
             </TabPane>
             <TabPane tab="Tenure" key="tenure">
@@ -157,7 +163,8 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  mineDisturbanceOptions: getMineDisturbanceOptions(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -168,6 +175,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       fetchMineTenureTypes,
       fetchMineDisturbanceOptions,
+      fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
       openModal,

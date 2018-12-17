@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
-import { Menu, Icon, Divider } from "antd";
+import { Menu, Icon, Divider, Button, Popover, Col, Row } from "antd";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -23,6 +23,8 @@ const propTypes = {
   mineRegionHash: PropTypes.object.isRequired,
   mineTenureHash: PropTypes.object.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
+  mineDisturbanceOptionsHash: PropTypes.object.isRequired,
+  mineCommodityOptionsHash: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -55,6 +57,42 @@ class MineHeader extends Component {
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
   };
+
+  createMineTypePopUp = (mineTypes) =>
+    mineTypes.map((type) => (
+      <div key={type.mine_type_guid}>
+        <p className="bold">{this.props.mineTenureHash[type.mine_tenure_type_code]}</p>
+        <Divider style={{ margin: "0", marginBottom: "5px", backgroundColor: "#404040" }} />
+        <div className="inline-flex">
+          <div>
+            <p>Commodity:</p>
+          </div>
+          <div>
+            {type.mine_type_detail &&
+              type.mine_type_detail.map(({ mine_commodity_code }) => (
+                <span>
+                  {mine_commodity_code &&
+                    this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                </span>
+              ))}
+          </div>
+        </div>
+        <div className="inline-flex">
+          <div>
+            <p>Disturbance:</p>
+          </div>
+          <div>
+            {type.mine_type_detail &&
+              type.mine_type_detail.map(({ mine_disturbance_code }) => (
+                <span>
+                  {mine_disturbance_code &&
+                    this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
+                </span>
+              ))}
+          </div>
+        </div>
+      </div>
+    ));
 
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
@@ -153,13 +191,13 @@ class MineHeader extends Component {
                 />
               </div>
               <div>
-                <h3>
+                <h5>
                   {this.props.mine.mine_status[0].status_labels.map((label, i) => (
                     <span className="mine__status" key={i}>
                       {label}
                     </span>
                   ))}
-                </h3>
+                </h5>
               </div>
             </div>
           )}
@@ -173,13 +211,25 @@ class MineHeader extends Component {
           )}
           <h5>
             Tenure:{" "}
-            {this.props.mine.mine_type[0]
-              ? this.props.mine.mine_type.map((tenure) => (
-                  <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
-                    {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
-                  </span>
-                ))
-              : String.EMPTY_FIELD}
+            {this.props.mine.mine_type[0] ? (
+              <Popover
+                style={{ widht: "400px", backgroundColor: "white" }}
+                content={this.createMineTypePopUp(this.props.mine.mine_type)}
+                placement="bottomRight"
+                trigger="click"
+              >
+                <Button className="btn--dropdown">
+                  {this.props.mine.mine_type.map((tenure) => (
+                    <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
+                      {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
+                    </span>
+                  ))}
+                  <Icon type="down" style={{ fontSize: "14px" }} />
+                </Button>
+              </Popover>
+            ) : (
+              String.EMPTY_FIELD
+            )}
           </h5>
           <h5>
             {this.props.mine.mine_detail[0].major_mine_ind
