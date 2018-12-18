@@ -22,7 +22,6 @@ class  PermitSpec extends GebReportingSpec {
 
         then:"I should see a list of permit"
         assert permitTab.permit_no.text() != ''
-        assert permitTab.permit_date.text() != ''
     }
 
 
