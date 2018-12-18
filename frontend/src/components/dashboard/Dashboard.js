@@ -138,12 +138,18 @@ export class Dashboard extends Component {
     });
   };
 
-  onPageChange = (current, pageSize) => {
+  onPageChange = (page, per_page) => {
+    const { major, tsf, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute({
-        page: current,
-        page_size: pageSize,
-        search: this.state.params.search,
+        page,
+        per_page,
+        major,
+        tsf,
+        status: status && status.join(","),
+        region: region && region.join(","),
+        tenure: tenure && tenure.join(","),
+        commodity: commodity && commodity.join(","),
       })
     );
   };
