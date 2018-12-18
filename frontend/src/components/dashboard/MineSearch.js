@@ -114,7 +114,8 @@ export class MineSearch extends Component {
             />
           </Col>
         </Row>
-        <Row>
+        {/* TODO: Enable when backend supports advanced search */}
+        <Row style={{ display: "none" }}>
           <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
               {this.state.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
