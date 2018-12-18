@@ -294,7 +294,11 @@ export class Dashboard extends Component {
             <TabPane tab="Map" key="map">
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
-                  <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView />
+                  <MineSearch
+                    initialValues={this.state.params}
+                    handleCoordinateSearch={this.handleCoordinateSearch}
+                    isMapView
+                  />
                 </Col>
                 <Col md={2} sm={0} xs={0}>
                   <div className="center">
