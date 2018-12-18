@@ -58,8 +58,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             search_term = request.args.get('search', None, type=str)
             status_filter_term = request.args.get('status', None, type=str)
             tenure_filter_term = request.args.get('tenure', None, type=str)
-            region_code_filter_term = request.args.get('region_code', None, type=str)
-            major_mine_filter_term = request.args.get('major_mine', None, type=str)
+            region_code_filter_term = request.args.get('region', None, type=str)
+            major_mine_filter_term = request.args.get('major', None, type=str)
             tsf_filter_term = request.args.get('tsf', None, type=str)
 
             sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
