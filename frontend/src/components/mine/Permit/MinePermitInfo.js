@@ -53,8 +53,8 @@ const groupPermits = (permits) =>
   }, {});
 
 const transformRowData = (permits) => {
-  const first = permits[0];
-  const latest = permits[permits.length - 1];
+  const latest = permits[0];
+  const first = permits[permits.length - 1];
   return {
     key: latest.permit_guid,
     lastAmended: latest.issue_date,
