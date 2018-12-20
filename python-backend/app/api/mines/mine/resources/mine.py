@@ -4,13 +4,11 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
-from sqlalchemy import exc
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_identity import MineIdentity
 from ..models.mine_detail import MineDetail
-from ..models.mine_type import MineType
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
@@ -18,6 +16,7 @@ from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+
 
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -52,7 +51,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             search_term = request.args.get('search', None, type=str)
             status_search_term = request.args.get('status', None, type=str)
 
-            #Create a filter on mine status if one is provided
+            # Create a filter on mine status if one is provided
             if status_search_term:
                 status_search_term_array = status_search_term.split(',')
                 status_filter = MineStatusXref.mine_operation_status_code.in_(status_search_term_array)
@@ -75,7 +74,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                         .join(MineStatusXref)\
                         .filter(all_status_filter)
                     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
-                paginated_mine_query, pagination_details = apply_pagination(
+                result_query, pagination_details = apply_pagination(
                     mines_permit_join_query, page, items_per_page)
 
             else:
@@ -86,16 +85,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                         .join(MineStatus)\
                         .join(MineStatusXref)\
                         .filter(all_status_filter)
-                    sorted_mine_query = apply_sort(mine_query_with_status, sort_criteria)
+                    result_query = apply_sort(mine_query_with_status, sort_criteria)
                 else:
-                    sorted_mine_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
+                    result_query = apply_sort(MineIdentity.query.join(MineDetail), sort_criteria)
 
-                paginated_mine_query, pagination_details = apply_pagination(sorted_mine_query ,page, items_per_page)
-
+            paginated_mine_query, pagination_details = apply_pagination(result_query, page, items_per_page)
 
             mines = paginated_mine_query.all()
             return {
-                'mines': list(map(lambda x: x.json(), mines)),
+                'mines': list(map(lambda x: x.json_for_list(), mines)),
                 'current_page': pagination_details.page_number,
                 'total_pages': pagination_details.num_pages,
                 'items_per_page': pagination_details.page_size,

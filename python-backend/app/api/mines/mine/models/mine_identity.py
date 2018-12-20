@@ -1,17 +1,14 @@
-from datetime import datetime
 import uuid
 
-from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
-from ...region.models.region import MineRegionCode
 from app.extensions import db
 
 
 class MineIdentity(AuditMixin, Base):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    #Relationships
+    # Relationships
     mine_detail = db.relationship(
         'MineDetail',
         backref='mine_identity',
@@ -76,6 +73,17 @@ class MineIdentity(AuditMixin, Base):
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents':
             [item.json() for item in self.mine_expected_documents],
+            'mine_type': [item.json() for item in self.active(self.mine_type)]
+        }
+
+    def json_for_list(self):
+        return {
+            'guid': str(self.mine_guid),
+            'mine_detail': [item.json() for item in self.mine_detail],
+            'mine_permit': [item.json() for item in self.mine_permit],
+            'mine_status': [item.json() for item in self.mine_status],
+            'mine_tailings_storage_facility':
+            [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_type': [item.json() for item in self.active(self.mine_type)]
         }
 
