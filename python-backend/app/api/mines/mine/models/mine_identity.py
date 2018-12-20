@@ -116,7 +116,8 @@ class MineIdentity(AuditMixin, Base):
             'mine_permit': [item.json() for item in self.mine_permit]
         }
 
-    def active(self, records):
+    @staticmethod
+    def active(records):
         return list(filter(lambda x: x.active_ind, records))
 
 
