@@ -7,7 +7,7 @@ import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
+import AdvancedSearchForm from "@/components/Forms/AdvancedSearchForm";
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
