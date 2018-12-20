@@ -26,6 +26,9 @@ class Tailings extends GebReportingSpec {
         and: "see successful message"
         toastMessage == "Successfully added the TSF."
 
+        and: "Tailings tab is loaded into the page"
+        tailingsTab
+
         then: "User can now see the tailings tab"
         assert tailingsTab.tabSelect.displayed == true
 
