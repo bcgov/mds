@@ -32,4 +32,6 @@ requests==2.20.0
 six==1.11.0
 SQLAlchemy==1.2.10
 sqlalchemy-filters==0.8.0
+uwsgi==2.0.17.1
+uwsgitop==0.10
 Werkzeug==0.14.1

@@ -4,17 +4,18 @@ import json
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource
-from flask_uploads import UploadSet, configure_uploads, patch_request_class
+from flask_uploads import configure_uploads
 from flask_compress import Compress
 
-from .api.parties.namespace.parties import api as parties_api
-from .api.mines.namespace.mines import api as mines_api
-from .api.permits.namespace.permits import api as permits_api
-from .api.documents.namespace.documents import api as document_api
-from .api.document_manager.namespace.document_manager import api as document_manager_api
-from .commands import register_commands
-from .config import Config
-from .extensions import db, jwt, api, documents
+from app.api.parties.namespace.parties import api as parties_api
+from app.api.mines.namespace.mines import api as mines_api
+from app.api.permits.namespace.permits import api as permits_api
+from app.api.documents.namespace.documents import api as document_api
+from app.api.document_manager.namespace.document_manager import api as document_manager_api
+from app.commands import register_commands
+from app.config import Config
+from app.extensions import db, jwt, api, documents
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -32,7 +33,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    
+
     return app
 
 
@@ -58,14 +59,14 @@ def register_routes(app):
     api.add_namespace(permits_api)
     api.add_namespace(document_api)
     api.add_namespace(document_manager_api)
-    
+
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
             return {'success': 'true'}
 
-    # Default error handler to propogate lower level errors up to the API level
+    # Default error handler to propagate lower level errors up to the API level
     @api.errorhandler
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
