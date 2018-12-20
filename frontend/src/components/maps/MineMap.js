@@ -40,7 +40,9 @@ class MineMap extends Component {
    * Adds widgets and any other view modifications after map has been loaded
    */
   handleLoadMap = (map, view) => {
-    this.renderWidgets(view);
+    if (!this.props.mine) {
+      this.renderWidgets(view);
+    }    
     this.setState({ map, view });
   };
 
@@ -60,7 +62,9 @@ class MineMap extends Component {
       "esri/widgets/LayerList",
       "esri/widgets/Expand",
       "esri/widgets/BasemapGallery",
-    ]).then(([LayerListWidget, Expand, BasemapGallery]) => {
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Legend",
+    ]).then(([LayerListWidget, Expand, BasemapGallery, ScaleBar, Legend]) => {
       const widgetPositionArray = {};
 
       const layerList = new LayerListWidget({
@@ -74,6 +78,19 @@ class MineMap extends Component {
         container: document.createElement("map_gallery"),
       });
       widgetPositionArray["top-right"] = mapGallery;
+
+      const scaleBar = new ScaleBar({
+        view,
+        container: document.createElement("scale_bar"),
+      });
+      scaleBar.unit = "metric";
+      widgetPositionArray["bottom-right"] = scaleBar;
+
+      const legend = new Legend({
+        view,
+        container: document.createElement("legend"),
+      });
+      widgetPositionArray["bottom-left"] = legend;
 
       for (const position in widgetPositionArray) {
         // Cast all the widgets under an expandable div and add them to the UI
