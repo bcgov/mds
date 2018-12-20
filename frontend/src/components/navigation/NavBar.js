@@ -19,7 +19,12 @@ const propTypes = {
 
 export const NavBar = (props) => (
   <div className="menu">
-    <Link to={router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)}>
+    <Link
+      to={router.MINE_DASHBOARD.dynamicRoute({
+        page: String.DEFAULT_PAGE,
+        per_page: String.DEFAULT_PER_PAGE,
+      })}
+    >
       <img alt="Home" className="menu__img" src={HOME} />
     </Link>
     <Dropdown overlay={<Logout />}>

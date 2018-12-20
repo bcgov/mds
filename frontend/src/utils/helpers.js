@@ -22,10 +22,7 @@ export const createReducer = (reducer, name) => (state, action) => {
 };
 // Function to create state object using the id as the key (used in src/reducers/<customReducer>)
 export const createItemMap = (array, idField) =>
-  array.reduce((result, item) => {
-    result[item[idField]] = item;
-    return result;
-  }, {});
+  array.reduce((result, item) => ({ [item[idField]]: item, ...result }), {});
 
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);

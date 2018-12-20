@@ -88,7 +88,7 @@ const columns = [
   },
   {
     title: "TSF",
-    dataIndex: "TSF",
+    dataIndex: "tsf",
     width: 150,
   },
 ];
@@ -110,7 +110,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     commodityHash: mineCommodityHash,
     tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
     tenureHash: mineTenureHash,
-    TSF: mines[id].mine_tailings_storage_facility
+    tsf: mines[id].mine_tailings_storage_facility
       ? mines[id].mine_tailings_storage_facility.length
       : String.EMPTY_FIELD,
   }));
