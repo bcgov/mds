@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
+import { uniqBy } from "lodash";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -41,7 +42,10 @@ const columns = [
     width: 150,
     render: (text, record) => (
       <div>
-        {text && text.map(({ permit_no, permit_guid }) => <div key={permit_guid}>{permit_no}</div>)}
+        {text &&
+          uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
+            <div key={permit_guid}>{permit_no}</div>
+          ))}
         {!text && <div>{record.emptyField}</div>}
       </div>
     ),
