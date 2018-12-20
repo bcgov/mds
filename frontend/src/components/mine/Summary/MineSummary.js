@@ -3,34 +3,35 @@ import PropTypes from "prop-types";
 import { Card } from "antd";
 import { uniqBy } from "lodash";
 import NullScreen from "@/components/common/NullScreen";
+import CustomPropTypes from "@/customPropTypes";
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
-  permittees: PropTypes.object,
-  permitteeIds: PropTypes.array,
+  mine: CustomPropTypes.mine.isRequired,
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
+  permitteeIds: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
-  mine: {},
+  permittees: {},
+  permitteeIds: [],
 };
 
 class MineSummary extends Component {
   render() {
-    const { mine, permittees, permitteeIds } = this.props;
-    if (!mine.mgr_appointment[0] && !mine.mine_permit[0]) {
+    if (!this.props.mine.mgr_appointment[0] && !this.props.mine.mine_permit[0]) {
       return <NullScreen type="generic" />;
     }
 
-    const uniquePermits = uniqBy(mine.mine_permit, "permit_no");
+    const uniquePermits = uniqBy(this.props.mine.mine_permit, "permit_no");
 
     return (
       <div>
         <Card>
           <table>
-            {mine.mgr_appointment[0] && (
+            {this.props.mine.mgr_appointment[0] && (
               <tbody>
                 <tr>
                   <th scope="col">
@@ -46,23 +47,29 @@ class MineSummary extends Component {
                 <tr>
                   <td data-label="Mine Manager">
                     <p className="p-large">
-                      {mine.mgr_appointment[0] ? mine.mgr_appointment[0].name : "-"}
+                      {this.props.mine.mgr_appointment[0]
+                        ? this.props.mine.mgr_appointment[0].name
+                        : "-"}
                     </p>
                   </td>
                   <td data-label="Email">
                     <p className="p-large">
-                      {mine.mgr_appointment[0] ? mine.mgr_appointment[0].email : "-"}
+                      {this.props.mine.mgr_appointment[0]
+                        ? this.props.mine.mgr_appointment[0].email
+                        : "-"}
                     </p>
                   </td>
                   <td data-label="Manager Since">
                     <p className="p-large">
-                      {mine.mgr_appointment[0] ? mine.mgr_appointment[0].effective_date : "-"}
+                      {this.props.mine.mgr_appointment[0]
+                        ? this.props.mine.mgr_appointment[0].effective_date
+                        : "-"}
                     </p>
                   </td>
                 </tr>
               </tbody>
             )}
-            {mine.mine_permit[0] && (
+            {this.props.mine.mine_permit[0] && (
               <tbody>
                 <tr>
                   <th scope="col">
@@ -75,16 +82,16 @@ class MineSummary extends Component {
                     <h4>Permittee Since</h4>
                   </th>
                 </tr>
-                {permitteeIds.map((id) => (
+                {this.props.permitteeIds.map((id) => (
                   <tr key={id}>
                     <td data-label="Permittee">
-                      <p className="p-large">{permittees[id].party.name}</p>
+                      <p className="p-large">{this.props.permittees[id].party.name}</p>
                     </td>
                     <td data-label="Email">
-                      <p className="p-large">{permittees[id].party.email}</p>
+                      <p className="p-large">{this.props.permittees[id].party.email}</p>
                     </td>
                     <td data-label="Effective Date">
-                      <p className="p-large">{permittees[id].effective_date}</p>
+                      <p className="p-large">{this.props.permittees[id].effective_date}</p>
                     </td>
                   </tr>
                 ))}
@@ -92,7 +99,7 @@ class MineSummary extends Component {
             )}
           </table>
         </Card>
-        {mine.mine_permit[0] && (
+        {this.props.mine.mine_permit[0] && (
           <Card>
             <table>
               <tbody>

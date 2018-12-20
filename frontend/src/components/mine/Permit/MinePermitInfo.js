@@ -1,14 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Table } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import * as String from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 const columns = [

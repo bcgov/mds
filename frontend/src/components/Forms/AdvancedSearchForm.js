@@ -4,15 +4,15 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { optionsType } from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
-  mineTenureTypes: optionsType.isRequired,
-  mineRegionOptions: optionsType.isRequired,
-  mineStatusOptions: optionsType.isRequired,
+  mineTenureTypes: CustomPropTypes.options.isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
+  mineStatusOptions: CustomPropTypes.options.isRequired,
 };
 
 export class AdvancedSearchForm extends Component {
