@@ -1,4 +1,4 @@
-FROM openshift/jenkins-slave-bddstack
+FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 USER root
 
