@@ -224,7 +224,12 @@ export class MineTailingsInfo extends Component {
               return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
             })
             .map((doc, id) => {
-              const isOverdue = Date.parse(doc.due_date) < new Date();
+              const isOverdue =
+                Date.parse(doc.due_date) < new Date() &&
+                (doc.exp_document_status_guid === "None" ||
+                  (this.props.expectedDocumentStatusOptions[0] &&
+                    doc.exp_document_Status_guid ===
+                      this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
                   <Row gutter={16} justify="center" align="top">
