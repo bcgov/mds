@@ -10,3 +10,4 @@ instance/
 postgres-data/
 .coverage
 coverage.xml
+npm-debug.log

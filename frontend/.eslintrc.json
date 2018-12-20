@@ -14,8 +14,15 @@
     "prettier",
     "prettier/react"
   ],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".js", ".json"]
+      }
+    }
+  },
   "rules": {
-    "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
     "no-case-declarations": 0,
     "react/display-name": 0,
