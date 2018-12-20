@@ -45,28 +45,42 @@ const columns = [
   },
 ];
 
-const transformRowData = (mine) =>
-  mine.mine_permit[0] &&
-  mine.mine_permit.map((permit) => ({
-    key: permit.permit_guid,
-    lastAmended: String.EMPTY_FIELD,
-    permitNo: permit.permit_no ? permit.permit_no : String.EMPTY_FIELD,
-    permittee: permit.permittee[0] ? permit.permittee[0].party.party_name : String.EMPTY_FIELD,
-    firstIssued: permit.issue_date ? permit.issue_date : String.EMPTY_FIELD,
-    status: String.EMPTY_FIELD,
-    authorizationEndDate: permit.expiry_date ? permit.expiry_date : String.EMPTY_FIELD,
-  }));
+const groupPermits = (permits) =>
+  permits.reduce((acc, permit) => {
+    acc[permit.permit_no] = acc[permit.permit_no] || [];
+    acc[permit.permit_no].push(permit);
+    return acc;
+  }, {});
 
-export const MinePermitInfo = (props) => (
-  <Table
-    align="center"
-    pagination={false}
-    columns={columns}
-    dataSource={transformRowData(props.mine)}
-    scroll={{ x: 1500 }}
-    locale={{ emptyText: <NullScreen type="permit" /> }}
-  />
-);
+const transformRowData = (permits) => {
+  const first = permits[0];
+  const latest = permits[permits.length - 1];
+  return {
+    key: latest.permit_guid,
+    lastAmended: latest.issue_date,
+    permitNo: latest.permit_no || String.EMPTY_FIELD,
+    firstIssued: first.issue_date || String.EMPTY_FIELD,
+    permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : String.EMPTY_FIELD,
+    authorizationEndDate: latest.expiry_date ? latest.expiry_date : String.EMPTY_FIELD,
+    status: String.EMPTY_FIELD,
+  };
+};
+
+export const MinePermitInfo = (props) => {
+  const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
+  const rowData = groupedPermits.map(transformRowData);
+  return (
+    <Table
+      align="center"
+      pagination={false}
+      columns={columns}
+      dataSource={rowData}
+      scroll={{ x: 1500 }}
+      locale={{ emptyText: <NullScreen type="permit" /> }}
+    />
+  );
+};
 
 MinePermitInfo.propTypes = propTypes;
+
 export default MinePermitInfo;
