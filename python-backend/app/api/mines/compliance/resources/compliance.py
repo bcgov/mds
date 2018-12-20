@@ -15,11 +15,11 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
         try:
             data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
+        except requests.exceptions.Timeout:
+            return self.raise_error(408, 'NRIS is down or unresponsive.')
         except requests.exceptions.HTTPError as errhttp:
             return self.raise_error(errhttp.response.status_code,
-                                    "There has been an unexpected error with NRIS.")
-        except requests.exceptions.Timeout as errt:
-            return self.raise_error(408, "NRIS has timed out.")
+                                    'NRIS error occurred.' + errhttp.response.message)
 
         if len(data) == 0:
             return None
@@ -33,33 +33,54 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
             advisories = 0
             warnings = 0
-            open_orders = 0
-            overdue_orders = 0
+            num_open_orders = 0
+            num_overdue_orders = 0
             section_35_orders = 0
+            open_orders_list = []
 
             for report in data:
-                report_date = datetime.strptime(report.get('assessmentDate'), '%Y-%m-%d %H:%M')
+                report_date = self.get_datetime_from_NRIS_data(report.get('assessmentDate'))
                 one_year_ago = datetime.now() - relativedelta(years=1)
 
                 inspection = report.get('inspection')
                 stops = inspection.get('stops')
+                order_count = 1
 
-                if stops:
-                    stops_dict = stops[0]
+                for stop in stops:
 
-                    stop_orders = stops_dict.get('stopOrders')
-                    stop_advisories = stops_dict.get('stopAdvisories')
-                    stop_warnings = stops_dict.get('stopWarnings')
+                    stop_orders = stop.get('stopOrders')
+                    stop_advisories = stop.get('stopAdvisories')
+                    stop_warnings = stop.get('stopWarnings')
 
-                    if stop_orders:
-                        open_orders += sum(k.get('orderStatus') == 'Open' for k in stop_orders)
-                        overdue_orders += sum(
-                            k.get('orderCompletionDate') is not None
-                            and k.get('orderStatus') == 'Open' and datetime.strptime(
-                                k.get('orderCompletionDate'), '%Y-%m-%d %H:%M') < datetime.now()
-                            for k in stop_orders)
-                        section_35_orders += sum(
-                            k.get('orderAuthoritySection') == 'Section 35' for k in stop_orders)
+                    for order in stop_orders:
+                        if order.get('orderStatus') == 'Open':
+                            legislation = order.get('orderLegislations')
+                            section = None
+                            if legislation:
+                                section = legislation[0].get('section')
+
+                            order_to_add = {
+                                'order_no': f'{report.get("assessmentId")}-{order_count}',
+                                'code_viloation': section,
+                                'report_no': report.get('assessmentId'),
+                                'inspector': report.get('assessor'),
+                                'due_date': order.get('orderCompletionDate'),
+                                'overdue': False,
+                            }
+
+                            num_open_orders += 1
+
+                            if order.get('orderCompletionDate'
+                                         ) is not None and self.get_datetime_from_NRIS_data(
+                                             order.get('orderCompletionDate')) < datetime.now():
+                                num_overdue_orders += 1
+                                order_to_add['overdue'] = True
+
+                            open_orders_list.append(order_to_add)
+                            order_count += 1
+
+                        if order.get('orderAuthoritySection') == 'Section 35':
+                            section_35_orders += 1
 
                     if one_year_ago < report_date:
                         advisories += len(stop_advisories)
@@ -68,11 +89,16 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             overview = {
                 'last_inspection': most_recent.get('assessmentDate'),
                 'inspector': most_recent.get('assessor'),
-                'open_orders': open_orders,
-                'overdue_orders': overdue_orders,
+                'num_open_orders': num_open_orders,
+                'num_overdue_orders': num_overdue_orders,
                 'advisories': advisories,
                 'warnings': warnings,
                 'section_35_orders': section_35_orders,
+                'open_orders': open_orders_list,
             }
 
             return overview
+
+    @classmethod
+    def get_datetime_from_NRIS_data(self, date):
+        return datetime.strptime(date, '%Y-%m-%d %H:%M')

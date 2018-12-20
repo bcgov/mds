@@ -17,103 +17,104 @@ class MockResponse:
     def raise_for_status(self):
         return
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def setup_info(test_client):
     expected_data = {
-        "last_inspection": "2018-12-10 18:36",
-        "inspector": "IDIR\\TEST",
-        "open_orders": 3,
-        "overdue_orders": 1,
-        "advisories": 3,
-        "warnings": 2,
-        "section_35_orders": 2
+        'last_inspection': '2018-12-10 18:36',
+        'inspector': 'IDIR\\TEST',
+        'open_orders': 3,
+        'overdue_orders': 1,
+        'advisories': 3,
+        'warnings': 2,
+        'section_35_orders': 2,
+        ''
     }
 
     NRIS_Mock_data = [{
-                "assessmentDate": "2018-11-01 13:36",
-                "assessmentType": "INSPECTION",
-                "assessor": "IDIR\\GRMCLEAN",
-                "inspection": {
-                    "stops": [
+                'assessmentDate': '2018-11-01 13:36',
+                'assessmentType': 'INSPECTION',
+                'assessor': 'IDIR\\GRMCLEAN',
+                'inspection': {
+                    'stops': [
                         {
-                            "stopOrders": [
+                            'stopOrders': [
                                 {
-                                    "orderStatus": "Open",
-                                    "orderCompletionDate": "2018-12-10 13:52",
-                                    "orderAuthoritySection": "Section 15(4)",
+                                    'orderStatus': 'Open',
+                                    'orderCompletionDate': '2018-12-10 13:52',
+                                    'orderAuthoritySection': 'Section 15(4)',
                                 }
                             ],
-                            "stopAdvisories": [{
-                                "advisoryDetail": "test"
+                            'stopAdvisories': [{
+                                'advisoryDetail': 'test'
                             },{
-                                "advisoryDetail": "test"
+                                'advisoryDetail': 'test'
                             },{
-                                "advisoryDetail": "test"
+                                'advisoryDetail': 'test'
                             }],
-                            "stopWarnings": [{
-                                "warningDetail": "test"
+                            'stopWarnings': [{
+                                'warningDetail': 'test'
                             },{
-                                "warningDetail": "test"
+                                'warningDetail': 'test'
                             }],
                         }
                     ]
                 }
             },{
-                "assessmentDate": "2018-12-10 18:36",
-                "assessmentType": "INSPECTION",
-                "assessor": "IDIR\\TEST",
-                "inspection": {
-                    "stops": [
+                'assessmentDate': '2018-12-10 18:36',
+                'assessmentType': 'INSPECTION',
+                'assessor': 'IDIR\\TEST',
+                'inspection': {
+                    'stops': [
                         {
-                            "stopOrders": [
+                            'stopOrders': [
                                 {
-                                    "orderStatus": "Open",
-                                    "orderCompletionDate": "2019-01-15 13:52",
-                                    "orderAuthoritySection": "Section 15(4)",
+                                    'orderStatus': 'Open',
+                                    'orderCompletionDate': '2019-01-15 13:52',
+                                    'orderAuthoritySection': 'Section 15(4)',
                                 },
                                 {
-                                    "orderStatus": "Open",
-                                    "orderCompletionDate": "2019-01-14 13:52",
-                                    "orderAuthoritySection": "Section 35",
+                                    'orderStatus': 'Open',
+                                    'orderCompletionDate': '2019-01-14 13:52',
+                                    'orderAuthoritySection': 'Section 35',
                                 }
                             ],
-                            "stopAdvisories": [],
-                            "stopWarnings": [],
+                            'stopAdvisories': [],
+                            'stopWarnings': [],
                         }
                     ]
                 }
             },{
-                "assessmentDate": "2017-12-01 18:36",
-                "assessmentType": "INSPECTION",
-                "assessor": "IDIR\\TEST",
-                "inspection": {
-                    "stops": [
+                'assessmentDate': '2017-12-01 18:36',
+                'assessmentType': 'INSPECTION',
+                'assessor': 'IDIR\\TEST',
+                'inspection': {
+                    'stops': [
                         {
-                            "stopOrders": [
+                            'stopOrders': [
                                 {
-                                    "orderStatus": "Closed",
-                                    "orderCompletionDate": "2018-01-15 13:52",
-                                    "orderAuthoritySection": "Section 15(4)",
+                                    'orderStatus': 'Closed',
+                                    'orderCompletionDate': '2018-01-15 13:52',
+                                    'orderAuthoritySection': 'Section 15(4)',
                                 },
                                 {
-                                    "orderStatus": "Closed",
-                                    "orderCompletionDate": "2018-01-14 13:52",
-                                    "orderAuthoritySection": "Section 35",
+                                    'orderStatus': 'Closed',
+                                    'orderCompletionDate': '2018-01-14 13:52',
+                                    'orderAuthoritySection': 'Section 35',
                                 }
                             ],
-                            "stopAdvisories": [{
-                                "advisoryDetail": "test"
+                            'stopAdvisories': [{
+                                'advisoryDetail': 'test'
                             },{
-                                "advisoryDetail": "test"
+                                'advisoryDetail': 'test'
                             },{
-                                "advisoryDetail": "test"
+                                'advisoryDetail': 'test'
                             }],
-                            "stopWarnings": [{
-                                "warningDetail": "test"
+                            'stopWarnings': [{
+                                'warningDetail': 'test'
                             },{
-                                "warningDetail": "test"
+                                'warningDetail': 'test'
                             },{
-                                "warningDetail": "test"
+                                'warningDetail': 'test'
                             }],
                         }
                     ]
