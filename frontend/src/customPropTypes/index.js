@@ -1,12 +1,14 @@
 // types/index.js
-import PropTypes from "prop-types";
+import { PropTypes, shape, arrayOf } from "prop-types";
 
-export const dropdownListItem = PropTypes.shape({
+export const dropdownListItem = shape({
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
 });
 
-export const party = PropTypes.shape({
+export const optionsType = arrayOf(dropdownListItem);
+
+export const party = shape({
   party_guid: PropTypes.string,
   party_type_code: PropTypes.string,
   phone_no: PropTypes.string,
@@ -19,7 +21,7 @@ export const party = PropTypes.shape({
   first_name: PropTypes.string,
 });
 
-export const partyRelationship = PropTypes.shape({
+export const partyRelationship = shape({
   mine_party_appt_guid: PropTypes.string,
   mine_guid: PropTypes.string,
   party: PropTypes.party,
