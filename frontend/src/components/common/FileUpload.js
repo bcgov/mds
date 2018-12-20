@@ -1,12 +1,20 @@
 import { map } from "lodash";
 import React from "react";
+import PropTypes from "prop-types";
 import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-registerPlugin(FilePondPluginFileValidateSize);
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+
+const propTypes = {
+  uploadUrl: PropTypes.string.isRequired,
+  maxFileSize: PropTypes.string,
+  acceptedFileTypesMap: PropTypes.object,
+};
 
 class FileUpload extends React.Component {
   constructor(props) {
@@ -28,13 +36,16 @@ class FileUpload extends React.Component {
   }
 
   render() {
+    const { maxFileSize, acceptedFileTypesMap } = this.props;
     return (
       <FilePond
+        server={this.server}
         name={"file"}
         allowRevert={false}
         allowMultiple={true}
-        maxFileSize={"100MB"}
-        server={this.server}
+        maxFileSize={maxFileSize || "100MB"}
+        acceptedFileTypes={Object.keys(acceptedFileTypesMap || {})}
+        fileValidateTypeLabelExpectedTypesMap={acceptedFileTypesMap}
         onupdatefiles={(fileItems) => {
           this.setState({
             files: map(fileItems, "file"),
@@ -48,5 +59,7 @@ class FileUpload extends React.Component {
     );
   }
 }
+
+FileUpload.propTypes = propTypes;
 
 export default FileUpload;
