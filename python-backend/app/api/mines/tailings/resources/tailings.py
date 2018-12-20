@@ -88,7 +88,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                         self.raise_error(500, "Error creating tsf expected documents")
                 except BaseException as e:
                     db.session.rollback()
-                    self.raise_error(500, str(e + ", tsf not created"))
+                    self.raise_error(500, str(e) + ", tsf not created")
             db.session.commit()
             return {
                 'mine_tailings_storage_facilities':
