@@ -19,7 +19,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             return self.raise_error(408, 'NRIS is down or unresponsive.')
         except requests.exceptions.HTTPError as errhttp:
             return self.raise_error(errhttp.response.status_code,
-                                    'NRIS error occurred.' + errhttp.response.message)
+                                    'NRIS error occurred.' + str(errhttp))
 
         if len(data) == 0:
             return None
@@ -54,10 +54,15 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
                     for order in stop_orders:
                         if order.get('orderStatus') == 'Open':
+
                             legislation = order.get('orderLegislations')
+                            permit = order.get('orderPermits')
                             section = None
+
                             if legislation:
                                 section = legislation[0].get('section')
+                            elif permit:
+                                section = permit[0].get('permitSectionNumber')
 
                             order_to_add = {
                                 'order_no': f'{report.get("assessmentId")}-{order_count}',
