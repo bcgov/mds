@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy } from "lodash";
@@ -12,7 +12,6 @@ import CustomPropTypes from "@/customPropTypes";
  * @class MineList - paginated list of mines
  */
 
-const { objectOf, arrayOf, string } = PropTypes;
 const propTypes = {
   mines: objectOf(CustomPropTypes.mine).isRequired,
   mineIds: arrayOf(string).isRequired,
