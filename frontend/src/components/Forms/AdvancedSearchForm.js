@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { optionsType } from "@/types";
+import { optionsType } from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
