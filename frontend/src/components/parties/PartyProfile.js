@@ -70,25 +70,6 @@ export class PartyProfile extends Component {
                     </Col>
                   </Row>
                   <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
-                  {parties.mgr_appointment.map((history, i) => {
-                    const expiry =
-                      history.expiry_date === "9999-12-31" ? "PRESENT" : history.expiry_date;
-                    return (
-                      <div key={i}>
-                        <Row type="flex" style={{ textAlign: "center" }}>
-                          <Col span={8}>
-                            <Link to={router.MINE_SUMMARY.dynamicRoute(history.mine_guid)}>
-                              {history.mine_name}
-                            </Link>
-                          </Col>
-                          <Col span={8}>Mine Manager</Col>
-                          <Col span={8}>
-                            {history.effective_date} - {expiry}
-                          </Col>
-                        </Row>
-                      </div>
-                    );
-                  })}
                 </div>
               </TabPane>
             </Tabs>
@@ -99,6 +80,26 @@ export class PartyProfile extends Component {
     return <Loading />;
   }
 }
+
+/* {parties.mgr_appointment.map((history, i) => {
+  const expiry =
+    history.expiry_date === "9999-12-31" ? "PRESENT" : history.expiry_date;
+  return (
+    <div key={i}>
+      <Row type="flex" style={{ textAlign: "center" }}>
+        <Col span={8}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(history.mine_guid)}>
+            {history.mine_name}
+          </Link>
+        </Col>
+        <Col span={8}>Mine Manager</Col>
+        <Col span={8}>
+          {history.effective_date} - {expiry}
+        </Col>
+      </Row>
+    </div>
+  );
+})} */
 
 const mapStateToProps = (state) => ({
   parties: getParties(state),

@@ -7,7 +7,6 @@ from sqlalchemy import or_
 
 from ....mines.mine.models.mine_identity import MineIdentity
 from ..models.party import Party
-from ..models.mgr_appointment import MgrAppointment
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin

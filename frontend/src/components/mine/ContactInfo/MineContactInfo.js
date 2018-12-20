@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
-import ViewMineManager from "./ViewMineManager";
 import ViewPermittee from "./ViewPermittee";
 import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -67,11 +66,6 @@ export class MineContactInfo extends Component {
     const { mine } = this.props;
     return (
       <div>
-        <ViewMineManager
-          {...this.props}
-          handleChange={this.handleChangeDebounced}
-          handlePartySubmit={this.handlePartySubmit}
-        />
         {mine.mine_permit[0] && (
           <ViewPermittee
             {...this.props}

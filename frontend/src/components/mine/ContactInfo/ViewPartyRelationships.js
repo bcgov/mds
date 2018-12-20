@@ -232,65 +232,59 @@ export class ViewPartyRelationships extends Component {
 
     return (
       <div>
-        <Card>
-          <Row gutter={16}>
-            <Col span={24}>
+        <Row gutter={16}>
+          <Col span={24}>
+            <div className="inline-flex between">
+              <h3>Contact Information</h3>
               <div className="inline-flex between">
-                <h3>Other Contacts</h3>
-                <div className="inline-flex between">
-                  <Popconfirm
-                    placement="topRight"
-                    title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
-                    onConfirm={(event) =>
-                      this.openTailingsModal(
-                        event,
-                        this.handleAddTailings,
-                        ModalContent.ADD_TAILINGS
-                      )
-                    }
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <input
-                      type="button"
-                      ref={this.TSFConfirmation}
-                      style={{ width: "1px", height: "1px" }}
-                    />
-                  </Popconfirm>
-                  <ConditionalButton
-                    isDropdown
-                    overlay={menu}
-                    string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+                <Popconfirm
+                  placement="topRight"
+                  title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
+                  onConfirm={(event) =>
+                    this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
+                  }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <input
+                    type="button"
+                    ref={this.TSFConfirmation}
+                    style={{ width: "1px", height: "1px" }}
                   />
-                </div>
+                </Popconfirm>
+                <ConditionalButton
+                  isDropdown
+                  overlay={menu}
+                  string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+                />
               </div>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              {partyRelationships.length != 0 ? (
-                partyRelationships.map((partyRelationship) => (
-                  <div key={partyRelationship.mine_party_appt_guid}>
-                    <hr />
-                    <br />
-                    {this.renderPartyRelationship(partyRelationship)}
-                    <br />
-                    <br />
-                  </div>
-                ))
-              ) : (
-                <div>
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            {partyRelationships.length != 0 ? (
+              partyRelationships.map((partyRelationship) => (
+                <div key={partyRelationship.mine_party_appt_guid}>
                   <hr />
                   <br />
-                  <br />
-                  <NullScreen type="contacts" />
+                  {this.renderPartyRelationship(partyRelationship)}
                   <br />
                   <br />
                 </div>
-              )}
-            </Col>
-          </Row>
-        </Card>
+              ))
+            ) : (
+              <div>
+                <hr />
+                <br />
+                <br />
+                <NullScreen type="contacts" />
+                <br />
+                <br />
+              </div>
+            )}
+          </Col>
+        </Row>
       </div>
     );
   }

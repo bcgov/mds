@@ -24,7 +24,6 @@ class Party(AuditMixin, Base):
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
 
@@ -55,21 +54,11 @@ class Party(AuditMixin, Base):
             context.update({
                 'first_name': self.first_name,
             })
-            if show_mgr:
-                context.update({'mgr_appointment': [item.json() for item in self.mgr_appointment]})
         return context
 
     @classmethod
     def find_by_party_guid(cls, _id):
         return cls.query.filter_by(party_guid=_id).first()
-
-    @classmethod
-    def find_by_mgr_appointment(cls, _id):
-        return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mgr_appointment_guid=_id).first()
-
-    @classmethod
-    def find_by_mine_guid(cls, _id):
-        return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mine_guid=_id).first()
 
     @classmethod
     def find_by_party_name(cls, party_name):
