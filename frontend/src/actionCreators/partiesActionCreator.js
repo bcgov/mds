@@ -70,34 +70,6 @@ export const fetchPartyById = (id) => (dispatch) => {
     });
 };
 
-export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) => {
-  dispatch(request(reducerTypes.ADD_MINE_MANAGER));
-  dispatch(showLoading());
-  return axios
-    .post(
-      ENVIRONMENT.apiUrl + API.MANAGER,
-      { mine_guid: mineId, party_guid: partyId, effective_date: date },
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: `Successfully updated the manager of ${mineName}`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.ADD_MINE_MANAGER));
-      dispatch(hideLoading());
-      return response;
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.ADD_MINE_MANAGER));
-      dispatch(hideLoading());
-    });
-};
-
 export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PERMITTEE));
   dispatch(showLoading());
@@ -203,12 +175,35 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     });
 };
 
-export const fetchPartyRelationships = (mineId) => (dispatch) => {
+export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading("modal"));
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_guid=${mineId}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(partyActions.storePartyRelationships(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
+  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?party_guid=${partyId}`,
       createRequestHeader()
     )
     .then((response) => {

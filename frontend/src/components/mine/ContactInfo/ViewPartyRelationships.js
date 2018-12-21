@@ -14,7 +14,7 @@ import NullScreen from "@/components/common/NullScreen";
 import {
   fetchPartyRelationshipTypes,
   addPartyRelationship,
-  fetchPartyRelationships,
+  fetchPartyRelationshipsByMineId,
   removePartyRelationship,
   updatePartyRelationship,
 } from "@/actionCreators/partiesActionCreator";
@@ -31,7 +31,7 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   selectedPartyRelationshipType: CustomPropTypes.dropdownListItem,
   addPartyRelationship: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
+  fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   selectedPartyRelationship: CustomPropTypes.partyRelationship,
   createTailingsStorageFacility: PropTypes.func.isRequired,
@@ -54,7 +54,7 @@ export class ViewPartyRelationships extends Component {
 
   componentWillMount() {
     this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPartyRelationships(this.props.mine.guid);
+    this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
   }
 
   onSubmitAddPartyRelationship = (values) => {
@@ -68,7 +68,7 @@ export class ViewPartyRelationships extends Component {
     };
 
     this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships(this.props.mine.guid);
+      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
       this.props.closeModal();
     });
   };
@@ -143,7 +143,7 @@ export class ViewPartyRelationships extends Component {
     payload.mine_tailings_storage_facility_guid = values.mine_tailings_storage_facility_guid;
 
     this.props.updatePartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships(this.props.mine.guid);
+      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
       this.props.closeModal();
     });
   };
@@ -151,7 +151,7 @@ export class ViewPartyRelationships extends Component {
   removePartyRelationship = (event, mine_party_appt_guid) => {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
-      this.props.fetchPartyRelationships(this.props.mine.guid);
+      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
     });
   };
 
@@ -300,7 +300,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPartyRelationshipTypes,
       addPartyRelationship,
-      fetchPartyRelationships,
+      fetchPartyRelationshipsByMineId,
       removePartyRelationship,
       updatePartyRelationship,
       createTailingsStorageFacility,

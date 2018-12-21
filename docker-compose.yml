@@ -81,7 +81,7 @@ services:
     depends_on:
       - backend
     networks:
-      - mds
+    - mds
 
 ####################### Networks Definition #######################
 networks:
