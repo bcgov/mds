@@ -14,7 +14,7 @@ import Logout from "../authentication/Logout";
  */
 
 const propTypes = {
-  userInfo: { preferred_username: PropTypes.string.isRequired },
+  userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
 };
 
 export const NavBar = (props) => (

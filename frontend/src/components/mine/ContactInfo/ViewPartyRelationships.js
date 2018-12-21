@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as CustomPropTypes from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 import { Card, Row, Col, Menu, Icon, Popconfirm } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
@@ -22,7 +22,7 @@ import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreato
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
