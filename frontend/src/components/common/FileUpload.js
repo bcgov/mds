@@ -48,7 +48,7 @@ class FileUpload extends React.Component {
         server={this.server}
         name="file"
         allowRevert={false}
-        allowMultiple={true}
+        allowMultiple
         maxFileSize={this.props.maxFileSize}
         allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
