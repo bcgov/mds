@@ -2,33 +2,43 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { difference, intersectionWith } from "lodash";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification } from "antd";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
+  mineStatusOptions: CustomPropTypes.options.isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
+  mineTenureTypes: CustomPropTypes.options.isRequired,
   mine_types: PropTypes.array,
   conditionalDisturbanceOptions: PropTypes.object.isRequired,
   conditionalCommodityOptions: PropTypes.object.isRequired,
   initialValues: PropTypes.object,
 };
 
+const defaultProps = {
+  title: "",
+  mine_types: [],
+  initialValues: null,
+};
+
 export class MineRecordForm extends Component {
   state = {
     activeKey: [],
+    usedTenureTypes: [],
   };
 
+  componentDidMount() {
+    console.log(this.state.usedTenureTypes);
+  }
   /**
    *
    * @param {*} nextProps
@@ -38,6 +48,7 @@ export class MineRecordForm extends Component {
    * componentWillReceiveProps checks if the FieldArray changes and
    * overrides the default behaviour to set a defautValue top the new block
    */
+
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
       mine_tenure_type_code: [],
@@ -54,6 +65,14 @@ export class MineRecordForm extends Component {
           "mine_types",
           nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
         );
+        // nextProps.mine_types.map(({ mine_tenure_type_code }) => {
+        //   if (mine_tenure_type_code) {
+        //     this.setState((prevState) => ({
+        //       usedTenureTypes: [...prevState.usedTenureTypes, mine_tenure_type_code],
+        //     }));
+        //   }
+        // });
+        // console.log(this.state.usedTenureTypes);
       }
     } else {
       // Do nothing if no mine_types, or no change to mine_types
@@ -65,13 +84,23 @@ export class MineRecordForm extends Component {
           "mine_types",
           nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
         );
+        nextProps.mine_types.map(({ mine_tenure_type_code }) => {
+          if (mine_tenure_type_code) {
+            this.setState((prevState) => ({
+              usedTenureTypes: [...prevState.usedTenureTypes, mine_tenure_type_code],
+            }));
+          }
+        });
       }
     }
   }
 
+  componentWillUnmount() {
+    this.setState({ usedTenureTypes: [] });
+  }
+
   // function to set the active CollapsePanel, this keeps the panel open when the inner state changes. (Ie changing inputs)
   setActiveKey = (key) => {
-    console.log(key);
     this.setState({
       activeKey: key,
     });
@@ -133,7 +162,8 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
+                    // disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
+                    usedOptions={this.props.initialValues ? null : this.state.usedTenureTypes}
                     onChange={this.handleOptionChange}
                     id={`${type}.mine_tenure_type_code`}
                     name={`${type}.mine_tenure_type_code`}
@@ -141,14 +171,17 @@ export class MineRecordForm extends Component {
                     placeholder="Please Select Tenure"
                     component={renderConfig.SELECT}
                     data={this.props.mineTenureTypes}
-                    validate={[required]}
                   />
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
+                    // disabled={
+                    //   this.props.initialValues.mine_types &&
+                    //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
+                    //     this.props.mine_types[index].mine_tenure_type_code
+                    // }
                     id={`${type}.mine_commodity_code`}
                     name={`${type}.mine_commodity_code`}
                     label="Commodity"
@@ -156,30 +189,34 @@ export class MineRecordForm extends Component {
                     component={renderConfig.MULTI_SELECT}
                     data={
                       this.props.conditionalCommodityOptions[
-                        (this.props.mine_types &&
-                          this.props.mine_types[index].mine_tenure_type_code) ||
-                          "COL"
+                        this.props.mine_types[index] &&
+                        this.props.mine_types[index].mine_tenure_type_code
+                          ? this.props.mine_types[index].mine_tenure_type_code
+                          : "COL"
                       ]
                     }
-                    validate={[required]}
                   />
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
+                    // disabled={
+                    //   this.props.initialValues.mine_types &&
+                    //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
+                    //     this.props.mine_types[index].mine_tenure_type_code
+                    // }
                     id={`${type}.mine_disturbance_code`}
                     name={`${type}.mine_disturbance_code`}
                     placeholder="Please Select Disturbance"
                     label="Disturbance"
                     component={renderConfig.MULTI_SELECT}
-                    validate={[required]}
                     data={
                       this.props.conditionalDisturbanceOptions[
-                        (this.props.mine_types &&
-                          this.props.mine_types[index].mine_tenure_type_code) ||
-                          "COL"
+                        this.props.mine_types[index] &&
+                        this.props.mine_types[index].mine_tenure_type_code
+                          ? this.props.mine_types[index].mine_tenure_type_code
+                          : "COL"
                       ]
                     }
                   />
@@ -314,6 +351,7 @@ export class MineRecordForm extends Component {
 }
 
 MineRecordForm.propTypes = propTypes;
+MineRecordForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
@@ -323,6 +361,7 @@ export default compose(
     form: FORM.MINE_RECORD,
     touchOnBlur: false,
     enableReinitialize: true,
+    keepDirtyOnReinitialize: true,
     // onSubmitSuccess: resetForm(FORM.MINE_RECORD),
   })
 )(MineRecordForm);

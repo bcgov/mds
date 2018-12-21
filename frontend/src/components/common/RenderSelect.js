@@ -41,9 +41,13 @@ const RenderSelect = (props) => (
       id={props.id}
       {...props.input}
     >
-      {props.data.map((value) => (
-        <Select.Option key={value.value} value={value.value}>
-          {value.label}
+      {props.data.map((opt) => (
+        <Select.Option
+          disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
+          key={opt.value}
+          value={opt.value}
+        >
+          {opt.label}
         </Select.Option>
       ))}
     </Select>
