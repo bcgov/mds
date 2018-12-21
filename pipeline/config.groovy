@@ -179,7 +179,8 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'ROUTE': "${vars.modules.'mds-python-backend'.ROUTE}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'DEPLOYMENT_ENVIRONMENT': "${vars.deployment.env.name}"
                     ]
                 ],
                 [
