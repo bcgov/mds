@@ -82,7 +82,7 @@ app {
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
+                            'BASE_PATH': "",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
@@ -279,8 +279,8 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
+                    PATH = ""
+                    ROUTE = "/"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -288,8 +288,8 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
+                    PATH = ""
+                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
