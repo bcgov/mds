@@ -39,7 +39,7 @@ export class RenderMultiSelect extends Component {
           }
         >
           <Select
-            disabled={!this.props.data}
+            disabled={!this.props.data || this.props.disabled}
             mode="multiple"
             getPopupContainer={() => document.getElementById(this.props.id)}
             placeholder={this.props.placeholder}

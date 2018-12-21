@@ -14,6 +14,7 @@ const propTypes = {
   opton: PropTypes.object,
   meta: PropTypes.object,
   data: PropTypes.array,
+  disabled: PropTypes.bool,
 };
 
 const RenderSelect = (props) => (
@@ -29,6 +30,7 @@ const RenderSelect = (props) => (
     }
   >
     <Select
+      disabled={props.disabled}
       getPopupContainer={() => document.getElementById(props.id)}
       showSearch
       placeholder={props.placeholder}

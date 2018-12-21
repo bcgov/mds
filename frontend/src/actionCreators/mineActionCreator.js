@@ -10,26 +10,30 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 const submitDisturbances = (type) => ({ data }) => {
-  const disturbanceResponses = type.mine_disturbance_code.map((code) =>
-    axios.post(
-      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-      {
-        mine_type_guid: data.mine_type_guid,
-        mine_disturbance_code: code,
-      },
-      createRequestHeader()
-    )
-  );
-  const commodityResponses = type.mine_commodity_code.map((code) =>
-    axios.post(
-      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-      {
-        mine_type_guid: data.mine_type_guid,
-        mine_commodity_code: code,
-      },
-      createRequestHeader()
-    )
-  );
+  const disturbanceResponses =
+    type.mine_disturbance_code.length >= 1 &&
+    type.mine_disturbance_code.map((code) =>
+      axios.post(
+        ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+        {
+          mine_type_guid: data.mine_type_guid,
+          mine_disturbance_code: code,
+        },
+        createRequestHeader()
+      )
+    );
+  const commodityResponses =
+    type.mine_commodity_code.length >= 1 &&
+    type.mine_commodity_code.map((code) =>
+      axios.post(
+        ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+        {
+          mine_type_guid: data.mine_type_guid,
+          mine_commodity_code: code,
+        },
+        createRequestHeader()
+      )
+    );
   return Promise.all([disturbanceResponses, commodityResponses]);
 };
 
@@ -45,7 +49,7 @@ const handleError = (dispatch, reducer) => (err) => {
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
-      type.mine_tenure_type_code
+      type.mine_tenure_type_code.length >= 1
         ? axios
             .post(
               ENVIRONMENT.apiUrl + API.MINE_TYPES,
@@ -123,6 +127,29 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
+  dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
+  dispatch(showLoading("modal"));
+  return axios
+    .delete(`${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`, createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: `Successfully removed Tenure: ${tenure}`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
       dispatch(hideLoading("modal"));
     });
 };

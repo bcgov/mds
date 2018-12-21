@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { difference, intersectionWith } from "lodash";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -43,20 +44,34 @@ export class MineRecordForm extends Component {
       mine_commodity_code: [],
       mine_disturbance_code: [],
     };
-    // Do nothing if no mine_types, or no change to mine_types
-    if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
-      return;
-    }
-    if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
-      this.props.change(
-        "mine_types",
-        nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
-      );
+    if (this.props.initialValues) {
+      // Do nothing if no mine_types, or no change to mine_types
+      if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
+        return;
+      }
+      if (this.props.initialValues.mine_types.length !== nextProps.mine_types.length) {
+        this.props.change(
+          "mine_types",
+          nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
+        );
+      }
+    } else {
+      // Do nothing if no mine_types, or no change to mine_types
+      if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
+        return;
+      }
+      if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
+        this.props.change(
+          "mine_types",
+          nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
+        );
+      }
     }
   }
 
   // function to set the active CollapsePanel, this keeps the panel open when the inner state changes. (Ie changing inputs)
   setActiveKey = (key) => {
+    console.log(key);
     this.setState({
       activeKey: key,
     });
@@ -64,20 +79,48 @@ export class MineRecordForm extends Component {
 
   removeField = (event, fields, index) => {
     event.preventDefault();
+    if (this.props.initialValues && this.props.initialValues.mine_types[index]) {
+      this.props.handleDelete(this.props.initialValues.mine_types[index]);
+    }
     fields.remove(index);
+  };
+
+  addField = (event, fields) => {
+    event.preventDefault();
+    if (fields.length === 4) {
+      notification.error({
+        message: "You cannot have more than 4 tenures associated with a mine",
+        duration: 10,
+      });
+    } else {
+      fields.push({});
+      this.setActiveKey([fields.length.toString()]);
+    }
   };
 
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
       <Form.Item style={{ marginTop: "15px" }} label={`Mine Type ${index + 1}`} />
-      <Button
-        ghost
-        onClick={(event) => {
-          this.removeField(event, fields, index);
-        }}
-      >
-        <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
-      </Button>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div onClick={(event) => event.stopPropagation()}>
+        <Popconfirm
+          placement="topRight"
+          title={
+            this.props.initialValues && this.props.initialValues.mine_types[index]
+              ? `Are you sure you want to delete Mine Type ${index + 1}?`
+              : `Are you sure you want to remove Mine Type ${index + 1}?`
+          }
+          onConfirm={(event) => {
+            this.removeField(event, fields, index);
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button ghost>
+            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+          </Button>
+        </Popconfirm>
+      </div>
     </div>
   );
 
@@ -90,6 +133,7 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
+                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
                     onChange={this.handleOptionChange}
                     id={`${type}.mine_tenure_type_code`}
                     name={`${type}.mine_tenure_type_code`}
@@ -104,6 +148,7 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
+                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
                     id={`${type}.mine_commodity_code`}
                     name={`${type}.mine_commodity_code`}
                     label="Commodity"
@@ -123,6 +168,7 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
+                    disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
                     id={`${type}.mine_disturbance_code`}
                     name={`${type}.mine_disturbance_code`}
                     placeholder="Please Select Disturbance"
@@ -142,7 +188,7 @@ export class MineRecordForm extends Component {
             </Collapse.Panel>
           ))}
         </Collapse>
-        <Button className="btn--dropdown" onClick={() => fields.push({})}>
+        <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
           <Icon type="plus" style={{ color: "#0F620E" }} />
           {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
         </Button>
@@ -217,13 +263,10 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        {/* hiding the mine_types fieldArray fron Edit view until the edit functionality is added */}
-        {!this.props.initialValues && (
-          <div>
-            <Form.Item label="Mine Type" />
-            <FieldArray name="mine_types" component={renderTypeSelect} />
-          </div>
-        )}
+        <div>
+          <Form.Item label="Mine Type" />
+          <FieldArray name="mine_types" component={renderTypeSelect} />
+        </div>
         <Row gutter={16}>
           <Col>
             <Form.Item>
@@ -280,6 +323,6 @@ export default compose(
     form: FORM.MINE_RECORD,
     touchOnBlur: false,
     enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.MINE_RECORD),
+    // onSubmitSuccess: resetForm(FORM.MINE_RECORD),
   })
 )(MineRecordForm);

@@ -34,3 +34,28 @@ export const getCurrentPermitteeIds = createSelector(
     return unique;
   }
 );
+
+export const getCurrentMineTypes = createSelector(
+  [getMines, getMineGuid],
+  (mines, mineGuid) => {
+    if (mineGuid) {
+      const mineTypesArr = mines[mineGuid].mine_type.map((type) => {
+        const mine_types = {
+          mine_tenure_type_code: "",
+          mine_commodity_code: [],
+          mine_disturbance_code: [],
+        };
+        mine_types.mine_tenure_type_code = type.mine_tenure_type_code;
+        type.mine_type_detail.map((detail) => {
+          if (detail.mine_commodity_code) {
+            mine_types.mine_commodity_code.push(detail.mine_commodity_code);
+          } else if (detail.mine_disturbance_code) {
+            mine_types.mine_disturbance_code.push(detail.mine_disturbance_code);
+          }
+        });
+        return mine_types;
+      });
+      return mineTypesArr;
+    }
+  }
+);

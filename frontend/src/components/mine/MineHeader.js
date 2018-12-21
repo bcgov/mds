@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
-import { Menu, Icon, Divider, Button, Popover, Col, Row } from "antd";
+import { Menu, Icon, Divider, Button, Popover } from "antd";
+import { difference, intersectionWith } from "lodash";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -14,7 +15,8 @@ import { ConditionalButton } from "../common/ConditionalButton";
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func,
+  updateMineRecord: PropTypes.func.isRequired,
+  removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func,
   fetchMineRecordById: PropTypes.func,
   mineStatusOptions: PropTypes.array.isRequired,
@@ -44,6 +46,17 @@ class MineHeader extends Component {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
+  };
+
+  handleDeleteMineType = (mineType) => {
+    this.props.mine.mine_type.map((type) => {
+      if (type.mine_tenure_type_code === mineType.mine_tenure_type_code) {
+        const tenure = this.props.mineTenureHash[mineType.mine_tenure_type_code];
+        this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
+          this.props.fetchMineRecordById(this.props.mine.guid);
+        });
+      }
+    });
   };
 
   handleAddTailings = (value) => {
@@ -102,7 +115,18 @@ class MineHeader extends Component {
     });
   }
 
-  openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title, mine) {
+  openModal(
+    event,
+    mineStatusOptions,
+    mineRegionOptions,
+    mineTenureTypes,
+    onSubmit,
+    handleDelete,
+    conditionalCommodityOptions,
+    conditionalDisturbanceOptions,
+    title,
+    mine
+  ) {
     event.preventDefault();
     const initialValues = {
       name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
@@ -111,6 +135,7 @@ class MineHeader extends Component {
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
       mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
+      mine_types: this.props.currentMineTypes,
     };
 
     this.props.openModal({
@@ -119,6 +144,9 @@ class MineHeader extends Component {
         mineRegionOptions,
         mineTenureTypes,
         onSubmit,
+        handleDelete,
+        conditionalCommodityOptions,
+        conditionalDisturbanceOptions,
         title,
         initialValues,
       },
@@ -141,6 +169,9 @@ class MineHeader extends Component {
                 this.props.mineRegionOptions,
                 this.props.mineTenureTypes,
                 this.handleUpdateMineRecord,
+                this.handleDeleteMineType,
+                this.props.conditionalCommodityOptions,
+                this.props.conditionalDisturbanceOptions,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
               )

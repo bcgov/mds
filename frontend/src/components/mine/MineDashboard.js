@@ -8,6 +8,7 @@ import {
   fetchMineRecordById,
   updateMineRecord,
   createTailingsStorageFacility,
+  removeMineType,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -16,7 +17,12 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
+import {
+  getMines,
+  getCurrentPermitteeIds,
+  getCurrentPermittees,
+  getCurrentMineTypes,
+} from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineStatusOptions,
@@ -25,6 +31,8 @@ import {
   getMineTenureTypes,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
+  getConditionalDisturbanceOptionsHash,
+  getConditionalCommodityOptions,
 } from "@/selectors/staticContentSelectors";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -165,6 +173,9 @@ const mapStateToProps = (state) => ({
   mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  currentMineTypes: getCurrentMineTypes(state),
+  conditionalCommodityOptions: getConditionalCommodityOptions(state),
+  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -178,6 +189,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
+      removeMineType,
       openModal,
       closeModal,
     },

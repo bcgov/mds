@@ -366,9 +366,9 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureTypes: getMineTenureTypes(state),
-  conditionalCommodityOptions: getConditionalCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
+  conditionalCommodityOptions: getConditionalCommodityOptions(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
