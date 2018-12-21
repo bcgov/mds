@@ -55,7 +55,9 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             if is_mine_first_tsf:
                 try:
                     req_documents_url = get_documents_svc_url('/required?category=MINE_TAILINGS')
-                    get_tsf_docs_resp = requests.get(req_documents_url, headers=request.headers)
+                    get_tsf_docs_resp = requests.get(
+                        req_documents_url,
+                        headers={'Authorization': request.headers['Authorization']})
 
                     if get_tsf_docs_resp.status_code != 200:
                         self.raise_error(
@@ -82,7 +84,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                     #raise Exception(str(new_expected_documents) + str(request.headers))
                     doc_assignment_response = requests.post(
                         get_documents_svc_url('/expected/mines/' + str(mine_guid)),
-                        headers=request.headers,
+                        headers={'Authorization': request.headers['Authorization']},
                         json={'documents': new_expected_documents})
                     if doc_assignment_response.status_code != 200:
                         self.raise_error(500, "Error creating tsf expected documents")
