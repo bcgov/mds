@@ -31,7 +31,7 @@ class MinePartyAppointment(AuditMixin, Base):
         db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
 
-    deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
+    active_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
@@ -59,7 +59,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_by_mine_party_appt_guid(cls, _id):
         try:
-            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(deleted_ind=True).first()
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(active_ind=True).first()
         except ValueError:
             return None
 
@@ -87,7 +87,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_code=None):
         try:
-            built_query = cls.query.filter_by(deleted_ind=True)
+            built_query = cls.query.filter_by(active_ind=True)
             if mine_guid:
                 built_query = built_query.filter_by(mine_guid=mine_guid)
             if party_guid:

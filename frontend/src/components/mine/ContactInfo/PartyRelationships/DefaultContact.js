@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Popconfirm } from "antd";
 import { GREEN_PENCIL } from "@/constants/assets";
+import { Link } from "react-router-dom";
+import * as router from "@/constants/routes";
+import { formatTitleString } from "@/utils/helpers";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -64,11 +67,16 @@ export const DefaultContact = (props) => (
         </Popconfirm>
       </div>
     </div>
-    <h5 className="bold">{props.partyRelationship.party.name}</h5>
+    <Link to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}>
+      <h5 className="bold">{formatTitleString(props.partyRelationship.party.name)}</h5>
+    </Link>
     <p>
       <Icon type="mail" />
       &nbsp;&nbsp;
-      {props.partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href={`mailto:${props.partyRelationship.party.email}`}>
+        {props.partyRelationship.party.email}
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <br />
       <Icon type="phone" />
       &nbsp;&nbsp;

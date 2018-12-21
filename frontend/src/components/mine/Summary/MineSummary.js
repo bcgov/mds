@@ -20,7 +20,7 @@ const defaultProps = {
 };
 
 const MineSummary = (props) => {
-  if (!props.mine.mgr_appointment[0] && !props.mine.mine_permit[0]) {
+  if (!props.mine.mine_permit[0]) {
     return <NullScreen type="generic" />;
   }
 
@@ -30,40 +30,6 @@ const MineSummary = (props) => {
     <div>
       <Card>
         <table>
-          {props.mine.mgr_appointment[0] && (
-            <tbody>
-              <tr>
-                <th scope="col">
-                  <h4>Mine Manager</h4>
-                </th>
-                <th scope="col">
-                  <h4>Email</h4>
-                </th>
-                <th scope="col">
-                  <h4>Manager Since</h4>
-                </th>
-              </tr>
-              <tr>
-                <td data-label="Mine Manager">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0] ? props.mine.mgr_appointment[0].name : "-"}
-                  </p>
-                </td>
-                <td data-label="Email">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0] ? props.mine.mgr_appointment[0].email : "-"}
-                  </p>
-                </td>
-                <td data-label="Manager Since">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0]
-                      ? props.mine.mgr_appointment[0].effective_date
-                      : "-"}
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          )}
           {props.mine.mine_permit[0] && (
             <tbody>
               <tr>
