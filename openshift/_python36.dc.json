@@ -512,30 +512,6 @@
         "type": "ClusterIP",
         "sessionAffinity": "None"
       }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
-      },
-      "spec": {
-        "host": "${APPLICATION_DOMAIN}",
-        "path": "${ROUTE}",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
-      }
     }
   ]
 }
