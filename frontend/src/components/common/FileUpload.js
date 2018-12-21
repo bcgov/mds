@@ -13,7 +13,7 @@ registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
   maxFileSize: PropTypes.string,
-  acceptedFileTypesMap: PropTypes.object,
+  acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
