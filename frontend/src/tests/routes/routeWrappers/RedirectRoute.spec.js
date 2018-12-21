@@ -8,10 +8,10 @@ const props = {};
 
 const setupProps = () => {
   props.path = routes.DASHBOARD.route;
-  props.redirectTo = routes.MINE_DASHBOARD.dynamicRoute(
-    String.DEFAULT_PAGE,
-    String.DEFAULT_PER_PAGE
-  );
+  props.redirectTo = routes.MINE_DASHBOARD.dynamicRoute({
+    page: String.DEFAULT_PAGE,
+    per_page: String.DEFAULT_PER_PAGE,
+  });
 };
 
 beforeEach(() => {
