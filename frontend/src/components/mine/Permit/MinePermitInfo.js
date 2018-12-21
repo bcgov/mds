@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "antd";
+import moment from "moment";
 import NullScreen from "@/components/common/NullScreen";
 import * as String from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -60,6 +61,8 @@ const childColumns = [
 ];
 
 // Data Manipulation
+const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+
 const groupPermits = (permits) =>
   permits.reduce((acc, permit) => {
     acc[permit.permit_no] = acc[permit.permit_no] || [];
@@ -72,9 +75,9 @@ const transformRowData = (permits) => {
   const first = permits[permits.length - 1];
   return {
     key: latest.permit_guid,
-    lastAmended: latest.issue_date,
+    lastAmended: formatDate(latest.issue_date),
     permitNo: latest.permit_no || String.EMPTY_FIELD,
-    firstIssued: first.issue_date || String.EMPTY_FIELD,
+    firstIssued: formatDate(first.issue_date) || String.EMPTY_FIELD,
     permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : String.EMPTY_FIELD,
     authorizationEndDate: latest.expiry_date ? latest.expiry_date : String.EMPTY_FIELD,
     amendmentHistory: permits.slice(1),
@@ -85,7 +88,7 @@ const transformRowData = (permits) => {
 const transformChildRowData = (x) => ({
   key: x.permit_guid,
   permitNo: x.permit_no,
-  issueDate: x.issue_date,
+  issueDate: formatDate(x.issue_date),
   permittee: x.permittee[0] ? x.permittee[0].party.party_name : String.EMPTY_FIELD,
   description: String.EMPTY_FIELD,
 });
@@ -108,6 +111,7 @@ const permitTable = (permits) => {
   const rowData = permits.map(transformRowData);
   return (
     <Table
+      className="nested-table"
       align="center"
       pagination={false}
       columns={columns}
