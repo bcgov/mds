@@ -1,7 +1,5 @@
 FROM python:3.6
 
-MAINTAINER FreshWorks <web@freshworks.io>
-
 # Update installation utility
 RUN apt-get update
 

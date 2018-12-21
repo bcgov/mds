@@ -12,7 +12,7 @@
     @include mobile {
       padding: 0;
     }
-    
+
     &--search {
       @include flex;
       padding: $default-padding-xl;
@@ -26,11 +26,18 @@
   }
 }
 
+.advanced-search__container {
+  margin: auto;
+  width: 80%;
+  margin-top: $default-padding-lg;
+  padding: $default-padding-lg;
+}
+
 .profile {
   background-color: $default-white;
 
   &__header {
-   @extend .landing-page__header;
+    @extend .landing-page__header;
   }
 
   &__content {
