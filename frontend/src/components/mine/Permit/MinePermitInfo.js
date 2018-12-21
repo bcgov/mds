@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import NullScreen from "@/components/common/NullScreen";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 /**
@@ -68,12 +68,12 @@ const transformRowData = (permits) => {
   return {
     key: latest.permit_guid,
     lastAmended: formatDate(latest.issue_date),
-    permitNo: latest.permit_no || String.EMPTY_FIELD,
-    firstIssued: formatDate(first.issue_date) || String.EMPTY_FIELD,
-    permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : String.EMPTY_FIELD,
-    authorizationEndDate: latest.expiry_date ? latest.expiry_date : String.EMPTY_FIELD,
+    permitNo: latest.permit_no || Strings.EMPTY_FIELD,
+    firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
+    permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : Strings.EMPTY_FIELD,
+    authorizationEndDate: latest.expiry_date ? latest.expiry_date : Strings.EMPTY_FIELD,
     amendmentHistory: permits.slice(1),
-    status: String.EMPTY_FIELD,
+    status: Strings.EMPTY_FIELD,
   };
 };
 
@@ -81,8 +81,8 @@ const transformChildRowData = ({ permit_guid, permit_no, issue_date, permittee }
   key: permit_guid,
   permitNo: permit_no,
   issueDate: formatDate(issue_date),
-  permittee: permittee[0] ? permittee[0].party.party_name : String.EMPTY_FIELD,
-  description: String.EMPTY_FIELD,
+  permittee: permittee[0] ? permittee[0].party.party_name : Strings.EMPTY_FIELD,
+  description: Strings.EMPTY_FIELD,
 });
 
 // Component
