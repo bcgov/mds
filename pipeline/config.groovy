@@ -57,6 +57,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/_nginx.bc.json',
+                    'params':[
+                            'NAME':"mds-nginx",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "nginx",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'openshift/bddstack.bc.json',
                     'params':[
                             'NAME':"bdd-stack",
@@ -163,6 +173,21 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/_nginx.dc.json',
+                    'params':[
+                            'NAME':"mds-nginx",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.nginx.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.nginx.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
+                            'ROUTE': "${vars.modules.'mds-nginx'.PATH}",
+                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
+                    ]
+                ],
+                [
                     'file':'openshift/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
@@ -221,6 +246,12 @@ environments {
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
+                nginx {
+                    cpu_request = "1m"
+                    cpu_limit = "100m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
+                }
                 python {
                     cpu_request = "1m"
                     cpu_limit = "150m"
@@ -250,6 +281,10 @@ environments {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                     ROUTE = "/${vars.git.changeId}"
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
