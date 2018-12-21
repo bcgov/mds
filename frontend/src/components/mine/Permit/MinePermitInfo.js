@@ -12,7 +12,6 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
 };
 
-// Constants
 const columns = [
   {
     title: "Permit No.",
@@ -54,7 +53,6 @@ const childColumns = [
   { title: "Description", dataIndex: "description", key: "description" },
 ];
 
-// Data Manipulation
 const groupPermits = (permits) =>
   permits.reduce((acc, permit) => {
     acc[permit.permit_no] = acc[permit.permit_no] || [];
@@ -85,7 +83,6 @@ const transformChildRowData = ({ permit_guid, permit_no, issue_date, permittee }
   description: Strings.EMPTY_FIELD,
 });
 
-// Component
 const MinePermitInfo = (props) => {
   const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
   const amendmentHistory = (record) => {
