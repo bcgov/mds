@@ -42,6 +42,8 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                 report_date = self.get_datetime_from_NRIS_data(report.get('assessmentDate'))
                 one_year_ago = datetime.now() - relativedelta(years=1)
 
+                prefix, inspector = report.get('assessor').split('\\')
+
                 inspection = report.get('inspection')
                 stops = inspection.get('stops')
                 order_count = 1
@@ -66,9 +68,9 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
                             order_to_add = {
                                 'order_no': f'{report.get("assessmentId")}-{order_count}',
-                                'code_viloation': section,
+                                'violation': section,
                                 'report_no': report.get('assessmentId'),
-                                'inspector': report.get('assessor'),
+                                'inspector': inspector,
                                 'due_date': order.get('orderCompletionDate'),
                                 'overdue': False,
                             }
@@ -93,7 +95,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
             overview = {
                 'last_inspection': most_recent.get('assessmentDate'),
-                'inspector': most_recent.get('assessor'),
+                'inspector': inspector,
                 'num_open_orders': num_open_orders,
                 'num_overdue_orders': num_overdue_orders,
                 'advisories': advisories,
