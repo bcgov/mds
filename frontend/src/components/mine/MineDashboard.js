@@ -54,7 +54,7 @@ const propTypes = {
   mineStatusOptions: PropTypes.array,
   mineRegionOptions: PropTypes.array,
   mineTenureTypes: PropTypes.array,
-  mineTenureHash: PropTypes.obj,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
