@@ -87,6 +87,9 @@
     {
       "name": "MEMORY_REQUEST",
       "value": "768Mi"
+    },
+    {
+      "name": "DEPLOYMENT_ENVIRONMENT"
     }
   ],
   "objects": [
@@ -344,6 +347,10 @@
                   {
                     "name": "UPLOADED_DOCUMENT_DEST",
                     "value": "${UPLOADED_DOCUMENT_DEST}"
+                  },
+                  {
+                    "name": "DEPLOYMENT_ENVIRONMENT",
+                    "value": "${DEPLOYMENT_ENVIRONMENT}"
                   }
                 ],
                 "resources": {
