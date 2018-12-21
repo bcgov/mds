@@ -58,14 +58,18 @@ export class MineComplianceInfo extends Component {
                   <Col span={4} />
                   <Col span={4}>
                     <div className="center">
-                      <p className="info-display">{this.props.mineComplianceInfo.overdue_orders}</p>
+                      <p className="info-display">
+                        {this.props.mineComplianceInfo.num_overdue_orders}
+                      </p>
                       <p className="info-display-label">OVERDUE ORDERS</p>
                     </div>
                   </Col>
                   <Col span={4} />
                   <Col span={4}>
                     <div className="center">
-                      <p className="info-display">{this.props.mineComplianceInfo.open_orders}</p>
+                      <p className="info-display">
+                        {this.props.mineComplianceInfo.num_open_orders}
+                      </p>
                       <p className="info-display-label">OPEN ORDERS</p>
                     </div>
                   </Col>
