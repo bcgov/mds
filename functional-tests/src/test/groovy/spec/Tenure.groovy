@@ -29,22 +29,4 @@ class  Tenure extends GebReportingSpec {
         tenureTab.tenureUpdated(Const.TENURE) == true
     }
 
-    def "Scenario: User can not add tenure number if the given tenure is invalid"(){
-        when: "Tenure number is not in acceptable format"
-        tenureTab.addTenure(bad_tenure)
-        println "Scenario: "+scenario
-
-        and:"User see warning message"
-        tenureTab.updateTenureForm.warningMessage == warning
-
-        then: "Refresh the page, tenure number list stays the same"
-        tenureTab.tenureUpdated(bad_tenure) == false
-
-        where:
-        scenario        |bad_tenure    |warning
-        "short tenure"  |"123456"      |"Must be 7 characters long"
-        "long tenure"   |"123456677998"|"Must be 7 characters long"
-        "contains non-numerical value" | "1234cha" | "Input must be a number"
-    }
-
 }
