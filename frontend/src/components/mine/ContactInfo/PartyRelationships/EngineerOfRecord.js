@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import * as CustomPropTypes from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 
 const propTypes = {
