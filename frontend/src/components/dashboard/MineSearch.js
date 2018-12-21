@@ -16,9 +16,13 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleMineSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
-  mineNameList: PropTypes.array.isRequired,
+  mineNameList: PropTypes.array,
   isMapView: PropTypes.bool,
   searchValue: PropTypes.string,
+};
+
+const defaultProps = {
+  mineNameList: [],
 };
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
@@ -150,6 +154,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineSearch.propTypes = propTypes;
+MineSearch.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

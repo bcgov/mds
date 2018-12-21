@@ -44,31 +44,6 @@ class  DashboardSpec extends GebReportingSpec {
         "Giving full mine information"      |new MineProfileData (NAME_GOOD,STATUS,LAGTITUTE,LONGTITUE,NOTES)
     }
 
-    def "Scenario: Error displayed when the given mine information is in wrong format"(){
-        given: "I go to the Dashboard Page"
-        to Dashboard
-
-        when: "Loading is finished and I click the create a mine button"
-        createMineButton_Dashboard.click()
-
-        then: "I go to the mine record form page"
-        waitFor{createMineForm.header == "Create Mine Record" }
-
-        when: "I input invalid mine name"
-        createMineForm.createMineRecord(input)
-        println "Scenario: "+scenario
-
-        then: "I should see a warning"
-        createMineForm.warning == errorMessage
-
-        where:
-        scenario        |input                                                      ||errorMessage
-        "Long name"     |new MineProfileData (BAD_NAME_1,STATUS,NULL,NULL,NULL)     ||"Must be 60 characters or less"
-        "Short name"    |new MineProfileData (BAD_NAME_2,STATUS,NULL,NULL,NULL)     ||"Must be 3 characters or more"
-        "Null name"     |new MineProfileData (NULL,STATUS,NULL,NULL,NULL)           ||"This is a required field"
-        "Null status"   |new MineProfileData (NAME_GOOD,NULL,NULL,NULL,NULL)        ||"This is a required field"
-    }
-
     def "Scenario: User can view a mine"(){
         def viewMineName = firstMineName
 
