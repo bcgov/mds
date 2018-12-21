@@ -137,7 +137,8 @@ INSERT INTO mine_party_appt_type_code (
         update_user
 ) VALUES
     ('EOR', 'Engineer Of Record', 2, 'system-mds', 'system-mds'),
-    ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds')
+    ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds'),
+    ('PMT', 'Permitee', 3, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code (
