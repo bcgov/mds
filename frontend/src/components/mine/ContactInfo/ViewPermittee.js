@@ -8,6 +8,7 @@ import ConditionalButton from "@/components/common/ConditionalButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
+import CustomPropTypes from "@/customPropTypes";
 /**
  * @class ViewPermittee - all information of Permittees located under MineContactInfo.js
  */
@@ -20,9 +21,9 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   addPermittee: PropTypes.func.isRequired,
-  mine: PropTypes.object.isRequired,
-  permittees: PropTypes.object,
-  permitteeIds: PropTypes.array,
+  mine: CustomPropTypes.mine.isRequired,
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
+  permitteeIds: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
