@@ -82,7 +82,7 @@ app {
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "",
+                            'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
