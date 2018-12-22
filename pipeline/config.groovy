@@ -169,7 +169,7 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
+                            'API_URL': "https://mds-empr-mds-dev.pathfinder.gov.bc.ca/345/api/"
                     ]
                 ],
                 [
