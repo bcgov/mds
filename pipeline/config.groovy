@@ -279,8 +279,8 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = ""
-                    ROUTE = "/"
+                    PATH = "/${vars.git.changeId}"
+                    ROUTE = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
