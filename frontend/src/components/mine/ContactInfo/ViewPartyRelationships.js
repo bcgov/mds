@@ -33,6 +33,9 @@ const propTypes = {
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   createTailingsStorageFacility: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  updatePartyRelationship: PropTypes.func.isRequired,
+  removePartyRelationship: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -77,7 +80,7 @@ export class ViewPartyRelationships extends Component {
     if (!this.props.partyRelationshipTypes) return;
 
     if (value === "EOR") {
-      if (mine.mine_tailings_storage_facility.length == 0) {
+      if (mine.mine_tailings_storage_facility.length === 0) {
         this.TSFConfirmation.current.click();
         return;
       }
@@ -160,7 +163,7 @@ export class ViewPartyRelationships extends Component {
   }
 
   renderPartyRelationship = (partyRelationship) => {
-    if (!this.props.partyRelationshipTypes) return;
+    if (!this.props.partyRelationshipTypes) return <div />;
 
     const partyRelationshipTypeLabel = this.props.partyRelationshipTypes.find(
       (x) => x.value === partyRelationship.mine_party_appt_type_code
@@ -195,11 +198,9 @@ export class ViewPartyRelationships extends Component {
   };
 
   render() {
-    const { partyRelationships, partyRelationshipTypes } = this.props;
-
     const menu = (
       <Menu>
-        {partyRelationshipTypes.map((value) => (
+        {this.props.partyRelationshipTypes.map((value) => (
           <Menu.Item key={value.value}>
             <button
               className="full"
@@ -264,8 +265,8 @@ export class ViewPartyRelationships extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              {partyRelationships.length != 0 ? (
-                partyRelationships.map((partyRelationship) => (
+              {this.props.partyRelationships.length !== 0 ? (
+                this.props.partyRelationships.map((partyRelationship) => (
                   <div key={partyRelationship.mine_party_appt_guid}>
                     <hr />
                     <br />
