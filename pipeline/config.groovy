@@ -284,7 +284,7 @@ environments {
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}/"
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
