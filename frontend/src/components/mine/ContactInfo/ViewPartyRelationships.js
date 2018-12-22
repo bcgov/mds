@@ -29,19 +29,15 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
-  selectedPartyRelationshipType: CustomPropTypes.dropdownListItem,
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  selectedPartyRelationship: CustomPropTypes.partyRelationship,
   createTailingsStorageFacility: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
-  selectedPartyRelationshipType: {},
   partyRelationships: [],
-  selectedPartyRelationship: {},
 };
 
 export class ViewPartyRelationships extends Component {
