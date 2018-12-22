@@ -288,8 +288,8 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    PATH = ""
-                    ROUTE = "/"
+                    PATH = "/${vars.git.changeId}"
+                    ROUTE = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
