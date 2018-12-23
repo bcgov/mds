@@ -241,25 +241,25 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "1m"
+                    cpu_request = "50m"
                     cpu_limit = "100m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
                 nginx {
-                    cpu_request = "1m"
-                    cpu_limit = "150m"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
                 python {
-                    cpu_request = "1m"
+                    cpu_request = "50m"
                     cpu_limit = "150m"
                     memory_request = "768Mi"
                     memory_limit = "1Gi"
                 }
                 postgres {
-                    cpu_request = "1m"
+                    cpu_request = "100m"
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
@@ -318,8 +318,8 @@ environments {
                     memory_limit = "1.5Gi"
                 }
                 nginx {
-                    cpu_request = "200m"
-                    cpu_limit = "250m"
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
@@ -382,8 +382,8 @@ environments {
                     memory_limit = "1.5Gi"
                 }
                 nginx {
-                    cpu_request = "200m"
-                    cpu_limit = "250m"
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
