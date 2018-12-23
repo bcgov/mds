@@ -248,7 +248,7 @@ environments {
                 }
                 nginx {
                     cpu_request = "1m"
-                    cpu_limit = "100m"
+                    cpu_limit = "150m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
@@ -317,6 +317,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
                 }
+                nginx {
+                    cpu_request = "200m"
+                    cpu_limit = "250m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
+                }
                 python {
                     cpu_request = "300m"
                     cpu_limit = "500m"
@@ -374,6 +380,12 @@ environments {
                     cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
+                }
+                nginx {
+                    cpu_request = "200m"
+                    cpu_limit = "250m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 python {
                     cpu_request = "300m"
