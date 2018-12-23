@@ -127,7 +127,21 @@
             "from": {
               "kind": "ImageStreamTag",
               "name": "rhscl-nginx-112-rhel7:1.12.1-36"
-            }
+            },
+            "env": [
+              {
+                "name": "API_URL",
+                "value": "${API_URL}"
+              },
+              {
+                "name": "PATH_PREFIX",
+                "value": "/345"
+              },
+              {
+                "name": "NGINX_PORT",
+                "value": "8080"
+              }
+            ]
           }
         },
         "output": {
