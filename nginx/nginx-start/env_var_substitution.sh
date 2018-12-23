@@ -1,13 +1,13 @@
 #!/bin/bash
 
-for file in /etc/nginx/conf.d/*
+for file in ${NGINX_CONFIGURATION_PATH}/*
 do
   envsubst < $file > $file
 done
 
-for file in /etc/nginx/nginx.default.d/*
+for file in ${NGINX_DEFAULT_CONF_PATH}/*
 do
   envsubst < $file > $file
 done
 
-envsubst < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+envsubst < ${NGINX_CONF_PATH} > ${NGINX_CONF_PATH}
