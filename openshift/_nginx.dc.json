@@ -118,16 +118,8 @@
                 "image": " ",
                 "env": [
                   {
-                    "name": "API_URL",
-                    "value": "${API_URL}"
-                  },
-                  {
                     "name": "PATH_PREFIX",
                     "value": "/345"
-                  },
-                  {
-                    "name": "NGINX_PORT",
-                    "value": "8080"
                   }
                 ],
                 "resources": {
@@ -149,26 +141,6 @@
             ]
           }
         }
-      }
-    },
-    {
-      "apiVersion": "autoscaling/v1",
-      "kind": "HorizontalPodAutoscaler",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "labels": {
-          "name": "${NAME}${SUFFIX}"
-        }
-      },
-      "spec": {
-        "maxReplicas": 4,
-        "minReplicas": 1,
-        "scaleTargetRef": {
-          "apiVersion": "v1",
-          "kind": "DeploymentConfig",
-          "name": "${NAME}${SUFFIX}"
-        },
-        "targetCPUUtilizationPercentage": 95
       }
     },
     {
