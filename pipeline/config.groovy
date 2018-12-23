@@ -278,7 +278,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend${vars.deployment.suffix}"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
@@ -287,7 +287,7 @@ environments {
                     ROUTE = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend${vars.deployment.suffix}"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
@@ -343,7 +343,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend${vars.deployment.suffix}"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = ""
                 }
                 'mds-nginx' {
@@ -352,7 +352,7 @@ environments {
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend${vars.deployment.suffix}"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
                 }
                 'schemaspy' {
@@ -408,7 +408,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend${vars.deployment.suffix}"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = ""
                 }
                 'mds-nginx' {
@@ -417,7 +417,7 @@ environments {
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend${vars.deployment.suffix}"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
                 }
                 'schemaspy' {
