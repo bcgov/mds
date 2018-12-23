@@ -168,7 +168,7 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
-                            'API_URL': "${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
                 [
