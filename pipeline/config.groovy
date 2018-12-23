@@ -182,7 +182,7 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
-                            'ROUTE': "${vars.modules.'mds-nginx'.PATH}",
+                            'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
