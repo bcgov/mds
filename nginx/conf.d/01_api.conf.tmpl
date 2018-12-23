@@ -1,5 +1,4 @@
 location ${PATH_PREFIX}/api/ {
-        include /etc/nginx/uwsgi_params;
-        uwsgi_pass http://mds-python-backend-pr-345:5000${PATH_PREFIX}/;
-        include /opt/app-root/etc/nginx.conf.d/01_api.params;
+        proxy_pass http://mds-python-backend-pr-345:5000${PATH_PREFIX}/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }

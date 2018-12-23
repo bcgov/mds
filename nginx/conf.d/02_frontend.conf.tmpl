@@ -1,5 +1,5 @@
 location ${PATH_PREFIX}/ {
         proxy_pass http://mds-frontend-pr-345:3000${PATH_PREFIX}/;
         proxy_buffering    off;
-        include /opt/app-root/etc/nginx.conf.d/proxy_params.common;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
