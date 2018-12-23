@@ -4,13 +4,13 @@ set -e
 
 echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
+chmod -R 777 *
 
 if [ -f ./nginx.conf ]; then
   echo "---> Copying nginx.conf configuration file..."
   cp -v ./nginx.conf "${NGINX_CONF_PATH}"
   rm -f ./nginx.conf
 fi
-chmod -Rf a+rw ${NGINX_CONF_PATH}
 
 if [ -d ./nginx-cfg ]; then
   echo "---> Copying nginx configuration files..."
