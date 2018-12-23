@@ -41,39 +41,6 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhscl-nginx-112-rhel7",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Nginx Image"
-        },
-        "labels": {
-          "shared": "true"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": [
-          {
-            "name": "1.12.1-36",
-            "annotations": null,
-            "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/nginx-112-rhel7:1-36"
-            },
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Source"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -124,22 +91,9 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-nginx-112-rhel7:1.12.1-36"
-            },
-            "env": [
-              {
-                "name": "API_URL",
-                "value": "${API_URL}"
-              },
-              {
-                "name": "PATH_PREFIX",
-                "value": "/345"
-              },
-              {
-                "name": "NGINX_PORT",
-                "value": "8080"
-              }
-            ]
+              "namespace": "openshift",
+              "name": "bcgov-s2i-nginx:latest"
+            }
           }
         },
         "output": {

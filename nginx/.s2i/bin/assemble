@@ -11,7 +11,7 @@ if [ -f ./nginx.conf ]; then
   cp -v ./nginx.conf "${NGINX_CONF_PATH}"
   rm -f ./nginx.conf
 fi
-chmod -Rf a+rw /etc/opt/rh/rh-nginx112/nginx
+chmod -Rf a+rw /etc/opt/rh/rh-nginx112
 
 if [ -d ./nginx-cfg ]; then
   echo "---> Copying nginx configuration files..."
