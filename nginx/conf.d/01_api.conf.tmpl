@@ -1,4 +1,5 @@
 location ${PATH_PREFIX}/api {
         proxy_pass http://mds-python-backend-pr-345:5000${PATH_PREFIX};
+        proxy_redirect     off;
         proxy_pass_request_headers on;
 }
