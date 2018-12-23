@@ -278,7 +278,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.suffix}"
+                    HOST = "mds-frontend${vars.deployment.suffix}"
                     PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
@@ -343,7 +343,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.suffix}"
+                    HOST = "mds-frontend${vars.deployment.suffix}"
                     PATH = ""
                 }
                 'mds-nginx' {
@@ -408,7 +408,7 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.suffix}"
+                    HOST = "mds-frontend${vars.deployment.suffix}"
                     PATH = ""
                 }
                 'mds-nginx' {
