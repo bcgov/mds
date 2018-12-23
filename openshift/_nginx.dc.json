@@ -23,6 +23,10 @@
       "required": true
     },
     {
+      "name": "ROUTE",
+      "value": "/"
+    },
+    {
       "name": "PATH_PREFIX",
       "value": "/"
     },
@@ -126,15 +130,15 @@
                 "env": [
                   {
                     "name": "PATH_PREFIX",
-                    "value": "/345"
+                    "value": "${PATH_PREFIX}"
                   },
                   {
                     "name": "FRONTEND_SERVICE_URL",
-                    "value": "/345"
+                    "value": "${FRONTEND_SERVICE_URL}"
                   },
                   {
                     "name": "API_SERVICE_URL",
-                    "value": "/345"
+                    "value": "${API_SERVICE_URL}"
                   }
                 ],
                 "resources": {

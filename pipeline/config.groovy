@@ -162,14 +162,13 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
-                            'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
-                            'API_URL': "https://mds-empr-mds-dev.pathfinder.gov.bc.ca/345/api"
+                            'API_URL': "${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
                 [
@@ -184,7 +183,9 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
                             'ROUTE': "${vars.modules.'mds-nginx'.PATH}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
+                            'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
+                            'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
                 [
@@ -202,7 +203,6 @@ app {
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
-                            'ROUTE': "${vars.modules.'mds-python-backend'.ROUTE}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
@@ -278,18 +278,17 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-frontend-${vars.deployment.suffix}"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
+                    ROUTE = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-python-backend${vars.deployment.suffix}"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -344,14 +343,17 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-frontend-${vars.deployment.suffix}"
+                    PATH = ""
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-python-backend${vars.deployment.suffix}"
                     PATH = ""
-                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -406,14 +408,17 @@ environments {
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-frontend-${vars.deployment.suffix}"
+                    PATH = ""
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-python-backend${vars.deployment.suffix}"
                     PATH = ""
-                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
