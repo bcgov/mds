@@ -10,6 +10,8 @@ if [ -f ./nginx.conf ]; then
   cp -v ./nginx.conf "${NGINX_CONF_PATH}"
   rm -f ./nginx.conf
 fi
+envsubst < "${NGINX_CONF_PATH}" > /tmp/nginx.conf
+mv /tmp/nginx.conf "${NGINX_CONF_PATH}"
 
 if [ -d ./nginx-cfg ]; then
   echo "---> Copying nginx configuration files..."
@@ -20,6 +22,13 @@ if [ -d ./nginx-cfg ]; then
   chmod -Rf g+rw ${NGINX_CONFIGURATION_PATH}
 fi
 
+for file in ${NGINX_CONFIGURATION_PATH}/*
+do
+  filename=$(basename $file)
+  envsubst < $file > /tmp/$filename
+  mv /tmp/$filename $file
+done
+
 if [ -d ./nginx-default-cfg ]; then
   echo "---> Copying nginx default server configuration files..."
   if [ "$(ls -A ./nginx-default-cfg/*.conf)" ]; then
@@ -28,6 +37,13 @@ if [ -d ./nginx-default-cfg ]; then
   fi
   chmod -Rf g+rw ${NGINX_DEFAULT_CONF_PATH}
 fi
+
+for file in ${NGINX_DEFAULT_CONF_PATH}/*
+do
+  filename=$(basename $file)
+  envsubst < $file > /tmp/$filename
+  mv /tmp/$filename $file
+done
 
 if [ -d ./nginx-start ]; then
   echo "---> Copying nginx start-hook scripts..."
@@ -38,7 +54,4 @@ if [ -d ./nginx-start ]; then
 fi
 
 # Fix source directory permissions
-chmod 755 $NGINX_CONF_PATH
-chmod 755 $NGINX_CONFIGURATION_PATH
-chmod 755 $NGINX_DEFAULT_CONF_PATH
 fix-permissions ./
