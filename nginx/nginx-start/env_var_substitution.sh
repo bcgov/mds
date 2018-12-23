@@ -1,15 +1,15 @@
 #!/bin/bash
 
 for file in ${NGINX_CONFIGURATION_PATH}/*
-filename=$(basename $file)
 do
+  filename=$(basename $file)
   envsubst < $file > /tmp/$filename
   mv /tmp/$filename $file
 done
 
 for file in ${NGINX_DEFAULT_CONF_PATH}/*
-filename=$(basename $file)
 do
+  filename=$(basename $file)
   envsubst < $file > /tmp/$filename
   mv /tmp/$filename $file
 done
