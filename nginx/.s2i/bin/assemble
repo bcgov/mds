@@ -38,5 +38,5 @@ if [ -d ./nginx-start ]; then
 fi
 
 # Fix source directory permissions
-chmod -R 755 $NGINX_APP_ROOT
+chmod -R 777 $NGINX_APP_ROOT
 fix-permissions ./
