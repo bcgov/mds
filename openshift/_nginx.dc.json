@@ -194,7 +194,10 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}"
+        }
       },
       "spec": {
         "host": "${APPLICATION_DOMAIN}",
