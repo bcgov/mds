@@ -9,32 +9,22 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-const submitDisturbances = (type) => ({ data }) => {
-  const disturbanceResponses =
-    type.mine_disturbance_code.length >= 1 &&
-    type.mine_disturbance_code.map((code) =>
-      axios.post(
-        ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-        {
-          mine_type_guid: data.mine_type_guid,
-          mine_disturbance_code: code,
-        },
-        createRequestHeader()
-      )
-    );
-  const commodityResponses =
-    type.mine_commodity_code.length >= 1 &&
-    type.mine_commodity_code.map((code) =>
-      axios.post(
-        ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-        {
-          mine_type_guid: data.mine_type_guid,
-          mine_commodity_code: code,
-        },
-        createRequestHeader()
-      )
-    );
-  return Promise.all([disturbanceResponses, commodityResponses]);
+const submitMineDetails = (type) => ({ data: { mine_type_guid } }) => {
+  const create = (codeType) =>
+    type[codeType].length > 0
+      ? type[codeType].map((code) =>
+          axios.post(
+            ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+            {
+              mine_type_guid,
+              [codeType]: code,
+            },
+            createRequestHeader()
+          )
+        )
+      : Promise.resolve([]);
+
+  return Promise.all([create("mine_disturbance_code"), create("mine_commodity_code")]);
 };
 
 const handleError = (dispatch, reducer) => (err) => {
@@ -60,7 +50,7 @@ const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
               },
               createRequestHeader()
             )
-            .then(submitDisturbances(type))
+            .then(submitMineDetails(type))
             .catch(handleError(dispatch, reducer))
         : response
     );
