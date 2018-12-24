@@ -35,27 +35,24 @@ const defaultProps = {
 
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
-    const mineStatus = value.mine_status.join(",");
-    this.props
-      .updateMineRecord(
-        this.props.mine.guid,
-        { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
-        value.name
-      )
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+    console.log("THESE ARE MY EDIT FORM VALUES: ", value);
+    // const mineStatus = value.mine_status.join(",");
+    // this.props
+    //   .updateMineRecord(
+    //     this.props.mine.guid,
+    //     { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
+    //     value.name
+    //   )
+    //   .then(() => {
+    //     this.props.closeModal();
+    //     this.props.fetchMineRecordById(this.props.mine.guid);
+    //   });
   };
 
-  handleDeleteMineType = (mineType) => {
-    this.props.mine.mine_type.map((type) => {
-      if (type.mine_tenure_type_code === mineType.mine_tenure_type_code) {
-        const tenure = this.props.mineTenureHash[mineType.mine_tenure_type_code];
-        this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
-          this.props.fetchMineRecordById(this.props.mine.guid);
-        });
-      }
+  handleDeleteMineType = (event, mineTypeGuid, tenure) => {
+    event.preventDefault();
+    this.props.removeMineType(mineTypeGuid, tenure).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
     });
   };
 
@@ -124,6 +121,10 @@ class MineHeader extends Component {
     handleDelete,
     conditionalCommodityOptions,
     conditionalDisturbanceOptions,
+    mineTypes,
+    mineTenureHash,
+    mineDisturbanceOptionsHash,
+    mineCommodityOptionsHash,
     title,
     mine
   ) {
@@ -135,7 +136,6 @@ class MineHeader extends Component {
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
       mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
-      mine_types: this.props.currentMineTypes,
     };
 
     this.props.openModal({
@@ -147,6 +147,10 @@ class MineHeader extends Component {
         handleDelete,
         conditionalCommodityOptions,
         conditionalDisturbanceOptions,
+        mineTypes,
+        mineTenureHash,
+        mineDisturbanceOptionsHash,
+        mineCommodityOptionsHash,
         title,
         initialValues,
       },
@@ -172,6 +176,10 @@ class MineHeader extends Component {
                 this.handleDeleteMineType,
                 this.props.conditionalCommodityOptions,
                 this.props.conditionalDisturbanceOptions,
+                this.props.mine.mine_type,
+                this.props.mineTenureHash,
+                this.props.mineDisturbanceOptionsHash,
+                this.props.mineCommodityOptionsHash,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
               )

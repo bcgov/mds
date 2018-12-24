@@ -36,6 +36,10 @@ export class MineRecordForm extends Component {
     activeKey: [],
     usedTenureTypes: [],
   };
+
+  componentDidMount() {
+    console.log(this.props.mineTypes);
+  }
   /**
    *
    * @param {*} nextProps
@@ -52,22 +56,6 @@ export class MineRecordForm extends Component {
       mine_commodity_code: [],
       mine_disturbance_code: [],
     };
-    // if (this.props.initialValues) {
-    //   console.log(this.state.usedTenureTypes);
-    //   console.log(this.props);
-    //   console.log(nextProps.mine_types);
-    //   console.log(this.props.initialValues.mine_types);
-    //   // Do nothing if no mine_types, or no change to mine_types
-    //   if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
-    //     return;
-    //   }
-    //   if (this.props.initialValues.mine_types.length !== nextProps.mine_types.length) {
-    //     this.props.change(
-    //       "mine_types",
-    //       nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
-    //     );
-    //   }
-    // } else {
     // Do nothing if no mine_types, or no change to mine_types
     if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
       return;
@@ -104,12 +92,6 @@ export class MineRecordForm extends Component {
   // ALSO removes a tenure value from this.state.usedTenureTypes to make that option availabe agin
   removeField = (event, fields, index) => {
     event.preventDefault();
-    const optionsArr = [...this.state.usedTenureTypes];
-    const newOptionsArr = _.remove(optionsArr, this.props.mine_types[index].mine_tenure_type_code);
-    this.setState({ usedTenureTypes: newOptionsArr });
-    if (this.props.initialValues && this.props.mine_types[index]) {
-      this.props.handleDelete(this.props.mine_types[index]);
-    }
     fields.remove(index);
   };
 
@@ -301,6 +283,52 @@ export class MineRecordForm extends Component {
         </Row>
         <div>
           <Form.Item label="Mine Type" />
+          {this.props.mineTypes &&
+            this.props.mineTypes.map((type) => (
+              <div key={type.mine_type_guid}>
+                <Button
+                  ghost
+                  onClick={(event) =>
+                    this.props.handleDelete(
+                      event,
+                      type.mine_type_guid,
+                      this.props.mineTenureHash[type.mine_tenure_type_code]
+                    )
+                  }
+                >
+                  <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+                </Button>
+                <p className="bold">{this.props.mineTenureHash[type.mine_tenure_type_code]}</p>
+                <div className="inline-flex">
+                  <div>
+                    <p>Commodity:</p>
+                  </div>
+                  <div>
+                    {type.mine_type_detail &&
+                      type.mine_type_detail.map(({ mine_commodity_code }) => (
+                        <span>
+                          {mine_commodity_code &&
+                            this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                        </span>
+                      ))}
+                  </div>
+                </div>
+                <div className="inline-flex">
+                  <div>
+                    <p>Disturbance:</p>
+                  </div>
+                  <div>
+                    {type.mine_type_detail &&
+                      type.mine_type_detail.map(({ mine_disturbance_code }) => (
+                        <span>
+                          {mine_disturbance_code &&
+                            this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
+                        </span>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           <FieldArray name="mine_types" component={renderTypeSelect} />
         </div>
         <Row gutter={16}>
