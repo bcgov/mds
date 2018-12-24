@@ -124,7 +124,7 @@ npm run lint ./filepath
 Lint all files
 
 ```
-npm run lint .
+npm run lint ./src
 ```
 
 Apply linting rules to one file

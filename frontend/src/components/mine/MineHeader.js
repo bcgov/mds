@@ -72,7 +72,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_commodity_code }) => (
                 <span>
                   {mine_commodity_code &&
-                    this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                    `${this.props.mineCommodityOptionsHash[mine_commodity_code]  }, `}
                 </span>
               ))}
           </div>
@@ -86,7 +86,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_disturbance_code }) => (
                 <span>
                   {mine_disturbance_code &&
-                    this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
+                    `${this.props.mineDisturbanceOptionsHash[mine_disturbance_code]  }, `}
                 </span>
               ))}
           </div>
