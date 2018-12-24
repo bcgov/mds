@@ -120,7 +120,7 @@ table {
     content: attr(data-label);
     font-size: 12px;
     font-weight: $light;
-    color: red; // TODO: find this in the UI and fix it
+    color: $violet;
     text-transform: uppercase;
     float: left;
     margin-top: 5px;
