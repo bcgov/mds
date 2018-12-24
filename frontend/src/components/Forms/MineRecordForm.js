@@ -109,7 +109,7 @@ export class MineRecordForm extends Component {
 
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
-      <Form.Item style={{ marginTop: "15px" }} label={`Mine Type ${index + 1}`} />
+      <Form.Item style={{ marginTop: "15px" }} label={`New Mine Type: ${index + 1}`} />
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
@@ -129,6 +129,30 @@ export class MineRecordForm extends Component {
     </div>
   );
 
+  createExistingPanelHeader = (mineTenureCode) => (
+    <div className="inline-flex between">
+      <Form.Item
+        style={{ marginTop: "15px" }}
+        label={`Pre-Existing Mine Type: ${this.props.mineTenureHash[mineTenureCode]}`}
+      />
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div onClick={(event) => event.stopPropagation()}>
+        <Popconfirm
+          placement="topRight"
+          title={`Are you sure you want to remove Mine Type ${
+            this.props.mineTenureHash[mineTenureCode]
+          }?`}
+          onConfirm={(event) => this.props.handleDelete(event, mineTenureCode)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button ghost>
+            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+          </Button>
+        </Popconfirm>
+      </div>
+    </div>
+  );
   render() {
     const renderTypeSelect = ({ fields }) => (
       <div>
@@ -272,40 +296,40 @@ export class MineRecordForm extends Component {
         </Row>
         <div>
           <Form.Item label="Mine Type" />
-          {this.props.currentMineTypes &&
-            this.props.currentMineTypes.map((type, index) => (
-              <div key={index}>
-                <Button
-                  ghost
-                  onClick={(event) => this.props.handleDelete(event, type.mine_tenure_type_code)}
+          <Collapse>
+            {this.props.currentMineTypes &&
+              this.props.currentMineTypes.map((type, index) => (
+                <Collapse.Panel
+                  header={this.createExistingPanelHeader(type.mine_tenure_type_code)}
+                  key={index}
                 >
-                  <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
-                </Button>
-                <p className="bold">{this.props.mineTenureHash[type.mine_tenure_type_code]}</p>
-                <div className="inline-flex">
-                  <div>
-                    <p>Commodity:</p>
+                  <div key={index}>
+                    <div className="inline-flex">
+                      <div>
+                        <p>Commodity:</p>
+                      </div>
+                      <div>
+                        {type.mine_commodity_code &&
+                          type.mine_commodity_code.map((code) => (
+                            <span>{this.props.mineCommodityOptionsHash[code] + ", "}</span>
+                          ))}
+                      </div>
+                    </div>
+                    <div className="inline-flex">
+                      <div>
+                        <p>Disturbance:</p>
+                      </div>
+                      <div>
+                        {type.mine_disturbance_code &&
+                          type.mine_disturbance_code.map((code) => (
+                            <span>{this.props.mineDisturbanceOptionsHash[code] + ", "}</span>
+                          ))}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    {type.mine_commodity_code &&
-                      type.mine_commodity_code.map((code) => (
-                        <span>{this.props.mineCommodityOptionsHash[code] + ", "}</span>
-                      ))}
-                  </div>
-                </div>
-                <div className="inline-flex">
-                  <div>
-                    <p>Disturbance:</p>
-                  </div>
-                  <div>
-                    {type.mine_disturbance_code &&
-                      type.mine_disturbance_code.map((code) => (
-                        <span>{this.props.mineDisturbanceOptionsHash[code] + ", "}</span>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+                </Collapse.Panel>
+              ))}
+          </Collapse>
           <FieldArray name="mine_types" component={renderTypeSelect} />
         </div>
         <Row gutter={16}>
