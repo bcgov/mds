@@ -47,6 +47,7 @@ const handleError = (dispatch, reducer) => (err) => {
 };
 
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
+  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
       type.mine_tenure_type_code.length >= 1
@@ -54,7 +55,7 @@ const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
             .post(
               ENVIRONMENT.apiUrl + API.MINE_TYPES,
               {
-                mine_guid: response.data.mine_guid,
+                mine_guid: mineId,
                 mine_tenure_type_code: type.mine_tenure_type_code,
               },
               createRequestHeader()
@@ -96,22 +97,9 @@ export const createMineRecord = (payload) => (dispatch) => {
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-  const requests = [
-    axios.put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader()),
-  ];
-  if (payload.mine_types) {
-    const mineTypeGuid = payload.mineType[0] ? `/${payload.mineType[0].mine_type_guid}` : "";
-    const mineTypesUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES + mineTypeGuid;
-    const req = mineTypeGuid ? axios.put : axios.post;
-    requests.push(
-      req(
-        mineTypesUrl,
-        { mine_guid: id, mine_tenure_type_code: payload.mine_tenure_type_code },
-        createRequestHeader()
-      )
-    );
-  }
-  return Promise.all(requests)
+  return axios
+    .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD, id))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,

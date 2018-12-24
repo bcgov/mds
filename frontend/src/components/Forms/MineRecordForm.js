@@ -9,6 +9,7 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
+import { getCurrentMineTypes } from "@/selectors/mineSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -36,10 +37,6 @@ export class MineRecordForm extends Component {
     activeKey: [],
     usedTenureTypes: [],
   };
-
-  componentDidMount() {
-    console.log(this.props.mineTypes);
-  }
   /**
    *
    * @param {*} nextProps
@@ -73,7 +70,6 @@ export class MineRecordForm extends Component {
         }
       });
     }
-    // }
   }
 
   componentWillUnmount() {
@@ -97,7 +93,10 @@ export class MineRecordForm extends Component {
 
   addField = (event, fields) => {
     event.preventDefault();
-    if (fields.length === 4) {
+    if (
+      fields.length === 4 ||
+      (this.props.currentMineTypes && this.props.currentMineTypes.length === 4)
+    ) {
       notification.error({
         message: "You cannot have more than 4 tenures associated with a mine",
         duration: 10,
@@ -108,12 +107,6 @@ export class MineRecordForm extends Component {
     }
   };
 
-  // handleTenureCodeUpdate = (option) => {
-  //   this.setState((prevState) => ({
-  //     usedTenureTypes: [...prevState.usedTenureTypes, option],
-  //   }));
-  // };
-
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
       <Form.Item style={{ marginTop: "15px" }} label={`Mine Type ${index + 1}`} />
@@ -121,11 +114,7 @@ export class MineRecordForm extends Component {
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={
-            this.props.initialValues && this.props.initialValues.mine_types[index]
-              ? `Are you sure you want to delete Mine Type ${index + 1}?`
-              : `Are you sure you want to remove Mine Type ${index + 1}?`
-          }
+          title={`Are you sure you want to remove Mine Type ${index + 1}?`}
           onConfirm={(event) => {
             this.removeField(event, fields, index);
           }}
@@ -283,18 +272,12 @@ export class MineRecordForm extends Component {
         </Row>
         <div>
           <Form.Item label="Mine Type" />
-          {this.props.mineTypes &&
-            this.props.mineTypes.map((type) => (
-              <div key={type.mine_type_guid}>
+          {this.props.currentMineTypes &&
+            this.props.currentMineTypes.map((type, index) => (
+              <div key={index}>
                 <Button
                   ghost
-                  onClick={(event) =>
-                    this.props.handleDelete(
-                      event,
-                      type.mine_type_guid,
-                      this.props.mineTenureHash[type.mine_tenure_type_code]
-                    )
-                  }
+                  onClick={(event) => this.props.handleDelete(event, type.mine_tenure_type_code)}
                 >
                   <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
                 </Button>
@@ -304,12 +287,9 @@ export class MineRecordForm extends Component {
                     <p>Commodity:</p>
                   </div>
                   <div>
-                    {type.mine_type_detail &&
-                      type.mine_type_detail.map(({ mine_commodity_code }) => (
-                        <span>
-                          {mine_commodity_code &&
-                            this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
-                        </span>
+                    {type.mine_commodity_code &&
+                      type.mine_commodity_code.map((code) => (
+                        <span>{this.props.mineCommodityOptionsHash[code] + ", "}</span>
                       ))}
                   </div>
                 </div>
@@ -318,12 +298,9 @@ export class MineRecordForm extends Component {
                     <p>Disturbance:</p>
                   </div>
                   <div>
-                    {type.mine_type_detail &&
-                      type.mine_type_detail.map(({ mine_disturbance_code }) => (
-                        <span>
-                          {mine_disturbance_code &&
-                            this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
-                        </span>
+                    {type.mine_disturbance_code &&
+                      type.mine_disturbance_code.map((code) => (
+                        <span>{this.props.mineDisturbanceOptionsHash[code] + ", "}</span>
                       ))}
                   </div>
                 </div>
@@ -383,6 +360,7 @@ MineRecordForm.defaultProps = defaultProps;
 export default compose(
   connect((state) => ({
     mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
+    currentMineTypes: getCurrentMineTypes(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
