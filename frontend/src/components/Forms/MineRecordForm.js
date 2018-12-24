@@ -92,11 +92,11 @@ export class MineRecordForm extends Component {
   };
 
   addField = (event, fields) => {
+    const totalTypes = this.props.currentMineTypes
+      ? fields.length + this.props.currentMineTypes.length
+      : fields.length;
     event.preventDefault();
-    if (
-      fields.length === 4 ||
-      (this.props.currentMineTypes && this.props.currentMineTypes.length === 4)
-    ) {
+    if (totalTypes === 4) {
       notification.error({
         message: "You cannot have more than 4 tenures associated with a mine",
         duration: 10,
