@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification } from "antd";
+import _ from "lodash";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
@@ -35,10 +36,6 @@ export class MineRecordForm extends Component {
     activeKey: [],
     usedTenureTypes: [],
   };
-
-  componentDidMount() {
-    console.log(this.state.usedTenureTypes);
-  }
   /**
    *
    * @param {*} nextProps
@@ -106,10 +103,16 @@ export class MineRecordForm extends Component {
     });
   };
 
+  // removeRield either deletes the mine_type if in edit mode,
+  // OR removes a field from the field array if the mine_type doesn't exist in the DB.
+  // ALSO removes a tenure value from this.state.usedTenureTypes to make that option availabe agin
   removeField = (event, fields, index) => {
     event.preventDefault();
-    if (this.props.initialValues && this.props.initialValues.mine_types[index]) {
-      this.props.handleDelete(this.props.initialValues.mine_types[index]);
+    const optionsArr = [...this.state.usedTenureTypes];
+    const newOptionsArr = _.remove(optionsArr, this.props.mine_types[index].mine_tenure_type_code);
+    this.setState({ usedTenureTypes: newOptionsArr });
+    if (this.props.initialValues && this.props.mine_types[index]) {
+      this.props.handleDelete(this.props.mine_types[index]);
     }
     fields.remove(index);
   };
@@ -126,6 +129,12 @@ export class MineRecordForm extends Component {
       this.setActiveKey([fields.length.toString()]);
     }
   };
+
+  // handleTenureCodeUpdate = (option) => {
+  //   this.setState((prevState) => ({
+  //     usedTenureTypes: [...prevState.usedTenureTypes, option],
+  //   }));
+  // };
 
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
@@ -156,79 +165,153 @@ export class MineRecordForm extends Component {
   render() {
     const renderTypeSelect = ({ fields }) => (
       <div>
-        <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
-          {fields.map((type, index) => (
-            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Field
-                    // disabled={this.props.initialValues && this.props.initialValues.mine_types[0]}
-                    usedOptions={this.props.initialValues ? null : this.state.usedTenureTypes}
-                    onChange={this.handleOptionChange}
-                    id={`${type}.mine_tenure_type_code`}
-                    name={`${type}.mine_tenure_type_code`}
-                    label="Tenure"
-                    placeholder="Please Select Tenure"
-                    component={renderConfig.SELECT}
-                    data={this.props.mineTenureTypes}
-                  />
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Field
-                    // disabled={
-                    //   this.props.initialValues.mine_types &&
-                    //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
-                    //     this.props.mine_types[index].mine_tenure_type_code
-                    // }
-                    id={`${type}.mine_commodity_code`}
-                    name={`${type}.mine_commodity_code`}
-                    label="Commodity"
-                    placeholder="Please Select Commodity"
-                    component={renderConfig.MULTI_SELECT}
-                    data={
-                      this.props.conditionalCommodityOptions[
-                        this.props.mine_types[index] &&
-                        this.props.mine_types[index].mine_tenure_type_code
-                          ? this.props.mine_types[index].mine_tenure_type_code
-                          : "COL"
-                      ]
-                    }
-                  />
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Field
-                    // disabled={
-                    //   this.props.initialValues.mine_types &&
-                    //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
-                    //     this.props.mine_types[index].mine_tenure_type_code
-                    // }
-                    id={`${type}.mine_disturbance_code`}
-                    name={`${type}.mine_disturbance_code`}
-                    placeholder="Please Select Disturbance"
-                    label="Disturbance"
-                    component={renderConfig.MULTI_SELECT}
-                    data={
-                      this.props.conditionalDisturbanceOptions[
-                        this.props.mine_types[index] &&
-                        this.props.mine_types[index].mine_tenure_type_code
-                          ? this.props.mine_types[index].mine_tenure_type_code
-                          : "COL"
-                      ]
-                    }
-                  />
-                </Col>
-              </Row>
-            </Collapse.Panel>
-          ))}
-        </Collapse>
-        <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
-          <Icon type="plus" style={{ color: "#0F620E" }} />
-          {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
-        </Button>
+        {/* Editing and Adding mineTypes have different requirments */}
+        {this.props.initialValues && (
+          <div>
+            <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
+              {fields.map((type, index) => (
+                <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        // handleSelect={this.handleTenureCodeUpdate}
+                        // disabled={this.props.initialValues.mine_types[0]}
+                        usedOptions={this.props.initialValues ? null : this.state.usedTenureTypes}
+                        onChange={this.handleOptionChange}
+                        id={`${type}.mine_tenure_type_code`}
+                        name={`${type}.mine_tenure_type_code`}
+                        label="Tenure"
+                        placeholder="Please Select Tenure"
+                        component={renderConfig.SELECT}
+                        data={this.props.mineTenureTypes}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        // disabled={
+                        //   this.props.initialValues.mine_types &&
+                        //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
+                        //     this.props.mine_types[index].mine_tenure_type_code
+                        // }
+                        id={`${type}.mine_commodity_code`}
+                        name={`${type}.mine_commodity_code`}
+                        label="Commodity"
+                        placeholder="Please Select Commodity"
+                        component={renderConfig.MULTI_SELECT}
+                        data={
+                          this.props.conditionalCommodityOptions[
+                            this.props.mine_types[index] &&
+                            this.props.mine_types[index].mine_tenure_type_code
+                              ? this.props.mine_types[index].mine_tenure_type_code
+                              : "COL"
+                          ]
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        // disabled={
+                        //   this.props.initialValues.mine_types &&
+                        //   this.props.initialValues.mine_types[index].mine_tenure_type_code ===
+                        //     this.props.mine_types[index].mine_tenure_type_code
+                        // }
+                        id={`${type}.mine_disturbance_code`}
+                        name={`${type}.mine_disturbance_code`}
+                        placeholder="Please Select Disturbance"
+                        label="Disturbance"
+                        component={renderConfig.MULTI_SELECT}
+                        data={
+                          this.props.conditionalDisturbanceOptions[
+                            this.props.mine_types[index] &&
+                            this.props.mine_types[index].mine_tenure_type_code
+                              ? this.props.mine_types[index].mine_tenure_type_code
+                              : "COL"
+                          ]
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Collapse.Panel>
+              ))}
+            </Collapse>
+            <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
+              <Icon type="plus" style={{ color: "#0F620E" }} />
+              {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
+            </Button>
+          </div>
+        )}
+        {!this.props.initialValues && (
+          <div>
+            <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
+              {fields.map((type, index) => (
+                <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        // handleSelect={this.handleTenureCodeUpdate}
+                        usedOptions={this.state.usedTenureTypes}
+                        onChange={this.handleOptionChange}
+                        id={`${type}.mine_tenure_type_code`}
+                        name={`${type}.mine_tenure_type_code`}
+                        label="Tenure"
+                        placeholder="Please Select Tenure"
+                        component={renderConfig.SELECT}
+                        data={this.props.mineTenureTypes}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        id={`${type}.mine_commodity_code`}
+                        name={`${type}.mine_commodity_code`}
+                        label="Commodity"
+                        placeholder="Please Select Commodity"
+                        component={renderConfig.MULTI_SELECT}
+                        // if data doesn't exist, the multi-select is disabled
+                        data={
+                          this.props.mine_types[index].mine_tenure_type_code &&
+                          this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                            ? this.props.conditionalCommodityOptions[
+                                this.props.mine_types[index].mine_tenure_type_code
+                              ]
+                            : null
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Field
+                        id={`${type}.mine_disturbance_code`}
+                        name={`${type}.mine_disturbance_code`}
+                        placeholder="Please Select Disturbance"
+                        label="Disturbance"
+                        component={renderConfig.MULTI_SELECT}
+                        data={
+                          this.props.mine_types[index].mine_tenure_type_code &&
+                          this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                            ? this.props.conditionalDisturbanceOptions[
+                                this.props.mine_types[index].mine_tenure_type_code
+                              ]
+                            : null
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Collapse.Panel>
+              ))}
+            </Collapse>
+            <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
+              <Icon type="plus" style={{ color: "#0F620E" }} />
+              {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
+            </Button>
+          </div>
+        )}
       </div>
     );
     return (

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
 import { Menu, Icon, Divider, Button, Popover } from "antd";
-import { difference, intersectionWith } from "lodash";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { ConditionalButton } from "../common/ConditionalButton";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -17,11 +17,11 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
-  createTailingsStorageFacility: PropTypes.func,
-  fetchMineRecordById: PropTypes.func,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mine: PropTypes.object.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  mineStatusOptions: CustomPropTypes.options.isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   mineRegionHash: PropTypes.object.isRequired,
   mineTenureHash: PropTypes.object.isRequired,
   mineTenureTypes: PropTypes.array.isRequired,
@@ -30,7 +30,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
+  // mine: {},
 };
 
 class MineHeader extends Component {

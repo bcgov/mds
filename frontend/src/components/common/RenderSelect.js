@@ -1,20 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.any,
   placeholder: PropTypes.string,
   label: PropTypes.string,
-  opton: PropTypes.object,
   meta: PropTypes.object,
-  data: PropTypes.array,
+  data: CustomPropTypes.options,
   disabled: PropTypes.bool,
+};
+
+const defaultProps = {
+  placeholder: "",
+  label: "",
+  data: [],
+  disabled: false,
 };
 
 const RenderSelect = (props) => (
@@ -30,6 +37,7 @@ const RenderSelect = (props) => (
     }
   >
     <Select
+      // onSelect={props.handleSelect ? props.handleSelect : null}
       disabled={props.disabled}
       getPopupContainer={() => document.getElementById(props.id)}
       showSearch
@@ -55,5 +63,6 @@ const RenderSelect = (props) => (
 );
 
 RenderSelect.propTypes = propTypes;
+RenderSelect.defaultProps = defaultProps;
 
 export default RenderSelect;
