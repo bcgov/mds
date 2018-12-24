@@ -57,10 +57,13 @@ $h-divider-color: $darkest-grey;
 $v-divider-color: $darkest-grey;
 $pagination-item-hover: darken($violet, 20%);
 $pagination-item-border-hover: $pagination-item-hover;
+$card-border-color: $violet;
 
 /*
  * Style Defaults
  */
+
+$default-overlay: $medium-grey;
 
 // Font Size
 $default-h1: 36px;
