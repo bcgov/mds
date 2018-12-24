@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Popconfirm } from "antd";
-import { GREEN_PENCIL } from "@/constants/assets";
+import { BRAND_PENCIL } from "@/constants/assets";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -46,7 +46,7 @@ export const DefaultContact = (props) => (
             )
           }
         >
-          <img style={{ padding: "5px" }} src={GREEN_PENCIL} />
+          <img style={{ padding: "5px" }} src={BRAND_PENCIL} />
         </Button>
         <Popconfirm
           key={`${props.partyRelationship.mine_party_appt_guid}_delete`}

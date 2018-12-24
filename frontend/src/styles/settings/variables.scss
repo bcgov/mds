@@ -1,3 +1,7 @@
+/*
+ * Brand Colour Palette
+ */
+
 // Primary Colours
 $black: #161616;
 $darkest-grey: #3c3636;
@@ -26,28 +30,39 @@ $map-fuschia: #f736fb;
 $beacon-fuschia: #f736fb99;
 $map-lavender: #b7a6fc;
 
-// buttons
+/*
+ * Component Colour Aliases
+ */
+
+// Buttons
 $primary-btn-color: $violet;
+$primary-btn-color-hover: darken($primary-btn-color, 20%);
+$primary-btn-border-color-hover: $primary-btn-color-hover;
+
 $secondary-btn-color: $darkest-grey;
+$secondary-btn-color-hover: darken($secondary-btn-color, 20%);
+$secondary-btn-border-color-hover: $secondary-btn-color-hover;
+
+$tertiary-btn-color: $pure-white;
+$tertiary-btn-color-hover: $tertiary-btn-color;
+$tertiary-btn-border-color: $violet;
+$tertiary-btn-border-color-hover: darken($tertiary-btn-border-color, 20%);
+
+// Nav
 $nav-color: $darkest-grey;
 $nav-border-color: $medium-grey;
 
-//  colours
-$default-blue: #003366;
-$default-med-blue: #335c85;
-$default-light-blue: #628fbb;
-$default-dark-green: #0f620e;
-$default-light-green: #52c750;
-$default-white: #f1f1f2;
-$background-white: #ffffff;
-$default-yellow: #fcba18;
-$font-black: #383838;
-$default-dark-grey: #707070;
-$default-brown: #77510a;
-$default-dark-brown: #54463b;
-$default-overlay: $font-black;
+// Ant Component Overrides
+$h-divider-color: $darkest-grey;
+$v-divider-color: $darkest-grey;
+$pagination-item-hover: darken($violet, 20%);
+$pagination-item-border-hover: $pagination-item-hover;
 
-// font size
+/*
+ * Style Defaults
+ */
+
+// Font Size
 $default-h1: 36px;
 $mobile-h1: 24px;
 $default-h2: 18px;
@@ -60,20 +75,28 @@ $default-h5: 20px;
 $mobile-h5: 16px;
 $default-p: 16px;
 
-// font
+// Font
 $default-font: "Open Sans", sans-serif;
 $light: 300;
 $regular: 400;
 $semi-bold: 600;
 $bold: 700;
+$h1-color: $darkest-grey;
+$h2-color: $darkest-grey;
+$h3-color: $medium-grey;
+$h4-color: $medium-grey;
+$h5-color: $darkest-grey;
+$p-color: $black;
+$a-color: $violet;
+$a-color-hover: darken($a-color, 20%);
 
-// margins
+// Margins
 $default-margin-sm: 5px;
 $default-margin-md: 10px;
 $default-margin-lg: 20px;
 $default-margin-xxl: 50px;
 
-// padding
+// Padding
 $default-padding-sm: 5px;
 $default-padding-md: 10px;
 $default-padding-lg: 20px;
