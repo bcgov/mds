@@ -1,4 +1,3 @@
-from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -30,7 +29,6 @@ class MineType(AuditMixin, Base):
         order_by='desc(MineTypeDetail.update_timestamp)',
         lazy='joined'
     )
-
 
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid

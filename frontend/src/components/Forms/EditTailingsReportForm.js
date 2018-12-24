@@ -10,6 +10,7 @@ import * as FORM from "@/constants/forms";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
 import { required, notnone } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -64,6 +65,7 @@ export const EditTailingsReportForm = (props) => (
             id="tsf_document_upload"
             name="tsf_document_upload"
             uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.exp_document_guid)}
+            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
             component={FileUpload}
           />
         </Form.Item>
