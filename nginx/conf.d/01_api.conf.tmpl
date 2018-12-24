@@ -1,0 +1,4 @@
+location ${PATH_PREFIX}/api/ {
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}
