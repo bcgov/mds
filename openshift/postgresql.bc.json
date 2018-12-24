@@ -28,7 +28,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhel7",
+        "name": "${NAME}",
         "labels": {
           "shared": "true"
         },
@@ -40,11 +40,12 @@
         },
         "tags": [
           {
-            "name": "7.5",
+            "name": "${NAME_SUFFIX}",
             "annotations": null,
             "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhel7:7.5"
+              "kind": "ImageStreamTag",
+              "name": "postgresql-9.6-oracle-fdw:v1-stable",
+              "namespace": "bcgov"
             },
             "generation": 1,
             "importPolicy": {},
@@ -53,80 +54,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "shared": "true"
-        },
-        "annotations": {}
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${NAME_SUFFIX}",
-        "creationTimestamp": null,
-        "labels": {},
-        "annotations": {}
-      },
-      "spec": {
-        "completionDeadlineSeconds": 1800,
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChange": {}
-          },
-          {
-            "type": "ConfigChange"
-          }
-        ],
-        "runPolicy": "SerialLatestOnly",
-        "source": {
-          "git": {
-            "uri": "https://github.com/bcgov/openshift-postgresql-oracle_fdw"
-          },
-          "type": "Git"
-        },
-        "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "dockerfilePath": "rhel7.rh-postgresql96/Dockerfile",
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "rhel7:7.5"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}:${TAG_NAME}"
-          }
-        },
-        "resources": {
-          "limits": {
-            "cpu": "750m",
-            "memory": "3Gi"
-          },
-          "requests": {
-            "cpu": "500m",
-            "memory": "2Gi"
-          }
-        },
-        "postCommit": {},
-        "nodeSelector": null
       }
     }
   ]
