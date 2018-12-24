@@ -92,6 +92,6 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
             return self.create_error_payload(404, 'mine party appointment not found'), 404
-        mpa.active_ind = False
+        mpa.deleted_ind = True
         mpa.save()
         return {'status': 200, 'message': 'mine_party_appointment deleted successfully.'}
