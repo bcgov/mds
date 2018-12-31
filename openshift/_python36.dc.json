@@ -68,11 +68,6 @@
       "required": true
     },
     {
-      "name": "ROUTE",
-      "required": false,
-      "value": "/"
-    },
-    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
@@ -132,7 +127,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "document-storage${SUFFIX}",
+        "name": "mds-document-storage${SUFFIX}",
         "annotations": {
           "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
@@ -361,7 +356,7 @@
                 "volumeMounts": [
                   {
                     "mountPath": "/opt/app-root/src/document_uploads",
-                    "name": "document-storage-data"
+                    "name": "mds-document-storage-data"
                   }
                 ],
                 "imagePullPolicy": "Always"
@@ -456,9 +451,9 @@
             "securityContext": {},
             "volumes": [
               {
-                "name": "document-storage-data",
+                "name": "mds-document-storage-data",
                 "persistentVolumeClaim": {
-                  "claimName": "document-storage${SUFFIX}"
+                  "claimName": "mds-document-storage${SUFFIX}"
                 }
               }
             ]
@@ -511,30 +506,6 @@
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "creationTimestamp": null
-      },
-      "spec": {
-        "host": "${APPLICATION_DOMAIN}",
-        "path": "${ROUTE}",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}",
-          "weight": 100
-        },
-        "port": {
-          "targetPort": "web"
-        },
-        "tls": {
-          "termination": "edge"
-        },
-        "wildcardPolicy": "None"
       }
     }
   ]

@@ -54,7 +54,7 @@
         "lookupPolicy": {
           "local": false
         },
-        "tags":[
+        "tags": [
           {
             "name": "3.6.1-21",
             "annotations": null,
@@ -106,7 +106,7 @@
         "lookupPolicy": {
           "local": false
         },
-        "tags":[ ]
+        "tags": []
       }
     },
     {
@@ -115,8 +115,8 @@
       "metadata": {
         "name": "${NAME}-base${SUFFIX}",
         "creationTimestamp": null,
-        "labels": { },
-        "annotations": { }
+        "labels": {},
+        "annotations": {}
       },
       "spec": {
         "completionDeadlineSeconds": 1440,
@@ -143,8 +143,7 @@
               "kind": "ImageStreamTag",
               "name": "rhscl-python-36-rhel7:3.6.1-21"
             },
-            "env": [
-            ]
+            "env": []
           }
         },
         "output": {
@@ -179,8 +178,6 @@
       },
       "spec": {
         "completionDeadlineSeconds": 600,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
         "triggers": [
           {
             "type": "ImageChange"
