@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider, Pagination } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -25,13 +25,27 @@ const defaultProps = {
 };
 
 export class MineComplianceInfo extends Component {
-  state = { isLoading: true };
+  state = { isLoading: true, minOrderList: 0, maxOrderList: 10 };
 
   componentDidMount() {
     this.props
       .fetchMineComplianceInfo(this.props.mine.mine_detail[0].mine_no)
       .then(() => this.setState({ isLoading: !this.state.isLoading }));
   }
+
+  handlePageChange = (value) => {
+    if (value <= 1) {
+      this.setState({
+        minOrderList: 0,
+        maxOrderList: 10,
+      });
+    } else {
+      this.setState({
+        minOrderList: value === 1 ? 0 : (value - 1) * 10,
+        maxOrderList: value * 10,
+      });
+    }
+  };
 
   render() {
     return (
@@ -144,6 +158,7 @@ export class MineComplianceInfo extends Component {
                     return Date.parse(order1.due_date) > Date.parse(order2.due_date) ? 1 : -1;
                   return order1.order_no > order2.order_no ? 1 : -1;
                 })
+                .slice(this.state.minOrderList, this.state.maxOrderList)
                 .map((order, id) => {
                   return (
                     <div key={order.order_no}>
@@ -188,6 +203,13 @@ export class MineComplianceInfo extends Component {
                     </div>
                   );
                 })}
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={10}
+                onChange={this.handlePageChange}
+                total={this.props.mineComplianceInfo.open_orders.length}
+                className="center"
+              />
             </div>
           )}
         </div>
