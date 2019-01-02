@@ -37,7 +37,7 @@ const RenderSelect = (props) => (
     }
   >
     <Select
-      // onSelect={props.handleSelect ? props.handleSelect : null}
+      onSelect={props.handleSelect && props.handleSelect}
       disabled={props.disabled}
       getPopupContainer={() => document.getElementById(props.id)}
       showSearch
