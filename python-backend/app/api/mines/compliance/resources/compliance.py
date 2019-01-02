@@ -16,10 +16,10 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         try:
             data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
         except requests.exceptions.Timeout:
-            return self.create_error_payload(408, 'NRIS is down or unresponsive.')
+            return self.create_error_payload(408, 'NRIS is down or unresponsive.'), 408
         except requests.exceptions.HTTPError as errhttp:
             return self.create_error_payload(errhttp.response.status_code,
-                                    'NRIS error occurred.' + str(errhttp))
+                                    'NRIS error occurred.' + str(errhttp)), errhttp.response.status_code
         except TypeError as e:
             return self.create_error_payload(500, str(e)), 500
 
