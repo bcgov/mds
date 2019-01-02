@@ -48,8 +48,9 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid),
-            'permit_guid': str(self.permit_guid),
+            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid
+                                                       or ''),
+            'permit_guid': str(self.permit_guid or ''),
             'start_date': str(self.start_date),
             'end_date': str(self.end_date),
             'party': self.party.json(show_mgr=False) if self.party else str({})
