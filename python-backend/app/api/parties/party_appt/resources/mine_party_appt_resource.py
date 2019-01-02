@@ -19,6 +19,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'mine_party_appt_type_code', type=str, help='code for the type of appointment.')
     parser.add_argument('mine_tailings_storage_facility_guid', type=str)
+    parser.add_argument('permit_guid', type=str)
     parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
     parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
@@ -61,13 +62,14 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 new_mpa.mine_tailings_storage_facility_guid = data.get(
                     'mine_tailings_storage_facility_guid')
                 if not new_mpa.mine_tailings_storage_facility_guid:
-                    raise AssertionError('TSF guid must be provided for Engineer of Record')
+                    raise AssertionError('mine_tailings_storage_facility_guid must be provided for Engineer of Record')
                 #TODO move db foreign key constraint when services get separated
                 pass
+
             if new_mpa.mine_party_appt_type_code == "PMT":
                 new_mpa.permit_guid = data.get('permit_guid')
                 if not new_mpa.permit_guid:
-                    raise AssertionError('Permit guid must be provided for Permittee')
+                    raise AssertionError('permit_guid must be provided for Permittee')
                 #TODO move db foreign key constraint when services get separated
                 pass
 

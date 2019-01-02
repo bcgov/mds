@@ -63,6 +63,7 @@ export class ViewPartyRelationships extends Component {
       party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
       mine_tailings_storage_facility_guid: values.mine_tailings_storage_facility_guid,
+      permit_guid: values.permit_guid,
       start_date: values.start_date,
       end_date: values.end_date,
     };

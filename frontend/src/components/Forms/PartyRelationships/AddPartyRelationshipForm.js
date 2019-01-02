@@ -6,7 +6,10 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
+
+PermitteeOptions;
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -38,6 +41,9 @@ export const AddPartyRelationshipForm = (props) => {
   switch (props.partyRelationshipType) {
     case "EOR":
       options = <EngineerOfRecordOptions mine={props.mine} />;
+      break;
+    case "PMT":
+      options = <PermitteeOptions mine={props.mine} />;
       break;
     default:
       options = <div />;
