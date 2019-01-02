@@ -16,10 +16,12 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         try:
             data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
         except requests.exceptions.Timeout:
-            return self.raise_error(408, 'NRIS is down or unresponsive.')
+            return self.create_error_payload(408, 'NRIS is down or unresponsive.')
         except requests.exceptions.HTTPError as errhttp:
-            return self.raise_error(errhttp.response.status_code,
+            return self.create_error_payload(errhttp.response.status_code,
                                     'NRIS error occurred.' + str(errhttp))
+        except TypeError as e:
+            return self.create_error_payload(500, str(e)), 500
 
         if len(data) == 0:
             return None
@@ -92,6 +94,8 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                     if one_year_ago < report_date:
                         advisories += len(stop_advisories)
                         warnings += len(stop_warnings)
+            
+            # open_orders_list.sort(key=lambda o: o.get('due_date'))
 
             overview = {
                 'last_inspection': most_recent.get('assessmentDate'),

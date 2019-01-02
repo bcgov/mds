@@ -8,7 +8,7 @@ const dispatchProps = {};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.MineComplianceInfo = {};
+  props.MineComplianceInfo = MOCK.COMPLIANCE;
 };
 
 const setupDispatchProps = () => {
