@@ -55,8 +55,21 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
                 start_date=data.get('start_date'),
                 end_date=data.get('end_date'),
-                mine_tailings_storage_facility_guid=data.get('mine_tailings_storage_facility_guid'),
                 **self.get_create_update_dict())
+
+            if new_mpa.mine_party_appt_type_code == "EOR":
+                new_mpa.mine_tailings_storage_facility_guid = data.get(
+                    'mine_tailings_storage_facility_guid')
+                if not new_mpa.mine_tailings_storage_facility_guid:
+                    raise AssertionError('TSF guid must be provided for Engineer of Record')
+                #TODO move db foreign key constraint when services get separated
+                pass
+            if new_mpa.mine_party_appt_type_code == "PMT":
+                new_mpa.permit_guid = data.get('permit_guid')
+                if not new_mpa.permit_guid:
+                    raise AssertionError('Permit guid must be provided for Permittee')
+                #TODO move db foreign key constraint when services get separated
+                pass
 
             new_mpa.save()
         except AssertionError as e:
