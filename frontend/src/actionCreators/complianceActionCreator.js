@@ -9,6 +9,8 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
+// This file is anticipated to have multiple exports
+// eslint-disable-next-line import/prefer-default-export
 export const fetchMineComplianceInfo = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
