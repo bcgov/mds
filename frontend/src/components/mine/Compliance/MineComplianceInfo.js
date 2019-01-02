@@ -142,13 +142,10 @@ export class MineComplianceInfo extends Component {
                     {this.props.mineComplianceInfo.open_orders.sort((order1, order2) => {
                       const date1 = Date.parse(order1.due_date) || 0;
                       const date2 = Date.parse(order2.due_date) || 0; 
-                      if (!(date1 === date2))
-                        return date1 > date2 ? 1 : -1;
-                      return order1.order_no > order2.order_no ? 1 : -1;
+                      return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
                     })
                       .slice(this.state.minOrderList, this.state.maxOrderList)
-                      .map((order, id) => {
-                        return (
+                      .map((order, id) => (
                           <div key={order.order_no}>
                             <Row gutter={16} justify="center" align="top">
                               <Col span={2}>
@@ -189,8 +186,8 @@ export class MineComplianceInfo extends Component {
                             </Row>
                             <Divider type="horizontal" />
                           </div>
-                        );
-                      })}
+                        )
+                      )}
                     <Pagination
                       defaultCurrent={1}
                       defaultPageSize={10}

@@ -20,7 +20,7 @@ def get_NRIS_token():
     }
     url = current_app.config['NRIS_TOKEN_URL']
     if url is None:
-        raise TypeError('Could not load the NRIS token URL.')
+        raise TypeError('Could not load the NRIS URL.')
     else:
         resp = requests.get(
             url=url,
@@ -54,7 +54,7 @@ def get_EMPR_data_from_NRIS(mine_no):
     url = current_app.config['NRIS_INSPECTION_URL']
 
     if url is None:
-        raise TypeError('Could not load the NRIS inspection URL.')
+        raise TypeError('Could not load the NRIS URL.')
     else:
         #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
         params = {
