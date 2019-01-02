@@ -32,33 +32,34 @@ const mockState = {
 
 describe("mineSelectors", () => {
   const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
-  let { mineRegionOptions, mineTSFRequiredReports, mineTenureTypes } = mockState;
+  const { mineTSFRequiredReports } = mockState;
+  let { mineRegionOptions, mineTenureTypes } = mockState;
 
   it("`getMineStatusOptions` calls `staticContentReducer.getMineStatusOptions`", () => {
     const storeAction = storeStatusOptions(Mock.STATUS_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineStatusOptions(mockState)).toEqual(mineStatusOptions);
+    expect(getMineStatusOptions(localMockState)).toEqual(mineStatusOptions);
   });
 
   it("`getMineRegionOptions` calls `staticContentReducer.getMineRegionOptions`", () => {
     const storeAction = storeRegionOptions(Mock.REGION_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineRegionOptions(mockState)).toEqual(mineRegionOptions);
+    expect(getMineRegionOptions(localMockState)).toEqual(mineRegionOptions);
   });
 
   it("`getMineTSFRequiredReports` calls `staticContentReducer.getMineTSFRequiredReports`", () => {
     const storeAction = storeMineTSFRequiredDocuments(Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineTSFRequiredReports(mockState)).toEqual(mineTSFRequiredReports);
+    expect(getMineTSFRequiredReports(localMockState)).toEqual(mineTSFRequiredReports);
   });
 
   it("`getMineRegionHash` converts `staticContentReducer.getMineRegionOptions`", () => {
@@ -76,27 +77,27 @@ describe("mineSelectors", () => {
   it("`getMineTenureTypes` calls `staticContentReducer.getMineTenureTypes`", () => {
     const storeAction = storeTenureTypes(Mock.TENURE_TYPES);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineTenureTypes(mockState)).toEqual(mineTenureTypes);
+    expect(getMineTenureTypes(localMockState)).toEqual(mineTenureTypes);
   });
 
   it("`getMineDisturbanceOptions` calls `staticContentReducer.getMineDisturbanceOptions`", () => {
     const storeAction = storeDisturbanceOptions(Mock.DISTURBANCE_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineDisturbanceOptions(mockState)).toEqual(mineDisturbanceOptions);
+    expect(getMineDisturbanceOptions(localMockState)).toEqual(mineDisturbanceOptions);
   });
 
   it("`getMineCommodityOptions` calls `staticContentReducer.getMineCommodityOptions`", () => {
     const storeAction = storeCommodityOptions(Mock.COMMODITY_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineCommodityOptions(mockState)).toEqual(mineCommodityOptions);
+    expect(getMineCommodityOptions(localMockState)).toEqual(mineCommodityOptions);
   });
 });

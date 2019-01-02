@@ -2,17 +2,15 @@ import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
 import { createLabelHash } from "@/utils/helpers";
 
-export const getMineStatusOptions = (state) => staticContentReducer.getMineStatusOptions(state);
-export const getMineRegionOptions = (state) => staticContentReducer.getMineRegionOptions(state);
-export const getMineTenureTypes = (state) => staticContentReducer.getMineTenureTypes(state);
-export const getMineDisturbanceOptions = (state) =>
-  staticContentReducer.getMineDisturbanceOptions(state);
-export const getMineCommodityOptions = (state) =>
-  staticContentReducer.getMineCommodityOptions(state);
-export const getExpectedDocumentStatusOptions = (state) =>
-  staticContentReducer.getExpectedDocumentStatusOptions(state);
-export const getMineTSFRequiredReports = (state) =>
-  staticContentReducer.getMineTSFRequiredReports(state);
+export const {
+  getMineStatusOptions,
+  getMineRegionOptions,
+  getMineTenureTypes,
+  getMineDisturbanceOptions,
+  getMineCommodityOptions,
+  getExpectedDocumentStatusOptions,
+  getMineTSFRequiredReports,
+} = staticContentReducer;
 
 export const getMineTenureTypesHash = createSelector(
   [getMineTenureTypes],
@@ -51,26 +49,24 @@ export const getConditionalCommodityOptions = createSelector(
 
 export const getDisturbanceOptionHash = createSelector(
   [getMineDisturbanceOptions],
-  (options) => {
-    return options.reduce(
+  (options) =>
+    options.reduce(
       (map, { description, mine_disturbance_code }) => ({
         [mine_disturbance_code]: description,
         ...map,
       }),
       {}
-    );
-  }
+    )
 );
 
 export const getCommodityOptionHash = createSelector(
   [getMineCommodityOptions],
-  (options) => {
-    return options.reduce(
+  (options) =>
+    options.reduce(
       (map, { description, mine_commodity_code }) => ({
         [mine_commodity_code]: description,
         ...map,
       }),
       {}
-    );
-  }
+    )
 );

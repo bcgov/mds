@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
 import { Menu, Icon, Divider, Button, Popover } from "antd";
+import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -86,7 +86,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_commodity_code }) => (
                 <span>
                   {mine_commodity_code &&
-                    this.props.mineCommodityOptionsHash[mine_commodity_code] + ", "}
+                    `${this.props.mineCommodityOptionsHash[mine_commodity_code]}, `}
                 </span>
               ))}
           </div>
@@ -100,7 +100,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_disturbance_code }) => (
                 <span>
                   {mine_disturbance_code &&
-                    this.props.mineDisturbanceOptionsHash[mine_disturbance_code] + ", "}
+                    `${this.props.mineDisturbanceOptionsHash[mine_disturbance_code]}, `}
                 </span>
               ))}
           </div>
@@ -186,7 +186,7 @@ class MineHeader extends Component {
               )
             }
           >
-            <img alt="pencil" style={{ padding: "5px" }} src={GREEN_PENCIL} />
+            <img alt="pencil" style={{ padding: "5px" }} src={BRAND_PENCIL} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
@@ -198,7 +198,7 @@ class MineHeader extends Component {
               this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
-            <img alt="document" style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
+            <img alt="document" style={{ padding: "5px" }} src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
