@@ -34,17 +34,10 @@ export class MineComplianceInfo extends Component {
   }
 
   handlePageChange = (value) => {
-    if (value <= 1) {
       this.setState({
-        minOrderList: 0,
-        maxOrderList: 10,
-      });
-    } else {
-      this.setState({
-        minOrderList: value === 1 ? 0 : (value - 1) * 10,
-        maxOrderList: value * 10,
-      });
-    }
+        minOrderList: value <= 1 ? 0 : (value - 1) * 10,
+        maxOrderList: value <= 1 ? 10 : value * 10,
+      })
   };
 
   render() {
