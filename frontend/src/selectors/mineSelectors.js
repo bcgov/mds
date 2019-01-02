@@ -12,8 +12,9 @@ export const getCurrentPermittees = createSelector(
   (mines, mineGuid) => {
     const permitteeObj = {}; /* 
     if (mineGuid) {
-      mines[mineGuid].mine_permit.map((permit) => {
-        permitteeObj[permit.permittee[0].party_guid] = permit.permittee[0];
+      mines[mineGuid].mine_permit.forEach((permit) => {
+        const permittee = permit.permittee[0];
+        permitteeObj[permittee.party_guid] = permittee;
       });
     } */
     return permitteeObj;
@@ -26,7 +27,7 @@ export const getCurrentPermitteeIds = createSelector(
     const permitteeIds = [];
     let unique; /* 
     if (mineGuid) {
-      mines[mineGuid].mine_permit.map((permit) => {
+      mines[mineGuid].mine_permit.forEach((permit) => {
         permitteeIds.push(permit.permittee[0].party_guid);
       });
     } */

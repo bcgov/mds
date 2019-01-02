@@ -1,6 +1,5 @@
 # Test Constants
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
-TEST_MINE_GUID2 = '4fc855aa-728a-48f2-a3df-85ce1336b01b'
 
 TEST_MINE_DETAIL_GUID = '94de18e5-5239-4df0-aa2d-b21961d4721e'
 TEST_MINE_NAME = 'test_mine_name'

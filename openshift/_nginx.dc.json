@@ -1,0 +1,220 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-nginx-dc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name for all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "ROUTE",
+      "value": "/"
+    },
+    {
+      "name": "PATH_PREFIX",
+      "value": "/"
+    },
+    {
+      "name": "FRONTEND_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "API_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "APPLICATION_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "CPU_LIMIT",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "512Mi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "150m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "256Mi"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Defines how to deploy the application server"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["nginx"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+              "name": "${NAME}${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "nginx",
+                "image": " ",
+                "env": [
+                  {
+                    "name": "PATH_PREFIX",
+                    "value": "${PATH_PREFIX}"
+                  },
+                  {
+                    "name": "FRONTEND_SERVICE_URL",
+                    "value": "${FRONTEND_SERVICE_URL}"
+                  },
+                  {
+                    "name": "API_SERVICE_URL",
+                    "value": "${API_SERVICE_URL}"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  },
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  }
+                },
+                "ports": [
+                  {
+                    "containerPort": 8080
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}"
+        }
+      },
+      "spec": {
+        "host": "${APPLICATION_DOMAIN}",
+        "path": "${ROUTE}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "tls": {
+          "termination": "edge"
+        },
+        "wildcardPolicy": "None"
+      }
+    }
+  ]
+}

@@ -12,13 +12,11 @@ const defaultProps = {
   title: "",
 };
 
-export const AddTailingsReportModal = (props) => {
-  return (
+export const AddTailingsReportModal = (props) => (
     <div>
       <AddTailingsReportForm {...props} />
     </div>
   );
-};
 
 AddTailingsReportModal.propTypes = propTypes;
 AddTailingsReportModal.defaultProps = defaultProps;

@@ -44,11 +44,6 @@
       "value": "/"
     },
     {
-      "name": "ROUTE",
-      "required": false,
-      "value": "/"
-    },
-    {
       "name": "NODE_ENV",
       "displayName": "Node Environment",
       "description": "Environment for running node",
@@ -147,28 +142,6 @@
           }
         ],
         "selector": {
-          "name": "${NAME}${SUFFIX}"
-        }
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "labels": {
-          "component": "${NAME}"
-        }
-      },
-      "spec": {
-        "host": "${APPLICATION_DOMAIN}",
-        "tls": {
-          "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect"
-        },
-        "path": "${ROUTE}",
-        "to": {
-          "kind": "Service",
           "name": "${NAME}${SUFFIX}"
         }
       }

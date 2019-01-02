@@ -1,3 +1,4 @@
+import moment from "moment";
 import { reset } from "redux-form";
 /**
  * Helper function to clear redux form after submission
@@ -33,6 +34,9 @@ export const createDropDownList = (array, labelField, valueField) =>
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (obj) =>
   obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+
+// Function to format an API date string to human readable
+export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());

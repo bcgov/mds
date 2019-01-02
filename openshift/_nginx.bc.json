@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "bdd-stack-bc",
+    "name": "mds-nginx-bc",
     "creationTimestamp": null
   },
   "parameters": [
@@ -64,11 +64,11 @@
         "name": "${NAME}${SUFFIX}",
         "creationTimestamp": null,
         "annotations": {
-          "description": "Defines how to build the application"
+          "description": "Defines how to build the image"
         }
       },
       "spec": {
-        "completionDeadlineSeconds": 1200,
+        "completionDeadlineSeconds": 600,
         "triggers": [
           {
             "type": "ImageChange"
@@ -87,12 +87,12 @@
           "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
+          "type": "Source",
+          "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "bcgov",
-              "name": "jenkins-slave-bddstack:v1-stable"
+              "namespace": "openshift",
+              "name": "bcgov-s2i-nginx:latest"
             }
           }
         },
@@ -100,16 +100,6 @@
           "to": {
             "kind": "ImageStreamTag",
             "name": "${NAME}:${VERSION}"
-          }
-        },
-        "resources": {
-          "limits": {
-            "cpu": "500m",
-            "memory": "4Gi"
-          },
-          "requests": {
-            "cpu": "250m",
-            "memory": "2Gi"
           }
         },
         "nodeSelector": null
