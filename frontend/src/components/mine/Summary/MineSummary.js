@@ -43,7 +43,7 @@ const MineSummary = (props) => {
                   <h4>Permittee Since</h4>
                 </th>
               </tr>
-              {props.permitteeIds.map((id) => (
+              {/* props.permitteeIds.map((id) => (
                 <tr key={id}>
                   <td data-label="Permittee">
                     <p className="p-large">{props.permittees[id].party.name}</p>
@@ -55,7 +55,7 @@ const MineSummary = (props) => {
                     <p className="p-large">{props.permittees[id].effective_date}</p>
                   </td>
                 </tr>
-              ))}
+              )) */}
             </tbody>
           )}
         </table>

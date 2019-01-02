@@ -93,7 +93,11 @@ export class PartyProfile extends Component {
                 {this.props.partyRelationships.map((partyRelationship) => (
                   <div>
                     <Row type="flex" style={{ textAlign: "center" }}>
-                      <Col span={8}>{partyRelationship.mine_guid}</Col>
+                      <Col span={8}>
+                        <Link to={router.MINE_SUMMARY.dynamicRoute(partyRelationship.mine_guid)}>
+                          {partyRelationship.mine_guid}
+                        </Link>
+                      </Col>
                       <Col span={8}>
                         {this.props.partyRelationshipTypes &&
                           this.props.partyRelationshipTypes.find(

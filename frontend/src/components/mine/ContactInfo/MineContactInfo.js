@@ -5,8 +5,11 @@ import { connect } from "react-redux";
 import { debounce } from "lodash";
 import ViewPermittee from "./ViewPermittee";
 import ViewPartyRelationships from "./ViewPartyRelationships";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
+import {
+  openModal,
+  closeModal,
+} from "@/actions/modalActions"; /* 
+import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors"; */
 import {
   createParty,
   fetchParties,
@@ -66,13 +69,13 @@ export class MineContactInfo extends Component {
     const { mine } = this.props;
     return (
       <div>
-        {mine.mine_permit[0] && (
+        {/* mine.mine_permit[0] && (
           <ViewPermittee
             {...this.props}
             handleChange={this.handleChangeDebounced}
             handlePartySubmit={this.handlePartySubmit}
           />
-        )}
+        ) */}
         <ViewPartyRelationships
           {...this.props}
           handleChange={this.handleChangeDebounced}
@@ -87,8 +90,9 @@ MineContactInfo.propTypes = propTypes;
 MineContactInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
+  /* 
   permittees: getCurrentPermittees(state),
-  permitteeIds: getCurrentPermitteeIds(state),
+  permitteeIds: getCurrentPermitteeIds(state), */
 });
 
 const mapDispatchToProps = (dispatch) =>
