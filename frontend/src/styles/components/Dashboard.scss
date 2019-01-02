@@ -1,12 +1,12 @@
 .landing-page {
-  background-color: $default-white;
+  background-color: $lightest-grey;
 
   &__header {
     padding: $default-padding-xl;
   }
 
   &__content {
-    background-color: $background-white;
+    background-color: $pure-white;
     border-radius: $default-round-top-border;
 
     @include mobile {
@@ -34,7 +34,7 @@
 }
 
 .profile {
-  background-color: $default-white;
+  background-color: $pure-white;
 
   &__header {
     @extend .landing-page__header;

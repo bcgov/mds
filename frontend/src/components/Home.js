@@ -18,7 +18,7 @@ export const Home = () => {
         <NavBar />
         <LoadingBar
           style={{
-            backgroundColor: "#77510a",
+            backgroundColor: "#6b6363",
             position: "fixed",
             top: 55,
             zIndex: 90,

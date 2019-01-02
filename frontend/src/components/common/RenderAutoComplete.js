@@ -29,7 +29,7 @@ const RenderAutoComplete = ({ data, placeholder, handleChange, handleSelect }) =
     onSelect={handleSelect}
     onChange={handleChange}
   >
-    <Input id="search" suffix={<Icon type="search" style={{ color: "#537C52", fontSize: 20 }} />} />
+    <Input id="search" suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />} />
   </AutoComplete>
 );
 
