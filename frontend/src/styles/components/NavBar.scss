@@ -4,14 +4,18 @@
   z-index: 1000;
   width: 100vw;
   justify-content: space-between;
-  background-color: $default-blue;
+  background-color: $nav-color;
+  border-bottom: 1px solid $nav-border-color;
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
   &__img {
     margin: $default-margin-sm;
   }
-  
+
   &__dropdown-link {
-    color: $default-white;
+    color: $pure-white;
+    &:hover {
+      color: $light-grey;
+    }
   }
 }
