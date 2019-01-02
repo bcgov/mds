@@ -29,19 +29,18 @@ const propTypes = {
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
-  selectedPartyRelationshipType: CustomPropTypes.dropdownListItem,
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  selectedPartyRelationship: CustomPropTypes.partyRelationship,
   createTailingsStorageFacility: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  updatePartyRelationship: PropTypes.func.isRequired,
+  removePartyRelationship: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
-  selectedPartyRelationshipType: {},
   partyRelationships: [],
-  selectedPartyRelationship: {},
 };
 
 export class ViewPartyRelationships extends Component {
@@ -81,7 +80,7 @@ export class ViewPartyRelationships extends Component {
     if (!this.props.partyRelationshipTypes) return;
 
     if (value === "EOR") {
-      if (mine.mine_tailings_storage_facility.length == 0) {
+      if (mine.mine_tailings_storage_facility.length === 0) {
         this.TSFConfirmation.current.click();
         return;
       }
@@ -164,7 +163,7 @@ export class ViewPartyRelationships extends Component {
   }
 
   renderPartyRelationship = (partyRelationship) => {
-    if (!this.props.partyRelationshipTypes) return;
+    if (!this.props.partyRelationshipTypes) return <div />;
 
     const partyRelationshipTypeLabel = this.props.partyRelationshipTypes.find(
       (x) => x.value === partyRelationship.mine_party_appt_type_code
@@ -199,11 +198,9 @@ export class ViewPartyRelationships extends Component {
   };
 
   render() {
-    const { partyRelationships, partyRelationshipTypes } = this.props;
-
     const menu = (
       <Menu>
-        {partyRelationshipTypes.map((value) => (
+        {this.props.partyRelationshipTypes.map((value) => (
           <Menu.Item key={value.value}>
             <button
               className="full"
@@ -258,14 +255,22 @@ export class ViewPartyRelationships extends Component {
                   string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
                 />
               </div>
-            </div>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={24}>
-            {partyRelationships.length != 0 ? (
-              partyRelationships.map((partyRelationship) => (
-                <div key={partyRelationship.mine_party_appt_guid}>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              {this.props.partyRelationships.length !== 0 ? (
+                this.props.partyRelationships.map((partyRelationship) => (
+                  <div key={partyRelationship.mine_party_appt_guid}>
+                    <hr />
+                    <br />
+                    {this.renderPartyRelationship(partyRelationship)}
+                    <br />
+                    <br />
+                  </div>
+                ))
+              ) : (
+                <div>
                   <hr />
                   <br />
                   {this.renderPartyRelationship(partyRelationship)}

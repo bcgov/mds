@@ -235,7 +235,7 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
       dispatch(hideLoading());

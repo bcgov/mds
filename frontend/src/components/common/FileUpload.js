@@ -1,12 +1,25 @@
 import { map } from "lodash";
 import React from "react";
+import PropTypes from "prop-types";
 import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-registerPlugin(FilePondPluginFileValidateSize);
-
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+
+registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
+
+const propTypes = {
+  uploadUrl: PropTypes.string.isRequired,
+  maxFileSize: PropTypes.string,
+  acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
+};
+
+const defaultProps = {
+  maxFileSize: "100MB",
+  acceptedFileTypesMap: {},
+};
 
 class FileUpload extends React.Component {
   constructor(props) {
@@ -20,7 +33,7 @@ class FileUpload extends React.Component {
       url: ENVIRONMENT.apiUrl,
       process: {
         url: this.props.uploadUrl,
-        headers: createRequestHeader()["headers"],
+        headers: createRequestHeader().headers,
         onload: null,
         onerror: null,
       },
@@ -28,13 +41,18 @@ class FileUpload extends React.Component {
   }
 
   render() {
+    const acceptedFileTypes = Object.keys(this.props.acceptedFileTypesMap);
+
     return (
       <FilePond
-        name={"file"}
-        allowRevert={false}
-        allowMultiple={true}
-        maxFileSize={"100MB"}
         server={this.server}
+        name="file"
+        allowRevert={false}
+        allowMultiple
+        maxFileSize={this.props.maxFileSize}
+        allowFileTypeValidation={acceptedFileTypes.length > 0}
+        acceptedFileTypes={acceptedFileTypes}
+        fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
         onupdatefiles={(fileItems) => {
           this.setState({
             files: map(fileItems, "file"),
@@ -48,5 +66,8 @@ class FileUpload extends React.Component {
     );
   }
 }
+
+FileUpload.propTypes = propTypes;
+FileUpload.defaultProps = defaultProps;
 
 export default FileUpload;
