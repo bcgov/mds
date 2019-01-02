@@ -255,22 +255,14 @@ export class ViewPartyRelationships extends Component {
                   string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
                 />
               </div>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              {this.props.partyRelationships.length !== 0 ? (
-                this.props.partyRelationships.map((partyRelationship) => (
-                  <div key={partyRelationship.mine_party_appt_guid}>
-                    <hr />
-                    <br />
-                    {this.renderPartyRelationship(partyRelationship)}
-                    <br />
-                    <br />
-                  </div>
-                ))
-              ) : (
-                <div>
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            {this.props.partyRelationships.length !== 0 ? (
+              this.props.partyRelationships.map((partyRelationship) => (
+                <div key={partyRelationship.mine_party_appt_guid}>
                   <hr />
                   <br />
                   {this.renderPartyRelationship(partyRelationship)}
