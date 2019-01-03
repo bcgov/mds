@@ -50,7 +50,12 @@ export class PartyProfile extends Component {
   render() {
     const { id } = this.props.match.params;
     const parties = this.props.parties[id];
-    if (parties) {
+
+    const isLoaded =
+      this.props.partyRelationshipTypes.length > 0 &&
+      (this.props.partyRelationships.length > 0 && parties);
+
+    if (isLoaded) {
       return (
         <div className="profile">
           <div className="profile__header">

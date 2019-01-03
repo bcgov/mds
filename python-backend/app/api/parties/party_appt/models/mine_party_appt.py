@@ -95,7 +95,7 @@ class MinePartyAppointment(AuditMixin, Base):
             if party_guid:
                 built_query = built_query.filter_by(party_guid=party_guid)
             if mine_party_appt_type_code:
-                build_query = built_query.filter_by(
+                built_query = built_query.filter_by(
                     mine_party_appt_type_code=mine_party_appt_type_code)
             return built_query.all()
         except ValueError:

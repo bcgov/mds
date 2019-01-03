@@ -105,13 +105,13 @@ export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => 
 
 export const fetchPartyRelationshipTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
       dispatch(partyActions.storePartyRelationshipTypes(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -119,7 +119,7 @@ export const fetchPartyRelationshipTypes = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
@@ -177,7 +177,7 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
 
 export const fetchPartyRelationships = (mineId, partyId, typeCode) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${
@@ -198,13 +198,13 @@ export const fetchPartyRelationships = (mineId, partyId, typeCode) => (dispatch)
         duration: 10,
       });
       dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
 export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_guid=${mineId}`,
@@ -213,7 +213,7 @@ export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -221,13 +221,13 @@ export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
 export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?party_guid=${partyId}`,
@@ -236,7 +236,7 @@ export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -244,13 +244,13 @@ export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
 export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_party_appt_type_code=${typeCode}`,
@@ -259,7 +259,7 @@ export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -267,7 +267,7 @@ export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 

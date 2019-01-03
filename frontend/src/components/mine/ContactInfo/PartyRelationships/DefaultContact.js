@@ -22,7 +22,16 @@ export const DefaultContact = (props) => (
   <div>
     <div className="inline-flex between">
       <div>
-        <h4>{props.partyRelationshipTypeLabel}</h4>
+        <h4>
+          <Link
+            to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+              props.mine.guid,
+              props.partyRelationship.mine_party_appt_type_code
+            )}
+          >
+            {props.partyRelationshipTypeLabel}
+          </Link>
+        </h4>
         <p>
           <Icon type="clock-circle" />
           &nbsp;&nbsp;
