@@ -43,17 +43,22 @@ class MinePartyAppointment(AuditMixin, Base):
 
     # json
     def json(self):
-        return {
+        result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid),
-            'permit_guid': str(self.permit_guid),
             'start_date': str(self.start_date),
             'end_date': str(self.end_date),
             'party': self.party.json(show_mgr=False) if self.party else str({})
         }
+        related_guid = ""
+        if self.mine_party_appt_type_code == "EOR":
+            related_guid = str(self.mine_tailings_storage_facility_guid)
+        elif self.mine_party_appt_type_code == "PMT":
+            related_guid == str(self.permit_guid)
+        result["related_guid"] = related_guid
+        return result
 
     # search methods
     @classmethod
@@ -81,7 +86,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
         try:
-            return cls.find_by(mine_party_appt_type_code=code)
+            return cls.find_by(mine_party_appt_type_codes=[code])
         except ValueError:
             return None
 
