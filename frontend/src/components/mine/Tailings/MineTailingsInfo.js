@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { GREEN_PENCIL, RED_CLOCK } from "@/constants/assets";
+import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
   createMineExpectedDocument,
   removeExpectedDocument,
@@ -56,7 +56,7 @@ const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
     ? expectedDocumentStatusOptions[0].label
     : expectedDocumentStatusOptions.find((x) => x.value === doc.exp_document_status_guid).label;
 };
-/* 
+/*
   return  */
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
@@ -287,7 +287,7 @@ export class MineTailingsInfo extends Component {
                           )
                         }
                       >
-                        <img style={{ padding: "5px" }} src={GREEN_PENCIL} alt="Edit TSF Report" />
+                        <img style={{ padding: "5px" }} src={BRAND_PENCIL} alt="Edit TSF Report" />
                       </Button>
                       <Popconfirm
                         placement="topLeft"
