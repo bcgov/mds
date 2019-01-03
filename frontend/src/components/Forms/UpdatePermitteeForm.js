@@ -6,34 +6,27 @@ import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  permit: PropTypes.array,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permit: PropTypes.arrayOf(CustomPropTypes.permittee),
   title: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
-  parties: {},
-  partyIds: [],
   permit: [],
 };
 
-const permitteeOptions = (permit) => {
-  const dataArray = [];
-  permit.map((obj) => {
-    const data = {
-      value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
-      label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
-    };
-    dataArray.push(data);
-  });
-  return dataArray;
-};
+const permitteeOptions = (permit) =>
+  permit.map((obj) => ({
+    value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
+    label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
+  }));
 
 export const UpdatePermitteeForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
