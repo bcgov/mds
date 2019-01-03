@@ -235,7 +235,7 @@ export class MineTailingsInfo extends Component {
                   <Row gutter={16} justify="center" align="top">
                     <Col span={1}>
                       {isOverdue ? (
-                        <img style={{ padding: "5px" }} src={RED_CLOCK} alt="Edit TSF Report" />
+                        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
                         ""
                       )}
@@ -287,7 +287,7 @@ export class MineTailingsInfo extends Component {
                           )
                         }
                       >
-                        <img style={{ padding: "5px" }} src={BRAND_PENCIL} alt="Edit TSF Report" />
+                        <img className="padding-small" src={BRAND_PENCIL} alt="Edit TSF Report" />
                       </Button>
                       <Popconfirm
                         placement="topLeft"

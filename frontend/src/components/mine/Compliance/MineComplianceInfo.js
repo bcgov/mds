@@ -77,7 +77,7 @@ export class MineComplianceInfo extends Component {
                   <Row gutter={16} justify="center" align="top">
                     <Col span={2}>
                       {order.overdue && order.due_date != null ? (
-                        <img style={{ padding: "5px" }} src={RED_CLOCK} alt="Edit TSF Report" />
+                        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
                         ""
                       )}
