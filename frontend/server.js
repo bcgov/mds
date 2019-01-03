@@ -1,7 +1,6 @@
 const express = require("express");
 const fs = require("fs");
 const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
-const cors = require("cors");
 
 let BASE_PATH = process.env.BASE_PATH;
 if (dotenv.parsed) {
@@ -9,11 +8,9 @@ if (dotenv.parsed) {
 }
 
 const app = express();
-app.use(cors());
 const port = 3000;
 const commonHeaders = {
   "Cache-Control": "private, no-cache, no-store",
-  Pragma: "no-cache",
   Expires: 0,
   "X-XSS-Protection": 1,
 };
