@@ -26,7 +26,6 @@ const serveGzipped = (contentType) => (req, res, next) => {
   req.url = `${req.url}.gz`;
 
   // set correct headers
-  res.set(commonHeaders);
   res.set("Content-Encoding", "gzip");
   res.set("Content-Type", contentType);
 
@@ -35,7 +34,6 @@ const serveGzipped = (contentType) => (req, res, next) => {
 };
 
 app.get(`${BASE_PATH}/env`, function(req, res) {
-  res.set(commonHeaders);
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
