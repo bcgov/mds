@@ -22,14 +22,14 @@ const propTypes = {
 
 const columns = [
   {
-    title: "Mine Name 1",
+    title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
     render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
   },
   {
     title: "Mine No.",
-    width: 200,
+    width: 100,
     dataIndex: "mineNo",
   },
   {
