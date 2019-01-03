@@ -48,9 +48,8 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid
-                                                       or ''),
-            'permit_guid': str(self.permit_guid or ''),
+            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid),
+            'permit_guid': str(self.permit_guid),
             'start_date': str(self.start_date),
             'end_date': str(self.end_date),
             'party': self.party.json(show_mgr=False) if self.party else str({})
@@ -87,16 +86,16 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_code=None):
+    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
         try:
             built_query = cls.query.filter_by(deleted_ind=False)
             if mine_guid:
                 built_query = built_query.filter_by(mine_guid=mine_guid)
             if party_guid:
                 built_query = built_query.filter_by(party_guid=party_guid)
-            if mine_party_appt_type_code:
-                built_query = built_query.filter_by(
-                    mine_party_appt_type_code=mine_party_appt_type_code)
+            if mine_party_appt_type_codes:
+                built_query = built_query.filter(
+                    cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
             return built_query.all()
         except ValueError:
             return None
