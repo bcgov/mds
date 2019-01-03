@@ -8,9 +8,12 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    String mergeMethod='merge'
-                    echo "Merging (using '${mergeMethod}' method)"
-                    println(bcgov.GitHubHelper)
+                    repo = bcgov.GitHubHelper.getGitHubRepository("https://github.com/bcgov/mds")
+                    mergeMethod = bcgov.GitHubHelper.GHPullRequest.MergeMethod.MERGE
+                    pullRequest = repo.getPullRequest(360)
+                    mergeable = pullRequest.getMergeable()
+                    head = pullRequest.getHead()
+                    println repo, mergeMethod, pullRequest, mergeable, head
                 }
             }
         }
