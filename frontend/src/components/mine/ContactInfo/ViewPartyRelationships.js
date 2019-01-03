@@ -63,8 +63,7 @@ export class ViewPartyRelationships extends Component {
       mine_guid: this.props.mine.guid,
       party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
-      mine_tailings_storage_facility_guid: values.mine_tailings_storage_facility_guid,
-      permit_guid: values.permit_guid,
+      related_guid: values.related_guid,
       start_date: values.start_date,
       end_date: values.end_date,
     };
@@ -142,7 +141,7 @@ export class ViewPartyRelationships extends Component {
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
-    payload.mine_tailings_storage_facility_guid = values.mine_tailings_storage_facility_guid;
+    payload.related_guid = values.related_guid;
 
     this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);

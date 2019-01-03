@@ -16,9 +16,7 @@ const propTypes = {
 export const EngineerOfRecord = (props) => {
   const eorPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - ${
     props.mine.mine_tailings_storage_facility.find(
-      (x) =>
-        x.mine_tailings_storage_facility_guid ===
-        props.partyRelationship.mine_tailings_storage_facility_guid
+      (x) => x.mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
     ).mine_tailings_storage_facility_name
   }`;
 

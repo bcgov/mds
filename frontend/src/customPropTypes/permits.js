@@ -35,8 +35,7 @@ export const partyRelationship = shape({
   mine_guid: PropTypes.string,
   party,
   mine_party_appt_type_code: PropTypes.string,
-  mine_tailings_storage_facility_guid: PropTypes.string,
-  permit_guid: PropTypes.string,
+  related_guid: PropTypes.string,
   start_date: PropTypes.string,
   end_date: PropTypes.string,
 });

@@ -26,8 +26,8 @@ export const EngineerOfRecordOptions = (props) => {
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="mine_tailings_storage_facility_guid"
-            name="mine_tailings_storage_facility_guid"
+            id="related_guid"
+            name="related_guid"
             label="TSF *"
             placeholder="Select a TSF"
             component={renderConfig.SELECT}

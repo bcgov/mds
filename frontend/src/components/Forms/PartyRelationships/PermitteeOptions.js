@@ -21,8 +21,8 @@ export const PermitteeOptions = (props) => {
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="permit_guid"
-            name="permit_guid"
+            id="related_guid"
+            name="related_guid"
             label="Permit *"
             placeholder="Select a Permit"
             component={renderConfig.SELECT}
