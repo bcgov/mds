@@ -200,6 +200,7 @@ export class Dashboard extends Component {
       ? this.state.params.per_page
       : String.DEFAULT_PER_PAGE;
     // reset page when a search is initiated
+    // Test comment
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
     );
