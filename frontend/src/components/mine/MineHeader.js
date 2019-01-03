@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { ELLIPSE, GREEN_PENCIL, RED_ELLIPSE, GREEN_DOCUMENT } from "@/constants/assets";
+import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
 import { Menu, Icon, Divider, Button, Popover, Col, Row } from "antd";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -146,7 +146,7 @@ class MineHeader extends Component {
               )
             }
           >
-            <img alt="pencil" style={{ padding: "5px" }} src={GREEN_PENCIL} />
+            <img alt="pencil" style={{ padding: "5px" }} src={BRAND_PENCIL} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
@@ -158,7 +158,7 @@ class MineHeader extends Component {
               this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
-            <img alt="document" style={{ padding: "5px" }} src={GREEN_DOCUMENT} />
+            <img alt="document" style={{ padding: "5px" }} src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>

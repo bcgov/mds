@@ -3,11 +3,12 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Card, Row, Col, Menu, Icon, Popconfirm } from "antd";
+import { Row, Col, Menu, Icon, Popconfirm } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
+import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
 import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
 import NullScreen from "@/components/common/NullScreen";
@@ -156,6 +157,36 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  renderInactiveRelationships = (partyRelationships) => {
+    const activeRelationships = partyRelationships.filter((x) => x.end_date === "None");
+    const inactiveRelationships = partyRelationships.filter((x) => x.end_date !== "None");
+
+    const activePartyRelationshipTypes = [
+      ...new Set(activeRelationships.map((x) => x.mine_party_appt_type_code)),
+    ];
+    const inactivePartyRelationshipTypes = [
+      ...new Set(inactiveRelationships.map((x) => x.mine_party_appt_type_code)),
+    ];
+
+    return inactivePartyRelationshipTypes
+      .filter((x) => !activePartyRelationshipTypes.includes(x))
+      .map((typeCode) => (
+        <div key={typeCode}>
+          <hr />
+          <br />
+          <InactiveContact
+            partyRelationshipTypeCode={typeCode}
+            partyRelationshipTypeLabel={
+              this.props.partyRelationshipTypes.find((x) => x.value === typeCode).label
+            }
+            mine={this.props.mine}
+          />
+          <br />
+          <br />
+        </div>
+      ));
+  };
+
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
@@ -171,9 +202,11 @@ export class ViewPartyRelationships extends Component {
       (x) => x.value === partyRelationship.mine_party_appt_type_code
     ).label;
 
+    let contactComponent;
+
     switch (partyRelationship.mine_party_appt_type_code) {
       case "EOR":
-        return (
+        contactComponent = (
           <EngineerOfRecord
             partyRelationship={partyRelationship}
             partyRelationshipTypeLabel={partyRelationshipTypeLabel}
@@ -184,8 +217,9 @@ export class ViewPartyRelationships extends Component {
             removePartyRelationship={this.removePartyRelationship}
           />
         );
+        break;
       case "PMT":
-        return (
+        contactComponent = (
           <Permittee
             partyRelationship={partyRelationship}
             partyRelationshipTypeLabel={partyRelationshipTypeLabel}
@@ -196,8 +230,9 @@ export class ViewPartyRelationships extends Component {
             removePartyRelationship={this.removePartyRelationship}
           />
         );
+        break;
       default:
-        return (
+        contactComponent = (
           <DefaultContact
             partyRelationship={partyRelationship}
             partyRelationshipTypeLabel={partyRelationshipTypeLabel}
@@ -208,7 +243,18 @@ export class ViewPartyRelationships extends Component {
             removePartyRelationship={this.removePartyRelationship}
           />
         );
+        break;
     }
+
+    return (
+      <div key={partyRelationship.mine_party_appt_guid}>
+        <hr />
+        <br />
+        {contactComponent}
+        <br />
+        <br />
+      </div>
+    );
   };
 
   render() {
@@ -234,7 +280,7 @@ export class ViewPartyRelationships extends Component {
               }}
             >
               <Icon type="plus-circle" /> &nbsp;
-              {`Add ${value.label}`}
+              {`${value.label}`}
             </button>
           </Menu.Item>
         ))}
@@ -274,17 +320,13 @@ export class ViewPartyRelationships extends Component {
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            {this.props.partyRelationships.length !== 0 ? (
-              this.props.partyRelationships.map((partyRelationship) => (
-                <div key={partyRelationship.mine_party_appt_guid}>
-                  <hr />
-                  <br />
-                  {this.renderPartyRelationship(partyRelationship)}
-                  <br />
-                  <br />
-                </div>
-              ))
-            ) : (
+            {this.props.partyRelationships.length !== 0 &&
+              this.props.partyRelationships
+                .filter((x) => x.end_date === "None")
+                .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
+            {this.props.partyRelationships.length !== 0 &&
+              this.renderInactiveRelationships(this.props.partyRelationships)}
+            {this.props.partyRelationships.length === 0 && (
               <div>
                 <hr />
                 <br />
