@@ -21,8 +21,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         type=str,
         action='append',
         help='code for the type of appointment.')
-    parser.add_argument('mine_tailings_storage_facility_guid', type=str)
-    parser.add_argument('permit_guid', type=str)
+    parser.add_argument('related_guid', type=str)
     parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
     parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
@@ -62,8 +61,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict())
 
             if new_mpa.mine_party_appt_type_code == "EOR":
-                new_mpa.mine_tailings_storage_facility_guid = data.get(
-                    'mine_tailings_storage_facility_guid')
+                new_mpa.mine_tailings_storage_facility_guid = data.get('related_guid')
                 if not new_mpa.mine_tailings_storage_facility_guid:
                     raise AssertionError(
                         'mine_tailings_storage_facility_guid must be provided for Engineer of Record'
@@ -72,7 +70,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 pass
 
             if new_mpa.mine_party_appt_type_code == "PMT":
-                new_mpa.permit_guid = data.get('permit_guid')
+                new_mpa.permit_guid = data.get('related_guid')
                 if not new_mpa.permit_guid:
                     raise AssertionError('permit_guid must be provided for Permittee')
                 #TODO move db foreign key constraint when services get separated
