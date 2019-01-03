@@ -17,7 +17,10 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
     parser.add_argument(
-        'mine_party_appt_type_code', type=str, help='code for the type of appointment.')
+        'mine_party_appt_type_code',
+        type=str,
+        action='append',
+        help='code for the type of appointment.')
     parser.add_argument('mine_tailings_storage_facility_guid', type=str)
     parser.add_argument('permit_guid', type=str)
     parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
@@ -32,14 +35,14 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 self.raise_error(404, 'Mine Party Appointment not found')
             result = mpa.json()
         else:
-            mine_guid = request.args.get('mine_guid', type=str)
-            party_guid = request.args.get('party_guid', type=str)
-            mine_party_appt_type_code = request.args.get('mine_party_appt_type_code', type=str)
+            mine_guid = request.args.get('mine_guid')
+            party_guid = request.args.get('party_guid')
+            mine_party_appt_type_codes = request.args.get('mine_party_appt_type_code')  #list
 
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid,
                 party_guid=party_guid,
-                mine_party_appt_type_code=mine_party_appt_type_code)
+                mine_party_appt_type_codes=mine_party_appt_type_codes)
             result = list(map(lambda x: x.json(), mpas))
         return result
 
@@ -53,7 +56,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             new_mpa = MinePartyAppointment(
                 mine_guid=data.get('mine_guid'),
                 party_guid=data.get('party_guid'),
-                mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
+                mine_party_appt_type_code=data.get('mine_party_appt_type_code')[0],
                 start_date=data.get('start_date'),
                 end_date=data.get('end_date'),
                 **self.get_create_update_dict())
@@ -62,7 +65,9 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 new_mpa.mine_tailings_storage_facility_guid = data.get(
                     'mine_tailings_storage_facility_guid')
                 if not new_mpa.mine_tailings_storage_facility_guid:
-                    raise AssertionError('mine_tailings_storage_facility_guid must be provided for Engineer of Record')
+                    raise AssertionError(
+                        'mine_tailings_storage_facility_guid must be provided for Engineer of Record'
+                    )
                 #TODO move db foreign key constraint when services get separated
                 pass
 
