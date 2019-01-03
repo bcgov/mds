@@ -35,10 +35,8 @@ const propTypes = {
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mine_types: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  conditionalDisturbanceOptions: PropTypes.objectOf(PropTypes.arrayOf(CustomPropTypes.option))
-    .isRequired,
-  conditionalCommodityOptions: PropTypes.objectOf(PropTypes.arrayOf(CustomPropTypes.option))
-    .isRequired,
+  conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
 };
 
