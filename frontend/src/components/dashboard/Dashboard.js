@@ -17,12 +17,7 @@ import {
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
-  getMineTenureTypes,
   getMineTenureTypesHash,
-  getConditionalDisturbanceOptionsHash,
-  getConditionalCommodityOptions,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
@@ -218,24 +213,10 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(
-    event,
-    mineStatusOptions,
-    mineRegionOptions,
-    mineTenureTypes,
-    conditionalDisturbanceOptions,
-    conditionalCommodityOptions,
-    onSubmit,
-    title
-  ) {
+  openModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineStatusOptions,
-        mineRegionOptions,
-        mineTenureTypes,
-        conditionalDisturbanceOptions,
-        conditionalCommodityOptions,
         onSubmit,
         title,
       },
@@ -363,16 +344,7 @@ export class Dashboard extends Component {
               className="full-mobile"
               type="primary"
               handleAction={(event) =>
-                this.openModal(
-                  event,
-                  this.props.mineStatusOptions,
-                  this.props.mineRegionOptions,
-                  this.props.mineTenureTypes,
-                  this.props.conditionalDisturbanceOptions,
-                  this.props.conditionalCommodityOptions,
-                  this.handleSubmit,
-                  ModalContent.CREATE_MINE_RECORD
-                )
+                this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
               }
               string={ModalContent.CREATE_MINE_RECORD}
             />
@@ -388,14 +360,9 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineIds: getMineIds(state),
   pageData: getMinesPageData(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  conditionalCommodityOptions: getConditionalCommodityOptions(state),
-  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

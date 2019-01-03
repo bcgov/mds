@@ -11,6 +11,16 @@ import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { getCurrentMineTypes } from "@/selectors/mineSelectors";
+import {
+  getConditionalDisturbanceOptionsHash,
+  getConditionalCommodityOptions,
+  getDisturbanceOptionHash,
+  getCommodityOptionHash,
+  getMineStatusOptions,
+  getMineRegionOptions,
+  getMineTenureTypes,
+  getMineTenureTypesHash,
+} from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -21,6 +31,8 @@ const propTypes = {
   mineStatusOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
+  mineCommodityOptionsHash: PropTypes.object,
+  mineDisturbanceOptionsHash: PropTypes.object,
   mine_types: PropTypes.array,
   mineTenureHash: PropTypes.object,
   conditionalDisturbanceOptions: PropTypes.object.isRequired,
@@ -73,7 +85,9 @@ export class MineRecordForm extends Component {
       );
       const diff = _.difference(prevTenure, nextTenure);
       this.setState((prevState) => ({
-        usedTenureTypes: prevState.usedTenureTypes.filter((tenureTypes) => tenureTypes !== diff[0]),
+        usedTenureTypes: prevState.usedTenureTypes.filter(
+          (tenureTypes) => !diff.includes(tenureTypes)
+        ),
       }));
     }
     // Do nothing if no mine_types, or no change to mine_types
@@ -356,40 +370,6 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Form.Item label="Mine Type" />
-        {/* <Collapse>
-          {this.props.currentMineTypes &&
-            this.props.currentMineTypes.map((type) => (
-              <Collapse.Panel
-                header={this.createExistingPanelHeader(type.mine_tenure_type_code)}
-                key={type.mine_tenure_type_code}
-              >
-                <div key={type.mine_tenure_type_code}>
-                  <div className="inline-flex">
-                    <Form.Item label="Commodity" />
-                    <div>
-                      {type.mine_commodity_code &&
-                        type.mine_commodity_code.map((code) => (
-                          <Tag>{this.props.mineCommodityOptionsHash[code]}</Tag>
-                        ))}
-                      {type.mine_commodity_code.length === 0 && <span>{Strings.EMPTY_FIELD}</span>}
-                    </div>
-                  </div>
-                  <div className="inline-flex">
-                    <Form.Item label="Disturbance" />
-                    <div>
-                      {type.mine_disturbance_code &&
-                        type.mine_disturbance_code.map((code) => (
-                          <Tag>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
-                        ))}
-                      {type.mine_disturbance_code.length === 0 && (
-                        <span>{Strings.EMPTY_FIELD}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Collapse.Panel>
-            ))}
-        </Collapse> */}
         <FieldArray name="mine_types" component={renderTypeSelect} />
         <Row gutter={16}>
           <Col>
@@ -444,6 +424,14 @@ export default compose(
   connect((state) => ({
     mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
     currentMineTypes: getCurrentMineTypes(state),
+    mineStatusOptions: getMineStatusOptions(state),
+    mineRegionOptions: getMineRegionOptions(state),
+    mineTenureHash: getMineTenureTypesHash(state),
+    mineCommodityOptionsHash: getCommodityOptionHash(state),
+    mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+    mineTenureTypes: getMineTenureTypes(state),
+    conditionalCommodityOptions: getConditionalCommodityOptions(state),
+    conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,

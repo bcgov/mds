@@ -25,14 +25,10 @@ import {
 } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
   getMineTenureTypesHash,
   getMineTenureTypes,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-  getConditionalDisturbanceOptionsHash,
-  getConditionalCommodityOptions,
 } from "@/selectors/staticContentSelectors";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -172,16 +168,12 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   permittees: getCurrentPermittees(state),
   permitteeIds: getCurrentPermitteeIds(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
-  conditionalCommodityOptions: getConditionalCommodityOptions(state),
-  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

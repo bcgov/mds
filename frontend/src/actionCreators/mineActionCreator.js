@@ -9,7 +9,7 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-const submitMineDetails = (type) => ({ data: { mine_type_guid } }) => {
+const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
   const create = (codeType) =>
     type[codeType].length > 0
       ? type[codeType].map((code) =>
@@ -50,7 +50,7 @@ const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
               },
               createRequestHeader()
             )
-            .then(submitMineDetails(type))
+            .then(submitMineTypeDetails(type))
             .catch(handleError(dispatch, reducer))
         : response
     );

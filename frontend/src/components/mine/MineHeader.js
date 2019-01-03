@@ -116,21 +116,7 @@ class MineHeader extends Component {
     });
   }
 
-  openModal(
-    event,
-    mineStatusOptions,
-    mineRegionOptions,
-    mineTenureTypes,
-    onSubmit,
-    handleDelete,
-    conditionalCommodityOptions,
-    conditionalDisturbanceOptions,
-    mineTenureHash,
-    mineDisturbanceOptionsHash,
-    mineCommodityOptionsHash,
-    title,
-    mine
-  ) {
+  openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
     const initialValues = {
       name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
@@ -143,16 +129,8 @@ class MineHeader extends Component {
 
     this.props.openModal({
       props: {
-        mineStatusOptions,
-        mineRegionOptions,
-        mineTenureTypes,
         onSubmit,
         handleDelete,
-        conditionalCommodityOptions,
-        conditionalDisturbanceOptions,
-        mineTenureHash,
-        mineDisturbanceOptionsHash,
-        mineCommodityOptionsHash,
         title,
         initialValues,
       },
@@ -171,16 +149,8 @@ class MineHeader extends Component {
             onClick={(event) =>
               this.openModal(
                 event,
-                this.props.mineStatusOptions,
-                this.props.mineRegionOptions,
-                this.props.mineTenureTypes,
                 this.handleUpdateMineRecord,
                 this.handleDeleteMineType,
-                this.props.conditionalCommodityOptions,
-                this.props.conditionalDisturbanceOptions,
-                this.props.mineTenureHash,
-                this.props.mineDisturbanceOptionsHash,
-                this.props.mineCommodityOptionsHash,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
               )
