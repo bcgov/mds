@@ -114,7 +114,7 @@ export class MineSearch extends Component {
               defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
               placeholder="Search for a mine using name, ID, or permit number"
               onChange={this.handleSearch}
-              suffix={<Icon type="search" style={{ color: "#537C52", fontSize: 20 }} />}
+              suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
             />
           </Col>
         </Row>
