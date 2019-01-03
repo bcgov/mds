@@ -23,12 +23,6 @@ make project
 NOTE: By default the above command uses Keycloak hosted on the OpenShift Platform.
 If you don't have a valid account to access that and would like to use a local keycloak server, refer to the local keycloak section below.
 
-- If you wish to know how long the make project is taking, run the following command:
-
-```
-time make project
-```
-
 - To shut down the project cleanly, run the following command.
 
 ```
@@ -40,18 +34,6 @@ make reset
 - Install Docker
 - Define .env files in frontend and backend folders
 - Install node.js 8 (https://nodejs.org/en/)
-- Install node-gyp from an elevated command prompt
-
-```
-npm install --global --production windows-build-tools
-```
-
-- Download GTK 2 and extract it to C:\GTK
-
-```
-http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip
-```
-
 - Run docker commands to build and run
 
 ```
