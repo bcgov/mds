@@ -22,16 +22,7 @@ export const DefaultContact = (props) => (
   <div>
     <div className="inline-flex between">
       <div>
-        <h4>
-          <Link
-            to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-              props.mine.guid,
-              props.partyRelationship.mine_party_appt_type_code
-            )}
-          >
-            {props.partyRelationshipTypeLabel}
-          </Link>
-        </h4>
+        <h4>{props.partyRelationshipTypeLabel}</h4>
         <p>
           <Icon type="clock-circle" />
           &nbsp;&nbsp;
@@ -42,6 +33,15 @@ export const DefaultContact = (props) => (
           {props.partyRelationship.end_date === "None"
             ? "Present"
             : props.partyRelationship.end_date}
+          <br />
+          <Link
+            to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+              props.mine.guid,
+              props.partyRelationship.mine_party_appt_type_code
+            )}
+          >
+            View History
+          </Link>
         </p>
         <br />
       </div>
@@ -77,9 +77,7 @@ export const DefaultContact = (props) => (
         </Popconfirm>
       </div>
     </div>
-    <Link to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}>
-      <h5 className="bold">{formatTitleString(props.partyRelationship.party.name)}</h5>
-    </Link>
+    <h5 className="bold">{formatTitleString(props.partyRelationship.party.name)}</h5>
     <p>
       <Icon type="mail" />
       &nbsp;&nbsp;
@@ -92,6 +90,10 @@ export const DefaultContact = (props) => (
       &nbsp;&nbsp;
       {props.partyRelationship.party.phone_no}{" "}
       {props.partyRelationship.party.phone_ext ? `x${props.partyRelationship.party.phone_ext}` : ""}
+      <br />
+      <Link to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}>
+        View Profile
+      </Link>
     </p>
     {props.otherDetails}
   </div>
