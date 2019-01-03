@@ -44,17 +44,19 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
+// if (cluster.isMaster) {
+//   console.log(`Master ${process.pid} is running`);
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+//   // Fork workers.
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
 
-  cluster.on("exit", (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-} else {
-  app.listen(port, "0.0.0.0", () => console.log(`Worker ${process.pid} started`));
-}
+//   cluster.on("exit", (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`);
+//   });
+// } else {
+//   app.listen(port, "0.0.0.0", () => console.log(`Worker ${process.pid} started`));
+// }
+
+app.listen(port, "0.0.0.0", () => console.log(`Worker ${process.pid} started`));
