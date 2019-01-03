@@ -8,6 +8,12 @@ from app.extensions import db
 class MineIdentity(AuditMixin, Base):
     __tablename__ = 'mine_identity'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_no = db.Column(db.String(10))
+    mine_name = db.Column(db.String(60), nullable=False)
+    mine_note = db.Column(db.String(300), default='')
+    major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
+    deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
+    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
     mine_detail = db.relationship(
         'MineDetail',
@@ -27,10 +33,7 @@ class MineIdentity(AuditMixin, Base):
         order_by='desc(MineLocation.update_timestamp)',
         lazy='joined')
     mine_permit = db.relationship(
-        'Permit',
-        backref='mine_identity',
-        order_by='desc(Permit.issue_date)',
-        lazy='joined')
+        'Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship(
         'MineStatus',
         backref='mine_identity',
@@ -39,8 +42,7 @@ class MineIdentity(AuditMixin, Base):
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine_identity',
-        order_by=
-        'desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
+        order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
         lazy='joined')
     mine_expected_documents = db.relationship(
         'MineExpectedDocument',
@@ -62,23 +64,42 @@ class MineIdentity(AuditMixin, Base):
         return {
             'guid':
             str(self.mine_guid),
+            'mine_name':
+            self.mine_name,
+            'mine_no':
+            self.mine_no,
+            'mine_note':
+            self.mine_note,
+            'major_mine_ind':
+            self.major_mine_ind,
+            'region_code':
+            self.mine_region,
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
-            'mineral_tenure_xref':
-            [item.json() for item in self.mineral_tenure_xref],
+            'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_expected_documents':
-            [item.json() for item in self.mine_expected_documents],
+            'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
             'mine_type': [item.json() for item in self.active(self.mine_type)]
         }
 
     def json_for_list(self):
         return {
-            'guid': str(self.mine_guid),
+            'guid':
+            str(self.mine_guid),
+            'mine_name':
+            self.mine_name,
+            'mine_no':
+            self.mine_no,
+            'mine_note':
+            self.mine_note,
+            'major_mine_ind':
+            self.major_mine_ind,
+            'region_code':
+            self.mine_region,
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
@@ -90,6 +111,11 @@ class MineIdentity(AuditMixin, Base):
     def json_for_map(self):
         return {
             'guid': str(self.mine_guid),
+            'mine_name': self.mine_name,
+            'mine_no': self.mine_no,
+            'mine_note': self.mine_note,
+            'major_mine_ind': self.major_mine_ind,
+            'region_code': self.mine_region,
             'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location]
         }
@@ -98,8 +124,8 @@ class MineIdentity(AuditMixin, Base):
         mine_detail = self.mine_detail[0] if self.mine_detail else None
         return {
             'guid': str(self.mine_guid),
-            'mine_name': mine_detail.mine_name if mine_detail else '',
-            'mine_no': mine_detail.mine_no if mine_detail else ''
+            'mine_name': self.mine_name if mine_detail else '',
+            'mine_no': 'mine_no': self.mine_no if mine_detail else ''
         }
 
     def json_by_location(self):
@@ -120,7 +146,6 @@ class MineIdentity(AuditMixin, Base):
     def active(records):
         return list(filter(lambda x: x.active_ind, records))
 
-
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -131,8 +156,7 @@ class MineIdentity(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.join(
-            cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
+        return cls.query.join(cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):
