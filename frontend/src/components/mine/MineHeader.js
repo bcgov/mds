@@ -149,7 +149,7 @@ class MineHeader extends Component {
               )
             }
           >
-            <img alt="pencil" style={{ padding: "5px" }} src={BRAND_PENCIL} />
+            <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
@@ -161,7 +161,7 @@ class MineHeader extends Component {
               this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
-            <img alt="document" style={{ padding: "5px" }} src={BRAND_DOCUMENT} />
+            <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
