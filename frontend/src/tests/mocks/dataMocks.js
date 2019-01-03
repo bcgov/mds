@@ -630,6 +630,13 @@ export const DISTURBANCE_OPTIONS = {
   ],
 };
 
+export const DISTURBANCE_OPTIONS_HASH = {
+  SUR: "Surface",
+  UND: "Underground",
+  CWA: "Coal Wash",
+  MIL: "Mill",
+};
+
 export const COMMODITY_OPTIONS = {
   options: [
     {
@@ -651,6 +658,20 @@ export const COMMODITY_OPTIONS = {
       mine_tenure_type_codes: ["BCL"],
     },
   ],
+};
+
+export const CONDITIONAL_COMMODITY_OPTIONS = {
+  BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
+  COL: [
+    { label: "Thermal Coal", value: "TO", exclusive: true },
+    { label: "Metallurgic", value: "MC", exclusive: true },
+  ],
+};
+
+export const COMMODITY_OPTIONS_HASH = {
+  TO: "Thermal Coal",
+  MC: "Metallurgic",
+  CG: "Construction Aggregate",
 };
 
 export const CONDITIONAL_DISTURBANCE_OPTIONS = {
@@ -680,3 +701,11 @@ export const COMPLIANCE = {
   warnings: 5,
   section_35_orders: 5,
 };
+
+export const MINE_TYPES = [
+  {
+    mine_tenure_type_code: [],
+    mine_commodity_code: [],
+    mine_disturbance_code: [],
+  },
+];

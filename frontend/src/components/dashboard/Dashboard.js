@@ -6,6 +6,7 @@ import { Pagination, Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
+import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -48,12 +49,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  mines: PropTypes.object.isRequired,
-  mineIds: PropTypes.array.isRequired,
-  pageData: PropTypes.object.isRequired,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pageData: CustomPropTypes.minePageData.isRequired,
 };
 
 export class Dashboard extends Component {
@@ -214,9 +212,11 @@ export class Dashboard extends Component {
   };
 
   openModal(event, onSubmit, title) {
+    const handleDelete = () => {};
     event.preventDefault();
     this.props.openModal({
       props: {
+        handleDelete,
         onSubmit,
         title,
       },

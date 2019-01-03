@@ -26,10 +26,10 @@ import {
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
-  getMineTenureTypes,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
@@ -47,22 +47,21 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func,
-  createTailingsStorageFacility: PropTypes.func,
+  updateMineRecord: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  mines: PropTypes.object,
-  mineIds: PropTypes.array,
-  permittees: PropTypes.object,
-  permitteesIds: PropTypes.array,
-  mineStatusOptions: PropTypes.array,
-  mineRegionOptions: PropTypes.array,
-  mineTenureTypes: PropTypes.array,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permittees: PropTypes.arrayOf(CustomPropTypes.permittee),
+  permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
-  mines: {},
+  permittees: {},
+  permitteesIds: [],
+  mineTenureHash: {},
 };
 
 export class MineDashboard extends Component {
@@ -170,7 +169,6 @@ const mapStateToProps = (state) => ({
   permitteeIds: getCurrentPermitteeIds(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),

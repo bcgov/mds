@@ -19,18 +19,11 @@ const propTypes = {
   removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  mineStatusOptions: CustomPropTypes.options.isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
   mine: CustomPropTypes.mine.isRequired,
-  mineRegionHash: PropTypes.object.isRequired,
-  mineTenureHash: PropTypes.object.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
-  mineDisturbanceOptionsHash: PropTypes.object.isRequired,
-  mineCommodityOptionsHash: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  // mine: {},
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 class MineHeader extends Component {
@@ -284,6 +277,5 @@ class MineHeader extends Component {
 }
 
 MineHeader.propTypes = propTypes;
-MineHeader.defaultProps = defaultProps;
 
 export default MineHeader;

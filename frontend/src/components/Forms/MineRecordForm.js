@@ -26,25 +26,26 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func,
+  handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatusOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
-  mineCommodityOptionsHash: PropTypes.object,
-  mineDisturbanceOptionsHash: PropTypes.object,
-  mine_types: PropTypes.array,
-  mineTenureHash: PropTypes.object,
-  conditionalDisturbanceOptions: PropTypes.object.isRequired,
-  conditionalCommodityOptions: PropTypes.object.isRequired,
-  initialValues: PropTypes.object,
-  currentMineTypes: PropTypes.object,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mine_types: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  conditionalDisturbanceOptions: PropTypes.objectOf(PropTypes.arrayOf(CustomPropTypes.option))
+    .isRequired,
+  conditionalCommodityOptions: PropTypes.objectOf(PropTypes.arrayOf(CustomPropTypes.option))
+    .isRequired,
+  currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
 };
 
 const defaultProps = {
   title: "",
+  currentMineTypes: [],
   mine_types: [],
-  initialValues: null,
 };
 
 export class MineRecordForm extends Component {

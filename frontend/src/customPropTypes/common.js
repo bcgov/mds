@@ -6,5 +6,3 @@ export const dropdownListItem = shape({
 });
 
 export const options = arrayOf(dropdownListItem);
-
-export const customHash = PropTypes.objectOf(PropTypes.string);
