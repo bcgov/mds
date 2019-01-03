@@ -18,8 +18,10 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         except requests.exceptions.Timeout:
             return self.create_error_payload(408, 'NRIS is down or unresponsive.'), 408
         except requests.exceptions.HTTPError as errhttp:
-            return self.create_error_payload(errhttp.response.status_code,
-                                    'NRIS error occurred.' + str(errhttp)), errhttp.response.status_code
+            return self.create_error_payload(
+                errhttp.response.status_code,
+                'An NRIS error has occurred and not data is available at this time. Please check again later. If the problem persists please contact your NRIS administrator.'
+            ), errhttp.response.status_code
         except TypeError as e:
             return self.create_error_payload(500, str(e)), 500
 
@@ -94,7 +96,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                     if one_year_ago < report_date:
                         advisories += len(stop_advisories)
                         warnings += len(stop_warnings)
-            
+
             # open_orders_list.sort(key=lambda o: o.get('due_date'))
 
             overview = {
