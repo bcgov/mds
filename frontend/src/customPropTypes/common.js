@@ -6,3 +6,9 @@ export const dropdownListItem = shape({
 });
 
 export const options = arrayOf(dropdownListItem);
+
+export const formMeta = shape({
+  touched: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  warning: PropTypes.string.isRequired,
+});

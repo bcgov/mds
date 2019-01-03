@@ -12,7 +12,7 @@ const propTypes = {
   input: PropTypes.any,
   placeholder: PropTypes.string,
   label: PropTypes.string,
-  meta: PropTypes.object,
+  meta: CustomPropTypes.formMeta,
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
 };
@@ -22,6 +22,7 @@ const defaultProps = {
   label: "",
   data: [],
   disabled: false,
+  meta: {},
 };
 
 const RenderSelect = (props) => (
