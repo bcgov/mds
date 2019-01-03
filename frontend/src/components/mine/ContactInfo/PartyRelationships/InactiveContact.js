@@ -14,7 +14,7 @@ export const InactiveContact = (props) => (
   <div>
     <div className="inline-flex between">
       <div>
-        <h4>{props.partyRelationshipTypeLabel}</h4>
+        <h2>{props.partyRelationshipTypeLabel}</h2>
         <p>
           <Icon type="clock-circle" />
           &nbsp;&nbsp;None Active

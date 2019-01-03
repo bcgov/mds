@@ -22,7 +22,7 @@ export const DefaultContact = (props) => (
   <div>
     <div className="inline-flex between">
       <div>
-        <h4>{props.partyRelationshipTypeLabel}</h4>
+        <h2>{props.partyRelationshipTypeLabel}</h2>
         <p>
           <Icon type="clock-circle" />
           &nbsp;&nbsp;
@@ -77,7 +77,7 @@ export const DefaultContact = (props) => (
         </Popconfirm>
       </div>
     </div>
-    <h5 className="bold">{formatTitleString(props.partyRelationship.party.name)}</h5>
+    <h3>{formatTitleString(props.partyRelationship.party.name)}</h3>
     <p>
       <Icon type="mail" />
       &nbsp;&nbsp;
