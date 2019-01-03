@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
-import _ from "lodash";
+import { difference, map, without } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -53,9 +53,7 @@ export class MineRecordForm extends Component {
   };
 
   componentDidMount() {
-    const existingMineTypes = this.props.currentMineTypes
-      ? this.props.currentMineTypes.map(({ mine_tenure_type_code }) => mine_tenure_type_code)
-      : [];
+    const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
     this.setState({ usedTenureTypes: existingMineTypes });
   }
 
@@ -76,23 +74,16 @@ export class MineRecordForm extends Component {
     };
     // when a currentMineType is deleted, update this.state.usedTenureTypes
     if (this.props.currentMineTypes && this.props.currentMineTypes !== nextProps.currentMineTypes) {
-      const prevTenure = this.props.currentMineTypes.map(
-        ({ mine_tenure_type_code }) => mine_tenure_type_code
-      );
-      const nextTenure = nextProps.currentMineTypes.map(
-        ({ mine_tenure_type_code }) => mine_tenure_type_code
-      );
-      const diff = _.difference(prevTenure, nextTenure);
+      const prevTenure = map(this.props.currentMineTypes, "mine_tenure_type_code");
+      const nextTenure = map(nextProps.currentMineTypes, "mine_tenure_type_code");
+      const diff = difference(prevTenure, nextTenure);
       this.setState((prevState) => ({
         usedTenureTypes: prevState.usedTenureTypes.filter(
           (tenureTypes) => !diff.includes(tenureTypes)
         ),
       }));
     }
-    // Do nothing if no mine_types, or no change to mine_types
-    if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
-      return;
-    }
+
     if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
       this.props.change(
         "mine_types",
@@ -117,17 +108,13 @@ export class MineRecordForm extends Component {
     fields.remove(index);
     const removedMineType = this.props.mine_types[index].mine_tenure_type_code;
     this.setState((prevState) => ({
-      usedTenureTypes: prevState.usedTenureTypes.filter(
-        (tenureTypes) => tenureTypes !== removedMineType
-      ),
+      usedTenureTypes: without(prevState.usedTenureTypes, removedMineType),
     }));
   };
 
   // addField allows users to create a max of 4 mine Types.
   addField = (event, fields) => {
-    const totalTypes = this.props.currentMineTypes
-      ? fields.length + this.props.currentMineTypes.length
-      : fields.length;
+    const totalTypes = fields.length + this.props.currentMineTypes.length;
     event.preventDefault();
     if (totalTypes === 4) {
       notification.error({
