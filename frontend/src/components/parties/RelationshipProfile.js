@@ -55,7 +55,8 @@ export class RelationshipProfile extends Component {
 
     const isLoaded =
       this.props.partyRelationshipTypes.length > 0 &&
-      (this.props.partyRelationships.length > 0 && mine);
+      this.props.partyRelationships.length > 0 &&
+      mine;
 
     if (isLoaded) {
       return (
