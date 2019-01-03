@@ -674,9 +674,10 @@ export const CONDITIONAL_DISTURBANCE_OPTIONS = {
 export const COMPLIANCE = {
   last_inspection: "2018-12-12 00:00",
   inspector: "test",
-  open_orders: 5,
-  overdue_orders: 5,
+  num_open_orders: 5,
+  num_overdue_orders: 5,
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
+  open_orders:[],
 };

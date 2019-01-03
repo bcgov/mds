@@ -28,7 +28,7 @@ def setup_info(test_client):
 
     expected_data = {
         'last_inspection': '2018-12-10 18:36',
-        'inspector': 'IDIR\\TEST',
+        'inspector': 'TEST',
         'num_open_orders': 3,
         'num_overdue_orders': 1,
         'advisories': 3,
@@ -38,7 +38,7 @@ def setup_info(test_client):
             'order_no': '162409-1',
             'code_violation': '1.1.2',
             'report_no': 162409,
-            'inspector': 'IDIR\\TEST',
+            'inspector': 'TEST',
             'due_date': date,
             'overdue': False,
 
@@ -46,7 +46,7 @@ def setup_info(test_client):
             'order_no': '162409-2',
             'code_violation': '2.4.2',
             'report_no': 162409,
-            'inspector': 'IDIR\\TEST',
+            'inspector': 'TEST',
             'due_date': date,
             'overdue': False,
 
@@ -54,7 +54,7 @@ def setup_info(test_client):
             'order_no': '100018-1',
             'code_violation': 'C.8 (a) (i)',
             'report_no': 100018,
-            'inspector': 'IDIR\\TEST',
+            'inspector': 'TEST',
             'due_date': '2018-12-10 13:52',
             'overdue': True,
 
