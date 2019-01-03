@@ -20,7 +20,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         except requests.exceptions.HTTPError as errhttp:
             return self.create_error_payload(
                 errhttp.response.status_code,
-                'An NRIS error has occurred and not data is available at this time. Please check again later. If the problem persists please contact your NRIS administrator.'
+                'An NRIS error has occurred and no data is available at this time. Please check again later. If the problem persists please contact your NRIS administrator.'
             ), errhttp.response.status_code
         except TypeError as e:
             return self.create_error_payload(500, str(e)), 500
