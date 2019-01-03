@@ -7,6 +7,5 @@
 location ${PATH_PREFIX}/ {
         proxy_pass ${FRONTEND_SERVICE_URL}${PATH_PREFIX}/;
         proxy_buffering    off;
-        add_header   Pragma "no-cache";
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
