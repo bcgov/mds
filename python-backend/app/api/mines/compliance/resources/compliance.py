@@ -97,8 +97,6 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                         advisories += len(stop_advisories)
                         warnings += len(stop_warnings)
 
-            # open_orders_list.sort(key=lambda o: o.get('due_date'))
-
             overview = {
                 'last_inspection': most_recent.get('assessmentDate'),
                 'inspector': inspector,

@@ -25,8 +25,7 @@ def get_NRIS_token():
         resp = requests.get(
             url=url,
             params=params,
-            auth=(current_app.config['NRIS_USER_NAME'],
-                current_app.config['NRIS_PASS']))
+            auth=(current_app.config['NRIS_USER_NAME'], current_app.config['NRIS_PASS']))
         try:
             resp.raise_for_status()
         except:
@@ -36,7 +35,6 @@ def get_NRIS_token():
             return None
 
         return resp.json().get('access_token')
-    
 
 
 def get_EMPR_data_from_NRIS(mine_no):
@@ -50,7 +48,7 @@ def get_EMPR_data_from_NRIS(mine_no):
 
     if token is None:
         return None
-    
+
     url = current_app.config['NRIS_INSPECTION_URL']
 
     if url is None:
@@ -58,20 +56,15 @@ def get_EMPR_data_from_NRIS(mine_no):
     else:
         #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
         params = {
-            'inspectionStartDate':
-            '2018-01-01',
-            'inspectionEndDate':
-            f'{current_date.year}-{current_date.month}-{current_date.day}',
-            'mineNumber':
-            mine_no,
+            'inspectionStartDate': '2018-01-01',
+            'inspectionEndDate': f'{current_date.year}-{current_date.month}-{current_date.day}',
+            'mineNumber': mine_no,
         }
 
         headers = {'Authorization': 'Bearer ' + token}
         try:
             empr_nris_resp = requests.get(
-                url=current_app.config['NRIS_INSPECTION_URL'],
-                params=params,
-                headers=headers)
+                url=current_app.config['NRIS_INSPECTION_URL'], params=params, headers=headers)
         except requests.exceptions.Timeout:
             raise
 

@@ -78,7 +78,7 @@ export class MineComplianceInfo extends Component {
               <div key={order.order_no}>
                 <Row gutter={16} justify="center" align="top">
                   <Col span={2}>
-                    {order.overdue && order.due_date != null ? (
+                    {order.overdue && order.due_date !== null ? (
                       <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                     ) : (
                       ""
