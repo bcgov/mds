@@ -9,7 +9,6 @@
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
     "babel-polyfill": "^6.26.0",
-    "cors": "^2.8.5",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "filepond": "^3.5.0",
