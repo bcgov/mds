@@ -1,9 +1,6 @@
 const express = require("express");
-const cluster = require("cluster");
 const cacheControl = require("express-cache-controller");
-const fs = require("fs");
 const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
-const numCPUs = require("os").cpus().length;
 
 let BASE_PATH = process.env.BASE_PATH;
 if (dotenv.parsed) {
@@ -44,19 +41,4 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-// if (cluster.isMaster) {
-//   console.log(`Master ${process.pid} is running`);
-
-//   // Fork workers.
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork();
-//   }
-
-//   cluster.on("exit", (worker, code, signal) => {
-//     console.log(`worker ${worker.process.pid} died`);
-//   });
-// } else {
-//   app.listen(port, "0.0.0.0", () => console.log(`Worker ${process.pid} started`));
-// }
-
-app.listen(port, "0.0.0.0", () => console.log(`Worker ${process.pid} started`));
+app.listen(port, "0.0.0.0", () => console.log("Server running"));
