@@ -9,18 +9,10 @@ if (dotenv.parsed) {
 
 const app = express();
 const port = 3000;
-const commonHeaders = {
-  "Cache-Control": "private, no-cache, no-store",
-  Expires: 0,
-  "X-XSS-Protection": 1,
-};
 
 const staticServe = express.static(`${__dirname}/build`, {
   immutable: true,
   maxAge: "1y",
-  setHeaders: function(res, path, stat) {
-    res.set(commonHeaders);
-  },
 });
 
 const serveGzipped = (contentType) => (req, res, next) => {
