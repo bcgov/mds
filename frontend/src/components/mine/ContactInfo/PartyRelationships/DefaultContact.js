@@ -15,6 +15,7 @@ const propTypes = {
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
+  otherDetails: PropTypes.object,
 };
 
 export const DefaultContact = (props) => (
@@ -83,6 +84,7 @@ export const DefaultContact = (props) => (
       {props.partyRelationship.party.phone_no}{" "}
       {props.partyRelationship.party.phone_ext ? `x${props.partyRelationship.party.phone_ext}` : ""}
     </p>
+    {props.otherDetails}
   </div>
 );
 

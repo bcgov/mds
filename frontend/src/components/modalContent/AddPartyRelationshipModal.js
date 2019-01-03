@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Radio } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
@@ -18,13 +19,30 @@ const propTypes = {
 };
 
 export class AddPartyRelationshipModal extends Component {
+  state = { isPerson: true };
+
+  togglePartyChange = (value) => {
+    this.setState({ isPerson: value.target.value });
+  };
+
+  handlePartySubmit = (values) => {
+    const type = this.state.isPerson ? "PER" : "ORG";
+    this.props.onPartySubmit(values, type);
+  };
+
   render() {
     return (
       <div>
         <AddPartyRelationshipForm {...this.props} />
         <br />
-        <p className="center">{ModalContent.PERSON_NOT_FOUND}</p>
-        <AddPartyForm onSubmit={this.props.onPartySubmit} isPerson />
+        <p className="center">{ModalContent.PARTY_NOT_FOUND}</p>
+        <div className="center">
+          <Radio.Group defaultValue size="large" onChange={this.togglePartyChange}>
+            <Radio.Button value>Person</Radio.Button>
+            <Radio.Button value={false}>Company</Radio.Button>
+          </Radio.Group>
+          <AddPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
+        </div>
       </div>
     );
   }

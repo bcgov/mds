@@ -9,6 +9,7 @@ import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
+import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
 import NullScreen from "@/components/common/NullScreen";
 
 import {
@@ -73,8 +74,8 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  onPartySubmit = (values) => {
-    this.props.handlePartySubmit(values, ModalContent.PERSON);
+  onPartySubmit = (values, type) => {
+    this.props.handlePartySubmit(values, type);
   };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
@@ -174,6 +175,18 @@ export class ViewPartyRelationships extends Component {
       case "EOR":
         return (
           <EngineerOfRecord
+            partyRelationship={partyRelationship}
+            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            handleChange={this.props.handleChange}
+            mine={this.props.mine}
+            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.removePartyRelationship}
+          />
+        );
+      case "PMT":
+        return (
+          <Permittee
             partyRelationship={partyRelationship}
             partyRelationshipTypeLabel={partyRelationshipTypeLabel}
             handleChange={this.props.handleChange}

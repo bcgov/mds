@@ -7,7 +7,7 @@ import { Tabs, Row, Col, Divider, Icon } from "antd";
 import {
   fetchPartyById,
   fetchPartyRelationshipTypes,
-  fetchPartyRelationshipsByPartyId,
+  fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import {
   getParties,
@@ -20,7 +20,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { formatTitleString } from "@/utils/helpers";
 
 /**
- * @class PartyProfile - profile view for personnel/companies
+ * @class RelationshipProfile - profile view for party relationship types
  */
 
 const TabPane = Tabs.TabPane;
@@ -28,7 +28,7 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchPartyRelationshipsByPartyId: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
@@ -39,37 +39,26 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-export class PartyProfile extends Component {
+export class RelationshipProfile extends Component {
   componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationshipsByPartyId(id);
+    const { id, typeCode } = this.props.match.params;
+    // this.props.fetchPartyById(typeCode);
     this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationships(id, null, typeCode);
   }
 
   render() {
-    const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
-    if (parties) {
+    const { typeCode } = this.props.match.params;
+    // const parties = this.props.parties[typeCode];
+    if (this.props.partyRelationships) {
       return (
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1 className="bold">{formatTitleString(parties.name)}</h1>
+              <h1 className="bold" />
             </div>
             <div className="inline-flex between">
-              <div className="inline-flex">
-                <p>
-                  <Icon type="mail" />
-                  &nbsp;&nbsp;
-                  <a href={`mailto:${parties.email}`}>{parties.email}</a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <br />
-                  <Icon type="phone" />
-                  &nbsp;&nbsp;
-                  {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
-                </p>
-              </div>
+              <div className="inline-flex" />
             </div>
           </div>
           <div className="profile__content">
@@ -158,15 +147,15 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPartyById,
       fetchPartyRelationshipTypes,
-      fetchPartyRelationshipsByPartyId,
+      fetchPartyRelationships,
     },
     dispatch
   );
 
-PartyProfile.propTypes = propTypes;
-PartyProfile.defaultProps = defaultProps;
+RelationshipProfile.propTypes = propTypes;
+RelationshipProfile.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PartyProfile);
+)(RelationshipProfile);

@@ -23,11 +23,11 @@ const columns = [
     dataIndex: "status",
     key: "status",
   },
-  {
+  /*   {
     title: "Permittee",
     dataIndex: "permittee",
     key: "permittee",
-  },
+  }, */
   {
     title: "Authorization End Date",
     dataIndex: "authorizationEndDate",
@@ -49,7 +49,7 @@ const columns = [
 const childColumns = [
   { title: "Permit No.", dataIndex: "permitNo", key: "childPermitNo" },
   { title: "Date Issued", dataIndex: "issueDate", key: "issueDate" },
-  { title: "Permittee", dataIndex: "permittee", key: "childPermittee" },
+  // { title: "Permittee", dataIndex: "permittee", key: "childPermittee" },
   { title: "Description", dataIndex: "description", key: "description" },
 ];
 
@@ -68,18 +68,23 @@ const transformRowData = (permits) => {
     lastAmended: formatDate(latest.issue_date),
     permitNo: latest.permit_no || Strings.EMPTY_FIELD,
     firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
-    permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : Strings.EMPTY_FIELD,
+    // permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : Strings.EMPTY_FIELD,
     authorizationEndDate: latest.expiry_date ? formatDate(latest.expiry_date) : Strings.EMPTY_FIELD,
     amendmentHistory: permits.slice(1),
     status: Strings.EMPTY_FIELD,
   };
 };
 
-const transformChildRowData = ({ permit_guid, permit_no, issue_date, permittee }) => ({
+const transformChildRowData = ({
+  permit_guid,
+  permit_no,
+  issue_date,
+  // , permittee
+}) => ({
   key: permit_guid,
   permitNo: permit_no,
   issueDate: formatDate(issue_date),
-  permittee: permittee[0] ? permittee[0].party.party_name : Strings.EMPTY_FIELD,
+  // permittee: permittee[0] ? permittee[0].party.party_name : Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
 });
 

@@ -175,6 +175,33 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     });
 };
 
+export const fetchPartyRelationships = (mineId, partyId, typeCode) => (dispatch) => {
+  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${
+        mineId ? `mine_guid=${mineId}${partyId || typeCode ? "&" : ""}` : ""
+      }${partyId ? `party_guid=${partyId}${typeCode ? "&" : ""}` : ""}${
+        typeCode ? `mine_party_appt_type_code=${typeCode}` : ""
+      }`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(partyActions.storePartyRelationships(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
 export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading("modal"));
@@ -204,6 +231,29 @@ export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
   return axios
     .get(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?party_guid=${partyId}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(partyActions.storePartyRelationships(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
+  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_party_appt_type_code=${typeCode}`,
       createRequestHeader()
     )
     .then((response) => {

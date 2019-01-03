@@ -228,7 +228,7 @@ export class MineTailingsInfo extends Component {
                 Date.parse(doc.due_date) < new Date() &&
                 (doc.exp_document_status_guid === "None" ||
                   (this.props.expectedDocumentStatusOptions[0] &&
-                    doc.exp_document_Status_guid ===
+                    doc.exp_document_status_guid ===
                       this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
