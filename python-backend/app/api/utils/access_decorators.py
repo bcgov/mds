@@ -12,8 +12,7 @@ def role_decorator(func, role):
     def wrapper(*args, **kwds):
         return jwt.requires_roles([role])(func)(*args, **kwds)
 
-    wrapper.required_roles = [role]
-    if func.required_roles:
-        wrapper.required_roles.extend(func.required_roles)
+    wrapper.required_roles = getattr(func, "required_roles", [])
+    wrapper.required_roles.append(role)
 
     return wrapper
