@@ -8,7 +8,6 @@ from sqlalchemy_filters import apply_sort, apply_pagination
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_identity import MineIdentity
-from ..models.mine_detail import MineDetail
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation

@@ -5,16 +5,27 @@ import string
 import names
 
 from datetime import datetime
-from ..mines.mine.models.mine_detail import MineDetail
+from ..mines.mine.models.mine_identity import MineIdentity
 
 VOWELS = "aeiou"
 CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))
-RANDOM_CENTERS = [
-    {'latitude': 51.283958, 'longitude': -120.608253, 'radius_in_m': 221000},
-    {'latitude': 54.124806, 'longitude': -124.155545, 'radius_in_m': 221000},
-    {'latitude': 57.810546, 'longitude': -128.198514, 'radius_in_m': 221000},
-    {'latitude': 57.810546, 'longitude': -123.891873, 'radius_in_m': 221000}
-]
+RANDOM_CENTERS = [{
+    'latitude': 51.283958,
+    'longitude': -120.608253,
+    'radius_in_m': 221000
+}, {
+    'latitude': 54.124806,
+    'longitude': -124.155545,
+    'radius_in_m': 221000
+}, {
+    'latitude': 57.810546,
+    'longitude': -128.198514,
+    'radius_in_m': 221000
+}, {
+    'latitude': 57.810546,
+    'longitude': -123.891873,
+    'radius_in_m': 221000
+}]
 
 
 def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
@@ -28,7 +39,7 @@ def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
 
 def generate_mine_no():
     mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
-    while MineDetail.find_by_mine_no(mine_no):
+    while MineIdentity.find_by_mine_no(mine_no):
         mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
     return mine_no
 
@@ -54,10 +65,8 @@ def random_geo():
     x = w * math.cos(t)
     y = w * math.sin(t)
 
-    return {
-        'latitude': y + y0,
-        'longitude': x + x0
-    }
+    return {'latitude': y + y0, 'longitude': x + x0}
+
 
 def random_date():
     random_year = random.randint(1970, 2017)
@@ -68,11 +77,12 @@ def random_date():
 
 
 def random_region():
-    mine_region_code = ['SW','SC','NW','NE','SE']
+    mine_region_code = ['SW', 'SC', 'NW', 'NE', 'SE']
     random_region = random.choice(mine_region_code)
     return random_region
 
+
 def random_mine_category():
-    major_mine = [True,False]
+    major_mine = [True, False]
     random_category = random.choice(major_mine)
     return random_category

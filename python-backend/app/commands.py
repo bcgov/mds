@@ -12,7 +12,6 @@ from .api.mines.mine.models.mine_type import MineType
 from .api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON,
                             MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS)
 from .api.mines.mine.models.mine_identity import MineIdentity
-from .api.mines.mine.models.mine_detail import MineDetail
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party

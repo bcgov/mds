@@ -15,11 +15,6 @@ class MineIdentity(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
-    mine_detail = db.relationship(
-        'MineDetail',
-        backref='mine_identity',
-        order_by='desc(MineDetail.update_timestamp)',
-        lazy='joined')
     mgr_appointment = db.relationship(
         'MgrAppointment',
         backref='mine_identity',
@@ -76,7 +71,6 @@ class MineIdentity(AuditMixin, Base):
             self.mine_region,
             'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
-            'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
@@ -100,7 +94,6 @@ class MineIdentity(AuditMixin, Base):
             self.major_mine_ind,
             'region_code':
             self.mine_region,
-            'mine_detail': [item.json() for item in self.mine_detail],
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
@@ -116,7 +109,6 @@ class MineIdentity(AuditMixin, Base):
             'mine_note': self.mine_note,
             'major_mine_ind': self.major_mine_ind,
             'region_code': self.mine_region,
-            'mine_detail': [item.json() for item in self.mine_detail],
             'mine_location': [item.json() for item in self.mine_location]
         }
 
@@ -151,7 +143,7 @@ class MineIdentity(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.join(cls.mine_detail, aliased=True).filter_by(mine_no=_id).first()
+        return cls.query.filter_by(mine_no=_id).first()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

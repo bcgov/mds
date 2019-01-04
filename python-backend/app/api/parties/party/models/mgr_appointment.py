@@ -20,7 +20,8 @@ class MgrAppointment(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
@@ -28,7 +29,7 @@ class MgrAppointment(AuditMixin, Base):
     def json(self):
         party = Party.find_by_party_guid(str(self.party_guid))
         mine = MineIdentity.find_by_mine_guid(str(self.mine_guid))
-        mine_name = mine.mine_detail[0].mine_name
+        mine_name = mine.mine_name
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),
