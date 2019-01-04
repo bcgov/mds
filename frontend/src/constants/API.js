@@ -2,6 +2,7 @@
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
+export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/parties");
 export const MANAGER = "/parties/managers";
@@ -18,7 +19,8 @@ export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
 export const REMOVE_EXPECTED_DOCUMENT = "/documents/expected";
 export const ADD_MINE_EXPECTED_DOCUMENT = "/documents/expected/mines";
-export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) => `/documents/expected/${expectedDocumentGuid}/document`;
+export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
+  `/documents/expected/${expectedDocumentGuid}/document`;
 export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=MINE_TAILINGS";
 export const EXPECTED_DOCUMENT = "/documents/expected";

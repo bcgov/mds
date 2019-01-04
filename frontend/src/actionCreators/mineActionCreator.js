@@ -279,3 +279,27 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
+  return axios
+    .post(
+      ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST,
+      { mine_guids: mine_guids },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_BASIC_INFO_LIST));
+      dispatch(mineActions.storeMineBasicInfoList(response.data));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINE_BASIC_INFO_LIST));
+      dispatch(hideLoading());
+    });
+};

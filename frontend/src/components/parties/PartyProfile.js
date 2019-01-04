@@ -9,11 +9,13 @@ import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationshipsByPartyId,
 } from "@/actionCreators/partiesActionCreator";
+import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
 import {
   getParties,
   getPartyRelationshipTypesList,
   getPartyRelationships,
 } from "@/selectors/partiesSelectors";
+import { getMineBasicInfoList } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -29,21 +31,27 @@ const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationshipsByPartyId: PropTypes.func.isRequired,
+  fetchMineBasicInfoList: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  mineBasicInfoList: PropTypes.array,
   match: PropTypes.object,
 };
 
 const defaultProps = {
   partyRelationships: [],
+  mineBasicInfoList: [],
 };
 
 export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationshipsByPartyId(id);
+    this.props.fetchPartyRelationshipsByPartyId(id).then(() => {
+      const mine_guids = new Set(this.props.partyRelationships.map((a) => a.mine_guid));
+      this.props.fetchMineBasicInfoList([...mine_guids]);
+    });
     this.props.fetchPartyRelationshipTypes();
   }
 
@@ -98,13 +106,11 @@ export class PartyProfile extends Component {
                   <div>
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={8}>
-                        <Link
-                          to={router.MINE_SUMMARY.dynamicRoute(
-                            partyRelationship.mine_guid,
-                            "contact-information"
-                          )}
-                        >
-                          {partyRelationship.mine_guid}
+                        <Link to={router.MINE_SUMMARY.dynamicRoute(partyRelationship.mine_guid)}>
+                          {this.props.mineBasicInfoList.length > 0 &&
+                            this.props.mineBasicInfoList.find(
+                              (a) => a.guid === partyRelationship.mine_guid
+                            ).mine_detail[0].mine_name}
                         </Link>
                       </Col>
                       <Col span={8}>
@@ -161,6 +167,7 @@ const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypes: getPartyRelationshipTypesList(state),
   partyRelationships: getPartyRelationships(state),
+  mineBasicInfoList: getMineBasicInfoList(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -169,6 +176,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyById,
       fetchPartyRelationshipTypes,
       fetchPartyRelationshipsByPartyId,
+      fetchMineBasicInfoList,
     },
     dispatch
   );
