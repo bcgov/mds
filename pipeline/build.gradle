@@ -62,6 +62,20 @@ task('cd-deploy', type: JavaExec) {
     workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
 }
 
+task('cd-merge', type: JavaExec) {
+    description 'Run Merge Groovy script'
+
+    // Set main property to name of Groovy script class.
+    main = 'Merge'
+
+    // Set classpath for running the Groovy script.
+    classpath = sourceSets.main.runtimeClasspath
+
+    args project.getScriptArgs()
+
+    workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
+}
+
 task('cd-zap', type: JavaExec) {
     description 'Run ZAP Groovy script'
 
