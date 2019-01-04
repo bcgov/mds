@@ -17,7 +17,6 @@ cli.with {
     h(longOpt: 'help', 'Show usage information')
     c(longOpt: 'config', args: 1, argName: 'Pipeline config file', 'Pipeline config file', required: true)
     e(longOpt: 'env', args: 1, argName: 'Target environment name', 'Target environment name', required: true)
-    b(longOpt: 'branch', args: 1, argName: 'Current branch name', 'Current branch name', required: true)
     _(longOpt: 'pr', args: 1, argName: 'Pull Request Number', 'GitHub Pull Request #', required: true)
 }
 
@@ -36,8 +35,8 @@ if (opt?.h) {
     return 0
 }
 
-def config = OpenShiftHelper.loadBuildConfig(opt)
+def config = OpenShiftHelper.loadDeploymentConfig(opt)
 println config
 
-GHRepository repo=getGitHubRepository(repositoryUrl)
+GHRepository repo=GitHubRepositoryName.create("https://github.com/bcgov/mds.git").resolveOne()
 println repo
