@@ -75,7 +75,6 @@ Follow the `.env-example` template to create an `.env` file with valid values be
 A. OS Level Installation
 
 - [Node.js 8](https://nodejs.org/en/download/)
-- [Canvas](https://www.npmjs.com/package/canvas)
 
 1. Install package dependencies
 

@@ -16,10 +16,14 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         try:
             data = NRIS_service.get_EMPR_data_from_NRIS(mine_no)
         except requests.exceptions.Timeout:
-            return self.raise_error(408, 'NRIS is down or unresponsive.')
+            return self.create_error_payload(408, 'NRIS is down or unresponsive.'), 408
         except requests.exceptions.HTTPError as errhttp:
-            return self.raise_error(errhttp.response.status_code,
-                                    'NRIS error occurred.' + str(errhttp))
+            return self.create_error_payload(
+                errhttp.response.status_code,
+                'An NRIS error has occurred and no data is available at this time. Please check again later. If the problem persists please contact your NRIS administrator.'
+            ), errhttp.response.status_code
+        except TypeError as e:
+            return self.create_error_payload(500, str(e)), 500
 
         if len(data) == 0:
             return None
@@ -41,6 +45,8 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             for report in data:
                 report_date = self.get_datetime_from_NRIS_data(report.get('assessmentDate'))
                 one_year_ago = datetime.now() - relativedelta(years=1)
+
+                prefix, inspector = report.get('assessor').split('\\')
 
                 inspection = report.get('inspection')
                 stops = inspection.get('stops')
@@ -66,9 +72,9 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
                             order_to_add = {
                                 'order_no': f'{report.get("assessmentId")}-{order_count}',
-                                'code_viloation': section,
+                                'violation': section,
                                 'report_no': report.get('assessmentId'),
-                                'inspector': report.get('assessor'),
+                                'inspector': inspector,
                                 'due_date': order.get('orderCompletionDate'),
                                 'overdue': False,
                             }
@@ -93,7 +99,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
 
             overview = {
                 'last_inspection': most_recent.get('assessmentDate'),
-                'inspector': most_recent.get('assessor'),
+                'inspector': inspector,
                 'num_open_orders': num_open_orders,
                 'num_overdue_orders': num_overdue_orders,
                 'advisories': advisories,

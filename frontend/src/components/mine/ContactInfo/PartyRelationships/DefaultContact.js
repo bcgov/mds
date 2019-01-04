@@ -46,7 +46,7 @@ export const DefaultContact = (props) => (
             )
           }
         >
-          <img style={{ padding: "5px" }} src={BRAND_PENCIL} />
+          <img className="padding-small" src={BRAND_PENCIL} />
         </Button>
         <Popconfirm
           key={`${props.partyRelationship.mine_party_appt_guid}_delete`}
