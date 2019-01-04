@@ -9,12 +9,22 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
   dispatchProps.closeModal = jest.fn();
+  dispatchProps.handleDelete = jest.fn();
+  dispatchProps.change = jest.fn();
 };
 
 const setupProps = () => {
   props.title = "mockTitle";
   props.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   props.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  props.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  props.mineCommodityOptionsHash = MOCK.COMMODITY_OPTIONS_HASH;
+  props.mineDisturbanceOptionsHash = MOCK.DISTURBANCE_OPTIONS_HASH;
+  props.mine_types = MOCK.MINE_TYPES;
+  props.mineTenureHash = MOCK.TENURE_HASH;
+  props.conditionalDisturbanceOptions = MOCK.CONDITIONAL_DISTURBANCE_OPTIONS;
+  props.conditionalCommodityOptions = MOCK.CONDITIONAL_COMMODITY_OPTIONS.options;
+  props.currentMineTypes = MOCK.MINE_TYPES;
 };
 
 beforeEach(() => {
