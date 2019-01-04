@@ -1,7 +1,6 @@
 const express = require("express");
-const fs = require("fs");
+const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
-const cors = require("cors");
 
 let BASE_PATH = process.env.BASE_PATH;
 if (dotenv.parsed) {
@@ -9,44 +8,20 @@ if (dotenv.parsed) {
 }
 
 const app = express();
-app.use(cors());
+app.use(
+  cacheControl({
+    noStore: true,
+    private: true,
+  })
+);
 const port = 3000;
-const commonHeaders = {
-  "Cache-Control": "private, no-cache, no-store",
-  Pragma: "no-cache",
-  Expires: 0,
-  "X-XSS-Protection": 1,
-};
 
 const staticServe = express.static(`${__dirname}/build`, {
   immutable: true,
   maxAge: "1y",
-  setHeaders: function(res, path, stat) {
-    res.set(commonHeaders);
-  },
 });
 
-const serveGzipped = (contentType) => (req, res, next) => {
-  const acceptedEncodings = req.acceptsEncodings();
-  if (acceptedEncodings.indexOf("gzip") === -1 || !fs.existsSync(`./build/${req.url}.gz`)) {
-    next();
-    return;
-  }
-
-  // update request's url
-  req.url = `${req.url}.gz`;
-
-  // set correct headers
-  res.set(commonHeaders);
-  res.set("Content-Encoding", "gzip");
-  res.set("Content-Type", contentType);
-
-  // let express.static take care of the updated request
-  next();
-};
-
 app.get(`${BASE_PATH}/env`, function(req, res) {
-  res.set(commonHeaders);
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
@@ -60,9 +35,6 @@ app.get(`${BASE_PATH}/env`, function(req, res) {
     keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW,
   });
 });
-
-app.get(`${BASE_PATH}/*.js`, serveGzipped("text/javascript"));
-app.get(`${BASE_PATH}/*.css`, serveGzipped("text/css"));
 
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}*`, staticServe);
