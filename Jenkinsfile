@@ -4,70 +4,81 @@ pipeline {
         disableResume()
     }
     stages {
-        stage('Build') {
+        // stage('Build') {
+        //     agent { label 'master' }
+        //     steps {
+        //         echo "Aborting all running jobs ..."
+        //         script {
+        //             abortAllPreviousBuildInProgress(currentBuild)
+        //         }
+        //         echo "Building ..."
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
+        //     }
+        // }
+        // stage('Deploy (DEV)') {
+        //     agent { label 'master' }
+        //     steps {
+        //         echo "Deploy (DEV) ..."
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+        //     }
+        // }
+        // stage('Unit Tests and SonarQube Reporting (DEV)') {
+        //     agent { label 'master' }
+        //     steps {
+        //         echo "Running unit tests and reporting them to SonarQube ..."
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
+        //     }
+        // }
+        // stage('Functional Test (DEV)') {
+        //     agent { label 'master' }
+        //     steps {
+        //         echo "Functional Test (DEV) ..."
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+        //     }
+        // }
+        // stage ('ZAP (DEV)'){
+        //     agent { label 'master' }
+        //     steps {
+        //         echo "ZAP (DEV)"
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-zap -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+        //     }
+        // }
+        // stage('Deploy (TEST)') {
+        //     agent { label 'master' }
+        //     when {
+        //       environment name: 'CHANGE_TARGET', value: 'master'
+        //     }
+        //     steps {
+        //         echo "Deploy (TEST)"
+        //         sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
+        //     }
+        // }
+        // stage('Deploy (PROD)') {
+        //     agent { label 'master' }
+        //     when {
+        //       environment name: 'CHANGE_TARGET', value: 'master'
+        //     }
+        //     steps {
+        //         script {
+        //             def IS_APPROVED = input(message: "Deploy to PROD?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Deploy to PROD?')])
+        //             if (IS_APPROVED != 'yes') {
+        //                 currentBuild.result = "ABORTED"
+        //                 error "User cancelled"
+        //             }
+        //             echo "Deploy (PROD)"
+        //             sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
+        //         }
+        //     }
+        // }
+        stage('Merge to master') {
             agent { label 'master' }
             steps {
-                echo "Aborting all running jobs ..."
-                script {
-                    abortAllPreviousBuildInProgress(currentBuild)
-                }
-                echo "Building ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID}'
-            }
-        }
-        stage('Deploy (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Deploy (DEV) ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
-        stage('Unit Tests and SonarQube Reporting (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Running unit tests and reporting them to SonarQube ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
-            }
-        }
-        stage('Functional Test (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Functional Test (DEV) ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
-        stage ('ZAP (DEV)'){
-            agent { label 'master' }
-            steps {
-                echo "ZAP (DEV)"
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-zap -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
-            }
-        }
-        stage('Deploy (TEST)') {
-            agent { label 'master' }
-            when {
-              environment name: 'CHANGE_TARGET', value: 'master'
-            }
-            steps {
-                echo "Deploy (TEST)"
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test'
-            }
-        }
-        stage('Deploy (PROD)') {
-            agent { label 'master' }
-            when {
-              environment name: 'CHANGE_TARGET', value: 'master'
-            }
-            steps {
-                script {
-                    def IS_APPROVED = input(message: "Deploy to PROD?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Deploy to PROD?')])
-                    if (IS_APPROVED != 'yes') {
-                        currentBuild.result = "ABORTED"
-                        error "User cancelled"
-                    }
-                    echo "Deploy (PROD)"
-                    sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
-                }
+                git url: "${GIT_URL}", credentialsId: "github-account", branch: "newMaster"
+                sh """
+                git fetch
+                git merge origin/newpr3
+                git push origin newMaster
+                """
             }
         }
         stage('Acceptance') {
