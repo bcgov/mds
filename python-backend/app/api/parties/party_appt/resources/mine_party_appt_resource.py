@@ -8,7 +8,8 @@ from sqlalchemy import or_
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
 from ....constants import PARTY_STATUS_CODE
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -28,7 +29,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             return MinePartyAppointment.find_by_mine_party_appt_guid(
@@ -47,7 +48,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             return self.create_error_payload(
@@ -76,7 +77,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             'mine_party_appt_guid':
             'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date]'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def put(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
             return self.create_error_payload(
@@ -99,7 +100,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         'mine_party_appt_guid':
         'mine party appointment guid to be deleted'
     })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def delete(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
             return self.create_error_payload(

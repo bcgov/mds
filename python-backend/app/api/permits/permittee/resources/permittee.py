@@ -5,7 +5,8 @@ from flask_restplus import Resource, reqparse
 from ....parties.party.models.party import Party
 from ...permit.models.permit import Permit
 from ..models.permittee import Permittee
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -17,7 +18,7 @@ class PermitteeResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help='Effective date in the format of YYYY-MM-DD.')
 
     @api.doc(params={'permittee_guid': 'Permittee guid.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, permittee_guid):
         permittee = Permittee.find_by_permittee_guid(permittee_guid)
         if permittee:
@@ -25,7 +26,7 @@ class PermitteeResource(Resource, UserMixin, ErrorMixin):
         return self.create_error_payload(404, 'Permittee not found'), 404
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, permittee_guid=None):
         if permittee_guid:
             self.raise_error(400, 'Error: Unexpected permittee id in Url.')
