@@ -50,7 +50,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             new_mpa = MinePartyAppointment(
                 mine_guid=data.get('mine_guid'),
                 party_guid=data.get('party_guid'),
-                mine_party_appt_type_code=data.get('mine_party_appt_type_code')[0],
+                mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
                 start_date=data.get('start_date'),
                 end_date=data.get('end_date'),
                 **self.get_create_update_dict())
