@@ -12,7 +12,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   permit: PropTypes.arrayOf(CustomPropTypes.permittee),
   title: PropTypes.string.isRequired,
@@ -27,6 +27,9 @@ const permitteeOptions = (permit) =>
     value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
     label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
   }));
+
+const matchesOptions = (value, allValues, { parties }) =>
+  Object.keys(parties).includes(value) ? undefined : "Invalid Permittee";
 
 export const UpdatePermitteeForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -56,12 +59,13 @@ export const UpdatePermitteeForm = (props) => (
         <Form.Item>
           <Field
             id="party"
-            label="New Permittee *"
             name="party"
+            label="New Permittee *"
+            placeholder="Select a Party"
             component={renderConfig.LARGE_SELECT}
             data={props.partyIds}
             options={props.parties}
-            validate={[required]}
+            validate={[required, matchesOptions]}
             handleChange={props.handleChange}
           />
         </Form.Item>
