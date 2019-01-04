@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
-import { difference, map, without } from "lodash";
+import { difference, map, without, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -83,6 +83,16 @@ export class MineRecordForm extends Component {
         ),
       }));
     }
+    // when mine_type changes, update this.state.usedTenureTypes
+    if (this.props.mine_types !== nextProps.mine_types) {
+      const nextNewTenure = nextProps.mine_types
+        .filter(({ mine_tenure_type_code }) => mine_tenure_type_code)
+        .map(({ mine_tenure_type_code }) => mine_tenure_type_code);
+      const nextExistingTenure = map(nextProps.currentMineTypes, "mine_tenure_type_code");
+      const combined = nextExistingTenure.concat(nextNewTenure);
+      const newUsedTenure = uniq(combined);
+      this.setState({ usedTenureTypes: newUsedTenure });
+    }
 
     if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
       this.props.change(
@@ -106,10 +116,6 @@ export class MineRecordForm extends Component {
   removeField = (event, fields, index) => {
     event.preventDefault();
     fields.remove(index);
-    const removedMineType = this.props.mine_types[index].mine_tenure_type_code;
-    this.setState((prevState) => ({
-      usedTenureTypes: without(prevState.usedTenureTypes, removedMineType),
-    }));
   };
 
   // addField allows users to create a max of 4 mine Types.
@@ -125,12 +131,6 @@ export class MineRecordForm extends Component {
       fields.push({});
       this.setActiveKey([fields.length.toString()]);
     }
-  };
-
-  handleTenureCodeUpdate = (opt) => {
-    this.setState((prevState) => ({
-      usedTenureTypes: [...prevState.usedTenureTypes, opt],
-    }));
   };
 
   createPanelHeader = (index, fields) => (
@@ -221,9 +221,7 @@ export class MineRecordForm extends Component {
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    handleSelect={this.handleTenureCodeUpdate}
                     usedOptions={this.state.usedTenureTypes}
-                    onChange={this.handleOptionChange}
                     id={`${type}.mine_tenure_type_code`}
                     name={`${type}.mine_tenure_type_code`}
                     label="Tenure"
