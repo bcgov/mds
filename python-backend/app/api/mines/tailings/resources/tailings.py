@@ -6,7 +6,8 @@ from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
 from ..models.tailings import MineTailingsStorageFacility
 
-from app.extensions import jwt, api, db
+from app.extensions import api, db
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_documents_svc_url
 from ....documents.namespace.documents import api as doc_api
@@ -23,7 +24,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             'mine_tailings_storage_facility_guid':
             'mine_tailings_storage_facility_guid to be retrieved, or return error if not provided'
         })
-    # @jwt.requires_roles(["mds-mine-view"])
+    # @requires_role_mine_view
     def get(self, mine_tailings_storage_facility_guid=None):
         if mine_tailings_storage_facility_guid:
             tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
@@ -40,6 +41,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             }
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
+    # @requires_role_mine_create
     def post(self, mine_tailings_storage_facility_guid=None):
         if not mine_tailings_storage_facility_guid:
             data = self.parser.parse_args()
