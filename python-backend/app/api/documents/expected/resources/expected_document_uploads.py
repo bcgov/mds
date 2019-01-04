@@ -76,7 +76,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         response = requests.post(
             url=document_manager_URL, data=args, files=files, headers=headers)
-        return self.create_error_payload(666, str(response))
+        return self.create_error_payload(501, str(response))
         json_response = response.json()
 
         errors = json_response['errors']
