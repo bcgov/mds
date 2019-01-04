@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
-import { difference, map, without, uniq } from "lodash";
+import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -86,10 +86,10 @@ export class MineRecordForm extends Component {
     // when mine_type changes, update this.state.usedTenureTypes
     if (this.props.mine_types !== nextProps.mine_types) {
       const nextNewTenure = nextProps.mine_types
-        .filter(({ mine_tenure_type_code }) => mine_tenure_type_code)
+        .filter(({ mine_tenure_type_code }) => !isEmpty(mine_tenure_type_code))
         .map(({ mine_tenure_type_code }) => mine_tenure_type_code);
       const nextExistingTenure = map(nextProps.currentMineTypes, "mine_tenure_type_code");
-      const combined = nextExistingTenure.concat(nextNewTenure);
+      const combined = [...nextExistingTenure, ...nextNewTenure];
       const newUsedTenure = uniq(combined);
       this.setState({ usedTenureTypes: newUsedTenure });
     }
