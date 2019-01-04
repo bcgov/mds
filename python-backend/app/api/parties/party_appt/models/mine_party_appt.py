@@ -56,7 +56,7 @@ class MinePartyAppointment(AuditMixin, Base):
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
         elif self.mine_party_appt_type_code == "PMT":
-            related_guid == str(self.permit_guid)
+            related_guid = str(self.permit_guid)
         result["related_guid"] = related_guid
         return result
 
