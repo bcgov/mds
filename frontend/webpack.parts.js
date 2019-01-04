@@ -5,7 +5,6 @@ const cssnano = require("cssnano")({ zindex: false });
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
@@ -201,14 +200,6 @@ exports.setEnvironmentVariable = (dotenv = {}) => ({
       "process.env": {
         ...dotenv,
       },
-    }),
-  ],
-});
-
-exports.gZipCompression = () => ({
-  plugins: [
-    new CompressionPlugin({
-      algorithm: "gzip",
     }),
   ],
 });
