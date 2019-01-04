@@ -35,7 +35,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
-    mine_part_appt_type = db.relationship(
+    mine_party_appt_type = db.relationship(
         'MinePartyAppointmentType',
         backref='mine_party_appt',
         order_by='desc(MinePartyAppointmentType.display_order)',
