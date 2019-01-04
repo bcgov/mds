@@ -37,7 +37,7 @@ export class ViewMineManager extends Component {
       .addMineManager(
         this.props.mine.guid,
         values.mineManager,
-        this.props.mine.mine_detail[0].mine_name,
+        this.props.mine.mine_name,
         values.startDate
       )
       .then(() => {

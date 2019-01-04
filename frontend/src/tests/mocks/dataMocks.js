@@ -12,23 +12,14 @@ export const MINE_RESPONSE = {
   mines: [
     {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mgr_appointment: [],
       mine_permit: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567",
-        },
-      ],
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine3",
-          mine_no: "BLAH9091",
-          region_code: "NE",
         },
       ],
       mine_location: [{ longitude: null, latitude: null }],
@@ -59,6 +50,9 @@ export const MINE_RESPONSE = {
     },
     {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_name: "mine2",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mgr_appointment: [],
       mine_permit: [
         {
@@ -133,18 +127,6 @@ export const MINE_RESPONSE = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine2",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-      ],
       mine_location: [
         {
           longitude: null,
@@ -178,23 +160,14 @@ export const MINES = {
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mgr_appointment: [],
       mine_permit: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567",
-        },
-      ],
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine3",
-          mine_no: "BLAH9091",
-          region_code: "NE",
         },
       ],
       mine_location: [{ longitude: null, latitude: null }],
@@ -225,6 +198,9 @@ export const MINES = {
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_name: "mine2",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mgr_appointment: [],
       mine_permit: [
         {
@@ -299,18 +275,6 @@ export const MINES = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine2",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-      ],
       mine_location: [
         {
           longitude: null,
@@ -679,5 +643,5 @@ export const COMPLIANCE = {
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
-  open_orders:[],
+  open_orders: [],
 };

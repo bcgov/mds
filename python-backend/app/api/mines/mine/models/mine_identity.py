@@ -121,12 +121,7 @@ class MineIdentity(AuditMixin, Base):
         }
 
     def json_by_name(self):
-        mine_detail = self.mine_detail[0] if self.mine_detail else None
-        return {
-            'guid': str(self.mine_guid),
-            'mine_name': self.mine_name if mine_detail else '',
-            'mine_no': 'mine_no': self.mine_no if mine_detail else ''
-        }
+        return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
         mine_location = self.mine_location[0] if self.mine_location else None
@@ -167,8 +162,20 @@ class MineIdentity(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine_identity(cls, user_kwargs, save=True):
-        mine_identity = cls(mine_guid=uuid.uuid4(), **user_kwargs)
+    def create_mine_identity(cls,
+                             mine_no,
+                             mine_name,
+                             mine_category,
+                             mine_region,
+                             user_kwargs,
+                             save=True):
+        mine_identity = cls(
+            mine_guid=uuid.uuid4(),
+            mine_no=mine_no,
+            mine_name=mine_name,
+            major_mine_ind=mine_category,
+            mine_region=mine_region,
+            **user_kwargs)
         if save:
             mine_identity.save(commit=False)
         return mine_identity

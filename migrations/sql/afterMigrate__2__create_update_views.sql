@@ -9,7 +9,7 @@ and return relevant information for the MapView.
 */
 
 CREATE OR REPLACE VIEW mine_map_view AS
-SELECT md.mine_guid, ml.latitude, ml.longitude, md.mine_no, md.mine_name
-FROM mine_detail md
-INNER JOIN mine_location ml on ml.mine_guid=md.mine_guid
+SELECT mi.mine_guid, ml.latitude, ml.longitude, mi.mine_no, mi.mine_name
+FROM mine_identity mi
+INNER JOIN mine_location ml on ml.mine_guid=mi.mine_guid
 ;

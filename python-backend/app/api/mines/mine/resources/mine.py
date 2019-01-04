@@ -220,28 +220,19 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Mine Detail
         if mine_name or mine_note or major_mine_ind is not None:
-            mine_detail = mine.mine_detail[0]
             try:
-                new_mine_detail = MineDetail(
-                    mine_detail_guid=uuid.uuid4(),
-                    mine_guid=mine.mine_guid,
-                    mine_no=mine_detail.mine_no,
-                    mine_name=mine_detail.mine_name,
-                    mine_note=mine_detail.mine_note,
-                    major_mine_ind=mine_detail.major_mine_ind,
-                    mine_region=mine_detail.mine_region,
-                    **self.get_create_update_dict())
+                mine.update_user = self.get_update_user()
                 if mine_name:
-                    new_mine_detail.mine_name = mine_name
+                    mine.mine_name = mine_name
                 if mine_note:
-                    new_mine_detail.mine_note = mine_note
+                    mine.mine_note = mine_note
                 if major_mine_ind is not None:
-                    new_mine_detail.major_mine_ind = major_mine_ind
+                    mine.major_mine_ind = major_mine_ind
                 if region:
-                    new_mine_detail.mine_region = region
+                    mine.mine_region = region
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
-            new_mine_detail.save()
+            mine.save()
 
         # Tenure validation
         if tenure:
@@ -284,10 +275,10 @@ class MineListByName(Resource):
     def get(self):
         search_term = request.args.get('search')
         if search_term:
-            name_filter = MineDetail.mine_name.ilike('%{}%'.format(search_term))
-            number_filter = MineDetail.mine_no.ilike('%{}%'.format(search_term))
+            name_filter = MineIdentity.mine_name.ilike('%{}%'.format(search_term))
+            number_filter = MineIdentity.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines_q = MineIdentity.query.join(MineDetail).filter(name_filter | number_filter)
+            mines_q = MineIdentity.query.filter(name_filter | number_filter)
             permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
             mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
