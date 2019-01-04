@@ -6,6 +6,7 @@ import { Pagination, Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
+import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -17,12 +18,7 @@ import {
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
-  getMineTenureTypes,
   getMineTenureTypesHash,
-  getConditionalDisturbanceOptionsHash,
-  getConditionalCommodityOptions,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
@@ -53,12 +49,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  mines: PropTypes.object.isRequired,
-  mineIds: PropTypes.array.isRequired,
-  pageData: PropTypes.object.isRequired,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pageData: CustomPropTypes.minePageData.isRequired,
 };
 
 export class Dashboard extends Component {
@@ -218,24 +211,12 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(
-    event,
-    mineStatusOptions,
-    mineRegionOptions,
-    mineTenureTypes,
-    conditionalDisturbanceOptions,
-    conditionalCommodityOptions,
-    onSubmit,
-    title
-  ) {
+  openModal(event, onSubmit, title) {
+    const handleDelete = () => {};
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineStatusOptions,
-        mineRegionOptions,
-        mineTenureTypes,
-        conditionalDisturbanceOptions,
-        conditionalCommodityOptions,
+        handleDelete,
         onSubmit,
         title,
       },
@@ -363,16 +344,7 @@ export class Dashboard extends Component {
               className="full-mobile"
               type="primary"
               handleAction={(event) =>
-                this.openModal(
-                  event,
-                  this.props.mineStatusOptions,
-                  this.props.mineRegionOptions,
-                  this.props.mineTenureTypes,
-                  this.props.conditionalDisturbanceOptions,
-                  this.props.conditionalCommodityOptions,
-                  this.handleSubmit,
-                  ModalContent.CREATE_MINE_RECORD
-                )
+                this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
               }
               string={ModalContent.CREATE_MINE_RECORD}
             />
@@ -388,14 +360,9 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineIds: getMineIds(state),
   pageData: getMinesPageData(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
-  conditionalCommodityOptions: getConditionalCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

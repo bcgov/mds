@@ -157,7 +157,6 @@ const prodConfig = merge([
     },
     safe: true,
   }),
-  parts.gZipCompression(),
   parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);

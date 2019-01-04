@@ -41,6 +41,16 @@
       "name": "UPLOADED_DOCUMENT_DEST",
       "required": false,
       "value": "/opt/app-root/src/document_uploads"
+    },
+    {
+      "name": "NRIS_TOKEN_URL",
+      "required": false,
+      "value": "https://api.nrs.gov.bc.ca/oauth2/v1/oauth/token"
+    },
+    {
+      "name": "NRIS_INSPECTION_URL",
+      "required": false,
+      "value": "https://api.nrs.gov.bc.ca/nrisws-api/v1/emprInspections"
     }
   ],
   "objects": [
@@ -106,6 +116,14 @@
               {
                 "name": "UPLOADED_DOCUMENT_DEST",
                 "value": "${UPLOADED_DOCUMENT_DEST}"
+              },
+              {
+                "name": "NRIS_TOKEN_URL",
+                "value": "${NRIS_TOKEN_URL}"
+              },
+              {
+                "name": "NRIS_INSPECTION_URL",
+                "value": "${NRIS_INSPECTION_URL}"
               },
               {
                 "name": "GIT_BRANCH",
