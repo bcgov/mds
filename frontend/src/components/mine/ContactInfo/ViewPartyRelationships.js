@@ -12,6 +12,7 @@ import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationship
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
 import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
 import NullScreen from "@/components/common/NullScreen";
+import Loading from "@/components/common/Loading";
 
 import {
   fetchPartyRelationshipTypes,
@@ -21,7 +22,11 @@ import {
   updatePartyRelationship,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
-import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
+  getPartyRelationships,
+} from "@/selectors/partiesSelectors";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -30,7 +35,8 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  partyRelationshipTypes: PropTypes.object,
+  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -42,6 +48,7 @@ const propTypes = {
 
 const defaultProps = {
   partyRelationshipTypes: [],
+  partyRelationshipTypesList: [],
   partyRelationships: [],
 };
 
@@ -79,7 +86,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
-    if (!this.props.partyRelationshipTypes) return;
+    if (!this.props.partyRelationshipTypesList) return;
 
     if (value === "EOR") {
       if (mine.mine_tailings_storage_facility.length === 0) {
@@ -94,7 +101,7 @@ export class ViewPartyRelationships extends Component {
         handleChange,
         onPartySubmit,
         title: `${title}: ${
-          this.props.partyRelationshipTypes.find((x) => x.value === value).label
+          this.props.partyRelationshipTypesList.find((x) => x.value === value).label
         }`,
         partyRelationshipType: value,
         mine,
@@ -116,7 +123,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
-    if (!this.props.partyRelationshipTypes) return;
+    if (!this.props.partyRelationshipTypesList) return;
     this.setState({
       selectedPartyRelationship: partyRelationship,
     });
@@ -125,7 +132,7 @@ export class ViewPartyRelationships extends Component {
         onSubmit,
         handleChange,
         title: `Update ${
-          this.props.partyRelationshipTypes.find(
+          this.props.partyRelationshipTypesList.find(
             (x) => x.value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
@@ -157,8 +164,18 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderInactiveRelationships = (partyRelationships) => {
-    const activeRelationships = partyRelationships.filter((x) => x.end_date === "None");
-    const inactiveRelationships = partyRelationships.filter((x) => x.end_date !== "None");
+    const activeRelationships = partyRelationships.filter(
+      (x) =>
+        x.end_date === "None" ||
+        (Date.parse(x.end_date) >= new Date() &&
+          (x.start_date === "None" || Date.parse(x.start_date) <= new Date()))
+    );
+    const inactiveRelationships = partyRelationships.filter(
+      (x) =>
+        x.end_date !== "None" &&
+        (Date.parse(x.end_date) <= new Date() ||
+          (x.start_date !== "None" && Date.parse(x.start_date) >= new Date()))
+    );
 
     const activePartyRelationshipTypes = [
       ...new Set(activeRelationships.map((x) => x.mine_party_appt_type_code)),
@@ -170,20 +187,30 @@ export class ViewPartyRelationships extends Component {
     return inactivePartyRelationshipTypes
       .filter((x) => !activePartyRelationshipTypes.includes(x))
       .map((typeCode) => (
-        <div key={typeCode}>
-          <hr />
+        <Col span={8} key={typeCode}>
           <br />
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
             partyRelationshipTypeLabel={
-              this.props.partyRelationshipTypes.find((x) => x.value === typeCode).label
+              this.props.partyRelationshipTypesList.find((x) => x.value === typeCode).label
             }
             mine={this.props.mine}
           />
           <br />
           <br />
-        </div>
+        </Col>
       ));
+  };
+
+  getGroupTitle = (group) => {
+    switch (group) {
+      case "3":
+        return "Key Contacts";
+      case "2":
+        return "Specialists";
+      default:
+        return "Other Contacts";
+    }
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -194,10 +221,47 @@ export class ViewPartyRelationships extends Component {
     });
   }
 
-  renderPartyRelationship = (partyRelationship) => {
-    if (!this.props.partyRelationshipTypes) return <div />;
+  renderMenu = (partyRelationshipGroupingLevels) => (
+    <Menu>
+      {partyRelationshipGroupingLevels.map((group) => [
+        this.props.partyRelationshipTypes
+          .filter((x) => x.grouping_level === group)
+          .map((value) => (
+            <Menu.Item key={value.mine_party_appt_type_code}>
+              <button
+                className="full"
+                type="button"
+                onClick={() => {
+                  this.setState({
+                    selectedPartyRelationshipType: value.mine_party_appt_type_code,
+                  });
+                  this.openAddPartyRelationshipModal(
+                    value.mine_party_appt_type_code,
+                    this.onSubmitAddPartyRelationship,
+                    this.props.handleChange,
+                    this.onPartySubmit,
+                    ModalContent.ADD_CONTACT,
+                    this.props.mine
+                  );
+                }}
+              >
+                {`${value.description}`}
+              </button>
+            </Menu.Item>
+          )),
+        <Menu.Divider />,
+      ])}
+    </Menu>
+  );
 
-    const partyRelationshipTypeLabel = this.props.partyRelationshipTypes.find(
+  renderPartyRelationship = (partyRelationship) => {
+    if (
+      !this.props.partyRelationshipTypesList.length > 0 ||
+      !this.props.partyRelationshipTypes.length > 0
+    )
+      return <div />;
+
+    const partyRelationshipTypeLabel = this.props.partyRelationshipTypesList.find(
       (x) => x.value === partyRelationship.mine_party_appt_type_code
     ).label;
 
@@ -246,103 +310,115 @@ export class ViewPartyRelationships extends Component {
     }
 
     return (
-      <div key={partyRelationship.mine_party_appt_guid}>
-        <hr />
+      <Col span={8} key={partyRelationship.mine_party_appt_guid}>
         <br />
         {contactComponent}
         <br />
         <br />
-      </div>
+      </Col>
+    );
+  };
+
+  renderPartyRelationshipGroup = (partyRelationships, group) => {
+    const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
+      (x) => x.grouping_level === group
+    );
+    const partyRelationshipsInGroup = partyRelationships.filter((x) =>
+      partyRelationshipTypesInGroup.some(
+        (y) => y.mine_party_appt_type_code == x.mine_party_appt_type_code
+      )
+    );
+
+    return (
+      partyRelationshipsInGroup.length !== 0 && (
+        <Row gutter={16}>
+          {partyRelationshipsInGroup
+            .filter(
+              (x) =>
+                x.end_date === "None" ||
+                (Date.parse(x.end_date) >= new Date() &&
+                  (x.start_date === "None" || Date.parse(x.start_date) <= new Date()))
+            )
+            .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
+          {this.renderInactiveRelationships(partyRelationshipsInGroup)}
+        </Row>
+      )
     );
   };
 
   render() {
-    const menu = (
-      <Menu>
-        {this.props.partyRelationshipTypes.map((value) => (
-          <Menu.Item key={value.value}>
-            <button
-              className="full"
-              type="button"
-              onClick={() => {
-                this.setState({
-                  selectedPartyRelationshipType: value.value,
-                });
-                this.openAddPartyRelationshipModal(
-                  value.value,
-                  this.onSubmitAddPartyRelationship,
-                  this.props.handleChange,
-                  this.onPartySubmit,
-                  ModalContent.ADD_CONTACT,
-                  this.props.mine
-                );
-              }}
-            >
-              <Icon type="plus-circle" /> &nbsp;
-              {`${value.label}`}
-            </button>
-          </Menu.Item>
-        ))}
-      </Menu>
-    );
+    if (
+      !this.props.partyRelationshipTypesList.length > 0 ||
+      !this.props.partyRelationshipTypes.length > 0
+    )
+      return <Loading />;
+
+    const partyRelationshipGroupingLevels = [
+      ...new Set(this.props.partyRelationshipTypes.map((x) => x.grouping_level)),
+    ];
 
     return (
       <div>
-        <Row gutter={16}>
-          <Col span={24}>
-            <div className="inline-flex between">
-              <h3>Contact Information</h3>
-              <div className="inline-flex between">
-                <Popconfirm
-                  placement="topRight"
-                  title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
-                  onConfirm={(event) =>
-                    this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
-                  }
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <input
-                    type="button"
-                    ref={this.TSFConfirmation}
-                    style={{ width: "1px", height: "1px" }}
-                  />
-                </Popconfirm>
-                <ConditionalButton
-                  isDropdown
-                  overlay={menu}
-                  string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
-                />
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={24}>
-            {this.props.partyRelationships.length !== 0 &&
-              this.props.partyRelationships
-                .filter((x) => x.end_date === "None")
-                .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
-            {this.props.partyRelationships.length !== 0 &&
-              this.renderInactiveRelationships(this.props.partyRelationships)}
-            {this.props.partyRelationships.length === 0 && (
-              <div>
+        <div className="inline-flex between">
+          <div />
+          <div className="inline-flex between">
+            <Popconfirm
+              placement="topRight"
+              title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
+              onConfirm={(event) =>
+                this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
+              }
+              okText="Yes"
+              cancelText="No"
+            >
+              <input
+                type="button"
+                ref={this.TSFConfirmation}
+                style={{ width: "1px", height: "1px" }}
+              />
+            </Popconfirm>
+            <ConditionalButton
+              isDropdown
+              overlay={this.renderMenu(partyRelationshipGroupingLevels)}
+              string={[
+                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />,
+                "Add New Contact",
+              ]}
+            />
+          </div>
+        </div>
+        <div>
+          {partyRelationshipGroupingLevels.map((group) => [
+            <Row gutter={16}>
+              <Col span={24}>
+                <h2>{this.getGroupTitle(group)}</h2>
                 <hr />
-                <br />
-                <br />
-                <NullScreen type="contacts" />
-                <br />
-                <br />
-              </div>
-            )}
-          </Col>
-        </Row>
+              </Col>
+            </Row>,
+            this.renderPartyRelationshipGroup(this.props.partyRelationships, group),
+            <div>
+              <br />
+              <br />
+            </div>,
+          ])}
+          {this.props.partyRelationships.length === 0 && (
+            <div>
+              <hr />
+              <br />
+              <br />
+              <NullScreen type="contacts" />
+              <br />
+              <br />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   partyRelationships: getPartyRelationships(state),
 });

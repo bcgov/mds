@@ -4,5 +4,6 @@ export const {
   getParties,
   getPartyIds,
   getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
   getPartyRelationships,
 } = partiesReducer;

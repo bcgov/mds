@@ -19,6 +19,9 @@ class MinePartyAppointmentType(AuditMixin, Base):
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    person = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    organization = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    grouping_level = db.Column(db.Integer)
 
     def json(self):
         return {
@@ -26,6 +29,9 @@ class MinePartyAppointmentType(AuditMixin, Base):
             'description': str(self.description),
             'display_order': str(self.display_order),
             'active_ind' : str(self.active_ind),
+            'person': str(self.person),
+            'organization': str(self.organization),
+            'grouping_level': str(self.grouping_level),
         }
     
     @classmethod

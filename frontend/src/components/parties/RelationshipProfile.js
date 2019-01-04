@@ -9,7 +9,7 @@ import {
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMines } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
@@ -50,7 +50,7 @@ export class RelationshipProfile extends Component {
   }
 
   render() {
-    const { id, typeCode } = this.props.match.params;
+    const { id } = this.props.match.params;
     const mine = this.props.mines[id];
 
     const isLoaded =
@@ -73,11 +73,11 @@ export class RelationshipProfile extends Component {
             </div>
             <div className="inline-flex between">
               <div className="inline-flex">
-                <h4>
+                <p>
                   <Link to={router.MINE_SUMMARY.dynamicRoute(mine.guid, "contact-information")}>
                     {mine && mine.mine_detail[0].mine_name}
                   </Link>
-                </h4>
+                </p>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@ export class RelationshipProfile extends Component {
 }
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  partyRelationshipTypes: getPartyRelationshipTypes(state),
+  partyRelationshipTypes: getPartyRelationshipTypesList(state),
   partyRelationships: getPartyRelationships(state),
 });
 

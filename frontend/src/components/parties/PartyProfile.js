@@ -11,7 +11,7 @@ import {
 } from "@/actionCreators/partiesActionCreator";
 import {
   getParties,
-  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
   getPartyRelationships,
 } from "@/selectors/partiesSelectors";
 import Loading from "@/components/common/Loading";
@@ -98,7 +98,12 @@ export class PartyProfile extends Component {
                   <div>
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={8}>
-                        <Link to={router.MINE_SUMMARY.dynamicRoute(partyRelationship.mine_guid)}>
+                        <Link
+                          to={router.MINE_SUMMARY.dynamicRoute(
+                            partyRelationship.mine_guid,
+                            "contact-information"
+                          )}
+                        >
                           {partyRelationship.mine_guid}
                         </Link>
                       </Col>
@@ -154,7 +159,7 @@ export class PartyProfile extends Component {
 
 const mapStateToProps = (state) => ({
   parties: getParties(state),
-  partyRelationshipTypes: getPartyRelationshipTypes(state),
+  partyRelationshipTypes: getPartyRelationshipTypesList(state),
   partyRelationships: getPartyRelationships(state),
 });
 

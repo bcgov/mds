@@ -15,11 +15,11 @@ const propTypes = {
 
 export const Permittee = (props) => {
   const permit = props.mine.mine_permit.find(
-    (x) => x.permit_guid === props.partyRelationship.permit_guid
+    (x) => x.permit_guid === props.partyRelationship.related_guid
   );
-  const permitPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - PERMIT NO. ${
-    permit.permit_no
-  }`;
+  const permitPartyRelationshipTypeLabel = `${
+    props.partyRelationshipTypeLabel
+  } - PERMIT NO. ${permit && permit.permit_no}`;
 
   return (
     <DefaultContact

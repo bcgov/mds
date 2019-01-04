@@ -136,18 +136,24 @@ INSERT INTO mine_party_appt_type_code
     description,
     display_order,
     create_user,
-    update_user
+    update_user,
+    person,
+    organization,
+    grouping_level
     )
 VALUES
-    ('EOR', 'Engineer Of Record', 2, 'system-mds', 'system-mds'),
-    ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds'),
-    ('PMT', 'Permittee', 3, 'system-mds', 'system-mds'),
-    ('EMM', 'Exploration Mine Manager', 4, 'system-mds', 'system-mds'),
-    ('SVR', 'Supervisor', 5, 'system-mds', 'system-mds'),
-    ('SHB', 'Shift Boss', 6, 'system-mds', 'system-mds'),
-    ('FRB', 'Fire Boss', 7, 'system-mds', 'system-mds'),
-    ('BLA', 'Blaster', 8, 'system-mds', 'system-mds'),
-    ('MRC', 'Mine Rescue Contact', 8, 'system-mds', 'system-mds')
+    ('MMG', 'Mine Manager', 1, 'system-mds', 'system-mds', 'true', 'false', 3),
+    ('PMT', 'Permittee', 2, 'system-mds', 'system-mds', 'true', 'true', 3),
+    ('MOR', 'Mine Operator', 3, 'system-mds', 'system-mds', 'true', 'false', 3),
+    ('MOW', 'Mine Owner', 4, 'system-mds', 'system-mds', 'true', 'false', 3),
+    ('EOR', 'Engineer Of Record', 5, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('EVS', 'Environmental Specialist', 6, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('EMM', 'Exploration Mine Manager', 7, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('SVR', 'Supervisor', 8, 'system-mds', 'system-mds', 'true', 'false', 1),
+    ('SHB', 'Shift Boss', 9, 'system-mds', 'system-mds', 'true', 'false', 1),
+    ('FRB', 'Fire Boss', 10, 'system-mds', 'system-mds', 'true', 'false', 1),
+    ('BLA', 'Blaster', 11, 'system-mds', 'system-mds', 'true', 'false', 1),
+    ('MRC', 'Mine Rescue Contact', 12, 'system-mds', 'system-mds', 'true', 'false', 1)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
