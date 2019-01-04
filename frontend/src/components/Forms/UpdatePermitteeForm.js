@@ -14,7 +14,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  permit: PropTypes.arrayOf(CustomPropTypes.permittee),
+  permit: PropTypes.arrayOf(CustomPropTypes.permit),
   title: PropTypes.string.isRequired,
 };
 
@@ -60,7 +60,7 @@ export const UpdatePermitteeForm = (props) => (
             id="party"
             name="party"
             label="New Permittee *"
-            placeholder="Select a Party"
+            placeholder="Search for a Party"
             component={renderConfig.LARGE_SELECT}
             data={props.partyIds}
             options={props.parties}
