@@ -1,13 +1,16 @@
 from functools import wraps
 from app.extensions import jwt
 
-def requires_role_view(func):
-    return role_decorator(func, "mds-mine-view")
+MINE_VIEW = "mds-mine-view"
+MINE_CREATE = "mds-mine-create"
 
-def requires_role_create(func):
-     return role_decorator(func, "mds-mine-create")
+def requires_role_mine_view(func):
+    return _inner_wrapper(func, MINE_VIEW)
 
-def role_decorator(func, role):
+def requires_role_mine_create(func):
+     return _inner_wrapper(func, MINE_CREATE)
+
+def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
         return jwt.requires_roles([role])(func)(*args, **kwds)
