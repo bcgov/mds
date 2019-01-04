@@ -106,7 +106,12 @@ export class PartyProfile extends Component {
                   <div>
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={8}>
-                        <Link to={router.MINE_SUMMARY.dynamicRoute(partyRelationship.mine_guid)}>
+                        <Link
+                          to={router.MINE_SUMMARY.dynamicRoute(
+                            partyRelationship.mine_guid,
+                            "contact-information"
+                          )}
+                        >
                           {this.props.mineBasicInfoList.length > 0 &&
                             this.props.mineBasicInfoList.find(
                               (a) => a.guid === partyRelationship.mine_guid
