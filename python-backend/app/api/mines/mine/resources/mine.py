@@ -187,7 +187,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         }
 
     @api.expect(parser)
-    @requires_roles_mine_create
+    @requires_role_mine_create
     def put(self, mine_no_or_guid):
         data = self.parser.parse_args()
         tenure = data['tenure_number_id']
