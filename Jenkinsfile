@@ -3,7 +3,7 @@ pipeline {
     options {
         disableResume()
     }
-    // stages {
+    stages {
     //     stage('Build') {
     //         agent { label 'master' }
     //         steps {
