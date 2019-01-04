@@ -9,7 +9,7 @@ export const mine = shape({
 });
 
 export const mineTypes = shape({
-  mine_tenure_type_code: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  mine_tenure_type_code: PropTypes.string,
   mine_commodity_code: PropTypes.arrayOf(PropTypes.string),
   mine_disturbance_code: PropTypes.arrayOf(PropTypes.string),
 });

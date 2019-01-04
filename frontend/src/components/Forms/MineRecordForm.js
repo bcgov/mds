@@ -68,7 +68,7 @@ export class MineRecordForm extends Component {
    */
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
-      mine_tenure_type_code: [],
+      mine_tenure_type_code: "",
       mine_commodity_code: [],
       mine_disturbance_code: [],
     };

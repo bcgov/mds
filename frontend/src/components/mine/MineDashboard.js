@@ -51,15 +51,14 @@ const propTypes = {
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   permittees: PropTypes.arrayOf(CustomPropTypes.permittee),
   permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
-  permittees: {},
+  permittees: [],
   permitteesIds: [],
   mineTenureHash: {},
 };
