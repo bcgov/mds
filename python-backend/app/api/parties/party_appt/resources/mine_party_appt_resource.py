@@ -16,11 +16,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
-    parser.add_argument(
-        'mine_party_appt_type_code',
-        type=str,
-        action='append',
-        help='code for the type of appointment.')
+    parser.add_argument('mine_party_appt_type_code', type=str, help='code for the type of appt.')
     parser.add_argument('related_guid', type=str)
     parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
     parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
@@ -36,8 +32,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         else:
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
-            mine_party_appt_type_codes = request.args.get('mine_party_appt_type_code')  #list
-
+            mine_party_appt_type_codes = request.args.getlist('mine_party_appt_type_code')  #list
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid,
                 party_guid=party_guid,
