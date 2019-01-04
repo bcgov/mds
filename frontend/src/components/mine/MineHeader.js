@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
+import { Menu, Icon, Divider, Button, Popover } from "antd";
 import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
-import { Menu, Icon, Divider, Button, Popover, Col, Row } from "antd";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { ConditionalButton } from "../common/ConditionalButton";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -14,21 +15,15 @@ import { ConditionalButton } from "../common/ConditionalButton";
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func,
-  createTailingsStorageFacility: PropTypes.func,
-  fetchMineRecordById: PropTypes.func,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mine: PropTypes.object.isRequired,
-  mineRegionHash: PropTypes.object.isRequired,
-  mineTenureHash: PropTypes.object.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
-  mineDisturbanceOptionsHash: PropTypes.object.isRequired,
-  mineCommodityOptionsHash: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  mine: {},
+  updateMineRecord: PropTypes.func.isRequired,
+  removeMineType: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 class MineHeader extends Component {
@@ -44,6 +39,18 @@ class MineHeader extends Component {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
+  };
+
+  handleDeleteMineType = (event, mineTypeCode) => {
+    event.preventDefault();
+    this.props.mine.mine_type.map((type) => {
+      if (type.mine_tenure_type_code === mineTypeCode) {
+        const tenure = this.props.mineTenureHash[mineTypeCode];
+        this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
+          this.props.fetchMineRecordById(this.props.mine.guid);
+        });
+      }
+    });
   };
 
   handleAddTailings = (value) => {
@@ -72,7 +79,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_commodity_code }) => (
                 <span>
                   {mine_commodity_code &&
-                    `${this.props.mineCommodityOptionsHash[mine_commodity_code]  }, `}
+                    `${this.props.mineCommodityOptionsHash[mine_commodity_code]}, `}
                 </span>
               ))}
           </div>
@@ -86,7 +93,7 @@ class MineHeader extends Component {
               type.mine_type_detail.map(({ mine_disturbance_code }) => (
                 <span>
                   {mine_disturbance_code &&
-                    `${this.props.mineDisturbanceOptionsHash[mine_disturbance_code]  }, `}
+                    `${this.props.mineDisturbanceOptionsHash[mine_disturbance_code]}, `}
                 </span>
               ))}
           </div>
@@ -102,7 +109,7 @@ class MineHeader extends Component {
     });
   }
 
-  openModal(event, mineStatusOptions, mineRegionOptions, mineTenureTypes, onSubmit, title, mine) {
+  openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
     const initialValues = {
       name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
@@ -115,10 +122,8 @@ class MineHeader extends Component {
 
     this.props.openModal({
       props: {
-        mineStatusOptions,
-        mineRegionOptions,
-        mineTenureTypes,
         onSubmit,
+        handleDelete,
         title,
         initialValues,
       },
@@ -137,10 +142,8 @@ class MineHeader extends Component {
             onClick={(event) =>
               this.openModal(
                 event,
-                this.props.mineStatusOptions,
-                this.props.mineRegionOptions,
-                this.props.mineTenureTypes,
                 this.handleUpdateMineRecord,
+                this.handleDeleteMineType,
                 ModalContent.UPDATE_MINE_RECORD,
                 this.props.mine
               )
@@ -274,6 +277,5 @@ class MineHeader extends Component {
 }
 
 MineHeader.propTypes = propTypes;
-MineHeader.defaultProps = defaultProps;
 
 export default MineHeader;

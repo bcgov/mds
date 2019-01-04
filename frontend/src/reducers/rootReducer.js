@@ -46,6 +46,7 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_MINE_COMPLIANCE_INFO
   ),
+  [reducerTypes.REMOVE_MINE_TYPE]: createReducer(networkReducer, reducerTypes.REMOVE_MINE_TYPE),
 };
 
 export const rootReducer = combineReducers(reducerObject);

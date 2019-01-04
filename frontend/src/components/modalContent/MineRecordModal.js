@@ -4,16 +4,7 @@ import MineRecordForm from "@/components/Forms/MineRecordForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  mineStatusOptions: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
-  initialValues: PropTypes.object,
-  hasTSF: PropTypes.bool,
-  toggleTSF: PropTypes.func,
-};
-
-const defaultProps = {
-  title: "",
-  initialValues: null,
 };
 
 export const MineRecordModal = (props) => (
@@ -23,6 +14,5 @@ export const MineRecordModal = (props) => (
 );
 
 MineRecordModal.propTypes = propTypes;
-MineRecordModal.defaultProps = defaultProps;
 
 export default MineRecordModal;
