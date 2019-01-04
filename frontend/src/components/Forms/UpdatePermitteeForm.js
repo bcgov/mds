@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Divider, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, matchesOptions } from "@/utils/Validate";
+import { required, validSearchSelection } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -28,7 +28,7 @@ const permitteeOptions = (permit) =>
     label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
   }));
 
-const validParty = matchesOptions({ key: "parties", err: "Invalid Permittee" });
+const validParty = validSearchSelection({ key: "parties", err: "Invalid Permittee" });
 
 export const UpdatePermitteeForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>

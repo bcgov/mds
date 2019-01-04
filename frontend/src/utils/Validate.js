@@ -75,7 +75,7 @@ export const phoneNumber = (value) =>
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
 
-export const matchesOptions = ({ key, err }) => (value, allValues, formProps) =>
+export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
   !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;
 
 export const validateStartDate = memoize((previousStartDate) => (value) =>
