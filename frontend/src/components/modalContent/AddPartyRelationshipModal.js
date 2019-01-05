@@ -12,7 +12,7 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   onPartySubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  partyRelationshipType: PropTypes.string.isRequired,
+  partyRelationshipType: PropTypes.object.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
   mine: PropTypes.object.isRequired,
@@ -20,6 +20,10 @@ const propTypes = {
 
 export class AddPartyRelationshipModal extends Component {
   state = { isPerson: true };
+
+  componentDidMount() {
+    this.setState({ isPerson: this.props.partyRelationshipType.person === "True" });
+  }
 
   togglePartyChange = (value) => {
     this.setState({ isPerson: value.target.value });
@@ -30,17 +34,36 @@ export class AddPartyRelationshipModal extends Component {
     this.props.onPartySubmit(values, type);
   };
 
+  renderRadioButtonGroup = (person, organization) =>
+    person === "True" &&
+    organization === "True" && (
+      <Radio.Group defaultValue size="large" onChange={this.togglePartyChange}>
+        <Radio.Button value>Person</Radio.Button>
+        <Radio.Button value={false}>Company</Radio.Button>
+      </Radio.Group>
+    );
+
   render() {
     return (
       <div>
         <AddPartyRelationshipForm {...this.props} />
         <br />
-        <p className="center">{ModalContent.PARTY_NOT_FOUND}</p>
+        <p className="center">
+          {this.props.partyRelationshipType.person === "True" &&
+            this.props.partyRelationshipType.organization === "True" &&
+            ModalContent.PARTY_NOT_FOUND}
+          {this.props.partyRelationshipType.person === "False" &&
+            this.props.partyRelationshipType.organization === "True" &&
+            ModalContent.COMPANY_NOT_FOUND}
+          {this.props.partyRelationshipType.person === "True" &&
+            this.props.partyRelationshipType.organization === "False" &&
+            ModalContent.PERSON_NOT_FOUND}
+        </p>
         <div className="center">
-          <Radio.Group defaultValue size="large" onChange={this.togglePartyChange}>
-            <Radio.Button value>Person</Radio.Button>
-            <Radio.Button value={false}>Company</Radio.Button>
-          </Radio.Group>
+          {this.renderRadioButtonGroup(
+            this.props.partyRelationshipType.person,
+            this.props.partyRelationshipType.organization
+          )}
           <AddPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
         </div>
       </div>

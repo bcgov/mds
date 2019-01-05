@@ -86,7 +86,7 @@ export class ViewPartyRelationships extends Component {
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
 
-    if (value === "EOR") {
+    if (value.mine_party_appt_type_code === "EOR") {
       if (mine.mine_tailings_storage_facility.length === 0) {
         this.TSFConfirmation.current.click();
         return;
@@ -98,9 +98,7 @@ export class ViewPartyRelationships extends Component {
         onSubmit,
         handleChange,
         onPartySubmit,
-        title: `${title}: ${
-          this.props.partyRelationshipTypesList.find((x) => x.value === value).label
-        }`,
+        title: `${title}: ${value.description}`,
         partyRelationshipType: value,
         mine,
       },
@@ -234,7 +232,7 @@ export class ViewPartyRelationships extends Component {
                     selectedPartyRelationshipType: value.mine_party_appt_type_code,
                   });
                   this.openAddPartyRelationshipModal(
-                    value.mine_party_appt_type_code,
+                    value,
                     this.onSubmitAddPartyRelationship,
                     this.props.handleChange,
                     this.onPartySubmit,
