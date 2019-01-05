@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Menu, Icon, Popconfirm } from "antd";
+import { Row, Col, Menu, Icon, Popconfirm, Divider } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
@@ -187,7 +187,7 @@ export class ViewPartyRelationships extends Component {
     return inactivePartyRelationshipTypes
       .filter((x) => !activePartyRelationshipTypes.includes(x))
       .map((typeCode) => (
-        <Col span={8} key={typeCode}>
+        <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={6} key={typeCode}>
           <br />
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
@@ -310,7 +310,15 @@ export class ViewPartyRelationships extends Component {
     }
 
     return (
-      <Col span={8} key={partyRelationship.mine_party_appt_guid}>
+      <Col
+        xs={24}
+        sm={24}
+        md={12}
+        lg={12}
+        xl={8}
+        xxl={6}
+        key={partyRelationship.mine_party_appt_guid}
+      >
         <br />
         {contactComponent}
         <br />
@@ -330,7 +338,14 @@ export class ViewPartyRelationships extends Component {
     );
 
     return (
-      partyRelationshipsInGroup.length !== 0 && (
+      partyRelationshipsInGroup.length !== 0 && [
+        <Row gutter={16}>
+          <Col span={24}>
+            <h2>{this.getGroupTitle(group)}</h2>
+            <Divider />
+          </Col>
+        </Row>,
+
         <Row gutter={16}>
           {partyRelationshipsInGroup
             .filter(
@@ -341,8 +356,12 @@ export class ViewPartyRelationships extends Component {
             )
             .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}
-        </Row>
-      )
+        </Row>,
+        <div>
+          <br />
+          <br />
+        </div>,
+      ]
     );
   };
 
@@ -388,22 +407,12 @@ export class ViewPartyRelationships extends Component {
           </div>
         </div>
         <div>
-          {partyRelationshipGroupingLevels.map((group) => [
-            <Row gutter={16}>
-              <Col span={24}>
-                <h2>{this.getGroupTitle(group)}</h2>
-                <hr />
-              </Col>
-            </Row>,
-            this.renderPartyRelationshipGroup(this.props.partyRelationships, group),
-            <div>
-              <br />
-              <br />
-            </div>,
-          ])}
+          {partyRelationshipGroupingLevels.map((group) =>
+            this.renderPartyRelationshipGroup(this.props.partyRelationships, group)
+          )}
           {this.props.partyRelationships.length === 0 && (
             <div>
-              <hr />
+              <Divider />
               <br />
               <br />
               <NullScreen type="contacts" />
