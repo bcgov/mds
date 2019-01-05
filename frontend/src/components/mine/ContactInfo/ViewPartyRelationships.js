@@ -7,10 +7,8 @@ import { Row, Col, Menu, Icon, Popconfirm, Divider } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { ConditionalButton } from "@/components/common/ConditionalButton";
-import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
+import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
-import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
-import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 
@@ -249,7 +247,7 @@ export class ViewPartyRelationships extends Component {
               </button>
             </Menu.Item>
           )),
-        <Menu.Divider />,
+        <Menu.Divider key={group} />,
       ])}
     </Menu>
   );
@@ -265,49 +263,17 @@ export class ViewPartyRelationships extends Component {
       (x) => x.value === partyRelationship.mine_party_appt_type_code
     ).label;
 
-    let contactComponent;
-
-    switch (partyRelationship.mine_party_appt_type_code) {
-      case "EOR":
-        contactComponent = (
-          <EngineerOfRecord
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
-          />
-        );
-        break;
-      case "PMT":
-        contactComponent = (
-          <Permittee
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
-          />
-        );
-        break;
-      default:
-        contactComponent = (
-          <DefaultContact
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
-          />
-        );
-        break;
-    }
+    const contactComponent = (
+      <Contact
+        partyRelationship={partyRelationship}
+        partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+        handleChange={this.props.handleChange}
+        mine={this.props.mine}
+        openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
+        onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
+        removePartyRelationship={this.removePartyRelationship}
+      />
+    );
 
     return (
       <Col

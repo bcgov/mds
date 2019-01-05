@@ -9,62 +9,69 @@ import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Perm
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  handleChange: PropTypes.func,
   mine: PropTypes.object.isRequired,
-  openEditPartyRelationshipModal: PropTypes.func.isRequired,
-  onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  removePartyRelationship: PropTypes.func.isRequired,
+  openEditPartyRelationshipModal: PropTypes.func,
+  onSubmitEditPartyRelationship: PropTypes.func,
+  removePartyRelationship: PropTypes.func,
   otherDetails: PropTypes.object,
+  isEditable: PropTypes.bool,
+};
+
+const doNothing = () => {};
+
+const defaultProps = {
+  handleChange: doNothing(),
+  openEditPartyRelationshipModal: doNothing(),
+  onSubmitEditPartyRelationship: doNothing(),
+  removePartyRelationship: doNothing(),
+  otherDetails: {},
+  isEditable: false,
 };
 
 export class Contact extends Component {
-  constructor(props) {
-    super(props);
-    this.TSFConfirmation = React.createRef();
-  }
-
   componentWillMount() {}
 
   render() {
     let component;
 
-    switch (partyRelationship.mine_party_appt_type_code) {
+    switch (this.props.partyRelationship.mine_party_appt_type_code) {
       case "EOR":
         component = (
           <EngineerOfRecord
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            partyRelationship={this.props.partyRelationship}
+            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
             handleChange={this.props.handleChange}
             mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
+            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.props.removePartyRelationship}
           />
         );
         break;
       case "PMT":
         component = (
           <Permittee
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            partyRelationship={this.props.partyRelationship}
+            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
             handleChange={this.props.handleChange}
             mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
+            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.props.removePartyRelationship}
           />
         );
         break;
       default:
         component = (
           <DefaultContact
-            partyRelationship={partyRelationship}
-            partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+            partyRelationship={this.props.partyRelationship}
+            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
             handleChange={this.props.handleChange}
             mine={this.props.mine}
-            openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.removePartyRelationship}
+            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
+            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
+            removePartyRelationship={this.props.removePartyRelationship}
           />
         );
         break;
@@ -72,3 +79,8 @@ export class Contact extends Component {
     return component;
   }
 }
+
+Contact.propTypes = propTypes;
+Contact.defaultProps = defaultProps;
+
+export default Contact;
