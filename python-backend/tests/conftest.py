@@ -88,11 +88,6 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture
-def compare_auth_flags(api_method, required_roles):
-    return set(required_roles) == set(getattr(api_method, "required_roles", []))
-
-
 def setup_data(session):
     # Clear data
     clear_data(session)
