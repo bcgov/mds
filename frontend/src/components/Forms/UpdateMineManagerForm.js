@@ -3,24 +3,28 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, validateStartDate } from "@/utils/Validate";
+import { required, validateStartDate, validSearchSelection } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
+  parties: PropTypes.objectOf(CustomPropTypes.party),
+  partyIds: PropTypes.arrayOf(PropTypes.string),
   title: PropTypes.string.isRequired,
-  initialValues: PropTypes.object,
+  initialValues: PropTypes.shape({ startDate: PropTypes.string }),
 };
 
 const defaultProps = {
   parties: {},
   partyIds: [],
+  initialValues: {},
 };
+
+const validMineManager = validSearchSelection({ key: "parties", err: "Invalid Mine Manager" });
 
 export const UpdateMineManagerForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -31,10 +35,11 @@ export const UpdateMineManagerForm = (props) => (
             id="mineManager"
             name="mineManager"
             label="Mine Manager *"
+            placeholder="Search for a Mine Manager"
             component={renderConfig.LARGE_SELECT}
             data={props.partyIds}
             options={props.parties}
-            validate={[required]}
+            validate={[required, validMineManager]}
             handleChange={props.handleChange}
           />
         </Form.Item>
