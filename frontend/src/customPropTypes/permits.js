@@ -22,6 +22,17 @@ export const permittee = shape({
   permittee_guid: PropTypes.string,
 });
 
+export const permit = shape({
+  expiry_date: PropTypes.string,
+  issue_date: PropTypes.string,
+  mine_guid: PropTypes.string,
+  permit_guid: PropTypes.string,
+  permit_no: PropTypes.string,
+  permit_status_code: PropTypes.string,
+  permittee: PropTypes.arrayOf(permittee),
+  received_date: PropTypes.string,
+});
+
 export const minePermit = shape({
   permit_guid: PropTypes.string.isRequired,
   issue_date: PropTypes.string.isRequired,

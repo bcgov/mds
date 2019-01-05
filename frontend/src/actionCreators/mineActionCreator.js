@@ -9,28 +9,22 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-const submitDisturbances = (type) => ({ data }) => {
-  const disturbanceResponses = type.mine_disturbance_code.map((code) =>
-    axios.post(
-      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-      {
-        mine_type_guid: data.mine_type_guid,
-        mine_disturbance_code: code,
-      },
-      createRequestHeader()
-    )
-  );
-  const commodityResponses = type.mine_commodity_code.map((code) =>
-    axios.post(
-      ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-      {
-        mine_type_guid: data.mine_type_guid,
-        mine_commodity_code: code,
-      },
-      createRequestHeader()
-    )
-  );
-  return Promise.all([disturbanceResponses, commodityResponses]);
+const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
+  const create = (codeType) =>
+    type[codeType].length > 0
+      ? type[codeType].map((code) =>
+          axios.post(
+            ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+            {
+              mine_type_guid,
+              [codeType]: code,
+            },
+            createRequestHeader()
+          )
+        )
+      : Promise.resolve([]);
+
+  return Promise.all([create("mine_disturbance_code"), create("mine_commodity_code")]);
 };
 
 const handleError = (dispatch, reducer) => (err) => {
@@ -43,19 +37,20 @@ const handleError = (dispatch, reducer) => (err) => {
 };
 
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
+  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
-      type.mine_tenure_type_code
+      type.mine_tenure_type_code.length >= 1
         ? axios
             .post(
               ENVIRONMENT.apiUrl + API.MINE_TYPES,
               {
-                mine_guid: response.data.mine_guid,
+                mine_guid: mineId,
                 mine_tenure_type_code: type.mine_tenure_type_code,
               },
               createRequestHeader()
             )
-            .then(submitDisturbances(type))
+            .then(submitMineTypeDetails(type))
             .catch(handleError(dispatch, reducer))
         : response
     );
@@ -92,22 +87,9 @@ export const createMineRecord = (payload) => (dispatch) => {
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-  const requests = [
-    axios.put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader()),
-  ];
-  if (payload.mine_types) {
-    const mineTypeGuid = payload.mineType[0] ? `/${payload.mineType[0].mine_type_guid}` : "";
-    const mineTypesUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES + mineTypeGuid;
-    const req = mineTypeGuid ? axios.put : axios.post;
-    requests.push(
-      req(
-        mineTypesUrl,
-        { mine_guid: id, mine_tenure_type_code: payload.mine_tenure_type_code },
-        createRequestHeader()
-      )
-    );
-  }
-  return Promise.all(requests)
+  return axios
+    .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD, id))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
@@ -123,6 +105,29 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
+  dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
+  dispatch(showLoading("modal"));
+  return axios
+    .delete(`${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`, createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: `Successfully removed Tenure: ${tenure}`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
       dispatch(hideLoading("modal"));
     });
 };

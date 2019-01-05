@@ -120,5 +120,4 @@ export default reduxForm({
   form: FORM.ADD_PARTY_RELATIONSHIP,
   validate,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PARTY_RELATIONSHIP),
 })(AddPartyRelationshipForm);
