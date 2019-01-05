@@ -263,18 +263,6 @@ export class ViewPartyRelationships extends Component {
       (x) => x.value === partyRelationship.mine_party_appt_type_code
     ).label;
 
-    const contactComponent = (
-      <Contact
-        partyRelationship={partyRelationship}
-        partyRelationshipTypeLabel={partyRelationshipTypeLabel}
-        handleChange={this.props.handleChange}
-        mine={this.props.mine}
-        openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
-        onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
-        removePartyRelationship={this.removePartyRelationship}
-      />
-    );
-
     return (
       <Col
         xs={24}
@@ -286,7 +274,15 @@ export class ViewPartyRelationships extends Component {
         key={partyRelationship.mine_party_appt_guid}
       >
         <br />
-        {contactComponent}
+        <Contact
+          partyRelationship={partyRelationship}
+          partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+          handleChange={this.props.handleChange}
+          mine={this.props.mine}
+          openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
+          onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
+          removePartyRelationship={this.removePartyRelationship}
+        />
         <br />
         <br />
       </Col>
