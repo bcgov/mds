@@ -134,7 +134,7 @@ export class ViewPartyRelationships extends Component {
             (x) => x.value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
-        partyRelationship,
+        partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
         mine,
       },
       content: modalConfig.EDIT_PARTY_RELATIONSHIP,
