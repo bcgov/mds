@@ -11,8 +11,13 @@ export const request = (reducer) => ({
   type: ActionTypes.REQUEST,
 });
 
-export const error = (reducer, error) => ({
+export const error = (reducer, err) => ({
   name: reducer,
   type: ActionTypes.ERROR,
-  errorMessage: error,
+  errorMessage: err,
+});
+
+export const clear = (reducer) => ({
+  name: reducer,
+  type: ActionTypes.CLEAR,
 });

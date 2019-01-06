@@ -9,11 +9,62 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
+const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
+  const create = (codeType) =>
+    type[codeType].length > 0
+      ? type[codeType].map((code) =>
+          axios.post(
+            ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
+            {
+              mine_type_guid,
+              [codeType]: code,
+            },
+            createRequestHeader()
+          )
+        )
+      : Promise.resolve([]);
+
+  return Promise.all([create("mine_disturbance_code"), create("mine_commodity_code")]);
+};
+
+const handleError = (dispatch, reducer) => (err) => {
+  notification.error({
+    message: err.response ? err.response.data.error.message : String.ERROR,
+    duration: 10,
+  });
+  dispatch(error(reducer));
+  dispatch(hideLoading("modal"));
+};
+
+const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
+  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
+  if (payload.mine_types) {
+    const allMineTypes = payload.mine_types.map((type) =>
+      type.mine_tenure_type_code.length >= 1
+        ? axios
+            .post(
+              ENVIRONMENT.apiUrl + API.MINE_TYPES,
+              {
+                mine_guid: mineId,
+                mine_tenure_type_code: type.mine_tenure_type_code,
+              },
+              createRequestHeader()
+            )
+            .then(submitMineTypeDetails(type))
+            .catch(handleError(dispatch, reducer))
+        : response
+    );
+    return Promise.all(allMineTypes);
+  }
+  return response;
+};
+
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return axios
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.name}`,
@@ -38,6 +89,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(showLoading("modal"));
   return axios
     .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD, id))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
@@ -53,6 +105,29 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
+      dispatch(hideLoading("modal"));
+    });
+};
+
+export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
+  dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
+  dispatch(showLoading("modal"));
+  return axios
+    .delete(`${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`, createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: `Successfully removed Tenure: ${tenure}`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
       dispatch(hideLoading("modal"));
     });
 };
@@ -96,7 +171,7 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
@@ -117,7 +192,7 @@ export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({ message: String.ERROR, duration: 10 });
       dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
@@ -186,66 +261,6 @@ export const fetchMineNameList = (search = null) => (dispatch) => {
     });
 };
 
-export const fetchStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_STATUS, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
-      dispatch(mineActions.storeStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_STATUS_OPTIONS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchRegionOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_REGION_OPTIONS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_REGION, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_REGION_OPTIONS));
-      dispatch(mineActions.storeRegionOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_REGION_OPTIONS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/status`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(mineActions.storeDocumentStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
 export const updateExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -266,46 +281,6 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchMineTailingsRequiredDocuments = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-      dispatch(mineActions.storeMineTSFRequiredDocuments(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-      dispatch(hideLoading("modal"));
-    });
-};
-
-export const fetchMineTenureTypes = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_TENURE_TYPES));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_TENURE_TYPES, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_TENURE_TYPES));
-      dispatch(mineActions.storeTenureTypes(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch(() => {
-      notification.error({
-        message: String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_TENURE_TYPES));
       dispatch(hideLoading("modal"));
     });
 };

@@ -1,71 +1,111 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Row, Col, Divider } from "antd";
+import React from "react";
+import { Table } from "antd";
 import NullScreen from "@/components/common/NullScreen";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import { formatDate } from "@/utils/helpers";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
+const columns = [
+  {
+    title: "Permit No.",
+    dataIndex: "permitNo",
+    key: "permitNo",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
+    title: "Permittee",
+    dataIndex: "permittee",
+    key: "permittee",
+  },
+  {
+    title: "Authorization End Date",
+    dataIndex: "authorizationEndDate",
+    key: "authorizationEndDate",
+  },
+
+  {
+    title: "First Issued",
+    dataIndex: "firstIssued",
+    key: "firstIssued",
+  },
+  {
+    title: "Last Amended",
+    dataIndex: "lastAmended",
+    key: "lastAmended",
+  },
+];
+
+const childColumns = [
+  { title: "Permit No.", dataIndex: "permitNo", key: "childPermitNo" },
+  { title: "Date Issued", dataIndex: "issueDate", key: "issueDate" },
+  { title: "Permittee", dataIndex: "permittee", key: "childPermittee" },
+  { title: "Description", dataIndex: "description", key: "description" },
+];
+
+const groupPermits = (permits) =>
+  permits.reduce((acc, permit) => {
+    acc[permit.permit_no] = acc[permit.permit_no] || [];
+    acc[permit.permit_no].push(permit);
+    return acc;
+  }, {});
+
+const transformRowData = (permits) => {
+  const latest = permits[0];
+  const first = permits[permits.length - 1];
+  return {
+    key: latest.permit_guid,
+    lastAmended: formatDate(latest.issue_date),
+    permitNo: latest.permit_no || Strings.EMPTY_FIELD,
+    firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
+    permittee: latest.permittee[0] ? latest.permittee[0].party.party_name : Strings.EMPTY_FIELD,
+    authorizationEndDate: latest.expiry_date ? formatDate(latest.expiry_date) : Strings.EMPTY_FIELD,
+    amendmentHistory: permits.slice(1),
+    status: Strings.EMPTY_FIELD,
+  };
 };
 
-class MinePermitInfo extends Component {
-  render() {
-    const { mine } = this.props;
+const transformChildRowData = ({ permit_guid, permit_no, issue_date, permittee }) => ({
+  key: permit_guid,
+  permitNo: permit_no,
+  issueDate: formatDate(issue_date),
+  permittee: permittee[0] ? permittee[0].party.party_name : Strings.EMPTY_FIELD,
+  description: Strings.EMPTY_FIELD,
+});
+
+const MinePermitInfo = (props) => {
+  const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
+  const amendmentHistory = (record) => {
+    const childRowData = record.amendmentHistory.map(transformChildRowData);
     return (
-      <div>
-        <Row type="flex" style={{ textAlign: "center" }}>
-          <Col span={4}>
-            <h2>Permit #</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Permittee</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Status</h2>
-          </Col>
-          <Col span={4}>
-            <h2>First Issued</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Last Amended</h2>
-          </Col>
-          <Col span={4}>
-            <h2>Authorization End Date</h2>
-          </Col>
-        </Row>
-        <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
-        {mine.mine_permit.map((permit) => (
-          <div key={permit.permit_no}>
-            <Row type="flex" style={{ textAlign: "center" }}>
-              <Col id="permit_no" span={4}>
-                <p>{permit.permit_no}</p>
-              </Col>
-              <Col id="permittee" span={4}>
-                {permit.permittee[0].party.party_name}
-              </Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Col id="permit_issue_date" span={4}>
-                {permit.issue_date}
-              </Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Col span={4}>{String.EMPTY_FIELD}</Col>
-              <Divider />
-            </Row>
-          </div>
-        ))}
-        {mine.mine_permit.length === 0 && <NullScreen type="permit" />}
-      </div>
+      <Table align="center" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
-  }
-}
+  };
+  const rowData = groupedPermits.map(transformRowData);
+
+  return (
+    <Table
+      className="nested-table"
+      align="center"
+      pagination={false}
+      columns={columns}
+      dataSource={rowData}
+      expandedRowRender={amendmentHistory}
+      locale={{ emptyText: <NullScreen type="permit" /> }}
+    />
+  );
+};
 
 MinePermitInfo.propTypes = propTypes;
-MinePermitInfo.defaultProps = defaultProps;
+
 export default MinePermitInfo;

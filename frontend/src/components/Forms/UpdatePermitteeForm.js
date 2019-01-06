@@ -3,37 +3,32 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Divider, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, validSearchSelection } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  permit: PropTypes.array,
+  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permit: PropTypes.arrayOf(CustomPropTypes.permit),
   title: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
-  parties: {},
-  partyIds: [],
   permit: [],
 };
 
-const permitteeOptions = (permit) => {
-  const dataArray = [];
-  permit.map((obj) => {
-    const data = {
-      value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
-      label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
-    };
-    dataArray.push(data);
-  });
-  return dataArray;
-};
+const permitteeOptions = (permit) =>
+  permit.map((obj) => ({
+    value: `${obj.permittee[0].permittee_guid}, ${obj.permit_guid}`,
+    label: `${obj.permittee[0].party.name}, ${obj.permit_no}`,
+  }));
+
+const validParty = validSearchSelection({ key: "parties", err: "Invalid Permittee" });
 
 export const UpdatePermitteeForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -63,12 +58,13 @@ export const UpdatePermitteeForm = (props) => (
         <Form.Item>
           <Field
             id="party"
-            label="New Permittee *"
             name="party"
+            label="New Permittee *"
+            placeholder="Search for a Party"
             component={renderConfig.LARGE_SELECT}
             data={props.partyIds}
             options={props.parties}
-            validate={[required]}
+            validate={[required, validParty]}
             handleChange={props.handleChange}
           />
         </Form.Item>

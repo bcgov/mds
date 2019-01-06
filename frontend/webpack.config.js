@@ -1,17 +1,17 @@
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const merge = require('webpack-merge');
-const path = require('path');
-const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
+const merge = require("webpack-merge");
+const path = require("path");
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
-const parts = require('./webpack.parts');
+const parts = require("./webpack.parts");
 
-const DEVELOPMENT = 'development';
-const PRODUCTION = 'production';
+const DEVELOPMENT = "development";
+const PRODUCTION = "production";
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -30,23 +30,23 @@ const BUILD_FILE_NAMES = {
 };
 
 const PATH_ALIASES = {
-  '@': PATHS.src,
+  "@": PATHS.src,
   //Put your aliases here
 };
 
 const envFile = {};
 envFile["BASE_PATH"] = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
-if (process.env){
-  Object.keys(process.env).map(key => {
+if (process.env) {
+  Object.keys(process.env).map((key) => {
     envFile[key] = JSON.stringify(process.env[key]);
-});
-// Update the env dict with any in the .env file
+  });
+  // Update the env dict with any in the .env file
 }
-if (dotenv.parsed){
-    Object.keys(dotenv.parsed).map(key => {
-        envFile[key] = JSON.stringify(dotenv.parsed[key]);
-    });
+if (dotenv.parsed) {
+  Object.keys(dotenv.parsed).map((key) => {
+    envFile[key] = JSON.stringify(dotenv.parsed[key]);
+  });
 }
 
 const commonConfig = merge([
@@ -61,11 +61,11 @@ const commonConfig = merge([
       }),
       // Adding timestamp to builds
       function() {
-        this.plugin('watch-run', function(watching, callback) {
-            console.log('Begin compile at ' + new Date());
-            callback();
-        })
-      }
+        this.plugin("watch-run", function(watching, callback) {
+          console.log("Begin compile at " + new Date());
+          callback();
+        });
+      },
     ],
     resolve: {
       alias: PATH_ALIASES,
@@ -76,7 +76,7 @@ const commonConfig = merge([
     include: PATHS.src,
   }),
   parts.loadFonts({
-    exclude: path.join(PATHS.src, 'assets', 'images'),
+    exclude: path.join(PATHS.src, "assets", "images"),
     options: {
       name: BUILD_FILE_NAMES.assets,
     },
@@ -88,7 +88,7 @@ const devConfig = merge([
     output: {
       path: PATHS.build,
       publicPath: ASSET_PATH,
-      filename: 'bundle.js',
+      filename: "bundle.js",
     },
   },
   parts.generateSourceMaps({
@@ -99,10 +99,10 @@ const devConfig = merge([
     port: PORT,
   }),
   parts.loadCSS({
-    theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss')
+    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
   }),
   parts.loadImages({
-    exclude: path.join(PATHS.src, 'assets', 'fonts'),
+    exclude: path.join(PATHS.src, "assets", "fonts"),
   }),
 ]);
 
@@ -118,10 +118,10 @@ const prodConfig = merge([
   parts.clean(PATHS.build),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
-    theme: path.join(PATHS.src, 'styles', 'settings', 'theme.scss'),
+    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
   }),
   parts.loadImages({
-    exclude: path.join(PATHS.src, 'assets', 'fonts'),
+    exclude: path.join(PATHS.src, "assets", "fonts"),
     urlLoaderOptions: {
       limit: 10 * 1024,
       name: BUILD_FILE_NAMES.assets,
@@ -135,7 +135,7 @@ const prodConfig = merge([
         quality: 40,
       },
       pngquant: {
-        quality: '50-60',
+        quality: "50-60",
         speed: 4,
       },
     },
@@ -157,10 +157,8 @@ const prodConfig = merge([
     },
     safe: true,
   }),
-  parts.gZipCompression(),
-  parts.registerServiceWorker(),
   parts.extractManifest(),
-  parts.copy(PATHS.public, path.join(PATHS.build, 'public')),
+  parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
 module.exports = (mode) => {

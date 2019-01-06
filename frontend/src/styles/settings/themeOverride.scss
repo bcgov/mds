@@ -22,13 +22,13 @@
   .ant-divider-horizontal {
     margin: 5px;
     height: 1px;
-    background-color: $default-dark-green;
+    background-color: $h-divider-color;
   }
   &.ant-divider-vertical {
     margin: 0 15px;
     height: 30px;
     width: 2px;
-    background-color: $default-brown;
+    background-color: $v-divider-color;
   }
 }
 // BUTTON
@@ -37,12 +37,12 @@
 .ant-btn-secondary {
   font-weight: $light;
   margin: 10px;
-  color: $default-dark-green;
-  border: 1px solid $default-dark-green;
+  color: $secondary-btn-color;
+  border: 1px solid $secondary-btn-color;
 
   &:hover {
-    color: $default-light-green;
-    border: 1px solid $default-light-green;
+    color: $secondary-btn-color-hover;
+    border: 1px solid $secondary-btn-border-color-hover;
   }
 }
 
@@ -54,17 +54,29 @@
     text-decoration: none !important;
   }
   &:hover {
-    color: $default-light-green;
-    border: 1px solid $default-light-green;
+    color: $pagination-item-hover;
+    border: 1px solid $pagination-item-border-hover;
   }
 }
 
 .ant-btn-primary {
-  color: $white;
+  color: $pure-white;
   &:hover {
-    color: $white;
-    background-color: $default-light-green;
-    border: 1px solid $default-light-green;
+    color: $pure-white;
+    background-color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
+}
+
+.ant-btn-dashed {
+  margin: 10px 0;
+  color: $tertiary-btn-color;
+  border-color: $tertiary-btn-border-color;
+  border-style: dashed;
+  &:hover {
+    color: $tertiary-btn-color-hover;
+    border-color: $tertiary-btn-border-color-hover;
+    border-style: dashed;
   }
 }
 .ant-popover-buttons button {
@@ -85,10 +97,10 @@
   }
 }
 
-//POPUP CONFIRM
+// POPUP CONFIRM
 .ant-popover-inner-content,
 .ant-popover-arrow {
-  background-color: $default-white;
+  background-color: $pure-white;
 }
 
 // TOAST
@@ -109,7 +121,7 @@
 }
 
 .ant-card-bordered {
-  border: 1px solid $default-dark-green;
+  border: 1px solid $card-border-color;
 }
 
 // ROW
@@ -120,6 +132,11 @@
 // PAGINATION
 .ant-pagination {
   margin: $default-margin-lg;
+}
+
+// TAGS
+.ant-tag {
+  font-size: 14px;
 }
 
 // FORMS
@@ -134,4 +151,10 @@
 // DATE PICKER
 .ant-calendar-picker {
   width: 100%;
+}
+
+// COLLAPSE
+.ant-collapse {
+  border: none;
+  background-color: $pure-white;
 }

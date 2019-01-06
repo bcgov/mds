@@ -12,11 +12,7 @@ import { getKeycloak } from "@/selectors/authenticationSelectors";
 
 const propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  keycloak: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  keycloak: {},
+  keycloak: { logout: PropTypes.func.isRequired }.isRequired,
 };
 
 export class Logout extends Component {
@@ -48,7 +44,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Logout.propTypes = propTypes;
-Logout.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

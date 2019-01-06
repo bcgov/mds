@@ -13,7 +13,9 @@ const setupDispatchProps = () => {
   dispatchProps.createMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
+  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
+  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
@@ -29,6 +31,7 @@ const setupReducerProps = () => {
   reducerProps.pageData = MOCK.PAGE_DATA;
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineRegionHash = MOCK.REGION_HASH;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
@@ -62,10 +65,16 @@ describe("Dashboard", () => {
       const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
       component.update();
       reducerProps.history.push(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
       expect(reducerProps.history.push).toHaveBeenCalledWith(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
       expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
       expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();

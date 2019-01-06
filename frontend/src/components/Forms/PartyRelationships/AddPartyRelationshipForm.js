@@ -6,45 +6,38 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  partyType: PropTypes.string.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
+  partyRelationshipType: PropTypes.string,
+  mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
-  parties: {},
-  partyIds: [],
-  partyType: "",
+  partyRelationshipType: "",
+  mine: {},
+};
+
+const validate = (values) => {
+  const errors = {};
+  if (values.start_date && values.end_date) {
+    if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
+      errors.end_date = "Must be after start date.";
+    }
+  }
+  return errors;
 };
 
 export const AddPartyRelationshipForm = (props) => {
   let options;
-  switch (props.partyType) {
-    case "EoR":
-      options = (
-        <Row gutter={16}>
-          <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="tsf"
-                name="tsf"
-                label="TSF *"
-                placeholder="Select a TSF"
-                component={renderConfig.LARGE_SELECT}
-                /* data={props.partyIds}
-                  options={props.parties} */
-                validate={[required]} /* 
-                  handleChange={props.handleChange} */
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      );
+  switch (props.partyRelationshipType) {
+    case "EOR":
+      options = <EngineerOfRecordOptions mine={props.mine} />;
       break;
     default:
       options = <div />;
@@ -54,11 +47,11 @@ export const AddPartyRelationshipForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col md={12} xs={24}>
+        <Col md={24} xs={24}>
           <Form.Item>
             <Field
-              id="name"
-              name="name"
+              id="party_guid"
+              name="party_guid"
               label="Name *"
               component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
@@ -68,15 +61,27 @@ export const AddPartyRelationshipForm = (props) => {
             />
           </Form.Item>
         </Col>
+      </Row>
+      <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>
             <Field
-              id="date"
-              name="date"
-              label="Effective Date *"
+              id="start_date"
+              name="start_date"
+              label="Start Date"
               placeholder="yyyy-mm-dd"
               component={renderConfig.DATE}
-              validate={[required]}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} xs={24}>
+          <Form.Item>
+            <Field
+              id="end_date"
+              name="end_date"
+              label="End Date"
+              placeholder="yyyy-mm-dd"
+              component={renderConfig.DATE}
             />
           </Form.Item>
         </Col>
@@ -107,6 +112,6 @@ AddPartyRelationshipForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_PARTY_RELATIONSHIP,
+  validate,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PARTY_RELATIONSHIP),
 })(AddPartyRelationshipForm);

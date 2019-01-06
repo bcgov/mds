@@ -29,11 +29,11 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
             }
         }
-        stage('Functional Test (DEV) (SKIPPED)') {
+        stage('Functional Test (DEV)') {
             agent { label 'master' }
             steps {
                 echo "Functional Test (DEV) ..."
-                //sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
+                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-functional-test -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
         stage ('ZAP (DEV)'){
@@ -67,6 +67,31 @@ pipeline {
                     }
                     echo "Deploy (PROD)"
                     sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=prod'
+                }
+            }
+        }
+        stage('Merge to master') {
+            agent { label 'master' }
+            when {
+              environment name: 'CHANGE_TARGET', value: 'master'
+            }
+            steps {
+                script {
+                    def IS_APPROVED = input(message: "Merge to master?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Merge to master?')])
+                    if (IS_APPROVED != 'yes') {
+                        currentBuild.result = "ABORTED"
+                        error "User cancelled"
+                    }
+                    echo "Squashing commits and merging to master"
+                }
+                withCredentials([usernamePassword(credentialsId: 'github-account', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    sh """
+                        git fetch
+                        git checkout ${CHANGE_TARGET}
+                        git merge --squash origin/${CHANGE_BRANCH}
+                        git commit -m "Merge branch '${CHANGE_BRANCH}' into ${CHANGE_TARGET}"
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
+                    """
                 }
             }
         }

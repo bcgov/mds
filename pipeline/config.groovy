@@ -57,6 +57,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/_nginx.bc.json',
+                    'params':[
+                            'NAME':"mds-nginx",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "nginx",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'openshift/bddstack.bc.json',
                     'params':[
                             'NAME':"bdd-stack",
@@ -152,13 +162,30 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
-                            'ROUTE': "${vars.modules.'mds-frontend'.ROUTE}",
                             'NODE_ENV': "${vars.deployment.node_env}",
+                            'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
-                            'API_URL': "https://${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+                    ]
+                ],
+                [
+                    'file':'openshift/_nginx.dc.json',
+                    'params':[
+                            'NAME':"mds-nginx",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.nginx.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.nginx.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
+                            'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
+                            'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
+                            'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
                 [
@@ -176,8 +203,8 @@ app {
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
-                            'ROUTE': "${vars.modules.'mds-python-backend'.ROUTE}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -186,7 +213,7 @@ app {
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'BACKEND_HOST': "${vars.modules.'mds-python-backend'.HOST}${vars.modules.'mds-python-backend'.PATH}",
+                            'BACKEND_HOST': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
@@ -201,6 +228,7 @@ environments {
     'dev' {
         vars {
             DB_PVC_SIZE = '1Gi'
+            DOCUMENT_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -213,19 +241,25 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "1m"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
+                }
+                nginx {
+                    cpu_request = "50m"
                     cpu_limit = "100m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
                 }
                 python {
-                    cpu_request = "1m"
+                    cpu_request = "50m"
                     cpu_limit = "150m"
                     memory_request = "768Mi"
                     memory_limit = "1Gi"
                 }
                 postgres {
-                    cpu_request = "1m"
+                    cpu_request = "100m"
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
@@ -240,17 +274,21 @@ environments {
                 suffix = "-pr-${vars.git.changeId}"
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
+                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
+                    PATH = "/${vars.git.changeId}"
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                     ROUTE = "/${vars.git.changeId}"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -261,6 +299,7 @@ environments {
     'test' {
         vars {
             DB_PVC_SIZE = '10Gi'
+            DOCUMENT_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -277,6 +316,12 @@ environments {
                     cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
+                }
+                nginx {
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 python {
                     cpu_request = "300m"
@@ -300,17 +345,21 @@ environments {
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "production"
+                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
+                    PATH = ""
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
-                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -320,7 +369,8 @@ environments {
     }
     'prod' {
         vars {
-            DB_PVC_SIZE = '10Gi'
+            DB_PVC_SIZE = '50Gi'
+            DOCUMENT_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -330,6 +380,12 @@ environments {
                     cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
+                }
+                nginx {
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
+                    memory_request = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 python {
                     cpu_request = "300m"
@@ -360,17 +416,21 @@ environments {
                 key = 'prod'
                 namespace = 'empr-mds-prod'
                 node_env = "production"
+                map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
             }
             modules {
                 'mds-frontend' {
-                    HOST = "mds-frontend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
+                    PATH = ""
+                }
+                'mds-nginx' {
+                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
                 'mds-python-backend' {
-                    HOST = "mds-python-backend-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
-                    ROUTE = "/"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

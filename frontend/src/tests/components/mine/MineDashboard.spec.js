@@ -7,11 +7,13 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecordById = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
+  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
+  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.match = {};
 };
 
@@ -23,6 +25,7 @@ const setupReducerProps = () => {
   reducerProps.permitteeIds = [];
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
 };

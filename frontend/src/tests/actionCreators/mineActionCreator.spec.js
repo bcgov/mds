@@ -6,13 +6,10 @@ import {
   fetchMineRecords,
   fetchMineRecordById,
   fetchMineNameList,
-  fetchStatusOptions,
-  fetchRegionOptions,
   createTailingsStorageFacility,
   createMineExpectedDocument,
   removeExpectedDocument,
-  fetchMineTailingsRequiredDocuments,
-  fetchMineTenureTypes,
+  removeMineType,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -35,11 +32,17 @@ beforeEach(() => {
 
 describe("`createMineRecord` action creator", () => {
   const mineName = "mock Mine";
+  const mineGuid = "12345-6789";
+  const mineTenureTypeCode = "MIN";
   const url = ENVIRONMENT.apiUrl + API.MINE;
-  const mockPayLoad = { name: mineName };
+  const mineTypeUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES;
+  const mockPayLoad = { name: mineName, mine_tenure_type_code: mineTenureTypeCode };
+  const mockMineTypePayLoad = { mine_guid: mineGuid, mine_tenure_type_code: mineTenureTypeCode };
   it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, mockPayLoad).reply(200, mockResponse);
+    const mockMineResponse = { success: true, mine_guid: mineGuid };
+    const mockMineTypeResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayLoad).reply(200, mockMineResponse);
+    mockAxios.onPost(mineTypeUrl, mockMineTypePayLoad).reply(200, mockMineTypeResponse);
     return createMineRecord(mockPayLoad)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -76,6 +79,30 @@ describe("`updateMineRecord` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
     return updateMineRecord(mineId, tenureNumber)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeMineType` action creator", () => {
+  const tenure = "MockTenure";
+  const mineTypeGuid = "12345-6789";
+  const url = `${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removeMineType(mineTypeGuid, tenure)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return removeMineType(mineTypeGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -216,93 +243,6 @@ describe("`fetchMineNameList` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchMineNameList()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchStatusOptions` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_STATUS;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchStatusOptions()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchStatusOptions()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchRegionOptions` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_REGION;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchRegionOptions()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchRegionOptions()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchMineTailingsRequiredDocuments` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchMineTenureTypes` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_TENURE_TYPES;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineTenureTypes()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchMineTenureTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

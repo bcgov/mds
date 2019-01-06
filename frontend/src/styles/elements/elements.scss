@@ -1,4 +1,9 @@
-h1, h2, h3, h4, h5, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
   padding: 0;
   margin: 0;
   width: auto;
@@ -7,7 +12,7 @@ h1, h2, h3, h4, h5, p {
 h1 {
   font-size: $default-h1;
   font-weight: $bold;
-  color: $font-black;
+  color: $h1-color;
 
   @include mobile {
     font-size: $mobile-h1;
@@ -17,7 +22,7 @@ h2 {
   font-size: $default-h2;
   font-weight: $bold;
   text-transform: uppercase;
-  color: $default-brown;
+  color: $h2-color;
   @include mobile {
     font-size: $mobile-h2;
   }
@@ -25,7 +30,7 @@ h2 {
 h3 {
   font-size: $default-h5;
   font-weight: $bold;
-  color:  $font-black;
+  color: $h3-color;
   @include mobile {
     font-size: $mobile-h3;
   }
@@ -33,7 +38,7 @@ h3 {
 h4 {
   font-size: $default-h4;
   font-weight: $bold;
-  color: $default-dark-green;
+  color: $h4-color;
   text-transform: uppercase;
   @include mobile {
     font-size: $mobile-h4;
@@ -43,21 +48,22 @@ h4 {
 h5 {
   font-size: $default-h5;
   font-weight: $light;
-  color: $font-black;
+  color: $h5-color;
   @include mobile {
     font-size: $mobile-h5;
   }
 }
 
-p, .p {
+p,
+.p {
   font-size: $default-p;
-  color: $font-black;
+  color: $p-color;
   font-weight: $light;
 }
 
 .p-large {
   font-size: $default-h2;
-  color: $font-black;
+  color: $p-color;
   font-weight: $bold;
 
   @include tablet {
@@ -66,14 +72,19 @@ p, .p {
 }
 
 .p-white {
-  color: $default-white;
+  color: $pure-white;
 }
 
-a, Link {
-  color: $default-dark-green;
+.bold {
+  font-weight: $bold;
+}
+
+a,
+link {
+  color: $a-color;
   text-decoration: underline;
   &:hover {
-    color: $default-light-green;
+    color: $a-color-hover;
     text-decoration: underline;
   }
 }
@@ -82,7 +93,7 @@ a, Link {
 table {
   width: 100%;
 }
-  
+
 @include tablet {
   // hide title when mobile
   table th {
@@ -95,26 +106,26 @@ table {
     position: absolute;
     width: 1px;
   }
-  
+
   table tr {
     display: block;
   }
-  
+
   table td {
     display: block;
     text-align: right;
   }
-  
+
   table td::before {
     content: attr(data-label);
     font-size: 12px;
     font-weight: $light;
-    color: $default-dark-green;
+    color: $violet;
     text-transform: uppercase;
     float: left;
     margin-top: 5px;
   }
-  
+
   table td:last-child {
     border-bottom: 0;
   }
@@ -124,4 +135,24 @@ hr {
   border-top: 1px solid #c4cdd5;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+//These are here to style the infographic portion of the compliance tab and have not
+//been finalized yet.
+.info-display {
+  font-size: 32px;
+  font-weight: $bold;
+  color: $violet;
+  @include mobile {
+    font-size: 26px;
+  }
+}
+
+.info-display-label {
+  font-size: 18px;
+  font-weight: $bold;
+  color: $darkest-grey;
+  @include mobile {
+    font-size: 16px;
+  }
 }

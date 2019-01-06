@@ -1,5 +1,5 @@
 .dashboard {
-  background-color: $default-white;
+  background-color: $lightest-grey;
   top: -50px;
   padding-top: $default-padding-xl;
   position: relative;
@@ -13,7 +13,7 @@
       @include flex;
       height: 100%;
       margin: $default-margin-xxl;
-      background-color: $background-white;
+      background-color: $pure-white;
       box-shadow: $default-box-shadow;
 
       @include large {
@@ -51,7 +51,7 @@
 
   &__content {
     z-index: 100;
-    background-color: $background-white;
+    background-color: $pure-white;
     position: relative;
     border-radius: $default-round-top-border;
 
@@ -72,10 +72,25 @@
   }
 }
 
+.mine_tenure {
+  &:nth-child(1),
+  &:nth-child(2),
+  &:nth-child(3) {
+    &:after {
+      content: ", ";
+    }
+  }
+  &:last-child() {
+    &:after {
+      content: " " !important;
+    }
+  }
+}
+
 .table-wrapper {
   padding: $default-padding-md;
-  border-left: 4px solid $default-blue;
-  background: $default-white;
+  border-left: 4px solid $violet;
+  background: $pure-white;
 
   th {
     padding: 30px;

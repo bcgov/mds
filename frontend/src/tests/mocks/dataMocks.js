@@ -55,7 +55,7 @@ export const MINE_RESPONSE = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
     {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -168,7 +168,7 @@ export const MINE_RESPONSE = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
   ],
 };
@@ -215,7 +215,7 @@ export const MINES = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -334,7 +334,7 @@ export const MINES = {
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
         },
       ],
-      mine_type: [{ mine_tenure_type_id: 3 }, { mine_tenure_type_id: 2 }],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
   },
 };
@@ -506,18 +506,18 @@ export const REGION_HASH = {
 
 export const TENURE_TYPES = {
   options: [
-    { value: 1, label: "Coal" },
-    { value: 2, label: "Mineral" },
-    { value: 3, label: "Placer" },
-    { value: 4, label: "BC Land" },
+    { value: "COL", label: "Coal" },
+    { value: "MIN", label: "Mineral" },
+    { value: "PLR", label: "Placer" },
+    { value: "BCL", label: "BC Land" },
   ],
 };
 
 export const TENURE_HASH = {
-  1: "Coal",
-  2: "Mineral",
-  3: "Placer",
-  4: "BC Land",
+  COL: "Coal",
+  MIN: "Mineral",
+  PLR: "Placer",
+  BCL: "BC Land",
 };
 
 export const PERMITTEE = {
@@ -599,4 +599,114 @@ export const USER_ACCESS_DATA = [
   "admin",
   "uma_authorization",
   "mds-mine-admin",
+];
+
+export const DISTURBANCE_OPTIONS = {
+  options: [
+    {
+      description: "Surface",
+      exclusive_ind: false,
+      mine_disturbance_code: "SUR",
+      mine_tenure_type_codes: ["COL", "MIN", "PLR", "BCL"],
+    },
+    {
+      description: "Underground",
+      exclusive_ind: false,
+      mine_disturbance_code: "UND",
+      mine_tenure_type_codes: ["COL", "MIN", "PLR"],
+    },
+    {
+      description: "Coal Wash",
+      exclusive_ind: true,
+      mine_disturbance_code: "CWA",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Mill",
+      exclusive_ind: true,
+      mine_disturbance_code: "MIL",
+      mine_tenure_type_codes: ["PLR"],
+    },
+  ],
+};
+
+export const DISTURBANCE_OPTIONS_HASH = {
+  SUR: "Surface",
+  UND: "Underground",
+  CWA: "Coal Wash",
+  MIL: "Mill",
+};
+
+export const COMMODITY_OPTIONS = {
+  options: [
+    {
+      description: "Thermal Coal",
+      exclusive_ind: true,
+      mine_commodity_code: "TO",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Metallurgic",
+      exclusive_ind: true,
+      mine_commodity_code: "MC",
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      description: "Construction Aggregate",
+      exclusive_ind: false,
+      mine_commodity_code: "CG",
+      mine_tenure_type_codes: ["BCL"],
+    },
+  ],
+};
+
+export const CONDITIONAL_COMMODITY_OPTIONS = {
+  BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
+  COL: [
+    { label: "Thermal Coal", value: "TO", exclusive: true },
+    { label: "Metallurgic", value: "MC", exclusive: true },
+  ],
+};
+
+export const COMMODITY_OPTIONS_HASH = {
+  TO: "Thermal Coal",
+  MC: "Metallurgic",
+  CG: "Construction Aggregate",
+};
+
+export const CONDITIONAL_DISTURBANCE_OPTIONS = {
+  BCL: [{ label: "Surface", value: "SUR", exclusive: false }],
+  COL: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Coal Wash", value: "CWA", exclusive: true },
+  ],
+  MIN: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+  ],
+  PLR: [
+    { label: "Surface", value: "SUR", exclusive: false },
+    { label: "Underground", value: "UND", exclusive: false },
+    { label: "Mill", value: "MIL", exclusive: true },
+  ],
+};
+
+export const COMPLIANCE = {
+  last_inspection: "2018-12-12 00:00",
+  inspector: "test",
+  num_open_orders: 5,
+  num_overdue_orders: 5,
+  advisories: 5,
+  warnings: 5,
+  section_35_orders: 5,
+  open_orders:[],
+};
+
+export const MINE_TYPES = [
+  {
+    mine_tenure_type_code: [],
+    mine_commodity_code: [],
+    mine_disturbance_code: [],
+  },
 ];

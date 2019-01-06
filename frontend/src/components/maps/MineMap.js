@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { WebMap } from "react-arcgis";
 import { loadModules } from "react-arcgis";
+import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
 import MinePin from "./MinePin";
 import LocationPin from "./LocationPin";
@@ -39,7 +40,9 @@ class MineMap extends Component {
    * Adds widgets and any other view modifications after map has been loaded
    */
   handleLoadMap = (map, view) => {
-    this.renderWidgets(view);
+    if (!this.props.mine) {
+      this.renderWidgets(view);
+    }    
     this.setState({ map, view });
   };
 
@@ -59,20 +62,25 @@ class MineMap extends Component {
       "esri/widgets/LayerList",
       "esri/widgets/Expand",
       "esri/widgets/BasemapGallery",
-    ]).then(([LayerListWidget, Expand, BasemapGallery]) => {
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Legend",
+    ]).then(([LayerListWidget, Expand, BasemapGallery, ScaleBar, Legend]) => {
       const widgetPositionArray = {};
 
-      const layerList = new LayerListWidget({
+      widgetPositionArray["top-left"] = new LayerListWidget({
         view,
         container: document.createElement("layer_list"),
       });
-      widgetPositionArray["top-left"] = layerList;
 
-      const mapGallery = new BasemapGallery({
+      widgetPositionArray["top-right"] = new BasemapGallery({
         view,
         container: document.createElement("map_gallery"),
       });
-      widgetPositionArray["top-right"] = mapGallery;
+
+      widgetPositionArray["bottom-left"] = new Legend({
+        view,
+        container: document.createElement("legend"),
+      });      
 
       for (const position in widgetPositionArray) {
         // Cast all the widgets under an expandable div and add them to the UI
@@ -82,6 +90,13 @@ class MineMap extends Component {
         });
         view.ui.add(currentWidget, position);
       }
+      
+      const scaleBar = new ScaleBar({
+        view,
+        container: document.createElement("scale_bar"),
+        unit: "metric",
+      });
+      view.ui.add(scaleBar, "bottom-right");
     });
   }
 
@@ -99,10 +114,10 @@ class MineMap extends Component {
               mine.mine_location[0] ? mine.mine_location[0].longitude : String.DEFAULT_LONG,
               mine.mine_location[0] ? mine.mine_location[0].latitude : String.DEFAULT_LAT,
             ],
-            zoom: mine.mine_location[0] ? 8 : 4,
+            zoom: mine.mine_location[0] ? 8 : 5,
+            constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
-          onMouseWheel={(event) => event.stopPropagation()}
         >
           <MinePin />
         </WebMap>
@@ -112,15 +127,15 @@ class MineMap extends Component {
       // Map located on landing page - contains all mine pins and adds a location pin when searched.
       // this.props.lat & this.props.long get changed in Dashboard.js
       <WebMap
-        id={String.BASE_WEBMAP_ID}
+        id={ENVIRONMENT.mapPortalId}
         style={{ width: "100vw", height: "100vh" }}
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
           center: [this.props.long, this.props.lat],
           zoom: 6,
+          constraints: { minZoom: 5 },
         }}
         onLoad={this.handleLoadMap}
-        onMouseWheel={(event) => event.stopPropagation()}
       >
         {this.renderPin()}
         <MinePin />

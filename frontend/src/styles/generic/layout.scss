@@ -14,12 +14,12 @@ body {
 
 .content {
   overflow: initial;
-  background-color: $background-white;
+  background-color: $pure-white;
 }
 
 .footer {
   height: 45px;
-  background-color: $default-blue;
+  background-color: $nav-color;
 }
 
 .center {
@@ -47,7 +47,7 @@ body {
 
 .inline-flex {
   @include flex;
-  
+
   &--img {
     margin-top: 5px;
     height: 50%;
@@ -87,4 +87,28 @@ body {
   @include mobile {
     padding: 0 $default-padding-sm;
   }
+}
+
+.thick-divider {
+  height: 2px;
+}
+
+.btn--dropdown {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+  }
+}
+
+.padding-small{
+  padding: 5px;
 }

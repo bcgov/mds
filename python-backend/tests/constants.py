@@ -1,10 +1,12 @@
 # Test Constants
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
-TEST_MINE_GUID2 = '4fc855aa-728a-48f2-a3df-85ce1336b01b'
 
 TEST_MINE_DETAIL_GUID = '94de18e5-5239-4df0-aa2d-b21961d4721e'
 TEST_MINE_NAME = 'test_mine_name'
 TEST_MINE_NO = 'BLAH000'
+
+TEST_MINE_TYPE_GUID = 'df4939f0-04c9-49dc-bf04-2a3c3b8b0e14'
+TEST_MINE_TYPE_DETAIL_GUID = 'df4939f0-04c9-49dc-bf04-2a3c3b8b0e15'
 
 TEST_PARTY_PER_GUID_1 = 'df4939f0-04c9-49dc-bf04-2a3c3b8b0e24'
 TEST_PARTY_PER_FIRST_NAME_1 = 'first_name'
@@ -54,13 +56,28 @@ TEST_PARTY_TYPE = 'PER'
 TEST_ORG_TYPE = 'ORG'
 
 TEST_REGION_GUID = 'a0b98cb1-6e70-4c54-9395-1e8ccc867cd1'
-TEST_REGION_CODES = ['SW','SC','NW','NE','SE']
-TEST_REGION_CODE_DISPLAY_ORDER = [10,20,30,40,50]
+TEST_REGION_CODES = ['SW', 'SC', 'NW', 'NE', 'SE']
+TEST_REGION_CODE_DISPLAY_ORDER = [10, 20, 30, 40, 50]
 TEST_REGION_CODE = 'NE'
-TEST_REGION_DESCRIPTION= 'North East Region'
+TEST_REGION_DESCRIPTION = 'North East Region'
 
-TEST_MINE_TENURE_TYPE_IDS = [1,2,3,4]
-TEST_MINE_TENURE_TYPE_NAMES = ['Coal', 'Mineral', 'Placer', 'BC Land']
+TEST_MINE_TENURE_TYPE_CODES = ['COL', 'MIN', 'PLR', 'BCL']
+TEST_MINE_TENURE_TYPE_DESCRIPTIONS = ['Coal', 'Mineral', 'Placer', 'BC Land']
+
+TEST_MINE_DISTURBANCE_CODES = ['SUR', 'UND', 'CWA', 'MIL']
+TEST_MINE_DISTURBANCE_DESCRIPTIONS = [
+    'Surface', 'Underground', 'Coal Wash', 'Mill'
+]
+
+TEST_MINE_COMMODITY_CODES = ['TO', 'MC', 'CG', 'SA', 'AE', 'AL']
+TEST_MINE_COMMODITY_DESCRIPTIONS = [
+    'Thermal Coal',
+    'Metallurgic',
+    'Construction Aggregate',
+    'Sand and Gravel',
+    'Agate',
+    'Aluminum'
+]
 
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID = 'bd5ef43b-379a-41a0-aa00-c5b632e9c329'
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS = 'MINE_TAILINGS'
@@ -86,6 +103,9 @@ TEST_EXPECTED_DOCUMENT_NAME1 = 'Expected Document 1'
 TEST_EXPECTED_DOCUMENT_GUID2 = 'f6c98d68-e565-41f3-9cea-d3cb4542c814'
 TEST_EXPECTED_DOCUMENT_NAME2 = 'Expected Document 2'
 
+TEST_MINE_DOCUMENT_NAME1 = 'Mine Document 1'
+TEST_DOCUMENT_MANAGER_FILE_GUID = 'a7cd9625-887c-4cc6-9faa-9396a1718a8f'
+
 TEST_TAILINGS_STORAGE_FACILITY_GUID1 = '6e7348fd-5aaf-4910-a2e2-c36d17ff6903'
 TEST_TAILINGS_STORAGE_FACILITY_NAME1 = 'Tailings Facility 1'
 
@@ -97,6 +117,8 @@ TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION1 = 'Alliterating Ardvarks Are Awesome'
 
 TEST_MINE_PARTY_APPT_TYPE_CODE2 = 'BBB'
 TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2 = 'Buzzing Bumblebees be ballin'
+
+TEST_MINE_PARTY_APPT_GUID = '2484d785-a3c7-47db-b296-edb284a3c160'
 
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
@@ -117,9 +139,7 @@ BASE_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "realm_access": {
-        "roles": [
-            "idir"
-        ]
+        "roles": ["idir"]
     }
 }
 
@@ -136,11 +156,7 @@ FULL_AUTH_CLAIMS = {
     "email": "test-email",
     "given_name": "test-given-name",
     "realm_access": {
-        "roles": [
-            "mds-mine-view",
-            "mds-mine-create",
-            "idir"
-        ]
+        "roles": ["mds-mine-view", "mds-mine-create", "idir"]
     }
 }
 
@@ -154,9 +170,6 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "realm_access": {
-        "roles": [
-            "mds-mine-view",
-            "idir"
-        ]
+        "roles": ["mds-mine-view", "idir"]
     }
 }

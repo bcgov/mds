@@ -44,11 +44,6 @@
       "value": "/"
     },
     {
-      "name": "ROUTE",
-      "required": false,
-      "value": "/"
-    },
-    {
       "name": "NODE_ENV",
       "displayName": "Node Environment",
       "description": "Environment for running node",
@@ -93,6 +88,10 @@
       "displayName": "API Url",
       "description": "URL for the backend API",
       "value": "http://localhost:3000"
+    },
+    {
+      "name": "MAP_PORTAL_ID",
+      "value": "e926583cd0114cd19ebc591f344e30dc"
     },
     {
       "name": "CPU_LIMIT",
@@ -143,28 +142,6 @@
           }
         ],
         "selector": {
-          "name": "${NAME}${SUFFIX}"
-        }
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "labels": {
-          "component": "${NAME}"
-        }
-      },
-      "spec": {
-        "host": "${APPLICATION_DOMAIN}",
-        "tls": {
-          "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect"
-        },
-        "path": "${ROUTE}",
-        "to": {
-          "kind": "Service",
           "name": "${NAME}${SUFFIX}"
         }
       }
@@ -222,6 +199,10 @@
                   {
                     "name": "API_URL",
                     "value": "${API_URL}"
+                  },
+                  {
+                    "name": "MAP_PORTAL_ID",
+                    "value": "${MAP_PORTAL_ID}"
                   },
                   {
                     "name": "NODE_ENV",
