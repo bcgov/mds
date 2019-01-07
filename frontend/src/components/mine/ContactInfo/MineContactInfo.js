@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { debounce } from "lodash";
 import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
-import { createParty, fetchParties, addPermittee } from "@/actionCreators/partiesActionCreator";
+import { createParty, fetchParties } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 
 /**
@@ -18,6 +18,13 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  addMineManager: PropTypes.func.isRequired,
+  addPermittee: PropTypes.func.isRequired,
+  mine: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
 };
 
 export class MineContactInfo extends Component {
@@ -30,10 +37,6 @@ export class MineContactInfo extends Component {
     this.props.fetchParties();
   }
 
-  handleChange = (value) => {
-    this.props.fetchParties(value);
-  };
-
   /**
    * add new parties (firstName, surname || companyName) to db.
    */
@@ -42,6 +45,10 @@ export class MineContactInfo extends Component {
     this.props.createParty(payload).then(() => {
       this.props.fetchParties();
     });
+  };
+
+  handleChange = (value) => {
+    this.props.fetchParties(value);
   };
 
   render() {
@@ -58,13 +65,15 @@ export class MineContactInfo extends Component {
 }
 
 MineContactInfo.propTypes = propTypes;
+MineContactInfo.defaultProps = defaultProps;
+
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
       createParty,
-      addPermittee,
       fetchMineRecordById,
       openModal,
       closeModal,
@@ -72,4 +81,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapDispatchToProps)(MineContactInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineContactInfo);
