@@ -33,7 +33,7 @@ DECLARE
 
 BEGIN
 
-INSERT INTO mine_identity(mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
+INSERT INTO mine(mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
 VALUES (MINE_GUID,MINE_NO,MINE_NAME,MINE_NOTE,MAJOR_IND,REGION,IDIR_USER,DEFAULT,IDIR_USER,DEFAULT);
 
 -- add location

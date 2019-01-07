@@ -7,7 +7,7 @@ from sqlalchemy_filters import apply_sort, apply_pagination
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
-from ..models.mine_identity import MineIdentity
+from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
@@ -44,7 +44,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @jwt.requires_roles(["mds-mine-view"])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
-            mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
+            mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
             if mine:
                 return mine.json()
             return self.create_error_payload(404, 'Mine not found'), 404
@@ -74,14 +74,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 all_status_filter = status_filter | status_reason_filter | status_subreason_filter
 
             if search_term:
-                name_filter = MineIdentity.mine_name.ilike('%{}%'.format(search_term))
-                number_filter = MineIdentity.mine_no.ilike('%{}%'.format(search_term))
+                name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
+                number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
                 permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-                mines_query = MineIdentity.query.filter(name_filter | number_filter)
-                permit_query = MineIdentity.query.join(Permit).filter(permit_filter)
+                mines_query = Mine.query.filter(name_filter | number_filter)
+                permit_query = Mine.query.join(Permit).filter(permit_filter)
                 mines_permit_join_query = mines_query.union(permit_query)
                 if status_search_term:
-                    status_query = MineIdentity.query\
+                    status_query = Mine.query\
                         .join(MineStatus)\
                         .join(MineStatusXref)\
                         .filter(all_status_filter)
@@ -90,19 +90,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                                                                     items_per_page)
 
             else:
-                sort_criteria = [{
-                    'model': 'MineIdentity',
-                    'field': 'mine_name',
-                    'direction': 'asc'
-                }]
+                sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
                 if status_search_term:
-                    mine_query_with_status = MineIdentity.query\
+                    mine_query_with_status = Mine.query\
                         .join(MineStatus)\
                         .join(MineStatusXref)\
                         .filter(all_status_filter)
                     result_query = apply_sort(mine_query_with_status, sort_criteria)
                 else:
-                    result_query = apply_sort(MineIdentity.query, sort_criteria)
+                    result_query = apply_sort(Mine.query, sort_criteria)
 
             paginated_mine_query, pagination_details = apply_pagination(
                 result_query, page, items_per_page)
@@ -161,9 +157,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         mine_region = data['mine_region']
-        mine_identity = MineIdentity(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
+        mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
-            mine_identity = MineIdentity(
+            mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
                 mine_name=data['name'],
@@ -173,28 +169,27 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict())
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
-        mine_identity.save()
+        mine.save()
 
         if lat and lon:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
-                mine_guid=mine_identity.mine_guid,
+                mine_guid=mine.mine_guid,
                 latitude=lat,
                 longitude=lon,
                 **self.get_create_update_dict())
             location.save()
-        mine_status = self.mine_status_processor(status,
-                                                 mine_identity.mine_guid) if status else None
+        mine_status = self.mine_status_processor(status, mine.mine_guid) if status else None
         return {
-            'mine_guid': str(mine_identity.mine_guid),
-            'mine_no': mine_identity.mine_no,
-            'mine_name': mine_identity.mine_name,
-            'mine_note': mine_identity.mine_note,
-            'major_mine_ind': mine_identity.major_mine_ind,
+            'mine_guid': str(mine.mine_guid),
+            'mine_no': mine.mine_no,
+            'mine_name': mine.mine_name,
+            'mine_note': mine.mine_note,
+            'major_mine_ind': mine.major_mine_ind,
             'latitude': str(location.latitude) if location else None,
             'longitude': str(location.longitude) if location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine_identity.mine_region if mine_region else None,
+            'mine_region': mine.mine_region if mine_region else None,
         }
 
     @api.expect(parser)
@@ -213,7 +208,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
                 and not region and major_mine_ind is None):
             self.raise_error(400, 'Error: No fields filled.')
-        mine = MineIdentity.find_by_mine_no_or_guid(mine_no_or_guid)
+        mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             return self.create_error_payload(404, 'Mine not found'), 404
 
@@ -274,14 +269,14 @@ class MineListByName(Resource):
     def get(self):
         search_term = request.args.get('search')
         if search_term:
-            name_filter = MineIdentity.mine_name.ilike('%{}%'.format(search_term))
-            number_filter = MineIdentity.mine_no.ilike('%{}%'.format(search_term))
+            name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
+            number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines_q = MineIdentity.query.filter(name_filter | number_filter)
-            permit_q = MineIdentity.query.join(Permit).filter(permit_filter)
+            mines_q = Mine.query.filter(name_filter | number_filter)
+            permit_q = Mine.query.join(Permit).filter(permit_filter)
             mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
         else:
-            mines = MineIdentity.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
+            mines = Mine.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
 
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result}

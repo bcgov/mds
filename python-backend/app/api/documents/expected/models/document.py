@@ -20,20 +20,16 @@ class ExpectedDocument(AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     # Foreign Key Columns
     req_document_guid = db.Column(
-        UUID(as_uuid=True),
-        db.ForeignKey('mds_required_document.req_document_guid'),
-        nullable=True)
+        UUID(as_uuid=True), db.ForeignKey('mds_required_document.req_document_guid'), nullable=True)
 
-    mine_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     # Data Columns
     exp_document_name = db.Column(db.String(100), nullable=False)
     exp_document_description = db.Column(db.String(300))
 
     due_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime)
-    active_ind = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     exp_document_status_guid = db.Column(
         UUID(as_uuid=True), nullable=True, server_default=FetchedValue())
 
@@ -65,8 +61,7 @@ class ExpectedDocument(AuditMixin, Base):
         except ValueError:
             return None
 
-    def add_due_date_to_expected_document(self, current_date, due_date_type,
-                                          period_in_months):
+    def add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
 
         current_year = current_date.year
         march = 3
@@ -77,8 +72,7 @@ class ExpectedDocument(AuditMixin, Base):
 
         if due_date_type == 'FIS':
 
-            fiscal_year_end = datetime(current_year, march, day, hour, minute,
-                                       second)
+            fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
             due_date = fiscal_year_end + \
                 relativedelta(months=int(period_in_months))
 

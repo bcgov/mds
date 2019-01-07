@@ -5,7 +5,7 @@ import string
 import names
 
 from datetime import datetime
-from ..mines.mine.models.mine_identity import MineIdentity
+from ..mines.mine.models.mine import Mine
 
 VOWELS = "aeiou"
 CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))
@@ -39,7 +39,7 @@ def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
 
 def generate_mine_no():
     mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
-    while MineIdentity.find_by_mine_no(mine_no):
+    while Mine.find_by_mine_no(mine_no):
         mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
     return mine_no
 

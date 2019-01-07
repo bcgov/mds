@@ -6,8 +6,8 @@ from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 
-class MineIdentity(AuditMixin, Base):
-    __tablename__ = 'mine_identity'
+class Mine(AuditMixin, Base):
+    __tablename__ = 'mine'
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
@@ -19,43 +19,36 @@ class MineIdentity(AuditMixin, Base):
     # Relationships
     mgr_appointment = db.relationship(
         'MgrAppointment',
-        backref='mine_identity',
+        backref='mine',
         order_by='desc(MgrAppointment.update_timestamp)',
         lazy='joined')
-    mineral_tenure_xref = db.relationship(
-        'MineralTenureXref', backref='mine_identity', lazy='joined')
+    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='joined')
     mine_location = db.relationship(
         'MineLocation',
-        backref='mine_identity',
+        backref='mine=',
         order_by='desc(MineLocation.update_timestamp)',
         lazy='joined')
     mine_permit = db.relationship(
-        'Permit', backref='mine_identity', order_by='desc(Permit.issue_date)', lazy='joined')
+        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship(
-        'MineStatus',
-        backref='mine_identity',
-        order_by='desc(MineStatus.update_timestamp)',
-        lazy='joined')
+        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
-        backref='mine_identity',
+        backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
         lazy='joined')
     mine_expected_documents = db.relationship(
         'MineExpectedDocument',
         primaryjoin=
-        "and_(MineExpectedDocument.mine_guid == MineIdentity.mine_guid, MineExpectedDocument.active_ind==True)",
-        backref='mine_identity',
+        "and_(MineExpectedDocument.mine_guid == Mine.mine_guid, MineExpectedDocument.active_ind==True)",
+        backref='mine',
         order_by='desc(MineExpectedDocument.due_date)',
         lazy='joined')
     mine_type = db.relationship(
-        'MineType',
-        backref='mine_identity',
-        order_by='desc(MineType.update_timestamp)',
-        lazy='joined')
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='joined')
 
     def __repr__(self):
-        return '<MineIdentity %r>' % self.mine_guid
+        return '<Mine %r>' % self.mine_guid
 
     def json(self):
         return {
@@ -156,14 +149,8 @@ class MineIdentity(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine_identity(cls,
-                             mine_no,
-                             mine_name,
-                             mine_category,
-                             mine_region,
-                             user_kwargs,
-                             save=True):
-        mine_identity = cls(
+    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
+        mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
@@ -171,8 +158,8 @@ class MineIdentity(AuditMixin, Base):
             mine_region=mine_region,
             **user_kwargs)
         if save:
-            mine_identity.save(commit=False)
-        return mine_identity
+            mine.save(commit=False)
+        return mine
 
     @validates('mine_name')
     def validate_mine_name(self, key, mine_name):

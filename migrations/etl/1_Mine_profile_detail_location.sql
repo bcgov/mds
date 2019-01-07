@@ -66,18 +66,18 @@ DECLARE
     location_row    integer;
 BEGIN
     RAISE NOTICE '.. Step 2 of 2: Update mine details in MDS';
-    SELECT count(*) FROM mine_identity into old_row;
-    -- Upsert data from new_record into mine_identity table
+    SELECT count(*) FROM mine into old_row;
+    -- Upsert data from new_record into mine table
     WITH new_record AS (
         SELECT *
         FROM ETL_PROFILE
         WHERE NOT EXISTS (
             SELECT  1
-            FROM    mine_identity
+            FROM    mine
             WHERE   mine_guid = ETL_PROFILE.mine_guid
         )
     )
-    INSERT INTO mine_identity(
+    INSERT INTO mine(
         mine_guid           ,
         mine_no             ,
         mine_name           ,
@@ -145,7 +145,7 @@ BEGIN
         (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
         AND
         (new.lat_dec <> 0 AND new.lon_dec <> 0);
-    SELECT count(*) FROM mine_identity into new_row;
+    SELECT count(*) FROM mine into new_row;
     SELECT count(*) FROM mine_location into location_row;
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
     RAISE NOTICE '....Total mine records in the MDS: %.', new_row;

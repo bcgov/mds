@@ -11,7 +11,7 @@ from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 
 from ..models.mine_expected_document import MineExpectedDocument
-from ....mines.mine.models.mine_identity import MineIdentity
+from ....mines.mine.models.mine import Mine
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
 from ...mines.models.mine_document import MineDocument
@@ -45,7 +45,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             )
 
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
-        mine = MineIdentity.find_by_mine_guid(str(expected_document.mine_guid))
+        mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
         if document_category:
