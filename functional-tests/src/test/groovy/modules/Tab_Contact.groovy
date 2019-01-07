@@ -1,7 +1,6 @@
 package modules
 
 import geb.Module
-import modules.Form_UpdateManager
 
 class Tab_Contact extends Module {
     static at = {waitFor() {activeTab=='Contact Information'}}
