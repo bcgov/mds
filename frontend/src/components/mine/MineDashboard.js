@@ -141,7 +141,8 @@ export class MineDashboard extends Component {
                     <MineComplianceInfo mine={mine} {...this.props} />
                   </div>
                 </TabPane>
-                <TabPane tab="Tenure" key="tenure">
+                {/* TODO: Unhide for July release */}
+                <TabPane style={{ display: "none" }} tab="Tenure" key="tenure">
                   <div className="tab__content">
                     <MineTenureInfo mine={mine} {...this.props} />
                   </div>
