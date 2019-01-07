@@ -38,7 +38,7 @@ export class NavBar extends Component {
           <img alt="Home" className="menu__img" src={HOME} />
         </Link>
         <Dropdown overlay={this.menu} placement="bottomLeft">
-          <button type="button" style={{ color: "#ffffff" }}>
+          <button type="button" className="menu__btn">
             <img alt="Profile" className="menu__img" src={PROFILE} />
             {this.props.userInfo.preferred_username}
             <Icon type="down" />
