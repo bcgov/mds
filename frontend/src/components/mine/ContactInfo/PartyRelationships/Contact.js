@@ -21,10 +21,18 @@ const propTypes = {
 const doNothing = () => {};
 
 const defaultProps = {
-  handleChange: doNothing(),
-  openEditPartyRelationshipModal: doNothing(),
-  onSubmitEditPartyRelationship: doNothing(),
-  removePartyRelationship: doNothing(),
+  handleChange: () => {
+    doNothing();
+  },
+  openEditPartyRelationshipModal: () => {
+    doNothing();
+  },
+  onSubmitEditPartyRelationship: () => {
+    doNothing();
+  },
+  removePartyRelationship: () => {
+    doNothing();
+  },
   otherDetails: {},
   isEditable: false,
 };
