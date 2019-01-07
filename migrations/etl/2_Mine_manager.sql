@@ -257,7 +257,7 @@ DECLARE
     new_row integer;
 BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
-    SELECT count(*) FROM mgr_appointment INTO old_row;
+    SELECT count(*) FROM mine_party_appt INTO old_row;
     --select only new record
     WITH new_manager AS
     (
