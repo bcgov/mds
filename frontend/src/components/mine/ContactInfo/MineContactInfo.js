@@ -4,11 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import ViewPartyRelationships from "./ViewPartyRelationships";
-import {
-  openModal,
-  closeModal,
-} from "@/actions/modalActions"; /* 
-import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors"; */
+import { openModal, closeModal } from "@/actions/modalActions";
 import { createParty, fetchParties, addPermittee } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 
