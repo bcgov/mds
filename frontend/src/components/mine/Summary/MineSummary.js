@@ -6,10 +6,6 @@ import { Row, Col } from "antd";
 import { uniqBy } from "lodash";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  fetchPartyRelationshipTypes,
-  fetchPartyRelationships,
-} from "@/actionCreators/partiesActionCreator";
 import PropTypes from "prop-types";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 
@@ -20,8 +16,6 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(PropTypes.object),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
@@ -32,17 +26,6 @@ const defaultProps = {
 };
 
 export class MineSummary extends Component {
-  componentWillMount() {
-    this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
-  }
-  /* 
-  componentDidUpdate(prevProps) {
-    if (prevProps.partyRelationships !== this.props.partyRelationships) {
-      this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
-    }
-  } */
-
   renderPartyRelationship(partyRelationship) {
     if (!this.props.partyRelationshipTypes.length > 0) return <div>Loading...</div>;
 
@@ -84,19 +67,7 @@ const mapStateToProps = (state) => ({
   partyRelationshipTypes: getPartyRelationshipTypes(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchPartyRelationships,
-      fetchPartyRelationshipTypes,
-    },
-    dispatch
-  );
-
 MineSummary.propTypes = propTypes;
 MineSummary.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineSummary);
+export default connect(mapStateToProps)(MineSummary);

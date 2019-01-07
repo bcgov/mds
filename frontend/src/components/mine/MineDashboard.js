@@ -29,6 +29,10 @@ import {
   getDisturbanceOptionHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
+import {
+  fetchPartyRelationshipTypes,
+  fetchPartyRelationshipsByMineId,
+} from "@/actionCreators/partiesActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -55,6 +59,8 @@ const propTypes = {
   permittees: PropTypes.objectOf(CustomPropTypes.permittee),
   permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -66,7 +72,7 @@ const defaultProps = {
 export class MineDashboard extends Component {
   state = { activeTab: "summary", isLoaded: false };
 
-  componentDidMount() {
+  componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
@@ -76,6 +82,8 @@ export class MineDashboard extends Component {
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
     this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationshipsByMineId(id);
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -187,6 +195,8 @@ const mapDispatchToProps = (dispatch) =>
       removeMineType,
       openModal,
       closeModal,
+      fetchPartyRelationshipsByMineId,
+      fetchPartyRelationshipTypes,
     },
     dispatch
   );

@@ -13,11 +13,10 @@ import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 
 import {
-  fetchPartyRelationshipTypes,
   addPartyRelationship,
-  fetchPartyRelationshipsByMineId,
   removePartyRelationship,
   updatePartyRelationship,
+  fetchPartyRelationshipsByMineId,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
 import {
@@ -32,8 +31,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  partyRelationshipTypes: PropTypes.object,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
@@ -57,17 +54,6 @@ export class ViewPartyRelationships extends Component {
   }
 
   state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
-
-  componentWillMount() {
-    this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
-  }
-  /* 
-  componentDidUpdate(prevProps) {
-    if (prevProps.partyRelationships !== this.props.partyRelationships) {
-      this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
-    }
-  } */
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
@@ -396,7 +382,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchPartyRelationshipTypes,
       addPartyRelationship,
       fetchPartyRelationshipsByMineId,
       removePartyRelationship,

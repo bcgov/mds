@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Table } from "antd";
@@ -7,7 +6,6 @@ import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -15,7 +13,6 @@ import { getPartyRelationships } from "@/selectors/partiesSelectors";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
 
@@ -65,16 +62,6 @@ const childColumns = [
 ];
 
 export class MinePermitInfo extends Component {
-  componentWillMount() {
-    this.props.fetchPartyRelationships(this.props.mine.id, null, "PMT");
-  }
-  /* 
-  componentDidUpdate(prevProps) {
-    if (prevProps.partyRelationships !== this.props.partyRelationships) {
-      this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
-    }
-  } */
-
   groupPermits = (permits) =>
     permits.reduce((acc, permit) => {
       acc[permit.permit_no] = acc[permit.permit_no] || [];
@@ -148,18 +135,7 @@ const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchPartyRelationships,
-    },
-    dispatch
-  );
-
 MinePermitInfo.propTypes = propTypes;
 MinePermitInfo.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MinePermitInfo);
+export default connect(mapStateToProps)(MinePermitInfo);
