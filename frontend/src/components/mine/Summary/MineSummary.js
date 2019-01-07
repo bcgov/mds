@@ -55,7 +55,7 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
-const MineSummary = (props) => {
+export const MineSummary = (props) => {
   if (props.partyRelationships.length === 0) {
     return <NullScreen type="generic" />;
   }

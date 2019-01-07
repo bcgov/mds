@@ -17,12 +17,7 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import {
-  getMines,
-  getCurrentPermitteeIds,
-  getCurrentPermittees,
-  getCurrentMineTypes,
-} from "@/selectors/mineSelectors";
+import { getMines, getCurrentPermitteeIds, getCurrentMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -172,7 +167,6 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  permittees: getCurrentPermittees(state),
   permitteeIds: getCurrentPermitteeIds(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),

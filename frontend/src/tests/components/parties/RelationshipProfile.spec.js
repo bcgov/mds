@@ -1,21 +1,24 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { PartyProfile } from "@/components/parties/PartyProfile";
+import { RelationshipProfile } from "@/components/parties/RelationshipProfile";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchPartyById = jest.fn();
-  dispatchProps.fetchPartyRelationshipsByPartyId = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.match = {};
+  dispatchProps.fetchMineRecordById = jest.fn();
+  dispatchProps.fetchPartyById = jest.fn();
+  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn();
 };
 
 const setupReducerProps = () => {
   reducerProps.parties = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
-  reducerProps.partyRelationshipTypes = MOCK.PARTYRELATIONSHIPTYPES;
+  reducerProps.partyRelationships = {};
+  reducerProps.partyRelationshipTypes = [];
+  reducerProps.mines = MOCK.MINES;
 };
 
 beforeEach(() => {
@@ -23,10 +26,10 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("PartyProfile", () => {
+describe("RelationshipProfile", () => {
   it("renders properly", () => {
     const component = shallow(
-      <PartyProfile
+      <RelationshipProfile
         {...dispatchProps}
         {...reducerProps}
         match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}

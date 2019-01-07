@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { UpdatePermitteeModal } from "@/components/modalContent/UpdatePermitteeModal";
+import { EditPartyRelationshipModal } from "@/components/modalContent/EditPartyRelationshipModal";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -13,11 +13,7 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  [props.permit] = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_permit;
-  props.parties = MOCK.PARTY.parties;
-  props.partyIds = MOCK.PARTY.partyIds;
-  props.permittees = MOCK.PERMITTEE.permittees;
-  props.permitteeIds = MOCK.PERMITTEE.permitteeIds;
+  props.partyRelationship = MOCK.PARTYRELATIONSHIP;
 };
 
 beforeEach(() => {
@@ -25,9 +21,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("UpdatePermitteeModal", () => {
+describe("EditPartyRelationshipModal", () => {
   it("renders properly", () => {
-    const component = shallow(<UpdatePermitteeModal {...dispatchProps} {...props} />);
+    const component = shallow(<EditPartyRelationshipModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

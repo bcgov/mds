@@ -18,8 +18,6 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  addMineManager: PropTypes.func.isRequired,
-  addPermittee: PropTypes.func.isRequired,
   mine: PropTypes.object.isRequired,
 };
 
