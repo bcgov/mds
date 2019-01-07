@@ -52,7 +52,7 @@ const propTypes = {
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  permittees: PropTypes.arrayOf(CustomPropTypes.permittee),
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
   permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
