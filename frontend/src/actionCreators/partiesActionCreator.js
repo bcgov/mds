@@ -183,7 +183,7 @@ export const fetchPartyRelationships = (mineId, partyId, typeCode) => (dispatch)
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${
         mineId ? `mine_guid=${mineId}${partyId || typeCode ? "&" : ""}` : ""
       }${partyId ? `party_guid=${partyId}${typeCode ? "&" : ""}` : ""}${
-        typeCode ? `mine_party_appt_type_code=${typeCode}` : ""
+        typeCode ? `types=${typeCode}` : ""
       }`,
       createRequestHeader()
     )
@@ -252,10 +252,7 @@ export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return axios
-    .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_party_appt_type_code=${typeCode}`,
-      createRequestHeader()
-    )
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?types=${typeCode}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
