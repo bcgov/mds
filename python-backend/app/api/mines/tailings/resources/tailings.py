@@ -40,6 +40,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             }
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
+    @jwt.requires_roles(["mds-mine-create"])
     def post(self, mine_tailings_storage_facility_guid=None):
         if not mine_tailings_storage_facility_guid:
             data = self.parser.parse_args()
