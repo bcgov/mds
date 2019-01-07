@@ -29,7 +29,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   match: PropTypes.object,
-  mines: PropTypes.object,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 const defaultProps = {

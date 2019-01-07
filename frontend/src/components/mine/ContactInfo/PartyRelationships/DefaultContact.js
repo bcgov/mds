@@ -15,6 +15,7 @@ const propTypes = {
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
   otherDetails: PropTypes.object,
+  isEditable: PropTypes.bool.isRequired,
 };
 
 export class DefaultContact extends Component {
@@ -114,23 +115,25 @@ export class DefaultContact extends Component {
               }}
             >
               View Profile
-            </Button>
-            <br />
-            <Button
-              style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
-              key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
-              type="primary"
-              onClick={() =>
-                this.props.openEditPartyRelationshipModal(
-                  this.props.partyRelationship,
-                  this.props.onSubmitEditPartyRelationship,
-                  this.props.handleChange,
-                  this.props.mine
-                )
-              }
-            >
-              Update
-            </Button>
+            </Button>{" "}
+            {this.props.isEditable && [
+              <br />,
+              <Button
+                style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
+                key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
+                type="primary"
+                onClick={() =>
+                  this.props.openEditPartyRelationshipModal(
+                    this.props.partyRelationship,
+                    this.props.onSubmitEditPartyRelationship,
+                    this.props.handleChange,
+                    this.props.mine
+                  )
+                }
+              >
+                Update
+              </Button>,
+            ]}
           </div>
           {this.props.otherDetails}
         </div>

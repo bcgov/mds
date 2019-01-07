@@ -11,6 +11,8 @@ const propTypes = {
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
+  otherDetails: PropTypes.object,
+  isEditable: PropTypes.bool.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
@@ -29,6 +31,8 @@ export const EngineerOfRecord = (props) => {
       openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
       onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
       removePartyRelationship={props.removePartyRelationship}
+      otherDetails={props.otherDetails}
+      isEditable={props.isEditable}
     />
   );
 };

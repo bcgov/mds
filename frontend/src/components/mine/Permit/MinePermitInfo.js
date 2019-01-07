@@ -7,26 +7,20 @@ import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import {
-  fetchPartyRelationshipTypes,
-  fetchPartyRelationships,
-} from "@/actionCreators/partiesActionCreator";
-import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selectors/partiesSelectors";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
+import { getPartyRelationships } from "@/selectors/partiesSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
 };
 
 const defaultProps = {
   partyRelationships: [],
-  partyRelationshipTypes: [],
 };
 
 const columns = [
@@ -65,16 +59,21 @@ const columns = [
 
 const childColumns = [
   { title: "Permit No.", dataIndex: "permitNo", key: "childPermitNo" },
-  { title: "Date Issued", dataIndex: "issueDate", key: "issueDate" },
+  { title: "Date", dataIndex: "Date", key: "Date" },
   { title: "Permittee", dataIndex: "permittee", key: "childPermittee" },
   { title: "Description", dataIndex: "description", key: "description" },
 ];
 
 export class MinePermitInfo extends Component {
-  componentDidMount() {
-    this.props.fetchPartyRelationshipTypes();
+  componentWillMount() {
     this.props.fetchPartyRelationships(this.props.mine.id, null, "PMT");
   }
+  /* 
+  componentDidUpdate(prevProps) {
+    if (prevProps.partyRelationships !== this.props.partyRelationships) {
+      this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
+    }
+  } */
 
   groupPermits = (permits) =>
     permits.reduce((acc, permit) => {
@@ -115,7 +114,7 @@ export class MinePermitInfo extends Component {
   transformChildRowData = (permittee, record) => ({
     key: record.key,
     permitNo: record.permitNo,
-    issueDate: permittee.start_date,
+    Date: permittee.start_date,
     permittee: permittee.party.name,
     description: Strings.EMPTY_FIELD,
   });
@@ -146,14 +145,12 @@ export class MinePermitInfo extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  partyRelationshipTypes: getPartyRelationshipTypesList(state),
   partyRelationships: getPartyRelationships(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchPartyRelationshipTypes,
       fetchPartyRelationships,
     },
     dispatch

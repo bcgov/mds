@@ -62,6 +62,12 @@ export class ViewPartyRelationships extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
   }
+  /* 
+  componentDidUpdate(prevProps) {
+    if (prevProps.partyRelationships !== this.props.partyRelationships) {
+      this.props.fetchPartyRelationships(this.props.mine.id, null, "MMG");
+    }
+  } */
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
@@ -184,7 +190,6 @@ export class ViewPartyRelationships extends Component {
       .filter((x) => !activePartyRelationshipTypes.includes(x))
       .map((typeCode) => (
         <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={6} key={typeCode}>
-          <br />
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
             partyRelationshipTypeLabel={
@@ -192,8 +197,6 @@ export class ViewPartyRelationships extends Component {
             }
             mine={this.props.mine}
           />
-          <br />
-          <br />
         </Col>
       ));
   };
@@ -271,7 +274,6 @@ export class ViewPartyRelationships extends Component {
         xxl={6}
         key={partyRelationship.mine_party_appt_guid}
       >
-        <br />
         <Contact
           partyRelationship={partyRelationship}
           partyRelationshipTypeLabel={partyRelationshipTypeLabel}
@@ -280,9 +282,8 @@ export class ViewPartyRelationships extends Component {
           openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
           removePartyRelationship={this.removePartyRelationship}
+          isEditable="true"
         />
-        <br />
-        <br />
       </Col>
     );
   };

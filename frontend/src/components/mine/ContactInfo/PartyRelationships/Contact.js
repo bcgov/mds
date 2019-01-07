@@ -46,6 +46,7 @@ export class Contact extends Component {
             openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
             onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
             removePartyRelationship={this.props.removePartyRelationship}
+            isEditable={this.props.isEditable}
           />
         );
         break;
@@ -59,6 +60,7 @@ export class Contact extends Component {
             openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
             onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
             removePartyRelationship={this.props.removePartyRelationship}
+            isEditable={this.props.isEditable}
           />
         );
         break;
@@ -72,6 +74,7 @@ export class Contact extends Component {
             openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
             onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
             removePartyRelationship={this.props.removePartyRelationship}
+            isEditable={this.props.isEditable}
           />
         );
         break;
