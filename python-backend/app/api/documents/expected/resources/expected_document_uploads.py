@@ -16,7 +16,8 @@ from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
 from ...mines.models.mine_document import MineDocument
 
-from app.extensions import jwt, api, db
+from app.extensions import api, db
+from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -29,7 +30,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'expected_document_guid':
             'Required: The guid of the expected document that this upload will be satisfying.'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, expected_document_guid):
 
         self.parser.add_argument(
