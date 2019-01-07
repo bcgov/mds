@@ -6,3 +6,11 @@ export const dropdownListItem = shape({
 });
 
 export const options = arrayOf(dropdownListItem);
+
+// export const popConfirm = shape({
+//   placement: PropTypes.string,
+//   title: PropTypes.string,
+//   onConfirm: PropTypes.func.isRequired,
+//   okText: PropTypes.string,
+//   cancelText: PropTypes.string
+// });

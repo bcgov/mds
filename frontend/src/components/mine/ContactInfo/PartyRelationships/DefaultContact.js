@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Popconfirm } from "antd";
 import { BRAND_PENCIL } from "@/constants/assets";
+import { ConditionalButton} from "@/components/common/ConditionalButton";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -33,35 +34,33 @@ export const DefaultContact = (props) => (
         <br />
       </div>
       <div>
-        <Button
+        <ConditionalButton
           key={`${props.partyRelationship.mine_party_appt_guid}_edit`}
-          ghost
           type="primary"
-          onClick={() =>
+          ghost
+          handleAction={() =>
             props.openEditPartyRelationshipModal(
               props.partyRelationship,
               props.onSubmitEditPartyRelationship,
               props.handleChange,
               props.mine
-            )
-          }
-        >
-          <img style={{ padding: "5px" }} src={BRAND_PENCIL} />
-        </Button>
-        <Popconfirm
+            )}
+          string={<img style={{ padding: "5px" }} src={BRAND_PENCIL} />}
+        />
+        <ConditionalButton
           key={`${props.partyRelationship.mine_party_appt_guid}_delete`}
-          placement="topLeft"
-          title={`Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`}
-          onConfirm={(event) =>
-            props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid)
-          }
-          okText="Delete"
-          cancelText="Cancel"
-        >
-          <Button ghost type="primary">
-            <Icon type="minus-circle" theme="outlined" />
-          </Button>
-        </Popconfirm>
+          type="primary"
+          ghost={true}
+          popConfirm={{
+            placement: "topLeft",
+            title: `Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`,
+            onConfirm: (event) =>
+            props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid),
+            okText: "Delete",
+            cancelText: "Cancel"
+          }}
+          string={<Icon type="minus-circle" theme="outlined" />}
+        />
       </div>
     </div>
     <h5 className="bold">{props.partyRelationship.party.name}</h5>
