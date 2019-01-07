@@ -57,7 +57,7 @@ export class ViewMineManager extends Component {
     const appointment = this.props.mine.mgr_appointment;
     const hasAppointment = appointment != null && appointment.length > 0;
     const initialValues = {
-      mineManager: hasAppointment ? appointment[0].party_guid : null,
+      mineManager: hasAppointment ? appointment[0].name : null,
       startDate: hasAppointment ? appointment[0].effective_date : null,
     };
 
