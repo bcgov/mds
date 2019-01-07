@@ -1,5 +1,6 @@
 import uuid
 
+from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -171,3 +172,23 @@ class MineIdentity(AuditMixin, Base):
         if save:
             mine_identity.save(commit=False)
         return mine_identity
+
+    @validates('mine_name')
+    def validate_mine_name(self, key, mine_name):
+        if not mine_name:
+            raise AssertionError('No mine name provided.')
+        if len(mine_name) > 60:
+            raise AssertionError('Mine name must not exceed 60 characters.')
+        return mine_name
+
+    @validates('mine_note')
+    def validate_mine_note(self, key, mine_note):
+        if len(mine_note) > 300:
+            raise AssertionError('Mine note must not exceed 300 characters.')
+        return mine_note
+
+    @validates('mine_no')
+    def validate_mine_no(self, key, mine_no):
+        if len(mine_no) > 10:
+            raise AssertionError('Mine number must not exceed 10 characters.')
+        return mine_no

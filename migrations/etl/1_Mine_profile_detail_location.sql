@@ -66,7 +66,7 @@ DECLARE
     location_row    integer;
 BEGIN
     RAISE NOTICE '.. Step 2 of 2: Update mine details in MDS';
-    SELECT count(*) FROM mine_detail into old_row;
+    SELECT count(*) FROM mine_identity into old_row;
     -- Upsert data from new_record into mine_identity table
     WITH new_record AS (
         SELECT *
@@ -79,42 +79,15 @@ BEGIN
     )
     INSERT INTO mine_identity(
         mine_guid           ,
+        mine_no             ,
+        mine_name           ,
+        mine_region         ,
+        major_mine_ind      ,
         create_user         ,
         create_timestamp    ,
         update_user         ,
         update_timestamp    )
     SELECT
-        new.mine_guid       ,
-        'mms.migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()
-    FROM new_record new;
-    -- Upsert data from new_record into mine_detail
-    WITH new_record AS (
-        SELECT *
-        FROM ETL_PROFILE
-        WHERE NOT EXISTS (
-            SELECT  1
-            FROM    mine_detail
-            WHERE   mine_guid = ETL_PROFILE.mine_guid
-        )
-    )
-    INSERT INTO mine_detail(
-        mine_detail_guid    ,
-        mine_guid           ,
-        mine_no             ,
-        mine_name           ,
-        mine_region         ,
-        effective_date      ,
-        expiry_date         ,
-        create_user         ,
-        create_timestamp    ,
-        update_user         ,
-        update_timestamp    ,
-        major_mine_ind      )
-    SELECT
-        gen_random_uuid()   ,
         new.mine_guid       ,
         new.mine_no         ,
         new.mine_nm         ,
@@ -126,15 +99,12 @@ BEGIN
             WHEN '5' THEN 'NW'
             ELSE null
         END AS reg_cd       ,
+        major_mine_ind      ,
+        'mms.migration'     ,
         now()               ,
-        '9999-12-31'::date  ,
         'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()               ,
-        major_mine_ind
+        now()
     FROM new_record new;
-
 
     -- Upsert data from new_record into mine_location
     WITH new_record AS (
@@ -175,7 +145,7 @@ BEGIN
         (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
         AND
         (new.lat_dec <> 0 AND new.lon_dec <> 0);
-    SELECT count(*) FROM mine_detail into new_row;
+    SELECT count(*) FROM mine_identity into new_row;
     SELECT count(*) FROM mine_location into location_row;
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
     RAISE NOTICE '....Total mine records in the MDS: %.', new_row;

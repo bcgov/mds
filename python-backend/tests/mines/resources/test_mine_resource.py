@@ -292,7 +292,7 @@ def test_put_mine_name(test_client, auth_headers):
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert test_tenure_data['name'] in [x['mine_name'] for x in put_data['mine_detail']]
+    assert test_tenure_data['name'] == put_data['mine_name']
     assert put_resp.status_code == 200
 
 
@@ -301,7 +301,7 @@ def test_put_mine_major_true(test_client, auth_headers):
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data['mine_detail'][0]['major_mine_ind'] == True
+    assert put_data['major_mine_ind'] == True
     assert put_resp.status_code == 200
 
 
@@ -310,7 +310,7 @@ def test_put_mine_major_false(test_client, auth_headers):
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data['mine_detail'][0]['major_mine_ind'] == False
+    assert put_data['major_mine_ind'] == False
     assert put_resp.status_code == 200
 
 
@@ -319,7 +319,7 @@ def test_put_mine_note(test_client, auth_headers):
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert test_tenure_data['note'] in [x['mine_note'] for x in put_data['mine_detail']]
+    assert test_tenure_data['note'] == put_data['mine_note']
     assert put_resp.status_code == 200
 
 
@@ -336,4 +336,4 @@ def test_put_mine_region(test_client, auth_headers):
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200
     put_data = json.loads(put_resp.data.decode())
-    assert put_data['mine_detail'][0]['region_code'] == test_mine_data['mine_region']
+    assert put_data['region_code'] == test_mine_data['mine_region']
