@@ -17,12 +17,11 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   parties: PropTypes.object.isRequired,
   partyIds: PropTypes.array.isRequired,
-  partyRelationshipType: PropTypes.string,
+  partyRelationshipType: PropTypes.object.isRequired,
   mine: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
-  partyRelationshipType: "",
   mine: {},
 };
 
@@ -38,7 +37,8 @@ const validate = (values) => {
 
 export const AddPartyRelationshipForm = (props) => {
   let options;
-  switch (props.partyRelationshipType) {
+
+  switch (props.partyRelationshipType.mine_party_appt_type_code) {
     case "EOR":
       options = <EngineerOfRecordOptions mine={props.mine} />;
       break;

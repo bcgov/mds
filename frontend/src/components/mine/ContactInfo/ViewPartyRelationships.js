@@ -269,7 +269,7 @@ export class ViewPartyRelationships extends Component {
           openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
           removePartyRelationship={this.removePartyRelationship}
-          isEditable="true"
+          isEditable
         />
       </Col>
     );
