@@ -12,6 +12,8 @@ export const ADD_MINE_MANAGER = "Please add mine manager below";
 export const ADD_TENURE = "Please add tenure number below";
 export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
+export const MAP_UNAVAILABLE =
+  "The B.C. Geographic Warehouse (BCGW)'s map layers are unavailable at this time.";
 
 export const UNAUTHORIZED = "You do not have permission to access this site";
 // to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
