@@ -235,7 +235,7 @@ export class MineTailingsInfo extends Component {
                   <Row gutter={16} justify="center" align="top">
                     <Col span={1}>
                       {isOverdue ? (
-                        <img style={{ padding: "5px" }} src={RED_CLOCK} alt="Edit TSF Report" />
+                        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
                         ""
                       )}
@@ -297,7 +297,7 @@ export class MineTailingsInfo extends Component {
                           cancelText: "Cancel"
                         }}
                         type="primary"
-                        ghost={true}
+                        ghost
                         string={<Icon type="minus-circle" theme="outlined" />}
                       />
                     </Col>

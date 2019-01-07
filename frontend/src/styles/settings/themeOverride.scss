@@ -134,6 +134,11 @@
   margin: $default-margin-lg;
 }
 
+// TAGS
+.ant-tag {
+  font-size: 14px;
+}
+
 // FORMS
 .ant-form-vertical .ant-form-item {
   padding-bottom: 0;
@@ -151,9 +156,5 @@
 // COLLAPSE
 .ant-collapse {
   border: none;
-  background-color: $pure-white;
-}
-
-.ant-collapse-content > .ant-collapse-content-box {
   background-color: $pure-white;
 }

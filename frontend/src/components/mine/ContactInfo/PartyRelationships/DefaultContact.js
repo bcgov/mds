@@ -45,12 +45,13 @@ export const DefaultContact = (props) => (
               props.handleChange,
               props.mine
             )}
-          string={<img style={{ padding: "5px" }} src={BRAND_PENCIL} />}
+          string={<img className="padding-small" style={{ padding: "5px" }} src={BRAND_PENCIL} />}
         />
         <ConditionalButton
+
           key={`${props.partyRelationship.mine_party_appt_guid}_delete`}
           type="primary"
-          ghost={true}
+          ghost
           popConfirm={{
             placement: "topLeft",
             title: `Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`,
