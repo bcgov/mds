@@ -322,21 +322,29 @@ def setup_data(session):
     mpat1 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
         description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION1,
+        grouping_level=2,
         **DUMMY_USER_KWARGS)
     mpat1.save()
 
     mpat2 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2,
+        grouping_level=2,
         **DUMMY_USER_KWARGS)
     mpat2.save()
 
     mpat3 = MinePartyAppointmentType(
-        mine_party_appt_type_code='EOR', description='Engineer of Record', **DUMMY_USER_KWARGS)
+        mine_party_appt_type_code='EOR',
+        description='Engineer of Record',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
     mpat3.save()
 
     mpat4 = MinePartyAppointmentType(
-        mine_party_appt_type_code='PMT', description='Engineer of Record', **DUMMY_USER_KWARGS)
+        mine_party_appt_type_code='PMT',
+        description='Engineer of Record',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
     mpat4.save()
 
     # Test Permittee Data
