@@ -37,7 +37,15 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   ).description;
 
   return (
-    <Col span={12} xs={24} key={partyRelationship.mine_party_appt_guid}>
+    <Col
+      xs={24}
+      sm={24}
+      md={24}
+      lg={12}
+      xl={8}
+      xxl={6}
+      key={partyRelationship.mine_party_appt_guid}
+    >
       <Contact
         mine={mine}
         partyRelationship={partyRelationship}
@@ -54,7 +62,7 @@ const MineSummary = (props) => {
 
   return (
     <div>
-      <Row gutter={16}>
+      <Row gutter={16} type="flex" justify="center">
         {props.summaryPartyRelationships
           .filter(
             (x) =>
