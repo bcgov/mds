@@ -144,11 +144,14 @@ export class MineDashboard extends Component {
                     <MineComplianceInfo mine={mine} {...this.props} />
                   </div>
                 </TabPane>
-                <TabPane tab="Tenure" key="tenure">
-                  <div className="tab__content">
-                    <MineTenureInfo mine={mine} {...this.props} />
-                  </div>
-                </TabPane>
+                {/* TODO: Unhide for July release */
+                false && (
+                  <TabPane tab="Tenure" key="tenure">
+                    <div className="tab__content">
+                      <MineTenureInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">

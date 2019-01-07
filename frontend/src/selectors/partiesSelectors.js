@@ -9,9 +9,10 @@ export const {
   getPartyRelationships,
 } = partiesReducer;
 
-export const getPartyRelationshipsByTypes = createSelector(
+//TODO: find a way to paratmeterize this selector.
+export const getSummaryPartyRelationships = createSelector(
   [getPartyRelationships],
-  (partyRelationships, types) => {
+  (partyRelationships) => {
     return partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code));
   }
 );

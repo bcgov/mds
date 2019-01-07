@@ -80,7 +80,7 @@ def test_post_permittee_no_permittee_no_effective_date(test_client, auth_headers
         'party_guid': TEST_PARTY_PER_GUID_3,
         'mine_party_appt_guid': TEST_PERMITTEE_GUID,
         'mine_party_appt_type_code': 'PMT',
-        'permit_guid': TEST_PERMIT_GUID_1,
+        'related_guid': TEST_PERMIT_GUID_1,
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
@@ -95,7 +95,7 @@ def test_post_permittee(test_client, auth_headers):
         'party_guid': TEST_PARTY_PER_GUID_3,
         'mine_party_appt_type_code': 'PMT',
         'mine_party_appt_guid': TEST_PERMITTEE_GUID,
-        'permit_guid': TEST_PERMIT_GUID_1,
+        'related_guid': TEST_PERMIT_GUID_1,
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     post_resp = test_client.post(
@@ -123,7 +123,7 @@ def test_post_permittee_party_guid_not_found(test_client, auth_headers):
     data = {
         'party_guid': TEST_MINE_GUID,
         'mine_party_appt_guid': TEST_PERMITTEE_GUID,
-        'permit_guid': TEST_PERMIT_GUID_1,
+        'related_guid': TEST_PERMIT_GUID_1,
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     post_resp = test_client.post(
@@ -136,7 +136,7 @@ def test_post_permittee_party_guid_not_found(test_client, auth_headers):
 def test_put_permittee_permittee_guid_not_found(test_client, auth_headers):
     data = {
         'party_guid': TEST_PARTY_PER_GUID_3,
-        'permit_guid': TEST_PERMIT_GUID_1,
+        'related_guid': TEST_PERMIT_GUID_1,
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     put_resp = test_client.put(

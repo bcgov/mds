@@ -32,11 +32,9 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         else:
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
-            mine_party_appt_type_codes = request.args.getlist('mine_party_appt_type_code')  #list
+            types = request.args.getlist('types')  #list
             mpas = MinePartyAppointment.find_by(
-                mine_guid=mine_guid,
-                party_guid=party_guid,
-                mine_party_appt_type_codes=mine_party_appt_type_codes)
+                mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_codes=types)
             result = list(map(lambda x: x.json(), mpas))
         return result
 

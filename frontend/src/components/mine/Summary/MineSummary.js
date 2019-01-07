@@ -8,7 +8,7 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import {
   getPartyRelationshipTypes,
   getPartyRelationships,
-  getPartyRelationshipsByTypes,
+  getSummaryPartyRelationships,
 } from "@/selectors/partiesSelectors";
 import { connect } from "react-redux";
 
@@ -81,7 +81,7 @@ export const MineSummary = (props) => {
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
-  summaryPartyRelationships: getPartyRelationshipsByTypes(state),
+  summaryPartyRelationships: getSummaryPartyRelationships(state),
 });
 
 MineSummary.propTypes = propTypes;
