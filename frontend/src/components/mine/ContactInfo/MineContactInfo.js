@@ -33,7 +33,7 @@ export class MineContactInfo extends Component {
     this.handleChangeDebounced = debounce(this.handleChange, 1000);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchParties();
   }
 

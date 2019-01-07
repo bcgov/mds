@@ -20,11 +20,13 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(PropTypes.object),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
+  summaryPartyRelationships: [],
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -35,7 +37,7 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   ).description;
 
   return (
-    <Col span={12} key={partyRelationship.mine_party_appt_guid}>
+    <Col span={12} xs={24} key={partyRelationship.mine_party_appt_guid}>
       <Contact
         mine={mine}
         partyRelationship={partyRelationship}
@@ -50,11 +52,10 @@ const MineSummary = (props) => {
     return <NullScreen type="generic" />;
   }
 
-  alert(this.props.summaryPartyRelationships);
   return (
     <div>
       <Row gutter={16}>
-        {props.partyRelationships
+        {props.summaryPartyRelationships
           .filter(
             (x) =>
               x.end_date === "None" ||
