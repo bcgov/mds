@@ -5,7 +5,11 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
-import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationships,
+  getPartyRelationshipsByTypes,
+} from "@/selectors/partiesSelectors";
 import { connect } from "react-redux";
 
 /**
@@ -46,6 +50,7 @@ const MineSummary = (props) => {
     return <NullScreen type="generic" />;
   }
 
+  alert(this.props.summaryPartyRelationships);
   return (
     <div>
       <Row gutter={16}>
@@ -67,6 +72,7 @@ const MineSummary = (props) => {
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
+  summaryPartyRelationships: getPartyRelationshipsByTypes(state),
 });
 
 MineSummary.propTypes = propTypes;
