@@ -16,7 +16,7 @@ import utils.DataCleanup
         SummarySpec.class,
         PermitSpec.class,
         ContactInfoSpec.class,
-        Tenure.class,
+        // Tenure.class, TODO: Enable when re-enabling Tenure tab
         Tailings.class,
         DataCleanup.class
 ])
