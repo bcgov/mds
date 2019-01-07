@@ -93,7 +93,13 @@
               "kind": "ImageStreamTag",
               "namespace": "openshift",
               "name": "bcgov-s2i-nginx:latest"
-            }
+            },
+            "env": [
+              {
+                "name": "NGINX_AUX_DIR",
+                "value": "auxiliary"
+              }
+            ]
           }
         },
         "output": {

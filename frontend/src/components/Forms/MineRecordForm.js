@@ -3,30 +3,59 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
+import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
+import * as Strings from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import { getCurrentMineTypes } from "@/selectors/mineSelectors";
+import {
+  getConditionalDisturbanceOptionsHash,
+  getConditionalCommodityOptions,
+  getDisturbanceOptionHash,
+  getCommodityOptionHash,
+  getMineStatusOptions,
+  getMineRegionOptions,
+  getMineTenureTypes,
+  getMineTenureTypesHash,
+} from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
-  mine_types: PropTypes.array,
-  conditionalDisturbanceOptions: PropTypes.object.isRequired,
-  conditionalCommodityOptions: PropTypes.object.isRequired,
-  initialValues: PropTypes.object,
+  mineStatusOptions: CustomPropTypes.options.isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
+  mineTenureTypes: CustomPropTypes.options.isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mine_types: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+};
+
+const defaultProps = {
+  title: "",
+  currentMineTypes: [],
+  mine_types: [],
 };
 
 export class MineRecordForm extends Component {
   state = {
     activeKey: [],
+    usedTenureTypes: [],
   };
+
+  componentDidMount() {
+    const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
+    this.setState({ usedTenureTypes: existingMineTypes });
+  }
 
   /**
    *
@@ -39,14 +68,32 @@ export class MineRecordForm extends Component {
    */
   componentWillReceiveProps(nextProps) {
     const defaultValue = {
-      mine_tenure_type_code: [],
+      mine_tenure_type_code: "",
       mine_commodity_code: [],
       mine_disturbance_code: [],
     };
-    // Do nothing if no mine_types, or no change to mine_types
-    if (!nextProps.mine_types || nextProps.mine_types === this.props.mine_types) {
-      return;
+    // when a currentMineType is deleted, update this.state.usedTenureTypes
+    if (this.props.currentMineTypes && this.props.currentMineTypes !== nextProps.currentMineTypes) {
+      const prevTenure = map(this.props.currentMineTypes, "mine_tenure_type_code");
+      const nextTenure = map(nextProps.currentMineTypes, "mine_tenure_type_code");
+      const diff = difference(prevTenure, nextTenure);
+      this.setState((prevState) => ({
+        usedTenureTypes: prevState.usedTenureTypes.filter(
+          (tenureTypes) => !diff.includes(tenureTypes)
+        ),
+      }));
     }
+    // when mine_type changes, update this.state.usedTenureTypes
+    if (this.props.mine_types !== nextProps.mine_types) {
+      const nextNewTenure = nextProps.mine_types
+        .filter(({ mine_tenure_type_code }) => !isEmpty(mine_tenure_type_code))
+        .map(({ mine_tenure_type_code }) => mine_tenure_type_code);
+      const nextExistingTenure = map(nextProps.currentMineTypes, "mine_tenure_type_code");
+      const combined = [...nextExistingTenure, ...nextNewTenure];
+      const newUsedTenure = uniq(combined);
+      this.setState({ usedTenureTypes: newUsedTenure });
+    }
+
     if (!this.props.mine_types || nextProps.mine_types.length > this.props.mine_types.length) {
       this.props.change(
         "mine_types",
@@ -55,7 +102,11 @@ export class MineRecordForm extends Component {
     }
   }
 
-  // function to set the active CollapsePanel, this keeps the panel open when the inner state changes. (Ie changing inputs)
+  componentWillUnmount() {
+    this.setState({ usedTenureTypes: [] });
+  }
+
+  // set the active CollapsePanel, this keeps the panel open when the inner state changes. (Ie changing inputs)
   setActiveKey = (key) => {
     this.setState({
       activeKey: key,
@@ -67,17 +118,65 @@ export class MineRecordForm extends Component {
     fields.remove(index);
   };
 
+  // addField allows users to create a max of 4 mine Types.
+  addField = (event, fields) => {
+    const totalTypes = fields.length + this.props.currentMineTypes.length;
+    event.preventDefault();
+    if (totalTypes === 4) {
+      notification.error({
+        message: "You cannot have more than 4 tenures associated with a mine",
+        duration: 10,
+      });
+    } else {
+      fields.push({});
+      this.setActiveKey([fields.length.toString()]);
+    }
+  };
+
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
-      <Form.Item style={{ marginTop: "15px" }} label={`Mine Type ${index + 1}`} />
-      <Button
-        ghost
-        onClick={(event) => {
-          this.removeField(event, fields, index);
-        }}
-      >
-        <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
-      </Button>
+      <Form.Item style={{ marginTop: "15px" }} label={`New Mine Type: ${index + 1}`} />
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div onClick={(event) => event.stopPropagation()}>
+        <Popconfirm
+          placement="topRight"
+          title={`Are you sure you want to remove Mine Type ${index + 1}?`}
+          onConfirm={(event) => {
+            this.removeField(event, fields, index);
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button ghost>
+            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+          </Button>
+        </Popconfirm>
+      </div>
+    </div>
+  );
+
+  createExistingPanelHeader = (mineTenureCode) => (
+    <div className="inline-flex between">
+      <Form.Item
+        style={{ marginTop: "15px" }}
+        label={`Existing Mine Type: ${this.props.mineTenureHash[mineTenureCode]}`}
+      />
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div onClick={(event) => event.stopPropagation()}>
+        <Popconfirm
+          placement="topRight"
+          title={`Are you sure you want to remove Mine Type ${
+            this.props.mineTenureHash[mineTenureCode]
+          }?`}
+          onConfirm={(event) => this.props.handleDelete(event, mineTenureCode)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button ghost>
+            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+          </Button>
+        </Popconfirm>
+      </div>
     </div>
   );
 
@@ -85,19 +184,50 @@ export class MineRecordForm extends Component {
     const renderTypeSelect = ({ fields }) => (
       <div>
         <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
+          {this.props.currentMineTypes &&
+            this.props.currentMineTypes.map((type) => (
+              <Collapse.Panel
+                header={this.createExistingPanelHeader(type.mine_tenure_type_code)}
+                key={type.mine_tenure_type_code}
+              >
+                <div key={type.mine_tenure_type_code}>
+                  <div className="inline-flex">
+                    <Form.Item label="Commodity" />
+                    <div>
+                      {type.mine_commodity_code &&
+                        type.mine_commodity_code.map((code) => (
+                          <Tag>{this.props.mineCommodityOptionsHash[code]}</Tag>
+                        ))}
+                      {type.mine_commodity_code.length === 0 && <span>{Strings.EMPTY_FIELD}</span>}
+                    </div>
+                  </div>
+                  <div className="inline-flex">
+                    <Form.Item label="Disturbance" />
+                    <div>
+                      {type.mine_disturbance_code &&
+                        type.mine_disturbance_code.map((code) => (
+                          <Tag>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
+                        ))}
+                      {type.mine_disturbance_code.length === 0 && (
+                        <span>{Strings.EMPTY_FIELD}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Collapse.Panel>
+            ))}
           {fields.map((type, index) => (
             <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
-                    onChange={this.handleOptionChange}
+                    usedOptions={this.state.usedTenureTypes}
                     id={`${type}.mine_tenure_type_code`}
                     name={`${type}.mine_tenure_type_code`}
                     label="Tenure"
                     placeholder="Please Select Tenure"
                     component={renderConfig.SELECT}
                     data={this.props.mineTenureTypes}
-                    validate={[required]}
                   />
                 </Col>
               </Row>
@@ -109,14 +239,16 @@ export class MineRecordForm extends Component {
                     label="Commodity"
                     placeholder="Please Select Commodity"
                     component={renderConfig.MULTI_SELECT}
+                    // if data doesn't exist, the multi-select is disabled
                     data={
-                      this.props.conditionalCommodityOptions[
-                        (this.props.mine_types &&
-                          this.props.mine_types[index].mine_tenure_type_code) ||
-                          "COL"
-                      ]
+                      this.props.mine_types[index] &&
+                      this.props.mine_types[index].mine_tenure_type_code &&
+                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        ? this.props.conditionalCommodityOptions[
+                            this.props.mine_types[index].mine_tenure_type_code
+                          ]
+                        : null
                     }
-                    validate={[required]}
                   />
                 </Col>
               </Row>
@@ -128,13 +260,14 @@ export class MineRecordForm extends Component {
                     placeholder="Please Select Disturbance"
                     label="Disturbance"
                     component={renderConfig.MULTI_SELECT}
-                    validate={[required]}
                     data={
-                      this.props.conditionalDisturbanceOptions[
-                        (this.props.mine_types &&
-                          this.props.mine_types[index].mine_tenure_type_code) ||
-                          "COL"
-                      ]
+                      this.props.mine_types[index] &&
+                      this.props.mine_types[index].mine_tenure_type_code &&
+                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        ? this.props.conditionalDisturbanceOptions[
+                            this.props.mine_types[index].mine_tenure_type_code
+                          ]
+                        : null
                     }
                   />
                 </Col>
@@ -142,12 +275,15 @@ export class MineRecordForm extends Component {
             </Collapse.Panel>
           ))}
         </Collapse>
-        <Button className="btn--dropdown" onClick={() => fields.push({})}>
-          <Icon type="plus" style={{ color: "#0F620E" }} />
-          {fields.length === 0 ? "Add Mine Type" : "Add Another Mine Type"}
+        <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
+          <Icon type="plus" style={{ color: "#5e46a1" }} />
+          {fields.length === 0 && !this.props.currentMineTypes
+            ? "Add Mine Type"
+            : "Add Another Mine Type"}
         </Button>
       </div>
     );
+
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
@@ -217,13 +353,8 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        {/* hiding the mine_types fieldArray fron Edit view until the edit functionality is added */}
-        {!this.props.initialValues && (
-          <div>
-            <Form.Item label="Mine Type" />
-            <FieldArray name="mine_types" component={renderTypeSelect} />
-          </div>
-        )}
+        <Form.Item label="Mine Type" />
+        <FieldArray name="mine_types" component={renderTypeSelect} />
         <Row gutter={16}>
           <Col>
             <Form.Item>
@@ -271,15 +402,25 @@ export class MineRecordForm extends Component {
 }
 
 MineRecordForm.propTypes = propTypes;
+MineRecordForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
     mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
+    currentMineTypes: getCurrentMineTypes(state),
+    mineStatusOptions: getMineStatusOptions(state),
+    mineRegionOptions: getMineRegionOptions(state),
+    mineTenureHash: getMineTenureTypesHash(state),
+    mineCommodityOptionsHash: getCommodityOptionHash(state),
+    mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+    mineTenureTypes: getMineTenureTypes(state),
+    conditionalCommodityOptions: getConditionalCommodityOptions(state),
+    conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
     touchOnBlur: false,
     enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.MINE_RECORD),
+    keepDirtyOnReinitialize: true,
   })
 )(MineRecordForm);

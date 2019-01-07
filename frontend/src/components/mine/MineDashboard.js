@@ -8,6 +8,7 @@ import {
   fetchMineRecordById,
   updateMineRecord,
   createTailingsStorageFacility,
+  removeMineType,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -16,16 +17,19 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
+import {
+  getMines,
+  getCurrentPermitteeIds,
+  getCurrentPermittees,
+  getCurrentMineTypes,
+} from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
   getMineTenureTypesHash,
-  getMineTenureTypes,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
@@ -43,22 +47,20 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func,
-  createTailingsStorageFacility: PropTypes.func,
+  updateMineRecord: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  mines: PropTypes.object,
-  mineIds: PropTypes.array,
-  permittees: PropTypes.object,
-  permitteesIds: PropTypes.array,
-  mineStatusOptions: PropTypes.array,
-  mineRegionOptions: PropTypes.array,
-  mineTenureTypes: PropTypes.array,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
+  permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
-  mines: {},
+  permittees: [],
+  permitteesIds: [],
+  mineTenureHash: {},
 };
 
 export class MineDashboard extends Component {
@@ -139,11 +141,14 @@ export class MineDashboard extends Component {
                     <MineComplianceInfo mine={mine} {...this.props} />
                   </div>
                 </TabPane>
-                <TabPane tab="Tenure" key="tenure">
-                  <div className="tab__content">
-                    <MineTenureInfo mine={mine} {...this.props} />
-                  </div>
-                </TabPane>
+                {/* TODO: Unhide for July release */
+                false && (
+                  <TabPane tab="Tenure" key="tenure">
+                    <div className="tab__content">
+                      <MineTenureInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">
@@ -164,13 +169,11 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   permittees: getCurrentPermittees(state),
   permitteeIds: getCurrentPermitteeIds(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  currentMineTypes: getCurrentMineTypes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -184,6 +187,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
+      removeMineType,
       openModal,
       closeModal,
     },
