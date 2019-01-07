@@ -151,7 +151,7 @@ BEGIN
         mine_guid           ,
         latitude            ,
         longitude           ,
-        geom                ,
+        location_pnt        ,
         effective_date      ,
         expiry_date         ,
         create_user         ,
