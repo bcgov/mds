@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EditPartyRelationshipModal } from "@/components/modalContent/EditPartyRelationshipModal";
+import EditPartyRelationshipModal from "@/components/modalContent/EditPartyRelationshipModal";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
