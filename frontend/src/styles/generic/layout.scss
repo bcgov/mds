@@ -45,6 +45,10 @@ body {
   text-align: left;
 }
 
+.full-height {
+  height: inherit !important;
+}
+
 .inline-flex {
   @include flex;
 
@@ -116,6 +120,10 @@ body {
 .card-buttons {
   flex-direction: column;
 }
+
 .padding-small {
-  padding: 5px;
+  &--right {
+    padding-right: 5px;
+  }
+  padding: $default-padding-sm;
 }
