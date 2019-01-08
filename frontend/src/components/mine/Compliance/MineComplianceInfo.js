@@ -29,7 +29,7 @@ export class MineComplianceInfo extends Component {
 
   componentDidMount() {
     this.props
-      .fetchMineComplianceInfo(this.props.mine.mine_detail[0].mine_no)
+      .fetchMineComplianceInfo(this.props.mine.mine_no)
       .then(() => this.setState({ isLoading: !this.state.isLoading }));
   }
 

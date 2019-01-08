@@ -1,7 +1,6 @@
 # Test Constants
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
 
-TEST_MINE_DETAIL_GUID = '94de18e5-5239-4df0-aa2d-b21961d4721e'
 TEST_MINE_NAME = 'test_mine_name'
 TEST_MINE_NO = 'BLAH000'
 
@@ -65,18 +64,11 @@ TEST_MINE_TENURE_TYPE_CODES = ['COL', 'MIN', 'PLR', 'BCL']
 TEST_MINE_TENURE_TYPE_DESCRIPTIONS = ['Coal', 'Mineral', 'Placer', 'BC Land']
 
 TEST_MINE_DISTURBANCE_CODES = ['SUR', 'UND', 'CWA', 'MIL']
-TEST_MINE_DISTURBANCE_DESCRIPTIONS = [
-    'Surface', 'Underground', 'Coal Wash', 'Mill'
-]
+TEST_MINE_DISTURBANCE_DESCRIPTIONS = ['Surface', 'Underground', 'Coal Wash', 'Mill']
 
 TEST_MINE_COMMODITY_CODES = ['TO', 'MC', 'CG', 'SA', 'AE', 'AL']
 TEST_MINE_COMMODITY_DESCRIPTIONS = [
-    'Thermal Coal',
-    'Metallurgic',
-    'Construction Aggregate',
-    'Sand and Gravel',
-    'Agate',
-    'Aluminum'
+    'Thermal Coal', 'Metallurgic', 'Construction Aggregate', 'Sand and Gravel', 'Agate', 'Aluminum'
 ]
 
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID = 'bd5ef43b-379a-41a0-aa00-c5b632e9c329'
@@ -123,11 +115,7 @@ TEST_MINE_PARTY_APPT_GUID = '2484d785-a3c7-47db-b296-edb284a3c160'
 DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
 # Auth Constants
-TOKEN_HEADER = {
-    "alg": "RS256",
-    "typ": "JWT",
-    "kid": "flask-jwt-oidc-test-client"
-}
+TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}
 
 BASE_AUTH_CLAIMS = {
     "iss": "test_issuer",

@@ -104,7 +104,7 @@ describe("`addMineManager` action creator", () => {
     party_guid: MOCK.PARTY.partyIds[0],
     effective_date: "2018-10-10",
   };
-  const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_detail[0].mine_name;
+  const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_name;
   const url = ENVIRONMENT.apiUrl + API.MANAGER;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
@@ -139,7 +139,7 @@ describe("`addPermittee` action creator", () => {
     party_guid: MOCK.PARTY.partyIds[0],
     effective_date: "2018-10-10",
   };
-  const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_detail[0].mine_name;
+  const mineName = MOCK.MINES.mines[MOCK.MINES.mineIds[1]].mine_name;
   const url = ENVIRONMENT.apiUrl + API.PERMITTEE;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };

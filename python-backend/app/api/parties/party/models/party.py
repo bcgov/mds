@@ -8,7 +8,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from ....mines.mine.models.mine_identity import MineIdentity
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -23,10 +22,14 @@ class Party(AuditMixin, Base):
     phone_ext = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(254), nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    mgr_appointment = db.relationship('MgrAppointment', order_by='desc(MgrAppointment.update_timestamp)', backref='person', lazy='joined')
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    mgr_appointment = db.relationship(
+        'MgrAppointment',
+        order_by='desc(MgrAppointment.update_timestamp)',
+        backref='person',
+        lazy='joined')
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
-
 
     @hybrid_property
     def name(self):
@@ -65,7 +68,8 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_mgr_appointment(cls, _id):
-        return cls.query.join(cls.mgr_appointment, aliased=True).filter_by(mgr_appointment_guid=_id).first()
+        return cls.query.join(
+            cls.mgr_appointment, aliased=True).filter_by(mgr_appointment_guid=_id).first()
 
     @classmethod
     def find_by_mine_guid(cls, _id):
@@ -73,17 +77,23 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_party_name(cls, party_name):
-        return cls.query.filter(func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['org']).first()
+        return cls.query.filter(
+            func.lower(cls.party_name) == func.lower(party_name),
+            cls.party_type_code == PARTY_STATUS_CODE['org']).first()
 
     @classmethod
     def find_by_name(cls, first_name, party_name):
-        return cls.query.filter(func.lower(cls.first_name) == func.lower(first_name), func.lower(cls.party_name) == func.lower(party_name), cls.party_type_code == PARTY_STATUS_CODE['per']).first()
+        return cls.query.filter(
+            func.lower(cls.first_name) == func.lower(first_name),
+            func.lower(cls.party_name) == func.lower(party_name),
+            cls.party_type_code == PARTY_STATUS_CODE['per']).first()
 
     @classmethod
     def search_by_name(cls, search_term, party_type=None, query_limit=50):
         _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
-            return cls.query.filter(cls.party_type_code==party_type).filter(_filter_by_name).limit(query_limit)
+            return cls.query.filter(
+                cls.party_type_code == party_type).filter(_filter_by_name).limit(query_limit)
         else:
             return cls.query.filter(_filter_by_name).limit(query_limit)
 
@@ -93,11 +103,11 @@ class Party(AuditMixin, Base):
             party_guid=uuid.uuid4(),
             first_name=generated_first_name,
             party_name=generated_last_name,
-            email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' + generated_last_name.lower() + '.com',
+            email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' +
+            generated_last_name.lower() + '.com',
             phone_no='123-123-1234',
             party_type_code=PARTY_STATUS_CODE['per'],
-            **user_kwargs
-        )
+            **user_kwargs)
         if save:
             party.save(commit=False)
         return party

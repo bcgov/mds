@@ -33,12 +33,8 @@ DECLARE
 
 BEGIN
 
-INSERT INTO mine_identity
-VALUES (MINE_GUID,IDIR_USER,DEFAULT,IDIR_USER,DEFAULT);
-
--- create test mine record
-INSERT INTO mine_detail
-VALUES (DEFAULT,MINE_GUID,MINE_NO,MINE_NAME,MINE_NOTE,EFFECTIVE_DATE,DEFAULT,IDIR_USER,DEFAULT,IDIR_USER,DEFAULT,MAJOR_IND,REGION);
+INSERT INTO mine(mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
+VALUES (MINE_GUID,MINE_NO,MINE_NAME,MINE_NOTE,MAJOR_IND,REGION,IDIR_USER,DEFAULT,IDIR_USER,DEFAULT);
 
 -- add location
 INSERT INTO mine_location
