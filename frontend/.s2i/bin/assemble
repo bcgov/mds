@@ -60,17 +60,21 @@ if [ -z "$NODE_ENV" ]; then
   fi
 fi
 
+PROD_BUILD_DIR=build
+DEV_BUILD_DIR=build-dev
 
 echo "---> Installing all dependencies"
 NODE_ENV=development npm install
 
 #do not fail when there is no build script
 echo "---> Building in dev mode"
-export BUILD_DIR=build-dev
+export BUILD_DIR=$DEV_BUILD_DIR
 npm run build --if-present
 
 echo "---> Building in production mode"
-export BUILD_DIR=build
+export BASE_PATH=
+export ASSET_PATH=/
+export BUILD_DIR=$PROD_BUILD_DIR
 npm run build --if-present
 
 # Clear the npm's cache and tmp directories only if they are not a docker volumes
