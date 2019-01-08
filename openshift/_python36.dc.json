@@ -54,6 +54,10 @@
       "value": "/"
     },
     {
+      "name": "DOCUMENT_MANAGER_URL",
+      "required": false
+    },
+    {
       "name": "UPLOADED_DOCUMENT_DEST",
       "required": false,
       "value": "/opt/app-root/src/document_uploads"
@@ -335,6 +339,10 @@
                   {
                     "name": "BASE_PATH",
                     "value": "${BASE_PATH}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "${DOCUMENT_MANAGER_URL}"
                   },
                   {
                     "name": "UPLOADED_DOCUMENT_DEST",

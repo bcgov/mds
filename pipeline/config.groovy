@@ -204,7 +204,8 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'DOCUMENT_MANAGER_URL':"${vars.DOCUMENT_MANAGER_URL}"
                     ]
                 ],
                 [
@@ -229,6 +230,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+            DOCUMENT_MANAGER_URL = "http://localhost:500/${vars.git.changeId}"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -300,6 +302,7 @@ environments {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
+            DOCUMENT_MANAGER_URL = "http://localhost:500"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -371,6 +374,7 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '20Gi'
+            DOCUMENT_MANAGER_URL = "http://localhost:500"
             git {
                 changeId = "${opt.'pr'}"
             }
