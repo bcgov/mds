@@ -33,7 +33,7 @@ export const ConditionalButton = (props) => (
       </Button>
     )}
     {props.isDropdown && (
-      <Dropdown overlay={props.overlay} placement="bottomLeft">
+      <Dropdown className="full-height" overlay={props.overlay} placement="bottomLeft">
         <Button type={props.type}>{props.string}</Button>
       </Dropdown>
     )}
