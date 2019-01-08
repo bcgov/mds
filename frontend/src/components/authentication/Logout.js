@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { Button } from "antd";
+import { LOGOUT } from "@/constants/assets";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logoutUser } from "@/actions/authenticationActions";
@@ -24,9 +24,10 @@ export class Logout extends Component {
 
   render() {
     return (
-      <Button type="primary" onClick={this.handleLogout}>
+      <button type="button" onClick={this.handleLogout}>
+        <img alt="Profile" className="menu__img" src={LOGOUT} />
         Logout
-      </Button>
+      </button>
     );
   }
 }

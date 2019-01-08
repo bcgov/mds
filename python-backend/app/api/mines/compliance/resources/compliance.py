@@ -1,7 +1,8 @@
 import requests
 from datetime import datetime
 from flask_restplus import Resource
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view
 from dateutil.relativedelta import relativedelta
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -10,7 +11,7 @@ from app.api.nris_services import NRIS_service
 
 class MineComplianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'mine_no': 'Mine ID.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, mine_no=None):
 
         try:
