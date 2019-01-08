@@ -63,7 +63,7 @@ fi
 PROD_BUILD_DIR=build
 DEV_BUILD_DIR=build-dev
 
-if [ ! -z "$SKIP_NPM_INSTALL" ]; then
+if [ "$SKIP_NPM_INSTALL" == false ]; then
   echo "---> Installing all dependencies"
   npm install
 fi
