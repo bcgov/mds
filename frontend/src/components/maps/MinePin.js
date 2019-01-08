@@ -30,7 +30,7 @@ export class MinePin extends Component {
   state = { graphic: null, isFullMap: false };
 
   popupTemplate(id) {
-    const { mine_name } = this.props.mines[id].mine_detail[0];
+    const { mine_name } = this.props.mines[id];
     const content = renderToString(<MapPopup id={id} />);
     return {
       title: mine_name,

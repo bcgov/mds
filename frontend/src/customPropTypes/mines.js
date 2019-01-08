@@ -5,6 +5,10 @@ import { minePermit } from "@/customPropTypes/permits";
 // eslint-disable-next-line import/prefer-default-export
 export const mine = shape({
   guid: PropTypes.string.isRequired,
+  mine_no: PropTypes.string,
+  mine_name: PropTypes.string,
+  region_code: PropTypes.string,
+  major_mine_ind: PropTypes.bool,
   mine_permit: arrayOf(minePermit),
 });
 

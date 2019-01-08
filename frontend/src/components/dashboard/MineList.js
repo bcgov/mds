@@ -102,15 +102,13 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
   mineIds.map((id) => ({
     key: id,
     emptyField: Strings.EMPTY_FIELD,
-    mineName: mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_name : Strings.EMPTY_FIELD,
-    mineNo: mines[id].mine_detail[0] ? mines[id].mine_detail[0].mine_no : Strings.EMPTY_FIELD,
+    mineName: mines[id].mine_name ? mines[id].mine_name : Strings.EMPTY_FIELD,
+    mineNo: mines[id].mine_no ? mines[id].mine_no : Strings.EMPTY_FIELD,
     operationalStatus: mines[id].mine_status[0]
       ? mines[id].mine_status[0].status_labels[0]
       : Strings.EMPTY_FIELD,
     permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
-    region: mines[id].mine_detail[0].region_code
-      ? mineRegionHash[mines[id].mine_detail[0].region_code]
-      : Strings.EMPTY_FIELD,
+    region: mines[id].region_code ? mineRegionHash[mines[id].region_code] : Strings.EMPTY_FIELD,
     commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
     commodityHash: mineCommodityHash,
     tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,

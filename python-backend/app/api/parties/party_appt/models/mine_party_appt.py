@@ -18,7 +18,7 @@ class MinePartyAppointment(AuditMixin, Base):
     # Columns
     mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_party_appt_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     mine_party_appt_type_code = db.Column(
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))

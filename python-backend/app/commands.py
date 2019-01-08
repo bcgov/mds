@@ -11,8 +11,7 @@ from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine_type import MineType
 from .api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON,
                             MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS)
-from .api.mines.mine.models.mine_identity import MineIdentity
-from .api.mines.mine.models.mine_detail import MineDetail
+from .api.mines.mine.models.mine import Mine
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party
@@ -30,15 +29,14 @@ from .extensions import db
 def register_commands(app):
     DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
-    def create_multiple_mine_tenure(num, mine_identity):
+    def create_multiple_mine_tenure(num, mine):
         for _ in range(num):
-            MineralTenureXref.create_mine_tenure(mine_identity,
-                                                 random_key_gen(key_length=7, letters=False),
+            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False),
                                                  DUMMY_USER_KWARGS)
 
-    def create_multiple_permit_permittees(num, mine_identity, party, prev_party_guid):
+    def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
-            mine_permit = Permit.create_mine_permit(mine_identity, random_key_gen(key_length=12),
+            mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
                                                     random.choice(PERMIT_STATUS_CODE['choices']),
                                                     random_date(), DUMMY_USER_KWARGS)
             permittee_party = random.choice([party.party_guid, prev_party_guid
@@ -88,19 +86,17 @@ def register_commands(app):
             for _ in range(int(num)):
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
-                mine_identity = MineIdentity.create_mine_identity(DUMMY_USER_KWARGS)
-                MineDetail.create_mine_detail(mine_identity, generate_mine_no(),
-                                              generate_mine_name(), random_mine_category(),
-                                              random_region(), DUMMY_USER_KWARGS)
-                MineType.create_mine_type(mine_identity.mine_guid,
-                                          random.choice(mine_tenure_type_codes), DUMMY_USER_KWARGS)
-                MineLocation.create_mine_location(mine_identity, random_geo(), DUMMY_USER_KWARGS)
+                mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
+                                        random_mine_category(), random_region(), DUMMY_USER_KWARGS)
+                MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
+                                          DUMMY_USER_KWARGS)
+                MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
                 party = Party.create_party(names.get_first_name(), names.get_last_name(),
                                            DUMMY_USER_KWARGS)
 
-                create_multiple_mine_tenure(random.randint(0, 4), mine_identity)
+                create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
-                    random.randint(0, 6), mine_identity, party, prev_party_guid)
+                    random.randint(0, 6), mine, party, prev_party_guid)
 
             try:
                 db.session.commit()
