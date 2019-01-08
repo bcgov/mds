@@ -48,8 +48,8 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'start_date': str(self.start_date),
-            'end_date': str(self.end_date),
+            'start_date': str(self.start_date or ''),
+            'end_date': str(self.end_date or ''),
             'party': self.party.json(show_mgr=False) if self.party else str({})
         }
         related_guid = ""
