@@ -105,7 +105,7 @@ const transformChildRowData = (permittee, record) => ({
 export const MinePermitInfo = (props) => {
   const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
   const amendmentHistory = (record) => {
-    const childRowData = record.record.permittees.map((permittee) =>
+    const childRowData = record.permittees.map((permittee) =>
       transformChildRowData(permittee, record)
     );
     return (

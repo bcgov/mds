@@ -7,7 +7,7 @@ import { Tabs, Row, Col, Divider, Icon } from "antd";
 import {
   fetchPartyById,
   fetchPartyRelationshipTypes,
-  fetchPartyRelationshipsByPartyId,
+  fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
 import {
@@ -30,7 +30,7 @@ const TabPane = Tabs.TabPane;
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchPartyRelationshipsByPartyId: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   parties: PropTypes.object.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -48,8 +48,8 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    if (this.props.fetchPartyRelationshipsByPartyId(id)) {
-      this.props.fetchPartyRelationshipsByPartyId(id).then(() => {
+    if (this.props.fetchPartyRelationships) {
+      this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
         const mine_guids = new Set(this.props.partyRelationships.map((a) => a.mine_guid));
         this.props.fetchMineBasicInfoList([...mine_guids]);
       });
@@ -182,7 +182,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPartyById,
       fetchPartyRelationshipTypes,
-      fetchPartyRelationshipsByPartyId,
+      fetchPartyRelationships,
       fetchMineBasicInfoList,
     },
     dispatch

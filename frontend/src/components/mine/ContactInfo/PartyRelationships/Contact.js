@@ -15,7 +15,7 @@ const propTypes = {
   onSubmitEditPartyRelationship: PropTypes.func,
   removePartyRelationship: PropTypes.func,
   otherDetails: PropTypes.object,
-  isEditable: PropTypes.string,
+  isEditable: PropTypes.bool,
 };
 
 const doNothing = () => {};

@@ -12,7 +12,7 @@ class Tab_Contact extends Module {
         header {$("div", id:"rcDialogTitle0").text()}
     }
 
-     def modifyManager(managerProfileData){
+     def modifyManager(){
          addButton.click();
          addManagerButton.click();
     }

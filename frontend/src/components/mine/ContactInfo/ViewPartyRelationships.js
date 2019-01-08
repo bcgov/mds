@@ -16,7 +16,7 @@ import {
   addPartyRelationship,
   removePartyRelationship,
   updatePartyRelationship,
-  fetchPartyRelationshipsByMineId,
+  fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
 import {
@@ -34,7 +34,7 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(PropTypes.object),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
-  fetchPartyRelationshipsByMineId: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -67,7 +67,7 @@ export class ViewPartyRelationships extends Component {
     };
 
     this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
+      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
       this.props.closeModal();
     });
   };
@@ -140,7 +140,7 @@ export class ViewPartyRelationships extends Component {
     payload.related_guid = values.related_guid;
 
     this.props.updatePartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
+      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
       this.props.closeModal();
     });
   };
@@ -148,7 +148,7 @@ export class ViewPartyRelationships extends Component {
   removePartyRelationship = (event, mine_party_appt_guid) => {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
-      this.props.fetchPartyRelationshipsByMineId(this.props.mine.guid);
+      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
     });
   };
 
@@ -242,8 +242,8 @@ export class ViewPartyRelationships extends Component {
 
   renderPartyRelationship = (partyRelationship) => {
     if (
-      !this.props.partyRelationshipTypesList.length > 0 ||
-      !this.props.partyRelationshipTypes.length > 0
+      this.props.partyRelationshipTypesList.length <= 0 ||
+      this.props.partyRelationshipTypes.length <= 0
     )
       return <div />;
 
@@ -384,7 +384,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addPartyRelationship,
-      fetchPartyRelationshipsByMineId,
+      fetchPartyRelationships,
       removePartyRelationship,
       updatePartyRelationship,
       createTailingsStorageFacility,

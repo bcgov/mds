@@ -41,7 +41,7 @@ export class RelationshipProfile extends Component {
   componentDidMount() {
     const { id, typeCode } = this.props.match.params;
     this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPartyRelationships(id, null, typeCode);
+    this.props.fetchPartyRelationships({ types: typeCode });
 
     const mine = this.props.mines[id];
     if (!mine) {

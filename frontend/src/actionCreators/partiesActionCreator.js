@@ -8,6 +8,7 @@ import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import queryString from "query-string";
 
 export const createParty = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PARTY));
@@ -175,88 +176,18 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     });
 };
 
-export const fetchPartyRelationships = (mineId, partyId, typeCode) => (dispatch) => {
+export const fetchPartyRelationships = (parms) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return axios
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${
-        mineId ? `mine_guid=${mineId}${partyId || typeCode ? "&" : ""}` : ""
-      }${partyId ? `party_guid=${partyId}${typeCode ? "&" : ""}` : ""}${
-        typeCode ? `types=${typeCode}` : ""
-      }`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
       createRequestHeader()
     )
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
       dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading());
-    });
-};
-
-export const fetchPartyRelationshipsByMineId = (mineId) => (dispatch) => {
-  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading());
-  return axios
-    .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_guid=${mineId}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading());
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading());
-    });
-};
-
-export const fetchPartyRelationshipsByPartyId = (partyId) => (dispatch) => {
-  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading());
-  return axios
-    .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?party_guid=${partyId}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading());
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading());
-    });
-};
-
-export const fetchPartyRelationshipsByTypeCode = (typeCode) => (dispatch) => {
-  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading());
-  return axios
-    .get(`${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?types=${typeCode}`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({

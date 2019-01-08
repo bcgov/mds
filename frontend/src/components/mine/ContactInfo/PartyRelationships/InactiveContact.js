@@ -16,7 +16,7 @@ export class InactiveContact extends Component {
   };
 
   render() {
-    if (this.state.redirectToProfile === true) {
+    if (this.state.redirectToProfile) {
       return (
         <Redirect
           to={router.RELATIONSHIP_PROFILE.dynamicRoute(

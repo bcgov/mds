@@ -289,11 +289,7 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
   return axios
-    .post(
-      ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST,
-      { mine_guids: mine_guids },
-      createRequestHeader()
-    )
+    .post(ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST, { mine_guids }, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_BASIC_INFO_LIST));
       dispatch(mineActions.storeMineBasicInfoList(response.data));
