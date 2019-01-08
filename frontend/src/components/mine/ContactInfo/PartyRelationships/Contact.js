@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -36,59 +36,55 @@ const defaultProps = {
   isEditable: false,
 };
 
-export class Contact extends Component {
-  componentWillMount() {}
+export const Contact = (props) => {
+  let component;
 
-  render() {
-    let component;
-
-    switch (this.props.partyRelationship.mine_party_appt_type_code) {
-      case "EOR":
-        component = (
-          <EngineerOfRecord
-            partyRelationship={this.props.partyRelationship}
-            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.props.removePartyRelationship}
-            isEditable={this.props.isEditable}
-          />
-        );
-        break;
-      case "PMT":
-        component = (
-          <Permittee
-            partyRelationship={this.props.partyRelationship}
-            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.props.removePartyRelationship}
-            isEditable={this.props.isEditable}
-          />
-        );
-        break;
-      default:
-        component = (
-          <DefaultContact
-            partyRelationship={this.props.partyRelationship}
-            partyRelationshipTypeLabel={this.props.partyRelationshipTypeLabel}
-            handleChange={this.props.handleChange}
-            mine={this.props.mine}
-            openEditPartyRelationshipModal={this.props.openEditPartyRelationshipModal}
-            onSubmitEditPartyRelationship={this.props.onSubmitEditPartyRelationship}
-            removePartyRelationship={this.props.removePartyRelationship}
-            isEditable={this.props.isEditable}
-          />
-        );
-        break;
-    }
-    return component;
+  switch (props.partyRelationship.mine_party_appt_type_code) {
+    case "EOR":
+      component = (
+        <EngineerOfRecord
+          partyRelationship={props.partyRelationship}
+          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
+          handleChange={props.handleChange}
+          mine={props.mine}
+          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
+          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
+          removePartyRelationship={props.removePartyRelationship}
+          isEditable={props.isEditable}
+        />
+      );
+      break;
+    case "PMT":
+      component = (
+        <Permittee
+          partyRelationship={props.partyRelationship}
+          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
+          handleChange={props.handleChange}
+          mine={props.mine}
+          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
+          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
+          removePartyRelationship={props.removePartyRelationship}
+          isEditable={props.isEditable}
+        />
+      );
+      break;
+    default:
+      component = (
+        <DefaultContact
+          partyRelationship={props.partyRelationship}
+          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
+          handleChange={props.handleChange}
+          mine={props.mine}
+          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
+          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
+          removePartyRelationship={props.removePartyRelationship}
+          isEditable={props.isEditable}
+        />
+      );
+      break;
   }
-}
+  return component;
+};
 
 Contact.propTypes = propTypes;
 Contact.defaultProps = defaultProps;

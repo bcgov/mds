@@ -5,9 +5,10 @@ import { renderConfig } from "@/components/common/config";
 import { Form, Col, Row } from "antd";
 import { required } from "@/utils/Validate";
 import { createDropDownList } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mine: PropTypes.object,
+  mine: CustomPropTypes.mine,
 };
 
 const defaultProps = {

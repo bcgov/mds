@@ -7,6 +7,7 @@ import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { createParty, fetchParties } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
@@ -18,11 +19,7 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  mine: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  mine: {},
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 export class MineContactInfo extends Component {
@@ -63,7 +60,6 @@ export class MineContactInfo extends Component {
 }
 
 MineContactInfo.propTypes = propTypes;
-MineContactInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({});
 
