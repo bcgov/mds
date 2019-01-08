@@ -16,7 +16,7 @@ class Form_UpdatePermittee extends Module {
         selectCurrentPermitteeFirstItem (wait:true) {selectCurrentPermittee.find("li", class: "ant-select-dropdown-menu-item", 0)}
 
         selectNewPermittee (wait:true) {$("div", id:"party")}
-        newPermitteeBox (wait:true) {selectNewPermittee.find("input", class: "ant-select-search__field")}
+        newPermitteeBox (wait:true) {selectNewPermittee.find("input", class: "ant-input")}
         selectNewPermitteeFirstItem (wait:true) {selectNewPermittee.find("li", class: "ant-select-dropdown-menu-item", 0)}
 
         startDateBox (wait:true) {$("span", id:"startDate")}

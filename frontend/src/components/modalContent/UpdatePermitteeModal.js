@@ -7,23 +7,21 @@ import * as ModalContent from "@/constants/modalContent";
 import { connect } from "react-redux";
 import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
 import { getParties, getPartyIds } from "@/selectors/partiesSelectors";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  permit: PropTypes.object.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  permittees: PropTypes.object.isRequired,
-  permitteeIds: PropTypes.array.isRequired,
+  permit: PropTypes.arrayOf(CustomPropTypes.permit),
+  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permitteeIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
 };
 
 const defaultProps = {
   permit: {},
-  parties: {},
-  partyIds: [],
-  permitteeIds: [],
   permittees: {},
 };
 

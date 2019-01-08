@@ -1,13 +1,14 @@
 from flask import request
 from flask_restplus import Resource
 from ..models.required_documents import RequiredDocument
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'req_doc_guid': 'Required Document guid.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, req_doc_guid=None):
         if req_doc_guid:
             req_doc = RequiredDocument.find_by_req_doc_guid(req_doc_guid)
