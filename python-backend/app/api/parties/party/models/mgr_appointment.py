@@ -9,7 +9,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 
 from .party import Party
-from ....mines.mine.models.mine_identity import MineIdentity
+from ....mines.mine.models.mine import Mine
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -17,18 +17,19 @@ from ....constants import PARTY_STATUS_CODE
 class MgrAppointment(AuditMixin, Base):
     __tablename__ = "mgr_appointment"
     mgr_appointment_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MgrAppoinment %r>' % self.mgr_appointment_guid
 
     def json(self):
         party = Party.find_by_party_guid(str(self.party_guid))
-        mine = MineIdentity.find_by_mine_guid(str(self.mine_guid))
-        mine_name = mine.mine_detail[0].mine_name
+        mine = Mine.find_by_mine_guid(str(self.mine_guid))
+        mine_name = mine.mine_name
         return {
             'mgr_appointment_guid': str(self.mgr_appointment_guid),
             'mine_guid': str(self.mine_guid),

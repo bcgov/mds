@@ -12,13 +12,21 @@ from ....utils.models_mixins import AuditMixin, Base
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
     permit_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
-    received_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    issue_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    permit_status_code = db.Column(db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permittee = db.relationship('Permittee', backref='permittee', order_by='desc(Permittee.effective_date), desc(Permittee.update_timestamp)', lazy='joined')
+    received_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    issue_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    permit_status_code = db.Column(
+        db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
+    permittee = db.relationship(
+        'Permittee',
+        backref='permittee',
+        order_by='desc(Permittee.effective_date), desc(Permittee.update_timestamp)',
+        lazy='joined')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
@@ -44,15 +52,20 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=_id)
 
     @classmethod
-    def create_mine_permit(cls, mine_identity, permit_no, permit_status_code, issue_date, user_kwargs, save=True):
+    def create_mine_permit(cls,
+                           mine,
+                           permit_no,
+                           permit_status_code,
+                           issue_date,
+                           user_kwargs,
+                           save=True):
         mine_permit = cls(
             permit_guid=uuid.uuid4(),
-            mine_guid=mine_identity.mine_guid,
+            mine_guid=mine.mine_guid,
             permit_no=permit_no,
             permit_status_code=permit_status_code,
             issue_date=issue_date,
-            **user_kwargs
-        )
+            **user_kwargs)
         if save:
             mine_permit.save(commit=False)
         return mine_permit
