@@ -5,18 +5,23 @@ import PropTypes from "prop-types";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
 import AddPartyForm from "@/components/Forms/AddPartyForm";
 import * as ModalContent from "@/constants/modalContent";
-import { getParties, getPartyIds } from "@/selectors/partiesSelectors";
+import { getRawParties } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   onPartySubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party),
   mine: CustomPropTypes.mine.isRequired,
+};
+
+const defaultProps = {
+  parties: [],
 };
 
 export class AddPartyRelationshipModal extends Component {
@@ -45,9 +50,26 @@ export class AddPartyRelationshipModal extends Component {
     );
 
   render() {
+    let filteredParties = this.props.parties;
+    if (this.props.partyRelationshipType.person !== "True") {
+      filteredParties = filteredParties.filter((x) => x.party_type_code === "ORG");
+    } else if (this.props.partyRelationshipType.organization !== "True") {
+      filteredParties = filteredParties.filter((x) => x.party_type_code === "PER");
+    }
+
     return (
       <div>
-        <AddPartyRelationshipForm {...this.props} />
+        <AddPartyRelationshipForm
+          onSubmit={this.props.onSubmit}
+          handleChange={this.props.handleChange}
+          closeModal={this.props.closeModal}
+          onPartySubmit={this.props.onPartySubmit}
+          title={this.props.title}
+          partyRelationshipType={this.props.partyRelationshipType}
+          parties={createItemMap(filteredParties, "party_guid")}
+          partyIds={createItemIdsArray(filteredParties, "party_guid")}
+          mine={this.props.mine}
+        />
         <br />
         <p className="center">
           {this.props.partyRelationshipType.person === "True" &&
@@ -73,11 +95,12 @@ export class AddPartyRelationshipModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  parties: getParties(state),
-  partyIds: getPartyIds(state),
+  parties: getRawParties(state),
 });
 
 AddPartyRelationshipModal.propTypes = propTypes;
+AddPartyRelationshipModal.defaultProps = defaultProps;
+
 export default connect(
   mapStateToProps,
   null

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Col, Row } from "antd";

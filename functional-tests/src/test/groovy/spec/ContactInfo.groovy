@@ -16,7 +16,10 @@ class  ContactInfoSpec extends GebReportingSpec {
         given: "I go to mine profile"
         to MineProfilePage
 
-        then: "I go to contact tab"
+        when: "I go to contact tab"
         contactInfoTab.tabSelect.click()
+
+        then: "I am on the contact tab"
+        assert contactInfoTab.activeTab == "Contact Information"
     }
 }

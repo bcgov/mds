@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
