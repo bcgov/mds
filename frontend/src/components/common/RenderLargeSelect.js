@@ -1,71 +1,66 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete, Input } from "antd";
+import { Form, AutoComplete, Input, Icon } from "antd";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
  */
 
 const propTypes = {
-  input: PropTypes.any,
+  input: PropTypes.shape({ value: PropTypes.string }).isRequired,
+  options: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.arrayOf(PropTypes.string).isRequired,
   label: PropTypes.string,
-  options: PropTypes.object,
-  meta: PropTypes.object,
-  data: PropTypes.array,
-  option: PropTypes.object,
-  handleChange: PropTypes.func,
+  handleChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 };
 
-const transformData = (data, option) => {
-  if (data) {
-    const dataList = [];
-    data.map((opt) => {
-      dataList.push(
-        <AutoComplete.Option key={opt} value={opt}>
-          {option[opt].name}
-        </AutoComplete.Option>
-      );
-    });
-    return dataList;
-  }
+const defaultProps = {
+  label: "",
+  placeholder: "",
 };
-const RenderLargeSelect = ({
-  id,
-  data,
-  options,
-  label,
-  placeholder,
-  input,
-  handleChange,
-  meta: { touched, error, warning },
-}) => (
+
+const transformData = (data, option) =>
+  data.map((opt) => (
+    <AutoComplete.Option key={opt} value={opt}>
+      {option[opt].name}
+    </AutoComplete.Option>
+  ));
+
+const RenderLargeSelect = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <AutoComplete
-      getPopupContainer={() => document.getElementById(id)}
-      id={id}
-      defaultActiveFirstOption={false}
+      getPopupContainer={() => document.getElementById(props.id)}
+      id={props.id}
+      defaultActiveFirstOption
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
       style={{ width: "100%" }}
-      dataSource={transformData(data, options)}
-      placeholder={placeholder || "Select a party"} // TODO remove/refactor implimentation specific string
+      dataSource={props.input.value.length > 0 ? transformData(props.data, props.options) : []}
+      placeholder={props.placeholder}
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
-      onSearch={handleChange}
-      {...input}
+      onSearch={props.handleChange}
+      {...props.input}
     >
-      <Input />
+      <Input suffix={<Icon type="search" className="certain-category-icon" />} />
     </AutoComplete>
   </Form.Item>
 );
 
 RenderLargeSelect.propTypes = propTypes;
+RenderLargeSelect.defaultProps = defaultProps;
 
 export default RenderLargeSelect;

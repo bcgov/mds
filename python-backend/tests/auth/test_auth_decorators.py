@@ -1,8 +1,8 @@
 from flask_restplus import Resource, Namespace
+from app.extensions import api as app_api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
-api = Namespace('test')
-@api.route('/')
+
 class TestResource(Resource):
     @requires_role_mine_view
     def get(self):
@@ -12,7 +12,9 @@ class TestResource(Resource):
     def post(self):
         return "Example create method"
 
-
+api = Namespace('test')
+api.add_resource(TestResource, '')
+app_api.add_namespace(api)
 
 # Test view role
 def test_get_no_auth(test_client):

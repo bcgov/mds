@@ -24,7 +24,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             'mine_tailings_storage_facility_guid':
             'mine_tailings_storage_facility_guid to be retrieved, or return error if not provided'
         })
-    # @requires_role_mine_view
+    @requires_role_mine_view
     def get(self, mine_tailings_storage_facility_guid=None):
         if mine_tailings_storage_facility_guid:
             tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
@@ -41,7 +41,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             }
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
-    # @requires_role_mine_create
+    @requires_role_mine_create
     def post(self, mine_tailings_storage_facility_guid=None):
         if not mine_tailings_storage_facility_guid:
             data = self.parser.parse_args()

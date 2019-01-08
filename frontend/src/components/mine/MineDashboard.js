@@ -52,7 +52,7 @@ const propTypes = {
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  permittees: PropTypes.arrayOf(CustomPropTypes.permittee),
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
   permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
 };
@@ -141,11 +141,14 @@ export class MineDashboard extends Component {
                     <MineComplianceInfo mine={mine} {...this.props} />
                   </div>
                 </TabPane>
-                <TabPane tab="Tenure" key="tenure">
-                  <div className="tab__content">
-                    <MineTenureInfo mine={mine} {...this.props} />
-                  </div>
-                </TabPane>
+                {/* TODO: Unhide for July release */
+                false && (
+                  <TabPane tab="Tenure" key="tenure">
+                    <div className="tab__content">
+                      <MineTenureInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">
