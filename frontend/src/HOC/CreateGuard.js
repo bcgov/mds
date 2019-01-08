@@ -9,9 +9,10 @@ import { USER_ROLES } from "@/constants/environment";
  */
 
 export const CreateGuard = (WrappedComponent) => {
+  
   class CreateGuard extends Component {
     render() {
-      if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
+      if (this.props.userRoles.includes(USER_ROLES.role_create)) {
         return <WrappedComponent {...this.props} />;
       }
       return <div />;
@@ -29,3 +30,5 @@ export const CreateGuard = (WrappedComponent) => {
     null
   )(CreateGuard);
 };
+
+export default CreateGuard;

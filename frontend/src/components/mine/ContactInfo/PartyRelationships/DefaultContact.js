@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Popconfirm } from "antd";
 import { BRAND_PENCIL } from "@/constants/assets";
-import { ConditionalButton} from "@/components/common/ConditionalButton";
+import ConditionalButton from "@/components/common/ConditionalButton";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -35,9 +35,6 @@ export const DefaultContact = (props) => (
       </div>
       <div>
         <ConditionalButton
-          key={`${props.partyRelationship.mine_party_appt_guid}_edit`}
-          type="primary"
-          ghost
           handleAction={() =>
             props.openEditPartyRelationshipModal(
               props.partyRelationship,
@@ -45,11 +42,11 @@ export const DefaultContact = (props) => (
               props.handleChange,
               props.mine
             )}
-          string={<img className="padding-small" style={{ padding: "5px" }} src={BRAND_PENCIL} />}
+          string={<img className="padding-small" style={{ padding: "5px" }} alt="Edit" src={BRAND_PENCIL} />}
+          type="primary"
+          ghost
         />
         <ConditionalButton
-
-          key={`${props.partyRelationship.mine_party_appt_guid}_delete`}
           type="primary"
           ghost
           popConfirm={{

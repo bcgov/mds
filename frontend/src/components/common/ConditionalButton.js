@@ -17,7 +17,6 @@ const propTypes = {
   isDropdown: PropTypes.bool,
   overlay: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   ghost: PropTypes.bool,
-  key: PropTypes.string,
   popConfirm: shape({
     placement: PropTypes.string,
     title: PropTypes.string,
@@ -30,7 +29,7 @@ const propTypes = {
 const defaultProps = {
   string: "",
   ghost: false,
-  key: "",
+  // key: false,
   type: "primary",
   isDropdown: false,
   popConfirm: null,
@@ -40,20 +39,20 @@ const defaultProps = {
 export const ConditionalButton = (props) => (
   <span>
     {!props.isDropdown && props.popConfirm==null && (
-      <Button key={props.key} className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
+      <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
         {props.string}
       </Button>
     )}
     {props.isDropdown && props.popConfirm==null && (
       <Dropdown overlay={props.overlay} placement="bottomLeft">
-        <Button key={props.key} type={props.type}>{props.string}</Button>
+        <Button type={props.type}>{props.string}</Button>
       </Dropdown>
     )}
     {props.popConfirm!=null && (
       <Popconfirm
         {...props.popConfirm}
       >
-        <Button key={props.key} className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
+        <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
           {props.string}
         </Button>
       </Popconfirm>

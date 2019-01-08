@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
-import { ConditionalButton} from "@/components/common/ConditionalButton"
+import { Row, Col, Icon, Divider } from "antd";
+import ConditionalButton from "@/components/common/ConditionalButton"
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";

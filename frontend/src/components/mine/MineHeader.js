@@ -6,7 +6,7 @@ import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { ConditionalButton } from "../common/ConditionalButton";
+import ConditionalButton from "../common/ConditionalButton";
 import CustomPropTypes from "@/customPropTypes";
 
 /**

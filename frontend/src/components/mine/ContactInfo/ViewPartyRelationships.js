@@ -6,7 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Card, Row, Col, Menu, Icon, Popconfirm, Button } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { ConditionalButton } from "@/components/common/ConditionalButton";
+import ConditionalButton from "@/components/common/ConditionalButton";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
 import NullScreen from "@/components/common/NullScreen";
