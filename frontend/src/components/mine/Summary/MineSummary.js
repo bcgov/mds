@@ -65,9 +65,9 @@ export const MineSummary = (props) => {
         {props.summaryPartyRelationships
           .filter(
             (x) =>
-              x.end_date === "None" ||
+              !x.end_date ||
               (Date.parse(x.end_date) >= new Date() &&
-                (x.start_date === "None" || Date.parse(x.start_date) <= new Date()))
+                (!x.start_date || Date.parse(x.start_date) <= new Date()))
           )
           .map((partyRelationship) =>
             renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)

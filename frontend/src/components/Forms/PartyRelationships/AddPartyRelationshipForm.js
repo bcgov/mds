@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, validSearchSelection } from "@/utils/Validate";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,6 +34,8 @@ const validate = (values) => {
   return errors;
 };
 
+const validParty = validSearchSelection({ key: "parties", err: "Invalid Party" });
+
 export const AddPartyRelationshipForm = (props) => {
   let options;
 
@@ -61,7 +63,7 @@ export const AddPartyRelationshipForm = (props) => {
               component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
               options={props.parties}
-              validate={[required]}
+              validate={[required, validParty]}
               handleChange={props.handleChange}
             />
           </Form.Item>

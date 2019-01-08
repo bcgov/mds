@@ -47,7 +47,7 @@ export const MINE_RESPONSE = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -159,7 +159,7 @@ export const MINE_RESPONSE = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -205,7 +205,7 @@ export const MINES = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -323,7 +323,7 @@ export const MINES = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",

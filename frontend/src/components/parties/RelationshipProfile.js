@@ -23,7 +23,6 @@ const TabPane = Tabs.TabPane;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchPartyById: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -117,13 +116,10 @@ export class RelationshipProfile extends Component {
                       <Col span={8}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;
-                        {partyRelationship.start_date === "None"
-                          ? "Unknown"
-                          : partyRelationship.start_date}{" "}
-                        -{" "}
-                        {partyRelationship.end_date === "None"
-                          ? "Present"
-                          : partyRelationship.end_date}
+                        {partyRelationship.start_date
+                          ? partyRelationship.start_date
+                          : "Unknown"} -{" "}
+                        {partyRelationship.end_date ? partyRelationship.end_date : "Present"}
                       </Col>
                     </Row>
                   </div>

@@ -13,7 +13,6 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  removePartyRelationship: PropTypes.func.isRequired,
   otherDetails: PropTypes.object,
   isEditable: PropTypes.bool.isRequired,
 };
@@ -63,13 +62,13 @@ export class DefaultContact extends Component {
               <p>
                 <Icon type="clock-circle" />
                 &nbsp;&nbsp;
-                {this.props.partyRelationship.start_date === "None"
-                  ? "Unknown"
-                  : this.props.partyRelationship.start_date}{" "}
+                {this.props.partyRelationship.start_date
+                  ? this.props.partyRelationship.start_date
+                  : "Unknown"}{" "}
                 -{" "}
-                {this.props.partyRelationship.end_date === "None"
-                  ? "Present"
-                  : this.props.partyRelationship.end_date}
+                {this.props.partyRelationship.end_date
+                  ? this.props.partyRelationship.end_date
+                  : "Present"}
                 <br />
               </p>
             </div>
