@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import { Icon, Card, Row, Col, Button } from "antd";
 import * as router from "@/constants/routes";
 import { Redirect } from "react-router";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   partyRelationshipTypeCode: PropTypes.string.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 export class InactiveContact extends Component {

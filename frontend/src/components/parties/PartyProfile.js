@@ -32,15 +32,16 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
-  parties: PropTypes.object.isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
-  mineBasicInfoList: PropTypes.array,
+  mineBasicInfoList: PropTypes.arrayOf(CustomPropTypes.mine),
   match: PropTypes.object,
 };
 
 const defaultProps = {
   partyRelationships: [],
+  partyRelationshipTypes: [],
   mineBasicInfoList: [],
 };
 
@@ -149,26 +150,6 @@ export class PartyProfile extends Component {
     return <Loading />;
   }
 }
-
-/* {parties.mgr_appointment.map((history, i) => {
-  const expiry =
-    history.expiry_date === "9999-12-31" ? "PRESENT" : history.expiry_date;
-  return (
-    <div key={i}>
-      <Row type="flex" style={{ textAlign: "center" }}>
-        <Col span={8}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(history.mine_guid)}>
-            {history.mine_name}
-          </Link>
-        </Col>
-        <Col span={8}>Mine Manager</Col>
-        <Col span={8}>
-          {history.effective_date} - {expiry}
-        </Col>
-      </Row>
-    </div>
-  );
-})} */
 
 const mapStateToProps = (state) => ({
   parties: getParties(state),

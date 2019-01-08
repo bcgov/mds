@@ -1,5 +1,4 @@
 import React from "react";
-import { arrayOf } from "prop-types";
 import { Row, Col } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,7 +17,7 @@ import { connect } from "react-redux";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  partyRelationshipTypes: PropTypes.arrayOf(PropTypes.object),
+  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };

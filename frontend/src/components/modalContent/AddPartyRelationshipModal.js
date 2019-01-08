@@ -6,16 +6,17 @@ import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddP
 import AddPartyForm from "@/components/Forms/AddPartyForm";
 import * as ModalContent from "@/constants/modalContent";
 import { getParties, getPartyIds } from "@/selectors/partiesSelectors";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   onPartySubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  partyRelationshipType: PropTypes.object.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  mine: PropTypes.object.isRequired,
+  partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 export class AddPartyRelationshipModal extends Component {

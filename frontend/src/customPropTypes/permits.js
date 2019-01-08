@@ -50,3 +50,13 @@ export const partyRelationship = shape({
   start_date: PropTypes.string,
   end_date: PropTypes.string,
 });
+
+export const partyRelationshipType = shape({
+  active_ind: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  display_order: PropTypes.string.isRequired,
+  grouping_level: PropTypes.string.isRequired,
+  mine_party_appt_type_code: PropTypes.string.isRequired,
+  organization: PropTypes.string.isRequired,
+  person: PropTypes.string.isRequired,
+});

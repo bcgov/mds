@@ -5,20 +5,18 @@ import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
-
-PermitteeOptions;
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  partyRelationshipType: PropTypes.object.isRequired,
-  mine: PropTypes.object.isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
+  mine: CustomPropTypes.mine,
 };
 
 const defaultProps = {

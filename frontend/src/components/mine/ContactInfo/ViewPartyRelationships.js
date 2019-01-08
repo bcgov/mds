@@ -31,7 +31,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handlePartySubmit: PropTypes.func.isRequired,
-  partyRelationshipTypes: PropTypes.arrayOf(PropTypes.object),
+  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
@@ -176,7 +176,7 @@ export class ViewPartyRelationships extends Component {
     return inactivePartyRelationshipTypes
       .filter((x) => !activePartyRelationshipTypes.includes(x))
       .map((typeCode) => (
-        <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={6} key={typeCode}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={typeCode}>
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
             partyRelationshipTypeLabel={
