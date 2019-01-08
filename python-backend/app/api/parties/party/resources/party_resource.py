@@ -8,7 +8,8 @@ from sqlalchemy import or_
 from ....mines.mine.models.mine_identity import MineIdentity
 from ..models.party import Party
 from ....constants import PARTY_STATUS_CODE
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class PartyResource(Resource, UserMixin, ErrorMixin):
@@ -27,7 +28,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         '?search': 'Term searched in first name and party name, and 100 parties will be returned.',
         '?type': 'Search will filter for the type indicated.'
     })
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, party_guid=None):
         if party_guid:
             party = Party.find_by_party_guid(party_guid)
@@ -70,7 +71,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         return party_context
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, party_guid=None):
         if party_guid:
             self.raise_error(400, 'Error: Unexpected party id in Url.')
@@ -93,7 +94,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         return party.json()
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def put(self, party_guid):
         data = PartyResource.parser.parse_args()
         party_exists = Party.find_by_party_guid(party_guid)
