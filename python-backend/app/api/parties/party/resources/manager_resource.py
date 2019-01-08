@@ -9,7 +9,8 @@ from ....mines.mine.models.mine_identity import MineIdentity
 from ..models.party import Party
 from ..models.mgr_appointment import MgrAppointment
 from ....constants import PARTY_STATUS_CODE
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class ManagerResource(Resource, UserMixin, ErrorMixin):
@@ -19,7 +20,7 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('effective_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help='Effective date. In the format of YYYY-MM-DD.')
 
     @api.doc(params={'mgr_appointment_guid': 'Manager guid.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, mgr_appointment_guid):
         manager = MgrAppointment.find_by_mgr_appointment_guid(mgr_appointment_guid)
         if manager:
@@ -27,7 +28,7 @@ class ManagerResource(Resource, UserMixin, ErrorMixin):
         return self.create_error_payload(404, 'Manager not found'), 404
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, mgr_appointment_guid=None):
         if mgr_appointment_guid:
             self.raise_error(400, 'Error: Unexpected manager id in Url.')

@@ -7,12 +7,13 @@ from flask_restplus import Resource, reqparse
 
 from ..models.document_status import ExpectedDocumentStatus
 
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):
-    # @jwt.requires_roles(["mds-mine-view"])
+    # @requires_role_mine_view
     def get(self):
         mine_exp_docs_status = ExpectedDocumentStatus.find_all_document_status()
         return {
