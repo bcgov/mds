@@ -65,7 +65,12 @@ echo "---> Installing all dependencies"
 NODE_ENV=development npm install
 
 #do not fail when there is no build script
+echo "---> Building in dev mode"
+export BUILD_DIR=build-dev
+npm run build --if-present
+
 echo "---> Building in production mode"
+export BUILD_DIR=build
 npm run build --if-present
 
 # Clear the npm's cache and tmp directories only if they are not a docker volumes

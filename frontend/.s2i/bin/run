@@ -18,11 +18,13 @@ fi
 # For Test and Prod, rebuild the image to support base URLs
 run_node() {
   if [ "$NODE_ENV" == "development" ]; then
-    echo "Running the application"
+    echo "Serving the application from dev build"
+    export BUILD_DIR=build-dev
     exec npm run -d $NPM_RUN
   else
-    echo "Rebuilding the application and serving it"
-    exec npm run -d build-serve
+    echo "Serving the application from production build"
+    export BUILD_DIR=build
+    exec npm run -d $NPM_RUN
   fi
 }
 

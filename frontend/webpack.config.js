@@ -12,13 +12,14 @@ const PRODUCTION = "production";
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
+const BUILD_DIR = process.env.BUILD_DIR || "build";
 
 const PATHS = {
   src: path.join(__dirname, "src"),
   entry: path.join(__dirname, "src", "index.js"),
   public: path.join(__dirname, "public"),
   template: path.join(__dirname, "public", "index.html"),
-  build: path.join(__dirname, "build"),
+  build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
 };
 

@@ -3,8 +3,10 @@ const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
 let BASE_PATH = process.env.BASE_PATH;
+let BUILD_DIR = process.env.BUILD_DIR || "build";
 if (dotenv.parsed) {
   BASE_PATH = dotenv.parsed.BASE_PATH;
+  BUILD_DIR = dotenv.parsed.BUILD_DIR;
 }
 
 const app = express();
@@ -16,7 +18,7 @@ app.use(
 );
 const port = 3000;
 
-const staticServe = express.static(`${__dirname}/build`, {
+const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
   immutable: true,
   maxAge: "1y",
 });
