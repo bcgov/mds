@@ -63,8 +63,10 @@ fi
 PROD_BUILD_DIR=build
 DEV_BUILD_DIR=build-dev
 
-echo "---> Installing all dependencies"
-NODE_ENV=development npm install
+if [ ! -z "$SKIP_NPM_INSTALL" ]; then
+  echo "---> Installing all dependencies"
+  npm install
+fi
 
 #do not fail when there is no build script
 echo "---> Building in dev mode"
