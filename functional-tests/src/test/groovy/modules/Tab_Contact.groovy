@@ -7,5 +7,15 @@ class Tab_Contact extends Module {
     static content = {
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
         tabSelect (wait:true) {$("div.ant-tabs-tab", text: "Contact Information")}
+        addButton (wait:true) {$("button", text:"Add New Contact")}
+        addManagerButton (wait:true) {$("full").has("span",text:"Mine Manager")}
+        header {$("div", id:"rcDialogTitle0").text()}
     }
+
+     def modifyManager(managerProfileData){
+         addButton.click();
+         addManagerButton.click();
+    }
+
+
 }
