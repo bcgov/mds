@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { Menu, Icon, Divider, Button, Popover } from "antd";
-import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
+import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -175,7 +175,12 @@ class MineHeader extends Component {
             <ConditionalButton
               isDropdown
               overlay={menu}
-              string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+              string={
+                <div className="padding-small">
+                  <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                  Add/Edit
+                </div>
+              }
             />
           </div>
           <Divider />
