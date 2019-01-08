@@ -11,6 +11,7 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
+import { uniqBy } from "lodash";
 
 import {
   addPartyRelationship,
@@ -160,18 +161,17 @@ export class ViewPartyRelationships extends Component {
           (x.start_date === "None" || Date.parse(x.start_date) <= new Date()))
     );
     const inactiveRelationships = partyRelationships.filter(
-      (x) =>
-        x.end_date !== "None" &&
-        (Date.parse(x.end_date) <= new Date() ||
-          (x.start_date !== "None" && Date.parse(x.start_date) >= new Date()))
+      (x) => !activeRelationships.includes(x)
     );
 
-    const activePartyRelationshipTypes = [
-      ...new Set(activeRelationships.map((x) => x.mine_party_appt_type_code)),
-    ];
-    const inactivePartyRelationshipTypes = [
-      ...new Set(inactiveRelationships.map((x) => x.mine_party_appt_type_code)),
-    ];
+    const activePartyRelationshipTypes = uniqBy(
+      activeRelationships,
+      "mine_party_appt_type_code"
+    ).map((x) => x.mine_party_appt_type_code);
+    const inactivePartyRelationshipTypes = uniqBy(
+      inactiveRelationships,
+      "mine_party_appt_type_code"
+    ).map((x) => x.mine_party_appt_type_code);
 
     return inactivePartyRelationshipTypes
       .filter((x) => !activePartyRelationshipTypes.includes(x))

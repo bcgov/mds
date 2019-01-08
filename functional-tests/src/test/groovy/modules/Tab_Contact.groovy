@@ -9,7 +9,7 @@ class Tab_Contact extends Module {
         tabSelect (wait:true) {$("div.ant-tabs-tab", text: "Contact Information")}
         addButton (wait:true) {$("button", text:"Add New Contact")}
         addManagerButton (wait:true) {$("button").has("span",text:"Mine Manager")}
-        header {$("div", id:"rcDialogTitle0").text()}
+        header (wait:true) {$("div", id:"rcDialogTitle0").text()}
     }
 
      def modifyManager(){
