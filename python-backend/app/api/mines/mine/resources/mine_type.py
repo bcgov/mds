@@ -2,7 +2,8 @@ import uuid
 
 from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.mine_type import MineType
 
@@ -13,7 +14,7 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
 
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
 
@@ -40,7 +41,7 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
         return mine_type.json()
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def delete(self, mine_type_guid=None):
         data = self.parser.parse_args()
 

@@ -13,7 +13,8 @@ from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -41,7 +42,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_no_or_guid':
             'Mine number or guid. If not provided a paginated list of mines will be returned.'
         })
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -143,7 +144,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return _mine_status
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
@@ -193,7 +194,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         }
 
     @api.expect(parser)
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def put(self, mine_no_or_guid):
         data = self.parser.parse_args()
         tenure = data['tenure_number_id']
@@ -265,7 +266,7 @@ class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
 
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self):
         search_term = request.args.get('search')
         if search_term:
