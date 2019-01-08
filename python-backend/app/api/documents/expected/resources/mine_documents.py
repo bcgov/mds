@@ -8,7 +8,8 @@ from datetime import datetime
 from ...required.models.required_documents import RequiredDocument
 from ..models.mine_expected_document import MineExpectedDocument
 
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -25,7 +26,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         'mine_guid':
         'Optional: Mine number or guid. returns list of expected documents for the mine'
     })
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, mine_guid=None):
         if mine_guid == None:
             return self.create_error_payload(401, 'Must provide a mine id.')
@@ -41,7 +42,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
             'mine_guid':
             'Required: Mine number or guid. creates expected documents from payload for mine_guid'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, mine_guid):
         data = self.parser.parse_args()
         doc_list = data['documents']

@@ -10,7 +10,8 @@ from flask_restplus import Resource, reqparse
 from flask_uploads import UploadNotAllowed
 
 from ..models.document_manager import DocumentManager
-from app.extensions import jwt, api, documents
+from app.extensions import api, documents
+from ...utils.access_decorators import requires_role_mine_create
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -31,7 +32,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
 
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self):
 
         try:
@@ -105,7 +106,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'Required: Document guid. Returns the file associated to this guid.'
         })
     #TODO: removed authoization until token/redis system in place
-    #@jwt.requires_roles(["mds-mine-create"])
+    #@requires_role_mine_create
     def get(self, document_guid=None):
 
         if not document_guid:
