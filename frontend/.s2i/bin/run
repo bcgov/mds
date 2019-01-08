@@ -23,12 +23,12 @@ run_node() {
   if [ "$NODE_ENV" == "development" ]; then
     echo "Serving the application from dev build"
     export BUILD_DIR=$DEV_BUILD_DIR
-    exec rm -rf $PROD_BUILD_DIR
+    rm -rf $PROD_BUILD_DIR
     exec npm run -d $NPM_RUN
   else
     echo "Serving the application from production build"
     export BUILD_DIR=$PROD_BUILD_DIR
-    exec rm -rf $DEV_BUILD_DIR
+    rm -rf $DEV_BUILD_DIR
     exec npm run -d $NPM_RUN
   fi
 }
