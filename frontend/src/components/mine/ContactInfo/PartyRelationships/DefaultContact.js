@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Button, Icon, Popconfirm } from "antd";
+import { Icon } from "antd";
 import { BRAND_PENCIL } from "@/constants/assets";
 import ConditionalButton from "@/components/common/ConditionalButton";
 
@@ -9,7 +9,7 @@ const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
@@ -53,7 +53,7 @@ export const DefaultContact = (props) => (
             placement: "topLeft",
             title: `Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`,
             onConfirm: (event) =>
-            props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid),
+              props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid),
             okText: "Delete",
             cancelText: "Cancel"
           }}

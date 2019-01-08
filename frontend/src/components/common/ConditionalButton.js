@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
-import {PropTypes, shape} from "prop-types";
+import { PropTypes, shape } from "prop-types";
 
 import { CreateGuard } from "@/HOC/CreateGuard";
 // import CustomPropTypes from "@/customPropTypes";
@@ -27,9 +27,9 @@ const propTypes = {
 };
 
 const defaultProps = {
+  handleAction: null,
   string: "",
   ghost: false,
-  // key: false,
   type: "primary",
   isDropdown: false,
   popConfirm: null,
@@ -38,7 +38,7 @@ const defaultProps = {
 
 export const ConditionalButton = (props) => (
   <span>
-    {!props.isDropdown && props.popConfirm==null && (
+    {!props.isDropdown && props.popConfirm == null && (
       <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
         {props.string}
       </Button>
@@ -48,7 +48,7 @@ export const ConditionalButton = (props) => (
         <Button type={props.type}>{props.string}</Button>
       </Dropdown>
     )}
-    {props.popConfirm!=null && (
+    {props.popConfirm != null && (
       <Popconfirm
         {...props.popConfirm}
       >
@@ -57,8 +57,6 @@ export const ConditionalButton = (props) => (
         </Button>
       </Popconfirm>
     )}
-
-
   </span>
 );
 
