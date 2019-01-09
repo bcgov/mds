@@ -51,10 +51,12 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         document_category = expected_document.required_document.req_document_category.req_document_category
 
         if data.get('mine_document_guid'):
-            existing_mine_doc = MineDocument.find_by_guid(data.get('mine_document_guid'))
+            existing_mine_doc = MineDocument.find_by_mine_document_guid(
+                data.get('mine_document_guid'))
             if not existing_mine_doc:
                 return self.create_error_payload(500, 'mine_document not found'), 500
-            expected_document.mine_documents.extend(existing_mine_doc)
+
+            expected_document.mine_documents.append(existing_mine_doc)
             db.session.commit()
             result = expected_document.json()
         else:  #expecting a new file
