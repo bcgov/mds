@@ -230,7 +230,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
-            DOCUMENT_MANAGER_URL = "http://localhost:500/${vars.git.changeId}"
+            DOCUMENT_MANAGER_URL = "http://localhost:5000/353"//${vars.git.changeId}"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -302,7 +302,7 @@ environments {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
-            DOCUMENT_MANAGER_URL = "http://localhost:500"
+            DOCUMENT_MANAGER_URL = "http://localhost:5000"
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -374,7 +374,7 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '20Gi'
-            DOCUMENT_MANAGER_URL = "http://localhost:500"
+            DOCUMENT_MANAGER_URL = "http://localhost:5000"
             git {
                 changeId = "${opt.'pr'}"
             }
