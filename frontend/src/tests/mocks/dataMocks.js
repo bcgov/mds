@@ -15,7 +15,6 @@ export const MINE_RESPONSE = {
       mine_name: "mine3",
       mine_no: "BLAH9091",
       region_code: "NE",
-      mgr_appointment: [],
       mine_permit: [],
       mineral_tenure_xref: [
         {
@@ -53,7 +52,6 @@ export const MINE_RESPONSE = {
       mine_name: "mine2",
       mine_no: "BLAH9091",
       region_code: "NE",
-      mgr_appointment: [],
       mine_permit: [
         {
           expiry_date: "9999-12-31",
@@ -163,7 +161,6 @@ export const MINES = {
       mine_name: "mine3",
       mine_no: "BLAH9091",
       region_code: "NE",
-      mgr_appointment: [],
       mine_permit: [],
       mineral_tenure_xref: [
         {
@@ -201,7 +198,6 @@ export const MINES = {
       mine_name: "mine2",
       mine_no: "BLAH9091",
       region_code: "NE",
-      mgr_appointment: [],
       mine_permit: [
         {
           expiry_date: "9999-12-31",

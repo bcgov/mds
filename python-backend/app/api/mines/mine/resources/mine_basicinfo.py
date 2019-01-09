@@ -5,11 +5,7 @@ from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
-from ..models.mine_identity import MineIdentity
-from ..models.mine_detail import MineDetail
-from ....permits.permit.models.permit import Permit
-from ...location.models.mine_location import MineLocation
-from ....utils.random import generate_mine_no
+from ..models.mine import Mine
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -29,6 +25,6 @@ class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
         result = []
         #return data.get('mine_guids')
         for mine_guid in data.get('mine_guids', []):
-            mine = MineIdentity.find_by_mine_guid(mine_guid)
+            mine = Mine.find_by_mine_guid(mine_guid)
             result.append(mine.json_for_list())
         return result

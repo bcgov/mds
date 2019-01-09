@@ -1,6 +1,6 @@
 import json, uuid
 from tests.constants import TEST_MINE_GUID, DUMMY_USER_KWARGS
-from app.api.mines.mine.models.mine_identity import MineIdentity
+from app.api.mines.mine.models.mine import Mine
 
 
 def test_get_mines_basic_info_empty(test_client, auth_headers):
@@ -23,7 +23,11 @@ def test_get_mines_basic_info_single(test_client, auth_headers):
 
 def test_get_mines_basic_info_multiple(test_client, auth_headers):
     new_mine_guid = 'b6e1c212-aa7d-4f30-8c37-f7e3837be561'
-    mine_identity2 = MineIdentity(mine_guid=uuid.UUID(new_mine_guid), **DUMMY_USER_KWARGS)
+    mine_identity2 = Mine(
+        mine_guid=uuid.UUID(new_mine_guid),
+        mine_no="Bzzz1234",
+        mine_name="test_mine_name",
+        **DUMMY_USER_KWARGS)
     mine_identity2.save()
 
     form_data = {'mine_guids': [TEST_MINE_GUID, new_mine_guid]}
