@@ -45,6 +45,8 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             )
 
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        if not expected_document:
+            return self.create_error_payload(500, f'expected document not found'), 500
         mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
@@ -58,7 +60,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         else:  #expecting a new file
             if not data['file']:
                 return self.create_error_payload(
-                    500, 'expecting mine_document_guid or new file, neither found'), 500
+                    400, 'expecting mine_document_guid or new file, neither found'), 400
 
             if document_category:
                 folder = 'mines/' + str(mine.mine_guid) + '/' + str(document_category)
