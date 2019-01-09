@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import EditPartyRelationshipForm from "@/components/Forms/PartyRelationships/EditPartyRelationshipForm";
 import CustomPropTypes from "@/customPropTypes";
@@ -6,6 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   mine: CustomPropTypes.mine.isRequired,
@@ -13,8 +14,6 @@ const propTypes = {
 
 const EditPartyRelationshipModal = (props) => {
   const initialValues = props.partyRelationship;
-  initialValues.start_date = initialValues.start_date;
-  initialValues.end_date = initialValues.end_date;
 
   return (
     <div>

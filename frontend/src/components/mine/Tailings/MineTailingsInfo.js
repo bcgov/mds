@@ -23,6 +23,7 @@ import { createDropDownList } from "@/utils/helpers";
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -49,8 +50,8 @@ const defaultProps = {
 };
 
 const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return "Loading...";
-  if (!doc) return "Loading...";
+  if (!expectedDocumentStatusOptions[0]) return String.LOADING;
+  if (!doc) return String.LOADING;
 
   return doc.exp_document_status_guid === "None"
     ? expectedDocumentStatusOptions[0].label

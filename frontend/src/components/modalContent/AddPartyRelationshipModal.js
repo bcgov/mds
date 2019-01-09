@@ -28,7 +28,7 @@ export class AddPartyRelationshipModal extends Component {
   state = { isPerson: true };
 
   componentDidMount() {
-    this.setState({ isPerson: this.props.partyRelationshipType.person === "True" });
+    this.setState({ isPerson: this.props.partyRelationshipType.person });
   }
 
   togglePartyChange = (value) => {
@@ -41,8 +41,8 @@ export class AddPartyRelationshipModal extends Component {
   };
 
   renderRadioButtonGroup = (person, organization) =>
-    person === "True" &&
-    organization === "True" && (
+    person &&
+    organization && (
       <Radio.Group defaultValue size="large" onChange={this.togglePartyChange}>
         <Radio.Button value>Person</Radio.Button>
         <Radio.Button value={false}>Company</Radio.Button>
@@ -51,9 +51,9 @@ export class AddPartyRelationshipModal extends Component {
 
   render() {
     let filteredParties = this.props.parties;
-    if (this.props.partyRelationshipType.person !== "True") {
+    if (!this.props.partyRelationshipType.person) {
       filteredParties = filteredParties.filter((x) => x.party_type_code === "ORG");
-    } else if (this.props.partyRelationshipType.organization !== "True") {
+    } else if (!this.props.partyRelationshipType.organization) {
       filteredParties = filteredParties.filter((x) => x.party_type_code === "PER");
     }
 
@@ -72,14 +72,14 @@ export class AddPartyRelationshipModal extends Component {
         />
         <br />
         <p className="center">
-          {this.props.partyRelationshipType.person === "True" &&
-            this.props.partyRelationshipType.organization === "True" &&
+          {this.props.partyRelationshipType.person &&
+            this.props.partyRelationshipType.organization &&
             ModalContent.PARTY_NOT_FOUND}
-          {this.props.partyRelationshipType.person === "False" &&
-            this.props.partyRelationshipType.organization === "True" &&
+          {!this.props.partyRelationshipType.person &&
+            this.props.partyRelationshipType.organization &&
             ModalContent.COMPANY_NOT_FOUND}
-          {this.props.partyRelationshipType.person === "True" &&
-            this.props.partyRelationshipType.organization === "False" &&
+          {this.props.partyRelationshipType.person &&
+            !this.props.partyRelationshipType.organization &&
             ModalContent.PERSON_NOT_FOUND}
         </p>
         <div className="center">

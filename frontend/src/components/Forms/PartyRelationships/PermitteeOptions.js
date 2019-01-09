@@ -7,11 +7,7 @@ import { createDropDownList } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
-};
-
-const defaultProps = {
-  mine: {},
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 export const PermitteeOptions = (props) => {
@@ -36,6 +32,5 @@ export const PermitteeOptions = (props) => {
 };
 
 PermitteeOptions.propTypes = propTypes;
-PermitteeOptions.defaultProps = defaultProps;
 
 export default PermitteeOptions;

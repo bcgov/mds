@@ -116,10 +116,8 @@ export class RelationshipProfile extends Component {
                       <Col span={8}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;
-                        {partyRelationship.start_date
-                          ? partyRelationship.start_date
-                          : "Unknown"} -{" "}
-                        {partyRelationship.end_date ? partyRelationship.end_date : "Present"}
+                        {partyRelationship.start_date || "Unknown"} -{" "}
+                        {partyRelationship.end_date || "Present"}
                       </Col>
                     </Row>
                   </div>

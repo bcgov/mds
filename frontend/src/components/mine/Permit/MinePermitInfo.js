@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import * as String from "@/constants/strings";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -70,15 +71,15 @@ const groupPermits = (permits) =>
 const transformRowData = (permits, partyRelationships) => {
   const latest = permits[0];
   const first = permits[permits.length - 1];
-  let permitteeName = "Loading...";
+  let permitteeName = String.LOADING;
   let permittees = [];
   if (partyRelationships.length > 0) {
     permittees = partyRelationships
       .filter((x) => x.related_guid === latest.permit_guid)
-      .sort((pr1, pr2) => {
-        if (!(Date.parse(pr1.due_date) === Date.parse(pr2.due_date)))
-          return Date.parse(pr1.due_date) > Date.parse(pr2.due_date) ? 1 : -1;
-        return pr1.exp_document_name > pr2.exp_document_name ? 1 : -1;
+      .sort((order1, order2) => {
+        const date1 = Date.parse(order1.due_date) || 0;
+        const date2 = Date.parse(order2.due_date) || 0;
+        return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
       });
     permitteeName = permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
   }

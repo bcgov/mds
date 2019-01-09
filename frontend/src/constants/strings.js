@@ -1,6 +1,7 @@
 import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error!";
+export const LOADING = "Loading...";
 export const TRY_AGAIN = "Please try again later";
 export const NO_DATA = "No data available";
 export const NO_COORDINATES = "This mine does not contain valid coordinates";

@@ -10,6 +10,7 @@ import {
   getSummaryPartyRelationships,
 } from "@/selectors/partiesSelectors";
 import { connect } from "react-redux";
+import * as String from "@/constants/strings";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
@@ -29,7 +30,7 @@ const defaultProps = {
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
-  if (partyRelationshipTypes.length === 0) return <div>Loading...</div>;
+  if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
 
   const partyRelationshipTypeLabel = partyRelationshipTypes.find(
     (x) => x.mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
@@ -52,6 +53,10 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
       />
     </Col>
   );
+};
+
+const activeParties = (partyRelationships) => {
+  
 };
 
 export const MineSummary = (props) => {
