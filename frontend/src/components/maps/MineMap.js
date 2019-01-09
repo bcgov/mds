@@ -15,16 +15,26 @@ import * as String from "@/constants/strings";
  */
 const propTypes = {
   mine: PropTypes.object,
+  map: PropTypes.object,
+  view: PropTypes.object,
   lat: PropTypes.number,
   long: PropTypes.number,
 };
 
 const defaultProps = {
   mine: null,
+  map: {},
+  view: {},
 };
 
 class MineMap extends Component {
-  state = { map: null, view: null, center: null, zoom: null, mapFailedToLoad: false };
+  state = {
+    map: this.props.map,
+    view: this.props.view,
+    center: [],
+    zoom: 5,
+    mapFailedToLoad: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.lat != this.props.lat || nextProps.long != this.props.long) {
