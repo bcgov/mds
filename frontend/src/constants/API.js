@@ -2,6 +2,7 @@
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
+export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/parties");
 export const MANAGER = "/parties/managers";

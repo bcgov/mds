@@ -3,6 +3,7 @@ import { storeParty, storeParties } from "@/actions/partyActions";
 
 const baseExpectedValue = {
   parties: {},
+  rawParties: {},
   partyIds: [],
   partyRelationships: [],
   partyRelationshipTypes: [],
@@ -22,6 +23,7 @@ describe("partiesReducer", () => {
   it("receives STORE_PARTY", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.parties = { test123: { party_guid: "test123" } };
+    expectedValue.rawParties = [{ party_guid: "test123" }];
     expectedValue.partyIds = ["test123"];
 
     const result = partiesReducer(undefined, storeParty({ party_guid: "test123" }));
@@ -34,6 +36,7 @@ describe("partiesReducer", () => {
       test123: { party_guid: "test123" },
       test456: { party_guid: "test456" },
     };
+    expectedValue.rawParties = [{ party_guid: "test123" }, { party_guid: "test456" }];
     expectedValue.partyIds = ["test123", "test456"];
 
     const result = partiesReducer(

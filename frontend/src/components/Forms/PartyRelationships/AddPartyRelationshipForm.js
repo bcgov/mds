@@ -4,22 +4,23 @@ import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
-import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { required, validSearchSelection } from "@/utils/Validate";
+import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  parties: PropTypes.object.isRequired,
-  partyIds: PropTypes.array.isRequired,
-  partyRelationshipType: PropTypes.string,
-  mine: PropTypes.object.isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
+  mine: CustomPropTypes.mine,
 };
 
 const defaultProps = {
-  partyRelationshipType: "",
   mine: {},
 };
 
@@ -33,11 +34,17 @@ const validate = (values) => {
   return errors;
 };
 
+const validParty = validSearchSelection({ key: "parties", err: "Invalid Party" });
+
 export const AddPartyRelationshipForm = (props) => {
   let options;
-  switch (props.partyRelationshipType) {
+
+  switch (props.partyRelationshipType.mine_party_appt_type_code) {
     case "EOR":
       options = <EngineerOfRecordOptions mine={props.mine} />;
+      break;
+    case "PMT":
+      options = <PermitteeOptions mine={props.mine} />;
       break;
     default:
       options = <div />;
@@ -56,7 +63,7 @@ export const AddPartyRelationshipForm = (props) => {
               component={renderConfig.LARGE_SELECT}
               data={props.partyIds}
               options={props.parties}
-              validate={[required]}
+              validate={[required, validParty]}
               handleChange={props.handleChange}
             />
           </Form.Item>
