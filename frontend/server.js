@@ -5,8 +5,8 @@ const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 let BASE_PATH = process.env.BASE_PATH;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
 if (dotenv.parsed) {
-  BASE_PATH = dotenv.parsed.BASE_PATH;
-  BUILD_DIR = dotenv.parsed.BUILD_DIR;
+  BASE_PATH = dotenv.parsed.BASE_PATH || BASE_PATH;
+  BUILD_DIR = dotenv.parsed.BUILD_DIR || BUILD_DIR;
 }
 
 const app = express();
