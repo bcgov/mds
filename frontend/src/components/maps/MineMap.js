@@ -15,8 +15,6 @@ import * as String from "@/constants/strings";
  */
 const propTypes = {
   mine: PropTypes.object,
-  map: PropTypes.object,
-  view: PropTypes.object,
   lat: PropTypes.number,
   long: PropTypes.number,
 };
@@ -25,8 +23,6 @@ const defaultProps = {
   mine: null,
   map: {},
   view: {},
-  lat: null,
-  long: null,
 };
 
 class MineMap extends Component {
