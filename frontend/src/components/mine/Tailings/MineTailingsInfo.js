@@ -67,11 +67,16 @@ export class MineTailingsInfo extends Component {
     this.props.fetchMineTailingsRequiredDocuments();
   }
 
-  getFileFromDocumentManager = (docMgrFileGuid) => {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
+  handleAddTailingsSubmit = (value) => {
+    this.props
+      .createTailingsStorageFacility({
+        ...value,
+        mine_guid: this.props.mine.guid,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
   };
 
   handleAddReportSubmit = (value) => {
@@ -107,6 +112,13 @@ export class MineTailingsInfo extends Component {
     this.props.removeExpectedDocument(exp_doc_guid).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
     });
+  };
+
+  getFileFromDocumentManager = (docMgrFileGuid) => {
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
+    window.open(url, "_blank");
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
   };
 
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
@@ -157,8 +169,8 @@ export class MineTailingsInfo extends Component {
         <div>
           <br />
           <br />
-          {this.props.mine.mine_tailings_storage_facility.map((facility) => (
-            <Row key={facility.mine_tailings_storage_facility_guid} gutter={16}>
+          {this.props.mine.mine_tailings_storage_facility.map((facility, id) => (
+            <Row key={id} gutter={16}>
               <Col span={6}>
                 <h3>{facility.mine_tailings_storage_facility_name}</h3>
               </Col>
