@@ -75,7 +75,6 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         args = {'folder': folder, 'pretty_folder': pretty_folder}
         headers = {'Authorization': request.headers.get('Authorization')}
 
-        return self.create_error_payload(501,document_manager_URL), 501
         response = requests.post(url=document_manager_URL, data=args, files=files, headers=headers)
         json_response = response.json()
 
