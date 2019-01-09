@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 class MineMap extends Component {
-  state = { map: null, view: null, center: null, zoom: null, mapFailedToLoad: null };
+  state = { map: null, view: null, center: null, zoom: null, mapFailedToLoad: false };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.lat != this.props.lat || nextProps.long != this.props.long) {
