@@ -15,7 +15,7 @@ BEGIN
         mine_no           varchar(7)    ,
         mine_nm           varchar(60)   ,
         reg_cd            varchar(1)    ,
-        mine_typ          varchar(2)    ,
+        mine_typ          varchar(3)    ,
         lat_dec           numeric(9,7)  ,
         lon_dec           numeric(11,7) ,
         major_mine_ind    boolean
