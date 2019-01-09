@@ -21,14 +21,12 @@ const propTypes = {
 
 const defaultProps = {
   mine: null,
-  map: {},
-  view: {},
 };
 
 class MineMap extends Component {
   state = {
-    map: this.props.map,
-    view: this.props.view,
+    map: {},
+    view: {},
     center: null,
     zoom: 5,
     mapFailedToLoad: false,
