@@ -17,7 +17,7 @@ const propTypes = {
 
 export const Permittee = (props) => {
   const permit = props.mine.mine_permit.find(
-    (x) => x.permit_guid === props.partyRelationship.related_guid
+    ({ permit_guid }) => permit_guid === props.partyRelationship.related_guid
   );
   const permitPartyRelationshipTypeLabel = `${
     props.partyRelationshipTypeLabel

@@ -75,7 +75,7 @@ const transformRowData = (permits, partyRelationships) => {
   let permittees = [];
   if (partyRelationships.length > 0) {
     permittees = partyRelationships
-      .filter((x) => x.related_guid === latest.permit_guid)
+      .filter(({ related_guid }) => related_guid === latest.permit_guid)
       .sort((order1, order2) => {
         const date1 = Date.parse(order1.due_date) || 0;
         const date2 = Date.parse(order2.due_date) || 0;

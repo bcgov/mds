@@ -123,7 +123,7 @@ export class ViewPartyRelationships extends Component {
         handleChange,
         title: `Update ${
           this.props.partyRelationshipTypesList.find(
-            (x) => x.value === partyRelationship.mine_party_appt_type_code
+            ({ value }) => value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
         partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
@@ -248,7 +248,7 @@ export class ViewPartyRelationships extends Component {
       return <div />;
 
     const partyRelationshipTypeLabel = this.props.partyRelationshipTypesList.find(
-      (x) => x.value === partyRelationship.mine_party_appt_type_code
+      ({ value }) => value === partyRelationship.mine_party_appt_type_code
     ).label;
 
     return (
@@ -321,7 +321,7 @@ export class ViewPartyRelationships extends Component {
       return <Loading />;
 
     const partyRelationshipGroupingLevels = [
-      ...new Set(this.props.partyRelationshipTypes.map((x) => x.grouping_level)),
+      ...new Set(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
 
     return (

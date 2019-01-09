@@ -55,7 +55,8 @@ const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
 
   return doc.exp_document_status_guid === "None"
     ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find((x) => x.value === doc.exp_document_status_guid).label;
+    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
+        .label;
 };
 /*
   return  */
@@ -81,7 +82,7 @@ export class MineTailingsInfo extends Component {
 
   handleAddReportSubmit = (value) => {
     const requiredReport = this.props.mineTSFRequiredReports.find(
-      (x) => x.req_document_guid === value.req_document_guid
+      ({ req_document_guid }) => req_document_guid === value.req_document_guid
     );
     const newRequiredReport = {
       document_name: requiredReport.req_document_name,

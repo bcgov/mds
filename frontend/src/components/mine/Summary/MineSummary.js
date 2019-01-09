@@ -33,7 +33,8 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
 
   const partyRelationshipTypeLabel = partyRelationshipTypes.find(
-    (x) => x.mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
+    ({ mine_party_appt_type_code }) =>
+      mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
   ).description;
 
   return (
@@ -55,9 +56,10 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
-const activeParties = (partyRelationships) => {
-  
-};
+const isActive = (partyRelationship) =>
+  !partyRelationship.end_date ||
+  (Date.parse(partyRelationship.end_date) >= new Date() &&
+    (!partyRelationship.start_date || Date.parse(partyRelationship.start_date) <= new Date()));
 
 export const MineSummary = (props) => {
   if (props.partyRelationships.length === 0) {
@@ -68,12 +70,7 @@ export const MineSummary = (props) => {
     <div>
       <Row gutter={16} type="flex" justify="center">
         {props.summaryPartyRelationships
-          .filter(
-            (x) =>
-              !x.end_date ||
-              (Date.parse(x.end_date) >= new Date() &&
-                (!x.start_date || Date.parse(x.start_date) <= new Date()))
-          )
+          .filter(isActive)
           .map((partyRelationship) =>
             renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)
           )}

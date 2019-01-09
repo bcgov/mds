@@ -52,9 +52,9 @@ export class AddPartyRelationshipModal extends Component {
   render() {
     let filteredParties = this.props.parties;
     if (!this.props.partyRelationshipType.person) {
-      filteredParties = filteredParties.filter((x) => x.party_type_code === "ORG");
+      filteredParties = filteredParties.filter(({ party_type_code }) => party_type_code === "ORG");
     } else if (!this.props.partyRelationshipType.organization) {
-      filteredParties = filteredParties.filter((x) => x.party_type_code === "PER");
+      filteredParties = filteredParties.filter(({ party_type_code }) => party_type_code === "PER");
     }
 
     return (

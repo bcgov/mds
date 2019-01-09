@@ -20,6 +20,7 @@ import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { formatTitleString } from "@/utils/helpers";
+import * as String from "@/constants/strings";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -51,11 +52,25 @@ export class PartyProfile extends Component {
     this.props.fetchPartyById(id);
     if (this.props.fetchPartyRelationships()) {
       this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
-        const mine_guids = new Set(this.props.partyRelationships.map((a) => a.mine_guid));
+        const mine_guids = new Set(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
         this.props.fetchMineBasicInfoList([...mine_guids]);
       });
     }
     this.props.fetchPartyRelationshipTypes();
+  }
+
+  getPartyRelationshipTypeLabel(partyRelationship) {
+    const partyRelationshipType = this.props.partyRelationshipTypes.find(
+      ({ value }) => value === partyRelationship.mine_party_appt_type_code
+    );
+    return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
+  }
+
+  getMineName(mineId) {
+    const mine =
+      this.props.mineBasicInfoList.length > 0 &&
+      this.props.mineBasicInfoList.find(({ guid }) => guid === mineId);
+    return (mine && mine.mine_name) || String.LOADING;
   }
 
   render() {
@@ -115,25 +130,15 @@ export class PartyProfile extends Component {
                             "contact-information"
                           )}
                         >
-                          {this.props.mineBasicInfoList.length > 0 &&
-                            this.props.mineBasicInfoList.find(
-                              (a) => a.guid === partyRelationship.mine_guid
-                            ).mine_detail[0].mine_name}
+                          {this.getMineName(partyRelationship.mine_guid)}
                         </Link>
                       </Col>
-                      <Col span={8}>
-                        {this.props.partyRelationshipTypes &&
-                          this.props.partyRelationshipTypes.find(
-                            (x) => x.value === partyRelationship.mine_party_appt_type_code
-                          ).label}
-                      </Col>
+                      <Col span={8}>{this.getPartyRelationshipTypeLabel(partyRelationship)}</Col>
                       <Col span={8}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;
-                        {partyRelationship.start_date
-                          ? partyRelationship.start_date
-                          : "Unknown"} -{" "}
-                        {partyRelationship.end_date ? partyRelationship.end_date : "Present"}
+                        {partyRelationship.start_date || "Unknown"} -{" "}
+                        {partyRelationship.end_date || "Present"}
                       </Col>
                     </Row>
                   </div>
