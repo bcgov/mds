@@ -21,6 +21,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { formatTitleString } from "@/utils/helpers";
 import * as String from "@/constants/strings";
+import { uniq } from "lodash";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -52,7 +53,7 @@ export class PartyProfile extends Component {
     this.props.fetchPartyById(id);
     if (this.props.fetchPartyRelationships()) {
       this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
-        const mine_guids = new Set(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
+        const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
         this.props.fetchMineBasicInfoList([...mine_guids]);
       });
     }

@@ -11,7 +11,7 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
-import { uniqBy } from "lodash";
+import { uniq, uniqBy } from "lodash";
 
 import {
   addPartyRelationship,
@@ -321,7 +321,7 @@ export class ViewPartyRelationships extends Component {
       return <Loading />;
 
     const partyRelationshipGroupingLevels = [
-      ...new Set(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
+      ...uniq(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
 
     return (
