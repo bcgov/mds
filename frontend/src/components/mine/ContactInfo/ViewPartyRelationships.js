@@ -93,7 +93,7 @@ export class ViewPartyRelationships extends Component {
         onPartySubmit,
         title: `${title}: ${
           this.props.partyRelationshipTypes.find((x) => x.value === value).label
-          }`,
+        }`,
         partyRelationshipType: value,
         mine,
       },
@@ -126,7 +126,7 @@ export class ViewPartyRelationships extends Component {
           this.props.partyRelationshipTypes.find(
             (x) => x.value === partyRelationship.mine_party_appt_type_code
           ).label
-          }: ${partyRelationship.party.name}`,
+        }: ${partyRelationship.party.name}`,
         partyRelationship,
         mine,
       },
@@ -276,15 +276,15 @@ export class ViewPartyRelationships extends Component {
                   </div>
                 ))
               ) : (
-                  <div>
-                    <hr />
-                    <br />
-                    <br />
-                    <NullScreen type="contacts" />
-                    <br />
-                    <br />
-                  </div>
-                )}
+                <div>
+                  <hr />
+                  <br />
+                  <br />
+                  <NullScreen type="contacts" />
+                  <br />
+                  <br />
+                </div>
+              )}
             </Col>
           </Row>
         </Card>

@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Icon, Divider } from "antd";
-import ConditionalButton from "@/components/common/ConditionalButton"
+import ConditionalButton from "@/components/common/ConditionalButton";
+import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
@@ -29,7 +30,7 @@ import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -45,7 +46,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
   expectedDocumentStatusOptions: [],
 };
 
@@ -67,16 +67,11 @@ export class MineTailingsInfo extends Component {
     this.props.fetchMineTailingsRequiredDocuments();
   }
 
-  handleAddTailingsSubmit = (value) => {
-    this.props
-      .createTailingsStorageFacility({
-        ...value,
-        mine_guid: this.props.mine.guid,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+  getFileFromDocumentManager = (docMgrFileGuid) => {
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
+    window.open(url, "_blank");
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
   };
 
   handleAddReportSubmit = (value) => {
@@ -156,21 +151,14 @@ export class MineTailingsInfo extends Component {
     }
   }
 
-  getFileFromDocumentManager(docMgrFileGuid) {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
-  }
-
   render() {
     return (
       <div>
         <div>
           <br />
           <br />
-          {this.props.mine.mine_tailings_storage_facility.map((facility, id) => (
-            <Row key={id} gutter={16}>
+          {this.props.mine.mine_tailings_storage_facility.map((facility) => (
+            <Row key={facility.mine_tailings_storage_facility_guid} gutter={16}>
               <Col span={6}>
                 <h3>{facility.mine_tailings_storage_facility_name}</h3>
               </Col>
@@ -229,7 +217,7 @@ export class MineTailingsInfo extends Component {
                 (doc.exp_document_status_guid === "None" ||
                   (this.props.expectedDocumentStatusOptions[0] &&
                     doc.exp_document_Status_guid ===
-                    this.props.expectedDocumentStatusOptions[0].value));
+                      this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
                   <Row gutter={16} justify="center" align="top">
@@ -237,8 +225,8 @@ export class MineTailingsInfo extends Component {
                       {isOverdue ? (
                         <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
-                          ""
-                        )}
+                        ""
+                      )}
                     </Col>
                     <Col id={`name-${id}`} span={8}>
                       <h6>{doc.exp_document_name}</h6>
@@ -261,17 +249,17 @@ export class MineTailingsInfo extends Component {
                       {!doc.related_documents
                         ? "-"
                         : doc.related_documents.map((file, id) => (
-                          <div>
-                            <a
-                              key={id}
-                              onClick={() =>
-                                this.getFileFromDocumentManager(file.document_manager_guid)
-                              }
-                            >
-                              {file.document_name}
-                            </a>
-                          </div>
-                        ))}
+                            <div>
+                              <a
+                                key={id}
+                                onClick={() =>
+                                  this.getFileFromDocumentManager(file.document_manager_guid)
+                                }
+                              >
+                                {file.document_name}
+                              </a>
+                            </div>
+                          ))}
                     </Col>
                     <Col span={4} align="right">
                       <ConditionalButton
@@ -294,7 +282,7 @@ export class MineTailingsInfo extends Component {
                           title: `Are you sure you want to delete ${doc.exp_document_name}?`,
                           onConfirm: (event) => this.removeReport(event, doc.exp_document_guid),
                           okText: "Delete",
-                          cancelText: "Cancel"
+                          cancelText: "Cancel",
                         }}
                         type="primary"
                         ghost
