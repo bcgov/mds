@@ -32,7 +32,7 @@ class Permit(AuditMixin, Base):
             'permit_status_code': self.permit_status_code,
             'received_date': self.received_date.isoformat(),
             'issue_date': self.issue_date.isoformat(),
-            'expiry_date': self.issue_date.isoformat()
+            'expiry_date': self.expiry_date.isoformat()
         }
 
     @classmethod

@@ -105,6 +105,24 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def create_mine_party_appt(cls,
+                               mine_guid,
+                               party_guid,
+                               permit_guid,
+                               mine_party_appt_type_code,
+                               user_kwargs,
+                               save=True):
+        mpa = cls(
+            mine_guid=mine_guid,
+            party_guid=party_guid,
+            permit_guid=permit_guid,
+            mine_party_appt_type_code="PMT",
+            **user_kwargs)
+        if save:
+            mpa.save(commit=False)
+        return mpa
+
     # validators
     @validates('mine_guid')
     def validate_mine_guid(self, key, val):
