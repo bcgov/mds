@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app/
 RUN rm -rf node_modules
 
-RUN npm install --silent
+RUN npm ci
 
 # Build the app and remove any non-production dependencies
 RUN npm run build
