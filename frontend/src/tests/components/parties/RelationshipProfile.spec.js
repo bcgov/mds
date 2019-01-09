@@ -11,7 +11,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.fetchPartyById = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {

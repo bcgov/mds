@@ -13,7 +13,7 @@ const setupDispatchProps = () => {
   dispatchProps.handlePartySubmit = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.addPartyRelationship = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.createTailingsStorageFacility = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.updatePartyRelationship = jest.fn();

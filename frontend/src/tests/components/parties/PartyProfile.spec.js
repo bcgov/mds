@@ -8,7 +8,7 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchPartyById = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.match = {};
 };

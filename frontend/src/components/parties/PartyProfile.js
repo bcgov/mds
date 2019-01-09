@@ -51,12 +51,10 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    if (this.props.fetchPartyRelationships()) {
-      this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
-        const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
-        this.props.fetchMineBasicInfoList([...mine_guids]);
-      });
-    }
+    this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
+      const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
+      this.props.fetchMineBasicInfoList([...mine_guids]);
+    });
     this.props.fetchPartyRelationshipTypes();
   }
 

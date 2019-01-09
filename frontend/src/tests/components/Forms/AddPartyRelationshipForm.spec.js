@@ -8,7 +8,7 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
 };
 
 const setupProps = () => {
