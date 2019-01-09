@@ -93,3 +93,19 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(500, 'An unexpected error occured')
 
         return {'status': 200, 'errors': errors, 'files': filenames}
+
+    @requires_role_mine_create
+    def delete(self, expected_document_guid=None, mine_document_guid=None):
+
+        if expected_document_guid is None or mine_document_guid is None:
+            return self.create_error_payload(
+                400, 'Must provide a expected document guid and a mine document guid.'), 400
+
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+
+        expected_document.mine_documents.remove(mine_document)
+
+        expected_document.save()
+
+        return
