@@ -21,10 +21,8 @@ from app.api.mines.status.resources.status import MineStatusResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
-from app.api.parties.party.resources.manager_resource import ManagerResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.permits.permit.resources.permit import PermitResource
-from app.api.permits.permittee.resources.permittee import PermitteeResource
 
 
 @pytest.mark.parametrize("resource,method,expected_roles", [
@@ -38,8 +36,6 @@ from app.api.permits.permittee.resources.permittee import PermitteeResource
     (ExpectedDocumentUploadResource, "delete", [MINE_CREATE]),
     (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
     (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
-    (ManagerResource, "get", [MINE_VIEW]),
-    (ManagerResource, "post", [MINE_CREATE]),
     (MineCommodityCodeResource, "get", [MINE_VIEW]),
     (MineComplianceResource, "get", [MINE_VIEW]),
     (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
@@ -67,8 +63,6 @@ from app.api.permits.permittee.resources.permittee import PermitteeResource
     (PartyResource, "post", [MINE_CREATE]),
     (PartyResource, "put", [MINE_CREATE]),
     (PermitResource, "get", [MINE_VIEW]),
-    (PermitteeResource, "get", [MINE_VIEW]),
-    (PermitteeResource, "post", [MINE_CREATE]),
     (RequiredDocumentResource, "get", [MINE_VIEW]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):

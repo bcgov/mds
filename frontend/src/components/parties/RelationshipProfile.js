@@ -5,57 +5,48 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Row, Col, Divider, Icon } from "antd";
 import {
-  fetchPartyById,
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
-import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
-import {
-  getParties,
-  getPartyRelationshipTypesList,
-  getPartyRelationships,
-} from "@/selectors/partiesSelectors";
-import { getMineBasicInfoList } from "@/selectors/mineSelectors";
+import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getMines } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString } from "@/utils/helpers";
 import * as String from "@/constants/strings";
-import { uniq } from "lodash";
 
 /**
- * @class PartyProfile - profile view for personnel/companies
+ * @class RelationshipProfile - profile view for party relationship types
  */
 
 const TabPane = Tabs.TabPane;
 
 const propTypes = {
-  fetchPartyById: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  fetchMineBasicInfoList: PropTypes.func.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
-  mineBasicInfoList: PropTypes.arrayOf(CustomPropTypes.mine),
   match: PropTypes.object,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
   partyRelationshipTypes: [],
-  mineBasicInfoList: [],
 };
 
-export class PartyProfile extends Component {
+export class RelationshipProfile extends Component {
   componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
-      const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
-      this.props.fetchMineBasicInfoList([...mine_guids]);
-    });
+    const { id, typeCode } = this.props.match.params;
     this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationships({ types: typeCode });
+
+    const mine = this.props.mines[id];
+    if (!mine) {
+      this.props.fetchMineRecordById(id);
+    }
   }
 
   getPartyRelationshipTypeLabel(partyRelationship) {
@@ -65,39 +56,30 @@ export class PartyProfile extends Component {
     return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
   }
 
-  getMineName(mineId) {
-    const mine =
-      this.props.mineBasicInfoList.length > 0 &&
-      this.props.mineBasicInfoList.find(({ guid }) => guid === mineId);
-    return (mine && mine.mine_name) || String.LOADING;
-  }
-
   render() {
     const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
+    const mine = this.props.mines[id];
 
     const isLoaded =
       this.props.partyRelationshipTypes.length > 0 &&
-      (this.props.partyRelationships.length > 0 && parties);
+      this.props.partyRelationships.length > 0 &&
+      mine;
 
     if (isLoaded) {
       return (
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1 className="bold">{formatTitleString(parties.name)}</h1>
+              <h1 className="bold">
+                {this.getPartyRelationshipTypeLabel(this.props.partyRelationships[0])} History
+              </h1>
             </div>
             <div className="inline-flex between">
               <div className="inline-flex">
                 <p>
-                  <Icon type="mail" />
-                  &nbsp;&nbsp;
-                  <a href={`mailto:${parties.email}`}>{parties.email}</a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <br />
-                  <Icon type="phone" />
-                  &nbsp;&nbsp;
-                  {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.guid, "contact-information")}>
+                    {mine && mine.mine_name}
+                  </Link>
                 </p>
               </div>
             </div>
@@ -108,7 +90,7 @@ export class PartyProfile extends Component {
                 <div>
                   <Row type="flex" style={{ textAlign: "center" }}>
                     <Col span={8}>
-                      <h2>Mine Name</h2>
+                      <h2>Contact</h2>
                     </Col>
                     <Col span={8}>
                       <h2>Role</h2>
@@ -124,12 +106,9 @@ export class PartyProfile extends Component {
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={8}>
                         <Link
-                          to={router.MINE_SUMMARY.dynamicRoute(
-                            partyRelationship.mine_guid,
-                            "contact-information"
-                          )}
+                          to={router.PARTY_PROFILE.dynamicRoute(partyRelationship.party.party_guid)}
                         >
-                          {this.getMineName(partyRelationship.mine_guid)}
+                          {partyRelationship.party.name}
                         </Link>
                       </Col>
                       <Col span={8}>{this.getPartyRelationshipTypeLabel(partyRelationship)}</Col>
@@ -151,29 +130,26 @@ export class PartyProfile extends Component {
     return <Loading />;
   }
 }
-
 const mapStateToProps = (state) => ({
-  parties: getParties(state),
+  mines: getMines(state),
   partyRelationshipTypes: getPartyRelationshipTypesList(state),
   partyRelationships: getPartyRelationships(state),
-  mineBasicInfoList: getMineBasicInfoList(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchPartyById,
+      fetchMineRecordById,
       fetchPartyRelationshipTypes,
       fetchPartyRelationships,
-      fetchMineBasicInfoList,
     },
     dispatch
   );
 
-PartyProfile.propTypes = propTypes;
-PartyProfile.defaultProps = defaultProps;
+RelationshipProfile.propTypes = propTypes;
+RelationshipProfile.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PartyProfile);
+)(RelationshipProfile);

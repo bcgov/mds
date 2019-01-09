@@ -8,6 +8,7 @@ import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import queryString from "query-string";
 
 export const createParty = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PARTY));
@@ -70,34 +71,6 @@ export const fetchPartyById = (id) => (dispatch) => {
     });
 };
 
-export const addMineManager = (mineId, partyId, mineName, date) => (dispatch) => {
-  dispatch(request(reducerTypes.ADD_MINE_MANAGER));
-  dispatch(showLoading());
-  return axios
-    .post(
-      ENVIRONMENT.apiUrl + API.MANAGER,
-      { mine_guid: mineId, party_guid: partyId, effective_date: date },
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: `Successfully updated the manager of ${mineName}`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.ADD_MINE_MANAGER));
-      dispatch(hideLoading());
-      return response;
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.ADD_MINE_MANAGER));
-      dispatch(hideLoading());
-    });
-};
-
 export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PERMITTEE));
   dispatch(showLoading());
@@ -133,13 +106,13 @@ export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => 
 
 export const fetchPartyRelationshipTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
       dispatch(partyActions.storePartyRelationshipTypes(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -147,7 +120,7 @@ export const fetchPartyRelationshipTypes = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
@@ -203,12 +176,12 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     });
 };
 
-export const fetchPartyRelationships = (mineId) => (dispatch) => {
+export const fetchPartyRelationships = (parms) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return axios
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?mine_guid=${mineId}`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -222,7 +195,7 @@ export const fetchPartyRelationships = (mineId) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     });
 };
 
