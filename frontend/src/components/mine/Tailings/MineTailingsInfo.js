@@ -177,7 +177,7 @@ export class MineTailingsInfo extends Component {
               <Col span={6} />
             </Row>
           ))}
-          <div className="center">            
+          <div className="center">
             <ConditionalButton
               className="full-mobile"
               type="primary"
@@ -229,7 +229,7 @@ export class MineTailingsInfo extends Component {
                 (doc.exp_document_status_guid === "None" ||
                   (this.props.expectedDocumentStatusOptions[0] &&
                     doc.exp_document_Status_guid ===
-                      this.props.expectedDocumentStatusOptions[0].value));
+                    this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
                   <Row gutter={16} justify="center" align="top">
@@ -237,8 +237,8 @@ export class MineTailingsInfo extends Component {
                       {isOverdue ? (
                         <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </Col>
                     <Col id={`name-${id}`} span={8}>
                       <h6>{doc.exp_document_name}</h6>
@@ -261,17 +261,17 @@ export class MineTailingsInfo extends Component {
                       {!doc.related_documents
                         ? "-"
                         : doc.related_documents.map((file, id) => (
-                            <div>
-                              <a
-                                key={id}
-                                onClick={() =>
-                                  this.getFileFromDocumentManager(file.document_manager_guid)
-                                }
-                              >
-                                {file.document_name}
-                              </a>
-                            </div>
-                          ))}
+                          <div>
+                            <a
+                              key={id}
+                              onClick={() =>
+                                this.getFileFromDocumentManager(file.document_manager_guid)
+                              }
+                            >
+                              {file.document_name}
+                            </a>
+                          </div>
+                        ))}
                     </Col>
                     <Col span={4} align="right">
                       <ConditionalButton
@@ -286,9 +286,9 @@ export class MineTailingsInfo extends Component {
                             doc
                           )
                         }
-                        string={<img  src={BRAND_PENCIL} alt="Edit TSF Report" />}
+                        string={<img src={BRAND_PENCIL} alt="Edit TSF Report" />}
                       />
-                      <ConditionalButton 
+                      <ConditionalButton
                         popConfirm={{
                           placement: "topLeft",
                           title: `Are you sure you want to delete ${doc.exp_document_name}?`,

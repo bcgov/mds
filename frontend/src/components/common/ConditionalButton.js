@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
+import { isNull, noop } from "lodash";
 import { PropTypes, shape } from "prop-types";
 
 import { CreateGuard } from "@/HOC/CreateGuard";
-// import CustomPropTypes from "@/customPropTypes";
 /**
  * @constant ConditionalButton is a conditionally rendered button depending on user permissions.
  * The component can either be a single button with an action || a dropdown with a menu passed in as a prop.
@@ -27,7 +27,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleAction: null,
+  handleAction: noop,
   string: "",
   ghost: false,
   type: "primary",
@@ -38,7 +38,7 @@ const defaultProps = {
 
 export const ConditionalButton = (props) => (
   <span>
-    {!props.isDropdown && props.popConfirm == null && (
+    {!props.isDropdown && isNull(props.popConfirm) && (
       <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
         {props.string}
       </Button>
@@ -48,7 +48,7 @@ export const ConditionalButton = (props) => (
         <Button type={props.type}>{props.string}</Button>
       </Dropdown>
     )}
-    {props.popConfirm != null && (
+    {props.popConfirm && (
       <Popconfirm
         {...props.popConfirm}
       >
