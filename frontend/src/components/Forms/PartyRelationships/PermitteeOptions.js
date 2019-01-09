@@ -7,20 +7,11 @@ import { createDropDownList } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
-
-export const EngineerOfRecordOptions = (props) => {
-  const tsfDropdown = createDropDownList(
-    props.mine.mine_tailings_storage_facility,
-    "mine_tailings_storage_facility_name",
-    "mine_tailings_storage_facility_guid"
-  );
-
+export const PermitteeOptions = (props) => {
+  const permitDropdown = createDropDownList(props.mine.mine_permit, "permit_no", "permit_guid");
   return (
     <Row gutter={16}>
       <Col md={12} xs={24}>
@@ -28,10 +19,10 @@ export const EngineerOfRecordOptions = (props) => {
           <Field
             id="related_guid"
             name="related_guid"
-            label="TSF *"
-            placeholder="Select a TSF"
+            label="Permit *"
+            placeholder="Select a Permit"
             component={renderConfig.SELECT}
-            data={tsfDropdown}
+            data={permitDropdown}
             validate={[required]}
           />
         </Form.Item>
@@ -40,7 +31,6 @@ export const EngineerOfRecordOptions = (props) => {
   );
 };
 
-EngineerOfRecordOptions.propTypes = propTypes;
-EngineerOfRecordOptions.defaultProps = defaultProps;
+PermitteeOptions.propTypes = propTypes;
 
-export default EngineerOfRecordOptions;
+export default PermitteeOptions;

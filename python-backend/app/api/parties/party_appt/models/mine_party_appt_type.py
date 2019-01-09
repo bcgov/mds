@@ -19,15 +19,21 @@ class MinePartyAppointmentType(AuditMixin, Base):
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    person = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    organization = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    grouping_level = db.Column(db.Integer)
 
     def json(self):
         return {
-            'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'description': str(self.description),
-            'display_order': str(self.display_order),
-            'active_ind' : str(self.active_ind),
+            'mine_party_appt_type_code': self.mine_party_appt_type_code,
+            'description': self.description,
+            'display_order': self.display_order,
+            'person': self.person,
+            'organization': self.organization,
+            'grouping_level': self.grouping_level,
+            'active_ind': self.active_ind
         }
-    
+
     @classmethod
     def find_by_mine_party_appt_type_code(cls, code):
         try:

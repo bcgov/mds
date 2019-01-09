@@ -14,6 +14,9 @@ const setupDispatchProps = () => {
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchMineTenureTypes = jest.fn();
   dispatchProps.fetchMineCommodityOptions = jest.fn();
+  dispatchProps.fetchRelationshipTypes = jest.fn();
+  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.match = {};
 };
 
