@@ -25,15 +25,15 @@ class MinePartyAppointmentType(AuditMixin, Base):
 
     def json(self):
         return {
-            'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'description': str(self.description),
-            'display_order': str(self.display_order),
-            'active_ind' : str(self.active_ind),
-            'person': str(self.person),
-            'organization': str(self.organization),
-            'grouping_level': str(self.grouping_level),
+            'mine_party_appt_type_code': self.mine_party_appt_type_code,
+            'description': self.description,
+            'display_order': self.display_order,
+            'person': self.person,
+            'organization': self.organization,
+            'grouping_level': self.grouping_level,
+            'active_ind': self.active_ind
         }
-    
+
     @classmethod
     def find_by_mine_party_appt_type_code(cls, code):
         try:
