@@ -68,21 +68,28 @@ const groupPermits = (permits) =>
     return acc;
   }, {});
 
+const getPermittees = (partyRelationships, latest) => {
+  return partyRelationships
+    .filter(({ related_guid }) => related_guid === latest.permit_guid)
+    .sort((order1, order2) => {
+      const date1 = Date.parse(order1.due_date) || 0;
+      const date2 = Date.parse(order2.due_date) || 0;
+      return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
+    });
+};
+
+const getPermitteeName = (permittees) => {
+  return permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
+};
+
 const transformRowData = (permits, partyRelationships) => {
   const latest = permits[0];
   const first = permits[permits.length - 1];
-  let permitteeName = String.LOADING;
-  let permittees = [];
-  if (partyRelationships.length > 0) {
-    permittees = partyRelationships
-      .filter(({ related_guid }) => related_guid === latest.permit_guid)
-      .sort((order1, order2) => {
-        const date1 = Date.parse(order1.due_date) || 0;
-        const date2 = Date.parse(order2.due_date) || 0;
-        return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
-      });
-    permitteeName = permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
-  }
+
+  const permittees = getPermittees(partyRelationships, latest);
+  const permitteeName =
+    partyRelationships.length === 0 ? String.LOADING : getPermitteeName(permittees);
+
   return {
     key: latest.permit_guid,
     lastAmended: formatDate(latest.issue_date),
