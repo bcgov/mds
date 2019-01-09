@@ -46,7 +46,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
         if not expected_document:
-            return self.create_error_payload(500, f'expected document not found'), 500
+            return self.create_error_payload(400, f'expected document not found'), 400
         mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
@@ -54,7 +54,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             existing_mine_doc = MineDocument.find_by_mine_document_guid(
                 data.get('mine_document_guid'))
             if not existing_mine_doc:
-                return self.create_error_payload(500, 'mine_document not found'), 500
+                return self.create_error_payload(400, 'mine_document not found'), 400
 
             expected_document.mine_documents.append(existing_mine_doc)
             db.session.commit()
