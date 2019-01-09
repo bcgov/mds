@@ -65,7 +65,7 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            mine_detail.mine_guid   ,
+            mine.mine_guid   ,
             permit_info.mine_no     ,
             permit_info.permit_no   ,
             permit_info.cid AS permit_cid   ,
@@ -78,8 +78,8 @@ BEGIN
             END AS sta_cd           ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
-        INNER JOIN mine_detail ON
-            mine_detail.mine_no=permit_info.mine_no
+        INNER JOIN mine ON
+            mine.mine_no=permit_info.mine_no
         WHERE permit_info.cid IN (
             SELECT permit_cid
             FROM new_permit_list

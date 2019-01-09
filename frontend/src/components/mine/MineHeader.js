@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { Menu, Icon, Divider, Button, Popover } from "antd";
-import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
+import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -112,12 +112,12 @@ class MineHeader extends Component {
   openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
     const initialValues = {
-      name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
+      name: mine.mine_name ? mine.mine_name : null,
       latitude: mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       longitude: mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
-      major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
-      mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
+      major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
+      mine_region: mine.region_code ? mine.region_code : null,
     };
 
     this.props.openModal({
@@ -171,15 +171,20 @@ class MineHeader extends Component {
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between">
-            <h1>{this.props.mine.mine_detail[0].mine_name} </h1>
+            <h1>{this.props.mine.mine_name} </h1>
             <ConditionalButton
               isDropdown
               overlay={menu}
-              string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
+              string={
+                <div className="padding-small">
+                  <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                  Add/Edit
+                </div>
+              }
             />
           </div>
           <Divider />
-          <h5>Mine No.: {this.props.mine.mine_detail[0].mine_no} </h5>
+          <h5>Mine No.: {this.props.mine.mine_no} </h5>
           {this.props.mine.mine_status[0] && (
             <div className="inline-flex">
               <div>
@@ -234,11 +239,7 @@ class MineHeader extends Component {
               String.EMPTY_FIELD
             )}
           </h5>
-          <h5>
-            {this.props.mine.mine_detail[0].major_mine_ind
-              ? String.MAJOR_MINE
-              : String.REGIONAL_MINE}
-          </h5>
+          <h5>{this.props.mine.major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</h5>
           <h5>
             TSF:{" "}
             {this.props.mine.mine_tailings_storage_facility.length > 0
@@ -265,8 +266,8 @@ class MineHeader extends Component {
             </div>
             <p className="p-white">
               Region:{" "}
-              {this.props.mine.mine_detail[0].region_code
-                ? this.props.mineRegionHash[this.props.mine.mine_detail[0].region_code]
+              {this.props.mine.region_code
+                ? this.props.mineRegionHash[this.props.mine.region_code]
                 : String.EMPTY_FIELD}
             </p>
           </div>

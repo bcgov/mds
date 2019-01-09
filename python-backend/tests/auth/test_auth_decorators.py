@@ -3,7 +3,7 @@ from app.extensions import api as app_api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
 
-class TestResource(Resource):
+class DummyResource(Resource):
     @requires_role_mine_view
     def get(self):
         return "Example view method"
@@ -13,7 +13,7 @@ class TestResource(Resource):
         return "Example create method"
 
 api = Namespace('test')
-api.add_resource(TestResource, '')
+api.add_resource(DummyResource, '')
 app_api.add_namespace(api)
 
 # Test view role
