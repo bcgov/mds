@@ -1,66 +1,18 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Keycloak from "keycloak-js";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated, getKeycloak } from "@/selectors/authenticationSelectors";
-import {
-  authenticateUser,
-  storeKeycloakData,
-  storeUserAccessData,
-} from "@/actions/authenticationActions";
-import { KEYCLOAK } from "@/constants/environment";
+import { authenticateUser, storeKeycloakData } from "@/actions/authenticationActions";
 
 /**
  * @constant AuthGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
 
 export const AuthGuard = (WrappedComponent) => {
-  /**
-   * Initializes the KeyCloak client and enables
-   * redirects directly to IDIR login page.
-   *
-   * The method uses async/awaits instead of promises
-   * because we were facing troubles with promise resolving
-   * and changing state.
-   *
-   */
-  class AuthGuard extends Component {
-    async keycloakInit() {
-      // Initialize client
-      const keycloak = Keycloak(KEYCLOAK);
-      await keycloak.init();
+  const authGuard = () => <WrappedComponent />;
 
-      // Prompt for login using IDIR if not authenticated
-      if (!keycloak.authenticated) {
-        await keycloak.login({
-          idpHint: KEYCLOAK.idpHint,
-        });
-      }
-
-      // Fetch user info and roles and store them in local storage
-      const userInfo = await keycloak.loadUserInfo();
-      localStorage.setItem("jwt", keycloak.token);
-      this.props.storeKeycloakData(keycloak);
-      this.props.authenticateUser(userInfo);
-    }
-
-    componentDidMount() {
-      this.keycloakInit();
-    }
-
-    render() {
-      if (this.props.keycloak) {
-        if (this.props.isAuthenticated) {
-          return <WrappedComponent {...this.props} />;
-        }
-        return <div>Loading ...</div>;
-      }
-      return <div>Loading ...</div>;
-    }
-  }
-
-  hoistNonReactStatics(AuthGuard, WrappedComponent);
+  hoistNonReactStatics(authGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
@@ -71,7 +23,6 @@ export const AuthGuard = (WrappedComponent) => {
     bindActionCreators(
       {
         authenticateUser,
-        storeUserAccessData,
         storeKeycloakData,
       },
       dispatch
@@ -80,5 +31,7 @@ export const AuthGuard = (WrappedComponent) => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AuthGuard);
+  )(authGuard);
 };
+
+export default AuthGuard;
