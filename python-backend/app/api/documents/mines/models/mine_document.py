@@ -33,5 +33,6 @@ class MineDocument(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=mine_guid).filter_by(active_ind=True).all()
 
     @classmethod
-    def find_by_guid(cls, guid):
-        return cls.query.filter_by(mine_document_guid=guid).filter_by(active_ind=True).all()
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
+            active_ind=True).first()
