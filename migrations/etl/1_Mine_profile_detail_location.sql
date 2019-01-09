@@ -172,11 +172,11 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
-        CASE new.mine_typ
-          when ANY('{CX,CS,CU}'::text[]) THEN 'COL'
-          when ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
-          when ANY('{PS,PU}'::text[]) THEN 'PLR'
-          when ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
+        CASE
+          when new.mine_typ = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
+          when new.mine_typ = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
+          when new.mine_typ = ANY('{PS,PU}'::text[]) THEN 'PLR'
+          when new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
           ELSE null
         END AS mine_tenure_type_code,
         'mms_migration'     ,
