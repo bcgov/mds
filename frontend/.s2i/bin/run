@@ -13,16 +13,23 @@ if [ -e "/opt/app-root/etc/generate_container_user" ]; then
   source /opt/app-root/etc/generate_container_user
 fi
 
+PROD_BUILD_DIR=build
+DEV_BUILD_DIR=build-dev
+
 # Runs the nodejs application server.
 # For Dev, run the already build application
 # For Test and Prod, rebuild the image to support base URLs
 run_node() {
   if [ "$NODE_ENV" == "development" ]; then
-    echo "Running the application"
+    echo "Serving the application from dev build"
+    export BUILD_DIR=$DEV_BUILD_DIR
+    rm -rf $PROD_BUILD_DIR
     exec npm run -d $NPM_RUN
   else
-    echo "Rebuilding the application and serving it"
-    exec npm run -d build-serve
+    echo "Serving the application from production build"
+    export BUILD_DIR=$PROD_BUILD_DIR
+    rm -rf $DEV_BUILD_DIR
+    exec npm run -d $NPM_RUN
   fi
 }
 
