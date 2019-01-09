@@ -17,18 +17,17 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import {
-  getMines,
-  getCurrentPermitteeIds,
-  getCurrentPermittees,
-  getCurrentMineTypes,
-} from "@/selectors/mineSelectors";
+import { getMines, getCurrentMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
+import {
+  fetchPartyRelationshipTypes,
+  fetchPartyRelationships,
+} from "@/actionCreators/partiesActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -55,6 +54,8 @@ const propTypes = {
   permittees: PropTypes.objectOf(CustomPropTypes.permittee),
   permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -66,7 +67,7 @@ const defaultProps = {
 export class MineDashboard extends Component {
   state = { activeTab: "summary", isLoaded: false };
 
-  componentDidMount() {
+  componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
@@ -76,6 +77,8 @@ export class MineDashboard extends Component {
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
     this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationships({ mine_guid: id });
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -167,8 +170,6 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  permittees: getCurrentPermittees(state),
-  permitteeIds: getCurrentPermitteeIds(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
@@ -190,6 +191,8 @@ const mapDispatchToProps = (dispatch) =>
       removeMineType,
       openModal,
       closeModal,
+      fetchPartyRelationships,
+      fetchPartyRelationshipTypes,
     },
     dispatch
   );
