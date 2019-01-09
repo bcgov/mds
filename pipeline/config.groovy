@@ -230,7 +230,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
-            DOCUMENT_MANAGER_URL = "http://localhost:5000/353"//${vars.git.changeId}"
+            DOCUMENT_MANAGER_URL = "http://localhost:5000/${vars.git.changeId}"
             git {
                 changeId = "${opt.'pr'}"
             }
