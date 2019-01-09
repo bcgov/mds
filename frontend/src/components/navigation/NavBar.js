@@ -23,6 +23,9 @@ export class NavBar extends Component {
       <Menu.Item key="0">
         <Logout />
       </Menu.Item>
+      <Menu.Item key="0">
+        <button type="button">Admin</button>
+      </Menu.Item>
     </Menu>
   );
 

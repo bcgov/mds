@@ -3,8 +3,6 @@ import {
   getMines,
   getMineNames,
   getMineGuid,
-  getCurrentPermittees,
-  getCurrentPermitteeIds,
   getMinesPageData,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
@@ -78,19 +76,5 @@ describe("mineSelectors", () => {
       [MINES]: storeState,
     };
     expect(getMinesPageData(localMockState)).toEqual(minesPageData);
-  });
-
-  it("`getCurrentPermittees` calls `mineReducer.getCurrentPermittees`", () => {
-    const localMines = Mock.MINES.mines;
-    const localMineGuid = Mock.MINES.mineIds[1];
-    const selected = getCurrentPermittees.resultFunc(localMines, localMineGuid);
-    expect(selected).toEqual(Mock.PERMITTEE.permittees);
-  });
-
-  it("`getCurrentPermitteeIds` calls `mineReducer.getCurrentPermitteeIds`", () => {
-    const localMines = Mock.MINES.mines;
-    const localMineGuid = Mock.MINES.mineIds[1];
-    const selected = getCurrentPermitteeIds.resultFunc(localMines, localMineGuid);
-    expect(selected).toEqual(["1c7da2c4-10d5-4c9f-994a-96427aa0c69b"]);
   });
 });

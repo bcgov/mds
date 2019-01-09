@@ -18,12 +18,11 @@ from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
 from .api.permits.permit.models.permit import Permit
 from .api.permits.permit.models.permit_status_code import PermitStatusCode
-from .api.permits.permittee.models.permittee import Permittee
 from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
-
+from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db
 
 
@@ -40,10 +39,19 @@ def register_commands(app):
             mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
                                                     random.choice(PERMIT_STATUS_CODE['choices']),
                                                     random_date(), DUMMY_USER_KWARGS)
+
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid
-            Permittee.create_mine_permittee(mine_permit, permittee_party, random_date(),
-                                            DUMMY_USER_KWARGS)
+
+            db.session.commit()
+            #raise Exception(str(mine_permit.permit_guid) + str(mine_permit.mine_guid))
+            mpa = MinePartyAppointment.create_mine_party_appt(
+                mine_permit.mine_guid,
+                permittee_party,
+                mine_permit.permit_guid,
+                'PMT',
+                DUMMY_USER_KWARGS,
+                save=True)
 
     # in terminal you can run $flask <cmd> <arg>
     @app.cli.command()
@@ -95,6 +103,7 @@ def register_commands(app):
                 party = Party.create_party(names.get_first_name(), names.get_last_name(),
                                            DUMMY_USER_KWARGS)
 
+                db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)

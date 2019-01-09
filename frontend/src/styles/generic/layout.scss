@@ -62,6 +62,10 @@ body {
   }
 }
 
+.wrap {
+  flex-wrap: wrap;
+}
+
 .between {
   justify-content: space-between;
 }
@@ -111,6 +115,10 @@ body {
     border: none;
     padding: 0;
   }
+}
+
+.card-buttons {
+  flex-direction: column;
 }
 
 .padding-small {
