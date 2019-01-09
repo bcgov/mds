@@ -6,7 +6,6 @@ from flask_restplus import Resource, reqparse
 from sqlalchemy import or_
 
 from ..models.party import Party
-from ..models.mgr_appointment import MgrAppointment
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create

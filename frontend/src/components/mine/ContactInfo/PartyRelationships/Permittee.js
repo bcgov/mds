@@ -15,18 +15,18 @@ const propTypes = {
   isEditable: PropTypes.bool.isRequired,
 };
 
-export const EngineerOfRecord = (props) => {
-  const eorPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - ${
-    props.mine.mine_tailings_storage_facility.find(
-      ({ mine_tailings_storage_facility_guid }) =>
-        mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
-    ).mine_tailings_storage_facility_name
-  }`;
+export const Permittee = (props) => {
+  const permit = props.mine.mine_permit.find(
+    ({ permit_guid }) => permit_guid === props.partyRelationship.related_guid
+  );
+  const permitPartyRelationshipTypeLabel = `${
+    props.partyRelationshipTypeLabel
+  } - PERMIT NO. ${permit && permit.permit_no}`;
 
   return (
     <DefaultContact
       partyRelationship={props.partyRelationship}
-      partyRelationshipTypeLabel={eorPartyRelationshipTypeLabel}
+      partyRelationshipTypeLabel={permitPartyRelationshipTypeLabel}
       handleChange={props.handleChange}
       mine={props.mine}
       openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
@@ -38,6 +38,6 @@ export const EngineerOfRecord = (props) => {
   );
 };
 
-EngineerOfRecord.propTypes = propTypes;
+Permittee.propTypes = propTypes;
 
-export default EngineerOfRecord;
+export default Permittee;

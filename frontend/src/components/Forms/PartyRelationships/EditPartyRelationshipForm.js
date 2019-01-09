@@ -6,13 +6,14 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  partyRelationship: PropTypes.object.isRequired,
-  mine: PropTypes.object.isRequired,
+  partyRelationship: CustomPropTypes.partyRelationship.isRequired,
+  mine: CustomPropTypes.mine,
   initialValues: PropTypes.object,
 };
 

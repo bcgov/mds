@@ -23,6 +23,7 @@ import { createDropDownList } from "@/utils/helpers";
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -49,12 +50,13 @@ const defaultProps = {
 };
 
 const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return "Loading...";
-  if (!doc) return "Loading...";
+  if (!expectedDocumentStatusOptions[0]) return String.LOADING;
+  if (!doc) return String.LOADING;
 
   return doc.exp_document_status_guid === "None"
     ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find((x) => x.value === doc.exp_document_status_guid).label;
+    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
+        .label;
 };
 /*
   return  */
@@ -80,7 +82,7 @@ export class MineTailingsInfo extends Component {
 
   handleAddReportSubmit = (value) => {
     const requiredReport = this.props.mineTSFRequiredReports.find(
-      (x) => x.req_document_guid === value.req_document_guid
+      ({ req_document_guid }) => req_document_guid === value.req_document_guid
     );
     const newRequiredReport = {
       document_name: requiredReport.req_document_name,
@@ -228,7 +230,7 @@ export class MineTailingsInfo extends Component {
                 Date.parse(doc.due_date) < new Date() &&
                 (doc.exp_document_status_guid === "None" ||
                   (this.props.expectedDocumentStatusOptions[0] &&
-                    doc.exp_document_Status_guid ===
+                    doc.exp_document_status_guid ===
                       this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
