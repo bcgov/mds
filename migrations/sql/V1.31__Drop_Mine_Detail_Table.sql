@@ -1,2 +1,2 @@
-DROP VIEW IF EXISTS customer_info;
+DROP VIEW IF EXISTS mine_map_view;
 DROP TABLE mine_detail;
