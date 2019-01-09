@@ -16,26 +16,18 @@ from ....utils.models_mixins import AuditMixin, Base
 class MinePartyAppointment(AuditMixin, Base):
     __tablename__ = "mine_party_appt"
     # Columns
-    mine_party_appt_id = db.Column(
-        db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_party_appt_guid = db.Column(
-        UUID(as_uuid=True), server_default=FetchedValue())
-    mine_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
-    party_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    mine_party_appt_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     mine_party_appt_type_code = db.Column(
-        db.String(3),
-        db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
+        db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True),
-        db.ForeignKey(
-            'mine_tailings_storage_facility.mine_tailings_storage_facility_guid'
-        ))
-    permit_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
+        db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
+    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
     active_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
@@ -49,32 +41,22 @@ class MinePartyAppointment(AuditMixin, Base):
     # json
     def json(self):
         return {
-            'mine_party_appt_guid':
-            str(self.mine_party_appt_guid),
-            'mine_guid':
-            str(self.mine_guid),
-            'party_guid':
-            str(self.party_guid),
-            'mine_party_appt_type_code':
-            str(self.mine_party_appt_type_code),
-            'mine_tailings_storage_facility_guid':
-            str(self.mine_tailings_storage_facility_guid),
-            'permit_guid':
-            str(self.permit_guid),
-            'start_date':
-            str(self.start_date),
-            'end_date':
-            str(self.end_date),
-            'party':
-            self.party.json(show_mgr=False) if self.party else str({})
+            'mine_party_appt_guid': str(self.mine_party_appt_guid),
+            'mine_guid': str(self.mine_guid),
+            'party_guid': str(self.party_guid),
+            'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
+            'mine_tailings_storage_facility_guid': str(self.mine_tailings_storage_facility_guid),
+            'permit_guid': str(self.permit_guid),
+            'start_date': str(self.start_date),
+            'end_date': str(self.end_date),
+            'party': self.party.json(show_mgr=False) if self.party else str({})
         }
 
     # search methods
     @classmethod
     def find_by_mine_party_appt_guid(cls, _id):
         try:
-            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
-                active_ind=True).first()
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(active_ind=True).first()
         except ValueError:
             return None
 
@@ -100,10 +82,7 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by(cls,
-                mine_guid=None,
-                party_guid=None,
-                mine_party_appt_type_code=None):
+    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_code=None):
         try:
             built_query = cls.query.filter_by(active_ind=True)
             if mine_guid:

@@ -184,7 +184,7 @@ BEGIN
         mms.person_combo_id     ,
         mms.mgr_combo_id
     FROM new_manager_info mms
-    INNER JOIN mine_detail mds ON
+    INNER JOIN mine_identity mds ON
         mds.mine_no=mms.mine_no;
     SELECT count(*) FROM ETL_MANAGER INTO new_row;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);

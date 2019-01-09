@@ -5,8 +5,7 @@ import pytest
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.mines.mine.models.mine_identity import MineIdentity
-from app.api.mines.mine.models.mine_detail import MineDetail
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
@@ -121,16 +120,13 @@ def setup_data(session):
         mine_commodity_code.save()
 
     # Test Mine Data
-    mine_identity = MineIdentity(mine_guid=uuid.UUID(TEST_MINE_GUID), **DUMMY_USER_KWARGS)
-    mine_detail = MineDetail(
-        mine_detail_guid=uuid.UUID(TEST_MINE_DETAIL_GUID),
+    mine = Mine(
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         mine_no=TEST_MINE_NO,
         mine_name=TEST_MINE_NAME,
         mine_region=TEST_REGION_CODE,
         **DUMMY_USER_KWARGS)
-    mine_identity.save()
-    mine_detail.save()
+    mine.save()
 
     # Test Mine Type
     mine_type = MineType(

@@ -1,5 +1,7 @@
 ## SQL scripts for ETL and Migrations
+
 This folder contains following:
+
 ```
 |-- Dockerfile (Dockerfile definition for OpenShift build)
 |-- Dockerfile.dev (Dockerfile definition for local development)
@@ -20,30 +22,35 @@ https://flywaydb.org/documentation/migrations
 The etl scripts are used for fetching data from the legacy MMS system. Currently they do not run automatically and require
 manually execution.
 To run the script manually, follow the instructions below:
+
 1. Login into Openshift console and navigate to the deployment environment.
 2. Open up a terminal into the `flyway-migration` container under the `mds-python-backend` pod.
 3. Navigate to the `etl` directory under `FLYWAY_HOME` directory.
+
 ```
 cd $FLYWAY_HOME/etl
 ```
+
 4. Run the desired script against the current database.
+
 ```
 psql -f FILENAME.sql
 ```
 
 Note: If you want to run scripts against a seperate db first. You can pass different parameters to the psql client such as : `psql -d DATABASE_NAME -f FILENAME.sql`
 
-
 #### ASSUMPTIONS:
+
 - there is a dedicated database (e.g. `mds`), with an owner (e.g. `mds`) that has all the required privileges required
-- Openshift Pipeline will take care of this.  Note that if you require it locally:
-   `psql -t -U $POSTGRESQL_USER`
+- Openshift Pipeline will take care of this. Note that if you require it locally:
+  `psql -t -U $POSTGRESQL_USER`
 
 ```
   CREATE DATABASE mds;
   CREATE USER mds WITH ENCRYPTED PASSWORD '<xxxx>';
   GRANT ALL PRIVILEGES ON DATABASE mds TO mds;
 ```
+
 1. Logged in as superuser on 'mds' database:
 
 ```
@@ -79,7 +86,7 @@ EOF
 
 ```
 psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER << EOF
-INSERT INTO mine_identity
+INSERT INTO mine
  (mine_guid, create_user, update_user)
 VALUES (
  '2daa4513-201f-4103-83c6-5bd1fae6a962'::uuid
@@ -142,25 +149,22 @@ VALUES (
 );
 
 
-SELECT id.mine_guid, det.mine_no
-      ,det.mine_name
+SELECT id.mine_guid, id.mine_no
+      ,id.mine_name
       ,xref.tenure_number_id
-FROM   mine_identity id
-INNER JOIN mine_detail         det  ON id.mine_guid   = det.mine_guid
+FROM   mine id
 INNER JOIN mineral_tenure_xref xref ON xref.mine_guid = id.mine_guid;
 
-SELECT id.mine_guid, det.mine_no, det.mine_name, mgr.first_name, mgr.surname,
+SELECT id.mine_guid, id.mine_no, id.mine_name, mgr.first_name, mgr.surname,
        app.effective_date,
        CASE app.expiry_date
          WHEN '9999-12-31'::date THEN NULL
          ELSE app.expiry_date
        END
-FROM   mine_identity id,
-       mine_detail det,
+FROM   mine id,
        person mgr,
        mgr_appointment app
-WHERE  id.mine_guid = det.mine_guid
-AND    id.mine_guid = app.mine_guid
+WHERE  id.mine_guid = app.mine_guid
 AND    app.person_guid = mgr.person_guid;
 EOF
 ```
