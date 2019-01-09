@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Install app dependencies
 COPY . /app/
-RUN rm -rf node_modules
 
 RUN npm ci
 
