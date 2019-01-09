@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prevent running assemble in builders different than official STI image.
-# The official nodejs:8-onbuild already run npm install and use different
+# The official nodejs:8-onbuild already run npm ci and use different
 # application folder.
 [ -d "/usr/src/app" ] && exit 0
 
@@ -60,12 +60,23 @@ if [ -z "$NODE_ENV" ]; then
   fi
 fi
 
+PROD_BUILD_DIR=build
+DEV_BUILD_DIR=build-dev
 
-echo "---> Installing all dependencies"
-NODE_ENV=development npm install
+if [ "$SKIP_NPM_INSTALL" == false ]; then
+  echo "---> Installing all dependencies"
+  npm ci
+fi
 
 #do not fail when there is no build script
+echo "---> Building in dev mode"
+export BUILD_DIR=$DEV_BUILD_DIR
+npm run build --if-present
+
 echo "---> Building in production mode"
+export BASE_PATH=
+export ASSET_PATH=/
+export BUILD_DIR=$PROD_BUILD_DIR
 npm run build --if-present
 
 # Clear the npm's cache and tmp directories only if they are not a docker volumes
