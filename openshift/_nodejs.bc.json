@@ -133,8 +133,6 @@
       },
       "spec": {
         "completionDeadlineSeconds": 1440,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
         "triggers": [
           {
             "type": "ImageChange",
@@ -190,7 +188,7 @@
         }
       },
       "spec": {
-        "completionDeadlineSeconds": 600,
+        "completionDeadlineSeconds": 900,
         "triggers": [
           {
             "type": "ImageChange"
@@ -223,6 +221,10 @@
               {
                 "name": "ASSET_PATH",
                 "value": "${BASE_PATH}/"
+              },
+              {
+                "name": "SKIP_NPM_INSTALL",
+                "value": "true"
               }
             ]
           }

@@ -11,7 +11,7 @@ from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 
 from ..models.mine_expected_document import MineExpectedDocument
-from ....mines.mine.models.mine_detail import MineDetail
+from ....mines.mine.models.mine import Mine
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
 from ...mines.models.mine_document import MineDocument
@@ -34,11 +34,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     def post(self, expected_document_guid):
 
         self.parser.add_argument(
-            'file',
-            type=FileStorage,
-            location='files',
-            action='append',
-            required=True)
+            'file', type=FileStorage, location='files', action='append', required=True)
 
         try:
             data = self.parser.parse_args()
@@ -49,23 +45,18 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                 f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.'
             )
 
-        expected_document = MineExpectedDocument.find_by_exp_document_guid(
-            expected_document_guid)
-        mine_detail = MineDetail.find_by_mine_guid(
-            str(expected_document.mine_guid))
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
         if document_category:
-            folder = 'mines/' + str(
-                mine_detail.mine_guid) + '/' + str(document_category)
-            pretty_folder = 'mines/' + str(
-                mine_detail.mine_no) + '/' + str(document_category)
+            folder = 'mines/' + str(mine.mine_guid) + '/' + str(document_category)
+            pretty_folder = 'mines/' + str(mine.mine_no) + '/' + str(document_category)
         else:
-            folder = 'mines/' + str(mine_detail.mine_guid) + '/documents'
-            pretty_folder = 'mines/' + str(mine_detail.mine_no) + '/documents'
+            folder = 'mines/' + str(mine.mine_guid) + '/documents'
+            pretty_folder = 'mines/' + str(mine.mine_no) + '/documents'
 
-        document_manager_URL = current_app.config[
-            'DOCUMENT_MANAGER_URL'] + '/document-manager'
+        document_manager_URL = current_app.config['DOCUMENT_MANAGER_URL'] + '/document-manager'
 
         files = []
 
@@ -75,8 +66,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         args = {'folder': folder, 'pretty_folder': pretty_folder}
         headers = {'Authorization': request.headers.get('Authorization')}
 
-        response = requests.post(
-            url=document_manager_URL, data=args, files=files, headers=headers)
+        response = requests.post(url=document_manager_URL, data=args, files=files, headers=headers)
         json_response = response.json()
 
         errors = json_response['errors']
@@ -100,7 +90,6 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         except DBAPIError:
             #log the error here and return a pretty error message
             db.session.rollback()
-            return self.create_error_payload(500,
-                                             'An unexpected error occured')
+            return self.create_error_payload(500, 'An unexpected error occured')
 
         return {'status': 200, 'errors': errors, 'files': filenames}

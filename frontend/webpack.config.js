@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
@@ -12,13 +13,14 @@ const PRODUCTION = "production";
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
+const BUILD_DIR = process.env.BUILD_DIR || "build";
 
 const PATHS = {
   src: path.join(__dirname, "src"),
   entry: path.join(__dirname, "src", "index.js"),
   public: path.join(__dirname, "public"),
   template: path.join(__dirname, "public", "index.html"),
-  build: path.join(__dirname, "build"),
+  build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
 };
 
@@ -114,6 +116,7 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
+    plugins: [new HardSourceWebpackPlugin()],
   },
   parts.clean(PATHS.build),
   parts.extractCSS({

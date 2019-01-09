@@ -79,7 +79,7 @@ A. OS Level Installation
 1. Install package dependencies
 
 ```
-npm install
+npm ci
 ```
 
 2. Run the application

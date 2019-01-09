@@ -38,13 +38,7 @@ export class ViewPermittee extends Component {
   handlePermitteeSubmit = (values) => {
     const guids = values.permittee.split(", ");
     this.props
-      .addPermittee(
-        guids[0],
-        guids[1],
-        values.party,
-        this.props.mine.mine_detail[0].mine_name,
-        values.startDate
-      )
+      .addPermittee(guids[0], guids[1], values.party, this.props.mine.mine_name, values.startDate)
       .then(() => {
         this.props.fetchMineRecordById(this.props.mine.guid);
         this.props.fetchParties();

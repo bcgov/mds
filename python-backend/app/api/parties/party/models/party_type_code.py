@@ -8,7 +8,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from ....mines.mine.models.mine_identity import MineIdentity
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -39,8 +38,7 @@ class PartyTypeCode(AuditMixin, Base):
             party_type_code=code,
             description=description,
             display_order=display_order,
-            **user_kwargs
-        )
+            **user_kwargs)
         if save:
             party_type_code.save(commit=False)
         return party_type_code
