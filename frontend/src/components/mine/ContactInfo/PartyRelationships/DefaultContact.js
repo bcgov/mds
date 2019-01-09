@@ -118,11 +118,9 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
-              <Button
-                style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
-                key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
+              <ConditionalButton
                 type="primary"
-                onClick={() =>
+                handleAction={() =>
                   this.props.openEditPartyRelationshipModal(
                     this.props.partyRelationship,
                     this.props.onSubmitEditPartyRelationship,
@@ -130,9 +128,8 @@ export class DefaultContact extends Component {
                     this.props.mine
                   )
                 }
-              >
-                Update
-              </Button>,
+                string="Update"
+              />,
             ]}
           </div>
           {this.props.otherDetails}
