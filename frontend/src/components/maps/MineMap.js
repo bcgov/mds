@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { notification } from "antd";
-import { WebMap, Map } from "react-arcgis";
+import { WebMap } from "react-arcgis";
 import { loadModules } from "react-arcgis";
 import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
@@ -118,7 +118,7 @@ class MineMap extends Component {
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
-        <Map
+        <WebMap
           style={{ width: "100%", height: "100%" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
@@ -132,13 +132,13 @@ class MineMap extends Component {
           onLoad={this.handleLoadMap}
         >
           <MinePin />
-        </Map>
+        </WebMap>
       );
     }
     if (this.state.mapFailedToLoad) {
       return (
         // Fallback to default map if any of the layers fail to load
-        <Map
+        <WebMap
           style={{ width: "100vw", height: "100vh" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
@@ -150,7 +150,7 @@ class MineMap extends Component {
         >
           {this.renderPin()}
           <MinePin />
-        </Map>
+        </WebMap>
       );
     }
     return (
