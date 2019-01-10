@@ -41,6 +41,14 @@ class MinePartyAppointment(AuditMixin, Base):
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
 
+    def assign_related_guid(self, related_guid):
+        if self.mine_party_appt_type_code == "EOR":
+            self.mine_tailings_storage_facility_guid = related_guid
+
+        if self.mine_party_appt_type_code == "PMT":
+            self.permit_guid = related_guid
+        return
+
     # json
     def json(self):
         result = {
