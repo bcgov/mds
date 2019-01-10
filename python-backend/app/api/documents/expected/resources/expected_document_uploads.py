@@ -42,7 +42,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 413,
                 f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.'
-            )
+            ), 413
 
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
         if not expected_document:
@@ -109,3 +109,24 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                 return self.create_error_payload(500, 'An unexpected error occured')
             result = {'status': 200, 'errors': errors, 'files': filenames}
         return result
+
+    @requires_role_mine_create
+    def delete(self, expected_document_guid=None, mine_document_guid=None):
+
+        if expected_document_guid is None or mine_document_guid is None:
+            return self.create_error_payload(
+                400, 'Must provide a expected document guid and a mine document guid.'), 400
+
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+
+        if expected_document is None or mine_document is None:
+            return self.create_error_payload(
+                400,
+                f'Failed to remove the document either the expected document or the mine document was not found.'
+            ), 400
+
+        expected_document.mine_documents.remove(mine_document)
+        expected_document.save()
+
+        return {'status': 200, 'message': 'The document was removed succesfully.'}
