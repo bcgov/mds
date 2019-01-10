@@ -54,6 +54,6 @@ VALUES
 INSERT INTO mine_party_appt (mine_guid, party_guid, mine_party_appt_type_code, permit_guid, create_user, update_user)
 VALUES
     (MINE_GUID, PARTY_GUID1, "PMT", PERMIT_GUID1,IDIR_USER,IDIR_USER),
-    (MINE_GUID, PARTY_GUID2, "PMT", PERMIT_GUID1,IDIR_USER,IDIR_USER),
+    (MINE_GUID, PARTY_GUID2, "PMT", PERMIT_GUID1,IDIR_USER,IDIR_USER);
 
 END $$;
