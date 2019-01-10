@@ -84,7 +84,7 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
                      setup_info.get('file_upload_2')],
         }
         post_resp = test_client.post(
-            '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+            '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
             headers=auth_headers['full_auth_header'],
             data=data)
 
@@ -98,7 +98,7 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
 def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
         headers=auth_headers['full_auth_header'],
         data={})
 
@@ -109,19 +109,12 @@ def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info)
 
 
 def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
-    mine_document_guid = "5d9a2ce3-c2eb-46ea-85c9-34f56fcfa926"
-    existing_mine_doc = MineDocument(
-        mine_document_guid=mine_document_guid,
-        document_manager_guid="b6b01aac-0e96-4e81-a90a-6853ec3da2d9",
-        mine_guid=TEST_MINE_GUID,
-        document_name="test_document",
-        **DUMMY_USER_KWARGS)
-    existing_mine_doc.save()
+    existing_mine_doc = setup_info.get('mine_document')
 
-    data = {'mine_document_guid': mine_document_guid}
+    data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
         headers=auth_headers['full_auth_header'],
         data=data)
 
