@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-<<<<<<< HEAD
-import ConditionalButton from "@/components/common/ConditionalButton";
-import { Button, Icon, Card } from "antd";
-=======
 import { Button, Icon, Card, Row, Col } from "antd";
->>>>>>> develop
+import ConditionalButton from "@/components/common/ConditionalButton";
 import * as router from "@/constants/routes";
 import { formatTitleString } from "@/utils/helpers";
 import { Redirect } from "react-router";
@@ -22,35 +18,6 @@ const propTypes = {
   isEditable: PropTypes.bool.isRequired,
 };
 
-<<<<<<< HEAD
-// <ConditionalButton
-//   handleAction={() =>
-//     props.openEditPartyRelationshipModal(
-//       props.partyRelationship,
-//       props.onSubmitEditPartyRelationship,
-//       props.handleChange,
-//       props.mine
-//     )}
-//   string={<img className="padding-small" style={{ padding: "5px" }} alt="Edit" src={BRAND_PENCIL} />}
-//   type="primary"
-//   ghost
-// />
-// <ConditionalButton
-//   type="primary"
-//   ghost
-//   popConfirm={{
-//     placement: "topLeft",
-//     title: `Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`,
-//     onConfirm: (event) =>
-//       props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid),
-//     okText: "Delete",
-//     cancelText: "Cancel"
-//   }}
-//   string={<Icon type="minus-circle" theme="outlined" />}
-// />
-
-=======
->>>>>>> develop
 export class DefaultContact extends Component {
   state = {
     redirectToRelationshipProfile: false,
@@ -151,16 +118,10 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
-<<<<<<< HEAD
               <ConditionalButton
-                handleAction={() =>
-=======
-              <Button
-                style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
-                key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
                 type="primary"
-                onClick={() =>
->>>>>>> develop
+                string="Update"
+                handleAction={() =>
                   this.props.openEditPartyRelationshipModal(
                     this.props.partyRelationship,
                     this.props.onSubmitEditPartyRelationship,
@@ -168,30 +129,7 @@ export class DefaultContact extends Component {
                     this.props.mine
                   )
                 }
-<<<<<<< HEAD
-                string="Update"
-                type="primary"
               />,
-              // <Button
-              //   // style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
-              //   // key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
-              //   // type="primary"
-              //   // onClick={() =>
-              //   //   this.props.openEditPartyRelationshipModal(
-              //   //     this.props.partyRelationship,
-              //   //     this.props.onSubmitEditPartyRelationship,
-              //   //     this.props.handleChange,
-              //   //     this.props.mine
-              //   //   )
-              //   // }
-              // >
-              //   Update
-              // </Button>,
-=======
-              >
-                Update
-              </Button>,
->>>>>>> develop
             ]}
           </div>
           {this.props.otherDetails}
