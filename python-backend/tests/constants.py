@@ -1,4 +1,6 @@
 # Test Constants
+DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
 
 TEST_MINE_NAME = 'test_mine_name'
@@ -111,8 +113,6 @@ TEST_MINE_PARTY_APPT_TYPE_CODE2 = 'BBB'
 TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2 = 'Buzzing Bumblebees be ballin'
 
 TEST_MINE_PARTY_APPT_GUID = '2484d785-a3c7-47db-b296-edb284a3c160'
-
-DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
 
 # Auth Constants
 TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}
