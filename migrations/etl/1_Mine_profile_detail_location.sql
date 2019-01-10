@@ -153,7 +153,9 @@ BEGIN
 
     -- Upsert data from new_record into mine_type
     WITH new_record AS (
-        SELECT *
+        SELECT
+            mine_guid,
+            mine_typ
         FROM ETL_PROFILE
         WHERE NOT EXISTS (
             SELECT  1
