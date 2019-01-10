@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+<<<<<<< HEAD
 import ConditionalButton from "@/components/common/ConditionalButton";
 import { Button, Icon, Card } from "antd";
+=======
+import { Button, Icon, Card, Row, Col } from "antd";
+>>>>>>> develop
 import * as router from "@/constants/routes";
 import { formatTitleString } from "@/utils/helpers";
 import { Redirect } from "react-router";
@@ -18,6 +22,7 @@ const propTypes = {
   isEditable: PropTypes.bool.isRequired,
 };
 
+<<<<<<< HEAD
 // <ConditionalButton
 //   handleAction={() =>
 //     props.openEditPartyRelationshipModal(
@@ -44,6 +49,8 @@ const propTypes = {
 //   string={<Icon type="minus-circle" theme="outlined" />}
 // />
 
+=======
+>>>>>>> develop
 export class DefaultContact extends Component {
   state = {
     redirectToRelationshipProfile: false,
@@ -144,8 +151,16 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
+<<<<<<< HEAD
               <ConditionalButton
                 handleAction={() =>
+=======
+              <Button
+                style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
+                key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
+                type="primary"
+                onClick={() =>
+>>>>>>> develop
                   this.props.openEditPartyRelationshipModal(
                     this.props.partyRelationship,
                     this.props.onSubmitEditPartyRelationship,
@@ -153,6 +168,7 @@ export class DefaultContact extends Component {
                     this.props.mine
                   )
                 }
+<<<<<<< HEAD
                 string="Update"
                 type="primary"
               />,
@@ -171,6 +187,11 @@ export class DefaultContact extends Component {
               // >
               //   Update
               // </Button>,
+=======
+              >
+                Update
+              </Button>,
+>>>>>>> develop
             ]}
           </div>
           {this.props.otherDetails}
