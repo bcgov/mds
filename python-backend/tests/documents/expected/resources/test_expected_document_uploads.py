@@ -84,7 +84,8 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
                      setup_info.get('file_upload_2')],
         }
         post_resp = test_client.post(
-            '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
+            '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+            '/document',
             headers=auth_headers['full_auth_header'],
             data=data)
 
@@ -98,7 +99,7 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
 def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
+        '/documents/expected/' + str(uuid.uuid4()) + '/document',
         headers=auth_headers['full_auth_header'],
         data={})
 
@@ -114,7 +115,8 @@ def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID + '/document',
+        '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+        '/document',
         headers=auth_headers['full_auth_header'],
         data=data)
 
