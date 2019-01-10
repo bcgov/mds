@@ -21,6 +21,8 @@ const propTypes = {
 
 const defaultProps = {
   mine: null,
+  lat: null,
+  long: null,
 };
 
 class MineMap extends Component {
