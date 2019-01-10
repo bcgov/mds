@@ -84,7 +84,8 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
                      setup_info.get('file_upload_2')],
         }
         post_resp = test_client.post(
-            '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+            '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+            '/document',
             headers=auth_headers['full_auth_header'],
             data=data)
 
@@ -95,18 +96,33 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
         assert 'file2.pdf' in post_data['files']
 
 
-def test_file_upload_with_no_file(test_client, auth_headers, setup_info):
+def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+        '/documents/expected/' + str(uuid.uuid4()) + '/document',
         headers=auth_headers['full_auth_header'],
         data={})
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 400
-    assert post_data['errors']['file'] is not None
-    assert post_data['message'] is not None
+    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_data['error']['message'] is not None
+
+
+def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
+    existing_mine_doc = setup_info.get('mine_document')
+
+    data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
+
+    post_resp = test_client.post(
+        '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+        '/document',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 200
 
 
 def test_happy_path_file_removal(test_client, auth_headers, setup_info):
