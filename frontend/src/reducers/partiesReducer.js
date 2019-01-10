@@ -9,6 +9,7 @@ import { createItemMap, createItemIdsArray, createDropDownList } from "@/utils/h
 
 const initialState = {
   parties: {},
+  rawParties: {},
   partyIds: [],
   partyRelationshipTypes: [],
   partyRelationships: [],
@@ -19,23 +20,21 @@ const partiesReducer = (state = initialState, action) => {
     case actionTypes.STORE_PARTIES:
       return {
         ...state,
+        rawParties: action.payload.parties,
         parties: createItemMap(action.payload.parties, "party_guid"),
         partyIds: createItemIdsArray(action.payload.parties, "party_guid"),
       };
     case actionTypes.STORE_PARTY:
       return {
         ...state,
+        rawParties: [action.payload],
         parties: createItemMap([action.payload], "party_guid"),
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
       return {
         ...state,
-        partyRelationshipTypes: createDropDownList(
-          action.payload,
-          "description",
-          "mine_party_appt_type_code"
-        ),
+        partyRelationshipTypes: action.payload,
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
       return {
@@ -48,8 +47,15 @@ const partiesReducer = (state = initialState, action) => {
 };
 
 export const getParties = (state) => state[PARTIES].parties;
+export const getRawParties = (state) => state[PARTIES].rawParties;
 export const getPartyIds = (state) => state[PARTIES].partyIds;
 export const getPartyRelationshipTypes = (state) => state[PARTIES].partyRelationshipTypes;
+export const getPartyRelationshipTypesList = (state) =>
+  createDropDownList(
+    state[PARTIES].partyRelationshipTypes,
+    "description",
+    "mine_party_appt_type_code"
+  );
 export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
 
 export default partiesReducer;
