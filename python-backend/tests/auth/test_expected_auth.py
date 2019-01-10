@@ -33,6 +33,7 @@ from app.api.permits.permit.resources.permit import PermitResource
     (ExpectedDocumentResource, "put", [MINE_CREATE]),
     (ExpectedDocumentResource, "delete", [MINE_CREATE]),
     (ExpectedDocumentUploadResource, "post", [MINE_CREATE]),
+    (ExpectedDocumentUploadResource, "delete", [MINE_CREATE]),
     (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
     (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
     (MineCommodityCodeResource, "get", [MINE_VIEW]),
