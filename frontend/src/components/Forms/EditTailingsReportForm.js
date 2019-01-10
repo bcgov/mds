@@ -60,6 +60,16 @@ export const EditTailingsReportForm = (props) => (
             data={props.statusOptions}
           />
         </Form.Item>
+        <Form.Item>
+          <Field
+            id="tsf_report_status"
+            name="tsf_report_status"
+            label="Status"
+            placeholder="Select a Status"
+            component={RenderSelect}
+            data={props.selectedDocument}
+          />
+        </Form.Item>
         <Form.Item label="Upload Documents">
           <Field
             id="tsf_document_upload"
