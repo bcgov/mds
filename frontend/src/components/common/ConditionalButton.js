@@ -22,8 +22,8 @@ const propTypes = {
     title: PropTypes.string,
     onConfirm: PropTypes.func.isRequired,
     okText: PropTypes.string,
-    cancelText: PropTypes.string
-  })
+    cancelText: PropTypes.string,
+  }),
 };
 
 const defaultProps = {
@@ -39,7 +39,12 @@ const defaultProps = {
 export const ConditionalButton = (props) => (
   <span>
     {!props.isDropdown && isNull(props.popConfirm) && (
-      <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
+      <Button
+        className="full-mobile"
+        ghost={props.ghost}
+        type={props.type}
+        onClick={props.handleAction}
+      >
         {props.string}
       </Button>
     )}
@@ -49,10 +54,13 @@ export const ConditionalButton = (props) => (
       </Dropdown>
     )}
     {props.popConfirm && (
-      <Popconfirm
-        {...props.popConfirm}
-      >
-        <Button className="full-mobile" ghost={props.ghost} type={props.type} onClick={props.handleAction}>
+      <Popconfirm {...props.popConfirm}>
+        <Button
+          className="full-mobile"
+          ghost={props.ghost}
+          type={props.type}
+          onClick={props.handleAction}
+        >
           {props.string}
         </Button>
       </Popconfirm>
