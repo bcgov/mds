@@ -5,7 +5,7 @@ DECLARE
 BEGIN
 DELETE FROM mgr_appointment WHERE create_user LIKE IDIR_USER;
 DELETE FROM permit WHERE create_user LIKE IDIR_USER;
-DELETE FROM permittee WHERE create_user LIKE IDIR_USER;
+DELETE FROM mine_party_appt WHERE create_user LIKE IDIR_USER;
 DELETE FROM party WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine_location WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
@@ -16,4 +16,3 @@ DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
 DELETE FROM mine WHERE create_user LIKE IDIR_USER;
 
 END $$;
-
