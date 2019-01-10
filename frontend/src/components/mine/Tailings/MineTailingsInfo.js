@@ -291,13 +291,13 @@ export class MineTailingsInfo extends Component {
                         string={<img src={BRAND_PENCIL} alt="Edit TSF Report" />}
                       />
                       <ConditionalButton
-                        popConfirm={{
+                        popConfirm={
                           placement: "topLeft",
                           title: `Are you sure you want to delete ${doc.exp_document_name}?`,
                           onConfirm: (event) => this.removeReport(event, doc.exp_document_guid),
                           okText: "Delete",
                           cancelText: "Cancel",
-                        }}
+                        }
                         type="primary"
                         ghost
                         string={<Icon type="minus-circle" theme="outlined" />}
