@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { WebMap } from "react-arcgis";
+import { notification } from "antd";
+import { WebMap, Map } from "react-arcgis";
 import { loadModules } from "react-arcgis";
 import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
@@ -20,10 +21,18 @@ const propTypes = {
 
 const defaultProps = {
   mine: null,
+  lat: null,
+  long: null,
 };
 
 class MineMap extends Component {
-  state = { map: null, view: null, center: null, zoom: null };
+  state = {
+    map: {},
+    view: {},
+    center: null,
+    zoom: 5,
+    mapFailedToLoad: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.lat != this.props.lat || nextProps.long != this.props.long) {
@@ -42,8 +51,19 @@ class MineMap extends Component {
   handleLoadMap = (map, view) => {
     if (!this.props.mine) {
       this.renderWidgets(view);
-    }    
+    }
     this.setState({ map, view });
+  };
+
+  /**
+   * handleFail displays a warning and loads a default base map with mine pins
+   */
+  handleFail = (error) => {
+    notification.warn({
+      message: String.MAP_UNAVAILABLE,
+      duration: 10,
+    });
+    this.setState({ mapFailedToLoad: true });
   };
 
   renderPin() {
@@ -80,7 +100,7 @@ class MineMap extends Component {
       widgetPositionArray["bottom-left"] = new Legend({
         view,
         container: document.createElement("legend"),
-      });      
+      });
 
       for (const position in widgetPositionArray) {
         // Cast all the widgets under an expandable div and add them to the UI
@@ -90,7 +110,7 @@ class MineMap extends Component {
         });
         view.ui.add(currentWidget, position);
       }
-      
+
       const scaleBar = new ScaleBar({
         view,
         container: document.createElement("scale_bar"),
@@ -106,7 +126,7 @@ class MineMap extends Component {
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
-        <WebMap
+        <Map
           style={{ width: "100%", height: "100%" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
@@ -120,7 +140,25 @@ class MineMap extends Component {
           onLoad={this.handleLoadMap}
         >
           <MinePin />
-        </WebMap>
+        </Map>
+      );
+    }
+    if (this.state.mapFailedToLoad) {
+      return (
+        // Fallback to default map if any of the layers fail to load
+        <Map
+          style={{ width: "100vw", height: "100vh" }}
+          mapProperties={{ basemap: "topo" }}
+          viewProperties={{
+            center: [this.props.long, this.props.lat],
+            zoom: 6,
+            constraints: { minZoom: 5 },
+          }}
+          onLoad={this.handleLoadMap}
+        >
+          {this.renderPin()}
+          <MinePin />
+        </Map>
       );
     }
     return (
@@ -136,6 +174,7 @@ class MineMap extends Component {
           constraints: { minZoom: 5 },
         }}
         onLoad={this.handleLoadMap}
+        onFail={this.handleFail}
       >
         {this.renderPin()}
         <MinePin />
