@@ -153,6 +153,7 @@ BEGIN
         gen_random_uuid()   ,
         new.mine_guid       ,
         CASE
+            -- Insert lat from preferred permit
             WHEN (
                 SELECT count(lat_dec)
                 FROM pmt_now_preferred
@@ -164,10 +165,31 @@ BEGIN
                 -- TODO: Replace limit with latest
                 WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
             )
-            -- WHEN pmt_now.lat_dec IS NOT NULL
-            -- THEN pmt_now.lat_dec
-            -- WHEN mms.mmsnow.lat_dec IS NOT NULL
-            -- THEN mms.mmsnow.lat_dec
+            -- Insert lat from fallback permit
+            WHEN (
+                SELECT count(lat_dec)
+                FROM pmt_now
+                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lat_dec
+                FROM pmt_now
+                -- TODO: Replace limit with latest
+                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
+            )
+            -- Insert lat from notice of work
+            WHEN (
+                SELECT count(lat_dec)
+                FROM mms.mmsnow
+                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lat_dec
+                FROM mms.mmsnow
+                -- TODO: Replace limit with latest
+                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
+            )
+            -- Fallback to lat from mine table
             ELSE new.lat_dec
         END AS latitude,
         new.lon_dec         ,
