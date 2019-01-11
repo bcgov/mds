@@ -32,6 +32,10 @@
       "value": "/"
     },
     {
+      "name": "DOCKER_IMAGE_DIRECTORY",
+      "value": "docker-images/nodejs-8"
+    },
+    {
       "name": "SOURCE_CONTEXT_DIR",
       "required": true
     },
@@ -144,7 +148,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/nodejs-8",
+          "contextDir": "${DOCKER_IMAGE_DIRECTORY}",
           "type": "Binary"
         },
         "strategy": {
@@ -164,12 +168,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "500m",
-            "memory": "4Gi"
+            "cpu": "250m",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "250m",
-            "memory": "3Gi"
+            "cpu": "150m",
+            "memory": "1Gi"
           }
         },
         "postCommit": {},
@@ -237,12 +241,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "500m",
-            "memory": "4Gi"
+            "cpu": "250m",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "350m",
-            "memory": "3Gi"
+            "cpu": "100m",
+            "memory": "1Gi"
           }
         },
         "nodeSelector": null

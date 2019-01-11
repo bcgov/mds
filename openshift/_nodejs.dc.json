@@ -44,6 +44,10 @@
       "value": "/"
     },
     {
+      "name": "PORT",
+      "value": "3000"
+    },
+    {
       "name": "NODE_ENV",
       "displayName": "Node Environment",
       "description": "Environment for running node",
@@ -137,8 +141,8 @@
         "ports": [
           {
             "name": "web",
-            "port": 3000,
-            "targetPort": 3000
+            "port": "${PORT}",
+            "targetPort": "${PORT}"
           }
         ],
         "selector": {
@@ -257,7 +261,7 @@
                 },
                 "ports": [
                   {
-                    "containerPort": 3000
+                    "containerPort": "${PORT}"
                   }
                 ]
               }
