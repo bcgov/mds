@@ -322,7 +322,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}/minespace"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -397,7 +397,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
-                    PATH = ""
+                    PATH = "/minespace"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -472,7 +472,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
-                    PATH = ""
+                    PATH = "/minespace"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

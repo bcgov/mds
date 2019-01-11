@@ -74,8 +74,8 @@ export BUILD_DIR=$DEV_BUILD_DIR
 npm run build --if-present
 
 echo "---> Building in production mode"
-export BASE_PATH=
-export ASSET_PATH=/
+export BASE_PATH=/minespace
+export ASSET_PATH=/minespace/
 export BUILD_DIR=$PROD_BUILD_DIR
 npm run build --if-present
 
