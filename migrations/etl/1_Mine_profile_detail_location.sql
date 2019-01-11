@@ -192,7 +192,46 @@ BEGIN
             -- Fallback to lat from mine table
             ELSE new.lat_dec
         END AS latitude,
-        new.lon_dec         ,
+        CASE
+            -- Insert lon from preferred permit
+            WHEN (
+                SELECT count(lon_dec)
+                FROM pmt_now_preferred
+                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lon_dec
+                FROM pmt_now_preferred
+                -- TODO: Replace limit with latest
+                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
+            )
+            -- Insert lon from fallback permit
+            WHEN (
+                SELECT count(lon_dec)
+                FROM pmt_now
+                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lon_dec
+                FROM pmt_now
+                -- TODO: Replace limit with latest
+                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
+            )
+            -- Insert lon from notice of work
+            WHEN (
+                SELECT count(lon_dec)
+                FROM mms.mmsnow
+                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lon_dec
+                FROM mms.mmsnow
+                -- TODO: Replace limit with latest
+                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
+            )
+            -- Fallback to lon from mine table
+            ELSE new.lon_dec
+        END AS longitude,
         ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
         now()               ,
         '9999-12-31'::date  ,
