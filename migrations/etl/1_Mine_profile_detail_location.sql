@@ -118,6 +118,24 @@ BEGIN
             FROM    mine_location
             WHERE   mine_no = ETL_PROFILE.mine_no
         )
+    ), pmt_now AS (
+        SELECT
+            lat_dec,
+            lon_dec,
+            permit_no,
+            mms.mmsnow.mine_no
+        FROM mms.mmsnow, mms.mmspmt
+        WHERE mms.mmspmt.cid = mms.mmsnow.cid
+    ), pmt_now_preferred AS (
+        SELECT
+            lat_dec,
+            lon_dec,
+            permit_no,
+            mine_no
+        FROM pmt_now
+        WHERE
+            permit_no != ''
+            AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
     )
     INSERT INTO mine_location(
         mine_location_guid  ,
@@ -134,7 +152,24 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
-        new.lat_dec         ,
+        CASE
+            WHEN (
+                SELECT count(lat_dec)
+                FROM pmt_now_preferred
+                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+            ) > 0
+            THEN (
+                SELECT lat_dec
+                FROM pmt_now_preferred
+                -- TODO: Replace limit with latest
+                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
+            )
+            -- WHEN pmt_now.lat_dec IS NOT NULL
+            -- THEN pmt_now.lat_dec
+            -- WHEN mms.mmsnow.lat_dec IS NOT NULL
+            -- THEN mms.mmsnow.lat_dec
+            ELSE new.lat_dec
+        END AS latitude,
         new.lon_dec         ,
         ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
         now()               ,
@@ -148,6 +183,10 @@ BEGIN
         (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
         AND
         (new.lat_dec <> 0 AND new.lon_dec <> 0);
+
+        -- TODO: ensure LATEST
+        -- TODO: ensure APPROVED (where appropriate)
+
     SELECT count(*) FROM mine into new_row;
     SELECT count(*) FROM mine_location into location_row;
 
