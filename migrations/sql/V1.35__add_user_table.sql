@@ -1,10 +1,11 @@
 CREATE TABLE minespace_users (
     id serial PRIMARY KEY,
     keycloak_guid uuid,
-    username character varying (60) NOT NULL,
+    email character varying(100) NOT NULL, 
     deleted_ind boolean NOT NULL DEFAULT FALSE,
 
-    UNIQUE (username)
+    UNIQUE (email),
+    UNIQUE (keycloak_guid)
 );
 
 CREATE TABLE minespace_users_mds_mine_access(
