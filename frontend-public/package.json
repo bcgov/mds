@@ -1,7 +1,7 @@
 {
-  "name": "mds-react-app",
+  "name": "mds-react-public-app",
   "version": "0.1.0",
-  "description": "React.js frontend for MDS application",
+  "description": "React.js public frontend for MDS application",
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
@@ -86,7 +86,7 @@
     "puppeteer": "^1.4.0"
   },
   "scripts": {
-    "serve": "cross-env HOST=0.0.0.0 PORT=8080 webpack-dev-server --hot --env development",
+    "serve": "cross-env HOST=0.0.0.0 PORT=3020 webpack-dev-server --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
     "start": "node server.js",

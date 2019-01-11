@@ -13,5 +13,5 @@ RUN npm ci
 RUN npm run build
 
 # Run the server
-EXPOSE 3000
+EXPOSE 3020
 CMD [ "npm", "run", "start" ]

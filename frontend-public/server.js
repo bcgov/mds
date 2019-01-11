@@ -4,9 +4,11 @@ const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
 let BASE_PATH = process.env.BASE_PATH;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
+let PORT = process.env.PORT || 3020;
 if (dotenv.parsed) {
   BASE_PATH = dotenv.parsed.BASE_PATH || BASE_PATH;
   BUILD_DIR = dotenv.parsed.BUILD_DIR || BUILD_DIR;
+  PORT = dotenv.parsed.PORT || PORT;
 }
 
 const app = express();
@@ -16,7 +18,6 @@ app.use(
     private: true,
   })
 );
-const port = 3000;
 
 const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
   immutable: true,
@@ -43,4 +44,4 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(port, "0.0.0.0", () => console.log("Server running"));
+app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
