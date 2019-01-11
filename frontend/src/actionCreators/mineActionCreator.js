@@ -304,3 +304,48 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const addMineDocumentToExpectedDocument = (expectedDocumentGuid, payload) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+  return axios
+    .post(
+      ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expectedDocumentGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+      dispatch(hideLoading());
+    });
+};
+
+export const fetchMineDocuments = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
+  dispatch(showLoading());
+  return axios
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
+      dispatch(mineActions.storeMineDocuments(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINE_DOCUMENTS));
+      dispatch(hideLoading());
+    });
+};
