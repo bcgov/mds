@@ -30,12 +30,12 @@ BEGIN
     INSERT INTO ETL_STATUS
     SELECT
         gen_random_uuid() AS mine_status_xref_guid,
-        mine_detail.mine_guid,
-        mine_detail.mine_no  ,
+        mine.mine_guid,
+        mine.mine_no  ,
         mms_new.sta_cd
     FROM mms_new
-    INNER JOIN mine_detail ON
-        mine_detail.mine_no=mms_new.mine_no;
+    INNER JOIN mine ON
+        mine.mine_no=mms_new.mine_no;
     SELECT count(*) FROM ETL_STATUS INTO new_row;
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
 END $$;

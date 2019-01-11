@@ -12,23 +12,13 @@ export const MINE_RESPONSE = {
   mines: [
     {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      mgr_appointment: [],
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mine_permit: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567",
-        },
-      ],
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine3",
-          mine_no: "BLAH9091",
-          region_code: "NE",
         },
       ],
       mine_location: [{ longitude: null, latitude: null }],
@@ -48,7 +38,7 @@ export const MINE_RESPONSE = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -59,7 +49,9 @@ export const MINE_RESPONSE = {
     },
     {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      mgr_appointment: [],
+      mine_name: "mine2",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mine_permit: [
         {
           expiry_date: "9999-12-31",
@@ -133,18 +125,6 @@ export const MINE_RESPONSE = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine2",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-      ],
       mine_location: [
         {
           longitude: null,
@@ -161,7 +141,7 @@ export const MINE_RESPONSE = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -178,23 +158,13 @@ export const MINES = {
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      mgr_appointment: [],
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mine_permit: [],
       mineral_tenure_xref: [
         {
           tenure_number_id: "1234567",
-        },
-      ],
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine3",
-          mine_no: "BLAH9091",
-          region_code: "NE",
         },
       ],
       mine_location: [{ longitude: null, latitude: null }],
@@ -208,7 +178,7 @@ export const MINES = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -225,7 +195,9 @@ export const MINES = {
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      mgr_appointment: [],
+      mine_name: "mine2",
+      mine_no: "BLAH9091",
+      region_code: "NE",
       mine_permit: [
         {
           expiry_date: "9999-12-31",
@@ -299,18 +271,6 @@ export const MINES = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_detail: [
-        {
-          mine_name: "mine1",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-        {
-          mine_name: "mine2",
-          mine_no: "BLAH9091",
-          region_code: "NE",
-        },
-      ],
       mine_location: [
         {
           longitude: null,
@@ -327,7 +287,7 @@ export const MINES = {
       mine_expected_documents: [
         {
           date_created: "2018-11-19",
-          due_date: "None",
+          due_date: "",
           exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -630,6 +590,13 @@ export const DISTURBANCE_OPTIONS = {
   ],
 };
 
+export const DISTURBANCE_OPTIONS_HASH = {
+  SUR: "Surface",
+  UND: "Underground",
+  CWA: "Coal Wash",
+  MIL: "Mill",
+};
+
 export const COMMODITY_OPTIONS = {
   options: [
     {
@@ -653,6 +620,20 @@ export const COMMODITY_OPTIONS = {
   ],
 };
 
+export const CONDITIONAL_COMMODITY_OPTIONS = {
+  BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
+  COL: [
+    { label: "Thermal Coal", value: "TO", exclusive: true },
+    { label: "Metallurgic", value: "MC", exclusive: true },
+  ],
+};
+
+export const COMMODITY_OPTIONS_HASH = {
+  TO: "Thermal Coal",
+  MC: "Metallurgic",
+  CG: "Construction Aggregate",
+};
+
 export const CONDITIONAL_DISTURBANCE_OPTIONS = {
   BCL: [{ label: "Surface", value: "SUR", exclusive: false }],
   COL: [
@@ -674,9 +655,195 @@ export const CONDITIONAL_DISTURBANCE_OPTIONS = {
 export const COMPLIANCE = {
   last_inspection: "2018-12-12 00:00",
   inspector: "test",
-  open_orders: 5,
-  overdue_orders: 5,
+  num_open_orders: 5,
+  num_overdue_orders: 5,
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
+  open_orders: [],
 };
+
+export const MINE_TYPES = [
+  {
+    mine_tenure_type_code: [],
+    mine_commodity_code: [],
+    mine_disturbance_code: [],
+  },
+];
+
+export const PARTYRELATIONSHIPS = [
+  {
+    mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+    mine_guid: "db059bf5-14aa-4b98-af67-9c1e635a6120",
+    party_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+    mine_party_appt_type_code: "PMT",
+    start_date: "2019-01-01",
+    end_date: "2019-01-03",
+    party: {
+      party_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+      party_type_code: "ORG",
+      phone_no: "123-123-1234",
+      phone_ext: null,
+      email: "test@test.test",
+      effective_date: "2019-01-02",
+      expiry_date: "9999-12-31",
+      party_name: "test company 2 ",
+      name: "test company 2 ",
+    },
+    related_guid: "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+  },
+  {
+    mine_party_appt_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+    mine_guid: "db059bf5-14aa-4b98-af67-9c1e635a6120",
+    party_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+    mine_party_appt_type_code: "MMG",
+    start_date: "2019-01-01",
+    end_date: "2019-01-03",
+    party: {
+      party_guid: "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+      party_type_code: "PER",
+      phone_no: "123-123-1234",
+      phone_ext: null,
+      email: "test@test.test",
+      effective_date: "2019-01-02",
+      expiry_date: "9999-12-31",
+      party_name: "test dude 1 ",
+      name: "test dude 1 ",
+    },
+    related_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+  },
+];
+
+export const PARTYRELATIONSHIP = [
+  {
+    mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+    mine_guid: "db059bf5-14aa-4b98-af67-9c1e635a6120",
+    party_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+    mine_party_appt_type_code: "PMT",
+    start_date: "2019-01-01",
+    end_date: "2019-01-03",
+    party: {
+      party_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
+      party_type_code: "ORG",
+      phone_no: "123-123-1234",
+      phone_ext: null,
+      email: "test@test.test",
+      effective_date: "2019-01-02",
+      expiry_date: "9999-12-31",
+      party_name: "test company 2 ",
+      name: "test company 2 ",
+    },
+    related_guid: "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+  },
+];
+
+export const PARTYRELATIONSHIPTYPES = [
+  {
+    mine_party_appt_type_code: "MMG",
+    description: "Mine Manager",
+    display_order: "1",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "3",
+  },
+  {
+    mine_party_appt_type_code: "PMT",
+    description: "Permitee",
+    display_order: "2",
+    active_ind: "True",
+    person: "True",
+    organization: "True",
+    grouping_level: "3",
+  },
+  {
+    mine_party_appt_type_code: "MOR",
+    description: "Mine Operator",
+    display_order: "3",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "3",
+  },
+  {
+    mine_party_appt_type_code: "MOW",
+    description: "Mine Owner",
+    display_order: "4",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "3",
+  },
+  {
+    mine_party_appt_type_code: "EOR",
+    description: "Engineer Of Record",
+    display_order: "5",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "2",
+  },
+  {
+    mine_party_appt_type_code: "EVS",
+    description: "Environmental Specialist",
+    display_order: "6",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "2",
+  },
+  {
+    mine_party_appt_type_code: "EMM",
+    description: "Exploration Mine Manager",
+    display_order: "7",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "2",
+  },
+  {
+    mine_party_appt_type_code: "SVR",
+    description: "Supervisor",
+    display_order: "8",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "1",
+  },
+  {
+    mine_party_appt_type_code: "SHB",
+    description: "Shift Boss",
+    display_order: "9",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "1",
+  },
+  {
+    mine_party_appt_type_code: "FRB",
+    description: "Fire Boss",
+    display_order: "10",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "1",
+  },
+  {
+    mine_party_appt_type_code: "BLA",
+    description: "Blaster",
+    display_order: "11",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "1",
+  },
+  {
+    mine_party_appt_type_code: "MRC",
+    description: "Mine Rescue Contact",
+    display_order: "12",
+    active_ind: "True",
+    person: "True",
+    organization: "False",
+    grouping_level: "1",
+  },
+];

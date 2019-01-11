@@ -61,7 +61,7 @@ export const exactLength = memoize((min) => (value) =>
 );
 
 export const number = (value) =>
-  value && isNaN(Number(value)) ? "Input must be a number" : undefined;
+  value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
 export const lat = (value) =>
   value && !Validate.checkLat(value) ? "Invalid latitude coordinate e.g. 53.7267" : undefined;
@@ -74,6 +74,9 @@ export const phoneNumber = (value) =>
 
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
+
+export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
+  !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;
 
 export const validateStartDate = memoize((previousStartDate) => (value) =>
   value <= previousStartDate

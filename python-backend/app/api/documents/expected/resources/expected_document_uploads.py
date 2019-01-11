@@ -11,12 +11,13 @@ from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 
 from ..models.mine_expected_document import MineExpectedDocument
-from ....mines.mine.models.mine_detail import MineDetail
+from ....mines.mine.models.mine import Mine
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
 from ...mines.models.mine_document import MineDocument
 
-from app.extensions import jwt, api, db
+from app.extensions import api, db
+from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -29,15 +30,11 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'expected_document_guid':
             'Required: The guid of the expected document that this upload will be satisfying.'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def post(self, expected_document_guid):
 
         self.parser.add_argument(
-            'file',
-            type=FileStorage,
-            location='files',
-            action='append',
-            required=True)
+            'file', type=FileStorage, location='files', action='append', required=True)
 
         try:
             data = self.parser.parse_args()
@@ -46,25 +43,20 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 413,
                 f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.'
-            )
+            ), 413
 
-        expected_document = MineExpectedDocument.find_by_exp_document_guid(
-            expected_document_guid)
-        mine_detail = MineDetail.find_by_mine_guid(
-            str(expected_document.mine_guid))
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
         document_category = expected_document.required_document.req_document_category.req_document_category
 
         if document_category:
-            folder = 'mines/' + str(
-                mine_detail.mine_guid) + '/' + str(document_category)
-            pretty_folder = 'mines/' + str(
-                mine_detail.mine_no) + '/' + str(document_category)
+            folder = 'mines/' + str(mine.mine_guid) + '/' + str(document_category)
+            pretty_folder = 'mines/' + str(mine.mine_no) + '/' + str(document_category)
         else:
-            folder = 'mines/' + str(mine_detail.mine_guid) + '/documents'
-            pretty_folder = 'mines/' + str(mine_detail.mine_no) + '/documents'
+            folder = 'mines/' + str(mine.mine_guid) + '/documents'
+            pretty_folder = 'mines/' + str(mine.mine_no) + '/documents'
 
-        document_manager_URL = current_app.config[
-            'DOCUMENT_MANAGER_URL'] + '/document-manager'
+        document_manager_URL = current_app.config['DOCUMENT_MANAGER_URL'] + '/document-manager'
 
         files = []
 
@@ -74,8 +66,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         args = {'folder': folder, 'pretty_folder': pretty_folder}
         headers = {'Authorization': request.headers.get('Authorization')}
 
-        response = requests.post(
-            url=document_manager_URL, data=args, files=files, headers=headers)
+        response = requests.post(url=document_manager_URL, data=args, files=files, headers=headers)
         json_response = response.json()
 
         errors = json_response['errors']
@@ -99,7 +90,27 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         except DBAPIError:
             #log the error here and return a pretty error message
             db.session.rollback()
-            return self.create_error_payload(500,
-                                             'An unexpected error occured')
+            return self.create_error_payload(500, 'An unexpected error occured'), 500
 
         return {'status': 200, 'errors': errors, 'files': filenames}
+
+    @requires_role_mine_create
+    def delete(self, expected_document_guid=None, mine_document_guid=None):
+
+        if expected_document_guid is None or mine_document_guid is None:
+            return self.create_error_payload(
+                400, 'Must provide a expected document guid and a mine document guid.'), 400
+
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+
+        if expected_document is None or mine_document is None:
+            return self.create_error_payload(
+                400,
+                f'Failed to remove the document either the expected document or the mine document was not found.'
+            ), 400
+
+        expected_document.mine_documents.remove(mine_document)
+        expected_document.save()
+
+        return {'status': 200, 'message': 'The document was removed succesfully.'}

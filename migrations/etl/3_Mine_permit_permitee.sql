@@ -65,7 +65,7 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            mine_detail.mine_guid   ,
+            mine.mine_guid   ,
             permit_info.mine_no     ,
             permit_info.permit_no   ,
             permit_info.cid AS permit_cid   ,
@@ -78,8 +78,8 @@ BEGIN
             END AS sta_cd           ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
-        INNER JOIN mine_detail ON
-            mine_detail.mine_no=permit_info.mine_no
+        INNER JOIN mine ON
+            mine.mine_no=permit_info.mine_no
         WHERE permit_info.cid IN (
             SELECT permit_cid
             FROM new_permit_list
@@ -545,7 +545,7 @@ DECLARE
     new_row integer;
 BEGIN
     RAISE NOTICE '.. Step 4 of 4: Update permittee info';
-    SELECT count(*) FROM permittee INTO old_row;
+    SELECT count(*) FROM mine_party_appt INTO old_row;
     --select only new record
     WITH new_permittee AS (
         SELECT *
@@ -555,10 +555,12 @@ BEGIN
             FROM permittee
         )
     )
-    INSERT INTO permittee (
-        permittee_guid   ,
+    INSERT INTO mine_party_appt (
+        mine_party_appt   ,
         permit_guid      ,
         party_guid       ,
+        mine_guid        ,
+        mine_party_appt_type_code,
         create_user      ,
         create_timestamp ,
         update_user      ,
@@ -570,6 +572,8 @@ BEGIN
         permittee_guid  ,
         permit_guid     ,
         party_guid      ,
+        mine_guid       ,
+        'PMT'           ,
         'mms_migration' ,
         now()           ,
         'mms_migration' ,
@@ -577,7 +581,7 @@ BEGIN
         issue_date      ,
         expiry_date
     FROM new_permittee;
-    SELECT count(*) FROM permittee INTO new_row;
+    SELECT count(*) FROM mine_party_appt INTO new_row;
     RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
     RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
 END $$;

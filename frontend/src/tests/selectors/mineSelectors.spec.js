@@ -3,8 +3,6 @@ import {
   getMines,
   getMineNames,
   getMineGuid,
-  getCurrentPermittees,
-  getCurrentPermitteeIds,
   getMinesPageData,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
@@ -24,73 +22,59 @@ const mockState = {
 
 describe("mineSelectors", () => {
   const { mineIds, mineNameList, minesPageData } = mockState;
-  let { mines, mineGuid } = mockState;
+  const { mines, mineGuid } = mockState;
 
   it("`getMines` calls `mineReducer.getMines`", () => {
     const storeAction = storeMineList(mockResponse);
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMines(mockState)).toEqual(mines);
+    expect(getMines(localMockState)).toEqual(mines);
   });
 
   it("`getMineGuid` calls `mineReducer.getMineGuid` when `storeMineList` is dispatched", () => {
     const storeAction = storeMineList(mockResponse);
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMineGuid(mockState)).toEqual(mineGuid);
+    expect(getMineGuid(localMockState)).toEqual(mineGuid);
   });
 
   it("`getMineGuid` calls `mineReducer.getMineGuid` when `storeMine` is dispatched", () => {
     const storeAction = storeMine(mineResponse, "18145c75-49ad-0101-85f3-a43e45ae989a");
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMineGuid(mockState)).toEqual("18145c75-49ad-0101-85f3-a43e45ae989a");
+    expect(getMineGuid(localMockState)).toEqual("18145c75-49ad-0101-85f3-a43e45ae989a");
   });
 
   it("`getMineIds` calls `mineReducer.getMineIds`", () => {
     const storeAction = storeMineList(mockResponse);
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMineIds(mockState)).toEqual(mineIds);
+    expect(getMineIds(localMockState)).toEqual(mineIds);
   });
 
   it("`getMineNames` calls `mineReducer.getMineNames`", () => {
     const storeAction = storeMineNameList(Mock.MINE_NAME_LIST);
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMineNames(mockState)).toEqual(mineNameList);
+    expect(getMineNames(localMockState)).toEqual(mineNameList);
   });
 
   it("`getMinesPageData` calls `mineReducer.getMinesPageData`", () => {
     const storeAction = storeMineList(Mock.PAGE_DATA);
     const storeState = mineReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [MINES]: storeState,
     };
-    expect(getMinesPageData(mockState)).toEqual(minesPageData);
-  });
-
-  it("`getCurrentPermittees` calls `mineReducer.getCurrentPermittees`", () => {
-    mines = Mock.MINES.mines;
-    mineGuid = Mock.MINES.mineIds[1];
-    const selected = getCurrentPermittees.resultFunc(mines, mineGuid);
-    expect(selected).toEqual(Mock.PERMITTEE.permittees);
-  });
-
-  it("`getCurrentPermitteeIds` calls `mineReducer.getCurrentPermitteeIds`", () => {
-    mines = Mock.MINES.mines;
-    mineGuid = Mock.MINES.mineIds[1];
-    const selected = getCurrentPermitteeIds.resultFunc(mines, mineGuid);
-    expect(selected).toEqual(["1c7da2c4-10d5-4c9f-994a-96427aa0c69b"]);
+    expect(getMinesPageData(localMockState)).toEqual(minesPageData);
   });
 });

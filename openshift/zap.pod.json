@@ -1,73 +1,73 @@
 {
-    "kind": "Template",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "zap",
-        "creationTimestamp": null
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "zap",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name used for all objects",
+      "required": true,
+      "value": "zap"
     },
-    "parameters": [
-        {
-            "name": "NAME",
-            "displayName": "Name",
-            "description": "A name used for all objects",
-            "required": true,
-            "value": "zap"
-        },
-        {
-            "name": "APP",
-            "displayName": "APP",
-            "description": "A name used for all objects",
-            "required": true,
-            "value": "zap"
-        },
-        {
-            "name": "URL",
-            "displayName": "The URL",
-            "description": "A suffix appended to all objects",
-            "required": true,
-            "value": "https://mds-frontend-empr-mds-prod.pathfinder.gov.bc.ca/"
+    {
+      "name": "APP",
+      "displayName": "APP",
+      "description": "A name used for all objects",
+      "required": true,
+      "value": "zap"
+    },
+    {
+      "name": "URL",
+      "displayName": "The URL",
+      "description": "A suffix appended to all objects",
+      "required": true,
+      "value": "https://mds-frontend-empr-mds-prod.pathfinder.gov.bc.ca/"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "run": "zap",
+          "app": "${APP}"
         }
-    ],
-    "objects": [
-        {
-            "kind": "Pod",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${NAME}",
-                "creationTimestamp": null,
-                "labels": {
-                    "run": "zap",
-                    "app": "${APP}"
-                }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "zap",
+            "image": "172.50.0.2:5000/openshift/jenkins-slave-zap",
+            "command": [
+              "/bin/bash",
+              "-c",
+              "export HOME=/home/jenkins; source /usr/local/bin/generate_container_user; source /usr/local/bin/configure-slave; /zap/zap-baseline.py -t ${URL}/; if [ $? -le 2 ]; then exit 0; else exit 1; fi"
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "300m",
+                "memory": "1.5Gi"
+              }
             },
-            "spec": {
-                "containers": [
-                    {
-                        "name": "zap",
-                        "image": "172.50.0.2:5000/openshift/jenkins-slave-zap",
-                        "command": [
-                            "/bin/bash",
-                            "-c",
-                            "export HOME=/home/jenkins; source /usr/local/bin/generate_container_user; source /usr/local/bin/configure-slave; /zap/zap-baseline.py -t ${URL}; if [ $? -le 2 ]; then exit 0; else exit 1; fi"
-                        ],
-                        "resources": {
-                            "limits": {
-                                "cpu": "500m",
-                                "memory": "4Gi"
-                            },
-                            "requests": {
-                                "cpu": "300m",
-                                "memory": "1.5Gi"
-                            }
-                        },
-                        "imagePullPolicy": "Always"
-                    }
-                ],
-                "restartPolicy": "Never",
-                "activeDeadlineSeconds": 360,
-                "dnsPolicy": "ClusterFirst"
-            },
-            "status": {}
-        }
-    ]
+            "imagePullPolicy": "Always"
+          }
+        ],
+        "restartPolicy": "Never",
+        "activeDeadlineSeconds": 360,
+        "dnsPolicy": "ClusterFirst"
+      },
+      "status": {}
+    }
+  ]
 }

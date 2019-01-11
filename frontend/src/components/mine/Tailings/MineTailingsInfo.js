@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { GREEN_PENCIL, RED_CLOCK } from "@/constants/assets";
+import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
   createMineExpectedDocument,
   removeExpectedDocument,
@@ -23,6 +23,7 @@ import { createDropDownList } from "@/utils/helpers";
 
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -49,14 +50,15 @@ const defaultProps = {
 };
 
 const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return "Loading...";
-  if (!doc) return "Loading...";
+  if (!expectedDocumentStatusOptions[0]) return String.LOADING;
+  if (!doc) return String.LOADING;
 
   return doc.exp_document_status_guid === "None"
     ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find((x) => x.value === doc.exp_document_status_guid).label;
+    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
+        .label;
 };
-/* 
+/*
   return  */
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
@@ -80,7 +82,7 @@ export class MineTailingsInfo extends Component {
 
   handleAddReportSubmit = (value) => {
     const requiredReport = this.props.mineTSFRequiredReports.find(
-      (x) => x.req_document_guid === value.req_document_guid
+      ({ req_document_guid }) => req_document_guid === value.req_document_guid
     );
     const newRequiredReport = {
       document_name: requiredReport.req_document_name,
@@ -224,13 +226,18 @@ export class MineTailingsInfo extends Component {
               return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
             })
             .map((doc, id) => {
-              const isOverdue = Date.parse(doc.due_date) < new Date();
+              const isOverdue =
+                Date.parse(doc.due_date) < new Date() &&
+                (doc.exp_document_status_guid === "None" ||
+                  (this.props.expectedDocumentStatusOptions[0] &&
+                    doc.exp_document_status_guid ===
+                      this.props.expectedDocumentStatusOptions[0].value));
               return (
                 <div key={doc.exp_document_guid}>
                   <Row gutter={16} justify="center" align="top">
                     <Col span={1}>
                       {isOverdue ? (
-                        <img style={{ padding: "5px" }} src={RED_CLOCK} alt="Edit TSF Report" />
+                        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
                       ) : (
                         ""
                       )}
@@ -282,7 +289,7 @@ export class MineTailingsInfo extends Component {
                           )
                         }
                       >
-                        <img style={{ padding: "5px" }} src={GREEN_PENCIL} alt="Edit TSF Report" />
+                        <img className="padding-small" src={BRAND_PENCIL} alt="Edit TSF Report" />
                       </Button>
                       <Popconfirm
                         placement="topLeft"

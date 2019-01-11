@@ -1,7 +1,7 @@
 //1. Import files needed to:
 //Determine what OS is running the test
 //Determines how exceptions/event are formatted in test logging.
-import org.apache.tools.ant.taskdefs.condition.Os 
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
@@ -11,7 +11,7 @@ plugins {
     id "groovy"
     id "com.energizedwork.webdriver-binaries" version "1.0"
     id "net.foragerr.jmeter" version "1.0.10-3.3"
-    
+
 }
 
 
@@ -21,12 +21,12 @@ ext {
     drivers = ["firefox", "firefoxHeadless", "chrome", "chromeHeadless","ie","edge","safari"]
 
     ext {
-        groovyVersion = '2.4.12'
-        gebVersion = '2.1'
-        seleniumVersion = '3.6.0'
-        chromeDriverVersion = '2.36'
-        geckoDriverVersion = '0.18.0'
-        ieDriverVersion = '3.6'
+        groovyVersion = '2.4.15'
+        gebVersion = '2.2'
+        seleniumVersion = '3.14.0'
+        chromeDriverVersion = '2.41'
+        geckoDriverVersion = '0.21.0'
+        ieDriverVersion = '3.14'
         edgeDriverVersion = seleniumVersion
         safariDriverVersion = seleniumVersion
     }
@@ -39,7 +39,7 @@ apply from: "gradle/osSpecificDownloads.gradle"
 repositories {
     mavenCentral()
 }
- 
+
 //5. Compiles all the dependencies
 dependencies {
     //If using Spock, need to depend on geb-spock
@@ -52,7 +52,7 @@ dependencies {
     //If using JUnit, need to depend on geb-junit (3 or 4)
     testCompile "org.gebish:geb-junit4:$gebVersion"
 
-    //Support needed for Geb to run off of. 
+    //Support needed for Geb to run off of.
     testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 
     //Drivers
@@ -63,11 +63,11 @@ dependencies {
     testCompile "org.seleniumhq.selenium:selenium-edge-driver:$seleniumVersion"
 
     //Spock reports
-    testCompile( 'com.athaydes:spock-reports:1.4.0' ) {
+    testCompile( 'com.athaydes:spock-reports:1.6.0' ) {
         transitive = false // this avoids affecting your version of Groovy/Spock
     }
-    testCompile 'org.slf4j:slf4j-api:1.7.13'
-    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+    testCompile 'org.slf4j:slf4j-api:1.7.25'
+    testCompile 'org.slf4j:slf4j-simple:1.7.25'
 
     //Needed to insert/cleanup test data directly into DB
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
@@ -165,6 +165,6 @@ tasks.withType(Test) {
 }
 
 tasks.withType(GroovyCompile) {
-    groovyOptions.forkOptions.memoryMaximumSize = '256m'
+    groovyOptions.forkOptions.memoryMaximumSize = '512m'
 }
 

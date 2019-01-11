@@ -1,6 +1,17 @@
 import * as partiesReducer from "@/reducers/partiesReducer";
+import { createSelector } from "reselect";
 
-export const getParties = (state) => partiesReducer.getParties(state);
-export const getPartyIds = (state) => partiesReducer.getPartyIds(state);
-export const getPartyRelationshipTypes = (state) => partiesReducer.getPartyRelationshipTypes(state);
-export const getPartyRelationships = (state) => partiesReducer.getPartyRelationships(state);
+export const {
+  getParties,
+  getRawParties,
+  getPartyIds,
+  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
+  getPartyRelationships,
+} = partiesReducer;
+
+export const getSummaryPartyRelationships = createSelector(
+  [getPartyRelationships],
+  (partyRelationships) =>
+    partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
+);

@@ -75,12 +75,11 @@ Follow the `.env-example` template to create an `.env` file with valid values be
 A. OS Level Installation
 
 - [Node.js 8](https://nodejs.org/en/download/)
-- [Canvas](https://www.npmjs.com/package/canvas)
 
 1. Install package dependencies
 
 ```
-npm install
+npm ci
 ```
 
 2. Run the application
@@ -124,7 +123,7 @@ npm run lint ./filepath
 Lint all files
 
 ```
-npm run lint .
+npm run lint ./src
 ```
 
 Apply linting rules to one file

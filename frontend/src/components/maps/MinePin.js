@@ -30,7 +30,7 @@ export class MinePin extends Component {
   state = { graphic: null, isFullMap: false };
 
   popupTemplate(id) {
-    const { mine_name } = this.props.mines[id].mine_detail[0];
+    const { mine_name } = this.props.mines[id];
     const content = renderToString(<MapPopup id={id} />);
     return {
       title: mine_name,
@@ -96,23 +96,23 @@ export class MinePin extends Component {
 
         const smSymbol = new SimpleMarkerSymbol({
           size: 22,
-          outline: new SimpleLineSymbol({ color: [221, 159, 34, 1] }),
-          color: [255, 204, 102, 1],
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [247, 54, 251, 1],
         });
         const mdSymbol = new SimpleMarkerSymbol({
           size: 24,
-          outline: new SimpleLineSymbol({ color: [82, 163, 204, 1] }),
-          color: [102, 204, 255, 1],
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [183, 166, 252, 1],
         });
         const lgSymbol = new SimpleMarkerSymbol({
           size: 28,
-          outline: new SimpleLineSymbol({ color: [41, 163, 41, 1] }),
-          color: [51, 204, 51, 1],
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [114, 192, 238, 1],
         });
         const xlSymbol = new SimpleMarkerSymbol({
           size: 32,
-          outline: new SimpleLineSymbol({ color: [200, 52, 59, 1] }),
-          color: [250, 65, 74, 1],
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [173, 252, 74, 1],
         });
 
         renderer.addClassBreakInfo(0, 5, smSymbol);

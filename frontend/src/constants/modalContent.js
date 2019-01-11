@@ -15,4 +15,6 @@ export const ORGANIZATION = "ORG";
 export const PARTY_NOT_FOUND = `If the party is not in the list above, please add a new person or company below`;
 export const PERSON_NOT_FOUND =
   "If the party is not in the list above, please add a new person below";
+export const COMPANY_NOT_FOUND =
+  "If the company is not in the list above, please add a new company below";
 export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";

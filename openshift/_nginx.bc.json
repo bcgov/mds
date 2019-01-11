@@ -1,0 +1,115 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-nginx-bc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Defines how to build the image"
+        }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 600,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "namespace": "openshift",
+              "name": "bcgov-s2i-nginx:latest"
+            },
+            "env": [
+              {
+                "name": "NGINX_AUX_DIR",
+                "value": "auxiliary"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "nodeSelector": null
+      }
+    }
+  ]
+}

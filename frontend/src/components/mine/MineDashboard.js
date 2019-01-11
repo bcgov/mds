@@ -8,6 +8,7 @@ import {
   fetchMineRecordById,
   updateMineRecord,
   createTailingsStorageFacility,
+  removeMineType,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -16,16 +17,18 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import { getMines, getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
+import { getMines, getCurrentMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
   getMineTenureTypesHash,
-  getMineTenureTypes,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
+import {
+  fetchPartyRelationshipTypes,
+  fetchPartyRelationships,
+} from "@/actionCreators/partiesActionCreator";
+import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
@@ -43,35 +46,39 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func,
-  createTailingsStorageFacility: PropTypes.func,
+  updateMineRecord: PropTypes.func.isRequired,
+  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  mines: PropTypes.object,
-  mineIds: PropTypes.array,
-  permittees: PropTypes.object,
-  permitteesIds: PropTypes.array,
-  mineStatusOptions: PropTypes.array,
-  mineRegionOptions: PropTypes.array,
-  mineTenureTypes: PropTypes.array,
-  mineTenureHash: PropTypes.obj,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
+  permitteesIds: PropTypes.arrayOf(PropTypes.string),
+  mineTenureHash: PropTypes.objectOf(PropTypes.string),
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  mines: {},
+  permittees: [],
+  permitteesIds: [],
+  mineTenureHash: {},
 };
 
 export class MineDashboard extends Component {
-  state = { activeTab: "summary" };
+  state = { activeTab: "summary", isLoaded: false };
 
-  componentDidMount() {
+  componentWillMount() {
     const { id, activeTab } = this.props.match.params;
-    this.props.fetchMineRecordById(id);
+    this.props.fetchMineRecordById(id).then(() => {
+      this.setState({ isLoaded: true });
+    });
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
     this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPartyRelationships({ mine_guid: id });
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -99,56 +106,63 @@ export class MineDashboard extends Component {
       return <Loading />;
     }
     return (
-      <div className="dashboard">
-        <div>
-          <MineHeader mine={mine} {...this.props} />
-        </div>
-        <div className="dashboard__content">
-          <Tabs
-            activeKey={this.state.activeTab}
-            defaultActiveKey="summary"
-            onChange={this.handleChange}
-            size="large"
-            animated={{ inkBar: true, tabPane: false }}
-          >
-            <TabPane tab="Summary" key="summary">
-              <div className="tab__content">
-                <MineSummary
-                  mine={mine}
-                  permittees={this.props.permittees}
-                  permitteeIds={this.props.permitteeIds}
-                />
-              </div>
-            </TabPane>
-            <TabPane tab="Permit" key="permit">
-              <div className="tab__content">
-                <MinePermitInfo mine={mine} />
-              </div>
-            </TabPane>
-            <TabPane tab="Contact Information" key="contact-information">
-              <div className="tab__content">
-                <MineContactInfo mine={mine} />
-              </div>
-            </TabPane>
-            <TabPane tab="Compliance" key="compliance">
-              <div className="tab__content">
-                <MineComplianceInfo mine={mine} {...this.props} />
-              </div>
-            </TabPane>
-            <TabPane tab="Tenure" key="tenure">
-              <div className="tab__content">
-                <MineTenureInfo mine={mine} {...this.props} />
-              </div>
-            </TabPane>
-            {mine.mine_tailings_storage_facility.length > 0 && (
-              <TabPane tab="Tailings" key="tailings">
-                <div className="tab__content">
-                  <MineTailingsInfo mine={mine} {...this.props} />
-                </div>
-              </TabPane>
-            )}
-          </Tabs>
-        </div>
+      <div>
+        {this.state.isLoaded && (
+          <div className="dashboard">
+            <div>
+              <MineHeader mine={mine} {...this.props} />
+            </div>
+            <div className="dashboard__content">
+              <Tabs
+                activeKey={this.state.activeTab}
+                defaultActiveKey="summary"
+                onChange={this.handleChange}
+                size="large"
+                animated={{ inkBar: true, tabPane: false }}
+              >
+                <TabPane tab="Summary" key="summary">
+                  <div className="tab__content">
+                    <MineSummary
+                      mine={mine}
+                      permittees={this.props.permittees}
+                      permitteeIds={this.props.permitteeIds}
+                    />
+                  </div>
+                </TabPane>
+                <TabPane tab="Permit" key="permit">
+                  <div className="tab__content">
+                    <MinePermitInfo mine={mine} />
+                  </div>
+                </TabPane>
+                <TabPane tab="Contact Information" key="contact-information">
+                  <div className="tab__content">
+                    <MineContactInfo mine={mine} />
+                  </div>
+                </TabPane>
+                <TabPane tab="Compliance" key="compliance">
+                  <div className="tab__content">
+                    <MineComplianceInfo mine={mine} {...this.props} />
+                  </div>
+                </TabPane>
+                {/* TODO: Unhide for July release */
+                false && (
+                  <TabPane tab="Tenure" key="tenure">
+                    <div className="tab__content">
+                      <MineTenureInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
+                {mine.mine_tailings_storage_facility.length > 0 && (
+                  <TabPane tab="Tailings" key="tailings">
+                    <div className="tab__content">
+                      <MineTailingsInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
+              </Tabs>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -156,15 +170,11 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  permittees: getCurrentPermittees(state),
-  permitteeIds: getCurrentPermitteeIds(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  currentMineTypes: getCurrentMineTypes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -178,8 +188,11 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
+      removeMineType,
       openModal,
       closeModal,
+      fetchPartyRelationships,
+      fetchPartyRelationshipTypes,
     },
     dispatch
   );

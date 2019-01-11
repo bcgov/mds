@@ -1,19 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.any,
   placeholder: PropTypes.string,
   label: PropTypes.string,
-  opton: PropTypes.object,
-  meta: PropTypes.object,
-  data: PropTypes.array,
+  meta: CustomPropTypes.formMeta,
+  data: CustomPropTypes.options,
+  disabled: PropTypes.bool,
+};
+
+const defaultProps = {
+  placeholder: "",
+  label: "",
+  data: [],
+  disabled: false,
+  meta: {},
 };
 
 const RenderSelect = (props) => (
@@ -29,6 +38,7 @@ const RenderSelect = (props) => (
     }
   >
     <Select
+      disabled={props.disabled}
       getPopupContainer={() => document.getElementById(props.id)}
       showSearch
       placeholder={props.placeholder}
@@ -39,9 +49,13 @@ const RenderSelect = (props) => (
       id={props.id}
       {...props.input}
     >
-      {props.data.map((value) => (
-        <Select.Option key={value.value} value={value.value}>
-          {value.label}
+      {props.data.map((opt) => (
+        <Select.Option
+          disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
+          key={opt.value}
+          value={opt.value}
+        >
+          {opt.label}
         </Select.Option>
       ))}
     </Select>
@@ -49,5 +63,6 @@ const RenderSelect = (props) => (
 );
 
 RenderSelect.propTypes = propTypes;
+RenderSelect.defaultProps = defaultProps;
 
 export default RenderSelect;

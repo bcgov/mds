@@ -14,12 +14,12 @@ body {
 
 .content {
   overflow: initial;
-  background-color: $background-white;
+  background-color: $pure-white;
 }
 
 .footer {
   height: 45px;
-  background-color: $default-blue;
+  background-color: $nav-color;
 }
 
 .center {
@@ -45,6 +45,10 @@ body {
   text-align: left;
 }
 
+.full-height {
+  height: inherit !important;
+}
+
 .inline-flex {
   @include flex;
 
@@ -56,6 +60,10 @@ body {
   & div {
     margin-right: 5px;
   }
+}
+
+.wrap {
+  flex-wrap: wrap;
 }
 
 .between {
@@ -107,4 +115,15 @@ body {
     border: none;
     padding: 0;
   }
+}
+
+.card-buttons {
+  flex-direction: column;
+}
+
+.padding-small {
+  &--right {
+    padding-right: 5px;
+  }
+  padding: $default-padding-sm;
 }

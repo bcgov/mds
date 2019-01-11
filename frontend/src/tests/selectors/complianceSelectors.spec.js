@@ -15,9 +15,9 @@ describe("complianceSelectors", () => {
   it("`getMineComplianceInfo` calls `complianceReducer.getMineComplianceInfo`", () => {
     const storeAction = storeMineComplianceInfo(mockResponse);
     const storeState = complianceReducer({}, storeAction);
-    const mockState = {
+    const localMockState = {
       [COMPLIANCE]: storeState,
     };
-    expect(getMineComplianceInfo(mockState)).toEqual(mineComplianceInfo);
+    expect(getMineComplianceInfo(localMockState)).toEqual(mineComplianceInfo);
   });
 });

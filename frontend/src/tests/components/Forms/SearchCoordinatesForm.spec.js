@@ -1,6 +1,6 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { SearchCoordinatesForm } from '@/components/Forms/SearchCoordinatesForm';
+import React from "react";
+import { shallow } from "enzyme";
+import { SearchCoordinatesForm } from "@/components/Forms/SearchCoordinatesForm";
 
 const dispatchProps = {};
 
@@ -12,8 +12,8 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe('AddPartyFrom', () => {
-  it('renders properly', () => {
+describe("SearchCoordinatesForm", () => {
+  it("renders properly", () => {
     const component = shallow(<SearchCoordinatesForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });

@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Pagination, Tabs, Col, Row, Divider, notification } from "antd";
+import { Pagination, Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
+import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -17,12 +18,7 @@ import {
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
-  getMineStatusOptions,
-  getMineRegionOptions,
-  getMineTenureTypes,
   getMineTenureTypesHash,
-  getConditionalDisturbanceOptionsHash,
-  getConditionalCommodityOptions,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
@@ -41,7 +37,7 @@ import { debounce } from "lodash";
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
@@ -53,20 +49,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  mines: PropTypes.object.isRequired,
-  mineIds: PropTypes.array.isRequired,
-  pageData: PropTypes.object.isRequired,
-  mineStatusOptions: PropTypes.array.isRequired,
-  mineRegionOptions: PropTypes.array.isRequired,
-  mineTenureTypes: PropTypes.array.isRequired,
-};
-
-const defaultProps = {
-  mines: {},
-  mineIds: [],
-  pageData: {},
-  mineStatusOptions: [],
-  mineRegionOptions: [],
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pageData: CustomPropTypes.minePageData.isRequired,
 };
 
 export class Dashboard extends Component {
@@ -82,6 +67,12 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
+        major: false,
+        tsf: false,
+        status: [],
+        region: [],
+        tenure: [],
+        commodity: [],
       },
     };
   }
@@ -92,7 +83,10 @@ export class Dashboard extends Component {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
-        router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, String.DEFAULT_PER_PAGE)
+        router.MINE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
       );
     }
     this.props.fetchStatusOptions();
@@ -117,16 +111,39 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const paramsObj = queryString.parse(params);
-    this.setState({ params: paramsObj });
+    const { status, commodity, region, tenure, major, tsf, ...remainingParams } = queryString.parse(
+      params
+    );
+    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
+    this.setState({
+      params: {
+        status: format(status),
+        commodity: format(commodity),
+        region: format(region),
+        tenure: format(tenure),
+        major: major === "true",
+        tsf: tsf === "true",
+        ...remainingParams,
+      },
+    });
     this.props.fetchMineRecords(params).then(() => {
       this.setState({ mineList: true });
     });
   };
 
-  onPageChange = (current, pageSize) => {
+  onPageChange = (page, per_page) => {
+    const { major, tsf, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute(current, pageSize, this.state.params.search)
+      router.MINE_DASHBOARD.dynamicRoute({
+        page,
+        per_page,
+        major,
+        tsf,
+        status: status && status.join(","),
+        region: region && region.join(","),
+        tenure: tenure && tenure.join(","),
+        commodity: commodity && commodity.join(","),
+      })
     );
   };
 
@@ -167,17 +184,17 @@ export class Dashboard extends Component {
     if (key === "map") {
       this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
     } else {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(page, per_page, search));
+      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute({ page, per_page, search }));
     }
   };
 
-  handleMineSearch = (value) => {
-    const perPage = this.state.params.per_page
+  handleMineSearch = (searchParams) => {
+    const per_page = this.state.params.per_page
       ? this.state.params.per_page
       : String.DEFAULT_PER_PAGE;
     // reset page when a search is initiated
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute(String.DEFAULT_PAGE, perPage, value)
+      router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
     );
   };
 
@@ -194,24 +211,12 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(
-    event,
-    mineStatusOptions,
-    mineRegionOptions,
-    mineTenureTypes,
-    conditionalDisturbanceOptions,
-    conditionalCommodityOptions,
-    onSubmit,
-    title
-  ) {
+  openModal(event, onSubmit, title) {
+    const handleDelete = () => {};
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineStatusOptions,
-        mineRegionOptions,
-        mineTenureTypes,
-        conditionalDisturbanceOptions,
-        conditionalCommodityOptions,
+        handleDelete,
         onSubmit,
         title,
       },
@@ -235,14 +240,12 @@ export class Dashboard extends Component {
             onTabClick={this.handleTabChange}
           >
             <TabPane tab="List" key="list">
-              <Row>
-                <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-                  <MineSearch
-                    handleMineSearch={this.handleMineSearchDebounced}
-                    searchValue={search}
-                  />
-                </Col>
-              </Row>
+              <MineSearch
+                initialValues={this.state.params}
+                {...this.props}
+                handleMineSearch={this.handleMineSearchDebounced}
+                searchValue={search}
+              />
               <div className="tab__content ">
                 <MineList {...this.props} />
               </div>
@@ -278,7 +281,11 @@ export class Dashboard extends Component {
             <TabPane tab="Map" key="map">
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
-                  <MineSearch handleCoordinateSearch={this.handleCoordinateSearch} isMapView />
+                  <MineSearch
+                    initialValues={this.state.params}
+                    handleCoordinateSearch={this.handleCoordinateSearch}
+                    isMapView
+                  />
                 </Col>
                 <Col md={2} sm={0} xs={0}>
                   <div className="center">
@@ -337,16 +344,7 @@ export class Dashboard extends Component {
               className="full-mobile"
               type="primary"
               handleAction={(event) =>
-                this.openModal(
-                  event,
-                  this.props.mineStatusOptions,
-                  this.props.mineRegionOptions,
-                  this.props.mineTenureTypes,
-                  this.props.conditionalDisturbanceOptions,
-                  this.props.conditionalCommodityOptions,
-                  this.handleSubmit,
-                  ModalContent.CREATE_MINE_RECORD
-                )
+                this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
               }
               string={ModalContent.CREATE_MINE_RECORD}
             />
@@ -362,14 +360,9 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineIds: getMineIds(state),
   pageData: getMinesPageData(state),
-  mineStatusOptions: getMineStatusOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
   mineRegionHash: getMineRegionHash(state),
-  mineTenureTypes: getMineTenureTypes(state),
-  conditionalCommodityOptions: getConditionalCommodityOptions(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -389,7 +382,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Dashboard.propTypes = propTypes;
-Dashboard.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
