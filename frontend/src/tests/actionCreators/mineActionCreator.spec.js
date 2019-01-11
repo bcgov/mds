@@ -9,6 +9,7 @@ import {
   createTailingsStorageFacility,
   createMineExpectedDocument,
   removeExpectedDocument,
+  removeMineDocumentFromExpectedDocument,
   removeMineType,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
@@ -243,6 +244,35 @@ describe("`fetchMineNameList` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchMineNameList()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeMineDocumentFromExpectedDocument` action creator", () => {
+  const expectedDocumentGuid = "12345-6789";
+  const mineDocumentGuid = "12345-6789-1028";
+  const url = `${ENVIRONMENT.apiUrl +
+    API.REMOVE_MINE_EXPECTED_DOCUMENT(expectedDocumentGuid, mineDocumentGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removeMineDocumentFromExpectedDocument(mineDocumentGuid, expectedDocumentGuid)(
+      dispatch
+    ).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return removeMineDocumentFromExpectedDocument(mineDocumentGuid, expectedDocumentGuid)(
+      dispatch
+    ).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

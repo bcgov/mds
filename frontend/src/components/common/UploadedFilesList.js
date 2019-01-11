@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 import CustomPropTypes from "@/customPropTypes";
 import {
-  removeMineExpectedDocument,
+  removeMineDocumentFromExpectedDocument,
   fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
@@ -16,17 +16,17 @@ import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelec
 const propTypes = {
   selectedDocGuid: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  removeMineExpectedDocument: PropTypes.func.isRequired,
+  removeMineDocumentFromExpectedDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.documentStatus).isRequired,
 };
 
-class UploadedFilesList extends React.Component {
+export class UploadedFilesList extends React.Component {
   unlinkFile = (event, mineDocumentGuid, expDocumentGuid) => {
     event.preventDefault();
     this.props
-      .removeMineExpectedDocument(mineDocumentGuid, expDocumentGuid)
+      .removeMineDocumentFromExpectedDocument(mineDocumentGuid, expDocumentGuid)
       .then(this.props.fetchMineRecordById(this.props.mineGuid));
   };
 
@@ -101,7 +101,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      removeMineExpectedDocument,
+      removeMineDocumentFromExpectedDocument,
       fetchMineRecordById,
     },
     dispatch

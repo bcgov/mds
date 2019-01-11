@@ -305,7 +305,7 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
     });
 };
 
-export const removeMineExpectedDocument = (mineDocumentGuid, expectedDocumentGuid) => (
+export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expectedDocumentGuid) => (
   dispatch
 ) => {
   dispatch(request(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
