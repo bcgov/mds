@@ -92,6 +92,5 @@ if ! mountpoint $NPM_TMP; then
     rm -rf $NPM_TMP/npm-*
 fi
 
-
 # Fix source directory permissions
 fix-permissions ./
