@@ -40,4 +40,14 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
             guid = uuid.UUID(guid)  #ensure good formatting
             new_user.mines.append(MinespaceUserMine(user_id=new_user.id, mine_guid=guid))
         db.session.commit()
-        return new_user.json(depth=1)
+        return new_user.json()
+
+    def delete(self, user_id=None):
+        if not user_id:
+            return self.create_error_payload(400, "user_id not found")
+        user = MinespaceUser.find_by_id(user_id)
+        if not user:
+            return self.create_error_payload(404, "user not found")
+        user.deleted_ind = True
+        user.save()
+        return ('', 204)
