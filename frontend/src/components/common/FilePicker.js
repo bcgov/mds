@@ -5,16 +5,15 @@ import { Field } from "redux-form";
 
 import FileUpload from "@/components/common/FileUpload";
 import { renderConfig } from "@/components/common/config";
-import { createDropDownList } from "@/utils/helpers";
 
 const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   uploadUrl: PropTypes.string.isRequired,
-  existingFiles: PropTypes.arrayOf(
+  existingFilesDropdown: PropTypes.arrayOf(
     PropTypes.shape({
-      mine_document_guid: PropTypes.string,
-      document_name: PropTypes.string,
+      value: PropTypes.string,
+      label: PropTypes.string,
     })
   ).isRequired,
   onSelectExisting: PropTypes.func.isRequired,
@@ -33,12 +32,6 @@ class FilePicker extends Component {
   };
 
   render() {
-    const fileDropdown = createDropDownList(
-      this.props.existingFiles,
-      "document_name",
-      "mine_document_guid"
-    );
-
     return (
       <div>
         <div className="center">
@@ -67,7 +60,7 @@ class FilePicker extends Component {
               name="attachExisting"
               label="Select a file that has been previously uploaded"
               component={renderConfig.SELECT}
-              data={fileDropdown}
+              data={this.props.existingFilesDropdown}
               onSelect={this.props.onSelectExisting}
             />
           </Form.Item>
