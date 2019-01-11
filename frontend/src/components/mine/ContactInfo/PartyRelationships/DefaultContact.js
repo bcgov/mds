@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Card, Row, Col } from "antd";
+import ConditionalButton from "@/components/common/ConditionalButton";
 import * as router from "@/constants/routes";
 import { formatTitleString } from "@/utils/helpers";
 import { Redirect } from "react-router";
@@ -117,11 +118,10 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
-              <Button
-                style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
-                key={`${this.props.partyRelationship.mine_party_appt_guid}_edit`}
+              <ConditionalButton
                 type="primary"
-                onClick={() =>
+                string="Update"
+                handleAction={() =>
                   this.props.openEditPartyRelationshipModal(
                     this.props.partyRelationship,
                     this.props.onSubmitEditPartyRelationship,
@@ -129,9 +129,7 @@ export class DefaultContact extends Component {
                     this.props.mine
                   )
                 }
-              >
-                Update
-              </Button>,
+              />,
             ]}
           </div>
           {this.props.otherDetails}
