@@ -2,8 +2,7 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from geoalchemy2 import Geometry
-from geoalchemy2 import functions
+from geoalchemy2 import Geometry, functions, types
 import json
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -48,6 +47,7 @@ class MineLocation(AuditMixin, Base):
             mine_guid=mine.mine_guid,
             latitude=random_location.get('latitude', 0),
             longitude=random_location.get('longitude', 0),
+            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)), float(random_location.get('latitude', 0))),
             effective_date=datetime.today(),
             expiry_date=datetime.today(),
             **user_kwargs)
