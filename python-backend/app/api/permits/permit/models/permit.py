@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
@@ -14,19 +15,11 @@ class Permit(AuditMixin, Base):
     permit_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
-    received_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    issue_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    expiry_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    expiry_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permittee = db.relationship(
-        'Permittee',
-        backref='permittee',
-        order_by='desc(Permittee.effective_date), desc(Permittee.update_timestamp)',
-        lazy='joined')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
@@ -39,8 +32,7 @@ class Permit(AuditMixin, Base):
             'permit_status_code': self.permit_status_code,
             'received_date': self.received_date.isoformat(),
             'issue_date': self.issue_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat(),
-            'permittee': [item.json() for item in self.permittee]
+            'expiry_date': self.expiry_date.isoformat()
         }
 
     @classmethod

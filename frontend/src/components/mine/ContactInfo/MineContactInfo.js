@@ -3,18 +3,11 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
-import ViewMineManager from "./ViewMineManager";
-import ViewPermittee from "./ViewPermittee";
 import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
-import { getCurrentPermitteeIds, getCurrentPermittees } from "@/selectors/mineSelectors";
-import {
-  createParty,
-  fetchParties,
-  addMineManager,
-  addPermittee,
-} from "@/actionCreators/partiesActionCreator";
+import { createParty, fetchParties } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
@@ -26,23 +19,17 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  addMineManager: PropTypes.func.isRequired,
-  addPermittee: PropTypes.func.isRequired,
-  mine: PropTypes.object.isRequired,
-  permittees: PropTypes.object.isRequired,
-  permitteeIds: PropTypes.array.isRequired,
-};
-
-const defaultProps = {
-  mine: {},
-  permitteeIds: [],
-  permittees: {},
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 export class MineContactInfo extends Component {
   constructor(props) {
     super(props);
     this.handleChangeDebounced = debounce(this.handleChange, 1000);
+  }
+
+  componentWillMount() {
+    this.props.fetchParties();
   }
 
   /**
@@ -59,26 +46,9 @@ export class MineContactInfo extends Component {
     this.props.fetchParties(value);
   };
 
-  componentDidMount() {
-    this.props.fetchParties();
-  }
-
   render() {
-    const { mine } = this.props;
     return (
       <div>
-        <ViewMineManager
-          {...this.props}
-          handleChange={this.handleChangeDebounced}
-          handlePartySubmit={this.handlePartySubmit}
-        />
-        {mine.mine_permit[0] && (
-          <ViewPermittee
-            {...this.props}
-            handleChange={this.handleChangeDebounced}
-            handlePartySubmit={this.handlePartySubmit}
-          />
-        )}
         <ViewPartyRelationships
           {...this.props}
           handleChange={this.handleChangeDebounced}
@@ -90,20 +60,14 @@ export class MineContactInfo extends Component {
 }
 
 MineContactInfo.propTypes = propTypes;
-MineContactInfo.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => ({
-  permittees: getCurrentPermittees(state),
-  permitteeIds: getCurrentPermitteeIds(state),
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
       createParty,
-      addMineManager,
-      addPermittee,
       fetchMineRecordById,
       openModal,
       closeModal,

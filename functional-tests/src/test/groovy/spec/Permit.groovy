@@ -6,7 +6,6 @@ import spock.lang.*
 
 import pages.*
 import utils.*
-import dataObjects.ManagerProfileData
 
 
 @Title("MDS-MineProfile-PermitTab")

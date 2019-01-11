@@ -17,11 +17,6 @@ class Mine(AuditMixin, Base):
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
-    mgr_appointment = db.relationship(
-        'MgrAppointment',
-        backref='mine',
-        order_by='desc(MgrAppointment.update_timestamp)',
-        lazy='joined')
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='joined')
     mine_location = db.relationship(
         'MineLocation',
@@ -64,7 +59,6 @@ class Mine(AuditMixin, Base):
             self.major_mine_ind,
             'region_code':
             self.mine_region,
-            'mgr_appointment': [item.json() for item in self.mgr_appointment],
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_location': [item.json() for item in self.mine_location],
             'mine_permit': [item.json() for item in self.mine_permit],
