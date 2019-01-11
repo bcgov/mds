@@ -199,8 +199,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
-                            'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend-public'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
@@ -223,6 +223,7 @@ app {
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'FRONTEND_PUBLIC_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
@@ -319,6 +320,10 @@ environments {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = "/${vars.git.changeId}"
                 }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
+                    PATH = "/${vars.git.changeId}"
+                }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
@@ -390,6 +395,10 @@ environments {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = ""
                 }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
+                    PATH = ""
+                }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
@@ -459,6 +468,10 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
+                    PATH = ""
+                }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
                     PATH = ""
                 }
                 'mds-nginx' {
