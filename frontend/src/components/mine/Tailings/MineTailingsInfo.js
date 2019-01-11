@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
+import { Row, Col, Icon, Divider } from "antd";
+import ConditionalButton from "@/components/common/ConditionalButton";
+import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
@@ -29,7 +31,7 @@ import * as String from "@/constants/strings";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -45,7 +47,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
   expectedDocumentStatusOptions: [],
 };
 
@@ -115,6 +116,13 @@ export class MineTailingsInfo extends Component {
     });
   };
 
+  getFileFromDocumentManager = (docMgrFileGuid) => {
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
+    window.open(url, "_blank");
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
+  };
+
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
     event.preventDefault();
     const mineTSFRequiredReportsDropDown = createDropDownList(
@@ -157,13 +165,6 @@ export class MineTailingsInfo extends Component {
     }
   }
 
-  getFileFromDocumentManager(docMgrFileGuid) {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
-  }
-
   render() {
     return (
       <div>
@@ -179,19 +180,18 @@ export class MineTailingsInfo extends Component {
             </Row>
           ))}
           <div className="center">
-            <Button
+            <ConditionalButton
               className="full-mobile"
               type="primary"
-              onClick={(event) =>
+              handleAction={(event) =>
                 this.openAddTailingsModal(
                   event,
                   this.handleAddTailingsSubmit,
                   ModalContent.ADD_TAILINGS
                 )
               }
-            >
-              {ModalContent.ADD_TAILINGS}
-            </Button>
+              string={ModalContent.ADD_TAILINGS}
+            />
           </div>
         </div>
         <br />
@@ -276,10 +276,10 @@ export class MineTailingsInfo extends Component {
                           ))}
                     </Col>
                     <Col span={4} align="right">
-                      <Button
-                        ghost
+                      <ConditionalButton
                         type="primary"
-                        onClick={(event) =>
+                        ghost
+                        handleAction={(event) =>
                           this.openEditReportModal(
                             event,
                             this.handleEditReportSubmit,
@@ -288,20 +288,20 @@ export class MineTailingsInfo extends Component {
                             doc
                           )
                         }
-                      >
-                        <img className="padding-small" src={BRAND_PENCIL} alt="Edit TSF Report" />
-                      </Button>
-                      <Popconfirm
-                        placement="topLeft"
-                        title={`Are you sure you want to delete ${doc.exp_document_name}?`}
-                        onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)}
-                        okText="Delete"
-                        cancelText="Cancel"
-                      >
-                        <Button ghost type="primary">
-                          <Icon type="minus-circle" theme="outlined" />
-                        </Button>
-                      </Popconfirm>
+                        string={<img src={BRAND_PENCIL} alt="Edit TSF Report" />}
+                      />
+                      <ConditionalButton
+                        popConfirm={{
+                          placement: "topLeft",
+                          title: `Are you sure you want to delete ${doc.exp_document_name}?`,
+                          onConfirm: (event) => this.removeReport(event, doc.exp_document_guid),
+                          okText: "Delete",
+                          cancelText: "Cancel",
+                        }}
+                        type="primary"
+                        ghost
+                        string={<Icon type="minus-circle" theme="outlined" />}
+                      />
                     </Col>
                   </Row>
                   <Divider type="horizontal" />
@@ -311,10 +311,9 @@ export class MineTailingsInfo extends Component {
           <div key="0">
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-                <Button
-                  className="full-mobile"
+                <ConditionalButton
                   type="secondary"
-                  onClick={(event) =>
+                  handleAction={(event) =>
                     this.openAddReportModal(
                       event,
                       this.handleAddReportSubmit,
@@ -322,9 +321,8 @@ export class MineTailingsInfo extends Component {
                       this.props.mineTSFRequiredReports
                     )
                   }
-                >
-                  {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
-                </Button>
+                  string={`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
+                />
               </Col>
               <Col span={12} />
               <Col span={4} align="right" />
