@@ -31,7 +31,11 @@ export const AuthGuard = (WrappedComponent) => {
    * and changing state.
    *
    */
-  class AuthGuard extends Component {
+  class authGuard extends Component {
+    componentDidMount() {
+      this.keycloakInit();
+    }
+
     async keycloakInit() {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
@@ -50,10 +54,6 @@ export const AuthGuard = (WrappedComponent) => {
       this.props.storeUserAccessData(keycloak.realmAccess.roles);
       this.props.storeKeycloakData(keycloak);
       this.props.authenticateUser(userInfo);
-    }
-
-    componentDidMount() {
-      this.keycloakInit();
     }
 
     render() {
@@ -76,7 +76,7 @@ export const AuthGuard = (WrappedComponent) => {
     }
   }
 
-  hoistNonReactStatics(AuthGuard, WrappedComponent);
+  hoistNonReactStatics(authGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
@@ -97,5 +97,7 @@ export const AuthGuard = (WrappedComponent) => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AuthGuard);
+  )(authGuard);
 };
+
+export default AuthGuard;
