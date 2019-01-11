@@ -321,7 +321,7 @@ environments {
                     PATH = "/${vars.git.changeId}"
                 }
                 'mds-frontend-public' {
-                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
                     PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
