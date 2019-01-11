@@ -22,8 +22,3 @@ export const mineExpectedDocument = shape({
   exp_document_status_guid: PropTypes.string,
   due_date: PropTypes.string,
 });
-
-export const documentStatus = shape({
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-});

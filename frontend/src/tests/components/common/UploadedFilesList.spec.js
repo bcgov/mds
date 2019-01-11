@@ -7,9 +7,9 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.selectedDocGuid =
+  props.selectedDocID =
     MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_expected_documents[0].exp_document_guid;
-  props.mineGuid = MOCK.MINES.mineIds[0];
+  props.mineId = MOCK.MINES.mineIds[0];
   props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options;
   props.mines = MOCK.MINES.mines;
 };

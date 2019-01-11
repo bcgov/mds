@@ -14,12 +14,12 @@ import { getMines } from "@/selectors/mineSelectors";
 import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
-  selectedDocGuid: PropTypes.string.isRequired,
-  mineGuid: PropTypes.string.isRequired,
+  selectedDocId: PropTypes.string.isRequired,
+  mineId: PropTypes.string.isRequired,
   removeMineDocumentFromExpectedDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.documentStatus).isRequired,
+  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export class UploadedFilesList extends React.Component {
@@ -27,7 +27,7 @@ export class UploadedFilesList extends React.Component {
     event.preventDefault();
     this.props
       .removeMineDocumentFromExpectedDocument(mineDocumentGuid, expDocumentGuid)
-      .then(this.props.fetchMineRecordById(this.props.mineGuid));
+      .then(this.props.fetchMineRecordById(this.props.mineId));
   };
 
   canUnlink = (selectedDoc) => {
@@ -44,8 +44,8 @@ export class UploadedFilesList extends React.Component {
   };
 
   render() {
-    const selectedDoc = this.props.mines[this.props.mineGuid].mine_expected_documents.find(
-      (expDoc) => expDoc.exp_document_guid === this.props.selectedDocGuid
+    const selectedDoc = this.props.mines[this.props.mineId].mine_expected_documents.find(
+      (expDoc) => expDoc.exp_document_guid === this.props.selectedDocId
     );
     const unlink = this.canUnlink(selectedDoc);
     return (
@@ -74,7 +74,7 @@ export class UploadedFilesList extends React.Component {
                     okText="Yes"
                     cancelText="No"
                     onConfirm={(event) =>
-                      this.unlinkFile(event, file.mine_document_guid, this.props.selectedDocGuid)
+                      this.unlinkFile(event, file.mine_document_guid, this.props.selectedDocId)
                     }
                   >
                     <button type="button">
