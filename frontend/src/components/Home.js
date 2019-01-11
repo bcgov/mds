@@ -2,6 +2,7 @@ import React from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
+import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
 import { AuthGuard } from "../HOC/AuthGuard";
 import NavBar from "./navigation/NavBar";
 
@@ -29,6 +30,7 @@ export const Home = () => {
       </div>
       <Content className="content">
         <DashboardRoutes />
+        <AdminDashboardRoutes />
         <BackTop>
           <Button type="primary">
             <Icon type="arrow-up" theme="outlined" />
