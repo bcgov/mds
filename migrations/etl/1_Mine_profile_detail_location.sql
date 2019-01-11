@@ -15,6 +15,7 @@ BEGIN
         mine_no           varchar(7)    ,
         mine_nm           varchar(60)   ,
         reg_cd            varchar(1)    ,
+        mine_typ          varchar(3)    ,
         lat_dec           numeric(9,7)  ,
         lon_dec           numeric(11,7) ,
         major_mine_ind    boolean
@@ -37,6 +38,7 @@ BEGIN
         mine_no         ,
         mine_nm         ,
         reg_cd          ,
+        mine_typ        ,
         lat_dec         ,
         lon_dec         ,
         major_mine_ind  )
@@ -45,6 +47,7 @@ BEGIN
         mms_new.mine_no    ,
         mms_new.mine_nm    ,
         mms_new.reg_cd     ,
+        mms_new.mine_typ   ,
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         CASE
@@ -147,6 +150,45 @@ BEGIN
         (new.lat_dec <> 0 AND new.lon_dec <> 0);
     SELECT count(*) FROM mine into new_row;
     SELECT count(*) FROM mine_location into location_row;
+
+    -- Upsert data from new_record into mine_type
+    WITH new_record AS (
+        SELECT
+            mine_guid,
+            mine_typ
+        FROM ETL_PROFILE
+        WHERE NOT EXISTS (
+            SELECT  1
+            FROM    mine_type
+            WHERE   mine_no = ETL_PROFILE.mine_no
+        )
+    )
+    INSERT INTO mine_type(
+        mine_type_guid       ,
+        mine_guid            ,
+        mine_tenure_type_code,
+        create_user          ,
+        create_timestamp     ,
+        update_user          ,
+        update_timestamp     )
+    SELECT
+        gen_random_uuid()   ,
+        new.mine_guid       ,
+        CASE
+          when new.mine_typ = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
+          when new.mine_typ = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
+          when new.mine_typ = ANY('{PS,PU}'::text[]) THEN 'PLR'
+          when new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
+          ELSE null
+        END AS mine_tenure_type_code,
+        'mms_migration'     ,
+        now()               ,
+        'mms_migration'     ,
+        now()
+    FROM new_record new
+    WHERE
+        mine_typ = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
+
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
     RAISE NOTICE '....Total mine records in the MDS: %.', new_row;
     RAISE NOTICE '....Total mine records with location info in the MDS: %.', location_row;

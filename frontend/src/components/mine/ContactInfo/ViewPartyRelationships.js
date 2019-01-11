@@ -6,7 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Menu, Icon, Popconfirm, Divider } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { ConditionalButton } from "@/components/common/ConditionalButton";
+import ConditionalButton from "@/components/common/ConditionalButton";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
@@ -190,9 +190,9 @@ export class ViewPartyRelationships extends Component {
 
   getGroupTitle = (group) => {
     switch (group) {
-      case "3":
+      case 3:
         return "Key Contacts";
-      case "2":
+      case 2:
         return "Specialists";
       default:
         return "Other Contacts";
@@ -253,13 +253,13 @@ export class ViewPartyRelationships extends Component {
 
     return (
       <Col
+        key={partyRelationship.mine_party_appt_guid}
         xs={24}
         sm={24}
         md={12}
         lg={12}
         xl={8}
         xxl={6}
-        key={partyRelationship.mine_party_appt_guid}
       >
         <Contact
           partyRelationship={partyRelationship}

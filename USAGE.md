@@ -91,7 +91,7 @@ make project
 4. Run the following command to create a local user with credentials `admin:admin`
 
 ```
-make keycloak-seed
+make keycloak-user
 ```
 
 NOTE: The above command only works after the keycloak server has started. If you see

@@ -25,7 +25,7 @@ import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
-import { ConditionalButton } from "@/components/common/ConditionalButton";
+import ConditionalButton from "@/components/common/ConditionalButton";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import MineMap from "@/components/maps/MineMap";
