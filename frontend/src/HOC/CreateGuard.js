@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
@@ -9,16 +9,15 @@ import { USER_ROLES } from "@/constants/environment";
  */
 
 export const CreateGuard = (WrappedComponent) => {
-  class CreateGuard extends Component {
-    render() {
-      if (this.props.userRoles.indexOf(USER_ROLES.role_create) >= 0) {
-        return <WrappedComponent {...this.props} />;
-      }
-      return <div />;
+
+  const createGuard = (props) => {
+    if (props.userRoles.includes(USER_ROLES.role_create)) {
+      return <WrappedComponent {...props} />;
     }
+    return <div />;
   }
 
-  hoistNonReactStatics(CreateGuard, WrappedComponent);
+  hoistNonReactStatics(createGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
     userRoles: getUserAccessData(state),
@@ -27,5 +26,7 @@ export const CreateGuard = (WrappedComponent) => {
   return connect(
     mapStateToProps,
     null
-  )(CreateGuard);
+  )(createGuard);
 };
+
+export default CreateGuard;
