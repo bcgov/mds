@@ -96,7 +96,7 @@ app {
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
+                            'BASE_PATH': "/${app.git.changeId}/minespace",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
                             'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
