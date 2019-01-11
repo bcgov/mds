@@ -16,15 +16,16 @@ export const NO_RESULTS = "No results found";
 export const MAP_UNAVAILABLE = [
   "The BC Geographic Warehouse (BCGW) map layers used in this application are unavailable at this time.",
   "Please notify ",
-  <b>mds.admin@gov.bc.ca</b>,
+  <b>mds@gov.bc.ca</b>,
   " if this problem persists.",
 ];
 
 export const UNAUTHORIZED = "You do not have permission to access this site";
+export const USER_UNAUTHORIZE = "You do not have permission to access this page";
 // to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
 export const CONTACT_ADMIN = [
   "Contact your system administrator at ",
-  <b>mds.admin@gov.bc.ca</b>,
+  <b>mds@gov.bc.ca</b>,
   " to request access",
 ];
 export const EMPTY_FIELD = "N/A";

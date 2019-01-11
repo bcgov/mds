@@ -3,7 +3,7 @@ import { Layout, BackTop, Button, Icon } from "antd";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
-import { AuthGuard } from "../HOC/AuthGuard";
+import { AuthGuard } from "@/HOC/AuthGuard";
 import NavBar from "./navigation/NavBar";
 
 /**
