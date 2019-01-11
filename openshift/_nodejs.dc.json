@@ -141,8 +141,8 @@
         "ports": [
           {
             "name": "web",
-            "port": "${PORT}",
-            "targetPort": "${PORT}"
+            "port": 3000,
+            "targetPort": 3000
           }
         ],
         "selector": {
@@ -261,7 +261,7 @@
                 },
                 "ports": [
                   {
-                    "containerPort": "${PORT}"
+                    "containerPort": 3000
                   }
                 ]
               }
