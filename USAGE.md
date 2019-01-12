@@ -36,7 +36,7 @@ Note: If working on a Windows environment, there is a powershell script `mds.ps1
 ```
 .\mds.ps1
 ```
-If you have run the above script, you should be ready to proceed to "Developing with MDS"
+If you have run the above script, you should be ready to proceed to "Generating Test Data"
 
 1. Rebuild all your images to have the new envt.
 
@@ -56,21 +56,19 @@ any errors, wait a couple of minutes and then try again.
 
 NOTE: It will take quite a bit longer for the other servers to start up, give it about 5 minutes before the frontend and backend are properly online.
 
-- To shut down the project cleanly, run the following command.
-
-```
-make reset
-```
 
 ## Generating Test Data
 
+There are two approaches to having test data in your system.  If you are a public contributor, choose "Using Flask".
+
+### Using Flask
 ```
 docker exec -it mds_backend bash
 flask create_data 1000
 exit
 ```
 
-## Seeding data with Test environment Database
+### Seeding data with Test environment Database
 
 NOTE: You need access to the Test Openshift environment and oc cli tools.
 
@@ -97,6 +95,11 @@ make backend
 If you have made changes to the database you will need to reapply the above commands in section "Generating Test Data":
 ```
 make database
+```
+
+To shut down the project cleanly, run the following command.
+```
+make reset
 ```
 
 There are plenty more make targets to use in the Makefile, so be sure to look there first as if it's a common development operation then it is most likely there.
