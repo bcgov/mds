@@ -9,13 +9,12 @@ import { USER_ROLES } from "@/constants/environment";
  */
 
 export const CreateGuard = (WrappedComponent) => {
-
   const createGuard = (props) => {
     if (props.userRoles.includes(USER_ROLES.role_create)) {
       return <WrappedComponent {...props} />;
     }
     return <div />;
-  }
+  };
 
   hoistNonReactStatics(createGuard, WrappedComponent);
 
