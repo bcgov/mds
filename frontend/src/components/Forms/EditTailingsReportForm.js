@@ -4,20 +4,26 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
-import FileUpload from "@/components/common/FileUpload";
+import MineTailingsFilePicker from "@/components/mine/Tailings/MineTailingsFilePicker";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
-import { required, notnone } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.array.isRequired,
-  selectedDocument: PropTypes.object,
+  statusOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    })
+  ).isRequired,
+  selectedDocument: PropTypes.shape({
+    exp_document_guid: PropTypes.string,
+    mine_guid: PropTypes.string,
+  }).isRequired,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -60,13 +66,12 @@ export const EditTailingsReportForm = (props) => (
             data={props.statusOptions}
           />
         </Form.Item>
-        <Form.Item label="Upload Documents">
+        <Form.Item label="Upload/Attach Documents">
           <Field
-            id="tsf_document_upload"
-            name="tsf_document_upload"
-            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.exp_document_guid)}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-            component={FileUpload}
+            id="tsfDocumentPicker"
+            name="tsfDocumentPicker"
+            selectedDocument={props.selectedDocument}
+            component={MineTailingsFilePicker}
           />
         </Form.Item>
       </Col>
