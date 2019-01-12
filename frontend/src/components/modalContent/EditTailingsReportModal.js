@@ -5,13 +5,20 @@ import EditTailingsReportForm from "@/components/Forms/EditTailingsReportForm";
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.array.isRequired,
-  initialValues: PropTypes.object,
-  selectedDocument: PropTypes.object,
+  initialValues: PropTypes.objectOf(PropTypes.any),
+  statusOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    })
+  ).isRequired,
+  selectedDocument: PropTypes.shape({
+    exp_document_guid: PropTypes.string,
+    mine_guid: PropTypes.string,
+  }).isRequired,
 };
 
 const defaultProps = {
-  title: "",
   initialValues: null,
 };
 
