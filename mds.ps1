@@ -49,6 +49,8 @@ write-host 'Waiting for keycloak server...'
 Start-Sleep -seconds 30
 write-host 'Creating admin user... (admin/admin)'
 docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
+write-host 'Generating random data in database'
+docker exec -it mds_backend bash -c "flask create_data 1000;"
 write-host 'frontend will be available at http://localhost:3000'
 write-host 'backend will be available at http://localhost:5000'
 write-host 'Postgresql will be available at http://localhost:5432'
