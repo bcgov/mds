@@ -15,6 +15,7 @@ const propTypes = {
   meta: CustomPropTypes.formMeta,
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
+  onSelect: PropTypes.func,
 };
 
 const defaultProps = {
@@ -23,6 +24,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
+  onSelect: ()=> {}
 };
 
 const RenderSelect = (props) => (
@@ -48,6 +50,7 @@ const RenderSelect = (props) => (
       }
       id={props.id}
       {...props.input}
+      onSelect={props.onSelect}
     >
       {props.data.map((opt) => (
         <Select.Option
