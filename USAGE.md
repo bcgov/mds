@@ -23,7 +23,7 @@ Keycloak needs to be set up for the application to run properly.
 
 Note: you can skip this step entirely if you already have a valid account to access the Keycloak server hosted on the OpenShift Platform.  If you have a keycloak account on the BC Gov Openshift Platform, proceed to "Building MDS", otherwise perform the following steps.
 
-1.  For local development, depending on your OS, run either `apply-local-dev-settings.ps1` or `apply-local-dev-settings.sh` scripts found in the root directory.  
+1.  For local development, depending on your OS, run either `apply-local-dev-settings.ps1` or `apply-local-dev-settings.sh` scripts found in the project root directory.  
 
 2.  Add the following entry in your hosts file.  The file location for OSX/Linux is "/etc/hosts" and on Windows is typically "C:/Windows/System32/Drivers/etc/hosts".  Ensure the following line containing the entry keycloak is present:
 
