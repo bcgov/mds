@@ -17,6 +17,7 @@ class  DataInit extends GebReportingSpec {
             DbConnection.MDS_FUNCTIONAL_TEST.execute(new File(creationFilePath).text)
         } catch (org.postgresql.util.PSQLException e) {
             println ">>>>>>Creation Failed. Check DB logs for detailed error message."
+            println e
         }
         println "Test execution on BaseURL: ${baseUrl}"
     }
