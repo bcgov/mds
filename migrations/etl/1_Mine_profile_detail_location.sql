@@ -1,4 +1,4 @@
--- 1. Migrate MINE PROFILE (mine name, mumber, lat/long)
+-- 1. Migrate MINE PROFILE
 -- Create the ETL_PROFILE table
 
 
@@ -16,8 +16,6 @@ BEGIN
         mine_nm           varchar(60)   ,
         reg_cd            varchar(1)    ,
         mine_typ          varchar(3)    ,
-        lat_dec           numeric(9,7)  ,
-        lon_dec           numeric(11,7) ,
         major_mine_ind    boolean
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
@@ -39,8 +37,6 @@ BEGIN
         mine_nm         ,
         reg_cd          ,
         mine_typ        ,
-        lat_dec         ,
-        lon_dec         ,
         major_mine_ind  )
     SELECT
         gen_random_uuid()  ,
@@ -48,8 +44,6 @@ BEGIN
         mms_new.mine_nm    ,
         mms_new.reg_cd     ,
         mms_new.mine_typ   ,
-        mms_new.lat_dec    ,
-        mms_new.lon_dec    ,
         CASE
             WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN TRUE
             ELSE FALSE
@@ -108,148 +102,6 @@ BEGIN
         'mms_migration'     ,
         now()
     FROM new_record new;
-
-    -- Upsert data from new_record into mine_location
-    WITH new_record AS (
-        SELECT *
-        FROM ETL_PROFILE
-        WHERE NOT EXISTS (
-            SELECT  1
-            FROM    mine_location
-            WHERE   mine_no = ETL_PROFILE.mine_no
-        )
-    ), pmt_now AS (
-        SELECT
-            lat_dec,
-            lon_dec,
-            permit_no,
-            mms.mmsnow.mine_no
-        FROM mms.mmsnow, mms.mmspmt
-        WHERE mms.mmspmt.cid = mms.mmsnow.cid
-    ), pmt_now_preferred AS (
-        SELECT
-            lat_dec,
-            lon_dec,
-            permit_no,
-            mine_no
-        FROM pmt_now
-        WHERE
-            permit_no != ''
-            AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
-    )
-    INSERT INTO mine_location(
-        mine_location_guid  ,
-        mine_guid           ,
-        latitude            ,
-        longitude           ,
-        geom                ,
-        effective_date      ,
-        expiry_date         ,
-        create_user         ,
-        create_timestamp    ,
-        update_user         ,
-        update_timestamp    )
-    SELECT
-        gen_random_uuid()   ,
-        new.mine_guid       ,
-        CASE
-            -- Insert lat from preferred permit
-            WHEN (
-                SELECT count(lat_dec)
-                FROM pmt_now_preferred
-                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lat_dec
-                FROM pmt_now_preferred
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
-            )
-            -- Insert lat from fallback permit
-            WHEN (
-                SELECT count(lat_dec)
-                FROM pmt_now
-                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lat_dec
-                FROM pmt_now
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
-            )
-            -- Insert lat from notice of work
-            WHEN (
-                SELECT count(lat_dec)
-                FROM mms.mmsnow
-                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lat_dec
-                FROM mms.mmsnow
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
-            )
-            -- Fallback to lat from mine table
-            ELSE new.lat_dec
-        END AS latitude,
-        CASE
-            -- Insert lon from preferred permit
-            WHEN (
-                SELECT count(lon_dec)
-                FROM pmt_now_preferred
-                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lon_dec
-                FROM pmt_now_preferred
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
-            )
-            -- Insert lon from fallback permit
-            WHEN (
-                SELECT count(lon_dec)
-                FROM pmt_now
-                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lon_dec
-                FROM pmt_now
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
-            )
-            -- Insert lon from notice of work
-            WHEN (
-                SELECT count(lon_dec)
-                FROM mms.mmsnow
-                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
-            ) > 0
-            THEN (
-                SELECT lon_dec
-                FROM mms.mmsnow
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
-            )
-            -- Fallback to lon from mine table
-            ELSE new.lon_dec
-        END AS longitude,
-        ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
-        now()               ,
-        '9999-12-31'::date  ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()
-    FROM new_record new
-    WHERE
-        (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
-        AND
-        (new.lat_dec <> 0 AND new.lon_dec <> 0);
-
-        -- TODO: ensure LATEST
-        -- TODO: ensure APPROVED (where appropriate)
-
-    SELECT count(*) FROM mine into new_row;
-    SELECT count(*) FROM mine_location into location_row;
 
     -- Upsert data from new_record into mine_type
     WITH new_record AS (
