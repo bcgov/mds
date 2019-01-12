@@ -36,7 +36,7 @@ Note: If working on a Windows environment, there is a powershell script `mds.ps1
 ```
 .\mds.ps1
 ```
-If you have run the above script, you should be ready to proceed to "Generating Test Data"
+If you have run the above script, you should be ready to proceed to "Developing with MDS".  Otherwise if you haven't, or if you are on a mac or linux system, follow the next steps:
 
 1. Rebuild all your images to have the new envt.
 
