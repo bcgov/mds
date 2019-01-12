@@ -22,6 +22,8 @@ Note: you can skip this step if you have a valid account to access the Keycloak 
 
 1.  Update your .env for both frontend and backend to point to local keycloak. Make sure to use HTTP and not HTTPS
 
+- This can be done with the `apply-local-dev-settings.ps1` and `apply-local-dev-settings.sh` scripts found in the root directory, if you use one of these, then skip to step 2
+
 - For frontend edit the `keycloak_url` in `frontend/src/constants/environment.js` and change the host from
     `https://sso-test.pathfinder.gov.bc.ca` to `http://keycloak:8080`
 
