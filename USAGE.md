@@ -18,23 +18,14 @@ This file describes how to run the project and develop against it.
     - Drive sharing is disabled by default, make sure to share your local drive in docker settings
 
 ## Setting up local keycloak
-Note: you can skip this step if you have a valid account to access the Keycloak server hosted on the OpenShift Platform
 
-1.  Update your .env for both frontend and backend to point to local keycloak. Make sure to use HTTP and not HTTPS
+Keycloak needs to be set up for the application to run properly.
 
-- This can be done with the `apply-local-dev-settings.ps1` and `apply-local-dev-settings.sh` scripts found in the root directory, if you use one of these, then skip to step 2
+Note: you can skip this step entirely if you already have a valid account to access the Keycloak server hosted on the OpenShift Platform.  If you have a keycloak account on the BC Gov Openshift Platform, proceed to "Building MDS", otherwise perform the following steps.
 
-- For frontend edit the `keycloak_url` in `frontend/src/constants/environment.js` and change the host from
-    `https://sso-test.pathfinder.gov.bc.ca` to `http://keycloak:8080`
+1.  For local development, depending on your OS, run either `apply-local-dev-settings.ps1` or `apply-local-dev-settings.sh` scripts found in the root directory.  
 
-- For Backend edit the .env file and update the following envt variables.
-
-`export JWT_OIDC_WELL_KNOWN_CONFIG=http://keycloak:8080/auth/realms/mds/.well-known/openid-configuration`
-
-`export JWT_OIDC_AUDIENCE=account`
-
-2.  Add the following entry in your hosts file.
-    OSX/Linux (/etc/hosts) Windows (C:/Windows/System32/Drivers/etc/hosts)
+2.  Add the following entry in your hosts file.  The file location for OSX/Linux is "/etc/hosts" and on Windows is typically "C:/Windows/System32/Drivers/etc/hosts".  Ensure the following line containing the entry keycloak is present:
 
 ```
 127.0.0.1	localhost	keycloak
