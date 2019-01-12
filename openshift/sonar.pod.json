@@ -70,12 +70,12 @@
             "command": ["container-entrypoint", "bash", "-c", "./run_tests.sh"],
             "resources": {
               "limits": {
-                "cpu": "500m",
-                "memory": "2Gi"
+                "cpu": "1",
+                "memory": "1.5Gi"
               },
               "requests": {
-                "cpu": "250m",
-                "memory": "1Gi"
+                "cpu": "500m",
+                "memory": "512Mi"
               }
             },
             "env": [

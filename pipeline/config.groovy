@@ -85,6 +85,21 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
+                            'NODE_ENV': "production"
+                        ]
+                ],
+                [
+                        'file':'openshift/_nodejs.bc.json',
+                        'params':[
+                            'NAME':"mds-frontend-public",
+                            'SUFFIX': "${app.build.suffix}",
+                            'APPLICATION_SUFFIX': "-${app.build.env.id}",
+                            'BASE_PATH': "/${app.git.changeId}/minespace",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "frontend-public",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
@@ -156,6 +171,7 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
+                            'PORT':3000,
                             'CPU_REQUEST':"${vars.resources.node.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
@@ -164,6 +180,28 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
+                            'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_URL': "${vars.keycloak.url}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+                    ]
+                ],
+                [
+                    'file':'openshift/_nodejs.dc.json',
+                    'params':[
+                            'NAME':"mds-frontend-public",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
+                            'TAG_NAME':"${app.deployment.version}",
+                            'PORT':3020,
+                            'CPU_REQUEST':"${vars.resources.node.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend-public'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
+                            'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -185,6 +223,7 @@ app {
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'FRONTEND_PUBLIC_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
@@ -281,6 +320,10 @@ environments {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = "/${vars.git.changeId}"
                 }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
+                    PATH = "/${vars.git.changeId}/minespace"
+                }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
@@ -352,6 +395,10 @@ environments {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = ""
                 }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
+                    PATH = "/minespace"
+                }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = ""
@@ -422,6 +469,10 @@ environments {
                 'mds-frontend' {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
                     PATH = ""
+                }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3000"
+                    PATH = "/minespace"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
