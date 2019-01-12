@@ -3,7 +3,7 @@ import { Icon, Dropdown, Menu } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+import { getUserInfo, isAdmin } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
 import { HOME, PROFILE } from "@/constants/assets";
@@ -15,6 +15,7 @@ import Logout from "../authentication/Logout";
 
 const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export class NavBar extends Component {
@@ -23,6 +24,13 @@ export class NavBar extends Component {
       <Menu.Item key="0">
         <Logout />
       </Menu.Item>
+      {this.props.isAdmin && (
+        <Menu.Item key="1">
+          <Link to={router.ADMIN_DASHBOARD.route}>
+            <button type="button">Admin</button>
+          </Link>
+        </Menu.Item>
+      )}
     </Menu>
   );
 
@@ -51,6 +59,7 @@ export class NavBar extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
+  isAdmin: isAdmin(state),
 });
 
 NavBar.propTypes = propTypes;

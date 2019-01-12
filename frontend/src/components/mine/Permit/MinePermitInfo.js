@@ -7,7 +7,6 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
-import * as String from "@/constants/strings";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -68,19 +67,15 @@ const groupPermits = (permits) =>
     return acc;
   }, {});
 
-const getPermittees = (partyRelationships, latest) => {
-  return partyRelationships
+const getPermittees = (partyRelationships, latest) => partyRelationships
     .filter(({ related_guid }) => related_guid === latest.permit_guid)
     .sort((order1, order2) => {
       const date1 = Date.parse(order1.due_date) || 0;
       const date2 = Date.parse(order2.due_date) || 0;
       return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
     });
-};
 
-const getPermitteeName = (permittees) => {
-  return permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
-};
+const getPermitteeName = (permittees) => permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
 const transformRowData = (permits, partyRelationships) => {
   const latest = permits[0];
@@ -88,7 +83,7 @@ const transformRowData = (permits, partyRelationships) => {
 
   const permittees = getPermittees(partyRelationships, latest);
   const permitteeName =
-    partyRelationships.length === 0 ? String.LOADING : getPermitteeName(permittees);
+    partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
 
   return {
     key: latest.permit_guid,
