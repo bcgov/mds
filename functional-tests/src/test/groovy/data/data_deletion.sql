@@ -1,6 +1,5 @@
 --delete all the data generated in functional test
-DO $
-$
+DO $$
 DECLARE
     IDIR_USER varchar = '%bdd-test%';
 BEGIN
