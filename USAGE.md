@@ -41,7 +41,9 @@ Now every time you wish to have a completely fresh environment, with user admin/
 make rebuild-all-local
 ```
 
-You are now ready to proceed to [Developing workflow tips for MDS](##Developing workflow tips for MDS)
+NOTE: It will take quite a bit longer for the other servers to start up, give it about 5 minutes before the frontend and backend are properly online.
+
+You are now ready to proceed to Developing workflow tips for MDS
 
 Note: If working on a Windows environment, there is a powershell script `mds.ps1` in the root directory, that will wait for Docker to start, and automatically do the step above. Run this script whenever you restart the machine, otherwise things don't work. To run the script, open Powershell and run:
 ```
@@ -68,8 +70,6 @@ make keycloak-user
 
 NOTE: The above command only works after the keycloak server has started. If you see
 any errors, wait a couple of minutes and then try again.
-
-NOTE: It will take quite a bit longer for the other servers to start up, give it about 5 minutes before the frontend and backend are properly online.
 
 
 ## Generating Test Data
