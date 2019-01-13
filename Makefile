@@ -29,10 +29,6 @@ restore-last-env:
 	@cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
 	@cp ./python-backend/.env-last-backup ./python-backend/.env
 
-one-time-local-dev-env-setup:
-	@echo "+\n++ Setting up your local development environment"
-	@echo "++ with local user admin/admin, and random data ...\n+"
-
 pause-30:
 	@echo "+\n++ Pausing 30 seconds\n+"
 	@sleep 30
