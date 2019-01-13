@@ -97,6 +97,10 @@ generate-rand1000:
 	@echo "+\n++ Generating 1000 random mine records in local database container...\n+"
 	@docker exec -it mds_backend bash -c "flask create_data 1000;"
 
+generate-rand100:
+	@echo "+\n++ Generating 100 random mine records in local database container...\n+"
+	@docker exec -it mds_backend bash -c "flask create_data 100;"
+
 database-dump-clean:
 	@echo "+\n++ Removing dump file...\n+"
 	@rm -f pgDump-test.pgCustom
