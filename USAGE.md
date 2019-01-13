@@ -94,6 +94,14 @@ docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCust
 
 ## Developing workflow tips for MDS
 
+If you are rebuilding often, you will have to deal with caching issues in your browser.
+
+In Chrome/Chromium, you can right-click on the page, choose "inspect", then right-click on the refresh icon next to the URL bar and choose hard reset.
+
+Another way is using the Inspector window, Network top menu entry, check "Disable Cache" and it will run without using the cache as long as the inspector is open.
+
+Or you can open an Incognito window and that should not have cached data in it.
+
 Typically one does not wish to run a full 'make project' for every little change.  This will wipe out your test data and local keycloak users.
 
 Have a look in the file called "Makefile" to see all the helpful aliased make targets for rebuilding whichever part of the application you are currently working in.  

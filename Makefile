@@ -2,7 +2,7 @@
 
 local-dev: one-time-local-dev-env-setup
 restore-dev: restore-last-env
-rebuild-all-local: reset | project pause-30 | create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
+rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
 backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
@@ -13,14 +13,14 @@ database-seed: database-dump | database-dump-seed
 database-seed-local: database-dump | database-dump-seed-local
 
 one-time-local-dev-env-setup:
-	@echo "+\n++ Setting up your local development environment\n+"
-	@echo "with local authentication and db.  Run this once only. ...\n+"
-	@echo "Your last configuration was saved to *-last-backup ...\n+"
-	@cp ./frontend/.env ./frontend/.env-last-backup
+	@echo "+\n++ Setting up your local development environment\n"
+	@echo "++ with local authentication and db.  Run this once only.\n"
+	@echo "++ Your last configuration was saved to *-last-backup ...\n+"
+	@[ -f "./frontend/.env" ] && cp ./frontend/.env ./frontend/.env-last-backup
 	@cp ./frontend/.env-dev-local-keycloak ./frontend/.env
-	@cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
+	@[ -f "./frontend/src/constants/environment.js" ] && cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
 	@cp ./frontend/src/constants/environment.js-dev-local-keycloak ./frontend/src/constants/environment.js
-	@cp ./python-backend/.env ./python-backend/.env-last-backup
+	@[ -f "./python-backend/.env" ] && cp ./python-backend/.env ./python-backend/.env-last-backup
 	@cp ./python-backend/.env-dev-local-keycloak ./python-backend/.env
 
 restore-last-env:
