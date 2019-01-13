@@ -2,7 +2,7 @@
 
 local-dev: one-time-local-dev-env-setup
 restore-dev: restore-last-env
-rebuild-all-local: reset project pause-30 create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
+rebuild-all-local: reset | project pause-30 | create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
 backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
