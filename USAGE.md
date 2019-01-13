@@ -10,6 +10,14 @@ This file describes how to run the project and develop against it.
 - Make
 - NodeJS 8.0.0
 
+## Hosts file entry
+
+Add the following entry in your hosts file.  The file location for OSX/Linux is "/etc/hosts" and on Windows is typically "C:/Windows/System32/Drivers/etc/hosts".  Ensure the following line containing the entry keycloak is present:
+
+```
+127.0.0.1	localhost	keycloak
+```
+
 ## Getting Started
 
 - Install Requirements listed above
@@ -17,26 +25,30 @@ This file describes how to run the project and develop against it.
     - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
     - Drive sharing is disabled by default, make sure to share your local drive in docker settings
 
-## Setting up local keycloak
+## Setting up local development
 
-Keycloak needs to be set up for the application to run properly.
+Keycloak needs to be set up for the application to run properly, a keycloak user needs to be made, and we need some test data.
 
-Note: you can skip this step entirely if you already have a valid account to access the Keycloak server hosted on the OpenShift Platform.  If you have a keycloak account on the BC Gov Openshift Platform, proceed to "Building MDS", otherwise perform the following steps.
-
-1.  For local development, depending on your OS, run either `apply-local-dev-settings.ps1` or `apply-local-dev-settings.sh` scripts found in the project root directory.  
-
-2.  Add the following entry in your hosts file.  The file location for OSX/Linux is "/etc/hosts" and on Windows is typically "C:/Windows/System32/Drivers/etc/hosts".  Ensure the following line containing the entry keycloak is present:
+Run the following commands after cloning the repo.  The first command will do a one-time setup of your environment so that you can do all your development locally.
 
 ```
-127.0.0.1	localhost	keycloak
+make local-dev
 ```
 
-## Building MDS
-Note: If working on a Windows environment, there is a powershell script `mds.ps1` in the root directory, that will wait for Docker to start, and automatically do the steps below. Run this script whenever you restart the machine, otherwise things don't work. To run the script, open Powershell and run:
+Now every time you wish to have a completely fresh environment, with user admin/admin and random data, run the following:
+
+```
+make rebuild-all-local
+```
+Note: If working on a Windows environment, there is a powershell script `mds.ps1` in the root directory, that will wait for Docker to start, and automatically do the step above. Run this script whenever you restart the machine, otherwise things don't work. To run the script, open Powershell and run:
 ```
 .\mds.ps1
 ```
-If you have run the above script, you should be ready to proceed to "Developing with MDS".  Otherwise if you haven't, or if you are on a mac or linux system, follow the next steps:
+
+
+## Building MDS
+
+If you have run the above setups, you should be ready to proceed to "Developing with MDS".  Otherwise if you haven't, or if you are on a mac or linux system, follow the next steps:
 
 1. Rebuild all your images to have the new envt.
 
@@ -62,10 +74,11 @@ NOTE: It will take quite a bit longer for the other servers to start up, give it
 There are two approaches to having test data in your system.  If you are a public contributor, choose "Using Flask".
 
 ### Using Flask
+
+This will connect to a locally running docker postgres instance and generate 1000 mine records with random data.
+
 ```
-docker exec -it mds_backend bash
-flask create_data 1000
-exit
+make generate-rand1000
 ```
 
 ### Seeding data with Test environment Database
@@ -76,7 +89,7 @@ NOTE: You need access to the Test Openshift environment and oc cli tools.
 docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
 ```
 
-## Developing with MDS
+## Developing workflow tips for MDS
 
 Typically one does not wish to run a full 'make project' for every little change.  This will wipe out your test data and local keycloak users.
 
