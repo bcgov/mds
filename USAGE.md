@@ -40,6 +40,9 @@ Now every time you wish to have a completely fresh environment, with user admin/
 ```
 make rebuild-all-local
 ```
+
+You are now ready to proceed to [Developing workflow tips for MDS](##Developing workflow tips for MDS)
+
 Note: If working on a Windows environment, there is a powershell script `mds.ps1` in the root directory, that will wait for Docker to start, and automatically do the step above. Run this script whenever you restart the machine, otherwise things don't work. To run the script, open Powershell and run:
 ```
 .\mds.ps1
