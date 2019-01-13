@@ -12,6 +12,13 @@ reset:	stop | clean
 database-seed: database-dump | database-dump-seed
 database-seed-local: database-dump | database-dump-seed-local
 
+start-logstash:
+	@echo "+\n++ This will start elasticsearch's logstash\n"
+	@echo "++ based off the /elastic/logstash/pipeline/mds.logstash.conf file \n"
+	@echo "++ You need to configure this mds.logstash.conf file first.\n+"
+	@echo "++ [CTRL]-[C] to exit ...\n+"
+	@logstash -f elastic/logstash/pipeline/mds.logstash.conf
+
 one-time-local-dev-env-setup:
 	@echo "+\n++ Setting up your local development environment\n"
 	@echo "++ with local authentication and db.  Run this once only.\n"
