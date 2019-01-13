@@ -39,20 +39,4 @@ while ($Running -ne $true) {
 write-host 'Docker started...'
 write-host 'Cleaning...'
 $ErrorActionPreference = "Continue"
-make clean
-write-host 'Building...'
-docker-compose build --force-rm
-write-host 'Spinning up containers...'
-docker-compose up -d
-write-host 'Waiting for keycloak server...'
-#todo: replace this sleep with a check
-Start-Sleep -seconds 30
-write-host 'Creating admin user... (admin/admin)'
-docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
-write-host 'Generating random data in database'
-docker exec -it mds_backend bash -c "flask create_data 1000;"
-write-host 'frontend will be available at http://localhost:3000'
-write-host 'backend will be available at http://localhost:5000'
-write-host 'Postgresql will be available at http://localhost:5432'
-write-host 'Wait up to 5min or longer for MDS webapp to be available.'
-write-host 'If it loads with errors, wait longer for the backend to become available and refresh.'
+make rebuild-all-local
