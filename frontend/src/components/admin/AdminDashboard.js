@@ -1,4 +1,5 @@
 import React from "react";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
@@ -13,4 +14,4 @@ export const AdminDashboard = () => (
   </div>
 );
 
-export default AdminDashboard;
+export default AuthorizationGuard("role_admin")(AdminDashboard);

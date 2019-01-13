@@ -3,7 +3,7 @@ import { Button, Dropdown, Popconfirm } from "antd";
 import { isNull, noop } from "lodash";
 import { PropTypes, shape } from "prop-types";
 
-import { CreateGuard } from "@/HOC/CreateGuard";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 /**
  * @constant ConditionalButton is a conditionally rendered button depending on user permissions.
  * The component can either be a single button with an action || a dropdown with a menu passed in as a prop.
@@ -71,4 +71,4 @@ export const ConditionalButton = (props) => (
 ConditionalButton.propTypes = propTypes;
 ConditionalButton.defaultProps = defaultProps;
 
-export default CreateGuard(ConditionalButton);
+export default AuthorizationGuard("role_create")(ConditionalButton);

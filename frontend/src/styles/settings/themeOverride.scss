@@ -164,3 +164,22 @@
   padding: 0;
   margin: 0;
 }
+// MENU.ITEM
+// Same styling as the default for .ant-dropdown-menu-item,
+// see AuthorizationWrapper.js for the specific use case of this custom class
+.custom-menu-item {
+  padding: 5px 12px;
+  margin: 0;
+  clear: both;
+  font-size: 14px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  line-height: 22px;
+  &:hover {
+    background-color: #d9d3e0;
+  }
+}
