@@ -30,6 +30,7 @@ import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import MineMap from "@/components/maps/MineMap";
 import * as String from "@/constants/strings";
+import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import { debounce } from "lodash";
 
@@ -340,7 +341,7 @@ export class Dashboard extends Component {
       <div className="landing-page">
         <div className="landing-page__header">
           <div className="right center-mobile">
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Button
                 className="full-mobile"
                 type="primary"

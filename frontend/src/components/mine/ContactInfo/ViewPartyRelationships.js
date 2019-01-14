@@ -6,6 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Menu, Icon, Popconfirm, Divider, Dropdown, Button } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
@@ -344,7 +345,7 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Dropdown
                 className="full-height"
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}

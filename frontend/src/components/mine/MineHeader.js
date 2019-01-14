@@ -8,6 +8,7 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -172,7 +173,7 @@ class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between">
             <h1>{this.props.mine.mine_name} </h1>
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Dropdown className="full-height" overlay={menu} placement="bottomLeft">
                 <Button type="primary">
                   <div className="padding-small">

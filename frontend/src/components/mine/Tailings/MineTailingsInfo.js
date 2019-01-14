@@ -6,6 +6,7 @@ import { Row, Col, Icon, Divider, Popconfirm, Button } from "antd";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
@@ -180,7 +181,7 @@ export class MineTailingsInfo extends Component {
             </Row>
           ))}
           <div className="center">
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Button
                 className="full-mobile"
                 type="primary"
@@ -279,7 +280,7 @@ export class MineTailingsInfo extends Component {
                           ))}
                     </Col>
                     <Col span={4} align="right">
-                      <AuthorizationWrapper permission="role_create">
+                      <AuthorizationWrapper permission={Permission.CREATE}>
                         <div className="inline-flex">
                           <Button
                             className="full-mobile"
@@ -319,7 +320,7 @@ export class MineTailingsInfo extends Component {
           <div key="0">
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-                <AuthorizationWrapper permission="role_create">
+                <AuthorizationWrapper permission={Permission.CREATE}>
                   <Button
                     type="secondary"
                     ghost

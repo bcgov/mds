@@ -4,6 +4,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Button, Icon, Card } from "antd";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
 import { formatTitleString } from "@/utils/helpers";
 import { Redirect } from "react-router";
 
@@ -118,7 +119,7 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
-              <AuthorizationWrapper permission="role_create">
+              <AuthorizationWrapper permission={Permission.CREATE}>
                 <Button
                   type="primary"
                   onClick={() =>

@@ -4,6 +4,7 @@ import { Card, Button } from "antd";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import NullScreen from "@/components/common/NullScreen";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
@@ -45,7 +46,7 @@ class MineTenureInfo extends Component {
         <div>
           <NullScreen type="tenure" />
           <div className="center">
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Button
                 type="primary"
                 onClick={(event) =>
@@ -81,7 +82,7 @@ class MineTenureInfo extends Component {
             </tbody>
           </table>
           <div className="right center-mobile">
-            <AuthorizationWrapper permission="role_create">
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Button
                 type="primary"
                 onClick={(event) =>

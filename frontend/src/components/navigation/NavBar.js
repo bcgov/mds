@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
+import * as Permission from "@/constants/permissions";
 import { HOME, PROFILE, ADMIN } from "@/constants/assets";
 import Logout from "../authentication/Logout";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -24,7 +25,7 @@ export class NavBar extends Component {
       <Menu.Item key="0">
         <Logout />
       </Menu.Item>
-      <AuthorizationWrapper permission="role_admin">
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <div className="custom-menu-item">
           <Link to={router.ADMIN_DASHBOARD.route}>
             <button type="button">
