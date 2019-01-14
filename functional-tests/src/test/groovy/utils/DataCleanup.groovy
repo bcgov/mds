@@ -15,7 +15,8 @@ class  DataCleanup extends GebReportingSpec {
             def cleanupScriptPath = new File('src/test/groovy/data/data_deletion.sql').absolutePath
             DbConnection.MDS_FUNCTIONAL_TEST.execute(new File(cleanupScriptPath).text)
         } catch (org.postgresql.util.PSQLException e) {
-            println ">>>>>>Deletion Failed. Check DB logs for detailed error message."
+            println ">>>>>>Deletion Failed. Check logs below for detailed error message."
+            println e
         }
     }
 }
