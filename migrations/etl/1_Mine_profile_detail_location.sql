@@ -170,7 +170,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM pmt_now_preferred
-                WHERE pmt_now_preferred.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -178,7 +178,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM pmt_now
-                WHERE pmt_now.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -186,7 +186,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM mms.mmsnow
-                WHERE mms.mmsnow.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
@@ -198,7 +198,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now_preferred
-                WHERE pmt_now_preferred.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -206,7 +206,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now
-                WHERE pmt_now.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -214,7 +214,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM mms.mmsnow
-                WHERE mms.mmsnow.mine_no = new.mine_no
+                WHERE mine_no = new.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
