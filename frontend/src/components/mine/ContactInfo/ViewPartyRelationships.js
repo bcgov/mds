@@ -139,7 +139,7 @@ export class ViewPartyRelationships extends Component {
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
-    payload.related_guid = values.related_guid;
+    payload.related_guid = values.related_guid || payload.related_guid;
 
     this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
@@ -169,6 +169,7 @@ export class ViewPartyRelationships extends Component {
       activeRelationships,
       "mine_party_appt_type_code"
     ).map((x) => x.mine_party_appt_type_code);
+
     const inactivePartyRelationshipTypes = uniqBy(
       inactiveRelationships,
       "mine_party_appt_type_code"
