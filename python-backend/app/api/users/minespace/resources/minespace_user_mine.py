@@ -36,14 +36,14 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, "user_guid or mine_guid not found"), 400
         user = MinespaceUser.find_by_id(user_id)
         if not user:
-            return self.create_error_payload(500, "user not found"), 500
+            return self.create_error_payload(404, "user not found"), 404
         found = False
         for mum in user.mines:
             if str(mum.mine_guid) == mine_guid:
                 db.session.delete(mum)
                 found = True
                 break
-        if found:
-            user.save()
-            return ('', 204)
-        return self.create_error_payload(500, 'not user mine relation found')
+        if not found:
+            return self.create_error_payload(404, 'user is not related to the provided mine'), 404
+        user.save()
+        return ('', 204)

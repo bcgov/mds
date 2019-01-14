@@ -28,7 +28,7 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         users = MinespaceUser.get_all()
         return {'users': [x.json() for x in users]}
 
-    @api.doc(params={'user_id': 'User id.'})
+    @api.doc(params={'user_id': 'Not expected.'})
     @requires_role_mine_admin
     def post(self, user_id=None):
         if user_id:
@@ -42,6 +42,8 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         db.session.commit()
         return new_user.json()
 
+    @api.doc(params={'user_id': 'user_id to be deleted'})
+    @requires_role_mine_admin
     def delete(self, user_id=None):
         if not user_id:
             return self.create_error_payload(400, "user_id not found")
