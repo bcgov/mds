@@ -6,9 +6,9 @@ import { USER_ROLES } from "@/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
- * if the role passed in matched the user permissions.
+ * if the role passed in matches the user permissions.
  * 
- * NOTE: If the childComponent is an ant design child component, 
+ * NOTE: If the childComponent is an ant design child component**
  * IE. Menu.Item,
  * <Menu>
  *    <Menu.Item />

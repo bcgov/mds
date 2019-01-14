@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Pagination, Tabs, Col, Divider, notification } from "antd";
+import { Pagination, Tabs, Col, Divider, notification, Button } from "antd";
 import queryString from "query-string";
 import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -25,7 +25,7 @@ import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
-import ConditionalButton from "@/components/common/ConditionalButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import MineMap from "@/components/maps/MineMap";
@@ -340,14 +340,17 @@ export class Dashboard extends Component {
       <div className="landing-page">
         <div className="landing-page__header">
           <div className="right center-mobile">
-            <ConditionalButton
-              className="full-mobile"
-              type="primary"
-              handleAction={(event) =>
-                this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
-              }
-              string={ModalContent.CREATE_MINE_RECORD}
-            />
+            <AuthorizationWrapper permission="role_create">
+              <Button
+                className="full-mobile"
+                type="primary"
+                onClick={(event) =>
+                  this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
+                }
+              >
+                {ModalContent.CREATE_MINE_RECORD}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <div className="landing-page__content">{this.renderCorrectView()}</div>

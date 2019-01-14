@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { Menu, Icon, Divider, Button, Popover } from "antd";
+import { Menu, Icon, Divider, Button, Popover, Dropdown } from "antd";
 import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import ConditionalButton from "../common/ConditionalButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -172,16 +172,16 @@ class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between">
             <h1>{this.props.mine.mine_name} </h1>
-            <ConditionalButton
-              isDropdown
-              overlay={menu}
-              string={
-                <div className="padding-small">
-                  <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                  Add/Edit
-                </div>
-              }
-            />
+            <AuthorizationWrapper permission="role_create">
+              <Dropdown className="full-height" overlay={menu} placement="bottomLeft">
+                <Button type="primary">
+                  <div className="padding-small">
+                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
           </div>
           <Divider />
           <h5>Mine No.: {this.props.mine.mine_no} </h5>

@@ -3,10 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Menu, Icon, Popconfirm, Divider } from "antd";
+import { Row, Col, Menu, Icon, Popconfirm, Divider, Dropdown, Button } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import ConditionalButton from "@/components/common/ConditionalButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
@@ -344,16 +344,20 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <ConditionalButton
-              isDropdown
-              overlay={this.renderMenu(partyRelationshipGroupingLevels)}
-              string={
-                <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
-                  <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} /> Add New
-                  Contact
-                </div>
-              }
-            />
+            <AuthorizationWrapper permission="role_create">
+              <Dropdown
+                className="full-height"
+                overlay={this.renderMenu(partyRelationshipGroupingLevels)}
+                placement="bottomLeft"
+              >
+                <Button type="primary">
+                  <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
+                    <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                    Add New Contact
+                  </div>
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
           </div>
         </div>
         <div>

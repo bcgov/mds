@@ -23,14 +23,14 @@ beforeEach(() => {
 });
 
 describe("AuthorizationGuard", () => {
-  it("should render the `WrappedComponent` if `userRoles === role_create`", () => {
+  it("should render the `WrappedComponent` if `userRoles === role_create || role_admin`", () => {
     const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
     expect(component.html()).not.toEqual("<div></div>");
     expect(component.html()).toEqual("<div>Test</div>");
   });
 
-  it("should render the `<NullScreen /> if `userRoles !== role_create`", () => {
+  it("should render the `<NullScreen /> if `userRoles !== role_create || role_admin`", () => {
     reducerProps.userRoles = [];
     const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(component.html()).not.toEqual("<div>Test</div>");
