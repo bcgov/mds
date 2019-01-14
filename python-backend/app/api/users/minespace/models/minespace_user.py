@@ -29,6 +29,10 @@ class MinespaceUser(Base):
         return result
 
     @classmethod
+    def get_all(cls):
+        return cls.query.filter_by(deleted_ind=False).first()
+
+    @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=user_id).filter_by(deleted_ind=False).first()
 

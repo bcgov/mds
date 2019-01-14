@@ -25,7 +25,7 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
                 if not user:
                     return self.create_error_payload(404, "user not found"), 404
             return user.json()
-        users = MinespaceUser.query.filter_by(deleted_ind=False).all()
+        users = MinespaceUser.get_all()
         return {'users': [x.json() for x in users]}
 
     @api.doc(params={'user_id': 'User id.'})
