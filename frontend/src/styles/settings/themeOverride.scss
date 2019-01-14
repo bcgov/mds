@@ -166,8 +166,10 @@
 }
 // MENU.ITEM
 // Same styling as the default for .ant-dropdown-menu-item,
+// included the ant design class in this CSS block our custom class stays insync with .ant-dropdowm-menu-item updates.
 // see AuthorizationWrapper.js for the specific use case of this custom class
-.custom-menu-item {
+.custom-menu-item,
+.ant-dropdown-menu-item {
   padding: 5px 12px;
   margin: 0;
   clear: both;
