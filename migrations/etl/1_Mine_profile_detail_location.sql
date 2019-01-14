@@ -169,6 +169,13 @@ BEGIN
                 -- TODO: Replace limit with latest
                 WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
             ),
+            -- NoW Latitude TODO: Confirm this works
+            (
+                SELECT lat_dec
+                FROM mms.mmsnow
+                -- TODO: Replace limit with latest
+                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
+            ),
             -- Default Latitude
             new.lat_dec
         ) AS latitude,
@@ -186,6 +193,13 @@ BEGIN
                 FROM pmt_now
                 -- TODO: Replace limit with latest
                 WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
+            ),
+            -- NoW Longitude TODO: Confirm this works
+            (
+                SELECT lon_dec
+                FROM mms.mmsnow
+                -- TODO: Replace limit with latest
+                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
             ),
             -- Default Longitude
             new.lon_dec
