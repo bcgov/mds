@@ -19,7 +19,7 @@ const propTypes = {
     "unauthorized",
     "view-mine-manager",
     "contacts",
-    "user-unauthorized",
+    "unauthorized-page",
   ]),
 };
 
@@ -79,6 +79,12 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.UNAUTHORIZED}</h3>
         <p>{String.CONTACT_ADMIN}</p>
+      </div>
+    )}
+    {props.type === "unauthorized-page" && (
+      <div className="no-nav-bar">
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>{String.UNAUTHORIZED_PAGE}</h3>
       </div>
     )}
     {props.type === "view-mine-manager" && (

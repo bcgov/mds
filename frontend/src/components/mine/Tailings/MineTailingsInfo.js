@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Icon, Divider } from "antd";
-import ConditionalButton from "@/components/common/ConditionalButton";
+import { Row, Col, Icon, Divider, Popconfirm, Button } from "antd";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
@@ -180,18 +181,21 @@ export class MineTailingsInfo extends Component {
             </Row>
           ))}
           <div className="center">
-            <ConditionalButton
-              className="full-mobile"
-              type="primary"
-              handleAction={(event) =>
-                this.openAddTailingsModal(
-                  event,
-                  this.handleAddTailingsSubmit,
-                  ModalContent.ADD_TAILINGS
-                )
-              }
-              string={ModalContent.ADD_TAILINGS}
-            />
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Button
+                className="full-mobile"
+                type="primary"
+                onClick={(event) =>
+                  this.openAddTailingsModal(
+                    event,
+                    this.handleAddTailingsSubmit,
+                    ModalContent.ADD_TAILINGS
+                  )
+                }
+              >
+                {ModalContent.ADD_TAILINGS}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <br />
@@ -276,32 +280,37 @@ export class MineTailingsInfo extends Component {
                           ))}
                     </Col>
                     <Col span={4} align="right">
-                      <ConditionalButton
-                        type="primary"
-                        ghost
-                        handleAction={(event) =>
-                          this.openEditReportModal(
-                            event,
-                            this.handleEditReportSubmit,
-                            ModalContent.EDIT_TAILINGS_REPORT,
-                            this.props.expectedDocumentStatusOptions,
-                            doc
-                          )
-                        }
-                        string={<img src={BRAND_PENCIL} alt="Edit TSF Report" />}
-                      />
-                      <ConditionalButton
-                        popConfirm={{
-                          placement: "topLeft",
-                          title: `Are you sure you want to delete ${doc.exp_document_name}?`,
-                          onConfirm: (event) => this.removeReport(event, doc.exp_document_guid),
-                          okText: "Delete",
-                          cancelText: "Cancel",
-                        }}
-                        type="primary"
-                        ghost
-                        string={<Icon type="minus-circle" theme="outlined" />}
-                      />
+                      <AuthorizationWrapper permission={Permission.CREATE}>
+                        <div className="inline-flex">
+                          <Button
+                            className="full-mobile"
+                            type="primary"
+                            ghost
+                            onClick={(event) =>
+                              this.openEditReportModal(
+                                event,
+                                this.handleEditReportSubmit,
+                                ModalContent.EDIT_TAILINGS_REPORT,
+                                this.props.expectedDocumentStatusOptions,
+                                doc
+                              )
+                            }
+                          >
+                            <img src={BRAND_PENCIL} alt="Edit TSF Report" />
+                          </Button>
+                          <Popconfirm
+                            placement="topLeft"
+                            title={`Are you sure you want to delete ${doc.exp_document_name}?`}
+                            onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)}
+                            okText="Delete"
+                            cancelText="Cancel"
+                          >
+                            <Button className="full-mobile" ghost type="primary">
+                              <Icon type="minus-circle" theme="outlined" />
+                            </Button>
+                          </Popconfirm>
+                        </div>
+                      </AuthorizationWrapper>
                     </Col>
                   </Row>
                   <Divider type="horizontal" />
@@ -311,18 +320,22 @@ export class MineTailingsInfo extends Component {
           <div key="0">
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-                <ConditionalButton
-                  type="secondary"
-                  handleAction={(event) =>
-                    this.openAddReportModal(
-                      event,
-                      this.handleAddReportSubmit,
-                      ModalContent.ADD_TAILINGS_REPORT,
-                      this.props.mineTSFRequiredReports
-                    )
-                  }
-                  string={`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
-                />
+                <AuthorizationWrapper permission={Permission.CREATE}>
+                  <Button
+                    type="secondary"
+                    ghost
+                    onClick={(event) =>
+                      this.openAddReportModal(
+                        event,
+                        this.handleAddReportSubmit,
+                        ModalContent.ADD_TAILINGS_REPORT,
+                        this.props.mineTSFRequiredReports
+                      )
+                    }
+                  >
+                    {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
+                  </Button>
+                </AuthorizationWrapper>
               </Col>
               <Col span={12} />
               <Col span={4} align="right" />
