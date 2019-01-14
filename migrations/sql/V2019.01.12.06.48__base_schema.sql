@@ -1010,6 +1010,12 @@ ALTER TABLE ONLY mine_operation_status_sub_reason_code
 ALTER TABLE ONLY mine_party_appt
     ADD CONSTRAINT mine_party_appt_pk PRIMARY KEY (mine_party_appt_id);
 
+--
+-- Name: document_manager_document_manager_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mds
+--
+
+SELECT pg_catalog.setval('document_manager_document_manager_id_seq', 1, false);
+
 
 --
 -- Name: permit mine_permit_guid_unique; Type: CONSTRAINT; Schema: public; Owner: mds
