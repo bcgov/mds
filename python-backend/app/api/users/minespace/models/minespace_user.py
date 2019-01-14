@@ -10,7 +10,7 @@ from ..models.minespace_user_mine import MinespaceUserMine
 
 
 class MinespaceUser(Base):
-    __tablename__ = 'minespace_users'
+    __tablename__ = 'minespace_user'
 
     id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     keycloak_guid = db.Column(UUID(as_uuid=True))
