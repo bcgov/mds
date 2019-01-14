@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -14,12 +15,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
-    })
-  ).isRequired,
+  statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedDocument: PropTypes.shape({
     exp_document_guid: PropTypes.string,
     mine_guid: PropTypes.string,
