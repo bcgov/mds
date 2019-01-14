@@ -23,10 +23,12 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, "unexpected mine_guid"), 400
         data = self.parser.parse_args()
         guid = uuid.UUID(data.get('mine_guid'))  #ensure good formatting
-
         user = MinespaceUser.find_by_id(user_id)
-        user.mines.append(MinespaceUserMine(user_id=user.user_id, mine_guid=guid))
-        user.save()
+        try:
+            user.mines.append(MinespaceUserMine(user_id=user.user_id, mine_guid=guid))
+            user.save()
+        except:
+            self.create_error_payload(500, "ERROR: user-mine access was not created"), 500
         return user.json()
 
     @api.doc(params={'user_id': 'User id.', 'mine_guid': 'MDS Mine Guid'})
