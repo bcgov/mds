@@ -48,8 +48,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         doc_list = data['documents']
         mine_new_docs = []
-        doc_status_list = ExpectedDocumentStatus.find_all_document_status()
-        not_received = next(filter(lambda x: x.description == 'Not Received', doc_status_list))
+        not_received = ExpectedDocumentStatus.find_by_expected_document_description('Not Received')
         for new_doc in doc_list:
             if new_doc['req_document_guid'] != None:
                 req_doc = RequiredDocument.find_by_req_doc_guid(new_doc['req_document_guid'])
