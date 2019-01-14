@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card } from "antd";
-import ConditionalButton from "@/components/common/ConditionalButton";
+import { Card, Button } from "antd";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import NullScreen from "@/components/common/NullScreen";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
@@ -40,19 +41,21 @@ class MineTenureInfo extends Component {
   }
 
   render() {
-    const { mine } = this.props;
-    if (mine.mineral_tenure_xref.length === 0) {
+    if (this.props.mine.mineral_tenure_xref.length === 0) {
       return (
         <div>
           <NullScreen type="tenure" />
           <div className="center">
-            <ConditionalButton
-              handleAction={(event) =>
-                this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)
-              }
-              string={ModalContent.ADD_TENURE}
-              type="primary"
-            />
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)
+                }
+              >
+                {ModalContent.ADD_TENURE}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
       );
@@ -69,7 +72,7 @@ class MineTenureInfo extends Component {
               </tr>
               <tr>
                 <td data-label="Tenure Numbers">
-                  {mine.mineral_tenure_xref.map((tenure) => (
+                  {this.props.mine.mineral_tenure_xref.map((tenure) => (
                     <p key={tenure.tenure_number_id} className="p-large">
                       {tenure.tenure_number_id}
                     </p>
@@ -79,13 +82,16 @@ class MineTenureInfo extends Component {
             </tbody>
           </table>
           <div className="right center-mobile">
-            <ConditionalButton
-              handleAction={(event) =>
-                this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)
-              }
-              string={ModalContent.ADD_TENURE}
-              type="primary"
-            />
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  this.openModal(event, this.handleSubmit, ModalContent.ADD_TENURE)
+                }
+              >
+                {ModalContent.ADD_TENURE}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </Card>
       </div>

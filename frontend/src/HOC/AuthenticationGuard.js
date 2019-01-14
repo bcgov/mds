@@ -18,10 +18,10 @@ import { KEYCLOAK, USER_ROLES } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
 
 /**
- * @constant AuthGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
+ * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
 
-export const AuthGuard = (WrappedComponent) => {
+export const AuthenticationGuard = (WrappedComponent) => {
   /**
    * Initializes the KeyCloak client and enables
    * redirects directly to IDIR login page.
@@ -31,7 +31,7 @@ export const AuthGuard = (WrappedComponent) => {
    * and changing state.
    *
    */
-  class authGuard extends Component {
+  class authenticationGuard extends Component {
     componentDidMount() {
       this.keycloakInit();
     }
@@ -76,7 +76,7 @@ export const AuthGuard = (WrappedComponent) => {
     }
   }
 
-  hoistNonReactStatics(authGuard, WrappedComponent);
+  hoistNonReactStatics(authenticationGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
@@ -97,7 +97,7 @@ export const AuthGuard = (WrappedComponent) => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(authGuard);
+  )(authenticationGuard);
 };
 
-export default AuthGuard;
+export default AuthenticationGuard;

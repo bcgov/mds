@@ -25,7 +25,7 @@ export class Logout extends Component {
   render() {
     return (
       <button type="button" onClick={this.handleLogout}>
-        <img alt="Profile" className="menu__img" src={LOGOUT} />
+        <img alt="Logout" className="menu__img" src={LOGOUT} />
         Logout
       </button>
     );
