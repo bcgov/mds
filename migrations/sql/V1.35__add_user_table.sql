@@ -1,5 +1,5 @@
 CREATE TABLE minespace_user (
-    id serial PRIMARY KEY,
+    user_id serial PRIMARY KEY,
     keycloak_guid uuid,
     email character varying(100) NOT NULL, 
     deleted_ind boolean NOT NULL DEFAULT FALSE,
@@ -16,5 +16,5 @@ CREATE TABLE minespace_user_mds_mine_access(
     mine_guid uuid NOT NULL, 
 
     PRIMARY KEY(user_id, mine_guid),
-    FOREIGN KEY (user_id) REFERENCES minespace_users(id) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (user_id) REFERENCES minespace_user(id) DEFERRABLE INITIALLY DEFERRED
 );

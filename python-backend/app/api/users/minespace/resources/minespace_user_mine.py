@@ -25,7 +25,7 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
         guid = uuid.UUID(data.get('mine_guid'))  #ensure good formatting
 
         user = MinespaceUser.find_by_id(user_id)
-        user.mines.append(MinespaceUserMine(user_id=user.id, mine_guid=guid))
+        user.mines.append(MinespaceUserMine(user_id=user.user_id, mine_guid=guid))
         user.save()
         return user.json()
 

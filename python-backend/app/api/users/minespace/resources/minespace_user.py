@@ -38,7 +38,7 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         db.session.add(new_user)
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)  #ensure good formatting
-            new_user.mines.append(MinespaceUserMine(user_id=new_user.id, mine_guid=guid))
+            new_user.mines.append(MinespaceUserMine(user_id=new_user.user_id, mine_guid=guid))
         db.session.commit()
         return new_user.json()
 
