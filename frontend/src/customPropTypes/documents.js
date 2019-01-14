@@ -1,8 +1,5 @@
 import { PropTypes, shape, arrayOf } from "prop-types";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
-
 export const mineDocument = shape({
   mine_document_guid: PropTypes.string.isRequired,
   mine_guid: PropTypes.string,

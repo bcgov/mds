@@ -67,8 +67,8 @@ export const EditTailingsReportForm = (props) => (
             id="tsf_report_file_uploads"
             name="tsf_report_file_uploads"
             component={UploadedFilesList}
-            selectedDocGuid={props.selectedDocument.exp_document_guid}
-            mineGuid={props.selectedDocument.mine_guid}
+            selectedDocId={props.selectedDocument.exp_document_guid}
+            mineId={props.selectedDocument.mine_guid}
           />
         </Form.Item>
         <Form.Item label="Upload Documents">

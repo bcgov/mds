@@ -325,8 +325,11 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
       dispatch(hideLoading());
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
       dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
     });

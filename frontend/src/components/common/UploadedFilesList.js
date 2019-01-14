@@ -34,13 +34,10 @@ export class UploadedFilesList extends React.Component {
     const docStatus = this.props.expectedDocumentStatusOptions.find(
       (status) => status.value === selectedDoc.exp_document_status_guid
     );
-
-    if (moment(selectedDoc.due_date, "YYYY-MM-DD") > moment()) {
-      if (docStatus.label === "Not Received" || docStatus.label === "Received / Pending Review") {
-        return true;
-      }
-    }
-    return false;
+    const dueDateCheck = moment(selectedDoc.due_date, "YYYY-MM-DD") > moment();
+    const statusCheck =
+      docStatus.label === "Not Received" || docStatus.label === "Received / Pending Review";
+    return dueDateCheck && statusCheck;
   };
 
   render() {
@@ -50,8 +47,11 @@ export class UploadedFilesList extends React.Component {
     const unlink = this.canUnlink(selectedDoc);
     return (
       <div>
-        {selectedDoc.related_documents.map((file, key) => (
-          <div className="padding-small margin-small lightest-grey-bg" key={key}>
+        {selectedDoc.related_documents.map((file) => (
+          <div
+            className="padding-small margin-small lightest-grey-bg"
+            key={file.mine_document_guid}
+          >
             <Row className="padding-small">
               <Col span={21}>
                 <p className={unlink ? "nested-table-header left" : "nested-table-header center"}>
