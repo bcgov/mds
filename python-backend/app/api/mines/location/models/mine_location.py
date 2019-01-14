@@ -2,7 +2,7 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from geoalchemy2 import Geometry, functions, types
+from geoalchemy2 import Geometry
 import json
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
