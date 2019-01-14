@@ -1,6 +1,6 @@
 import React from "react";
-import { AuthGuard } from "../HOC/AuthGuard";
+import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
 
 export const Home = () => <div>hello proponents</div>;
 
-export default AuthGuard(Home);
+export default AuthenticationGuard(Home);
