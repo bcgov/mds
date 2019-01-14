@@ -23,7 +23,7 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
             if not user:
                 user = MinespaceUser.find_by_email(request.args.get('email'))
                 if not user:
-                    return self.create_error_payload(500, "user not found"), 500
+                    return self.create_error_payload(404, "user not found"), 404
             return user.json()
         users = MinespaceUser.query.filter_by(deleted_ind=False).all()
         return {'users': [x.json() for x in users]}
