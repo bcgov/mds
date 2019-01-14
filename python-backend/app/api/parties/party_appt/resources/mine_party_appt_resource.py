@@ -22,8 +22,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
     parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
 
-    @api.doc(
-        params={'mine_party_appt_guid': 'mine party appointment serial id'})
+    @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
     @requires_role_mine_view
     def get(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
@@ -40,8 +39,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             result = list(map(lambda x: x.json(), mpas))
         return result
 
-    @api.doc(
-        params={'mine_party_appt_guid': 'mine party appointment serial id'})
+    @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
     @requires_role_mine_create
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
@@ -57,7 +55,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 **self.get_create_update_dict())
 
             if new_mpa.mine_party_appt_type_code == "EOR":
-                new_mpa.mine_tailings_storage_facility_guid = data.get('related_guid')
+                new_mpa.assign_related_guid(data.get('related_guid'))
                 if not new_mpa.mine_tailings_storage_facility_guid:
                     raise AssertionError(
                         'mine_tailings_storage_facility_guid must be provided for Engineer of Record'
@@ -66,7 +64,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 pass
 
             if new_mpa.mine_party_appt_type_code == "PMT":
-                new_mpa.permit_guid = data.get('related_guid')
+                new_mpa.assign_related_guid(data.get('related_guid'))
                 if not new_mpa.permit_guid:
                     raise AssertionError('permit_guid must be provided for Permittee')
                 #TODO move db foreign key constraint when services get separated
@@ -91,16 +89,15 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if not mpa:
             return self.create_error_payload(404, 'mine party appointment not found'), 404
         # Only accepting these parameters
-        mpa.start_date = data.get('start_date'),
-        mpa.end_date = data.get('end_date'),
-        mpa.mine_tailings_storage_facility_guid = data.get('mine_tailings_storage_facility_guid'),
+        mpa.start_date = data.get('start_date')
+        mpa.end_date = data.get('end_date')
+
+        mpa.assign_related_guid(data.get('related_guid'))
+
         mpa.save()
         return mpa.json()
 
-    @api.doc(params={
-        'mine_party_appt_guid':
-        'mine party appointment guid to be deleted'
-    })
+    @api.doc(params={'mine_party_appt_guid': 'mine party appointment guid to be deleted'})
     @requires_role_mine_create
     def delete(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
