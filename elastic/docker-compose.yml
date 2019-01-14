@@ -31,6 +31,22 @@ services:
       - elk
     depends_on:
       - elasticsearch
+
+      
+  beat:
+    image: docker.elastic.co/apm/apm-server:6.2.4
+    ports:
+      - "8200:8200"
+      - "8201:8200"
+    environment:
+      - apm-server.host=0.0.0.0
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+      - kibana
   
   # logstash:
   #   build:
@@ -51,6 +67,7 @@ services:
   #     - elasticsearch
   #   networks:
   #     - elk
+
 
 networks:
 

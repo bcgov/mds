@@ -23,6 +23,8 @@ one-time-local-dev-env-setup:
 	@echo "+\n++ Setting up your local development environment\n"
 	@echo "++ with local authentication and db.  Run this once only.\n"
 	@echo "++ Your last configuration was saved to *-last-backup ...\n+"
+	@[ ! -f ./elastic/.env ] ||cp ./elastic/.env ./elastic/.env-last-backup
+	@cp ./elastic/.env-sample ./elastic/.env
 	@[ ! -f ./frontend/.env ] ||cp ./frontend/.env ./frontend/.env-last-backup
 	@cp ./frontend/.env-dev-local-keycloak ./frontend/.env
 	@[ ! -f "./frontend/src/constants/environment.js" ] || cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
