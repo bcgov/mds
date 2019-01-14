@@ -1,0 +1,23 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# production
+/build
+
+# testing
+/coverage
+/reports
+
+# misc
+.DS_Store
+.env
+
+# Test snap
+*__snapshots__*
+*.snap
+
+# Editor settings
+.vscode/*
+.vimrc
