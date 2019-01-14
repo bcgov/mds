@@ -123,15 +123,25 @@ BEGIN
             lat_dec,
             lon_dec,
             permit_no,
-            mms.mmsnow.mine_no
+            mms.mmsnow.mine_no,
+            CASE
+              -- Approved Date if available
+              WHEN mms.mmspmt.appr_dt IS NOT NULL
+              THEN extract(epoch from mms.mmspmt.appr_dt)::bigint
+              -- Update Number if available
+              WHEN mms.mmsnow.upd_no IS NOT NULL
+              THEN mms.mmsnow.upd_no::integer
+              ELSE NULL::integer
+            END AS latest
         FROM mms.mmsnow, mms.mmspmt
-        WHERE mms.mmspmt.cid = mms.mmsnow.cid
+        WHERE mms.mmsnow.cid = mms.mmspmt.cid
     ), pmt_now_preferred AS (
         SELECT
             lat_dec,
             lon_dec,
             permit_no,
-            mine_no
+            mine_no,
+            latest
         FROM pmt_now
         WHERE
             permit_no != ''
@@ -152,29 +162,30 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
-        -- TODO: ensure LATEST
-        -- TODO: ensure APPROVED (where appropriate)
         COALESCE(
             -- Preferred Latitude
             (
                 SELECT lat_dec
                 FROM pmt_now_preferred
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
+                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
             ),
             -- Fallback Latitude
             (
                 SELECT lat_dec
                 FROM pmt_now
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
+                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
             ),
-            -- NoW Latitude TODO: Confirm this works
+            -- NoW Latitude
             (
                 SELECT lat_dec
                 FROM mms.mmsnow
-                -- TODO: Replace limit with latest
-                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
+                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+                ORDER BY upd_no DESC
+                LIMIT 1
             ),
             -- Default Latitude
             new.lat_dec
@@ -184,22 +195,25 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now_preferred
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no LIMIT 1
+                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
             ),
             -- Fallback Longitude
             (
                 SELECT lon_dec
                 FROM pmt_now
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no LIMIT 1
+                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
             ),
-            -- NoW Longitude TODO: Confirm this works
+            -- NoW Longitude
             (
                 SELECT lon_dec
                 FROM mms.mmsnow
-                -- TODO: Replace limit with latest
-                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no LIMIT 1
+                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+                ORDER BY upd_no DESC
+                LIMIT 1
             ),
             -- Default Longitude
             new.lon_dec
