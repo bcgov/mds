@@ -21,7 +21,7 @@ export const MAP_UNAVAILABLE = [
 ];
 
 export const UNAUTHORIZED = "You do not have permission to access this site";
-export const USER_UNAUTHORIZE = "You do not have permission to access this page";
+export const UNAUTHORIZED_PAGE = "You do not have permission to access this page";
 // to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
 export const CONTACT_ADMIN = [
   "Contact your system administrator at ",
