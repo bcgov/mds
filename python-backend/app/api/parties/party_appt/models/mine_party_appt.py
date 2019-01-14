@@ -41,6 +41,14 @@ class MinePartyAppointment(AuditMixin, Base):
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
 
+    def assign_related_guid(self, related_guid):
+        if self.mine_party_appt_type_code == "EOR":
+            self.mine_tailings_storage_facility_guid = related_guid
+
+        if self.mine_party_appt_type_code == "PMT":
+            self.permit_guid = related_guid
+        return
+
     # json
     def json(self):
         result = {
@@ -150,4 +158,11 @@ class MinePartyAppointment(AuditMixin, Base):
             if not val:
                 raise AssertionError(
                     'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
+        return val
+
+    @validates('permit_guid')
+    def validate_permit_guid(self, key, val):
+        if self.mine_party_appt_type_code == 'PMT':
+            if not val:
+                raise AssertionError('No permit_guid, but mine_party_appt_type_code is PMT.')
         return val
