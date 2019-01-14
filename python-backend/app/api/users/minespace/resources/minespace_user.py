@@ -34,11 +34,11 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         if user_id:
             return self.create_error_payload(400, "unexpected user guid"), 400
         data = self.parser.parse_args()
-        new_user = MinespaceUser(email=data.get('email'))
+        new_user = MinespaceUser.create_minespace_user(email=data.get('email'), save=False)
         db.session.add(new_user)
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)  #ensure good formatting
-            new_user.mines.append(MinespaceUserMine(user_id=new_user.user_id, mine_guid=guid))
+            new_mum = MinespaceUserMine.create_minespace_user_mine(user_id=new_user.user_id, mine_guid=guid, save=False))
         db.session.commit()
         return new_user.json()
 
