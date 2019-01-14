@@ -1,5 +1,18 @@
 #!make
 
+ifeq ($(OS),Windows_NT)
+
+ifneq ($(strip $(filter %sh,$(basename $(realpath $(SHELL))))),)
+POSIXSHELL := 1
+else
+POSIXSHELL :=
+endif
+
+else
+# not on windows:
+POSIXSHELL := 1
+endif
+
 local-dev: one-time-local-dev-env-setup
 restore-dev: restore-last-env
 rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
@@ -23,6 +36,8 @@ one-time-local-dev-env-setup:
 	@echo "+\n++ Setting up your local development environment\n"
 	@echo "++ with local authentication and db.  Run this once only.\n"
 	@echo "++ Your last configuration was saved to *-last-backup ...\n+"
+
+ifneq ($(POSIXSHELL),)
 	@[ ! -f ./elastic/.env ] ||cp ./elastic/.env ./elastic/.env-last-backup
 	@cp ./elastic/.env-sample ./elastic/.env
 	@[ ! -f ./frontend/.env ] ||cp ./frontend/.env ./frontend/.env-last-backup
@@ -31,6 +46,17 @@ one-time-local-dev-env-setup:
 	@cp ./frontend/src/constants/environment.js-dev-local-keycloak ./frontend/src/constants/environment.js
 	@[ ! -f "./python-backend/.env" ] || cp ./python-backend/.env ./python-backend/.env-last-backup
 	@cp ./python-backend/.env-dev-local-keycloak ./python-backend/.env
+else
+	@if exist .\elastic\.env copy /Y .\elastic\.env .\elastic\.env-last-backup
+	@copy /Y .\elastic\.env-sample .\elastic\.env
+	@if exist .\frontend\.env copy /Y .\frontend\.env .\frontend\.env-last-backup
+	@copy /Y .\frontend\.env-dev-local-keycloak .\frontend\.env
+	@if exist .\frontend\src\constants\environment.js copy /Y .\frontend\src\constants\environment.js .\frontend\src\constants\environment.js-last-backup
+	@copy /Y .\frontend\src\constants\environment.js-dev-local-keycloak .\frontend\src\constants\environment.js
+	@if exist .\python-backend\.env copy .\python-backend\.env .\python-backend\.env-last-backup
+	@copy /Y .\python-backend\.env-dev-local-keycloak .\python-backend\.env
+endif
+	
 
 restore-last-env:
 	@echo "+\n++ Restoring your environment from last backup...\n+"
@@ -40,7 +66,11 @@ restore-last-env:
 
 pause-30:
 	@echo "+\n++ Pausing 30 seconds\n+"
+ifneq ($(POSIXSHELL),)	
 	@sleep 30
+else
+	@timeout 30
+endif
 
 create-local-keycloak-users:
 	@echo "+\n++ Creating admin user... (admin/admin)\n+"
