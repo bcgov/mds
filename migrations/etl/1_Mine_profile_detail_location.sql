@@ -134,7 +134,10 @@ BEGIN
               ELSE NULL::integer
             END AS latest
         FROM mms.mmsnow, mms.mmspmt
-        WHERE mms.mmsnow.cid = mms.mmspmt.cid
+        WHERE
+            mms.mmsnow.cid = mms.mmspmt.cid
+            AND lat_dec IS NOT NULL
+            AND lon_dec IS NOT NULL
     ), pmt_now_preferred AS (
         SELECT
             lat_dec,
@@ -167,7 +170,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM pmt_now_preferred
-                WHERE lat_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+                WHERE pmt_now_preferred.mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -175,7 +178,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM pmt_now
-                WHERE lat_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+                WHERE pmt_now.mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -183,7 +186,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM mms.mmsnow
-                WHERE lat_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+                WHERE mms.mmsnow.mine_no = new.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
@@ -195,7 +198,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now_preferred
-                WHERE lon_dec IS NOT NULL AND pmt_now_preferred.mine_no = new.mine_no
+                WHERE pmt_now_preferred.mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -203,7 +206,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now
-                WHERE lon_dec IS NOT NULL AND pmt_now.mine_no = new.mine_no
+                WHERE pmt_now.mine_no = new.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -211,7 +214,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM mms.mmsnow
-                WHERE lon_dec IS NOT NULL AND mms.mmsnow.mine_no = new.mine_no
+                WHERE mms.mmsnow.mine_no = new.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
