@@ -304,3 +304,33 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expectedDocumentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
+  dispatch(showLoading());
+  return axios
+    .delete(
+      ENVIRONMENT.apiUrl +
+        API.REMOVE_MINE_EXPECTED_DOCUMENT(expectedDocumentGuid, mineDocumentGuid),
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully removed the document from the report.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
+      dispatch(hideLoading());
+    });
+};

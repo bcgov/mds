@@ -24,6 +24,7 @@ export class InactiveContact extends Component {
             this.props.mine.guid,
             this.props.partyRelationshipTypeCode
           )}
+          push
         />
       );
     }
