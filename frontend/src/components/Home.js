@@ -2,12 +2,13 @@ import React from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
-import { AuthGuard } from "../HOC/AuthGuard";
+import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
+import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
- * Home is wrapped in AuthGuard which checks keycloak authorization.
+ * Home is wrapped in AuthenticationGuard which checks keycloak authorization.
  */
 
 export const Home = () => {
@@ -29,6 +30,7 @@ export const Home = () => {
       </div>
       <Content className="content">
         <DashboardRoutes />
+        <AdminDashboardRoutes />
         <BackTop>
           <Button type="primary">
             <Icon type="arrow-up" theme="outlined" />
@@ -40,4 +42,4 @@ export const Home = () => {
   );
 };
 
-export default AuthGuard(Home);
+export default AuthenticationGuard(Home);

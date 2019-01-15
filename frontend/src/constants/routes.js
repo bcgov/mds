@@ -3,6 +3,8 @@ import Home from "@/components/Home";
 import Dashboard from "@/components/dashboard/Dashboard";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
+import RelationshipProfile from "@/components/parties/RelationshipProfile";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 
 export const DASHBOARD = {
   route: "/",
@@ -30,4 +32,15 @@ export const PARTY_PROFILE = {
   route: "/profile/:id",
   dynamicRoute: (id) => `/profile/${id}`,
   component: PartyProfile,
+};
+
+export const RELATIONSHIP_PROFILE = {
+  route: "/dashboard/:id/contact-information/:typeCode",
+  dynamicRoute: (id, typeCode) => `/dashboard/${id}/contact-information/${typeCode}`,
+  component: RelationshipProfile,
+};
+
+export const ADMIN_DASHBOARD = {
+  route: "/admin/dashboard",
+  component: AdminDashboard,
 };

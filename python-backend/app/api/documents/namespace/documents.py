@@ -8,21 +8,17 @@ from ..expected.resources.expected_document_uploads import ExpectedDocumentUploa
 from ..mines.resources.mine_document_resource import MineDocumentResource
 
 api = Namespace(
-    'documents',
-    description=
-    'MDS records of documents, expected documents, and required documents')
+    'documents', description='MDS records of documents, expected documents, and required documents')
 
 api.add_resource(ExpectedMineDocumentResource, '/expected/mines',
                  '/expected/mines/<string:mine_guid>')
-api.add_resource(ExpectedDocumentResource, '/expected',
-                 '/expected/<string:exp_doc_guid>')
-api.add_resource(RequiredDocumentResource, '/required',
-                 '/required/<string:req_doc_guid>')
+api.add_resource(ExpectedDocumentResource, '/expected', '/expected/<string:exp_doc_guid>')
+api.add_resource(RequiredDocumentResource, '/required', '/required/<string:req_doc_guid>')
 
-api.add_resource(ExpectedDocumentStatusResource, '/expected/status',
-                 '/expected/status')
+api.add_resource(ExpectedDocumentStatusResource, '/expected/status', '/expected/status')
 
 api.add_resource(ExpectedDocumentUploadResource,
-                 '/expected/<string:expected_document_guid>/document')
+                 '/expected/<string:expected_document_guid>/document',
+                 '/expected/<string:expected_document_guid>/document/<string:mine_document_guid>')
 
 api.add_resource(MineDocumentResource, '/mines/<string:mine_guid>')

@@ -24,7 +24,6 @@ body {
 
 .center {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .right {
@@ -60,6 +59,10 @@ body {
   & div {
     margin-right: 5px;
   }
+}
+
+.wrap {
+  flex-wrap: wrap;
 }
 
 .between {
@@ -113,9 +116,27 @@ body {
   }
 }
 
+.card-buttons {
+  flex-direction: column;
+}
+
 .padding-small {
   &--right {
     padding-right: 5px;
   }
   padding: $default-padding-sm;
+}
+
+.margin-small {
+  margin: $default-margin-sm;
+}
+
+.lightest-grey-bg {
+  background: $secondary-background-colour;
+}
+
+.nested-table-header {
+  font-size: $default-h2;
+  font-weight: $semi-bold;
+  color: $h4-color;
 }

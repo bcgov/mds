@@ -1,0 +1,7 @@
+{
+  "trailingComma": "es5",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "printWidth": 100,
+  "endOfLine": "lf"
+}

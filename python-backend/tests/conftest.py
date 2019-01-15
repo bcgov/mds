@@ -13,12 +13,10 @@ from app.api.mines.status.models.mine_operation_status_code import MineOperation
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from app.api.parties.party.models.party import Party
-from app.api.parties.party.models.mgr_appointment import MgrAppointment
 from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
-from app.api.permits.permittee.models.permittee import Permittee
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
@@ -27,6 +25,7 @@ from app.api.documents.required.models.required_documents import RequiredDocumen
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -231,14 +230,6 @@ def setup_data(session):
         party_type_code=TEST_ORG_TYPE,
         **DUMMY_USER_KWARGS)
     party_org.save()
-    # Test Manager Data
-    manager = MgrAppointment(
-        mgr_appointment_guid=uuid.UUID(TEST_MANAGER_GUID),
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        effective_date=datetime.today() - timedelta(days=10),
-        **DUMMY_USER_KWARGS)
-    manager.save()
 
     # Test Permit Status Codes
     for permit_code_value in TEST_PERMIT_STATUS_CODES:
@@ -258,14 +249,6 @@ def setup_data(session):
         issue_date=datetime.today(),
         **DUMMY_USER_KWARGS)
     permit.save()
-
-    # Test Permittee Data
-    permittee = Permittee(
-        permittee_guid=uuid.UUID(TEST_PERMITTEE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        **DUMMY_USER_KWARGS)
-    permittee.save()
 
     required_document_due_date_type1 = RequiredDocumentDueDateType(
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
@@ -316,6 +299,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     required_document3.save()
 
+    expected_document_status1 = ExpectedDocumentStatus(
+        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID1),
+        description="Not Received",
+        display_order=10,
+        **DUMMY_USER_KWARGS)
+    expected_document_status1.save()
+
+    expected_document_status2 = ExpectedDocumentStatus(
+        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID2),
+        description="Pending Review",
+        display_order=20,
+        **DUMMY_USER_KWARGS)
+    expected_document_status2.save()
+
     expected_document1 = MineExpectedDocument(
         exp_document_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
@@ -323,6 +320,7 @@ def setup_data(session):
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
         due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
+        exp_document_status_guid=expected_document_status1.exp_document_status_guid,
         **DUMMY_USER_KWARGS)
     expected_document1.save()
 
@@ -336,18 +334,40 @@ def setup_data(session):
     mpat1 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
         description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION1,
+        grouping_level=2,
         **DUMMY_USER_KWARGS)
     mpat1.save()
 
     mpat2 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         description=TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2,
+        grouping_level=2,
         **DUMMY_USER_KWARGS)
     mpat2.save()
 
     mpat3 = MinePartyAppointmentType(
-        mine_party_appt_type_code='EOR', description='Engineer of Record', **DUMMY_USER_KWARGS)
+        mine_party_appt_type_code='EOR',
+        description='Engineer of Record',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
     mpat3.save()
+
+    mpat4 = MinePartyAppointmentType(
+        mine_party_appt_type_code='PMT',
+        description='Engineer of Record',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
+    mpat4.save()
+
+    # Test Permittee Data
+    permittee = MinePartyAppointment(
+        mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
+        mine_party_appt_type_code='PMT',
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
+        **DUMMY_USER_KWARGS)
+    permittee.save()
 
     mpa = MinePartyAppointment(
         mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,

@@ -1,130 +1,91 @@
 import React from "react";
-import { objectOf, arrayOf, string } from "prop-types";
-import { Card } from "antd";
-import { uniqBy } from "lodash";
+import { Row, Col } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import PropTypes from "prop-types";
+import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationships,
+  getSummaryPartyRelationships,
+} from "@/selectors/partiesSelectors";
+import { connect } from "react-redux";
+import * as String from "@/constants/strings";
+
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  permittees: objectOf(CustomPropTypes.permittee),
-  permitteeIds: arrayOf(string),
+  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
 
 const defaultProps = {
-  permittees: {},
-  permitteeIds: [],
+  partyRelationshipTypes: [],
+  partyRelationships: [],
+  summaryPartyRelationships: [],
 };
 
-const MineSummary = (props) => {
-  if (!props.mine.mgr_appointment[0] && !props.mine.mine_permit[0]) {
+const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
+  if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
+
+  const partyRelationshipTypeLabel = partyRelationshipTypes.find(
+    ({ mine_party_appt_type_code }) =>
+      mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
+  ).description;
+
+  return (
+    <Col
+      xs={24}
+      sm={24}
+      md={24}
+      lg={12}
+      xl={8}
+      xxl={6}
+      key={partyRelationship.mine_party_appt_guid}
+    >
+      <Contact
+        mine={mine}
+        partyRelationship={partyRelationship}
+        partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+      />
+    </Col>
+  );
+};
+
+const isActive = (partyRelationship) =>
+  !partyRelationship.end_date ||
+  (Date.parse(partyRelationship.end_date) >= new Date() &&
+    (!partyRelationship.start_date || Date.parse(partyRelationship.start_date) <= new Date()));
+
+export const MineSummary = (props) => {
+  if (props.partyRelationships.length === 0) {
     return <NullScreen type="generic" />;
   }
 
-  const uniquePermits = uniqBy(props.mine.mine_permit, "permit_no");
-
   return (
     <div>
-      <Card>
-        <table>
-          {props.mine.mgr_appointment[0] && (
-            <tbody>
-              <tr>
-                <th scope="col">
-                  <h4>Mine Manager</h4>
-                </th>
-                <th scope="col">
-                  <h4>Email</h4>
-                </th>
-                <th scope="col">
-                  <h4>Manager Since</h4>
-                </th>
-              </tr>
-              <tr>
-                <td data-label="Mine Manager">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0] ? props.mine.mgr_appointment[0].name : "-"}
-                  </p>
-                </td>
-                <td data-label="Email">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0] ? props.mine.mgr_appointment[0].email : "-"}
-                  </p>
-                </td>
-                <td data-label="Manager Since">
-                  <p className="p-large">
-                    {props.mine.mgr_appointment[0]
-                      ? props.mine.mgr_appointment[0].effective_date
-                      : "-"}
-                  </p>
-                </td>
-              </tr>
-            </tbody>
+      <Row gutter={16} type="flex" justify="center">
+        {props.summaryPartyRelationships
+          .filter(isActive)
+          .map((partyRelationship) =>
+            renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)
           )}
-          {props.mine.mine_permit[0] && (
-            <tbody>
-              <tr>
-                <th scope="col">
-                  <h4>Permittee</h4>
-                </th>
-                <th scope="col">
-                  <h4>Email</h4>
-                </th>
-                <th scope="col">
-                  <h4>Permittee Since</h4>
-                </th>
-              </tr>
-              {props.permitteeIds.map((id) => (
-                <tr key={id}>
-                  <td data-label="Permittee">
-                    <p className="p-large">{props.permittees[id].party.name}</p>
-                  </td>
-                  <td data-label="Email">
-                    <p className="p-large">{props.permittees[id].party.email}</p>
-                  </td>
-                  <td data-label="Effective Date">
-                    <p className="p-large">{props.permittees[id].effective_date}</p>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
-      </Card>
-      {props.mine.mine_permit[0] && (
-        <Card>
-          <table>
-            <tbody>
-              <tr>
-                <th scope="col">
-                  <h4>Permit</h4>
-                </th>
-                <th scope="col">
-                  <h4>Last Amended</h4>
-                </th>
-              </tr>
-              {uniquePermits.map((permit) => (
-                <tr key={permit.permit_guid}>
-                  <td data-label="Permit">
-                    <p className="p-large">{permit.permit_no}</p>
-                  </td>
-                  <td data-label="Date Issued">
-                    <p className="p-large">{permit.issue_date}</p>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-      )}
+      </Row>
     </div>
   );
 };
 
+const mapStateToProps = (state) => ({
+  partyRelationships: getPartyRelationships(state),
+  partyRelationshipTypes: getPartyRelationshipTypes(state),
+  summaryPartyRelationships: getSummaryPartyRelationships(state),
+});
+
 MineSummary.propTypes = propTypes;
 MineSummary.defaultProps = defaultProps;
 
-export default MineSummary;
+export default connect(mapStateToProps)(MineSummary);
