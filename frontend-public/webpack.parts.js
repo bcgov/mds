@@ -9,6 +9,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
+const AntdScssThemePlugin = require("antd-scss-theme-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
@@ -64,6 +65,36 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
       },
     ],
   },
+});
+
+exports.loadCSS = ({ include, exclude, theme } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.s?css$/,
+        include,
+        exclude,
+        use: [
+          "style-loader",
+          "css-loader",
+          postCSSLoader,
+          AntdScssThemePlugin.themify("sass-loader"),
+        ],
+      },
+      {
+        test: /\.less$/,
+        include,
+        exclude,
+        use: [
+          "style-loader",
+          "css-loader",
+          postCSSLoader,
+          AntdScssThemePlugin.themify("less-loader"),
+        ],
+      },
+    ],
+  },
+  plugins: [new AntdScssThemePlugin(theme)],
 });
 
 exports.extractCSS = ({ include, exclude, filename } = {}) => ({

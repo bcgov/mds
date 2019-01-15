@@ -1,0 +1,17 @@
+.header {
+  @include flex;
+  position: fixed;
+  z-index: 1000;
+  width: 100vw;
+  background-color: $gov-blue;
+  border-bottom: 1px solid $gov-yellow;
+  padding: 0 0 0 $default-padding-xxl;
+
+  &__img {
+    margin: $default-margin-sm;
+  }
+
+  &__btn {
+    color: $pure-white;
+  }
+}

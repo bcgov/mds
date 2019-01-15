@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
+    "antd": "^3.12.3",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
     "babel-polyfill": "^6.26.0",
@@ -30,6 +31,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "antd-scss-theme-plugin": "^1.0.7",
     "autoprefixer": "^8.5.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
