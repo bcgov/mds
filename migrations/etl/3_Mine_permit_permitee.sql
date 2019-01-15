@@ -544,19 +544,19 @@ DECLARE
     old_row integer;
     new_row integer;
 BEGIN
-    RAISE NOTICE '.. Step 4 of 4: Update permittee info';
+    RAISE NOTICE '.. Step 4 of 4: Update party_appt info';
     SELECT count(*) FROM mine_party_appt INTO old_row;
     --select only new record
-    WITH new_permittee AS (
+    WITH new_party_appt AS (
         SELECT *
         FROM ETL_PERMIT
-        WHERE permittee_guid NOT IN (
-            SELECT permittee_guid
-            FROM permittee
+        WHERE party_guid NOT IN (
+            SELECT party_guid
+            FROM mine_party_appt
         )
     )
     INSERT INTO mine_party_appt (
-        mine_party_appt   ,
+        mine_party_appt_guid  ,
         permit_guid      ,
         party_guid       ,
         mine_guid        ,
@@ -580,7 +580,7 @@ BEGIN
         now()           ,
         issue_date      ,
         expiry_date
-    FROM new_permittee;
+    FROM new_party_appt;
     SELECT count(*) FROM mine_party_appt INTO new_row;
     RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
     RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
