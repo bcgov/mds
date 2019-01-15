@@ -25,6 +25,7 @@ from app.api.documents.required.models.required_documents import RequiredDocumen
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -298,6 +299,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     required_document3.save()
 
+    expected_document_status1 = ExpectedDocumentStatus(
+        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID1),
+        description="Not Received",
+        display_order=10,
+        **DUMMY_USER_KWARGS)
+    expected_document_status1.save()
+
+    expected_document_status2 = ExpectedDocumentStatus(
+        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID2),
+        description="Pending Review",
+        display_order=20,
+        **DUMMY_USER_KWARGS)
+    expected_document_status2.save()
+
     expected_document1 = MineExpectedDocument(
         exp_document_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID1),
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
@@ -305,6 +320,7 @@ def setup_data(session):
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
         due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
+        exp_document_status_guid=expected_document_status1.exp_document_status_guid,
         **DUMMY_USER_KWARGS)
     expected_document1.save()
 
