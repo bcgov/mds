@@ -18,25 +18,25 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 4: Scan new permit info in MMS';
     -- This is the intermediary table that will be used to store mine permit and permittee info from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PERMIT(
-        permittee_guid      uuid                    ,
+        mine_party_appt_guid      uuid            ,
         --permit info
-        permit_guid         uuid                    ,
-        source              numeric                 ,
-        mine_guid           uuid                    ,
-        mine_no             character varying(12)   ,
-        permit_no           character varying(12)   ,
-        received_date       date                    ,
-        issue_date          date                    ,
-        expiry_date         date                    ,
-        permit_status_code  character varying(2)    ,
+        permit_guid         uuid                  ,
+        source              numeric               ,
+        mine_guid           uuid                  ,
+        mine_no             character varying(12) ,
+        permit_no           character varying(12) ,
+        received_date       date                  ,
+        issue_date          date                  ,
+        expiry_date         date                  ,
+        permit_status_code  character varying(2)  ,
         --permittee info
-        party_guid          uuid                    ,
-        party_combo_id      character varying(200)  ,
-        first_name character varying(100)           ,
-        party_name character varying(100)           ,
-        party_type character varying(3)             ,
-        phone_no character varying(12)              ,
-        email character varying(254)                ,
+        party_guid          uuid                  ,
+        party_combo_id      character varying(200),
+        first_name character varying(100)         ,
+        party_name character varying(100)         ,
+        party_type character varying(3)           ,
+        phone_no character varying(12)            ,
+        email character varying(254)              ,
         effective_date date
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
@@ -380,7 +380,7 @@ BEGIN
             contact.party_combo_id=new_permittee.party_combo_id
     )
     INSERT INTO ETL_PERMIT(
-        permittee_guid      ,
+        mine_party_appt_guid,
         --permit info
         permit_guid         ,
         source              ,
@@ -402,7 +402,7 @@ BEGIN
         effective_date
     )
     SELECT
-        gen_random_uuid()       ,--permittee_guid
+        gen_random_uuid()       ,
         --permit info
         gen_random_uuid()       ,--permit_guid
         permittee_info.source   ,
@@ -544,43 +544,43 @@ DECLARE
     old_row integer;
     new_row integer;
 BEGIN
-    RAISE NOTICE '.. Step 4 of 4: Update permittee info';
+    RAISE NOTICE '.. Step 4 of 4: Update party_appt info';
     SELECT count(*) FROM mine_party_appt INTO old_row;
     --select only new record
-    WITH new_permittee AS (
+    WITH new_party_appt AS (
         SELECT *
         FROM ETL_PERMIT
-        WHERE permittee_guid NOT IN (
-            SELECT permittee_guid
-            FROM permittee
+        WHERE party_guid NOT IN (
+            SELECT party_guid
+            FROM mine_party_appt
         )
     )
     INSERT INTO mine_party_appt (
-        mine_party_appt   ,
-        permit_guid      ,
-        party_guid       ,
-        mine_guid        ,
+        mine_party_appt_guid     ,
+        permit_guid              ,
+        party_guid               ,
+        mine_guid                ,
         mine_party_appt_type_code,
-        create_user      ,
-        create_timestamp ,
-        update_user      ,
-        update_timestamp ,
-        effective_date   ,
+        create_user              ,
+        create_timestamp         ,
+        update_user              ,
+        update_timestamp         ,
+        effective_date           ,
         expiry_date
     )
     SELECT
-        permittee_guid  ,
-        permit_guid     ,
-        party_guid      ,
-        mine_guid       ,
-        'PMT'           ,
-        'mms_migration' ,
-        now()           ,
-        'mms_migration' ,
-        now()           ,
-        issue_date      ,
+        mine_party_appt_guid,
+        permit_guid         ,
+        party_guid          ,
+        mine_guid           ,
+        'PMT'               ,
+        'mms_migration'     ,
+        now()               ,
+        'mms_migration'     ,
+        now()               ,
+        issue_date          ,
         expiry_date
-    FROM new_permittee;
+    FROM new_party_appt;
     SELECT count(*) FROM mine_party_appt INTO new_row;
     RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
     RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
