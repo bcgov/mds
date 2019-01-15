@@ -16,12 +16,12 @@ const propTypes = {
 };
 
 export const EngineerOfRecord = (props) => {
-  const eorPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - ${
-    props.mine.mine_tailings_storage_facility.find(
-      ({ mine_tailings_storage_facility_guid }) =>
-        mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
-    ).mine_tailings_storage_facility_name
-  }`;
+  const tsf = props.mine.mine_tailings_storage_facility.find(
+    ({ mine_tailings_storage_facility_guid }) =>
+      mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
+  );
+  const eorPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - ${tsf &&
+    tsf.mine_tailings_storage_facility_name}`;
 
   return (
     <DefaultContact

@@ -1,4 +1,4 @@
--- 1. Migrate MINE PROFILE (mine name, mumber, lat/long)
+-- 1. Migrate MINE PROFILE
 -- Create the ETL_PROFILE table
 
 
@@ -15,6 +15,7 @@ BEGIN
         mine_no           varchar(7)    ,
         mine_nm           varchar(60)   ,
         reg_cd            varchar(1)    ,
+        mine_typ          varchar(3)    ,
         lat_dec           numeric(9,7)  ,
         lon_dec           numeric(11,7) ,
         major_mine_ind    boolean
@@ -37,6 +38,7 @@ BEGIN
         mine_no         ,
         mine_nm         ,
         reg_cd          ,
+        mine_typ        ,
         lat_dec         ,
         lon_dec         ,
         major_mine_ind  )
@@ -45,6 +47,7 @@ BEGIN
         mms_new.mine_no    ,
         mms_new.mine_nm    ,
         mms_new.reg_cd     ,
+        mms_new.mine_typ   ,
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         CASE
@@ -115,6 +118,37 @@ BEGIN
             FROM    mine_location
             WHERE   mine_no = ETL_PROFILE.mine_no
         )
+    ), pmt_now AS (
+        SELECT
+            lat_dec,
+            lon_dec,
+            permit_no,
+            mms.mmsnow.mine_no,
+            CASE
+              -- Approved Date if available
+              WHEN mms.mmspmt.appr_dt IS NOT NULL
+              THEN extract(epoch from mms.mmspmt.appr_dt)::bigint
+              -- Update Number if available
+              WHEN mms.mmsnow.upd_no IS NOT NULL
+              THEN mms.mmsnow.upd_no::integer
+              ELSE NULL::integer
+            END AS latest
+        FROM mms.mmsnow, mms.mmspmt
+        WHERE
+            mms.mmsnow.cid = mms.mmspmt.cid
+            AND lat_dec IS NOT NULL
+            AND lon_dec IS NOT NULL
+    ), pmt_now_preferred AS (
+        SELECT
+            lat_dec,
+            lon_dec,
+            permit_no,
+            mine_no,
+            latest
+        FROM pmt_now
+        WHERE
+            permit_no != ''
+            AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
     )
     INSERT INTO mine_location(
         mine_location_guid  ,
@@ -131,8 +165,62 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
-        new.lat_dec         ,
-        new.lon_dec         ,
+        COALESCE(
+            -- Preferred Latitude
+            (
+                SELECT lat_dec
+                FROM pmt_now_preferred
+                WHERE mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
+            ),
+            -- Fallback Latitude
+            (
+                SELECT lat_dec
+                FROM pmt_now
+                WHERE mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
+            ),
+            -- NoW Latitude
+            (
+                SELECT lat_dec
+                FROM mms.mmsnow
+                WHERE mine_no = new.mine_no
+                ORDER BY upd_no DESC
+                LIMIT 1
+            ),
+            -- Default Latitude
+            new.lat_dec
+        ) AS latitude,
+        COALESCE(
+            -- Preferred Longitude
+            (
+                SELECT lon_dec
+                FROM pmt_now_preferred
+                WHERE mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
+            ),
+            -- Fallback Longitude
+            (
+                SELECT lon_dec
+                FROM pmt_now
+                WHERE mine_no = new.mine_no
+                ORDER BY latest DESC
+                LIMIT 1
+            ),
+            -- NoW Longitude
+            (
+                SELECT lon_dec
+                FROM mms.mmsnow
+                WHERE mine_no = new.mine_no
+                ORDER BY upd_no DESC
+                LIMIT 1
+            ),
+            -- Default Longitude
+            new.lon_dec
+        ) AS longitude,
         ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
         now()               ,
         '9999-12-31'::date  ,
@@ -147,6 +235,45 @@ BEGIN
         (new.lat_dec <> 0 AND new.lon_dec <> 0);
     SELECT count(*) FROM mine into new_row;
     SELECT count(*) FROM mine_location into location_row;
+
+    -- Upsert data from new_record into mine_type
+    WITH new_record AS (
+        SELECT
+            mine_guid,
+            mine_typ
+        FROM ETL_PROFILE
+        WHERE NOT EXISTS (
+            SELECT  1
+            FROM    mine_type
+            WHERE   mine_no = ETL_PROFILE.mine_no
+        )
+    )
+    INSERT INTO mine_type(
+        mine_type_guid       ,
+        mine_guid            ,
+        mine_tenure_type_code,
+        create_user          ,
+        create_timestamp     ,
+        update_user          ,
+        update_timestamp     )
+    SELECT
+        gen_random_uuid()   ,
+        new.mine_guid       ,
+        CASE
+          when new.mine_typ = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
+          when new.mine_typ = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
+          when new.mine_typ = ANY('{PS,PU}'::text[]) THEN 'PLR'
+          when new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
+          ELSE null
+        END AS mine_tenure_type_code,
+        'mms_migration'     ,
+        now()               ,
+        'mms_migration'     ,
+        now()
+    FROM new_record new
+    WHERE
+        mine_typ = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
+
     RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
     RAISE NOTICE '....Total mine records in the MDS: %.', new_row;
     RAISE NOTICE '....Total mine records with location info in the MDS: %.', location_row;

@@ -9,7 +9,7 @@ import uuid
 from unittest import mock
 from datetime import datetime
 
-from tests.constants import TEST_EXPECTED_DOCUMENT_GUID1, TEST_REQUIRED_REPORT_GUID1, TEST_EXPECTED_DOCUMENT_NAME1, TEST_MINE_GUID, DUMMY_USER_KWARGS
+from tests.constants import TEST_EXPECTED_DOCUMENT_GUID1, TEST_REQUIRED_REPORT_GUID1, TEST_EXPECTED_DOCUMENT_NAME1, TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_STATUS_GUID1, DUMMY_USER_KWARGS
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.extensions import db
@@ -46,6 +46,7 @@ def setup_info(test_client):
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
         due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
+        exp_document_status_guid=TEST_EXPECTED_DOCUMENT_STATUS_GUID1,
         **DUMMY_USER_KWARGS)
 
     expected_document.mine_documents.append(mine_document)
@@ -84,7 +85,8 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
                      setup_info.get('file_upload_2')],
         }
         post_resp = test_client.post(
-            '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+            '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+            '/document',
             headers=auth_headers['full_auth_header'],
             data=data)
 
@@ -95,18 +97,33 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
         assert 'file2.pdf' in post_data['files']
 
 
-def test_file_upload_with_no_file(test_client, auth_headers, setup_info):
+def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
 
     post_resp = test_client.post(
-        '/documents/expected/' + TEST_EXPECTED_DOCUMENT_GUID1 + '/document',
+        '/documents/expected/' + str(uuid.uuid4()) + '/document',
         headers=auth_headers['full_auth_header'],
         data={})
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 400
-    assert post_data['errors']['file'] is not None
-    assert post_data['message'] is not None
+    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_data['error']['message'] is not None
+
+
+def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
+    existing_mine_doc = setup_info.get('mine_document')
+
+    data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
+
+    post_resp = test_client.post(
+        '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
+        '/document',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 200
 
 
 def test_happy_path_file_removal(test_client, auth_headers, setup_info):

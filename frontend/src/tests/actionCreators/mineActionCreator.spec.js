@@ -9,7 +9,10 @@ import {
   createTailingsStorageFacility,
   createMineExpectedDocument,
   removeExpectedDocument,
+  removeMineDocumentFromExpectedDocument,
   removeMineType,
+  addMineDocumentToExpectedDocument,
+  fetchMineDocuments,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -243,6 +246,96 @@ describe("`fetchMineNameList` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchMineNameList()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removeMineDocumentFromExpectedDocument` action creator", () => {
+  const expectedDocumentGuid = "12345-6789";
+  const mineDocumentGuid = "12345-6789-1028";
+  const url = `${ENVIRONMENT.apiUrl +
+    API.REMOVE_MINE_EXPECTED_DOCUMENT(expectedDocumentGuid, mineDocumentGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removeMineDocumentFromExpectedDocument(mineDocumentGuid, expectedDocumentGuid)(
+      dispatch
+    ).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return removeMineDocumentFromExpectedDocument(mineDocumentGuid, expectedDocumentGuid)(
+      dispatch
+    ).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`addMineDocumentToExpectedDocument` action creator", () => {
+  const expDocGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expDocGuid);
+
+  it("Request with new file, dispatches `success` with correct response", () => {
+    const payload = { file: "a file" };
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, payload).reply(200, mockResponse);
+    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request with existing file, dispatches `success` with correct response", () => {
+    const payload = { mine_document_guid: "555-6789" };
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, payload).reply(200, mockResponse);
+    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    const payload = {};
+    mockAxios.onPost(url, payload).reply(400, MOCK.ERROR);
+    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMineDocuments` action creator", () => {
+  const mineGuid = "12345-6789";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineDocuments(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchMineDocuments(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

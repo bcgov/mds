@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import EditTailingsReportForm from "@/components/Forms/EditTailingsReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.array.isRequired,
-  initialValues: PropTypes.object,
-  selectedDocument: PropTypes.object,
+  initialValues: PropTypes.objectOf(PropTypes.any),
+  statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
 const defaultProps = {
-  title: "",
   initialValues: null,
 };
 

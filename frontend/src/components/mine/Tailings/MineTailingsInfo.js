@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button, Icon, Popconfirm, Divider } from "antd";
+import { Row, Col, Icon, Divider, Popconfirm, Button } from "antd";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import {
@@ -29,7 +32,7 @@ import * as String from "@/constants/strings";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -45,7 +48,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
   expectedDocumentStatusOptions: [],
 };
 
@@ -115,6 +117,13 @@ export class MineTailingsInfo extends Component {
     });
   };
 
+  getFileFromDocumentManager = (docMgrFileGuid) => {
+    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
+    window.open(url, "_blank");
+    // Document_manager GET endpoint is unathenticated right now.
+    // TODO: updated this when Document manager tokens are implmeneted.
+  };
+
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
     event.preventDefault();
     const mineTSFRequiredReportsDropDown = createDropDownList(
@@ -157,13 +166,6 @@ export class MineTailingsInfo extends Component {
     }
   }
 
-  getFileFromDocumentManager(docMgrFileGuid) {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
-  }
-
   render() {
     return (
       <div>
@@ -179,19 +181,21 @@ export class MineTailingsInfo extends Component {
             </Row>
           ))}
           <div className="center">
-            <Button
-              className="full-mobile"
-              type="primary"
-              onClick={(event) =>
-                this.openAddTailingsModal(
-                  event,
-                  this.handleAddTailingsSubmit,
-                  ModalContent.ADD_TAILINGS
-                )
-              }
-            >
-              {ModalContent.ADD_TAILINGS}
-            </Button>
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Button
+                className="full-mobile"
+                type="primary"
+                onClick={(event) =>
+                  this.openAddTailingsModal(
+                    event,
+                    this.handleAddTailingsSubmit,
+                    ModalContent.ADD_TAILINGS
+                  )
+                }
+              >
+                {ModalContent.ADD_TAILINGS}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <br />
@@ -276,32 +280,37 @@ export class MineTailingsInfo extends Component {
                           ))}
                     </Col>
                     <Col span={4} align="right">
-                      <Button
-                        ghost
-                        type="primary"
-                        onClick={(event) =>
-                          this.openEditReportModal(
-                            event,
-                            this.handleEditReportSubmit,
-                            ModalContent.EDIT_TAILINGS_REPORT,
-                            this.props.expectedDocumentStatusOptions,
-                            doc
-                          )
-                        }
-                      >
-                        <img className="padding-small" src={BRAND_PENCIL} alt="Edit TSF Report" />
-                      </Button>
-                      <Popconfirm
-                        placement="topLeft"
-                        title={`Are you sure you want to delete ${doc.exp_document_name}?`}
-                        onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)}
-                        okText="Delete"
-                        cancelText="Cancel"
-                      >
-                        <Button ghost type="primary">
-                          <Icon type="minus-circle" theme="outlined" />
-                        </Button>
-                      </Popconfirm>
+                      <AuthorizationWrapper permission={Permission.CREATE}>
+                        <div className="inline-flex">
+                          <Button
+                            className="full-mobile"
+                            type="primary"
+                            ghost
+                            onClick={(event) =>
+                              this.openEditReportModal(
+                                event,
+                                this.handleEditReportSubmit,
+                                ModalContent.EDIT_TAILINGS_REPORT,
+                                this.props.expectedDocumentStatusOptions,
+                                doc
+                              )
+                            }
+                          >
+                            <img src={BRAND_PENCIL} alt="Edit TSF Report" />
+                          </Button>
+                          <Popconfirm
+                            placement="topLeft"
+                            title={`Are you sure you want to delete ${doc.exp_document_name}?`}
+                            onConfirm={(event) => this.removeReport(event, doc.exp_document_guid)}
+                            okText="Delete"
+                            cancelText="Cancel"
+                          >
+                            <Button className="full-mobile" ghost type="primary">
+                              <Icon type="minus-circle" theme="outlined" />
+                            </Button>
+                          </Popconfirm>
+                        </div>
+                      </AuthorizationWrapper>
                     </Col>
                   </Row>
                   <Divider type="horizontal" />
@@ -311,20 +320,22 @@ export class MineTailingsInfo extends Component {
           <div key="0">
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-                <Button
-                  className="full-mobile"
-                  type="secondary"
-                  onClick={(event) =>
-                    this.openAddReportModal(
-                      event,
-                      this.handleAddReportSubmit,
-                      ModalContent.ADD_TAILINGS_REPORT,
-                      this.props.mineTSFRequiredReports
-                    )
-                  }
-                >
-                  {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
-                </Button>
+                <AuthorizationWrapper permission={Permission.CREATE}>
+                  <Button
+                    type="secondary"
+                    ghost
+                    onClick={(event) =>
+                      this.openAddReportModal(
+                        event,
+                        this.handleAddReportSubmit,
+                        ModalContent.ADD_TAILINGS_REPORT,
+                        this.props.mineTSFRequiredReports
+                      )
+                    }
+                  >
+                    {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
+                  </Button>
+                </AuthorizationWrapper>
               </Col>
               <Col span={12} />
               <Col span={4} align="right" />
