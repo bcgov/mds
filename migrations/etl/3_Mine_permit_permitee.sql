@@ -18,25 +18,25 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 4: Scan new permit info in MMS';
     -- This is the intermediary table that will be used to store mine permit and permittee info from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PERMIT(
-        mine_party_appt_guid      uuid                    ,
+        mine_party_appt_guid      uuid            ,
         --permit info
-        permit_guid         uuid                    ,
-        source              numeric                 ,
-        mine_guid           uuid                    ,
-        mine_no             character varying(12)   ,
-        permit_no           character varying(12)   ,
-        received_date       date                    ,
-        issue_date          date                    ,
-        expiry_date         date                    ,
-        permit_status_code  character varying(2)    ,
+        permit_guid         uuid                  ,
+        source              numeric               ,
+        mine_guid           uuid                  ,
+        mine_no             character varying(12) ,
+        permit_no           character varying(12) ,
+        received_date       date                  ,
+        issue_date          date                  ,
+        expiry_date         date                  ,
+        permit_status_code  character varying(2)  ,
         --permittee info
-        party_guid          uuid                    ,
-        party_combo_id      character varying(200)  ,
-        first_name character varying(100)           ,
-        party_name character varying(100)           ,
-        party_type character varying(3)             ,
-        phone_no character varying(12)              ,
-        email character varying(254)                ,
+        party_guid          uuid                  ,
+        party_combo_id      character varying(200),
+        first_name character varying(100)         ,
+        party_name character varying(100)         ,
+        party_type character varying(3)           ,
+        phone_no character varying(12)            ,
+        email character varying(254)              ,
         effective_date date
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
@@ -380,7 +380,7 @@ BEGIN
             contact.party_combo_id=new_permittee.party_combo_id
     )
     INSERT INTO ETL_PERMIT(
-        mine_party_appt_guid      ,
+        mine_party_appt_guid,
         --permit info
         permit_guid         ,
         source              ,
