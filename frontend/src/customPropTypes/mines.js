@@ -1,15 +1,16 @@
 import { PropTypes, shape, arrayOf } from "prop-types";
 import { minePermit } from "@/customPropTypes/permits";
+import { mineExpectedDocument } from "@/customPropTypes/documents";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const mine = shape({
   guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
+  mine_note: PropTypes.string,
   region_code: PropTypes.string,
   major_mine_ind: PropTypes.bool,
   mine_permit: arrayOf(minePermit),
+  mine_expected_documents: arrayOf(mineExpectedDocument),
 });
 
 export const mineTypes = shape({

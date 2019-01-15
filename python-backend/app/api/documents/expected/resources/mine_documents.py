@@ -7,6 +7,7 @@ from datetime import datetime
 
 from ...required.models.required_documents import RequiredDocument
 from ..models.mine_expected_document import MineExpectedDocument
+from ..models.document_status import ExpectedDocumentStatus
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -47,6 +48,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         doc_list = data['documents']
         mine_new_docs = []
+        not_received = ExpectedDocumentStatus.find_by_expected_document_description('Not Received')
         for new_doc in doc_list:
             if new_doc['req_document_guid'] != None:
                 req_doc = RequiredDocument.find_by_req_doc_guid(new_doc['req_document_guid'])
@@ -56,6 +58,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_name=new_doc['document_name'],
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid=mine_guid,
+                exp_document_status_guid=not_received.exp_document_status_guid,
                 due_date=MineExpectedDocument.add_due_date_to_expected_document(
                     self, datetime.now(), req_doc.req_document_due_date_type,
                     req_doc.req_document_due_date_period_months),
