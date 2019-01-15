@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
@@ -6,13 +6,13 @@ import { isAuthenticated, getKeycloak } from "@/selectors/authenticationSelector
 import { authenticateUser, storeKeycloakData } from "@/actions/authenticationActions";
 
 /**
- * @constant AuthGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
+ * @constant AuthenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
 
-export const AuthGuard = (WrappedComponent) => {
-  const authGuard = () => <WrappedComponent />;
+export const AuthenticationGuard = (WrappedComponent) => {
+  const authenticationGuard = () => <WrappedComponent />;
 
-  hoistNonReactStatics(authGuard, WrappedComponent);
+  hoistNonReactStatics(authenticationGuard, WrappedComponent);
 
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
@@ -31,7 +31,7 @@ export const AuthGuard = (WrappedComponent) => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(authGuard);
+  )(authenticationGuard);
 };
 
-export default AuthGuard;
+export default AuthenticationGuard;

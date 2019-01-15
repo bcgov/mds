@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Button, Icon, Card, Row, Col } from "antd";
-import ConditionalButton from "@/components/common/ConditionalButton";
+import { Button, Icon, Card } from "antd";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
 import { formatTitleString } from "@/utils/helpers";
 import { Redirect } from "react-router";
 
@@ -32,6 +33,7 @@ export class DefaultContact extends Component {
             this.props.mine.guid,
             this.props.partyRelationship.mine_party_appt_type_code
           )}
+          push
         />
       );
     }
@@ -39,6 +41,7 @@ export class DefaultContact extends Component {
       return (
         <Redirect
           to={router.PARTY_PROFILE.dynamicRoute(this.props.partyRelationship.party.party_guid)}
+          push
         />
       );
     }
@@ -118,18 +121,21 @@ export class DefaultContact extends Component {
             </Button>{" "}
             {this.props.isEditable && [
               <br />,
-              <ConditionalButton
-                type="primary"
-                string="Update"
-                handleAction={() =>
-                  this.props.openEditPartyRelationshipModal(
-                    this.props.partyRelationship,
-                    this.props.onSubmitEditPartyRelationship,
-                    this.props.handleChange,
-                    this.props.mine
-                  )
-                }
-              />,
+              <AuthorizationWrapper permission={Permission.CREATE}>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    this.props.openEditPartyRelationshipModal(
+                      this.props.partyRelationship,
+                      this.props.onSubmitEditPartyRelationship,
+                      this.props.handleChange,
+                      this.props.mine
+                    )
+                  }
+                >
+                  Update
+                </Button>
+              </AuthorizationWrapper>,
             ]}
           </div>
           {this.props.otherDetails}

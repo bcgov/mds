@@ -184,7 +184,7 @@ BEGIN
         mms.person_combo_id     ,
         mms.mgr_combo_id
     FROM new_manager_info mms
-    INNER JOIN mine_identity mds ON
+    INNER JOIN mine mds ON
         mds.mine_no=mms.mine_no;
     SELECT count(*) FROM ETL_MANAGER INTO new_row;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);
@@ -270,7 +270,7 @@ BEGIN
                 party_guid = ETL_MANAGER.party_guid
             AND
                 mine_guid = ETL_Manager.mine_guid
-            AND 
+            AND
                 mine_party_appt_type_code = 'MMG'
         )
     )
@@ -290,7 +290,7 @@ BEGIN
         gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
         new.mine_guid       ,
         new.party_guid      ,
-        'MMG'
+        'MMG'               ,
         new.effective_date  ,
         '9999-12-31'::date  ,
         'mms_migration'     ,
