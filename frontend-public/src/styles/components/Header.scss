@@ -5,7 +5,7 @@
   width: 100vw;
   background-color: $gov-blue;
   border-bottom: 1px solid $gov-yellow;
-  padding: 0 0 0 $default-padding-xxl;
+  padding: 0 $default-padding-lg $default-margin-md $default-padding-xxl;
 
   &__img {
     margin: $default-margin-sm;
@@ -14,4 +14,25 @@
   &__btn {
     color: $pure-white;
   }
+}
+
+.header-title-bc {
+  padding-left: $default-margin-lg;
+  color: $gov-yellow;
+  font-style: italic;
+  font-weight: $regular;
+}
+.header-title {
+  color: $pure-white;
+  font-style: italic;
+  font-weight: $regular;
+}
+
+.header-h1 {
+  margin-top: $default-margin-lg;
+}
+
+.header-login-btn {
+  border-color: $pure-white;
+  text-align: right;
 }

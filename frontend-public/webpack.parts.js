@@ -48,25 +48,6 @@ exports.loadJS = ({ include, exclude } = {}) => ({
   },
 });
 
-exports.loadCSS = ({ include, exclude } = {}) => ({
-  module: {
-    rules: [
-      {
-        test: /\.s?css$/,
-        include,
-        exclude,
-        use: ["style-loader", "css-loader", postCSSLoader, "sass-loader"],
-      },
-      {
-        test: /\.less$/,
-        include,
-        exclude,
-        use: ["style-loader", "css-loader", postCSSLoader, "sass-loader"],
-      },
-    ],
-  },
-});
-
 exports.loadCSS = ({ include, exclude, theme } = {}) => ({
   module: {
     rules: [
@@ -97,7 +78,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
   plugins: [new AntdScssThemePlugin(theme)],
 });
 
-exports.extractCSS = ({ include, exclude, filename } = {}) => ({
+exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
   module: {
     rules: [
       {
@@ -109,7 +90,7 @@ exports.extractCSS = ({ include, exclude, filename } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          "sass-loader",
+          AntdScssThemePlugin.themify("sass-loader"),
         ],
       },
       {
@@ -121,12 +102,13 @@ exports.extractCSS = ({ include, exclude, filename } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          "sass-loader",
+          AntdScssThemePlugin.themify("less-loader"),
         ],
       },
     ],
   },
   plugins: [
+    new AntdScssThemePlugin(theme),
     new MiniCssExtractPlugin({
       filename,
     }),
