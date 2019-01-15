@@ -4,20 +4,22 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
+import UploadedFilesList from "@/components/common/UploadedFilesList";
 import FileUpload from "@/components/common/FileUpload";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
-import { required, notnone } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.array.isRequired,
-  selectedDocument: PropTypes.object,
+  selectedDocument: CustomPropTypes.mineExpectedDocument,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -58,6 +60,15 @@ export const EditTailingsReportForm = (props) => (
             placeholder="Select a Status"
             component={RenderSelect}
             data={props.statusOptions}
+          />
+        </Form.Item>
+        <Form.Item label="Attached Files">
+          <Field
+            id="tsf_report_file_uploads"
+            name="tsf_report_file_uploads"
+            component={UploadedFilesList}
+            selectedDocId={props.selectedDocument.exp_document_guid}
+            mineId={props.selectedDocument.mine_guid}
           />
         </Form.Item>
         <Form.Item label="Upload Documents">

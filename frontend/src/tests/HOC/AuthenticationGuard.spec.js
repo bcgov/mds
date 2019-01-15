@@ -1,11 +1,11 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AuthGuard } from "@/HOC/AuthGuard";
+import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import * as Mock from "@/tests/mocks/dataMocks";
 
-const Component = AuthGuard(() => <div>Test</div>);
+const Component = AuthenticationGuard(() => <div>Test</div>);
 const dispatchProps = {};
 const reducerProps = {};
 
@@ -26,7 +26,7 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("AuthGuard", () => {
+describe("AuthenticationGuard", () => {
   it("should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`", () => {
     const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(wrapper).toMatchSnapshot();

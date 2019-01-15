@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { CreateGuard } from "@/HOC/CreateGuard";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Mock from "@/tests/mocks/dataMocks";
 
-const Component = CreateGuard(() => <div>Test</div>);
+const Component = AuthorizationGuard("role_create")(() => <div>Test</div>);
 const dispatchProps = {};
 const reducerProps = {};
 
@@ -22,18 +22,17 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("CreateGuard", () => {
-  it("should render the `WrappedComponent` if `userRoles === role_create`", () => {
+describe("AuthorizationGuard", () => {
+  it("should render the `WrappedComponent` if `userRoles === role_create || role_admin`", () => {
     const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
     expect(component.html()).not.toEqual("<div></div>");
     expect(component.html()).toEqual("<div>Test</div>");
   });
 
-  it("should render the `<div />` if `userRoles !== role_create`", () => {
+  it("should render the `<NullScreen /> if `userRoles !== role_create || role_admin`", () => {
     reducerProps.userRoles = [];
     const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(component.html()).toEqual("<div></div>");
     expect(component.html()).not.toEqual("<div>Test</div>");
   });
 });

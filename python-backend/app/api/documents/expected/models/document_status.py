@@ -17,8 +17,7 @@ class ExpectedDocumentStatus(AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
-    active_ind = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<ExpectedDocumentStatus %r>' % self.exp_document_status_guid
@@ -32,6 +31,10 @@ class ExpectedDocumentStatus(AuditMixin, Base):
     @classmethod
     def find_by_expected_document_status(cls, _id):
         return cls.query.filter_by(exp_document_status_guid=_id).first()
+
+    @classmethod
+    def find_by_expected_document_description(cls, description):
+        return cls.query.filter_by(description=description).first()
 
     @classmethod
     def find_all_document_status(cls):
