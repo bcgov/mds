@@ -33,6 +33,7 @@ export class DefaultContact extends Component {
             this.props.mine.guid,
             this.props.partyRelationship.mine_party_appt_type_code
           )}
+          push
         />
       );
     }
@@ -40,6 +41,7 @@ export class DefaultContact extends Component {
       return (
         <Redirect
           to={router.PARTY_PROFILE.dynamicRoute(this.props.partyRelationship.party.party_guid)}
+          push
         />
       );
     }
