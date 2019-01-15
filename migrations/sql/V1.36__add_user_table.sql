@@ -16,7 +16,7 @@ CREATE TABLE minespace_user_mds_mine_access(
     mine_guid uuid NOT NULL, 
 
     PRIMARY KEY(user_id, mine_guid),
-    FOREIGN KEY (user_id) REFERENCES minespace_user(id) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (user_id) REFERENCES minespace_user(user_id) DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE minespace_user_mds_mine_access IS 'A list of mds mines a given minespace_user has access modify';
