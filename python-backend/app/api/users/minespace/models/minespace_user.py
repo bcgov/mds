@@ -20,13 +20,12 @@ class MinespaceUser(Base):
     mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 
     def json(self):
-        result = {
+        return {
             'user_id': str(self.user_id),
             'keycloak_guid': str(self.keycloak_guid or ''),
             'email': self.email,
             'mines': [str(x.mine_guid) for x in self.mines]
         }
-        return result
 
     @classmethod
     def get_all(cls):
