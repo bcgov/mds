@@ -5,6 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
+import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineTailingsFilePicker from "@/components/mine/Tailings/MineTailingsFilePicker";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
@@ -16,10 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  selectedDocument: PropTypes.shape({
-    exp_document_guid: PropTypes.string,
-    mine_guid: PropTypes.string,
-  }).isRequired,
+  selectedDocument: CustomPropTypes.mineExpectedDocument,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -60,6 +58,15 @@ export const EditTailingsReportForm = (props) => (
             placeholder="Select a Status"
             component={RenderSelect}
             data={props.statusOptions}
+          />
+        </Form.Item>
+        <Form.Item label="Attached Files">
+          <Field
+            id="tsf_report_file_uploads"
+            name="tsf_report_file_uploads"
+            component={UploadedFilesList}
+            selectedDocId={props.selectedDocument.exp_document_guid}
+            mineId={props.selectedDocument.mine_guid}
           />
         </Form.Item>
         <Form.Item label="Upload/Attach Documents">
