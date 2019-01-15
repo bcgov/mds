@@ -132,7 +132,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         mine_status_xref.save()
+
         try:
+            existing_status = MineStatus.find_by_mine_guid(mine_guid)
+            if existing_status:
+                existing_status.mine_status_xref_guid = mine_status_xref.mine_status_xref_guid
+                existing_status.save()
+                return existing_status
+                
             _mine_status = MineStatus(
                 mine_status_guid=uuid.uuid4(),
                 mine_guid=mine_guid,
