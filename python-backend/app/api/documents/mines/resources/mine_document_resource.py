@@ -22,9 +22,6 @@ class MineDocumentResource(Resource, UserMixin, ErrorMixin):
     def get(self, mine_guid=None):
         if not mine_guid:
             return self.create_error_payload(400, 'no mine_guid provided')
+      
         mine_docs = MineDocument.find_by_mine_guid(mine_guid)
-        if not mine_docs:
-            return self.create_error_payload(404, 'mine not found')
-
-        #does this list compreshension work the same as the lambda/map functions
         return {'mine_documents': [x.json() for x in mine_docs]}
