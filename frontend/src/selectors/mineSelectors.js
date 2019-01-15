@@ -43,9 +43,9 @@ export const getTransformedMineTypes = createSelector(
       mine_disturbance_code: [],
     };
     if (mineGuid) {
-      mines[mineGuid].mine_type.map((type) => {
+      mines[mineGuid].mine_type.forEach((type) => {
         mine_types.mine_tenure_type_code.push(type.mine_tenure_type_code);
-        type.mine_type_detail.map((detail) => {
+        type.mine_type_detail.forEach((detail) => {
           if (detail.mine_commodity_code) {
             mine_types.mine_commodity_code.push(detail.mine_commodity_code);
           } else if (detail.mine_disturbance_code) {
