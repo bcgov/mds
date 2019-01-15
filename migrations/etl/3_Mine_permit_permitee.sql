@@ -18,7 +18,7 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 4: Scan new permit info in MMS';
     -- This is the intermediary table that will be used to store mine permit and permittee info from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PERMIT(
-        permittee_guid      uuid                    ,
+        mine_party_appt_guid      uuid                    ,
         --permit info
         permit_guid         uuid                    ,
         source              numeric                 ,
@@ -380,7 +380,7 @@ BEGIN
             contact.party_combo_id=new_permittee.party_combo_id
     )
     INSERT INTO ETL_PERMIT(
-        permittee_guid      ,
+        mine_party_appt_guid      ,
         --permit info
         permit_guid         ,
         source              ,
@@ -402,7 +402,7 @@ BEGIN
         effective_date
     )
     SELECT
-        gen_random_uuid()       ,--permittee_guid
+        gen_random_uuid()       ,
         --permit info
         gen_random_uuid()       ,--permit_guid
         permittee_info.source   ,
@@ -556,29 +556,29 @@ BEGIN
         )
     )
     INSERT INTO mine_party_appt (
-        mine_party_appt_guid  ,
-        permit_guid      ,
-        party_guid       ,
-        mine_guid        ,
+        mine_party_appt_guid     ,
+        permit_guid              ,
+        party_guid               ,
+        mine_guid                ,
         mine_party_appt_type_code,
-        create_user      ,
-        create_timestamp ,
-        update_user      ,
-        update_timestamp ,
-        effective_date   ,
+        create_user              ,
+        create_timestamp         ,
+        update_user              ,
+        update_timestamp         ,
+        effective_date           ,
         expiry_date
     )
     SELECT
-        permittee_guid  ,
-        permit_guid     ,
-        party_guid      ,
-        mine_guid       ,
-        'PMT'           ,
-        'mms_migration' ,
-        now()           ,
-        'mms_migration' ,
-        now()           ,
-        issue_date      ,
+        mine_party_appt_guid,
+        permit_guid         ,
+        party_guid          ,
+        mine_guid           ,
+        'PMT'               ,
+        'mms_migration'     ,
+        now()               ,
+        'mms_migration'     ,
+        now()               ,
+        issue_date          ,
         expiry_date
     FROM new_party_appt;
     SELECT count(*) FROM mine_party_appt INTO new_row;
