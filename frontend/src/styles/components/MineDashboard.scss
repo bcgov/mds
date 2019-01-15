@@ -57,12 +57,12 @@
   }
 
   &__content {
-    z-index: 100;
     background-color: $pure-white;
     position: relative;
     border-radius: $default-round-top-border;
 
     @include mobile {
+      margin-top: $default-margin-lg;
       padding: 0;
     }
   }
