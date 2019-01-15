@@ -32,3 +32,27 @@ export const getCurrentMineTypes = createSelector(
     }
   }
 );
+
+export const getTransformedMineTypes = createSelector(
+  [getMines, getMineGuid],
+  (mines, mineGuid) => {
+    const mine_types = {
+      mine_tenure_type_code: [],
+      mine_commodity_code: [],
+      mine_disturbance_code: [],
+    };
+    if (mineGuid) {
+      mines[mineGuid].mine_type.map((type) => {
+        mine_types.mine_tenure_type_code.push(type.mine_tenure_type_code);
+        type.mine_type_detail.map((detail) => {
+          if (detail.mine_commodity_code) {
+            mine_types.mine_commodity_code.push(detail.mine_commodity_code);
+          } else if (detail.mine_disturbance_code) {
+            mine_types.mine_disturbance_code.push(detail.mine_disturbance_code);
+          }
+        });
+      });
+      return mine_types;
+    }
+  }
+);

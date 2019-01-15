@@ -24,6 +24,12 @@
       &__content {
         flex: 2;
         padding: $default-padding-lg;
+
+        &--status__img {
+          width: 15px;
+          height: 26px;
+          margin-right: 5px;
+        }
       }
 
       &__map {
@@ -64,10 +70,9 @@
 .mine__status {
   &:nth-child(2),
   &:nth-child(3) {
-    font-weight: lighter;
-    font-size: 16px;
     &:before {
-      content: "|";
+      content: ",";
+      margin-right: 4px;
     }
   }
 }
@@ -77,6 +82,7 @@
   &:nth-child(2),
   &:nth-child(3) {
     &:after {
+      margin-right: 4px;
       content: ", ";
     }
   }

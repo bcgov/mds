@@ -340,18 +340,23 @@ export class Dashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <div className="right center-mobile">
-            <AuthorizationWrapper permission={Permission.CREATE}>
-              <Button
-                className="full-mobile"
-                type="primary"
-                onClick={(event) =>
-                  this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
-                }
-              >
-                {ModalContent.CREATE_MINE_RECORD}
-              </Button>
-            </AuthorizationWrapper>
+          <div className="inline-flex between center-mobile center-mobile">
+            <div>
+              <h1>Mine Lookup</h1>
+              <h5>To find a mine summary, search in the list or map section below.</h5>
+            </div>
+            <div>
+              <AuthorizationWrapper permission={Permission.CREATE}>
+                <Button
+                  type="primary"
+                  onClick={(event) =>
+                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
+                  }
+                >
+                  {ModalContent.CREATE_MINE_RECORD}
+                </Button>
+              </AuthorizationWrapper>
+            </div>
           </div>
         </div>
         <div className="landing-page__content">{this.renderCorrectView()}</div>

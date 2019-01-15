@@ -63,20 +63,23 @@ $card-border-color: $violet;
  * Style Defaults
  */
 
-$default-overlay: $medium-grey;
+$default-overlay: rgba(65, 58, 58, 0.9);
 
 // Font Size
 $default-h1: 36px;
-$mobile-h1: 24px;
-$default-h2: 18px;
-$mobile-h2: 16px;
-$default-h3: 20px;
-$mobile-h3: 16px;
-$default-h4: 16px;
-$mobile-h4: 12px;
+$mobile-h1: 32px;
+$default-h2: 28px;
+$mobile-h2: 24px;
+$default-h3: 24px;
+$mobile-h3: 20px;
+$default-h4: 20px;
+$mobile-h4: 18px;
 $default-h5: 20px;
-$mobile-h5: 16px;
+$mobile-h5: 18px;
 $default-p: 16px;
+
+$table-header: 18px;
+$field-label: $default-p;
 
 // Font
 $default-font: "Open Sans", sans-serif;
@@ -89,9 +92,13 @@ $h2-color: $darkest-grey;
 $h3-color: $medium-grey;
 $h4-color: $medium-grey;
 $h5-color: $darkest-grey;
-$p-color: $black;
-$a-color: $violet;
+$p-color: $darkest-grey;
+$a-color: $hover-blue;
 $a-color-hover: darken($a-color, 20%);
+$ant-header-color: $darkest-grey;
+$ant-nested-header-color: $medium-grey;
+$ant-label-color: $medium-grey;
+$ant-label-title-color: $darkest-grey;
 
 // Margins
 $default-margin-sm: 5px;
