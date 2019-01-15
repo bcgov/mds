@@ -23,6 +23,7 @@
 
       &__content {
         flex: 2;
+        margin-top: $default-margin-lg;
         padding: $default-padding-lg;
 
         &--status__img {
@@ -67,42 +68,19 @@
   }
 }
 
-.mine__status {
-  &:nth-child(2),
-  &:nth-child(3) {
-    &:before {
-      content: ",";
-      margin-right: 4px;
-    }
-  }
-}
-
+.mine__status,
 .mine_tenure {
   &:nth-child(1),
   &:nth-child(2),
   &:nth-child(3) {
     &:after {
+      content: ",";
       margin-right: 4px;
-      content: ", ";
     }
   }
   &:last-child() {
     &:after {
       content: " " !important;
     }
-  }
-}
-
-.table-wrapper {
-  padding: $default-padding-md;
-  border-left: 4px solid $violet;
-  background: $pure-white;
-
-  th {
-    padding: 30px;
-  }
-
-  td {
-    padding: 0 0 $default-padding-xl $default-padding-xl;
   }
 }

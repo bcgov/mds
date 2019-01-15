@@ -343,11 +343,12 @@ export class Dashboard extends Component {
           <div className="inline-flex between center-mobile center-mobile">
             <div>
               <h1>Mine Lookup</h1>
-              <h5>To find a mine summary, search in the list or map section below.</h5>
+              <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
               <AuthorizationWrapper permission={Permission.CREATE}>
                 <Button
+                  className="full-mobile"
                   type="primary"
                   onClick={(event) =>
                     this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)

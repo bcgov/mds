@@ -136,10 +136,10 @@ class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
-          <div className="inline-flex between">
+          <div className="inline-flex between center-mobile">
             <h1>{this.props.mine.mine_name} </h1>
             <AuthorizationWrapper permission={Permission.CREATE}>
-              <Dropdown className="full-height" overlay={menu} placement="bottomLeft">
+              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="primary">
                   <div className="padding-small">
                     <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
@@ -150,7 +150,7 @@ class MineHeader extends Component {
             </AuthorizationWrapper>
           </div>
           <Divider className="custom-large-divider" />
-          <div className="inline-flex between">
+          <div className="inline-flex between block-mobile">
             <div className="inline-flex padding-small">
               <p className="field-title">Mine No. </p>
               <p> {this.props.mine.mine_no} </p>
@@ -160,7 +160,7 @@ class MineHeader extends Component {
               <p>{this.props.mine.major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</p>
             </div>
             <div className="inline-flex padding-small">
-              <p className="field-title">TSF </p>
+              <p className="field-title">TSF</p>
               <p>
                 {this.props.mine.mine_tailings_storage_facility.length > 0
                   ? this.props.mine.mine_tailings_storage_facility.length
@@ -178,13 +178,15 @@ class MineHeader extends Component {
                   this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
                 }
               />
-              <p>
-                {this.props.mine.mine_status[0].status_labels.map((label, i) => (
-                  <span className="mine__status" key={i}>
+              {this.props.mine.mine_status[0] ? (
+                this.props.mine.mine_status[0].status_labels.map((label) => (
+                  <p className="mine__status" key={label}>
                     {label}
-                  </span>
-                ))}
-              </p>
+                  </p>
+                ))
+              ) : (
+                <p>{String.EMPTY_FIELD}</p>
+              )}
             </div>
           )}
           {!this.props.mine.mine_status[0] && (
@@ -196,22 +198,36 @@ class MineHeader extends Component {
           <div className="inline-flex padding-small">
             <p className="field-title">Tenure</p>
             <p>
-              {this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
-                <span className="mine_tenure">{this.props.mineTenureHash[tenure]}</span>
-              ))}
+              {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
+                this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
+                  <span className="mine_tenure" key={tenure}>
+                    {this.props.mineTenureHash[tenure]}
+                  </span>
+                ))
+              ) : (
+                <p>{String.EMPTY_FIELD}</p>
+              )}
             </p>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-small wrap">
             <p className="field-title">Commodity</p>
-            {this.props.transformedMineTypes.mine_commodity_code.map((code) => (
-              <Tag>{this.props.mineCommodityOptionsHash[code]}</Tag>
-            ))}
+            {this.props.transformedMineTypes.mine_commodity_code.length > 0 ? (
+              this.props.transformedMineTypes.mine_commodity_code.map((code) => (
+                <Tag key={code}>{this.props.mineCommodityOptionsHash[code]}</Tag>
+              ))
+            ) : (
+              <p>{String.EMPTY_FIELD}</p>
+            )}
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-small wrap">
             <p className="field-title">Disturbance</p>
-            {this.props.transformedMineTypes.mine_disturbance_code.map((code) => (
-              <Tag>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
-            ))}
+            {this.props.transformedMineTypes.mine_disturbance_code.length > 0 ? (
+              this.props.transformedMineTypes.mine_disturbance_code.map((code) => (
+                <Tag key={code}>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
+              ))
+            ) : (
+              <p>{String.EMPTY_FIELD}</p>
+            )}
           </div>
         </div>
         <div className="dashboard__header--card__map">

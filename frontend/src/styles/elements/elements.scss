@@ -56,6 +56,7 @@ h5 {
   }
 }
 
+body,
 p,
 .p {
   font-size: $default-p;
@@ -83,6 +84,7 @@ p,
 
 a,
 link {
+  @extend p;
   color: $a-color;
   text-decoration: underline;
   &:hover {
@@ -181,4 +183,25 @@ hr {
   font-weight: $semi-bold;
   text-transform: uppercase;
   color: $ant-label-color;
+}
+
+// use these classes when you require a desired style but a header tag is not needed!
+.h1 {
+  @extend h1;
+}
+
+.h2 {
+  @extend h2;
+}
+
+.h3 {
+  @extend h3;
+}
+
+.h4 {
+  @extend h4;
+}
+
+.h5 {
+  @extend h5;
 }

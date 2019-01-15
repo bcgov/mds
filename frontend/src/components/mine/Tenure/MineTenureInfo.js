@@ -67,7 +67,7 @@ class MineTenureInfo extends Component {
             <tbody>
               <tr>
                 <th scope="col">
-                  <h4>Tenure Numbers</h4>
+                  <h2>Tenure Numbers</h2>
                 </th>
               </tr>
               <tr>

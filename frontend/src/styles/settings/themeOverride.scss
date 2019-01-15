@@ -40,7 +40,6 @@
 .ant-btn,
 .ant-btn-sm,
 .ant-btn-secondary {
-  font-weight: $light;
   margin: 10px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
@@ -65,6 +64,7 @@
 }
 
 .ant-btn-primary {
+  font-weight: $light;
   color: $pure-white;
   &:hover {
     color: $pure-white;
@@ -73,17 +73,6 @@
   }
 }
 
-.ant-btn-dashed {
-  margin: 10px 0;
-  color: $tertiary-btn-color;
-  border-color: $tertiary-btn-border-color;
-  border-style: dashed;
-  &:hover {
-    color: $tertiary-btn-color-hover;
-    border-color: $tertiary-btn-border-color-hover;
-    border-style: dashed;
-  }
-}
 .ant-popover-buttons button {
   margin: 10px;
   line-height: 1.5;
@@ -93,6 +82,7 @@
   font-size: 14px;
   height: 32px;
 }
+
 .ant-btn-background-ghost {
   border-style: none;
   box-shadow: none;
@@ -141,7 +131,8 @@
 
 // TAGS
 .ant-tag {
-  font-size: 14px;
+  @extend p;
+  padding: 0 7px !important;
 }
 
 // FORMS
