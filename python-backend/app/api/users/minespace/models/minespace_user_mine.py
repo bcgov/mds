@@ -15,8 +15,8 @@ class MinespaceUserMine(Base):
     mine_guid = db.Column(UUID(as_uuid=True), nullable=False, primary_key=True)
 
     @classmethod
-    def create_minespace_user(cls, user_id, mine_guid, save=True):
-        minespace_user = cls(user_id=user_id, mine_guid=mine_guid, **user_kwargs)
+    def create_minespace_user_mine(cls, user_id, mine_guid, save=True):
+        minespace_user = cls(user_id=user_id, mine_guid=mine_guid)
         if save:
             minespace_user.save(commit=False)
         return minespace_user

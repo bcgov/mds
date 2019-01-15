@@ -29,11 +29,11 @@ class MinespaceUser(Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.filter_by(deleted_ind=False).first()
+        return cls.query.filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=user_id).filter_by(deleted_ind=False).first()
+        return cls.query.filter_by(user_id=id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_guid(cls, user_guid):
@@ -43,8 +43,9 @@ class MinespaceUser(Base):
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
 
-    def create_minespace_user(cls, email, user_kwargs, save=True):
-        minespace_user = cls(email=email, **user_kwargs)
+    @classmethod
+    def create_minespace_user(cls, email, save=True):
+        minespace_user = cls(email=email)
         if save:
             minespace_user.save(commit=False)
         return minespace_user

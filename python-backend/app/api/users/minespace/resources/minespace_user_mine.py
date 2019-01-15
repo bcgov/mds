@@ -24,7 +24,10 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         guid = uuid.UUID(data.get('mine_guid'))  #ensure good formatting
         try:
-            mum = MinespaceUserMine.create_minespace_user_mine(user_id=user_id, mine_guid=guid)
+            mum = MinespaceUserMine.create_minespace_user_mine(
+                user_id,
+                guid,
+            )
             mum.save()
         except:
             self.create_error_payload(500, "ERROR: user-mine access was not created"), 500

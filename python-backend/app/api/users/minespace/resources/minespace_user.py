@@ -24,9 +24,10 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
                 user = MinespaceUser.find_by_email(request.args.get('email'))
                 if not user:
                     return self.create_error_payload(404, "user not found"), 404
-            return user.json()
-        users = MinespaceUser.get_all()
-        return {'users': [x.json() for x in users]}
+            result = user.json()
+        else:
+            result = {'users': [x.json() for x in MinespaceUser.get_all()]}
+        return result
 
     @api.doc(params={'user_id': 'Not expected.'})
     @requires_role_mine_admin
@@ -34,11 +35,12 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         if user_id:
             return self.create_error_payload(400, "unexpected user guid"), 400
         data = self.parser.parse_args()
-        new_user = MinespaceUser.create_minespace_user(email=data.get('email'), save=False)
+        new_user = MinespaceUser.create_minespace_user(data.get('email'), save=False)
         db.session.add(new_user)
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)  #ensure good formatting
-            new_mum = MinespaceUserMine.create_minespace_user_mine(user_id=new_user.user_id, mine_guid=guid, save=False))
+            new_mum = MinespaceUserMine.create_minespace_user_mine(
+                new_user.user_id, guid, save=False)
         db.session.commit()
         return new_user.json()
 
