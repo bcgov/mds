@@ -17,7 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  selectedDocument: CustomPropTypes.mineExpectedDocument,
+  selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
 export const EditTailingsReportForm = (props) => (

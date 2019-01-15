@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getMineDocuments } from "@/selectors/mineSelectors";
@@ -13,18 +14,10 @@ import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import FilePicker from "@/components/common/FilePicker";
 
 const propTypes = {
-  selectedDocument: PropTypes.shape({
-    exp_document_guid: PropTypes.string,
-    mine_guid: PropTypes.string,
-  }).isRequired,
+  selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
   addMineDocumentToExpectedDocument: PropTypes.func.isRequired,
   fetchMineDocuments: PropTypes.func.isRequired,
-  mineDocuments: PropTypes.arrayOf(
-    PropTypes.shape({
-      mine_document_guid: PropTypes.string,
-      document_name: PropTypes.string,
-    })
-  ).isRequired,
+  mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
 };
 
 class MineTailingsFilePicker extends Component {

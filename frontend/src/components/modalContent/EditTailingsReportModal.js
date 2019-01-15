@@ -8,10 +8,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  selectedDocument: PropTypes.shape({
-    exp_document_guid: PropTypes.string,
-    mine_guid: PropTypes.string,
-  }).isRequired,
+  selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
 const defaultProps = {
