@@ -14,6 +14,7 @@ const initialState = {
   minesPageData: {},
   mineGuid: false,
   mineBasicInfoList: [],
+  mineDocuments: [],
 };
 
 const mineReducer = (state = initialState, action) => {
@@ -43,6 +44,11 @@ const mineReducer = (state = initialState, action) => {
         ...state,
         mineBasicInfoList: action.payload,
       };
+    case actionTypes.STORE_MINE_DOCUMENTS:
+      return {
+        ...state,
+        mineDocuments: action.payload.mine_documents,
+      };
     default:
       return state;
   }
@@ -54,5 +60,6 @@ export const getMineNames = (state) => state[MINES].mineNameList;
 export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getMineGuid = (state) => state[MINES].mineGuid;
 export const getMineBasicInfoList = (state) => state[MINES].mineBasicInfoList;
+export const getMineDocuments = (state) => state[MINES].mineDocuments;
 
 export default mineReducer;
