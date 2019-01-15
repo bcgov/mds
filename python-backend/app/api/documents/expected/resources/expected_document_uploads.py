@@ -66,7 +66,8 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         args = {'folder': folder, 'pretty_folder': pretty_folder}
         headers = {'Authorization': request.headers.get('Authorization')}
 
-        response = requests.post(url=document_manager_URL, data=args, files=files, headers=headers)
+        response = requests.post(
+            url=document_manager_URL, data=args, files=files, headers=headers)
         json_response = response.json()
 
         errors = json_response['errors']

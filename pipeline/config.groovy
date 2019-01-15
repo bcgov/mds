@@ -204,7 +204,7 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
                 ],
                 [
