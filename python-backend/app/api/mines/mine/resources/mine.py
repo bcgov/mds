@@ -7,17 +7,15 @@ from sqlalchemy_filters import apply_sort, apply_pagination
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
-# from ..models.mine_identity import MineIdentity
-# from ..models.mine_detail import MineDetail
-# from ..models.mine_tenure_type_code import MineTenureTypeCode
-# from ..models.mine_type import MineType
+
+from ..models.mine_type import MineType
+from ..models.mine_type_detail import MineTypeDetail
+
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ....permits.permit.models.permit import Permit
-from ...region.models.region import MineRegionCode
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
-from ...tailings.models.tailings import MineTailingsStorageFacility
 from ....utils.random import generate_mine_no
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -67,30 +65,16 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             items_per_page = request.args.get('per_page', 25, type=int)
             page = request.args.get('page', 1, type=int)
             search_term = request.args.get('search', None, type=str)
+            #Filters to be applied
+            commodity_filter_terms = request.args.get('commodity', None, type=str)
             status_filter_term = request.args.get('status', None, type=str)
             tenure_filter_term = request.args.get('tenure', None, type=str)
             region_code_filter_term = request.args.get('region', None, type=str)
             major_mine_filter_term = request.args.get('major', None, type=str)
             tsf_filter_term = request.args.get('tsf', None, type=str)
 
-####Set up the base query that will be filtered
-            sort_criteria = [{'model': 'MineDetail', 'field': 'mine_name', 'direction': 'asc'}]
+            #Base query:
             mines_permit_join_query = Mine.query.join(Permit)
-            # mines_permit_join_query = MineIdentity.query.join(MineDetail)
-            # mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
-            # #TODO: Add 'isActive' column to mine status, details, type, location, and permmits tables to allow filtering
-            # #  like '.filter(major_mine_filter, isActive)'
-###Status filter term
-            # # Create a filter on mine status if one is provided
-            # if status_search_term:
-            #     status_search_term_array = status_search_term.split(',')
-            #     status_filter = MineStatusXref.mine_operation_status_code.in_(
-            #         status_search_term_array)
-            #     status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(
-            #         status_search_term_array)
-            #     status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
-            #         status_search_term_array)
-            #     all_status_filter = status_filter | status_reason_filter | status_subreason_filter
 
             # Filter by search_term if provided
             if search_term:
@@ -103,77 +87,63 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
             # Filter by Major Mine, if provided
             if major_mine_filter_term == "true" or major_mine_filter_term == "false":
-                major_mine_filter = MineDetail.major_mine_ind.is_(major_mine_filter_term == "true")
-                major_mine_query = MineIdentity.query.join(MineDetail).filter(major_mine_filter)
+                major_mine_filter = Mine.major_mine_ind.is_(major_mine_filter_term == "true")
+                major_mine_query = Mine.query.filter(major_mine_filter)
                 mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
 
-            # # Filter by TSF, if provided
-            # if tsf_filter_term == "true" or tsf_filter_term == "false":
-            #     tsf_filter = MineIdentity.mine_tailings_storage_facilities != None if tsf_filter_term == "true" else\
-            #         MineIdentity.mine_tailings_storage_facilities == None
-            #     tsf_query = MineIdentity.query.filter(tsf_filter)
-            #     mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
-            #
-            # # Filter by region, if provided
-            # if region_code_filter_term:
-            #     region_filter_term_array = region_code_filter_term.split(',')
-            #     region_filter = MineRegionCode.mine_region_code.in_(region_filter_term_array)
-            #     region_query = MineIdentity.query\
-            #         .join(MineDetail)\
-            #         .join(MineRegionCode)\
-            #         .filter(region_filter)
-            #     mines_permit_join_query = mines_permit_join_query.intersect(region_query)
-            #
-            # # Create a filter on mine status if one is provided
-            # if status_filter_term:
-            #     status_filter_term_array = status_filter_term.split(',')
-            #     status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
-            #     status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_filter_term_array)
-            #     status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
-            #         status_filter_term_array)
-            #     all_status_filter = status_filter | status_reason_filter | status_subreason_filter
-            #     status_query = MineIdentity.query \
-            #         .join(MineDetail) \
-            #         .join(MineStatus) \
-            #         .join(MineStatusXref) \
-            #         .filter(all_status_filter)
-            #     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
-            #
-            # # Create a filter on tenure if one is provided
-            # if tenure_filter_term:
-            #     tenure_filter_term_array = tenure_filter_term.split(',')
-            #     tenure_filter = MineTenureTypeCode.mine_tenure_type_code.in_(tenure_filter_term_array)
-            #     tenure_query = MineIdentity.query\
-            #         .join(MineDetail)\
-            #         .join(MineType)\
-            #         .join(MineTenureTypeCode)\
-            #         .filter(tenure_filter)
-            #     mines_permit_join_query = mines_permit_join_query.intersect(tenure_query)
+            # Filter by TSF, if provided
+            if tsf_filter_term == "true" or tsf_filter_term == "false":
+                tsf_filter = Mine.mine_tailings_storage_facilities != None if tsf_filter_term == "true" else \
+                    Mine.mine_tailings_storage_facilities == None
+                tsf_query = Mine.query.filter(tsf_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
 
+            # Filter by region, if provided
+            if region_code_filter_term:
+                region_filter_term_array = region_code_filter_term.split(',')
+                region_filter = Mine.mine_region.in_(region_filter_term_array)
+                region_query = Mine.query.filter(region_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(region_query)
+
+            # Filter by commodity if provided
+            if commodity_filter_terms:
+                commodity_filter_term_array = commodity_filter_terms.split(',')
+                commodity_filter = MineTypeDetail.mine_commodity_code.in_(commodity_filter_term_array)
+                mine_type_active_filter = MineType.active_ind.is_(True)
+                commodity_query = Mine.query\
+                    .join(MineType)\
+                    .join(MineTypeDetail)\
+                    .filter(commodity_filter, mine_type_active_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(commodity_query)
+
+            # Create a filter on tenure if one is provided
+            if tenure_filter_term:
+                tenure_filter_term_array = tenure_filter_term.split(',')
+                tenure_filter = MineType.mine_tenure_type_code.in_(tenure_filter_term_array)
+                mine_type_active_filter = MineType.active_ind.is_(True)
+                tenure_query = Mine.query \
+                    .join(MineType) \
+                    .filter(tenure_filter, mine_type_active_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(tenure_query)
+
+            # Create a filter on mine status if one is provided
+            if status_filter_term:
+                status_filter_term_array = status_filter_term.split(',')
+
+                status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
+                status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_filter_term_array)
+                status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
+                    status_filter_term_array)
+                all_status_filter = status_filter | status_reason_filter | status_subreason_filter
+                status_query = Mine.query \
+                    .join(MineStatus) \
+                    .join(MineStatusXref) \
+                    .filter(all_status_filter)
+                mines_permit_join_query = mines_permit_join_query.intersect(status_query)
+
+            sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
+            mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
             paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
-#####Old develop brancj
-                # if status_search_term:
-                #     status_query = Mine.query\
-                #         .join(MineStatus)\
-                #         .join(MineStatusXref)\
-                #         .filter(all_status_filter)
-                #     mines_permit_join_query = mines_permit_join_query.intersect(status_query)
-                # result_query, pagination_details = apply_pagination(mines_permit_join_query, page,
-                #                                                     items_per_page)
-
-            # else:
-            #     sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
-            #     if status_search_term:
-            #         mine_query_with_status = Mine.query\
-            #             .join(MineStatus)\
-            #             .join(MineStatusXref)\
-            #             .filter(all_status_filter)
-            #         result_query = apply_sort(mine_query_with_status, sort_criteria)
-            #     else:
-            #         result_query = apply_sort(Mine.query, sort_criteria)
-            #
-            # paginated_mine_query, pagination_details = apply_pagination(
-            #     result_query, page, items_per_page)
 
             mines = paginated_mine_query.all()
             return {
