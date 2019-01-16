@@ -12,7 +12,9 @@ export const Header = () => (
         <span className="header-title-bc">BC</span>
         <span className="header-title"> MineSpace</span>
       </h1>
-      <Button className="login-btn">Log in</Button>
+      <Button type="secondary" className="login-btn">
+        Log in
+      </Button>
     </div>
   </div>
 );

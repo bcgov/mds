@@ -3,10 +3,6 @@ body {
   width: 100vw;
 }
 
-.content {
-  margin: 70px 100px 50px 100px;
-}
-
 .layout {
   width: 100vw;
   min-height: 100vh;
@@ -59,15 +55,27 @@ body {
 }
 
 .sidebar-block {
-  float: right;
-  width: 450px;
-  padding: 10px;
+  width: 100%;
+  margin: 20px 0px;
 }
 
 .sidebar-block-title {
   background: $nav-blue;
+  text-align: center;
+  .side-bar-title {
+    color: $pure-white;
+    padding: $default-padding-sm;
+  }
 }
 
 .sidebar-block-content {
   background: $off-white;
+  padding: $default-padding-xl;
+}
+
+.sidebar-button {
+  @include flex();
+  align-items: center;
+  justify-content: center;
+  padding: $default-padding-md 0px;
 }

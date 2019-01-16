@@ -1,7 +1,5 @@
 // BUTTON
 // BUTTON
-.ant-btn,
-.ant-btn-sm,
 .ant-btn-secondary {
   font-weight: $light;
   margin: 10px;
@@ -18,4 +16,15 @@
 
 .ant-divider-horizontal {
   background: $gov-blue;
+}
+
+.ant-btn-primary {
+  color: $pure-white;
+  background-color: $primary-btn-color;
+  border-color: $primary-btn-color;
+  &:hover {
+    color: $pure-white;
+    background-color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
 }
