@@ -7,31 +7,42 @@ import * as FORM from "@/constants/forms";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  mines: CustomPropTypes.options.isRequired,
 };
 
 export const AddMinespaceUser = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Col>
       <Row>
-        <Field
-          id="user_bceid_email"
-          name="user_bceid_email"
-          label="BCEID Email"
-          component={RenderField}
-          validate={[required, email]}
-        />
-        <Field
-          id="proponent_mine_access"
-          name="proponent_mine_access"
-          label="Mines"
-          placeholder="Please Select a Mine"
-          component={renderConfig.MULTI_SELECT}
-          data={[{ value: "1234", label: "1234" }]}
-        />
+        <Col>
+          <Field
+            id="user_bceid_email"
+            name="user_bceid_email"
+            label="BCEID Email"
+            component={RenderField}
+            validate={[required, email]}
+          />
+        </Col>
+        <Col>
+          <Field
+            id="proponent_mine_access"
+            name="proponent_mine_access"
+            label="Mines"
+            placeholder="Please Select a Mine"
+            component={renderConfig.MULTI_SELECT}
+            data={props.mines}
+          />
+        </Col>
       </Row>
+      <div className="right center-mobile">
+        <Button className="full-mobile" type="primary" htmlType="submit">
+          Create Proponent
+        </Button>
+      </div>
     </Col>
   </Form>
 );

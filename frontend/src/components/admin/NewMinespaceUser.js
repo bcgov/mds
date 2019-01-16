@@ -5,44 +5,48 @@ import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import { createDropDownList } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import getMineNameList from "@/reducers/mineReducer";
-import { updateExpectedDocument } from "@/actionCreators/mineActionCreator";
+import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
+import { getMineNames } from "@/selectors/mineSelectors";
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 
 const propTypes = {
-  updateExpectedDocument: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  fetchMineNameList: PropTypes.func.isRequired,
+  mines: PropTypes.object,
 };
 
 const defaultProps = {
-  mines: [],
+  mines: {},
 };
 
 export class NewMinespaceUser extends Component {
   componentDidMount() {
-    // this.props.fetchMineRecords();
+    this.props.fetchMineNameList();
   }
 
   render() {
     return (
       <div>
         <h3>Add BCEID User</h3>
-        <AddMinespaceUser />
+        {this.props.mines.mines && (
+          <AddMinespaceUser
+            mines={createDropDownList(this.props.mines.mines, "mine_name", "mine_name")}
+          />
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMineNameList(state),
+  mines: getMineNames(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      updateExpectedDocument,
+      fetchMineNameList,
     },
     dispatch
   );

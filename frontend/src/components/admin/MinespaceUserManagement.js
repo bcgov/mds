@@ -1,6 +1,6 @@
 import React from "react";
-import { NewMinespaceUser } from "@/components/admin/NewMinespaceUser";
-import { ExistingMinespaceUsers } from "@/components/admin/ExistingMinespaceUsers";
+import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
+import ExistingMinespaceUsers from "@/components/admin/ExistingMinespaceUsers";
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
