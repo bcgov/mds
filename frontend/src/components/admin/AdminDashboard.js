@@ -1,5 +1,5 @@
 import React from "react";
-import { MinespaceUserManagement } from "@/components/admin/MinespaceUserManagement";
+import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
