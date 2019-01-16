@@ -61,6 +61,12 @@ body {
   }
 }
 
+.block-mobile {
+  @include mobile {
+    display: block;
+  }
+}
+
 .wrap {
   flex-wrap: wrap;
 }

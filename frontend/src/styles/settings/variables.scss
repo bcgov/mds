@@ -66,20 +66,23 @@ $secondary-background-colour: $lightest-grey;
  * Style Defaults
  */
 
-$default-overlay: $medium-grey;
+$default-overlay: rgba(65, 58, 58, 0.9);
 
 // Font Size
-$default-h1: 36px;
-$mobile-h1: 24px;
-$default-h2: 18px;
-$mobile-h2: 16px;
-$default-h3: 20px;
-$mobile-h3: 16px;
-$default-h4: 16px;
-$mobile-h4: 12px;
-$default-h5: 20px;
-$mobile-h5: 16px;
-$default-p: 16px;
+$default-h1: 2.25rem; //36px
+$mobile-h1: 2rem; //32px
+$default-h2: 1.75rem; //28px
+$mobile-h2: 1.5rem; //24px
+$default-h3: 1.5rem; //24px
+$mobile-h3: 1.25rem; //20px
+$default-h4: 1.25rem; //20px
+$mobile-h4: 1.125rem; //18px
+$default-h5: 1.25rem; //20px
+$mobile-h5: 1.125rem; //18px
+$default-p: 1rem; //16px
+
+$table-header: 1.125rem;
+$field-label: $default-p;
 
 // Font
 $default-font: "Open Sans", sans-serif;
@@ -92,9 +95,13 @@ $h2-color: $darkest-grey;
 $h3-color: $medium-grey;
 $h4-color: $medium-grey;
 $h5-color: $darkest-grey;
-$p-color: $black;
-$a-color: $violet;
+$p-color: $darkest-grey;
+$a-color: $hover-blue;
 $a-color-hover: darken($a-color, 20%);
+$ant-header-color: $darkest-grey;
+$ant-nested-header-color: $medium-grey;
+$ant-label-color: $medium-grey;
+$ant-label-title-color: $darkest-grey;
 
 // Margins
 $default-margin-sm: 5px;
