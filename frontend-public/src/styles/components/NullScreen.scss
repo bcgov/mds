@@ -6,19 +6,6 @@
     margin: 0;
   }
 
-  &--inline {
-    @include flex;
-    justify-content: center;
-    margin: 0;
-
-    h3 {
-      margin-top: 15px;
-    }
-    @include mobile {
-      display: block;
-    }
-  }
-
   .no-nav-bar {
     @include center(true, true);
   }
