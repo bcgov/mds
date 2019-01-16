@@ -31,7 +31,7 @@ class ExpectedDocument(AuditMixin, Base):
     received_date = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     exp_document_status_guid = db.Column(
-        UUID(as_uuid=True), nullable=True, server_default=FetchedValue())
+        UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
     #relationships
     required_document = db.relationship(

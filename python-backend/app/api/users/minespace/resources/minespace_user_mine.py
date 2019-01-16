@@ -23,11 +23,15 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, "unexpected mine_guid"), 400
         data = self.parser.parse_args()
         guid = uuid.UUID(data.get('mine_guid'))  #ensure good formatting
-
-        user = MinespaceUser.find_by_id(user_id)
-        user.mines.append(MinespaceUserMine(user_id=user.id, mine_guid=guid))
-        user.save()
-        return user.json()
+        try:
+            mum = MinespaceUserMine.create_minespace_user_mine(
+                user_id,
+                guid,
+            )
+            mum.save()
+        except:
+            self.create_error_payload(500, "ERROR: user-mine access was not created"), 500
+        return mum.user.json()
 
     @api.doc(params={'user_id': 'User id.', 'mine_guid': 'MDS Mine Guid'})
     @requires_role_mine_admin
@@ -36,14 +40,14 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, "user_guid or mine_guid not found"), 400
         user = MinespaceUser.find_by_id(user_id)
         if not user:
-            return self.create_error_payload(500, "user not found"), 500
+            return self.create_error_payload(404, "user not found"), 404
         found = False
         for mum in user.mines:
             if str(mum.mine_guid) == mine_guid:
                 db.session.delete(mum)
                 found = True
                 break
-        if found:
-            user.save()
-            return ('', 204)
-        return self.create_error_payload(500, 'not user mine relation found')
+        if not found:
+            return self.create_error_payload(404, 'user is not related to the provided mine'), 404
+        user.save()
+        return ('', 204)

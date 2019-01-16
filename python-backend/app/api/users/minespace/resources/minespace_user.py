@@ -18,30 +18,34 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'user_id': 'User id.'})
     @requires_role_mine_admin
     def get(self, user_id=None):
-        if user_id or request.args.get('email'):
+        if user_id or request.args.get('email'):  #looking for a specific user
             user = MinespaceUser.find_by_id(user_id)
             if not user:
                 user = MinespaceUser.find_by_email(request.args.get('email'))
                 if not user:
-                    return self.create_error_payload(500, "user not found"), 500
-            return user.json()
-        users = MinespaceUser.query.filter_by(deleted_ind=False).all()
-        return {'users': [x.json() for x in users]}
+                    return self.create_error_payload(404, "user not found"), 404
+            result = user.json()
+        else:  #get all users (not deleted)
+            result = {'users': [x.json() for x in MinespaceUser.get_all()]}
+        return result
 
-    @api.doc(params={'user_id': 'User id.'})
+    @api.doc(params={'user_id': 'Not expected.'})
     @requires_role_mine_admin
     def post(self, user_id=None):
         if user_id:
             return self.create_error_payload(400, "unexpected user guid"), 400
         data = self.parser.parse_args()
-        new_user = MinespaceUser(email=data.get('email'))
+        new_user = MinespaceUser.create_minespace_user(data.get('email'), save=False)
         db.session.add(new_user)
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)  #ensure good formatting
-            new_user.mines.append(MinespaceUserMine(user_id=new_user.id, mine_guid=guid))
+            new_mum = MinespaceUserMine.create_minespace_user_mine(
+                new_user.user_id, guid, save=False)
         db.session.commit()
         return new_user.json()
 
+    @api.doc(params={'user_id': 'user_id to be deleted'})
+    @requires_role_mine_admin
     def delete(self, user_id=None):
         if not user_id:
             return self.create_error_payload(400, "user_id not found")

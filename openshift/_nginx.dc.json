@@ -35,6 +35,10 @@
       "value": "/"
     },
     {
+      "name": "FRONTEND_PUBLIC_SERVICE_URL",
+      "value": "/"
+    },
+    {
       "name": "API_SERVICE_URL",
       "value": "/"
     },
@@ -135,6 +139,10 @@
                   {
                     "name": "FRONTEND_SERVICE_URL",
                     "value": "${FRONTEND_SERVICE_URL}"
+                  },
+                  {
+                    "name": "FRONTEND_PUBLIC_SERVICE_URL",
+                    "value": "${FRONTEND_PUBLIC_SERVICE_URL}"
                   },
                   {
                     "name": "API_SERVICE_URL",

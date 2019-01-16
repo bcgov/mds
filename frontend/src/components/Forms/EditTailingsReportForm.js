@@ -1,23 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
-import FileUpload from "@/components/common/FileUpload";
+import UploadedFilesList from "@/components/common/UploadedFilesList";
+import MineTailingsFilePicker from "@/components/mine/Tailings/MineTailingsFilePicker";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
-import { required, notnone } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.array.isRequired,
-  selectedDocument: PropTypes.object,
+  statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -60,13 +60,21 @@ export const EditTailingsReportForm = (props) => (
             data={props.statusOptions}
           />
         </Form.Item>
-        <Form.Item label="Upload Documents">
+        <Form.Item label="Attached Files">
           <Field
-            id="tsf_document_upload"
-            name="tsf_document_upload"
-            uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(props.selectedDocument.exp_document_guid)}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-            component={FileUpload}
+            id="tsf_report_file_uploads"
+            name="tsf_report_file_uploads"
+            component={UploadedFilesList}
+            selectedDocId={props.selectedDocument.exp_document_guid}
+            mineId={props.selectedDocument.mine_guid}
+          />
+        </Form.Item>
+        <Form.Item label="Upload/Attach Documents">
+          <Field
+            id="tsfDocumentPicker"
+            name="tsfDocumentPicker"
+            selectedDocument={props.selectedDocument}
+            component={MineTailingsFilePicker}
           />
         </Form.Item>
       </Col>

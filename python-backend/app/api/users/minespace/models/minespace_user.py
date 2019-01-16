@@ -10,9 +10,9 @@ from ..models.minespace_user_mine import MinespaceUserMine
 
 
 class MinespaceUser(Base):
-    __tablename__ = 'minespace_users'
+    __tablename__ = 'minespace_user'
 
-    id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     keycloak_guid = db.Column(UUID(as_uuid=True))
     email = db.Column(db.String(100), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
@@ -20,17 +20,20 @@ class MinespaceUser(Base):
     mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 
     def json(self):
-        result = {
-            'id': str(self.id),
+        return {
+            'user_id': str(self.user_id),
             'keycloak_guid': str(self.keycloak_guid or ''),
             'email': self.email,
             'mines': [str(x.mine_guid) for x in self.mines]
         }
-        return result
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).filter_by(deleted_ind=False).first()
+        return cls.query.filter_by(user_id=id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_guid(cls, user_guid):
@@ -39,3 +42,18 @@ class MinespaceUser(Base):
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
+
+    @classmethod
+    def create_minespace_user(cls, email, save=True):
+        minespace_user = cls(email=email)
+        if save:
+            minespace_user.save(commit=False)
+        return minespace_user
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if not email:
+            raise AssertionError('email is not provided.')
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            raise AssertionError('Invalid email format.')
+        return email

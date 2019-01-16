@@ -24,7 +24,6 @@ body {
 
 .center {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .right {
@@ -59,6 +58,12 @@ body {
 
   & div {
     margin-right: 5px;
+  }
+}
+
+.block-mobile {
+  @include mobile {
+    display: block;
   }
 }
 
@@ -126,4 +131,18 @@ body {
     padding-right: 5px;
   }
   padding: $default-padding-sm;
+}
+
+.margin-small {
+  margin: $default-margin-sm;
+}
+
+.lightest-grey-bg {
+  background: $secondary-background-colour;
+}
+
+.nested-table-header {
+  font-size: $default-h2;
+  font-weight: $semi-bold;
+  color: $h4-color;
 }
