@@ -267,7 +267,7 @@ CREATE TABLE mine_expected_document (
     update_user character varying(60) NOT NULL,
     update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
     received_date date,
-    exp_document_status_guid uuid
+    exp_document_status_guid uuid NOT NULL
 );
 
 
