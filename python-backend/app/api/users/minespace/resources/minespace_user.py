@@ -15,22 +15,6 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('email', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 
-    # @api.doc(params={'user_id': 'User id.'})
-    # @requires_role_mine_admin
-    # def get(self, user_id=None):
-    #     user = {}
-    #     if user_id:
-    #         user = MinespaceUser.find_by_id(user_id)
-    #     if not user and request.args.get('email'):
-    #         user = MinespaceUser.find_by_email(request.args.get('email'))
-    #     if not user:
-    #         return self.create_error_payload(404, "user not found"), 404
-    #     if user:
-    #         result = user.json()
-    #     else:
-    #         result = {'users': [x.json() for x in MinespaceUser.get_all()]}
-    #     return result
-
     @api.doc(params={'user_id': 'User id.'})
     @requires_role_mine_admin
     def get(self, user_id=None):
