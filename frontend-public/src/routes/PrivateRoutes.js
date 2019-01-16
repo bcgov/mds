@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 
-const Routes = () => (
+const PrivateRoutes = () => (
   <div>
     <Switch>
       <Route
@@ -16,4 +16,4 @@ const Routes = () => (
   </div>
 );
 
-export default Routes;
+export default PrivateRoutes;

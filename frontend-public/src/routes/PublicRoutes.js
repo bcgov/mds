@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
 
-const Routes = () => (
+const PublicRoutes = () => (
   <div>
     <Switch>
       <Route exact path={routes.HOME.route} component={routes.HOME.component} />
@@ -11,4 +11,4 @@ const Routes = () => (
   </div>
 );
 
-export default Routes;
+export default PublicRoutes;

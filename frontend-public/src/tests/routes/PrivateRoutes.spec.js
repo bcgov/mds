@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import Routes from "@/routes/Routes";
+import PrivateRoutes from "@/routes/PrivateRoutes";
 
 const props = {};
 
@@ -10,9 +10,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("Routes ", () => {
+describe("PrivateRoutes ", () => {
   it("renders properly", () => {
-    const component = shallow(<Routes {...props} />);
+    const component = shallow(<PrivateRoutes {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
