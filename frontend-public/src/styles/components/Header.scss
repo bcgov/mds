@@ -3,17 +3,15 @@
   position: fixed;
   z-index: 1000;
   width: 100vw;
+  height: 70px;
   background-color: $gov-blue;
   border-bottom: 1px solid $gov-yellow;
   padding: 0 $default-padding-lg $default-margin-md $default-padding-xxl;
+  top: 0;
+}
 
-  &__img {
-    margin: $default-margin-sm;
-  }
-
-  &__btn {
-    color: $pure-white;
-  }
+.header-wrapper {
+  height: 100%;
 }
 
 .header-title-bc {
@@ -22,6 +20,7 @@
   font-style: italic;
   font-weight: $regular;
 }
+
 .header-title {
   color: $pure-white;
   font-style: italic;
@@ -32,7 +31,8 @@
   margin-top: $default-margin-lg;
 }
 
-.header-login-btn {
-  border-color: $pure-white;
-  text-align: right;
+.login-btn {
+  position: absolute;
+  right: $default-padding-xxl;
+  top: $default-margin-md;
 }

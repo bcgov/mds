@@ -1,0 +1,21 @@
+// BUTTON
+// BUTTON
+.ant-btn,
+.ant-btn-sm,
+.ant-btn-secondary {
+  font-weight: $light;
+  margin: 10px;
+  color: $secondary-btn-color;
+  border: 1px solid $secondary-btn-color;
+  background: transparent;
+
+  &:hover {
+    color: $secondary-btn-color-hover;
+    border: 1px solid $secondary-btn-border-color-hover;
+    background: transparent;
+  }
+}
+
+.ant-divider-horizontal {
+  background: $gov-blue;
+}

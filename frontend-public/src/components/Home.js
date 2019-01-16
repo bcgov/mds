@@ -1,11 +1,16 @@
 import React from "react";
 import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
 import { Header } from "./Header";
+import { Footer } from "./Footer";
+import { LandingPage } from "./LandingPage";
 
 export const Home = () => (
   <div>
     <Header />
-    hello proponents
+
+    <LandingPage />
+
+    <Footer />
   </div>
 );
 
