@@ -14,7 +14,7 @@ const propTypes = {
   keycloak: { logout: PropTypes.func.isRequired }.isRequired,
 };
 
-export class Logout extends Component {
+export class Authentication extends Component {
   handleLogout = () => {
     this.props.keycloak.logout();
     localStorage.removeItem("jwt");
@@ -42,9 +42,9 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-Logout.propTypes = propTypes;
+Authentication.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Logout);
+)(Authentication);

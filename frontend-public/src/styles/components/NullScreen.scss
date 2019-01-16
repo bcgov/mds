@@ -1,0 +1,12 @@
+.null-screen {
+  text-align: center;
+  margin-top: 20px;
+
+  @include mobile {
+    margin: 0;
+  }
+
+  .no-nav-bar {
+    @include center(true, true);
+  }
+}

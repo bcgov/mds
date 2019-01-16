@@ -1,8 +1,10 @@
 import React from "react";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 import { BC_GOV } from "@/constants/assets";
 import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
+import * as Route from "@/constants/routes";
 
 export const Header = () => (
   <div className="header-wrapper">
@@ -12,9 +14,11 @@ export const Header = () => (
         <span className="header-title-bc">BC</span>
         <span className="header-title"> MineSpace</span>
       </h1>
-      <Button type="secondary" className="login-btn">
-        Log in
-      </Button>
+      <Link to={Route.DASHBOARD.route}>
+        <Button type="secondary" className="login-btn">
+          Log in
+        </Button>
+      </Link>
     </div>
   </div>
 );
