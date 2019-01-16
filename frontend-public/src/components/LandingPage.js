@@ -4,7 +4,7 @@ import { Divider, Row, Col, Button } from "antd";
 import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
 
 export const LandingPage = () => (
-  <div className="landing-page">
+  <div>
     <Row>
       <Col xs={1} md={4} lg={4} />
       <Col xs={22} md={16} lg={16}>
