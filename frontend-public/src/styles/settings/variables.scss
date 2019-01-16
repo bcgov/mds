@@ -18,15 +18,25 @@ $icon-grey: #a2a2a2;
 $dark-blue: #002663;
 
 // Background Colours
-$lightest-grey: #f1f1f1;
+$lightest-grey: #f2f2f2;
 $pure-white: #ffffff;
+$off-white: #f7f8fa;
 
 // Special Colours
-$alert-red: #a12622;
+$alert-red: #d40d0d;
 $ok-green: #45a766;
 
 //font colour
 $font-colour: #494949;
+
+//Button colour
+$primary-btn-color: $gov-yellow;
+$primary-btn-color-hover: darken($primary-btn-color, 20%);
+$primary-btn-border-color-hover: $primary-btn-color-hover;
+
+$secondary-btn-color: $pure-white;
+$secondary-btn-color-hover: darken($gov-yellow, 20%);
+$secondary-btn-border-color-hover: $secondary-btn-color-hover;
 
 // Font Size
 $title-h1: 36px;
@@ -47,7 +57,7 @@ $regular: 400;
 $bold-regular: 500;
 $semi-bold: 600;
 $bold: 700;
-$h1-color: $font-colour;
+$h1-color: $gov-blue;
 $title-color: $pure-white;
 $h2-color: $font-colour;
 $h3-color: $font-colour;
@@ -60,6 +70,7 @@ $a-color-hover: $link-hover;
 $default-margin-sm: 5px;
 $default-margin-md: 10px;
 $default-margin-lg: 20px;
+$default-margin-xl: 30px;
 $default-margin-xxl: 50px;
 
 // Padding
