@@ -282,26 +282,26 @@ environments {
                 node {
                     cpu_request = "50m"
                     cpu_limit = "100m"
-                    memory_request = "384Mi"
-                    memory_limit = "512Mi"
+                    memory_request = "256Mi"
+                    memory_limit = "384Mi"
                 }
                 nginx {
                     cpu_request = "50m"
                     cpu_limit = "100m"
-                    memory_request = "384Mi"
-                    memory_limit = "512Mi"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                 }
                 python {
                     cpu_request = "50m"
                     cpu_limit = "150m"
-                    memory_request = "768Mi"
-                    memory_limit = "1Gi"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
                 }
                 postgres {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "384Mi"
+                    memory_limit = "768Mi"
                 }
             }
             deployment {
@@ -417,7 +417,7 @@ environments {
     'prod' {
         vars {
             DB_PVC_SIZE = '50Gi'
-            DOCUMENT_PVC_SIZE = '20Gi'
+            DOCUMENT_PVC_SIZE = '50Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
