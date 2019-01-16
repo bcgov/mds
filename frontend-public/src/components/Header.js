@@ -15,7 +15,9 @@ export const Header = () => (
         <span className="header-title"> MineSpace</span>
       </h1>
       <Link to={Route.DASHBOARD.route}>
-        <Button className="login-btn">Log in</Button>
+        <Button type="secondary" className="login-btn">
+          Log in
+        </Button>
       </Link>
     </div>
   </div>
