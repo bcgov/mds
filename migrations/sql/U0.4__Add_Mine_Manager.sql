@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS mgr_appointment;
-DROP TABLE IF EXISTS person;
