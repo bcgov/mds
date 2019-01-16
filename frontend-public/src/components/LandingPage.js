@@ -14,7 +14,7 @@ export const LandingPage = () => (
     </Row>
     <Row>
       <Col xs={1} md={4} lg={4} />
-      <Col xs={18} md={12} lg={12}>
+      <Col xs={18} md={10} lg={10}>
         <p>
           The Mines Digital Service (MDS) is a digital product being iteratively developed and
           designed to hold mine related data that is user-friendly, trustworthy and reliable. The
@@ -35,8 +35,8 @@ export const LandingPage = () => (
           pilot project will run in the spring of 2019 with full integration in early 2020.
         </p>
       </Col>
-      <Col xs={4} md={4} lg={4} />
-      <Col xs={1} lg={4} />
+      <Col xs={4} md={6} lg={6} />
+      <Col xs={1} md={4} lg={4} />
     </Row>
     <Row>
       <Col xs={1} md={4} lg={4} />
@@ -45,9 +45,9 @@ export const LandingPage = () => (
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>
-    <Row>
+    <Row gutter={{ xs: 16 }}>
       <Col xs={1} md={4} lg={4} />
-      <Col xs={21} md={9} lg={11}>
+      <Col xs={22} md={10} lg={11}>
         <h1 className="large-margin-bot">Participate in the pilot project</h1>
         <h2 className="medium-margin-bot">Requirements</h2>
         <p>You can participate if you:</p>
@@ -95,8 +95,7 @@ export const LandingPage = () => (
           take time and it is best to begin ahead of time.
         </p>
       </Col>
-      <Col xs={1} md={1} lg={1} />
-      <Col xs={21} md={6} lg={4}>
+      <Col xs={22} md={6} lg={5}>
         <div className="sidebar-block">
           <div className="sidebar-block-title">
             <h2 className="side-bar-title">Do you have a Business BceID?</h2>

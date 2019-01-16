@@ -64,6 +64,9 @@ body {
 .sidebar-block {
   width: 100%;
   margin: 20px 0px;
+  @include tablet {
+    margin-left: 20px;
+  }
 }
 
 .sidebar-block-title {

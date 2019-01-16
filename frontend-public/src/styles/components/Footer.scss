@@ -4,6 +4,9 @@
   background-color: $gov-blue;
   border-top: 1px solid $gov-yellow;
   bottom: 0;
+  @include tablet {
+    height: 120px;
+  }
 }
 
 .footer-info-ul {
@@ -12,6 +15,10 @@
     display: inline;
     padding: $default-padding-sm $default-padding-lg;
     border-right: 1px solid $pure-white;
+    @include tablet {
+      display: inline-block;
+      width: 33.3333333%;
+    }
   }
 }
 
