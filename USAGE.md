@@ -7,55 +7,61 @@ This file describes how to run the project and develop against it.
 ## Requirements
 
 - Docker
-- Makefile
+- Make
+- NodeJS 8.0.0
 
-## Getting Started (OSX and LINUX)
+## Getting Started
 
-- Install Docker and Makefile
-- Define .env files in frontend and backend folders
+- Install Requirements listed above
+- On Windows, note the following:
+    - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
+    - Drive sharing is disabled by default, make sure to share your local drive in docker settings
 
-- Run the following command to build and run the project using Docker.
+## Setting up local development
 
-```
-make project
-```
+Keycloak needs to be set up for the application to run properly, a keycloak user needs to be made, and we need some test data.
 
-NOTE: By default the above command uses Keycloak hosted on the OpenShift Platform.
-If you don't have a valid account to access that and would like to use a local keycloak server, refer to the local keycloak section below.
 
-- To shut down the project cleanly, run the following command.
-
-```
-make reset
-```
-
-## Getting Started (Windows)
-
-- Install Docker
-- Define .env files in frontend and backend folders
-- Install node.js 8 (https://nodejs.org/en/)
-- Run docker commands to build and run
+Run the following commands after cloning the repo.  The first command will do a one-time setup of your environment so that you can do all your development locally.
 
 ```
-docker-compose build --force-rm
-docker-compose up -d
+make local-dev
 ```
 
-- Create local admin user
+Make sure your local docker is up and running before running the next step.
+
+Every time you wish to have a completely fresh environment, with user admin/admin and random data, run the following:
 
 ```
-docker exec -it mds_keycloak /tmp/keycloak-local-user.sh
+make rebuild-all-local
 ```
+
+NOTE: It will take quite a bit longer for the other servers to start up, give it about 5 minutes before the frontend and backend are properly online.
+
+You are now ready to proceed to the section 'Developing workflow tips for MDS'
+
 
 ## Generating Test Data
 
+There are two approaches to having test data in your system.  If you are a public contributor, choose "Using Flask".
+
+### Using Flask
+
+This will connect to a locally running docker postgres instance and generate 1000 mine records with random data.  This has already been done for you in the rebuild-all-local step, but if you need more data:
+
 ```
-docker exec -it mds_backend bash
-flask create_data 1000
-exit
+make generate-rand1000
 ```
 
-## Seeding data with Test environment Database
+or if you require less data...
+
+```
+make generate-rand100
+```
+
+The above commands generate random data.  For data from the test system, the alternative approach below will also provide you with data.
+
+### Seeding data with Test environment Database
 
 NOTE: You need access to the Test Openshift environment and oc cli tools.
 
@@ -63,46 +69,51 @@ NOTE: You need access to the Test Openshift environment and oc cli tools.
 docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
 ```
 
-## Setting up local keycloak
+## Developing workflow tips for MDS
 
-1.  Update your .env for both frontend and backend to point to local keycloak. - For frontend edit the `keycloak_url` in `frontend/src/constants/environment.js` and change the host from
-    `https://sso-test.pathfinder.gov.bc.ca` to `http://keycloak:8080`
+If you are rebuilding often, you will have to deal with caching issues in your browser.
 
-        - For Backend edit the .env file and update the following envt variables.
-            ```
-            export JWT_OIDC_WELL_KNOWN_CONFIG=http://keycloak:8080/auth/realms/mds/.well-known/openid-configuration
-            export JWT_OIDC_AUDIENCE=account
-            ```
+In Chrome/Chromium, you can right-click on the page, choose "inspect", then right-click on the refresh icon next to the URL bar and choose hard reset.
 
-2.  Add the following entry in your hosts file.
-    OSX (/etc/hosts) Windows (C:/Windows/System32/Drivers/etc/hosts)
+Another way is using the Inspector window, Network top menu entry, check "Disable Cache" and it will run without using the cache as long as the inspector is open.
 
+Or you can open an Incognito window and that should not have cached data in it.
+
+Typically one does not wish to run a full 'make project' for every little change.  This will wipe out your test data and local keycloak users.
+
+Have a look in the file called "Makefile" to see all the helpful aliased make targets for rebuilding whichever part of the application you are currently working in.  
+
+For example, if you have made some changes in the frontend, use the make target:
 ```
-127.0.0.1	localhost	keycloak
-```
-
-3. Rebuild all your images to have the new envt.
-
-```
-make clean
-make project
+make frontend
 ```
 
-4. Run the following command to create a local user with credentials `admin:admin`
-
+Same if you have made changes to the backend:
 ```
-make keycloak-user
+make backend
 ```
 
-NOTE: The above command only works after the keycloak server has started. If you see
-any errors, wait a couple of minutes and then try again.
+If you have made changes to the database you will need to reapply the above commands in section "Generating Test Data":
+```
+make database
+```
+
+To shut down the project cleanly, run the following command.
+```
+make reset
+```
+
+There are plenty more make targets to use in the Makefile, so be sure to look there first as if it's a common development operation then it is most likely there.
+
 
 ### Container Information
 
-- The backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
-- The frontend container exposes port 3000 and can be accessed at http://localhost:3000
-- The Postgres container exposes port 5432 and can be connected to with the admin account (mds/test); for example:
+- The mds_backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
+- The mds_frontend container exposes port 3000 and can be accessed at http://localhost:3000
+- The mds_keycloak container exposes port 8080 and can be accessed at http://keycloak:8080
+- The mds_postgres container exposes port 5432 and can be connected to with the admin account (mds/test); for example:
 
 ```
 psql --dbname=mds --username=mds --host=localhost --password --port=5432
 ```
+
