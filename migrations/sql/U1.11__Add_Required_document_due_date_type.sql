@@ -1,5 +1,0 @@
-DROP TABLE IF EXISTS required_document_due_date_type;
-
-ALTER TABLE mds_required_document DROP CONSTRAINT mds_required_document_req_document_due_date_type_fkey;
-ALTER TABLE mds_required_document DROP COLUMN req_document_due_date_period_months;
-ALTER TABLE mds_required_document DROP COLUMN req_document_due_date_type;

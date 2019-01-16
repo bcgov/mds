@@ -17,7 +17,7 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import { getMines, getCurrentMineTypes } from "@/selectors/mineSelectors";
+import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -175,6 +175,7 @@ const mapStateToProps = (state) => ({
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
+  transformedMineTypes: getTransformedMineTypes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

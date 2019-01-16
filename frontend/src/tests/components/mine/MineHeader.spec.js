@@ -20,6 +20,7 @@ const setupProps = () => {
   props.mineRegionHash = MOCK.REGION_HASH;
   props.mineTenureTypes = MOCK.TENURE_TYPES.options;
   props.mineTenureHash = MOCK.TENURE_HASH;
+  [props.transformedMineTypes] = MOCK.MINE_TYPES;
 };
 
 beforeEach(() => {
@@ -28,7 +29,7 @@ beforeEach(() => {
 });
 
 describe("MineHeader", () => {
-  it("renders dispatchPropsrly", () => {
+  it("renders dispatchProperly", () => {
     const component = shallow(<MineHeader {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
