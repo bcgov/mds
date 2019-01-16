@@ -1,2 +1,0 @@
-ALTER TABLE mds_required_document DROP COLUMN req_document_due_in_march;
-ALTER TABLE mds_required_document DROP COLUMN req_document_due_date_period_months;

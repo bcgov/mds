@@ -1,1 +1,0 @@
-ALTER TABLE mine_identity RENAME TO mine;

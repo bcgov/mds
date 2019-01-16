@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import { Form, Radio } from "antd";
 import { Field } from "redux-form";
 
@@ -10,12 +11,7 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   uploadUrl: PropTypes.string.isRequired,
-  existingFilesDropdown: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
-    })
-  ).isRequired,
+  existingFilesDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   onSelectExisting: PropTypes.func.isRequired,
 };
 
