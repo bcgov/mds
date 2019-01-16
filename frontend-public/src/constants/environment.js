@@ -1,8 +1,8 @@
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
-  keycloak_resource: "mines-application-local",
-  keycloak_clientId: "mines-application-local",
+  keycloak_resource: "minespace-local",
+  keycloak_clientId: "minespace-local",
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
 };

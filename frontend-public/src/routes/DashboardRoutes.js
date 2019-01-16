@@ -1,12 +1,16 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
+import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 
 const Routes = () => (
   <div>
     <Switch>
-      <Route exact path={routes.HOME.route} component={routes.HOME.component} />
-      <Route render={() => <div>404 - Not Found</div>} />
+      <Route
+        exact
+        path={routes.DASHBOARD.route}
+        component={AuthenticationGuard(routes.DASHBOARD.component)}
+      />
     </Switch>
   </div>
 );

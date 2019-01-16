@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
-import Routes from "./routes/Routes";
 import { hot } from "react-hot-loader";
+import Routes from "./routes/Routes";
+import DashboardRoutes from "./routes/DashboardRoutes";
 
 class App extends Component {
   render() {
@@ -9,6 +10,7 @@ class App extends Component {
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
           <Routes />
+          <DashboardRoutes />
         </Fragment>
       </BrowserRouter>
     );
