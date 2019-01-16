@@ -17,12 +17,27 @@ def requires_role_mine_admin(func):
     return _inner_wrapper(func, MINE_ADMIN)
 
 
+# def requires_any_of(roles):
+#     def decorator(func):
+#         @wraps(func)
+#         def wrapper(*args, **kwds):
+#             return jwt.has_one_of_roles(roles)(func)(*args, **kwds)
+
+#         wrapper.required_roles = _combine_role_flags(func, roles)
+#         return wrapper
+#     return decorator
+
+
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
         return jwt.requires_roles([role])(func)(*args, **kwds)
 
-    wrapper.required_roles = getattr(func, "required_roles", [])
-    wrapper.required_roles.append(role)
-
+    wrapper.required_roles = _combine_role_flags(func, [role])
     return wrapper
+
+
+def _combine_role_flags(func, roles):
+    flags = getattr(func, "required_roles", [])
+    flags.extend(roles)
+    return flags
