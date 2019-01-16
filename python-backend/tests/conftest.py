@@ -51,6 +51,8 @@ def auth_headers(app):
     base_auth_token = _jwt.create_jwt(BASE_AUTH_CLAIMS, TOKEN_HEADER)
     full_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS, TOKEN_HEADER)
     view_only_auth_token = _jwt.create_jwt(VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     return {
         'base_auth_header': {
             'Authorization': 'Bearer ' + base_auth_token
@@ -60,6 +62,12 @@ def auth_headers(app):
         },
         'view_only_auth_header': {
             'Authorization': 'Bearer ' + view_only_auth_token
+        },
+        'create_only_auth_header': {
+            'Authorization': 'Bearer ' + create_only_auth_token
+        },
+        'admin_only_auth_header': {
+            'Authorization': 'Bearer ' + admin_only_auth_token
         },
     }
 
