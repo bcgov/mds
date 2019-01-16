@@ -18,15 +18,16 @@ h1 {
     font-size: $mobile-h1;
   }
 }
+
 h2 {
   font-size: $default-h2;
   font-weight: $bold;
-  text-transform: uppercase;
   color: $h2-color;
   @include mobile {
     font-size: $mobile-h2;
   }
 }
+
 h3 {
   font-size: $default-h5;
   font-weight: $bold;
@@ -35,11 +36,11 @@ h3 {
     font-size: $mobile-h3;
   }
 }
+
 h4 {
   font-size: $default-h4;
   font-weight: $bold;
   color: $h4-color;
-  text-transform: uppercase;
   @include mobile {
     font-size: $mobile-h4;
   }
@@ -49,11 +50,13 @@ h5 {
   font-size: $default-h5;
   font-weight: $light;
   color: $h5-color;
+  text-transform: uppercase;
   @include mobile {
     font-size: $mobile-h5;
   }
 }
 
+body,
 p,
 .p {
   font-size: $default-p;
@@ -81,6 +84,7 @@ p,
 
 a,
 link {
+  @extend p;
   color: $a-color;
   text-decoration: underline;
   &:hover {
@@ -155,4 +159,49 @@ hr {
   @include mobile {
     font-size: 16px;
   }
+}
+
+// special text styles/classes, all ant design overrides should @extend these.
+.table-header {
+  font-size: $table-header;
+  font-weight: $semi-bold;
+  color: $ant-header-color;
+}
+.nested-table-header {
+  font-size: $table-header;
+  font-weight: $semi-bold;
+  color: $ant-nested-header-color;
+}
+.field-title {
+  font-size: $field-label;
+  font-weight: $semi-bold;
+  color: $ant-label-title-color;
+  margin-right: 5px;
+}
+.field-label {
+  font-size: $field-label;
+  font-weight: $semi-bold;
+  text-transform: uppercase;
+  color: $ant-label-color;
+}
+
+// use these classes when you require a desired style but a header tag is not needed!
+.h1 {
+  @extend h1;
+}
+
+.h2 {
+  @extend h2;
+}
+
+.h3 {
+  @extend h3;
+}
+
+.h4 {
+  @extend h4;
+}
+
+.h5 {
+  @extend h5;
 }

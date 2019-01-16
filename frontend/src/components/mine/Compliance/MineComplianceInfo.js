@@ -45,7 +45,7 @@ export class MineComplianceInfo extends Component {
       this.props.mineComplianceInfo &&
       this.props.mineComplianceInfo.open_orders && (
         <div>
-          <h4>Open Orders</h4>
+          <h2>Open Orders</h2>
           <br />
           <Row gutter={16} justify="center" align="top">
             <Col span={2} />
@@ -132,7 +132,7 @@ export class MineComplianceInfo extends Component {
         {this.state.isLoading && <Loading />}
         {!this.state.isLoading && (
           <div>
-            <h4>Compliance Overview</h4>
+            <h2>Compliance Overview</h2>
             <br />
             <br />
             {this.props.mineComplianceInfo && (
