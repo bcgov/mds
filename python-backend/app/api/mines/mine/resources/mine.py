@@ -61,9 +61,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 result = list((map(lambda x: x.json_for_map(), records)))
                 return {'mines': result}
 
-            return self.mine_filter_and_search_method(request.args)
+            paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
+            mines = paginated_mine_query.all()
+            return {
+                'mines': list(map(lambda x: x.json_for_list(), mines)),
+                'current_page': pagination_details.page_number,
+                'total_pages': pagination_details.num_pages,
+                'items_per_page': pagination_details.page_size,
+                'total': pagination_details.total_results,
+            }
 
-    def mine_filter_and_search_method(self, args):
+    def apply_filter_and_search(self, args):
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
@@ -137,15 +145,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
-        paginated_mine_query, pagination_details = apply_pagination(mines_permit_join_query, page, items_per_page)
-        mines = paginated_mine_query.all()
-        return {
-            'mines': list(map(lambda x: x.json_for_list(), mines)),
-            'current_page': pagination_details.page_number,
-            'total_pages': pagination_details.num_pages,
-            'items_per_page': pagination_details.page_size,
-            'total': pagination_details.total_results,
-        }
+        return apply_pagination(mines_permit_join_query, page, items_per_page)
 
     def mine_operation_code_processor(self, mine_status, index):
         try:
