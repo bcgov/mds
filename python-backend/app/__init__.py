@@ -12,6 +12,7 @@ from app.api.mines.namespace.mines import api as mines_api
 from app.api.permits.namespace.permits import api as permits_api
 from app.api.documents.namespace.documents import api as document_api
 from app.api.document_manager.namespace.document_manager import api as document_manager_api
+from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, documents
@@ -59,7 +60,7 @@ def register_routes(app):
     api.add_namespace(permits_api)
     api.add_namespace(document_api)
     api.add_namespace(document_manager_api)
-
+    api.add_namespace(users_api)
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
