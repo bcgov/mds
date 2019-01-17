@@ -8,7 +8,7 @@ from ....constants import MINE_STATUS_OPTIONS
 
 class MineStatusResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'mine_status_guid': 'Mine status guid.'})
-    @requires_role_mine_view
+    #@requires_role_mine_view
     def get(self, mine_status_guid=None):
         if mine_status_guid:
             mine_status = MineStatus.find_by_mine_status_guid(mine_status_guid)

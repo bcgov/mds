@@ -1,5 +1,6 @@
 import decimal
 import uuid
+from datetime import datetime
 
 from flask import request
 from flask_restplus import Resource, reqparse, inputs
@@ -121,25 +122,25 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
     def mine_status_processor(self, mine_status, mine_guid):
         try:
-            mine_status_xref = MineStatusXref(
-                mine_status_xref_guid=uuid.uuid4(),
-                mine_operation_status_code=self.mine_operation_code_processor(mine_status, 0),
-                mine_operation_status_reason_code=self.mine_operation_code_processor(
-                    mine_status, 1),
-                mine_operation_status_sub_reason_code=self.mine_operation_code_processor(
-                    mine_status, 2),
-                **self.get_create_update_dict())
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
-        mine_status_xref.save()
+            mine_status_xref = MineStatusXref.find_by_codes(
+                self.mine_operation_code_processor(mine_status, 0),
+                self.mine_operation_code_processor(mine_status, 1),
+                self.mine_operation_code_processor(mine_status, 2))
+            if not mine_status_xref:
+                self.raise_error(
+                    400,
+                    'Error: Invalid status_code, reason_code, and sub_reason_code combination., '
+                ), 400
 
-        try:
             existing_status = MineStatus.find_by_mine_guid(mine_guid)
             if existing_status:
-                existing_status.mine_status_xref_guid = mine_status_xref.mine_status_xref_guid
+                if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
+                    return existing_status
+
+                existing_status.expiry_date = datetime.today()
+                existing_status.active_ind = False
                 existing_status.save()
-                return existing_status
-                
+
             _mine_status = MineStatus(
                 mine_status_guid=uuid.uuid4(),
                 mine_guid=mine_guid,
