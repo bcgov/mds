@@ -82,6 +82,14 @@
     {
       "name": "MEMORY_REQUEST",
       "value": "768Mi"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
     }
   ],
   "objects": [
@@ -158,23 +166,18 @@
           "type": "Recreate",
           "recreateParams": {
             "pre": {
-              "failurePolicy": "Abort",
+              "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flyway-migration",
                 "command": [
                   "bash",
                   "-c",
-                  "for i in {1..60}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (echo $s && exit $s)"
+                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate)"
                 ]
               }
             },
-            "mid": {
-              "failurePolicy": "Abort",
-              "execNewPod": {
-                "containerName": "flyway-migration",
-                "command": ["bash", "-c", "cd $FLYWAY_HOME && ./flyway migrate"]
-              }
-            },
+            "maxSurge": "50%",
+            "maxUnavailable": 0,
             "timeoutSeconds": 1200
           },
           "resources": {
@@ -216,7 +219,7 @@
             "type": "ConfigChange"
           }
         ],
-        "replicas": 1,
+        "replicas": "${{REPLICA_MIN}}",
         "test": false,
         "selector": {
           "name": "${NAME}${SUFFIX}"
@@ -471,8 +474,8 @@
         }
       },
       "spec": {
-        "maxReplicas": 4,
-        "minReplicas": 1,
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
         "scaleTargetRef": {
           "apiVersion": "v1",
           "kind": "DeploymentConfig",
