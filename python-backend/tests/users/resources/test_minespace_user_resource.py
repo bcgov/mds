@@ -58,6 +58,30 @@ def test_post_minespace_user_duplicate_email(test_client, auth_headers, setup_in
     assert json.loads(post_resp.data.decode())["error"]["message"]
 
 
+def test_post_minespace_user_bad_email(test_client, auth_headers, setup_info):
+    data = {
+        "email": TEST_MINESPACE_USER_EMAIL_BAD_FORMAT,
+        "mine_guids": ["7dc50e1c-18cf-4272-9d5c-eb144959e109"]
+    }
+
+    post_resp = test_client.post(
+        '/users/minespace', json=data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 500, post_resp.response
+    assert json.loads(post_resp.data.decode())["error"]["message"]
+
+
+def test_post_minespace_user_email_too_long(test_client, auth_headers, setup_info):
+    data = {
+        "email": TEST_MINESPACE_USER_EMAIL_TOO_LONG,
+        "mine_guids": ["7dc50e1c-18cf-4272-9d5c-eb144959e109"]
+    }
+
+    post_resp = test_client.post(
+        '/users/minespace', json=data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 500, post_resp.response
+    assert json.loads(post_resp.data.decode())["error"]["message"]
+
+
 def test_post_minespace_user_new_email(test_client, auth_headers, setup_info):
     data = {"email": "new_email@server.com", "mine_guids": ["7dc50e1c-18cf-4272-9d5c-eb144959e109"]}
 

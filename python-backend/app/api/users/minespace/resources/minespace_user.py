@@ -35,14 +35,15 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         if user_id:
             return self.create_error_payload(400, "unexpected user guid"), 400
         data = self.parser.parse_args()
-        new_user = MinespaceUser.create_minespace_user(data.get('email'), save=False)
-        db.session.add(new_user)
-        for guid in data.get('mine_guids'):
-            guid = uuid.UUID(guid)  #ensure good formatting
-            new_mum = MinespaceUserMine.create_minespace_user_mine(
-                new_user.user_id, guid, save=False)
         try:
-            db.session.commit()
+            new_user = MinespaceUser.create_minespace_user(data.get('email'), save=False)
+            db.session.add(new_user)
+            for guid in data.get('mine_guids'):
+                guid = uuid.UUID(guid)  #ensure good formatting
+                new_mum = MinespaceUserMine.create_minespace_user_mine(
+                    new_user.user_id, guid, save=False)
+
+                db.session.commit()
         except Exception as e:
             db.session.rollback()
             return self.create_error_payload(500, "An error occurred: " + str(e)), 500
