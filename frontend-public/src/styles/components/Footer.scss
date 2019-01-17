@@ -16,7 +16,7 @@
 .footer-info-ul {
   padding: $default-padding-xl 0px 0px $default-padding-xxl;
   @include tablet {
-    padding-top: $default-padding-md;
+    padding: 0px;
   }
   li {
     display: inline;
@@ -40,5 +40,8 @@
   font-size: $default-p;
   &:hover {
     text-decoration: underline;
+  }
+  @include mobile {
+    font-size: 14px;
   }
 }

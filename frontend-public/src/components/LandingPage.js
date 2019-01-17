@@ -43,9 +43,9 @@ export const LandingPage = () => (
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>
-    <Row gutter={{ xs: 40, md: 32, lg: 24 }}>
+    <Row gutter={{ md: 32, lg: 24 }}>
       <Col xs={1} md={4} lg={4} />
-      <Col xs={22} md={10} lg={11}>
+      <Col xs={22} md={8} lg={11}>
         <h1 className="large-margin-bot">Participate in the pilot project</h1>
         <h2 className="medium-margin-bot">Requirements</h2>
         <p>You can participate if you:</p>
@@ -93,7 +93,7 @@ export const LandingPage = () => (
           take time and it is best to begin ahead of time.
         </p>
       </Col>
-      <Col xs={22} md={6} lg={5}>
+      <Col xs={22} md={8} lg={5}>
         <div className="sidebar-block">
           <div className="sidebar-block-title">
             <h2 className="side-bar-title">Do you have a Business BCeID?</h2>
