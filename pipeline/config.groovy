@@ -176,6 +176,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.node.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.node.replica_max}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
@@ -199,6 +201,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.node.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.node.replica_max}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend-public'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
@@ -219,6 +223,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.nginx.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.nginx.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.nginx.replica_max}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
@@ -238,6 +244,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.python.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
@@ -284,18 +292,24 @@ environments {
                     cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
+                    replica_min = 1
+                    replica_max = 1
                 }
                 nginx {
                     cpu_request = "50m"
                     cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
+                    replica_min = 1
+                    replica_max = 1
                 }
                 python {
                     cpu_request = "50m"
                     cpu_limit = "150m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
+                    replica_min = 1
+                    replica_max = 1
                 }
                 postgres {
                     cpu_request = "50m"
@@ -355,22 +369,28 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "150m"
-                    cpu_limit = "500m"
-                    memory_request = "1Gi"
-                    memory_limit = "1.5Gi"
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 nginx {
                     cpu_request = "100m"
                     cpu_limit = "150m"
-                    memory_request = "384Mi"
+                    memory_request = "256Mi"
                     memory_limit = "512Mi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 python {
-                    cpu_request = "300m"
-                    cpu_limit = "500m"
-                    memory_request = "2.5Gi"
-                    memory_limit = "4Gi"
+                    cpu_request = "200m"
+                    cpu_limit = "400m"
+                    memory_request = "1.5Gi"
+                    memory_limit = "3Gi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
                     cpu_request = "200m"
@@ -427,18 +447,24 @@ environments {
                     cpu_limit = "500m"
                     memory_request = "1Gi"
                     memory_limit = "1.5Gi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 nginx {
                     cpu_request = "100m"
                     cpu_limit = "150m"
                     memory_request = "384Mi"
                     memory_limit = "512Mi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 python {
                     cpu_request = "300m"
                     cpu_limit = "500m"
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
                     cpu_request = "250m"

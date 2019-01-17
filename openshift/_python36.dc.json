@@ -82,6 +82,14 @@
     {
       "name": "MEMORY_REQUEST",
       "value": "768Mi"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
     }
   ],
   "objects": [
@@ -169,6 +177,7 @@
               }
             },
             "maxSurge": "50%",
+            "maxUnavailable": 0,
             "timeoutSeconds": 1200
           },
           "resources": {
@@ -210,7 +219,7 @@
             "type": "ConfigChange"
           }
         ],
-        "replicas": 1,
+        "replicas": "${{REPLICA_MIN}}",
         "test": false,
         "selector": {
           "name": "${NAME}${SUFFIX}"
@@ -465,8 +474,8 @@
         }
       },
       "spec": {
-        "maxReplicas": 4,
-        "minReplicas": 1,
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
         "scaleTargetRef": {
           "apiVersion": "v1",
           "kind": "DeploymentConfig",
