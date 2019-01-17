@@ -16,13 +16,15 @@ class DummyResource(Resource):
     def delete(self):
         return "example delete method"
 
-    # @requires_any_of([MINE_VIEW, MINE_ADMIN])
-    # def put(self):
-    #     return "example put mthod"
+    @requires_any_of([MINE_VIEW, MINE_ADMIN])
+    def put(self):
+        return "example put mthod"
+
 
 api = Namespace('test')
 api.add_resource(DummyResource, '')
 app_api.add_namespace(api)
+
 
 # Test view role
 def test_get_no_auth(test_client):
@@ -97,24 +99,24 @@ def test_delete_admin_only(test_client, auth_headers):
 
 
 # Test requires_any_of decorator
-# def test_put_no_auth(test_client):
-#     resp = test_client.put('/test', headers={})
-#     assert resp.status_code == 401
+def test_put_no_auth(test_client):
+    resp = test_client.put('/test', headers={})
+    assert resp.status_code == 401
 
 
-# def test_put_view_only(test_client, auth_headers):
-#     resp = test_client.put(
-#         '/test', headers=auth_headers['view_only_auth_header'])
-#     assert resp.status_code == 200
+def test_put_view_only(test_client, auth_headers):
+    resp = test_client.put(
+        '/test', headers=auth_headers['view_only_auth_header'])
+    assert resp.status_code == 200
 
 
-# def test_put_create_only(test_client, auth_headers):
-#     resp = test_client.put(
-#         '/test', headers=auth_headers['create_only_auth_header'])
-#     assert resp.status_code == 401
+def test_put_create_only(test_client, auth_headers):
+    resp = test_client.put(
+        '/test', headers=auth_headers['create_only_auth_header'])
+    assert resp.status_code == 401
 
 
-# def test_put_admin_only(test_client, auth_headers):
-#     resp = test_client.put(
-#         '/test', headers=auth_headers['admin_only_auth_header'])
-#     assert resp.status_code == 200
+def test_put_admin_only(test_client, auth_headers):
+    resp = test_client.put(
+        '/test', headers=auth_headers['admin_only_auth_header'])
+    assert resp.status_code == 200
