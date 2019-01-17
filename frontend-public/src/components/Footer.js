@@ -1,7 +1,5 @@
 import React from "react";
 
-import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
-
 export const Footer = () => (
   <div className="footer">
     <div className="footer-info-ul">
@@ -61,4 +59,4 @@ export const Footer = () => (
   </div>
 );
 
-export default AuthenticationGuard(Footer);
+export default Footer;
