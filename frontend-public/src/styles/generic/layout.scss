@@ -11,7 +11,7 @@ body {
 .content {
   max-height: 100%;
   margin-top: 70px;
-  margin-bottom: 20px;
+  margin-bottom: $default-margin-lg;
   overflow: initial;
 }
 
@@ -61,31 +61,6 @@ body {
   margin-top: $default-margin-xl;
 }
 
-.sidebar-block {
-  width: 100%;
-  margin: 20px 0px;
-  @include tablet {
-    margin-left: 20px;
-  }
-}
-
-.sidebar-block-title {
-  background: $nav-blue;
-  text-align: center;
-  .side-bar-title {
-    color: $pure-white;
-    padding: $default-padding-sm;
-  }
-}
-
-.sidebar-block-content {
-  background: $off-white;
-  padding: $default-padding-xl;
-}
-
-.sidebar-button {
-  @include flex();
-  align-items: center;
-  justify-content: center;
-  padding: $default-padding-md 0px;
+.align-bot {
+  vertical-align: bottom;
 }

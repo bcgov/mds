@@ -6,13 +6,13 @@ export const LandingPage = () => (
     <Row>
       <Col xs={1} md={4} lg={4} />
       <Col xs={22} md={16} lg={16}>
-        <h1 className="title"> Welcome to MineSpace, an online portal for BC mines</h1>
+        <h1 className="landing-page-title"> Welcome to MineSpace, an online portal for BC mines</h1>
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>
     <Row>
       <Col xs={1} md={4} lg={4} />
-      <Col xs={18} md={10} lg={10}>
+      <Col xs={22} md={14} lg={10}>
         <p>
           The Mines Digital Service (MDS) is a digital product being iteratively developed and
           designed to hold mine related data that is user-friendly, trustworthy and reliable. The
@@ -33,7 +33,7 @@ export const LandingPage = () => (
           pilot project will run in the spring of 2019 with full integration in early 2020.
         </p>
       </Col>
-      <Col xs={4} md={6} lg={6} />
+      <Col xs={0} md={2} lg={6} />
       <Col xs={1} md={4} lg={4} />
     </Row>
     <Row>
@@ -43,7 +43,7 @@ export const LandingPage = () => (
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>
-    <Row gutter={{ xs: 16 }}>
+    <Row gutter={{ xs: 40, md: 32, lg: 24 }}>
       <Col xs={1} md={4} lg={4} />
       <Col xs={22} md={10} lg={11}>
         <h1 className="large-margin-bot">Participate in the pilot project</h1>
@@ -96,7 +96,7 @@ export const LandingPage = () => (
       <Col xs={22} md={6} lg={5}>
         <div className="sidebar-block">
           <div className="sidebar-block-title">
-            <h2 className="side-bar-title">Do you have a Business BceID?</h2>
+            <h2 className="side-bar-title">Do you have a Business BCeID?</h2>
           </div>
           <div className="sidebar-block-content">
             <p>
@@ -110,7 +110,9 @@ export const LandingPage = () => (
               Business BCeID account.
             </p>
             <div className="sidebar-button">
-              <Button type="primary">Get a BceID</Button>
+              <Button type="primary" size="large" block>
+                <span>Get a BCeID</span>
+              </Button>
             </div>
           </div>
         </div>

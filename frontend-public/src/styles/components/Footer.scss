@@ -5,19 +5,31 @@
   border-top: 1px solid $gov-yellow;
   bottom: 0;
   @include tablet {
+    @include flex();
+    align-items: center;
+    justify-content: center;
     height: 120px;
+    padding-right: $default-padding-md;
   }
 }
 
 .footer-info-ul {
   padding: $default-padding-xl 0px 0px $default-padding-xxl;
+  @include tablet {
+    padding-top: $default-padding-md;
+  }
   li {
     display: inline;
     padding: $default-padding-sm $default-padding-lg;
-    border-right: 1px solid $pure-white;
+    &:not(:last-child) {
+      border-right: 1px solid $pure-white;
+    }
     @include tablet {
+      text-align: center;
       display: inline-block;
       width: 33.3333333%;
+      margin-top: $default-margin-sm;
+      padding: 0px;
     }
   }
 }

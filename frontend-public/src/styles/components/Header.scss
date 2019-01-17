@@ -1,17 +1,16 @@
 .header {
-  @include flex;
   position: fixed;
   z-index: 1000;
   width: 100vw;
-  height: 70px;
+  min-height: 70px;
   background-color: $gov-blue;
   border-bottom: 1px solid $gov-yellow;
   padding: 0 $default-padding-lg $default-margin-md $default-padding-xxl;
   top: 0;
-}
-
-.header-wrapper {
-  height: 100%;
+  @include mobile {
+    padding: 0px;
+    min-height: 110px;
+  }
 }
 
 .header-title-bc {
@@ -19,20 +18,26 @@
   color: $gov-yellow;
   font-style: italic;
   font-weight: $regular;
+  @include tablet {
+    font-size: $default-p;
+    padding-left: $default-margin-sm;
+  }
 }
 
 .header-title {
   color: $pure-white;
   font-style: italic;
   font-weight: $regular;
-}
-
-.header-h1 {
-  margin-top: $default-margin-lg;
+  @include tablet {
+    font-size: $default-p;
+  }
 }
 
 .login-btn {
   position: absolute;
   right: $default-padding-xxl;
   top: $default-margin-md;
+  @include tablet {
+    right: 0;
+  }
 }
