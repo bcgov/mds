@@ -7,6 +7,7 @@ import { isAuthenticated, getKeycloak } from "@/selectors/authenticationSelector
 import { authenticateUser, storeKeycloakData } from "@/actions/authenticationActions";
 import { KEYCLOAK } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
+import Loading from "@/components/common/Loading";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -55,9 +56,9 @@ export const AuthenticationGuard = (WrappedComponent) => {
         // if (!this.props.isAuthenticated) {
         //   return <NullScreen type="unauthorized" />;
         // }
-        return <div>Loading...</div>;
+        return <Loading />;
       }
-      return <div>Loading...</div>;
+      return <Loading />;
     }
   }
 
