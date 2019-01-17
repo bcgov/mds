@@ -11,6 +11,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
+  mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineStatusOptions: CustomPropTypes.options.isRequired,
 };
@@ -21,6 +22,11 @@ export class AdvancedSearchForm extends Component {
     this.props.handleSearch();
   };
 
+  componentDidMount() {
+    console.log(this.props.mineCommodityOptions);
+    console.log(this.props);
+  }
+
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
@@ -30,7 +36,7 @@ export class AdvancedSearchForm extends Component {
               <Field
                 id="status"
                 name="status"
-                placeholder="Select mine status"
+                placeholder="Select Mine Status"
                 component={renderConfig.MULTI_SELECT}
                 data={this.props.mineStatusOptions}
               />
@@ -41,7 +47,7 @@ export class AdvancedSearchForm extends Component {
               <Field
                 id="region"
                 name="region"
-                placeholder="Select mine region"
+                placeholder="Select Mine Region"
                 component={renderConfig.MULTI_SELECT}
                 data={this.props.mineRegionOptions}
               />
@@ -54,7 +60,7 @@ export class AdvancedSearchForm extends Component {
               <Field
                 id="tenure"
                 name="tenure"
-                placeholder="Select mine tenure"
+                placeholder="Select Mine Tenure"
                 component={renderConfig.MULTI_SELECT}
                 data={this.props.mineTenureTypes}
               />
@@ -65,33 +71,39 @@ export class AdvancedSearchForm extends Component {
               <Field
                 id="commodity"
                 name="commodity"
-                placeholder="Select mine commodity"
+                placeholder="Select Mine Commodity"
                 component={renderConfig.MULTI_SELECT}
-                data={this.props.mineStatusOptions}
+                data={this.props.mineCommodityOptions}
               />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={6}>
-          <Col md={12}>
+          <Col md={12} xs={24}>
             <Form.Item>
               <Field
                 id="major"
                 name="major"
-                label="Major Mine"
-                type="checkbox"
-                component={renderConfig.CHECKBOX}
+                placeholder="Select Mine Class"
+                component={renderConfig.SELECT}
+                data={[
+                  { value: "true", label: "Major Mine" },
+                  { value: "false", label: "Regional Mine" },
+                ]}
               />
             </Form.Item>
           </Col>
-          <Col md={12}>
+          <Col md={12} xs={24}>
             <Form.Item>
               <Field
                 id="tsf"
                 name="tsf"
-                label="TSF"
-                type="checkbox"
-                component={renderConfig.CHECKBOX}
+                placeholder="Select TSF"
+                component={renderConfig.SELECT}
+                data={[
+                  { value: "false", label: "No TSF" },
+                  { value: "true", label: "One Or More TSFs" },
+                ]}
               />
             </Form.Item>
           </Col>

@@ -116,18 +116,18 @@ export class MineSearch extends Component {
               onChange={this.handleSearch}
               suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
             />
+            {this.state.isAdvanceSearch && (
+              <span className="advanced-search__container">
+                <AdvancedSearchForm
+                  {...this.props}
+                  onSubmit={this.handleSearch}
+                  handleSearch={this.handleSearch}
+                />
+              </span>
+            )}
           </Col>
         </Row>
-        {/* TODO: Enable when backend supports advanced search */}
-        <Row style={{ display: "none" }}>
-          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-            <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
-              {this.state.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
-              <Icon type={this.state.isAdvanceSearch ? "up" : "down"} />
-            </Button>
-          </Col>
-        </Row>
-        {this.state.isAdvanceSearch && (
+        {/* {this.state.isAdvanceSearch && (
           <div className="advanced-search__container">
             <AdvancedSearchForm
               {...this.props}
@@ -135,7 +135,15 @@ export class MineSearch extends Component {
               handleSearch={this.handleSearch}
             />
           </div>
-        )}
+        )} */}
+        <Row>
+          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
+            <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
+              {this.state.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
+              <Icon type={this.state.isAdvanceSearch ? "up" : "down"} />
+            </Button>
+          </Col>
+        </Row>
       </div>
     );
   }

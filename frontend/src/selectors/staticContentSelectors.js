@@ -1,13 +1,13 @@
 import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
-import { createLabelHash } from "@/utils/helpers";
+import { createLabelHash, createDropDownList } from "@/utils/helpers";
 
 export const {
   getMineStatusOptions,
   getMineRegionOptions,
   getMineTenureTypes,
-  getMineDisturbanceOptions,
   getMineCommodityOptions,
+  getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
 } = staticContentReducer;
@@ -69,4 +69,9 @@ export const getCommodityOptionHash = createSelector(
       }),
       {}
     )
+);
+
+export const getDropdownCommodityOptions = createSelector(
+  [getMineCommodityOptions],
+  (options) => createDropDownList(options, "description", "mine_commodity_code")
 );
