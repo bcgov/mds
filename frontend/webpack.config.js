@@ -1,10 +1,10 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
-const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 const parts = require("./webpack.parts");
 
@@ -33,11 +33,11 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
-  //Put your aliases here
+  // Put your aliases here
 };
 
 const envFile = {};
-envFile["BASE_PATH"] = JSON.stringify("");
+envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env) {
   Object.keys(process.env).map((key) => {
@@ -63,8 +63,8 @@ const commonConfig = merge([
       }),
       // Adding timestamp to builds
       function() {
-        this.plugin("watch-run", function(watching, callback) {
-          console.log("Begin compile at " + new Date());
+        this.plugin("watch-run", (watching, callback) => {
+          console.log(`Begin compile at ${  new Date()}`);
           callback();
         });
       },

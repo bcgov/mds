@@ -1,0 +1,66 @@
+body {
+  font-family: $default-font;
+  width: 100vw;
+}
+
+.layout {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.content {
+  max-height: 100%;
+  margin-top: 70px;
+  margin-bottom: $default-margin-lg;
+  overflow: initial;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.left {
+  text-align: left;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+
+.full-height {
+  height: inherit !important;
+}
+
+.small-margin-bot {
+  margin-bottom: $default-margin-md;
+}
+
+.medium-margin-bot {
+  margin-bottom: $default-margin-lg;
+}
+
+.large-margin-bot {
+  margin-bottom: $default-margin-xl;
+}
+
+.large-margin-top {
+  margin-top: $default-margin-xl;
+}
+
+.align-bot {
+  vertical-align: bottom;
+}

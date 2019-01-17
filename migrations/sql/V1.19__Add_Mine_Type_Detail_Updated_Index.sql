@@ -1,1 +1,0 @@
-CREATE INDEX mine_type_detail_xref_update_timestamp_idx ON mine_type_detail_xref (update_timestamp);
