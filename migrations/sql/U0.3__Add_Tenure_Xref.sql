@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS mineral_tenure_xref;

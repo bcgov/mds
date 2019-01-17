@@ -230,9 +230,20 @@ BEGIN
         now()
     FROM new_record new
     WHERE
-        (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
-        AND
-        (new.lat_dec <> 0 AND new.lon_dec <> 0);
+        -- Present + valid in MMSMIN
+        (
+            (new.lat_dec IS NOT NULL AND new.lon_dec IS NOT NULL)
+            AND
+            (new.lat_dec <> 0 AND new.lon_dec <> 0)
+        ) OR (
+        -- Present + valid in MMSNOW
+            SELECT COUNT(mine_no)
+            FROM mms.mmsnow
+            WHERE
+                new.mine_no = mine_no
+                AND (lat_dec IS NOT NULL AND lon_dec IS NOT NULL)
+                AND (lat_dec <> 0 AND lon_dec <> 0)
+        ) > 0;
     SELECT count(*) FROM mine into new_row;
     SELECT count(*) FROM mine_location into location_row;
 

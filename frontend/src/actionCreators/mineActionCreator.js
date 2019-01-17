@@ -24,7 +24,7 @@ const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
         )
       : Promise.resolve([]);
 
-  return Promise.all([create("mine_disturbance_code"), create("mine_commodity_code")]);
+  return Promise.all([...create("mine_disturbance_code"), ...create("mine_commodity_code")]);
 };
 
 const handleError = (dispatch, reducer) => (err) => {
@@ -89,7 +89,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(showLoading("modal"));
   return axios
     .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
-    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD, id))
+    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
