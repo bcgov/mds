@@ -8,8 +8,14 @@ MINE_ADMIN = "mds-mine-admin"
 def requires_role_mine_view(func):
     return _inner_wrapper(func, MINE_VIEW)
 
+
 def requires_role_mine_create(func):
-     return _inner_wrapper(func, MINE_CREATE)
+    return _inner_wrapper(func, MINE_CREATE)
+
+
+def requires_role_mine_admin(func):
+    return _inner_wrapper(func, MINE_ADMIN)
+
 
 def requires_role_mine_admin(func):
      return _inner_wrapper(func, MINE_ADMIN)
