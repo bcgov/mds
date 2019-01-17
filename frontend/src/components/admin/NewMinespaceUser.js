@@ -44,7 +44,7 @@ export class NewMinespaceUser extends Component {
               value: `${mine.mine_name}~${mine.guid}`,
               label: mine.mine_name,
             }))}
-            handleSubmit={this.createNewBCEIDUser}
+            onSubmit={this.createNewBCEIDUser}
           />
         )}
       </div>

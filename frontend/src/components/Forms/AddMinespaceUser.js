@@ -19,23 +19,27 @@ export const AddMinespaceUser = (props) => (
     <Col>
       <Row>
         <Col>
-          <Field
-            id="user_bceid_email"
-            name="user_bceid_email"
-            label="BCEID Email"
-            component={RenderField}
-            validate={[required, email]}
-          />
+          <Form.Item>
+            <Field
+              id="user_bceid_email"
+              name="user_bceid_email"
+              label="BCEID Email"
+              component={RenderField}
+              validate={[required, email]}
+            />
+          </Form.Item>
         </Col>
         <Col>
-          <Field
-            id="proponent_mine_access"
-            name="proponent_mine_access"
-            label="Mines"
-            placeholder="Please Select a Mine"
-            component={renderConfig.MULTI_SELECT}
-            data={props.mines}
-          />
+          <Form.Item>
+            <Field
+              id="proponent_mine_access"
+              name="proponent_mine_access"
+              label="Mines"
+              placeholder="Please Select a Mine"
+              component={renderConfig.MULTI_SELECT}
+              data={props.mines}
+            />
+          </Form.Item>
         </Col>
       </Row>
       <div className="right center-mobile">
