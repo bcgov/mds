@@ -105,6 +105,8 @@ class MinePartyAppointment(AuditMixin, Base):
     def find_manager_history_by_mine_no(cls, mine_no):
         try:
             relationship = cls.query.first()
+            if not relationship:
+                return None
             related_mine_guid = relationship.mine.mine_guid
             filters = {'mine_guid': related_mine_guid, 'mine_party_appt_type_code': 'MMG'}
             return cls.query.filter_by(**filters).all()
