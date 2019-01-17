@@ -1,6 +1,10 @@
 import React from "react";
-import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
+import { LandingPage } from "./LandingPage";
 
-export const Home = () => <div>hello proponents</div>;
+export const Home = () => (
+  <div>
+    <LandingPage />
+  </div>
+);
 
-export default AuthenticationGuard(Home);
+export default Home;
