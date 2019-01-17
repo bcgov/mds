@@ -37,6 +37,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
+
     mine_party_appt_type = db.relationship(
         'MinePartyAppointmentType',
         backref='mine_party_appt',
@@ -101,6 +102,16 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_manager_history_by_mine_no(cls, mine_no):
+        try:
+            relationship = cls.query.first()
+            related_mine_guid = relationship.mine.mine_guid
+            filters = {'mine_guid': related_mine_guid, 'mine_party_appt_type_code': 'MMG'}
+            return cls.query.filter_by(**filters).all()
+        except ValueError:
+            return None
+
+    @classmethod
     def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
         try:
             built_query = cls.query.filter_by(deleted_ind=False)
@@ -114,6 +125,14 @@ class MinePartyAppointment(AuditMixin, Base):
             return built_query.all()
         except ValueError:
             return None
+
+    @classmethod
+    def to_csv(cls, records):
+        rows = ['processed_by,processed_on']
+        for record in records:
+            row = str(record.processed_by)+','+str(record.processed_on)
+            rows.append(row)
+        return '\n'.join(rows)
 
     @classmethod
     def create_mine_party_appt(cls,
