@@ -25,13 +25,26 @@ export class NewMinespaceUser extends Component {
     this.props.fetchMineNameList();
   }
 
+  createNewBCEIDUser = (values) => {
+    console.log(values);
+    console.log(values.user_bceid_email);
+    //  const guids = values.proponent_mine_access.map((val) => val.split("~")[1]);
+    //  const email = values.email;
+    //  this.props.createMinespaceUser(email, guids);
+  };
+
   render() {
+    console.log(this.props.mines);
     return (
       <div>
         <h3>Add BCEID User</h3>
         {this.props.mines.mines && (
           <AddMinespaceUser
-            mines={createDropDownList(this.props.mines.mines, "mine_name", "mine_name")}
+            mines={this.props.mines.mines.map((mine) => ({
+              value: `${mine.mine_name}~${mine.guid}`,
+              label: mine.mine_name,
+            }))}
+            handleSubmit={this.createNewBCEIDUser}
           />
         )}
       </div>
