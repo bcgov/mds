@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
+    "antd": "^3.12.3",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
     "babel-polyfill": "^6.26.0",
@@ -16,10 +17,12 @@
     "filepond-plugin-file-validate-type": "^1.2.1",
     "hoist-non-react-statics": "^3.2.1",
     "keycloak-js": "^4.2.1",
+    "less-loader": "^4.1.0",
     "prop-types": "^15.6.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-filepond": "^5.0.0",
+    "react-lottie": "^1.2.3",
     "react-redux": "^5.0.7",
     "react-redux-loading-bar": "^4.0.5",
     "react-router-dom": "^4.2.2",
@@ -30,6 +33,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "antd-scss-theme-plugin": "^1.0.7",
     "autoprefixer": "^8.5.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
