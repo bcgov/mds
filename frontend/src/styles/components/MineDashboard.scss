@@ -23,7 +23,14 @@
 
       &__content {
         flex: 2;
+        margin-top: $default-margin-lg;
         padding: $default-padding-lg;
+
+        &--status__img {
+          width: 15px;
+          height: 26px;
+          margin-right: 5px;
+        }
       }
 
       &__map {
@@ -50,53 +57,30 @@
   }
 
   &__content {
-    z-index: 100;
     background-color: $pure-white;
     position: relative;
     border-radius: $default-round-top-border;
 
     @include mobile {
+      margin-top: $default-margin-lg;
       padding: 0;
     }
   }
 }
 
-.mine__status {
-  &:nth-child(2),
-  &:nth-child(3) {
-    font-weight: lighter;
-    font-size: 16px;
-    &:before {
-      content: "|";
-    }
-  }
-}
-
+.mine__status,
 .mine_tenure {
   &:nth-child(1),
   &:nth-child(2),
   &:nth-child(3) {
     &:after {
-      content: ", ";
+      content: ",";
+      margin-right: 4px;
     }
   }
   &:last-child() {
     &:after {
       content: " " !important;
     }
-  }
-}
-
-.table-wrapper {
-  padding: $default-padding-md;
-  border-left: 4px solid $violet;
-  background: $pure-white;
-
-  th {
-    padding: 30px;
-  }
-
-  td {
-    padding: 0 0 $default-padding-xl $default-padding-xl;
   }
 }
