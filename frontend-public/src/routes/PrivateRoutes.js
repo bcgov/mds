@@ -9,8 +9,7 @@ const PrivateRoutes = () => (
       <Route
         exact
         path={routes.DASHBOARD.route}
-        // component={AuthenticationGuard(routes.DASHBOARD.component)}
-        component={routes.DASHBOARD.component}
+        component={AuthenticationGuard(routes.DASHBOARD.component)}
       />
     </Switch>
   </div>

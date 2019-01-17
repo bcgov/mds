@@ -10,7 +10,8 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.keycloak = {};
+  props.keycloak = { logout: jest.fn() };
+  props.isAuthenticated = true;
 };
 
 beforeEach(() => {

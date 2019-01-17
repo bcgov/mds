@@ -1,10 +1,7 @@
 import React from "react";
-import { Button } from "antd";
-import { Link } from "react-router-dom";
+import Authentication from "@/components/authentication/Authentication";
 
 import { BC_GOV } from "@/constants/assets";
-import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
-import * as Route from "@/constants/routes";
 
 export const Header = () => (
   <div className="header-wrapper">
@@ -14,13 +11,9 @@ export const Header = () => (
         <span className="header-title-bc">BC</span>
         <span className="header-title"> MineSpace</span>
       </h1>
-      <Link to={Route.DASHBOARD.route}>
-        <Button type="secondary" className="login-btn">
-          Log in
-        </Button>
-      </Link>
+      <Authentication />
     </div>
   </div>
 );
 
-export default AuthenticationGuard(Header);
+export default Header;

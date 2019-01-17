@@ -6,7 +6,6 @@ const PublicRoutes = () => (
   <div>
     <Switch>
       <Route exact path={routes.HOME.route} component={routes.HOME.component} />
-      <Route render={() => <div>404 - Not Found</div>} />
     </Switch>
   </div>
 );
