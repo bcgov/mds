@@ -292,24 +292,24 @@ environments {
                     cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 3
                 }
                 nginx {
                     cpu_request = "50m"
                     cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 3
                 }
                 python {
                     cpu_request = "50m"
                     cpu_limit = "150m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 3
                 }
                 postgres {
                     cpu_request = "50m"
@@ -443,31 +443,31 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "150m"
-                    cpu_limit = "500m"
-                    memory_request = "1Gi"
-                    memory_limit = "1.5Gi"
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                     replica_min = 2
                     replica_max = 4
                 }
                 nginx {
                     cpu_request = "100m"
                     cpu_limit = "150m"
-                    memory_request = "384Mi"
+                    memory_request = "256Mi"
                     memory_limit = "512Mi"
                     replica_min = 2
                     replica_max = 4
                 }
                 python {
-                    cpu_request = "300m"
-                    cpu_limit = "500m"
-                    memory_request = "2.5Gi"
-                    memory_limit = "4Gi"
+                    cpu_request = "200m"
+                    cpu_limit = "400m"
+                    memory_request = "1.5Gi"
+                    memory_limit = "3Gi"
                     replica_min = 2
                     replica_max = 4
                 }
                 postgres {
-                    cpu_request = "250m"
+                    cpu_request = "200m"
                     cpu_limit = "500m"
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
