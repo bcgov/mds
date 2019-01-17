@@ -42,7 +42,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
       // Fetch user info and roles and store them in local storage
       const userInfo = await keycloak.loadUserInfo();
       localStorage.setItem("jwt", keycloak.token);
-      this.props.storeUserAccessData(keycloak.realmAccess.roles);
       this.props.storeKeycloakData(keycloak);
       this.props.authenticateUser(userInfo);
     }
@@ -52,9 +51,10 @@ export const AuthenticationGuard = (WrappedComponent) => {
         if (this.props.isAuthenticated) {
           return <WrappedComponent {...this.props} />;
         }
-        if (!this.props.isAuthenticated) {
-          return <NullScreen type="unauthorized" />;
-        }
+        // Add this block back in once there are user permissions to check against, ie user logs in with BCeID but permissions have not been updated on keycloak.
+        // if (!this.props.isAuthenticated) {
+        //   return <NullScreen type="unauthorized" />;
+        // }
         return <div>Loading...</div>;
       }
       return <div>Loading...</div>;

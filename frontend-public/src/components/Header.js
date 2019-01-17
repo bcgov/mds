@@ -1,10 +1,8 @@
 import React from "react";
-import { Button, Row, Col } from "antd";
-import { Link } from "react-router-dom";
+import Authentication from "@/components/authentication/Authentication";
+import { Row, Col } from "antd";
 
 import { BC_GOV } from "@/constants/assets";
-import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
-import * as Route from "@/constants/routes";
 
 export const Header = () => (
   <div className="header">
@@ -19,14 +17,10 @@ export const Header = () => (
         </div>
       </Col>
       <Col xs={24} sm={8} md={8} lg={8}>
-        <Link to={Route.DASHBOARD.route}>
-          <Button type="secondary" className="login-btn">
-            Log in
-          </Button>
-        </Link>
+        <Authentication />
       </Col>
     </Row>
   </div>
 );
 
-export default AuthenticationGuard(Header);
+export default Header;

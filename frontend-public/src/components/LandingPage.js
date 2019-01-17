@@ -1,8 +1,6 @@
 import React from "react";
 import { Divider, Row, Col, Button } from "antd";
 
-import { AuthenticationGuard } from "../HOC/AuthenticationGuard";
-
 export const LandingPage = () => (
   <div>
     <Row>
@@ -135,4 +133,4 @@ export const LandingPage = () => (
   </div>
 );
 
-export default AuthenticationGuard(LandingPage);
+export default LandingPage;
