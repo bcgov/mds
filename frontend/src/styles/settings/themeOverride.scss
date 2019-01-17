@@ -31,11 +31,15 @@
     background-color: $v-divider-color;
   }
 }
+.custom-large-divider {
+  border: 2px solid $h-divider-color;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 // BUTTON
 .ant-btn,
 .ant-btn-sm,
 .ant-btn-secondary {
-  font-weight: $light;
   margin: 10px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
@@ -60,6 +64,7 @@
 }
 
 .ant-btn-primary {
+  font-weight: $light;
   color: $pure-white;
   &:hover {
     color: $pure-white;
@@ -68,26 +73,16 @@
   }
 }
 
-.ant-btn-dashed {
-  margin: 10px 0;
-  color: $tertiary-btn-color;
-  border-color: $tertiary-btn-border-color;
-  border-style: dashed;
-  &:hover {
-    color: $tertiary-btn-color-hover;
-    border-color: $tertiary-btn-border-color-hover;
-    border-style: dashed;
-  }
-}
 .ant-popover-buttons button {
   margin: 10px;
   line-height: 1.5;
   text-align: center;
   cursor: pointer;
   padding: 0 15px;
-  font-size: 14px;
+  font-size: 0.875rem; //14px
   height: 32px;
 }
+
 .ant-btn-background-ghost {
   border-style: none;
   box-shadow: none;
@@ -101,6 +96,10 @@
 .ant-popover-inner-content,
 .ant-popover-arrow {
   background-color: $pure-white;
+}
+
+.ant-popover-message-title {
+  padding-left: 25px;
 }
 
 // TOAST
@@ -136,7 +135,8 @@
 
 // TAGS
 .ant-tag {
-  font-size: 14px;
+  @extend p;
+  padding: 0 7px !important;
 }
 
 // FORMS
@@ -173,7 +173,7 @@
   padding: 5px 12px;
   margin: 0;
   clear: both;
-  font-size: 14px;
+  font-size: 0.875rem; //14px
   font-weight: normal;
   color: rgba(0, 0, 0, 0.65);
   white-space: nowrap;
