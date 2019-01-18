@@ -105,17 +105,17 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_manager_history_by_mine_no(cls, mine_no):
-        # send internal network request to /mines where mine_no == mine_no
+        # send internal network request to fetch matching mine record
         mines_url = current_app.config['MINES_URL'] + '/mines/' + str(mine_no)
         headers = {'Authorization': request.headers.get('Authorization')}
         response = requests.get(url=mines_url, headers=headers)
         json_response = response.json()
 
-        # errors = json_response['errors']
-        # if errors and len(errors) > 0:
-            # return None
+        errors = json_response['errors']
+        if errors and len(errors) > 0:
+            return None
 
-        # extract the mine_guid
+        # fetch mine history by mine_guid
         related_mine_guid = json_response['guid']
         return cls.query.filter_by(mine_guid=related_mine_guid).all()
 
