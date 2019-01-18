@@ -17,9 +17,6 @@ def requires_role_mine_admin(func):
     return _inner_wrapper(func, MINE_ADMIN)
 
 
-def requires_role_mine_admin(func):
-     return _inner_wrapper(func, MINE_ADMIN)
-
 def _inner_wrapper(func, role):
     @wraps(func)
     def wrapper(*args, **kwds):
