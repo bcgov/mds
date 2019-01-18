@@ -34,7 +34,7 @@ export class NewMinespaceUser extends Component {
   };
 
   render() {
-    console.log(this.props.mines);
+    // console.log(this.props.mines);
     return (
       <div>
         <h3>Add BCEID User</h3>

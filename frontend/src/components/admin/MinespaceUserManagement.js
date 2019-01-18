@@ -1,16 +1,67 @@
-import React from "react";
+import React, { Component } from "react";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
-import ExistingMinespaceUsers from "@/components/admin/ExistingMinespaceUsers";
+import MinespaceUserList from "@/components/admin/MinespaceUserList";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
+import { getMineNames } from "@/selectors/mineSelectors";
+import { getMinespaceUsers } from "@/selectors/minespaceSelector";
+import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
+import { fetchMinespaceUsers } from "@/actionCreators/minespaceActionCreator";
+
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
+const propTypes = {
+  mines: PropTypes.object,
+  minespaceUsers: PropTypes.array,
+  fetchMineNameList: PropTypes.func.isRequired,
+  fetchMinespaceUsers: PropTypes.func.isRequired,
+};
 
-export const MinespaceUserManagement = () => (
-  <div>
-    <h2>Minespace User Management</h2>
-    <NewMinespaceUser />
-    <ExistingMinespaceUsers />
-  </div>
-);
+const defaultProps = {
+  mines: {},
+  minespaceUsers: {},
+};
 
-export default MinespaceUserManagement;
+export class MinespaceUserManagement extends Component {
+  componentDidMount() {
+    this.props.fetchMineNameList();
+    this.props.fetchMinespaceUsers();
+  }
+
+  render() {
+    console.log(this.props.minespaceUsers);
+    return (
+      <div>
+        <h2>Minespace User Management</h2>
+        <NewMinespaceUser />
+        <h3>Minespace Users</h3>
+        <MinespaceUserList minespaceUsers={this.props.minespaceUsers} mines={this.props.mines} />
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  mines: getMineNames(state),
+  minespaceUsers: getMinespaceUsers(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineNameList,
+      fetchMinespaceUsers,
+    },
+    dispatch
+  );
+
+MinespaceUserManagement.propTypes = propTypes;
+MinespaceUserManagement.defaultProps = defaultProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MinespaceUserManagement);

@@ -3,6 +3,7 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
+import * as minespaceActions from "@/actions/minespaceActions";
 import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -33,4 +34,22 @@ export const createMinespaceUser = (payload) => (dispatch) => {
     });
 };
 
-export default createMinespaceUser;
+export const fetchMinespaceUsers = () => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINESPACE_USER));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINESPACE_USER, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINESPACE_USER));
+      dispatch(minespaceActions.storeMinespaceUserList(response.data));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINESPACE_USER));
+      dispatch(hideLoading());
+    });
+};
