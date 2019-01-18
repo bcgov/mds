@@ -1,6 +1,5 @@
 from datetime import datetime
 import random
-import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import click
