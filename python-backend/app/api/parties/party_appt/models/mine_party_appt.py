@@ -129,11 +129,13 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def to_csv(cls, records):
-        rows = ['processed_by,processed_on']
+    def to_csv(cls, records, columns):
+        rows = [','.join(columns)]
         for record in records:
-            row = str(record.processed_by)+','+str(record.processed_on)
-            rows.append(row)
+            row = []
+            for column in columns:
+                row.append(str(getattr(record, column)))
+            rows.append(','.join(row))
         return '\n'.join(rows)
 
     @classmethod

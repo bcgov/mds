@@ -20,5 +20,5 @@ class MinePartyApptAdminResource(Resource, UserMixin, ErrorMixin):
         history = MinePartyAppointment.find_manager_history_by_mine_no(mine_no)
         if not history:
             self.raise_error(404, 'Mine Manager history not found')
-        csv = MinePartyAppointment.to_csv(history)
+        csv = MinePartyAppointment.to_csv(history, ['processed_by', 'processed_on'])
         return Response(csv, mimetype='text/csv')

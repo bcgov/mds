@@ -26,6 +26,6 @@ def test_mine_party_appt_find_manager_history_by_mine_no(test_client, auth_heade
 
 def test_mine_party_appt_to_csv(test_client, auth_headers):
     record =  MinePartyAppointment.query.first()
-    csv = MinePartyAppointment.to_csv([record])
+    csv = MinePartyAppointment.to_csv([record], ['processed_by', 'processed_on'])
     second_row = str(record.processed_by)+','+str(record.processed_on)
     assert csv == "processed_by,processed_on\n" + second_row
