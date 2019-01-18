@@ -54,7 +54,7 @@ export class ProponentDashboard extends Component {
                 ))}
               </ul>
               <p className="large-padding-top">
-                Don't see the mine you are looking for? Contact{" "}
+                Don&#39;t see the mine you are looking for? Contact{" "}
                 <a href="mailto:MDS@gov.bc.ca">MDS@gov.bc.ca</a> for assistance.
               </p>
             </Col>

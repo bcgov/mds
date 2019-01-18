@@ -6,6 +6,7 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated, getKeycloak } from "@/selectors/authenticationSelectors";
 import { authenticateUser, storeKeycloakData } from "@/actions/authenticationActions";
 import { KEYCLOAK } from "@/constants/environment";
+import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 
 /**
