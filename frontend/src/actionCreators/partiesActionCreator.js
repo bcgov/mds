@@ -222,8 +222,8 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
 
 export const downloadMineManagerHistory = (mineNo) =>
   axios({
-    url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
     method: "GET",
+    url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
     responseType: "blob",
     ...createRequestHeader(),
   })
@@ -238,7 +238,7 @@ export const downloadMineManagerHistory = (mineNo) =>
       return response;
     })
     .catch(({ response }) => {
-      let message = "Dowload failed";
+      let message = "Download failed";
       if (response.status === 422) {
         message = "No Mine Number provided";
       }
