@@ -10,7 +10,7 @@ const propTypes = {
 
 // This file is anticipated to use state
 // eslint-disable-next-line react/prefer-stateless-function
-export class ProponentMineInfo extends Component {
+export class UserMineInfo extends Component {
   render() {
     return (
       <div>
@@ -24,6 +24,6 @@ const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
 });
 
-ProponentMineInfo.propTypes = propTypes;
+UserMineInfo.propTypes = propTypes;
 
-export default connect(mapStateToProps)(ProponentMineInfo);
+export default connect(mapStateToProps)(UserMineInfo);

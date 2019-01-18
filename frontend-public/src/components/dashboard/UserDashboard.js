@@ -22,7 +22,7 @@ const propTypes = {
 
 // This file is anticipated to use state
 // eslint-disable-next-line react/prefer-stateless-function
-export class ProponentDashboard extends Component {
+export class UserDashboard extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
@@ -83,9 +83,9 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-ProponentDashboard.propTypes = propTypes;
+UserDashboard.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProponentDashboard);
+)(UserDashboard);

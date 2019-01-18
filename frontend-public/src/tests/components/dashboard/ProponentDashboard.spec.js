@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ProponentDashboard } from "@/components/dashboard/ProponentDashboard";
+import { UserDashboard } from "@/components/dashboard/UserDashboard";
 
 const props = {};
 
@@ -12,9 +12,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("ProponentDashboard", () => {
+describe("UserDashboard", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<ProponentDashboard {...props} />);
+    const wrapper = shallow(<UserDashboard {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 });
