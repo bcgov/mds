@@ -1,7 +1,9 @@
 from datetime import datetime
 import re
 import uuid
+import requests
 
+from flask import request, current_app
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -103,15 +105,19 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_manager_history_by_mine_no(cls, mine_no):
-        try:
-            relationship = cls.query.first()
-            if not relationship:
-                return None
-            related_mine_guid = relationship.mine.mine_guid
-            filters = {'mine_guid': related_mine_guid, 'mine_party_appt_type_code': 'MMG'}
-            return cls.query.filter_by(**filters).all()
-        except ValueError:
-            return None
+        # send internal network request to /mines where mine_no == mine_no
+        mines_url = current_app.config['MINES_URL'] + '/mines/' + str(mine_no)
+        headers = {'Authorization': request.headers.get('Authorization')}
+        response = requests.get(url=mines_url, headers=headers)
+        json_response = response.json()
+
+        # errors = json_response['errors']
+        # if errors and len(errors) > 0:
+            # return None
+
+        # extract the mine_guid
+        related_mine_guid = json_response['guid']
+        return cls.query.filter_by(mine_guid=related_mine_guid).all()
 
     @classmethod
     def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
