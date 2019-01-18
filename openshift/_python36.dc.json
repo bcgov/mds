@@ -172,7 +172,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway -outOfOrder=true migrate)"
+                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate)"
                 ]
               }
             },
@@ -435,6 +435,10 @@
                         "key": "database-name"
                       }
                     }
+                  },
+                  {
+                    "name": "FLYWAY_OUT_OF_ORDER",
+                    "value": "true"
                   }
                 ],
                 "resources": {
