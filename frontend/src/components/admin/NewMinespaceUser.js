@@ -7,12 +7,13 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
-import { createMinespaceUser } from "@/actionCreators/minespaceActionCreator";
+import { createMinespaceUser, fetchMinespaceUsers } from "@/actionCreators/minespaceActionCreator";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   mines: PropTypes.object,
   createMinespaceUser: PropTypes.func.isRequired,
+  fetchMinespaceUsers: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -31,7 +32,7 @@ export class NewMinespaceUser extends Component {
     };
 
     this.props.createMinespaceUser(payload).then(() => {
-      this.props.fetchMineNameList();
+      this.props.fetchMinespaceUsers();
     });
   };
 
@@ -62,6 +63,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineNameList,
       createMinespaceUser,
+      fetchMinespaceUsers,
     },
     dispatch
   );
