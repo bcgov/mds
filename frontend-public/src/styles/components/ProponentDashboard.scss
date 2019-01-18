@@ -1,0 +1,17 @@
+.user-mine-list {
+  list-style: none;
+  li {
+    padding: $default-padding-md 0px;
+  }
+}
+
+.user-title {
+  font-size: $title-h1;
+
+  padding-bottom: $default-padding-xl;
+}
+
+.user-dashboard-padding {
+  padding-top: $default-padding-xxl;
+  padding-bottom: 70px;
+}

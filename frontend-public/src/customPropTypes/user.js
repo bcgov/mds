@@ -6,6 +6,8 @@ export const userMineInfo = shape({
   guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
+  latitude: PropTypes.string,
+  longitude: PropTypes.string,
 });
 
 export const userMines = shape({
