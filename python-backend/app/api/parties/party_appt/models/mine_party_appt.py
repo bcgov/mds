@@ -111,12 +111,10 @@ class MinePartyAppointment(AuditMixin, Base):
         response = requests.get(url=mines_url, headers=headers)
         json_response = response.json()
 
-        errors = json_response['errors']
-        if errors and len(errors) > 0:
-            return None
-
         # fetch mine history by mine_guid
-        related_mine_guid = json_response['guid']
+        related_mine_guid = json_response.get('guid')
+        if not related_mine_guid:
+            return None
         return cls.query.filter_by(mine_guid=related_mine_guid).all()
 
     @classmethod
