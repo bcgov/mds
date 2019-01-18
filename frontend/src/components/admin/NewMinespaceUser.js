@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
-import createMinespaceUser from "@/actionCreators/minespaceActionCreator";
+import { createMinespaceUser } from "@/actionCreators/minespaceActionCreator";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
@@ -30,11 +30,12 @@ export class NewMinespaceUser extends Component {
       email: values.user_bceid_email,
     };
 
-    this.props.createMinespaceUser(payload);
+    this.props.createMinespaceUser(payload).then(() => {
+      this.props.fetchMineNameList();
+    });
   };
 
   render() {
-    // console.log(this.props.mines);
     return (
       <div>
         <h3>Add BCEID User</h3>

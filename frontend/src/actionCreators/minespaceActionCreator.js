@@ -10,7 +10,6 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 export const createMinespaceUser = (payload) => (dispatch) => {
-  console.log(payload);
   dispatch(request(reducerTypes.CREATE_MINESPACE_USER));
   dispatch(showLoading("modal"));
   return axios

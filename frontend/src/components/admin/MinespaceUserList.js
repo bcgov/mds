@@ -8,11 +8,13 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
+import { uniqBy } from "lodash";
+import { min } from "moment";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  minespaceUsers: PropTypes.object.isRequired,
-  mines: PropTypes.object.isRequired,
+  minespaceUsers: PropTypes.array.isRequired,
+  mines: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
@@ -29,35 +31,39 @@ const columns = [
     title: "Mines",
     width: 300,
     dataIndex: "mineNames",
-    // render: (text,record) => (
-    //   <div>
-    //   {text &&
-    //   uniqBy(text, "mine_name").map(({mine_guid}) => (
-    //     <div key={mine_guid}>{mine_name}</div>
-    //   ))}
-    //   {!text && <div>{record.emptyField}</div>}
-    //   </div>
-    // )
+    render: (text, record) => (
+      <div>{text && text.map(({ guid, mine_name }) => <div key={guid}>{mine_name}</div>)}</div>
+    ),
   },
 ];
 
-const transformRowData = (minespaceUsers) =>
+const lookupMineName = (mine_guids, mines) =>
+  mine_guids.map((guid) => {
+    const mine_record = mines.find((mine) => mine.guid === guid);
+    return { guid, mine_name: mine_record ? mine_record.mine_name : "" };
+  });
+
+const transformRowData = (minespaceUsers, mines) =>
   minespaceUsers.map((user) => ({
     key: user.id,
     emptyField: Strings.EMPTY_FIELD,
     email: user.email,
-    mineNames: user.mine_guids ? user.mine_guids : Strings.EMPTY_FIELD,
+    mineNames: lookupMineName(user.mines, mines),
   }));
 
 export const MinespaceUserList = (props) => (
-  <Table
-    align="center"
-    pagination={false}
-    columns={columns}
-    dataSource={transformRowData(props.minespaceUsers)}
-    scroll={{ x: 1500 }}
-    locale={{ emptyText: <NullScreen type="no-results" /> }}
-  />
+  <div>
+    {props.mines && (
+      <Table
+        align="center"
+        pagination={false}
+        columns={columns}
+        dataSource={transformRowData(props.minespaceUsers, props.mines)}
+        scroll={{ x: 1500 }}
+        locale={{ emptyText: <NullScreen type="no-results" /> }}
+      />
+    )}
+  </div>
 );
 MinespaceUserList.propTypes = propTypes;
 

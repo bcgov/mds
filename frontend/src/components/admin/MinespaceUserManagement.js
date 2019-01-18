@@ -33,12 +33,16 @@ export class MinespaceUserManagement extends Component {
 
   render() {
     console.log(this.props.minespaceUsers);
+    console.log(this.props.mines.mines);
     return (
       <div>
         <h2>Minespace User Management</h2>
         <NewMinespaceUser />
         <h3>Minespace Users</h3>
-        <MinespaceUserList minespaceUsers={this.props.minespaceUsers} mines={this.props.mines} />
+        <MinespaceUserList
+          minespaceUsers={this.props.minespaceUsers}
+          mines={this.props.mines.mines}
+        />
       </div>
     );
   }
