@@ -1,5 +1,6 @@
 from datetime import datetime
 import random
+import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import click
@@ -11,6 +12,7 @@ from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine_type import MineType
 from .api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON,
                             MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS)
+from .api.mines.status.models.mine_status_xref import MineStatusXref
 from .api.mines.mine.models.mine import Mine
 from .api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
@@ -93,8 +95,10 @@ def register_commands(app):
             mine_tenure_type_codes = list(
                 map(lambda x: x['value'], MineTenureTypeCode.all_options()))
             for _ in range(int(num)):
+                print(f'1')
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
+                print(f'2')
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
                                         random_mine_category(), random_region(), DUMMY_USER_KWARGS)
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
@@ -103,10 +107,14 @@ def register_commands(app):
                 party = Party.create_party(names.get_first_name(), names.get_last_name(),
                                            DUMMY_USER_KWARGS)
 
+                print(f'3')
                 db.session.commit()
+                print(f'4')
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
+                print(f'5')
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)
+                print(f'6')
 
             try:
                 db.session.commit()
@@ -139,6 +147,12 @@ def register_commands(app):
         for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
             MineOperationStatusSubReasonCode.create_mine_operation_status_sub_reason_code(
                 v['value'], v['label'], 1, DUMMY_USER_KWARGS)
+
+        for status_k, status_v in MINE_OPERATION_STATUS.items():
+            for reason_k, reason_v in MINE_OPERATION_STATUS_REASON.items():
+                for sub_k, sub_v in MINE_OPERATION_STATUS_SUB_REASON.items():
+                    MineStatusXref.create_mine_status_xref(status_v['value'], reason_v['value'],
+                                                           sub_v['value'], DUMMY_USER_KWARGS)
 
         display_order = 10
         for item in MINE_REGION_OPTIONS:
