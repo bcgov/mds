@@ -7,13 +7,12 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
-/**
- * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
- */
+import createMinespaceUser from "@/actionCreators/minespaceActionCreator";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   mines: PropTypes.object,
+  createMinespaceUser: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -26,11 +25,12 @@ export class NewMinespaceUser extends Component {
   }
 
   createNewBCEIDUser = (values) => {
-    console.log(values);
-    console.log(values.user_bceid_email);
-    //  const guids = values.proponent_mine_access.map((val) => val.split("~")[1]);
-    //  const email = values.email;
-    //  this.props.createMinespaceUser(email, guids);
+    const payload = {
+      mine_guids: values.proponent_mine_access.map((val) => val.split("~")[1]),
+      email: values.user_bceid_email,
+    };
+
+    this.props.createMinespaceUser(payload);
   };
 
   render() {
@@ -60,6 +60,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineNameList,
+      createMinespaceUser,
     },
     dispatch
   );

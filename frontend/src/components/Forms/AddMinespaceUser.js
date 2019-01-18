@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { required, email } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
