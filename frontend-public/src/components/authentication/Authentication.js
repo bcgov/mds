@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 import PropTypes from "prop-types";
+import * as routes from "@/constants/routes";
 import { logoutUser } from "@/actions/authenticationActions";
-import { getKeycloak } from "@/selectors/authenticationSelectors";
+import { getKeycloak, isAuthenticated } from "@/selectors/authenticationSelectors";
 
 /**
  * @class Logout.js is a small component which contains all keycloak logic to log a user out, NOTE: due to idir issues, Logout does not work as it should.
@@ -11,10 +14,11 @@ import { getKeycloak } from "@/selectors/authenticationSelectors";
 
 const propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   keycloak: { logout: PropTypes.func.isRequired }.isRequired,
 };
 
-export class Logout extends Component {
+export class Authentication extends Component {
   handleLogout = () => {
     this.props.keycloak.logout();
     localStorage.removeItem("jwt");
@@ -22,16 +26,26 @@ export class Logout extends Component {
   };
 
   render() {
+    if (!this.props.isAuthenticated) {
+      return (
+        <Link to={routes.DASHBOARD.route}>
+          <Button type="secondary" className="login-btn">
+            Log in
+          </Button>
+        </Link>
+      );
+    }
     return (
-      <button type="button" onClick={this.handleLogout}>
+      <Button type="secondary" className="login-btn" onClick={this.handleLogout}>
         Logout
-      </button>
+      </Button>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   keycloak: getKeycloak(state),
+  isAuthenticated: isAuthenticated(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -42,9 +56,9 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-Logout.propTypes = propTypes;
+Authentication.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Logout);
+)(Authentication);
