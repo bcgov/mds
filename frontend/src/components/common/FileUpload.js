@@ -5,6 +5,7 @@ import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import tus from "tus-js-client";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
@@ -30,14 +31,44 @@ class FileUpload extends React.Component {
     };
 
     this.server = {
-      url: ENVIRONMENT.apiUrl,
-      process: {
-        url: this.props.uploadUrl,
-        headers: createRequestHeader().headers,
-        onload: null,
-        onerror: null,
+      process: (fieldName, file, metadata, load, error, progress, abort) => {
+        const upload = new tus.Upload(file, {
+          endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+          retryDelays: [0, 1000, 3000, 5000],
+          metadata: {
+            filename: file.name,
+            filetype: file.type,
+          },
+          onError: (err) => {
+            error(err);
+          },
+          onProgress: (bytesUploaded, bytesTotal)=> {
+            progress(true, bytesUploaded, bytesTotal);
+          },
+          onSuccess: ()=> {
+            load(upload.url.split("/").pop());
+          },
+        });
+        // Start the upload
+        upload.start();
+        return {
+          abort: () => {
+            upload.abort();
+            abort();
+          },
+        };
       },
     };
+
+    // this.server = {
+    //   url: ENVIRONMENT.apiUrl,
+    //   process: {
+    //     url: this.props.uploadUrl,
+    //     headers: createRequestHeader().headers,
+    //     onload: null,
+    //     onerror: null,
+    //   },
+    // };
   }
 
   render() {
