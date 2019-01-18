@@ -8,6 +8,7 @@ import { USER_MINE_INFO } from "@/constants/reducerTypes";
 
 const initialState = {
   userMineInfo: {},
+  mine: {},
 };
 
 const userMineInfoReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const userMineInfoReducer = (state = initialState, action) => {
       return {
         ...state,
         userMineInfo: action.payload,
+      };
+    case actionTypes.STORE_MINE:
+      return {
+        ...state,
+        mine: action.payload,
       };
     case actionTypes.CLEAR:
       return {
@@ -27,5 +33,6 @@ const userMineInfoReducer = (state = initialState, action) => {
 };
 
 export const getUserMineInfo = (state) => state[USER_MINE_INFO].userMineInfo;
+export const getMine = (state) => state[USER_MINE_INFO].mine;
 
 export default userMineInfoReducer;

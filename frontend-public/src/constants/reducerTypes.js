@@ -5,3 +5,4 @@ export const AUTHENTICATION = "AUTHENTICATION";
 // User Dashboard Info
 export const USER_MINE_INFO = "USER_MINE_INFO";
 export const GET_USER_MINE_INFO = "GET_USER_MINE_INFO";
+export const GET_MINE_RECORD = "GET_MINE_RECORD";

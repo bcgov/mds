@@ -13,7 +13,7 @@ export const DASHBOARD = {
 };
 
 export const MINE_INFO = {
-  route: "/dashboard/mine/:mine_id",
-  dynamicRoute: (mine_id) => `/dashboard/mine/${mine_id}`,
+  route: "/dashboard/mine/:mineId",
+  dynamicRoute: (mineId) => `/dashboard/mine/${mineId}`,
   component: MineInfo,
 };

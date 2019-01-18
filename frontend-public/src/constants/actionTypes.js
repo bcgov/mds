@@ -5,6 +5,7 @@ export const ERROR = "ERROR";
 export const CLEAR = "CLEAR";
 
 export const STORE_USER_MINE_INFO = "STORE_USER_MINE_INFO";
+export const STORE_MINE = "STORE_MINE";
 
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER";
 export const LOGOUT = "LOGOUT";
