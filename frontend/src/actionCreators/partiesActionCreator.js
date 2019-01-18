@@ -238,7 +238,6 @@ export const downloadMineManagerHistory = (mineNo) =>
       return response;
     })
     .catch(({ response }) => {
-      console.log(response);
       let message = "Dowload failed";
       if (response.status === 422) {
         message = "No Mine Number provided";

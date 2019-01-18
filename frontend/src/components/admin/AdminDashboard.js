@@ -45,4 +45,4 @@ export class AdminDashboard extends Component {
   }
 }
 
-export default AuthorizationGuard(Permission.CREATE)(AdminDashboard); // TODO: Revert when done development
+export default AuthorizationGuard(Permission.ADMIN)(AdminDashboard);
