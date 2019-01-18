@@ -61,6 +61,14 @@
     {
       "name": "MEMORY_REQUEST",
       "value": "256Mi"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
     }
   ],
   "objects": [
@@ -97,7 +105,9 @@
       },
       "spec": {
         "strategy": {
-          "type": "Rolling"
+          "type": "Rolling",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
         },
         "triggers": [
           {
@@ -115,7 +125,7 @@
             "type": "ConfigChange"
           }
         ],
-        "replicas": 1,
+        "replicas": "${{REPLICA_MIN}}",
         "selector": {
           "name": "${NAME}${SUFFIX}"
         },
@@ -168,6 +178,26 @@
             ]
           }
         }
+      }
+    },
+    {
+      "apiVersion": "autoscaling/v1",
+      "kind": "HorizontalPodAutoscaler",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "labels": {
+          "name": "${NAME}${SUFFIX}"
+        }
+      },
+      "spec": {
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
+        "scaleTargetRef": {
+          "apiVersion": "v1",
+          "kind": "DeploymentConfig",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "targetCPUUtilizationPercentage": 95
       }
     },
     {

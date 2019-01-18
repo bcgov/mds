@@ -1,0 +1,47 @@
+.footer {
+  width: 100vw;
+  height: 80px;
+  background-color: $gov-blue;
+  border-top: 1px solid $gov-yellow;
+  bottom: 0;
+  @include tablet {
+    @include flex();
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    padding-right: $default-padding-md;
+  }
+}
+
+.footer-info-ul {
+  padding: $default-padding-xl 0px 0px $default-padding-xxl;
+  @include tablet {
+    padding: 0px;
+  }
+  li {
+    display: inline;
+    padding: $default-padding-sm $default-padding-lg;
+    &:not(:last-child) {
+      border-right: 1px solid $pure-white;
+    }
+    @include tablet {
+      text-align: center;
+      display: inline-block;
+      width: 33.3333333%;
+      margin-top: $default-margin-sm;
+      padding: 0px;
+    }
+  }
+}
+
+.footer-link {
+  color: $pure-white;
+  text-decoration: none;
+  font-size: $default-p;
+  &:hover {
+    text-decoration: underline;
+  }
+  @include mobile {
+    font-size: 14px;
+  }
+}

@@ -1,469 +1,466 @@
 {
-    "apiVersion": "v1",
-    "kind": "Template",
-    "labels": {
-        "template": "postgresql-persistent-template"
+  "apiVersion": "v1",
+  "kind": "Template",
+  "labels": {
+    "template": "postgresql-persistent-template"
+  },
+  "metadata": {
+    "creationTimestamp": null,
+    "name": "postgresql-dc"
+  },
+  "parameters": [
+    {
+      "description": "The name of the OpenShift Service exposed for the database.",
+      "displayName": "Database Service Name",
+      "name": "NAME",
+      "required": true,
+      "value": "postgresql"
     },
-    "metadata": {
+    {
+      "description": "The OpenShift ImageStream name.",
+      "displayName": "IMAGE_STREAM_NAME",
+      "name": "IMAGE_STREAM_NAME",
+      "value": "postgresql"
+    },
+    {
+      "description": "The OpenShift Namespace where the ImageStream resides.",
+      "displayName": "Namespace",
+      "name": "IMAGE_STREAM_NAMESPACE",
+      "value": "openshift"
+    },
+    {
+      "description": "The name of the OpenShift Service exposed for the database.",
+      "displayName": "Database Service Name",
+      "name": "DATABASE_SERVICE_NAME",
+      "required": true,
+      "value": "postgresql"
+    },
+    {
+      "description": "Username for PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL Connection Username",
+      "name": "POSTGRESQL_USER",
+      "required": true,
+      "value": "mds"
+    },
+    {
+      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL Admin Connection Username",
+      "name": "POSTGRESQL_ADMIN_USER",
+      "required": true,
+      "value": "postgres"
+    },
+    {
+      "description": "Password for the PostgreSQL connection user.",
+      "displayName": "PostgreSQL Connection Password",
+      "from": "[a-zA-Z0-9]{16}",
+      "generate": "expression",
+      "name": "POSTGRESQL_PASSWORD",
+      "required": true
+    },
+    {
+      "description": "Password for the PostgreSQL admin user.",
+      "displayName": "PostgreSQL Admin Connection Password",
+      "from": "[a-zA-Z0-9]{16}",
+      "generate": "expression",
+      "name": "POSTGRESQL_ADMIN_PASSWORD",
+      "required": true
+    },
+    {
+      "description": "Oracle FDW name",
+      "name": "FDW_NAME",
+      "value": ""
+    },
+    {
+      "description": "Oracle FDW remote schema name",
+      "name": "FDW_FOREIGN_SCHEMA",
+      "value": ""
+    },
+    {
+      "description": "Oracle FDW remote server name",
+      "name": "FDW_FOREIGN_SERVER",
+      "value": ""
+    },
+    {
+      "description": "Oracle FDW user",
+      "name": "FDW_USER",
+      "value": ""
+    },
+    {
+      "description": "Oracle FDW pass",
+      "name": "FDW_PASS",
+      "value": ""
+    },
+    {
+      "description": "Oracle FDW postgres schema",
+      "name": "FDW_SCHEMA",
+      "value": ""
+    },
+    {
+      "description": "Name of the PostgreSQL database accessed.",
+      "displayName": "PostgreSQL Database Name",
+      "name": "POSTGRESQL_DATABASE",
+      "required": true,
+      "value": "sampledb"
+    },
+    {
+      "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
+      "displayName": "Volume Capacity",
+      "name": "VOLUME_CAPACITY",
+      "required": true,
+      "value": "1Gi"
+    },
+    {
+      "description": "Version of PostgreSQL image to be used (9.2, 9.4, 9.5 or latest).",
+      "displayName": "Version of PostgreSQL Image",
+      "name": "IMAGE_STREAM_VERSION",
+      "required": true,
+      "value": "9.5"
+    },
+    {
+      "description": "Indicator to enable pgcrypto extension (provided out-of-the-box with PostgreSQL).",
+      "displayName": "Flag to enable pgcrypto PostgreSQL extension.",
+      "name": "PGCRYPTO_EXTENSION",
+      "value": "Y"
+    },
+    {
+      "description": "Indicator to enable postgis extension (from official PostgeSQL YUM repo).",
+      "displayName": "Flag to enable postgis PostgreSQL extension.",
+      "name": "POSTGIS_EXTENSION",
+      "value": "Y"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "value": "500m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "2Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "1.5Gi"
+    }
+  ],
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "metadata": {
+        "annotations": {
+          "template.openshift.io/expose-database_name": "{.data['database-name']}",
+          "template.openshift.io/expose-password": "{.data['database-password']}",
+          "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
+          "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
+          "as-copy-of": "template.${NAME}-secret"
+        },
+        "name": "${DATABASE_SERVICE_NAME}"
+      },
+      "stringData": {
+        "database-name": "${POSTGRESQL_DATABASE}",
+        "database-password": "${POSTGRESQL_PASSWORD}",
+        "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
+        "database-user": null,
+        "oracle-fdw-name": null,
+        "oracle-fdw-foreign-schema": null,
+        "oracle-fdw-foreign-server": null,
+        "oracle-fdw-user": null,
+        "oracle-fdw-password": null,
+        "oracle-fdw-schema": null
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "annotations": {
+          "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql\")].port}"
+        },
+        "name": "${DATABASE_SERVICE_NAME}"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "postgresql",
+            "nodePort": 0,
+            "port": 5432,
+            "protocol": "TCP",
+            "targetPort": 5432
+          }
+        ],
+        "selector": {
+          "name": "${DATABASE_SERVICE_NAME}"
+        },
+        "sessionAffinity": "None",
+        "type": "ClusterIP"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${VOLUME_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${IMAGE_STREAM_NAME}",
         "creationTimestamp": null,
-        "name": "postgresql-dc"
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
     },
-    "parameters": [
-        {
-            "description": "The name of the OpenShift Service exposed for the database.",
-            "displayName": "Database Service Name",
-            "name": "NAME",
-            "required": true,
-            "value": "postgresql"
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
         },
-        {
-            "description": "The OpenShift ImageStream name.",
-            "displayName": "IMAGE_STREAM_NAME",
-            "name": "IMAGE_STREAM_NAME",
-            "value": "postgresql"
+        "name": "${DATABASE_SERVICE_NAME}"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "${DATABASE_SERVICE_NAME}"
         },
-        {
-            "description": "The OpenShift Namespace where the ImageStream resides.",
-            "displayName": "Namespace",
-            "name": "IMAGE_STREAM_NAMESPACE",
-            "value": "openshift"
+        "strategy": {
+          "type": "Recreate",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
         },
-        {
-            "description": "The name of the OpenShift Service exposed for the database.",
-            "displayName": "Database Service Name",
-            "name": "DATABASE_SERVICE_NAME",
-            "required": true,
-            "value": "postgresql"
-        },
-        {
-            "description": "Username for PostgreSQL user that will be used for accessing the database.",
-            "displayName": "PostgreSQL Connection Username",
-            "name": "POSTGRESQL_USER",
-            "required": true,
-            "value": "mds"
-        },
-        {
-            "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
-            "displayName": "PostgreSQL Admin Connection Username",
-            "name": "POSTGRESQL_ADMIN_USER",
-            "required": true,
-            "value": "postgres"
-        },
-        {
-            "description": "Password for the PostgreSQL connection user.",
-            "displayName": "PostgreSQL Connection Password",
-            "from": "[a-zA-Z0-9]{16}",
-            "generate": "expression",
-            "name": "POSTGRESQL_PASSWORD",
-            "required": true
-        },
-        {
-            "description": "Password for the PostgreSQL admin user.",
-            "displayName": "PostgreSQL Admin Connection Password",
-            "from": "[a-zA-Z0-9]{16}",
-            "generate": "expression",
-            "name": "POSTGRESQL_ADMIN_PASSWORD",
-            "required": true
-        },
-        {
-            "description": "Oracle FDW name",
-            "name": "FDW_NAME",
-            "value": ""
-        },
-        {
-            "description": "Oracle FDW remote schema name",
-            "name": "FDW_FOREIGN_SCHEMA",
-            "value": ""
-        },
-        {
-            "description": "Oracle FDW remote server name",
-            "name": "FDW_FOREIGN_SERVER",
-            "value": ""
-        },
-        {
-            "description": "Oracle FDW user",
-            "name": "FDW_USER",
-            "value": ""
-        },
-        {
-            "description": "Oracle FDW pass",
-            "name": "FDW_PASS",
-            "value": ""
-        },
-        {
-            "description": "Oracle FDW postgres schema",
-            "name": "FDW_SCHEMA",
-            "value": ""
-        },
-        {
-            "description": "Name of the PostgreSQL database accessed.",
-            "displayName": "PostgreSQL Database Name",
-            "name": "POSTGRESQL_DATABASE",
-            "required": true,
-            "value": "sampledb"
-        },
-        {
-            "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
-            "displayName": "Volume Capacity",
-            "name": "VOLUME_CAPACITY",
-            "required": true,
-            "value": "1Gi"
-        },
-        {
-            "description": "Version of PostgreSQL image to be used (9.2, 9.4, 9.5 or latest).",
-            "displayName": "Version of PostgreSQL Image",
-            "name": "IMAGE_STREAM_VERSION",
-            "required": true,
-            "value": "9.5"
-        },
-        {
-            "description": "Indicator to enable pgcrypto extension (provided out-of-the-box with PostgreSQL).",
-            "displayName": "Flag to enable pgcrypto PostgreSQL extension.",
-            "name": "PGCRYPTO_EXTENSION",
-            "value": "Y"
-        },
-        {
-            "description": "Indicator to enable postgis extension (from official PostgeSQL YUM repo).",
-            "displayName": "Flag to enable postgis PostgreSQL extension.",
-            "name": "POSTGIS_EXTENSION",
-            "value": "Y"
-        },     
-        {
-            "name": "CPU_LIMIT",
-            "value": "500m"
-        },
-        {
-            "name": "MEMORY_LIMIT",
-            "value": "2Gi"
-        },
-        {
-            "name": "CPU_REQUEST",
-            "value": "200m"
-        },
-        {
-            "name": "MEMORY_REQUEST",
-            "value": "1.5Gi"
-        }
-    ],
-    "objects": [
-        {
-            "apiVersion": "v1",
-            "kind": "Secret",
-            "metadata": {
-                "annotations": {
-                    "template.openshift.io/expose-database_name": "{.data['database-name']}",
-                    "template.openshift.io/expose-password": "{.data['database-password']}",
-                    "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
-                    "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
-                    "as-copy-of": "template.${NAME}-secret"
-                },
-                "name": "${DATABASE_SERVICE_NAME}"
-            },
-            "stringData": {
-                "database-name": "${POSTGRESQL_DATABASE}",
-                "database-password": "${POSTGRESQL_PASSWORD}",
-                "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                "database-user": null,
-                "oracle-fdw-name": null,
-                "oracle-fdw-foreign-schema": null,
-                "oracle-fdw-foreign-server": null,
-                "oracle-fdw-user": null,
-                "oracle-fdw-password": null,
-                "oracle-fdw-schema": null
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "${DATABASE_SERVICE_NAME}"
             }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Service",
-            "metadata": {
-                "annotations": {
-                    "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql\")].port}"
+          },
+          "spec": {
+            "containers": [
+              {
+                "capabilities": {},
+                "env": [
+                  {
+                    "name": "POSTGRESQL_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-user",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-password",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-admin-password",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_DATABASE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-name",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-name",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_FOREIGN_SCHEMA",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-foreign-schema",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_FOREIGN_SERVER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-foreign-server",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-user",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-password",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FDW_SCHEMA",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "oracle-fdw-schema",
+                        "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PGCRYPTO_EXTENSION",
+                    "value": "Y"
+                  },
+                  {
+                    "name": "POSTGIS_EXTENSION",
+                    "value": "Y"
+                  },
+                  {
+                    "name": "PGOPTIONS",
+                    "value": "-c maintenance_work_mem=128MB"
+                  }
+                ],
+                "image": " ",
+                "imagePullPolicy": "IfNotPresent",
+                "livenessProbe": {
+                  "initialDelaySeconds": 30,
+                  "tcpSocket": {
+                    "port": 5432
+                  },
+                  "timeoutSeconds": 1
                 },
-                "name": "${DATABASE_SERVICE_NAME}"
-            },
-            "spec": {
+                "name": "postgresql",
                 "ports": [
-                    {
-                        "name": "postgresql",
-                        "nodePort": 0,
-                        "port": 5432,
-                        "protocol": "TCP",
-                        "targetPort": 5432
-                    }
+                  {
+                    "containerPort": 5432,
+                    "protocol": "TCP"
+                  }
                 ],
-                "selector": {
-                    "name": "${DATABASE_SERVICE_NAME}"
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/sh",
+                      "-i",
+                      "-c",
+                      "psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'"
+                    ]
+                  },
+                  "initialDelaySeconds": 5,
+                  "timeoutSeconds": 1
                 },
-                "sessionAffinity": "None",
-                "type": "ClusterIP"
-            },
-            "status": {
-                "loadBalancer": {}
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "PersistentVolumeClaim",
-            "metadata": {
-                "name": "${DATABASE_SERVICE_NAME}",
-                "annotations": {
-                    "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
-                    "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-                }
-            },
-            "spec": {
-                "accessModes": [
-                    "ReadWriteMany"
-                ],
                 "resources": {
-                    "requests": {
-                        "storage": "${VOLUME_CAPACITY}"
-                    }
-                }
-            }
-        },
-        {
-            "kind": "ImageStream",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${IMAGE_STREAM_NAME}",
-                "creationTimestamp": null,
-                "labels": {
-                    "shared": "true"
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  }
                 },
-                "annotations": {}
-            },
-            "spec": {
-                "lookupPolicy": {
-                    "local": false
-                }
-            }
-        },
-        {
-            "kind": "DeploymentConfig",
-            "apiVersion": "v1",
-            "metadata": {
-                "annotations": {
-                    "template.alpha.openshift.io/wait-for-ready": "true"
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
                 },
-                "name": "${DATABASE_SERVICE_NAME}"
-            },
-            "spec": {
-                "replicas": 1,
-                "selector": {
-                    "name": "${DATABASE_SERVICE_NAME}"
-                },
-                "strategy": {
-                    "type": "Recreate"
-                },
-                "template": {
-                    "metadata": {
-                        "labels": {
-                            "name": "${DATABASE_SERVICE_NAME}"
-                        }
-                    },
-                    "spec": {
-                        "containers": [
-                            {
-                                "capabilities": {},
-                                "env": [
-                                    {
-                                        "name": "POSTGRESQL_USER",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "database-user",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "POSTGRESQL_PASSWORD",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "database-password",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "POSTGRESQL_ADMIN_PASSWORD",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "database-admin-password",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "POSTGRESQL_DATABASE",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "database-name",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_NAME",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-name",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_FOREIGN_SCHEMA",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-foreign-schema",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_FOREIGN_SERVER",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-foreign-server",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_USER",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-user",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_PASS",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-password",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "FDW_SCHEMA",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "oracle-fdw-schema",
-                                                "name": "${DATABASE_SERVICE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "PGCRYPTO_EXTENSION",
-                                        "value": "Y"
-                                    },
-                                    {
-                                        "name": "POSTGIS_EXTENSION",
-                                        "value": "Y"
-                                    },
-                                    {
-                                        "name": "PGOPTIONS",
-                                        "value": "-c maintenance_work_mem=128MB"
-                                    }
-                                ],
-                                "image": " ",
-                                "imagePullPolicy": "IfNotPresent",
-                                "livenessProbe": {
-                                    "initialDelaySeconds": 30,
-                                    "tcpSocket": {
-                                        "port": 5432
-                                    },
-                                    "timeoutSeconds": 1
-                                },
-                                "name": "postgresql",
-                                "ports": [
-                                    {
-                                        "containerPort": 5432,
-                                        "protocol": "TCP"
-                                    }
-                                ],
-                                "readinessProbe": {
-                                    "exec": {
-                                        "command": [
-                                            "/bin/sh",
-                                            "-i",
-                                            "-c",
-                                            "psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'"
-                                        ]
-                                    },
-                                    "initialDelaySeconds": 5,
-                                    "timeoutSeconds": 1
-                                },
-                                "resources": {
-                                    "requests": {
-                                        "cpu": "${CPU_REQUEST}",
-                                        "memory": "${MEMORY_REQUEST}"
-                                    },
-                                    "limits": {
-                                        "cpu": "${CPU_LIMIT}",
-                                        "memory": "${MEMORY_LIMIT}"
-                                    }
-                                },
-                                "securityContext": {
-                                    "capabilities": {},
-                                    "privileged": false
-                                },
-                                "terminationMessagePath": "/dev/termination-log",
-                                "volumeMounts": [
-                                    {
-                                        "mountPath": "/var/lib/pgsql/data",
-                                        "name": "${DATABASE_SERVICE_NAME}-data"
-                                    },
-                                    {
-                                        "mountPath": "/var/run/postgresql",
-                                        "name": "${DATABASE_SERVICE_NAME}-run"
-                                    }
-                                ]
-                            }
-                        ],
-                        "dnsPolicy": "ClusterFirst",
-                        "restartPolicy": "Always",
-                        "volumes": [
-                            {
-                                "name": "${DATABASE_SERVICE_NAME}-data",
-                                "persistentVolumeClaim": {
-                                    "claimName": "${DATABASE_SERVICE_NAME}"
-                                }
-
-                            },
-                            {
-                                "name": "${DATABASE_SERVICE_NAME}-run",
-                                "emptyDir": {}
-                            }
-                        ]
-                    }
-                },
-                "triggers": [
-                    {
-                        "imageChangeParams": {
-                            "automatic": true,
-                            "containerNames": [
-                                "postgresql"
-                            ],
-                            "from": {
-                                "kind": "ImageStreamTag",
-                                "name": "${IMAGE_STREAM_NAME}:${IMAGE_STREAM_VERSION}",
-                                "namespace": "${IMAGE_STREAM_NAMESPACE}"
-                            },
-                            "lastTriggeredImage": ""
-                        },
-                        "type": "ImageChange"
-                    },
-                    {
-                        "type": "ConfigChange"
-                    }
+                "terminationMessagePath": "/dev/termination-log",
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/lib/pgsql/data",
+                    "name": "${DATABASE_SERVICE_NAME}-data"
+                  },
+                  {
+                    "mountPath": "/var/run/postgresql",
+                    "name": "${DATABASE_SERVICE_NAME}-run"
+                  }
                 ]
+              }
+            ],
+            "dnsPolicy": "ClusterFirst",
+            "restartPolicy": "Always",
+            "volumes": [
+              {
+                "name": "${DATABASE_SERVICE_NAME}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${DATABASE_SERVICE_NAME}"
+                }
+              },
+              {
+                "name": "${DATABASE_SERVICE_NAME}-run",
+                "emptyDir": {}
+              }
+            ]
+          }
+        },
+        "triggers": [
+          {
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["postgresql"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${IMAGE_STREAM_NAME}:${IMAGE_STREAM_VERSION}",
+                "namespace": "${IMAGE_STREAM_NAMESPACE}"
+              },
+              "lastTriggeredImage": ""
             },
-            "status": {}
-        }
-    ]
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ]
+      },
+      "status": {}
+    }
+  ]
 }
