@@ -12,6 +12,7 @@ from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
@@ -201,6 +202,18 @@ def setup_data(session):
         mine_operation_status_sub_reason_code.save()
 
     session.commit()
+
+    # Insert Operation Code Xref
+    for status_k, status_v in MINE_OPERATION_STATUS.items():
+        for reason_k, reason_v in MINE_OPERATION_STATUS_REASON.items():
+            for sub_k, sub_v in MINE_OPERATION_STATUS_SUB_REASON.items():
+                mine_status_xref = MineStatusXref(
+                    mine_status_xref_guid=uuid.uuid4(),
+                    mine_operation_status_code=status_v['value'],
+                    mine_operation_status_reason_code=reason_v['value'],
+                    mine_operation_status_sub_reason_code=sub_v['value'],
+                    **DUMMY_USER_KWARGS)
+                mine_status_xref.save()
 
     # Test Person Data
     person = Party(
