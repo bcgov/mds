@@ -62,20 +62,3 @@ class MineStatusXref(AuditMixin, Base):
             xref_query = xref_query.filter_by(
                 mine_operation_status_sub_reason_code=_mine_operation_status_sub_reason_code)
         return xref_query.first()
-
-    @classmethod
-    def create_mine_status_xref(cls,
-                                _mine_operation_status_code,
-                                _mine_operation_status_reason_code,
-                                _mine_operation_status_sub_reason_code,
-                                user_kwargs,
-                                save=True):
-        xref = cls(
-            mine_status_xref_guid=uuid.uuid4(),
-            mine_operation_status_code=mine_operation_status_code,
-            mine_operation_status_reason_code=_mine_operation_status_reason_code,
-            mine_operation_status_sub_reason_code=_mine_operation_status_sub_reason_code,
-            **user_kwargs)
-        if save:
-            xref.save(commit=False)
-        return xref
