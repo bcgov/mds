@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
@@ -17,6 +18,7 @@ class MineStatus(AuditMixin, Base):
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(
         db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<MineStatus %r>' % self.mine_status
@@ -82,8 +84,4 @@ class MineStatus(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).first()
-
-    @classmethod
-    def find_by_mine_status_xref_guid(cls, _id):
-        return cls.query.filter_by(mine_status_xref_guid=_id).first()
+        return cls.query.filter_by(mine_guid=_id).filter_by(active_ind=True).first()
