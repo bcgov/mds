@@ -42,9 +42,7 @@ class MineTailingsFilePicker extends Component {
 
     return (
       <FilePicker
-        uploadUrl={UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(
-          this.props.selectedDocument.exp_document_guid
-        )}
+        uploadUrl={"/documents/expected/upload/" + this.props.selectedDocument.exp_document_guid}
         acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
         existingFilesDropdown={fileDropdown}
         onSelectExisting={this.handleFileSelect}

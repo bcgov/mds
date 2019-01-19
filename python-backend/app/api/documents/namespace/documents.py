@@ -18,7 +18,7 @@ api.add_resource(RequiredDocumentResource, '/required', '/required/<string:req_d
 api.add_resource(ExpectedDocumentStatusResource, '/expected/status', '/expected/status')
 
 api.add_resource(ExpectedDocumentUploadResource,
-                 '/expected/<string:expected_document_guid>/document',
+                 '/expected/upload/<string:expected_document_guid>',
                  '/expected/<string:expected_document_guid>/document/<string:mine_document_guid>')
 
 api.add_resource(MineDocumentResource, '/mines/<string:mine_guid>')
