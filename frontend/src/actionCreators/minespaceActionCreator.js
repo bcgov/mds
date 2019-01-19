@@ -52,3 +52,23 @@ export const fetchMinespaceUsers = () => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
+  console.log(`About to delete minespaceUser {id = ${minespaceUserId}}`);
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.DELETE_MINESPACE_USER));
+  return axios
+    .delete(`${ENVIRONMENT.apiUrl}${API.MINESPACE_USER}/${minespaceUserId}`, createRequestHeader())
+    .then(() => {
+      dispatch(success(reducerTypes.DELETE_MINESPACE_USER));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.DELETE_MINESPACE_USER));
+      dispatch(hideLoading());
+    });
+};

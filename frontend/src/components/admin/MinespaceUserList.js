@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Table } from "antd";
+import { Table, Button, Popconfirm, Icon } from "antd";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import { createDropDownList } from "@/utils/helpers";
 import PropTypes from "prop-types";
@@ -15,10 +15,16 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   minespaceUsers: PropTypes.array.isRequired,
   mines: PropTypes.array.isRequired,
+  deleteMinespaceUser: PropTypes.func,
 };
 
 const defaultProps = {
   mines: {},
+  deleteMinespaceUser: null,
+};
+
+const testFunc = (obj) => {
+  console.log(obj);
 };
 
 const columns = [
@@ -35,6 +41,24 @@ const columns = [
       <div>{text && text.map(({ guid, mine_name }) => <div key={guid}>{mine_name}</div>)}</div>
     ),
   },
+  {
+    title: "",
+    width: 50,
+    dataIndex: "userId",
+    render: (text, record) => (
+      <Popconfirm
+        placement="topLeft"
+        title={`Are you sure you want to delete ${record.email}?`}
+        onConfirm={text(record.id)}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <Button className="full-mobile" ghost type="primary">
+          <Icon type="minus-circle" theme="outlined" />
+        </Button>
+      </Popconfirm>
+    ),
+  },
 ];
 
 const lookupMineName = (mine_guids, mines) =>
@@ -43,12 +67,13 @@ const lookupMineName = (mine_guids, mines) =>
     return { guid, mine_name: mine_record ? mine_record.mine_name : "" };
   });
 
-const transformRowData = (minespaceUsers, mines) =>
+const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   minespaceUsers.map((user) => ({
     key: user.id,
     emptyField: Strings.EMPTY_FIELD,
     email: user.email,
     mineNames: lookupMineName(user.mines, mines),
+    userId: () => deleteFunc,
   }));
 
 export const MinespaceUserList = (props) => (
@@ -58,7 +83,7 @@ export const MinespaceUserList = (props) => (
         align="center"
         pagination={false}
         columns={columns}
-        dataSource={transformRowData(props.minespaceUsers, props.mines)}
+        dataSource={transformRowData(props.minespaceUsers, props.mines, testFunc)}
         scroll={{ x: 1500 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />
