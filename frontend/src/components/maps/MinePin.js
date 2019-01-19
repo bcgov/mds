@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { loadModules } from "react-arcgis";
+import { loadModules } from "@esri/react-arcgis";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
