@@ -1,4 +1,4 @@
-import uuid
+import uuid, re
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates

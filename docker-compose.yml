@@ -42,7 +42,7 @@ services:
   flyway:
     container_name: mds_flyway
     image: boxfuse/flyway:5.2.3-alpine
-    command: -url=jdbc:postgresql://postgres/mds -user=mds -password=test -connectRetries=60 migrate
+    command: -url=jdbc:postgresql://postgres/mds -user=mds -password=test -connectRetries=60 -outOfOrder=true migrate 
     volumes:
       - ./migrations/sql:/flyway/sql
     depends_on:

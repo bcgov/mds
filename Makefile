@@ -154,10 +154,5 @@ stop:
 clean:
 	@echo "+\n++ Cleaning ...\n+"
 	@docker-compose rm -f -v -s
-	@if [ docker container inspect mds_postgres > /dev/null 2>&1 ]; then docker rmi -f mds_postgres; fi
-	@if [ docker container inspect mds_backend > /dev/null 2>&1 ]; then docker rmi -f mds_backend; fi
-	@if [ docker container inspect mds_frontend > /dev/null 2>&1 ]; then docker rmi -f mds_frontend; fi
-	@if [ docker volume inspect mds_postgres-data > /dev/null 2>&1 ]; then docker volume rm mds_postgres-data -f; fi
-	@if [ docker network inspect mds_postgres > /dev/null 2>&1 ]; then docker network rm mds_postgres; fi
-	@if [ docker network inspect mds_backend > /dev/null 2>&1 ]; then docker network rm mds_backend; fi
-	@if [ docker network inspect mds_frontend > /dev/null 2>&1 ]; then docker network rm mds_frontend; fi
+	@docker rmi -f mds_postgres mds_backend mds_frontend
+	@docker volume rm mds_postgres-data -f

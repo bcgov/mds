@@ -439,6 +439,10 @@
                         "key": "database-name"
                       }
                     }
+                  },
+                  {
+                    "name": "FLYWAY_OUT_OF_ORDER",
+                    "value": "true"
                   }
                 ],
                 "resources": {
