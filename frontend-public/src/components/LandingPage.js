@@ -41,7 +41,7 @@ export const LandingPage = () => (
     <Row>
       <Col xs={1} md={4} lg={4} />
       <Col xs={22} md={16} lg={16}>
-        <Divider />
+        <Divider className="gov-blue" />
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>

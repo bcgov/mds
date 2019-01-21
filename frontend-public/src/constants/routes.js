@@ -1,6 +1,6 @@
 import Home from "@/components/Home";
 import UserDashboard from "@/components/dashboard/UserDashboard";
-import MineInfo from "@/components/dashboard/MineInfo";
+import MineInfo from "@/components/dashboard/mine_info/MineInfo";
 
 export const HOME = {
   route: "/",

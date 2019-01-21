@@ -26,7 +26,7 @@ export class UserDashboard extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchUserMineInfo().then(() => this.setState({ isLoaded: !this.state.isLoading }));
+    this.props.fetchUserMineInfo().then(() => this.setState({ isLoaded: !this.state.isLoaded }));
   }
 
   render() {
