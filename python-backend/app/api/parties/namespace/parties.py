@@ -15,4 +15,4 @@ api.add_resource(
     '/mines/relationship-types/<string:mine_party_appt_type_code>')
 
 api.add_resource(
-        MinePartyApptAdminResource, '/mines/relationship-types/csv')
+        MinePartyApptAdminResource, '/mines/manager-history/csv')

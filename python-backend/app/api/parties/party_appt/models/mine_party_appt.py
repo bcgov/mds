@@ -105,17 +105,31 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_manager_history_by_mine_no(cls, mine_no):
-        # send internal network request to fetch matching mine record
+        # send internal API call to fetch matching mine record
         mines_url = current_app.config['MINES_URL'] + '/mines/' + str(mine_no)
-        headers = {'Authorization': request.headers.get('Authorization')}
+        auth_headers = request.headers.get('Authorization')
+        if not auth_headers:
+            return None, 401, 'Unauthorized'
+
+        headers = {'Authorization': auth_headers}
         response = requests.get(url=mines_url, headers=headers)
-        json_response = response.json()
+        if not response:
+            return None, 400, 'Unexpected error'
+        if response.status_code != 200:
+            return None, response.status_code, response.reason
 
         # fetch mine history by mine_guid
+        try:
+            json_response = response.json()
+        except:
+            return None, 400, 'Unexpected error'
         related_mine_guid = json_response.get('guid')
         if not related_mine_guid:
-            return None
-        return cls.query.filter_by(mine_guid=related_mine_guid).all()
+            return None, 404, 'Mine not found'
+        records = cls.query.filter_by(mine_guid=related_mine_guid).all()
+        if len(records) == 0:
+            return None, 404, 'No Mine Manager history found'
+        return records, 200, 'OK'
 
     @classmethod
     def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
@@ -146,10 +160,10 @@ class MinePartyAppointment(AuditMixin, Base):
     def create_mine_party_appt(cls,
                                mine_guid,
                                party_guid,
-                               permit_guid,
                                mine_party_appt_type_code,
                                processed_by,
                                user_kwargs,
+                               permit_guid=None,
                                save=True):
         mpa = cls(
             mine_guid=mine_guid,
