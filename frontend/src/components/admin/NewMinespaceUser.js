@@ -16,7 +16,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mines: {},
+  mines: [],
 };
 
 export class NewMinespaceUser extends Component {
@@ -39,9 +39,9 @@ export class NewMinespaceUser extends Component {
     return (
       <div>
         <h3>Add BCEID User</h3>
-        {this.props.mines.mines && (
+        {this.props.mines && (
           <AddMinespaceUser
-            mines={this.props.mines.mines.map((mine) => ({
+            mines={this.props.mines.map((mine) => ({
               value: `${mine.mine_name}~${mine.guid}`,
               label: `${mine.mine_name}-${mine.mine_no}`,
             }))}
