@@ -51,10 +51,10 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_admin
     def delete(self, user_id=None):
         if not user_id:
-            return self.create_error_payload(400, "user_id not found")
+            return self.create_error_payload(400, "user_id not found"), 400
         user = MinespaceUser.find_by_id(user_id)
         if not user:
-            return self.create_error_payload(404, "user not found")
+            return self.create_error_payload(404, "user not found"), 404
         user.deleted_ind = True
         user.save()
         return ('', 204)

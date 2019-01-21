@@ -15,16 +15,12 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   minespaceUsers: PropTypes.array.isRequired,
   mines: PropTypes.array.isRequired,
-  deleteMinespaceUser: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
   mines: {},
-  deleteMinespaceUser: null,
-};
-
-const testFunc = (obj) => {
-  console.log(obj);
+  handleDelete: null,
 };
 
 const columns = [
@@ -44,12 +40,12 @@ const columns = [
   {
     title: "",
     width: 50,
-    dataIndex: "userId",
+    dataIndex: "delete",
     render: (text, record) => (
       <Popconfirm
         placement="topLeft"
         title={`Are you sure you want to delete ${record.email}?`}
-        onConfirm={text(record.id)}
+        onConfirm={() => text(record.user_id)}
         okText="Delete"
         cancelText="Cancel"
       >
@@ -73,7 +69,8 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
     emptyField: Strings.EMPTY_FIELD,
     email: user.email,
     mineNames: lookupMineName(user.mines, mines),
-    userId: () => deleteFunc,
+    user_id: user.user_id,
+    delete: deleteFunc,
   }));
 
 export const MinespaceUserList = (props) => (
@@ -83,7 +80,7 @@ export const MinespaceUserList = (props) => (
         align="center"
         pagination={false}
         columns={columns}
-        dataSource={transformRowData(props.minespaceUsers, props.mines, testFunc)}
+        dataSource={transformRowData(props.minespaceUsers, props.mines, props.handleDelete)}
         scroll={{ x: 1500 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />

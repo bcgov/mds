@@ -54,7 +54,6 @@ export const fetchMinespaceUsers = () => (dispatch) => {
 };
 
 export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
-  console.log(`About to delete minespaceUser {id = ${minespaceUserId}}`);
   dispatch(showLoading());
   dispatch(request(reducerTypes.DELETE_MINESPACE_USER));
   return axios

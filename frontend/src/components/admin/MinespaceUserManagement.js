@@ -32,6 +32,12 @@ export class MinespaceUserManagement extends Component {
     this.props.fetchMinespaceUsers();
   }
 
+  handleDelete = (userId) => {
+    this.props.deleteMinespaceUser(userId).then(() => {
+      this.props.fetchMinespaceUsers();
+    });
+  };
+
   render() {
     console.log(this.props.minespaceUsers);
     console.log(this.props.mines.mines);
@@ -43,7 +49,7 @@ export class MinespaceUserManagement extends Component {
         <MinespaceUserList
           minespaceUsers={this.props.minespaceUsers}
           mines={this.props.mines.mines}
-          handleDelete={this.props.deleteMinespaceUser}
+          handleDelete={this.handleDelete}
         />
       </div>
     );
