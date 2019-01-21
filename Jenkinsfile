@@ -88,14 +88,14 @@ pipeline {
                     sh """
                         # Update master with latest changes from develop
                         git checkout master
-                        git pull origin master --no-edit
+                        git fetch
                         git merge --squash origin/develop
                         git commit -m "Merge branch develop into master"
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
 
                         # Update the HEAD on develop to be the same as master
                         git checkout develop
-                        git pull origin develop --no-edit
+                        git fetch
                         git merge -s ours -m "Updating develop with master" origin/master
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
                     """
