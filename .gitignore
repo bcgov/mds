@@ -14,3 +14,4 @@ __pycache__
 *.pgCustom
 *.sw*
 python-backend/document_uploads/
+*last-backup

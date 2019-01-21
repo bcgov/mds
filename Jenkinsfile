@@ -70,26 +70,33 @@ pipeline {
                 }
             }
         }
-        stage('Merge to release') {
+        stage('Merge to master') {
             agent { label 'master' }
             when {
               environment name: 'CHANGE_TARGET', value: 'master'
             }
             steps {
                 script {
-                    def IS_APPROVED = input(message: "Merge to release?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Merge to release?')])
+                    def IS_APPROVED = input(message: "Merge to master?", ok: "yes", parameters: [string(name: 'IS_APPROVED', defaultValue: 'yes', description: 'Merge to master?')])
                     if (IS_APPROVED != 'yes') {
                         currentBuild.result = "ABORTED"
                         error "User cancelled"
                     }
-                    echo "Squashing commits and merging to release"
+                    echo "Squashing commits and merging to master"
                 }
                 withCredentials([usernamePassword(credentialsId: 'github-account', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh """
-                        git fetch
-                        git checkout release
-                        git merge --squash origin/${CHANGE_BRANCH}
-                        git commit -m "Merge branch '${CHANGE_BRANCH}' into release"
+                        # Update master with latest changes from develop
+                        git checkout master
+                        git pull origin master --no-edit
+                        git merge --squash origin/develop
+                        git commit -m "Merge branch develop into master"
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
+
+                        # Update the HEAD on develop to be the same as master
+                        git checkout develop
+                        git pull origin develop --no-edit
+                        git merge -s ours -m "Updating develop with master" origin/master
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
                     """
                 }
