@@ -100,7 +100,7 @@ describe("`fetchPartyById` action creator", () => {
 describe("`downloadMineManagerHistory` action creator", () => {
   const mockMineNo = MOCK.MINES.mineIds[0];
   const url = `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mockMineNo)}`;
-  const mockWindow = { URL: { createObjectURL: () => "http://localhost:5000" } };
+  const mockWindow = { URL: { createObjectURL: () => {} } };
   const mockDocument = {
     createElement: () => ({ setAttribute: () => {}, click: () => {} }),
     body: { appendChild: () => {} },

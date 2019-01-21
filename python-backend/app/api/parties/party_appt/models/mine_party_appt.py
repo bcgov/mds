@@ -123,9 +123,11 @@ class MinePartyAppointment(AuditMixin, Base):
             json_response = response.json()
         except:
             return None, 400, 'Unexpected error'
+
         related_mine_guid = json_response.get('guid')
         if not related_mine_guid:
             return None, 404, 'Mine not found'
+
         records = cls.query.filter_by(mine_guid=related_mine_guid).all()
         if len(records) == 0:
             return None, 404, 'No Mine Manager history found'
