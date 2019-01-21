@@ -147,7 +147,7 @@ FULL_AUTH_CLAIMS = {
     "email": "test-email",
     "given_name": "test-given-name",
     "realm_access": {
-        "roles": ["mds-mine-view", "mds-mine-create", "idir"]
+        "roles": ["mds-mine-view", "mds-mine-create", "mds-mine-admin", "idir"]
     }
 }
 
