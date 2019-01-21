@@ -96,7 +96,7 @@ pipeline {
                         # Update the HEAD on develop to be the same as master
                         git checkout develop
                         git pull origin develop --no-edit
-                        git merge -s ours -m "Updating develop with master"
+                        git merge -s ours -m "Updating develop with master" origin/master
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
                     """
                 }
