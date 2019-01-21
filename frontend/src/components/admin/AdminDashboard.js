@@ -8,10 +8,13 @@ import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement"
 
 export const AdminDashboard = () => (
   <div className="landing-page">
-    <div className="landing-page__header" />
-    <div className="landing-page__content">
+    <div className="landing-page__header">
       <h1>Admin View</h1>
-      <MinespaceUserManagement />
+    </div>
+    <div className="landing-page__content">
+      <div className="tab__content">
+        <MinespaceUserManagement />
+      </div>
     </div>
   </div>
 );

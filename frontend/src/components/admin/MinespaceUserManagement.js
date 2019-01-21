@@ -40,7 +40,7 @@ export class MinespaceUserManagement extends Component {
 
   render() {
     return (
-      <div className="tab__content">
+      <div>
         <h2>Minespace User Management</h2>
         <NewMinespaceUser />
         <h3>Minespace Users</h3>

@@ -16,7 +16,7 @@ export const createMinespaceUser = (payload) => (dispatch) => {
     .post(ENVIRONMENT.apiUrl + API.MINESPACE_USER, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully created: ${payload.name}`,
+        message: `Successfully created minespace user.`,
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINESPACE_USER));
