@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
-import { createDropDownList } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
@@ -11,7 +10,7 @@ import { createMinespaceUser, fetchMinespaceUsers } from "@/actionCreators/mines
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  mines: PropTypes.object,
+  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   createMinespaceUser: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
 };
@@ -55,7 +54,7 @@ export class NewMinespaceUser extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMineNames(state),
+  mines: getMineNames(state).mines,
 });
 
 const mapDispatchToProps = (dispatch) =>

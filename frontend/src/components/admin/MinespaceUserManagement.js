@@ -15,7 +15,7 @@ import { fetchMinespaceUsers, deleteMinespaceUser } from "@/actionCreators/mines
  */
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
-  minespaceUsers: PropTypes.array,
+  minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
   deleteMinespaceUser: PropTypes.func.isRequired,

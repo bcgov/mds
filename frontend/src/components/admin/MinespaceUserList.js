@@ -12,12 +12,13 @@ import { uniqBy } from "lodash";
 import { min } from "moment";
 
 const propTypes = {
-  minespaceUsers: PropTypes.array.isRequired,
+  minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
   mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
+  minespaceUsers: [],
   mines: [],
   handleDelete: null,
 };
