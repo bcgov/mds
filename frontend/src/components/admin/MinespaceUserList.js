@@ -1,15 +1,9 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React from "react";
 import { Table, Button, Popconfirm, Icon } from "antd";
-import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
-import { createDropDownList } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
-import { uniqBy } from "lodash";
-import { min } from "moment";
 
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
