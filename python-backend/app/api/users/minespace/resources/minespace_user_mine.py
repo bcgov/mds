@@ -30,6 +30,7 @@ class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
             )
             mum.save()
         except:
+            db.session.rollback()
             self.create_error_payload(500, "ERROR: user-mine access was not created"), 500
         return mum.user.json()
 

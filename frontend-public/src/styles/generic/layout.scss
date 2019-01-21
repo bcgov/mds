@@ -64,3 +64,11 @@ body {
 .align-bot {
   vertical-align: bottom;
 }
+
+.large-padding-bot {
+  padding-bottom: $default-padding-lg;
+}
+
+.large-padding-top {
+  padding-top: $default-padding-lg;
+}
