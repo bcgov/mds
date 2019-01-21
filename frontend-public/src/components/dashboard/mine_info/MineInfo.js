@@ -29,8 +29,7 @@ const propTypes = {
       mineId: PropTypes.string,
     },
   }).isRequired,
-  expectedDocumentStatusOptions: PropTypes.array,
-  selectedDocument: PropTypes.object,
+  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
@@ -40,7 +39,6 @@ const propTypes = {
 
 const defaultProps = {
   expectedDocumentStatusOptions: [],
-  selectedDocument: {},
 };
 
 const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
@@ -106,7 +104,7 @@ export class MineInfo extends Component {
               <Col xs={1} sm={1} md={2} lg={4} />
               <Col xs={22} sm={22} md={14} lg={12}>
                 <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-                <p>Mine No.{this.props.mine.mine_no}</p>
+                <p>Mine No. {this.props.mine.mine_no}</p>
               </Col>
               <Col xs={22} sm={22} md={6} lg={4}>
                 <QuestionSidebar />
@@ -187,9 +185,8 @@ export class MineInfo extends Component {
                             {!doc.related_documents
                               ? "-"
                               : doc.related_documents.map((file) => (
-                                  <div>
+                                  <div key={file.mine_document_guid}>
                                     <a
-                                      key={file.mine_document_guid}
                                       onClick={() =>
                                         this.getFileFromDocumentManager(file.document_manager_guid)
                                       }
