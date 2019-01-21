@@ -23,7 +23,7 @@ const propTypes = {
 
 const defaultProps = {
   mines: [],
-  minespaceUsers: {},
+  minespaceUsers: [],
 };
 
 export class MinespaceUserManagement extends Component {
