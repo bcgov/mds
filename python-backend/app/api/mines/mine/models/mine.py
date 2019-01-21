@@ -15,7 +15,6 @@ class Mine(AuditMixin, Base):
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
-    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='joined')
     mine_location = db.relationship(
