@@ -6,6 +6,8 @@ from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
+from ..... import auth
+
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine import Mine
@@ -274,8 +276,13 @@ class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
 
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
-    @requires_role_mine_view
+    #@requires_role_mine_view
     def get(self):
+        #return auth.get_user_email()
+
+        #tenant = auth.get_current_tenant()
+        #return tenant.mine_ids
+
         search_term = request.args.get('search')
         if search_term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
