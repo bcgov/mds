@@ -39,8 +39,6 @@ export class MinespaceUserManagement extends Component {
   };
 
   render() {
-    // console.log(this.props.minespaceUsers);
-    // console.log(this.props.mines);
     return (
       <div className="tab__content">
         <h2>Minespace User Management</h2>

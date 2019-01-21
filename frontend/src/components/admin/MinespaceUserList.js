@@ -14,7 +14,7 @@ const propTypes = {
 const defaultProps = {
   minespaceUsers: [],
   mines: [],
-  handleDelete: null,
+  handleDelete: () => {},
 };
 
 const columns = [
