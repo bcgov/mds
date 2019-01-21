@@ -24,6 +24,28 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
+describe("`fetchMinespaceUsers` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINESPACE_USER;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMinespaceUsers()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchMinespaceUsers()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
 describe("`createMinespaceUser` action creator", () => {
   const mock_email = "Mock@mock.com";
   const mine_guids = ["12345-6789"];
