@@ -345,6 +345,29 @@ export const MINE_NAME_LIST = [
   },
 ];
 
+export const MINESPACE_USERS = [
+  {
+    user_id: "1",
+    email: "email1@srvr.com",
+    keycloak_guid: "",
+    mines: [""],
+  },
+  {
+    user_id: "2",
+    email: "email2@srvr.com",
+    keycloak_guid: "",
+    mines: [""],
+  },
+  {
+    user_id: "3",
+    email: "email3@srvr.com",
+    keycloak_guid: "",
+    mines: [""],
+  },
+];
+
+export const MINESPACE_RESPONSE = { users: MINESPACE_USERS };
+
 export const PAGE_DATA = {
   current_page: 1,
   has_next: true,
