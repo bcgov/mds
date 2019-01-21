@@ -278,10 +278,10 @@ class MineListByName(Resource):
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
     #@requires_role_mine_view
     def get(self):
-        #return auth.get_user_email()
+        #return str(auth.get_access())
 
-        #tenant = auth.get_current_tenant()
-        #return tenant.mine_ids
+        tenant = auth.get_current_tenant()
+        return tenant.mine_ids
 
         search_term = request.args.get('search')
         if search_term:

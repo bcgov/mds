@@ -7,10 +7,11 @@ import uuid
 from uuid import UUID
 from typing import Mapping, Optional
 from .api.utils.include.user_info import User
+from .api.users.minespace.models.minespace_user import MinespaceUser
 
 
 class Tenant(object):
-    def __init__(self, access: Optional[Mapping[UUID, Optional[str]]] = None):
+    def __init__(self, access: Optional[Mapping[UUID]] = None):
         self.access = access or {}
 
     def __repr__(self):
@@ -20,8 +21,8 @@ class Tenant(object):
     def mine_ids(self):
         return list(self.access.keys())
 
-    def get_permission(self, repository_id: UUID):
-        return self.access.get(repository_id)
+    def get_permission(self, mine_id: UUID):
+        return self.access.get(mine_id)
 
     @classmethod
     def from_user(cls, user: User):
@@ -33,21 +34,18 @@ class Tenant(object):
 
 
 class UserTenant(Tenant):
-    def __init__(self, user_id: str):
+    def __init__(self, user_id: int):
         self.user_id = user_id
 
     def __repr__(self):
-        return "<{} user_id={}>".format(type(self).__name__, self.user_id)
+        return "<{} user_id={}>".format(type(self).__name__, str(self.user_id)
 
     @cached_property
-    def access(self) -> Mapping[UUID, str]:
+    def access(self) -> Mapping[UUID]:
         if not self.user_id:
             return None
 
-        return {
-            '2c6c8e31-e56f-4982-87e9-044cefc8b0b3': 'Access',
-            '76963202-4ee6-4006-bd5b-8eac0fae110c': 'Access'
-        }
+        return get_access()
 
 
 """         return dict(
@@ -57,8 +55,15 @@ class UserTenant(Tenant):
         ) """
 
 
+def get_access():
+    user = get_current_user()
+    return dict(user.mines)
+
+
 def get_current_user():
-    return User()
+    email = get_user_email()
+    user = MinespaceUser.find_by_email(email)
+    return user
 
 
 def get_user_email():
