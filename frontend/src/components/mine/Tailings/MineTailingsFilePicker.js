@@ -7,6 +7,7 @@ import { getMineDocuments } from "@/selectors/mineSelectors";
 import {
   fetchMineDocuments,
   addMineDocumentToExpectedDocument,
+  fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
 import { createDropDownList } from "@/utils/helpers";
@@ -18,6 +19,7 @@ const propTypes = {
   addMineDocumentToExpectedDocument: PropTypes.func.isRequired,
   fetchMineDocuments: PropTypes.func.isRequired,
   mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
 };
 
 class MineTailingsFilePicker extends Component {
@@ -27,10 +29,11 @@ class MineTailingsFilePicker extends Component {
 
   handleFileSelect = (mineDocumentGuid) => {
     const data = { mine_document_guid: mineDocumentGuid };
-    this.props.addMineDocumentToExpectedDocument(
-      this.props.selectedDocument.exp_document_guid,
-      data
-    );
+    this.props
+      .addMineDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, data)
+      .then(() => {
+        this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid);
+      });
   };
 
   render() {
@@ -62,6 +65,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineDocuments,
       addMineDocumentToExpectedDocument,
+      fetchMineRecordById,
     },
     dispatch
   );
