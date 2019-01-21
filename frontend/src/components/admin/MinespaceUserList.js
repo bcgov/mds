@@ -12,14 +12,13 @@ import { uniqBy } from "lodash";
 import { min } from "moment";
 
 const propTypes = {
-  fetchMineNameList: PropTypes.func.isRequired,
   minespaceUsers: PropTypes.array.isRequired,
-  mines: PropTypes.array.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
-  mines: {},
+  mines: [],
   handleDelete: null,
 };
 
@@ -60,7 +59,10 @@ const columns = [
 const lookupMineName = (mine_guids, mines) =>
   mine_guids.map((guid) => {
     const mine_record = mines.find((mine) => mine.guid === guid);
-    return { guid, mine_name: mine_record ? mine_record.mine_name : "" };
+    return {
+      guid,
+      mine_name: mine_record ? `${mine_record.mine_name}-${mine_record.mine_no}` : "",
+    };
   });
 
 const transformRowData = (minespaceUsers, mines, deleteFunc) =>
@@ -88,5 +90,6 @@ export const MinespaceUserList = (props) => (
   </div>
 );
 MinespaceUserList.propTypes = propTypes;
+MinespaceUserList.defaultProps = defaultProps;
 
 export default MinespaceUserList;

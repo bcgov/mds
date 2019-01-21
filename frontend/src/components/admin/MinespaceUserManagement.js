@@ -14,7 +14,7 @@ import { fetchMinespaceUsers, deleteMinespaceUser } from "@/actionCreators/mines
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 const propTypes = {
-  mines: PropTypes.object,
+  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUsers: PropTypes.array,
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
@@ -22,7 +22,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mines: {},
+  mines: [],
   minespaceUsers: {},
 };
 
@@ -39,8 +39,8 @@ export class MinespaceUserManagement extends Component {
   };
 
   render() {
-    console.log(this.props.minespaceUsers);
-    console.log(this.props.mines.mines);
+    // console.log(this.props.minespaceUsers);
+    // console.log(this.props.mines);
     return (
       <div className="tab__content">
         <h2>Minespace User Management</h2>
@@ -48,7 +48,7 @@ export class MinespaceUserManagement extends Component {
         <h3>Minespace Users</h3>
         <MinespaceUserList
           minespaceUsers={this.props.minespaceUsers}
-          mines={this.props.mines.mines}
+          mines={this.props.mines}
           handleDelete={this.handleDelete}
         />
       </div>
@@ -57,7 +57,7 @@ export class MinespaceUserManagement extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMineNames(state),
+  mines: getMineNames(state).mines,
   minespaceUsers: getMinespaceUsers(state),
 });
 
