@@ -78,6 +78,7 @@ export class Dashboard extends Component {
         region: [],
         tenure: [],
         commodity: [],
+        search: [],
       },
     };
   }
@@ -116,9 +117,16 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { status, commodity, region, tenure, major, tsf, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      status,
+      commodity,
+      region,
+      tenure,
+      major,
+      tsf,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
@@ -128,6 +136,7 @@ export class Dashboard extends Component {
         tenure: format(tenure),
         major,
         tsf,
+        search,
         ...remainingParams,
       },
     });
@@ -137,13 +146,14 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    const { major, tsf, status, region, tenure, commodity } = this.state.params;
+    const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute({
         page,
         per_page,
         major,
         tsf,
+        search,
         status: status && status.join(","),
         region: region && region.join(","),
         tenure: tenure && tenure.join(","),

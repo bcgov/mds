@@ -18,14 +18,14 @@ const propTypes = {
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.array,
   isMapView: PropTypes.bool,
-  searchValue: PropTypes.string,
+  // searchValue: PropTypes.string,
 };
 
 const defaultProps = {
   mineNameList: [],
 };
 
-const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
+const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major, searchValue }) =>
   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
 
 export class MineSearch extends Component {
@@ -61,6 +61,7 @@ export class MineSearch extends Component {
    * filter mineList with new search input;
    */
   handleSearch = (value = {}) => {
+    console.log("*******THIS WAS CALLED********");
     const search = value.target && value.target.value;
     const { commodity, region, status, tenure, tsf, major } = search ? {} : value;
     this.props.handleMineSearch({
@@ -96,6 +97,9 @@ export class MineSearch extends Component {
   };
 
   render() {
+    console.log("The props in the mineSearch form are:");
+    console.log(this.props);
+    console.log(this);
     if (this.props.isMapView) {
       return (
         <RenderAutoComplete
@@ -106,36 +110,30 @@ export class MineSearch extends Component {
         />
       );
     }
+    console.log("The props in the mineSearch 2 form are:");
+    console.log(this.props);
     return (
       <div>
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-            <Input
+            {/* <Input
               defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
               placeholder="Search for a mine using name, ID, or permit number"
               onChange={this.handleSearch}
               suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
-            />
-            {this.state.isAdvanceSearch && (
-              <span className="advanced-search__container">
-                <AdvancedSearchForm
-                  {...this.props}
-                  onSubmit={this.handleSearch}
-                  handleSearch={this.handleSearch}
-                />
-              </span>
-            )}
+            /> */}
+            {/* {this.state.isAdvanceSearch && ( */}
+            <span className="advanced-search__container">
+              <AdvancedSearchForm
+                {...this.props}
+                onSubmit={this.handleSearch}
+                handleSearch={this.handleSearch}
+                // searchValue={this.props.searchValue}
+              />
+            </span>
+            {/* )} */}
           </Col>
         </Row>
-        {/* {this.state.isAdvanceSearch && (
-          <div className="advanced-search__container">
-            <AdvancedSearchForm
-              {...this.props}
-              onSubmit={this.handleSearch}
-              handleSearch={this.handleSearch}
-            />
-          </div>
-        )} */}
         <Row>
           <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
