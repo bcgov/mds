@@ -23,7 +23,7 @@ export class AdminDashboard extends Component {
   };
 
   handleDownload = () => {
-    downloadMineManagerHistory(this.state.mineNo);
+    downloadMineManagerHistory(this.state.mineNo, { window, document });
   };
 
   render() {
@@ -37,6 +37,7 @@ export class AdminDashboard extends Component {
             placeholder="Enter a Mine Number"
             value={this.state.mineNo}
             onChange={this.handleChange}
+            style={{ width: "50%", "max-width": "300px" }}
           />
           <Button onClick={this.handleDownload}>Download History</Button>
         </div>

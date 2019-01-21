@@ -1,6 +1,11 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { createParty, fetchParties, fetchPartyById } from "@/actionCreators/partiesActionCreator";
+import {
+  createParty,
+  fetchParties,
+  fetchPartyById,
+  downloadMineManagerHistory,
+} from "@/actionCreators/partiesActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
 import * as MOCK from "../mocks/dataMocks";
@@ -88,6 +93,34 @@ describe("`fetchPartyById` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`downloadMineManagerHistory` action creator", () => {
+  const mockMineNo = MOCK.MINES.mineIds[0];
+  const url = `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mockMineNo)}`;
+  const mockWindow = { URL: { createObjectURL: () => "http://localhost:5000" } };
+  const mockDocument = {
+    createElement: () => ({ setAttribute: () => {}, click: () => {} }),
+    body: { appendChild: () => {} },
+  };
+  const externalMocks = {
+    window: mockWindow,
+    document: mockDocument,
+  };
+  it("Request successful, returns response", () => {
+    const mockResponse = { success: true, response: { status: 200 } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return downloadMineManagerHistory(mockMineNo, externalMocks).then((response) => {
+      expect(response.data).toEqual(mockResponse);
+    });
+  });
+
+  it("Request failure, returns undefined", () => {
+    mockAxios.onGet(url).reply(400, { response: { status: 400 } });
+    return downloadMineManagerHistory(mockMineNo, externalMocks).then((response) => {
+      expect(response).toBeUndefined();
     });
   });
 });

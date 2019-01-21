@@ -220,7 +220,7 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
     });
 };
 
-export const downloadMineManagerHistory = (mineNo) =>
+export const downloadMineManagerHistory = (mineNo, { window, document }) =>
   axios({
     method: "GET",
     url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
@@ -232,7 +232,7 @@ export const downloadMineManagerHistory = (mineNo) =>
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "mine_manager_history.csv");
+      link.setAttribute("download", `mine_${mineNo}_manager_history.csv`);
       document.body.appendChild(link);
       link.click();
       return response;
