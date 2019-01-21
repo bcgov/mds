@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import MINE_VIEW, MINE_CREATE
+from app.api.utils.access_decorators import MINE_VIEW, MINE_CREATE, MINE_ADMIN
 
 from app.api.document_manager.resources.document_manager import DocumentManagerResource
 from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
@@ -23,6 +23,8 @@ from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePa
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.permits.permit.resources.permit import PermitResource
+from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
+from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 
 
 @pytest.mark.parametrize("resource,method,expected_roles", [
@@ -64,7 +66,11 @@ from app.api.permits.permit.resources.permit import PermitResource
     (PartyResource, "put", [MINE_CREATE]),
     (PermitResource, "get", [MINE_VIEW]),
     (RequiredDocumentResource, "get", [MINE_VIEW]),
-])
+    (MinespaceUserResource, 'get', [MINE_ADMIN]),
+    (MinespaceUserResource, 'post', [MINE_ADMIN]),
+    (MinespaceUserResource, 'delete', [MINE_ADMIN]),
+    (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
+    (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
