@@ -32,7 +32,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         return {'expected_document': mine_exp_doc.json()}
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
-    @requires_any_of(MINE_CREATE, MINESPACE_PROPONENT)
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(404, 'Must provide a expected document guid.'), 404

@@ -13,7 +13,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):
-    @requires_any_of(MINE_VIEW, MINESPACE_PROPONENT)
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         mine_exp_docs_status = ExpectedDocumentStatus.find_all_document_status()
         return {

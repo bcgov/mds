@@ -16,7 +16,7 @@ class MineDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={
         'mine_guid': 'Optional: Mine number or guid. returns list of documents for the mine'
     })
-    @requires_any_of(MINE_VIEW, MINESPACE_PROPONENT)
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_guid=None):
         if not mine_guid:
             return self.create_error_payload(400, 'no mine_guid provided')

@@ -1,4 +1,5 @@
 // Network URL's
+export const MINE = "/mines";
 export const MINE_NAME_LIST = "/mines/names";
 
 export const DOCUMENT_STATUS = "/documents/expected/status";

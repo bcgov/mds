@@ -30,7 +30,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'expected_document_guid':
             'Required: The guid of the expected document that this upload will be satisfying.'
         })
-    @requires_any_of(MINE_CREATE, MINESPACE_PROPONENT)
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, expected_document_guid):
 
         self.parser.add_argument('file', type=FileStorage, location='files', action='append')
@@ -110,7 +110,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             result = {'status': 200, 'errors': errors, 'files': filenames}
         return result
 
-    @requires_any_of(MINE_CREATE, MINESPACE_PROPONENT)
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, expected_document_guid=None, mine_document_guid=None):
 
         if expected_document_guid is None or mine_document_guid is None:
