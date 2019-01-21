@@ -12,11 +12,6 @@ export const storeMine = (payload) => ({
   payload,
 });
 
-export const storeDocumentStatusOptions = (payload) => ({
-  type: ActionTypes.STORE_DOCUMENT_STATUS_OPTIONS,
-  payload,
-});
-
 export const storeMineDocuments = (payload) => ({
   type: ActionTypes.STORE_MINE_DOCUMENTS,
   payload,

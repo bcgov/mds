@@ -24,3 +24,34 @@
     border: 1px solid $primary-btn-border-color-hover;
   }
 }
+
+.ant-form-item-label {
+  label {
+    font-size: $default-p;
+    color: $p-color;
+    font-weight: $semi-bold;
+  }
+}
+
+.ant-modal-title {
+  font-size: $default-h2;
+  color: $p-color;
+  font-weight: $semi-bold;
+}
+
+.ant-radio-button-wrapper {
+  border-color: $font-colour !important;
+  color: $font-colour;
+  &:hover {
+    color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
+}
+.ant-radio-button-wrapper-checked {
+  border-color: $primary-btn-color !important;
+  color: $primary-btn-color;
+  &:hover {
+    color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
+}

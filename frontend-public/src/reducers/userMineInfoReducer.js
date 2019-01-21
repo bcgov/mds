@@ -2,8 +2,8 @@ import * as actionTypes from "@/constants/actionTypes";
 import { USER_MINE_INFO } from "@/constants/reducerTypes";
 
 /**
- * @file mineReducer.js
- * all data associated with new mine/existing mine records is handled witnin this reducer.
+ * @file userMineInfoReducer.js
+ * all data associated with user mine records is handled witnin this reducer.
  */
 
 const initialState = {
@@ -25,11 +25,6 @@ const userMineInfoReducer = (state = initialState, action) => {
         ...state,
         mine: action.payload,
       };
-    case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
-      return {
-        ...state,
-        expectedDocumentStatusOptions: action.payload.options,
-      };
     case actionTypes.STORE_MINE_DOCUMENTS:
       return {
         ...state,
@@ -46,8 +41,6 @@ const userMineInfoReducer = (state = initialState, action) => {
 
 export const getUserMineInfo = (state) => state[USER_MINE_INFO].userMineInfo;
 export const getMine = (state) => state[USER_MINE_INFO].mine;
-export const getExpectedDocumentStatusOptions = (state) =>
-  state[USER_MINE_INFO].expectedDocumentStatusOptions;
 export const getMineDocuments = (state) => state[USER_MINE_INFO].mineDocuments;
 
 export default userMineInfoReducer;

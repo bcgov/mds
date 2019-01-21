@@ -2,17 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
+import moment from "moment";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineFilePicker from "@/components/dashboard/mine_info/MineFilePicker";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
@@ -21,6 +20,13 @@ export const EditReportForm = (props) => (
     <Row gutter={16}>
       <Col>
         <Form.Item label="Attached Files">
+          <div>
+            <p>
+              Note: you will be able to remove files up until the March 31, {moment().year()}{" "}
+              deadline. After that date, all attached files will be considered official submissions
+              to the Ministry.
+            </p>
+          </div>
           <Field
             id="tsf_report_file_uploads"
             name="tsf_report_file_uploads"

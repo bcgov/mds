@@ -6,7 +6,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import CustomPropTypes from "@/customPropTypes";
-import { getMine, getExpectedDocumentStatusOptions } from "@/selectors/userMineInfoSelector";
+import { getMine } from "@/selectors/userMineInfoSelector";
+import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 import {
   removeMineDocumentFromExpectedDocument,
   fetchMineRecordById,
@@ -52,7 +53,7 @@ export class UploadedFilesList extends React.Component {
           >
             <Row className="padding-small">
               <Col span={21}>
-                <p className={unlink ? "nested-table-header left" : "nested-table-header center"}>
+                <p className={unlink ? "uploaded-file left" : "uploaded-file center"}>
                   {file.document_name}
                 </p>
               </Col>

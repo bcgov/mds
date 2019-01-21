@@ -5,15 +5,16 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Row, Col, Divider, Icon, Button } from "antd";
 
-import { getMine, getExpectedDocumentStatusOptions } from "@/selectors/userMineInfoSelector";
+import { getMine } from "@/selectors/userMineInfoSelector";
+import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
 import {
   fetchMineRecordById,
-  fetchExpectedDocumentStatusOptions,
   updateExpectedDocument,
 } from "@/actionCreators/userDashboardActionCreator";
+import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/staticContentActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";

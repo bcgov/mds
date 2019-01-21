@@ -5,9 +5,7 @@ import EditReportForm from "@/components/Forms/EditReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
-  statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 

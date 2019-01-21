@@ -8,15 +8,13 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const fetchUserMineInfo = () => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.GET_MINE_INFO));
+  dispatch(request(reducerTypes.GET_USER_MINE_INFO));
   return axios
     .get(`${ENVIRONMENT.apiUrl + API.MINE_NAME_LIST}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_INFO));
+      dispatch(success(reducerTypes.GET_USER_MINE_INFO));
       dispatch(userMineInfoActions.storeUserMineInfo(response.data));
       dispatch(hideLoading());
     })
@@ -25,8 +23,8 @@ export const fetchUserMineInfo = () => (dispatch) => {
         message: err.response ? err.response.data.error.message : String.ERROR,
         duration: 10,
       });
-      dispatch(error(reducerTypes.GET_MINE_INFO));
-      dispatch(clear(reducerTypes.GET_MINE_INFO));
+      dispatch(error(reducerTypes.GET_USER_MINE_INFO));
+      dispatch(clear(reducerTypes.GET_USER_MINE_INFO));
       dispatch(hideLoading());
     });
 };
@@ -48,26 +46,6 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
       });
       dispatch(error(reducerTypes.GET_MINE_RECORD));
       dispatch(hideLoading());
-    });
-};
-
-export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-  dispatch(showLoading("modal"));
-  return axios
-    .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_STATUS}`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(userMineInfoActions.storeDocumentStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(hideLoading("modal"));
     });
 };
 
