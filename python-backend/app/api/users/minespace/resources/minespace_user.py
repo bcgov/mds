@@ -55,6 +55,9 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
         user = MinespaceUser.find_by_id(user_id)
         if not user:
             return self.create_error_payload(404, "user not found"), 404
-        user.deleted_ind = True
-        user.save()
+        for um in user.mines:
+            db.session.delete(um)
+        db.session.commit()
+        db.session.delete(user)
+        db.session.commit()
         return ('', 204)
