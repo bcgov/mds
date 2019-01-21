@@ -1,24 +1,26 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
-const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 const parts = require("./webpack.parts");
 
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
-const HOST = process.env.HOST;
-const PORT = process.env.PORT;
+const HOST = process.env.HOST || "0.0.0.0";
+const PORT = process.env.PORT || 3000;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
+const BUILD_DIR = process.env.BUILD_DIR || "build";
 
 const PATHS = {
   src: path.join(__dirname, "src"),
   entry: path.join(__dirname, "src", "index.js"),
   public: path.join(__dirname, "public"),
   template: path.join(__dirname, "public", "index.html"),
-  build: path.join(__dirname, "build"),
+  build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
 };
 
@@ -31,11 +33,11 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
-  //Put your aliases here
+  // Put your aliases here
 };
 
 const envFile = {};
-envFile["BASE_PATH"] = JSON.stringify("");
+envFile.BASE_PATH = JSON.stringify("");
 // Populate the env dict with Environment variables from the system
 if (process.env) {
   Object.keys(process.env).map((key) => {
@@ -61,8 +63,8 @@ const commonConfig = merge([
       }),
       // Adding timestamp to builds
       function() {
-        this.plugin("watch-run", function(watching, callback) {
-          console.log("Begin compile at " + new Date());
+        this.plugin("watch-run", (watching, callback) => {
+          console.log(`Begin compile at ${  new Date()}`);
           callback();
         });
       },
@@ -114,6 +116,7 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
+    plugins: [new HardSourceWebpackPlugin()],
   },
   parts.clean(PATHS.build),
   parts.extractCSS({

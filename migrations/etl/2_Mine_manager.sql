@@ -184,7 +184,7 @@ BEGIN
         mms.person_combo_id     ,
         mms.mgr_combo_id
     FROM new_manager_info mms
-    INNER JOIN mine_detail mds ON
+    INNER JOIN mine mds ON
         mds.mine_no=mms.mine_no;
     SELECT count(*) FROM ETL_MANAGER INTO new_row;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);
@@ -257,7 +257,7 @@ DECLARE
     new_row integer;
 BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
-    SELECT count(*) FROM mgr_appointment INTO old_row;
+    SELECT count(*) FROM mine_party_appt INTO old_row;
     --select only new record
     WITH new_manager AS
     (
@@ -265,17 +265,20 @@ BEGIN
         FROM ETL_MANAGER
         WHERE NOT EXISTS (
             SELECT  1
-            FROM    mgr_appointment
+            FROM    mine_party_appt
             WHERE
                 party_guid = ETL_MANAGER.party_guid
             AND
                 mine_guid = ETL_Manager.mine_guid
+            AND
+                mine_party_appt_type_code = 'MMG'
         )
     )
-    INSERT INTO mgr_appointment(
-        mgr_appointment_guid,
+    INSERT INTO mine_party_appt(
+        mine_party_appt_guid,
         mine_guid           ,
         party_guid          ,
+        mine_party_appt_type_code,
         effective_date      ,
         expiry_date         ,
         create_user         ,
@@ -287,6 +290,7 @@ BEGIN
         gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
         new.mine_guid       ,
         new.party_guid      ,
+        'MMG'               ,
         new.effective_date  ,
         '9999-12-31'::date  ,
         'mms_migration'     ,
@@ -294,7 +298,7 @@ BEGIN
         'mms_migration'     ,
         now()
     FROM new_manager new;
-    SELECT count(*) FROM mgr_appointment INTO new_row;
+    SELECT count(*) FROM mine_party_appt INTO new_row;
     RAISE NOTICE '.... # new manager assignment: %', (new_row-old_row);
     RAISE NOTICE '.... Total mine reords with manager information: %', (new_row);
     RAISE NOTICE 'Finish updating mine manager.';

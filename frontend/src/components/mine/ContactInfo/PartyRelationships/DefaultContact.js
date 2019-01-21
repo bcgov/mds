@@ -1,82 +1,149 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Button, Icon, Popconfirm } from "antd";
-import { BRAND_PENCIL } from "@/constants/assets";
+import { Button, Icon, Card } from "antd";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as router from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
+import { formatTitleString } from "@/utils/helpers";
+import { Redirect } from "react-router";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipTypeLabel: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  removePartyRelationship: PropTypes.func.isRequired,
+  otherDetails: PropTypes.object,
+  isEditable: PropTypes.bool.isRequired,
 };
 
-export const DefaultContact = (props) => (
-  <div>
-    <div className="inline-flex between">
-      <div>
-        <h4>{props.partyRelationshipTypeLabel}</h4>
-        <p>
-          <Icon type="clock-circle" />
-          &nbsp;&nbsp;
-          {props.partyRelationship.start_date === "None"
-            ? "Unknown"
-            : props.partyRelationship.start_date}{" "}
-          -{" "}
-          {props.partyRelationship.end_date === "None"
-            ? "Present"
-            : props.partyRelationship.end_date}
-        </p>
-        <br />
-      </div>
-      <div>
-        <Button
-          key={`${props.partyRelationship.mine_party_appt_guid}_edit`}
-          ghost
-          type="primary"
-          onClick={() =>
-            props.openEditPartyRelationshipModal(
-              props.partyRelationship,
-              props.onSubmitEditPartyRelationship,
-              props.handleChange,
-              props.mine
-            )
-          }
-        >
-          <img className="padding-small" src={BRAND_PENCIL} />
-        </Button>
-        <Popconfirm
-          key={`${props.partyRelationship.mine_party_appt_guid}_delete`}
-          placement="topLeft"
-          title={`Are you sure you want to delete this ${props.partyRelationshipTypeLabel}?`}
-          onConfirm={(event) =>
-            props.removePartyRelationship(event, props.partyRelationship.mine_party_appt_guid)
-          }
-          okText="Delete"
-          cancelText="Cancel"
-        >
-          <Button ghost type="primary">
-            <Icon type="minus-circle" theme="outlined" />
-          </Button>
-        </Popconfirm>
-      </div>
-    </div>
-    <h5 className="bold">{props.partyRelationship.party.name}</h5>
-    <p>
-      <Icon type="mail" />
-      &nbsp;&nbsp;
-      {props.partyRelationship.party.email}&nbsp;&nbsp;&nbsp;&nbsp;
-      <br />
-      <Icon type="phone" />
-      &nbsp;&nbsp;
-      {props.partyRelationship.party.phone_no}{" "}
-      {props.partyRelationship.party.phone_ext ? `x${props.partyRelationship.party.phone_ext}` : ""}
-    </p>
-  </div>
-);
+export class DefaultContact extends Component {
+  state = {
+    redirectToRelationshipProfile: false,
+    redirectToPartyProfile: false,
+  };
+
+  render() {
+    if (this.state.redirectToRelationshipProfile === true) {
+      return (
+        <Redirect
+          to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+            this.props.mine.guid,
+            this.props.partyRelationship.mine_party_appt_type_code
+          )}
+          push
+        />
+      );
+    }
+    if (this.state.redirectToPartyProfile === true) {
+      return (
+        <Redirect
+          to={router.PARTY_PROFILE.dynamicRoute(this.props.partyRelationship.party.party_guid)}
+          push
+        />
+      );
+    }
+
+    return (
+      <Card
+        headStyle={{
+          background: "#EEEEEE",
+          borderTop: "1px solid #CCCCCC",
+          borderRight: "1px solid #CCCCCC",
+          borderLeft: "1px solid #CCCCCC",
+        }}
+        bodyStyle={{
+          borderBottom: "4px solid #CCCCCC",
+          borderRight: "1px solid #CCCCCC",
+          borderLeft: "1px solid #CCCCCC",
+        }}
+        title={
+          <div className="inline-flex between wrap">
+            <div>
+              <h3>{this.props.partyRelationshipTypeLabel}</h3>
+              <p>
+                <Icon type="clock-circle" />
+                &nbsp;&nbsp;
+                {this.props.partyRelationship.start_date
+                  ? this.props.partyRelationship.start_date
+                  : "Unknown"}{" "}
+                -{" "}
+                {this.props.partyRelationship.end_date
+                  ? this.props.partyRelationship.end_date
+                  : "Present"}
+                <br />
+              </p>
+            </div>
+            <div className="right">
+              <Button
+                style={{ marginRight: "0" }}
+                onClick={() => {
+                  this.setState({ redirectToRelationshipProfile: true });
+                }}
+              >
+                See History
+              </Button>
+            </div>
+          </div>
+        }
+        bordered={false}
+      >
+        <div className="inline-flex between wrap">
+          <div>
+            <h5>{formatTitleString(this.props.partyRelationship.party.name)}</h5>
+            <p>
+              <Icon type="mail" />
+              &nbsp;&nbsp;
+              <a href={`mailto:${this.props.partyRelationship.party.email}`}>
+                {this.props.partyRelationship.party.email}
+              </a>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <br />
+              <Icon type="phone" />
+              &nbsp;&nbsp;
+              {this.props.partyRelationship.party.phone_no}{" "}
+              {this.props.partyRelationship.party.phone_ext
+                ? `x${this.props.partyRelationship.party.phone_ext}`
+                : ""}
+              <br />
+            </p>
+          </div>
+          <div className="right" style={{ flexGrow: "3" }}>
+            <Button
+              style={{ marginRight: "0", marginLeft: "0", marginBottom: "0" }}
+              onClick={() => {
+                this.setState({ redirectToPartyProfile: true });
+              }}
+            >
+              View Profile
+            </Button>{" "}
+            {this.props.isEditable && [
+              <br />,
+              <AuthorizationWrapper permission={Permission.CREATE}>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    this.props.openEditPartyRelationshipModal(
+                      this.props.partyRelationship,
+                      this.props.onSubmitEditPartyRelationship,
+                      this.props.handleChange,
+                      this.props.mine
+                    )
+                  }
+                >
+                  Update
+                </Button>
+              </AuthorizationWrapper>,
+            ]}
+          </div>
+          {this.props.otherDetails}
+        </div>
+      </Card>
+    );
+  }
+}
 
 DefaultContact.propTypes = propTypes;
 

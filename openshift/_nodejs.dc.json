@@ -44,6 +44,10 @@
       "value": "/"
     },
     {
+      "name": "PORT",
+      "value": "3000"
+    },
+    {
       "name": "NODE_ENV",
       "displayName": "Node Environment",
       "description": "Environment for running node",
@@ -108,6 +112,14 @@
     {
       "name": "MEMORY_REQUEST",
       "value": "512Mi"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
     }
   ],
   "objects": [
@@ -137,8 +149,8 @@
         "ports": [
           {
             "name": "web",
-            "port": 3000,
-            "targetPort": 3000
+            "port": "${{PORT}}",
+            "targetPort": "${{PORT}}"
           }
         ],
         "selector": {
@@ -161,7 +173,9 @@
       },
       "spec": {
         "strategy": {
-          "type": "Rolling"
+          "type": "Rolling",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
         },
         "triggers": [
           {
@@ -179,7 +193,7 @@
             "type": "ConfigChange"
           }
         ],
-        "replicas": 1,
+        "replicas": "${{REPLICA_MIN}}",
         "selector": {
           "name": "${NAME}${SUFFIX}"
         },
@@ -257,7 +271,7 @@
                 },
                 "ports": [
                   {
-                    "containerPort": 3000
+                    "containerPort": "${{PORT}}"
                   }
                 ]
               }
@@ -276,8 +290,8 @@
         }
       },
       "spec": {
-        "maxReplicas": 4,
-        "minReplicas": 1,
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
         "scaleTargetRef": {
           "apiVersion": "v1",
           "kind": "DeploymentConfig",

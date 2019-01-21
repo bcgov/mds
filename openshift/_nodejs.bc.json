@@ -32,6 +32,10 @@
       "value": "/"
     },
     {
+      "name": "DOCKER_IMAGE_DIRECTORY",
+      "value": "docker-images/nodejs-8"
+    },
+    {
       "name": "SOURCE_CONTEXT_DIR",
       "required": true
     },
@@ -133,8 +137,6 @@
       },
       "spec": {
         "completionDeadlineSeconds": 1440,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
         "triggers": [
           {
             "type": "ImageChange",
@@ -146,7 +148,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/nodejs-8",
+          "contextDir": "${DOCKER_IMAGE_DIRECTORY}",
           "type": "Binary"
         },
         "strategy": {
@@ -166,12 +168,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "500m",
-            "memory": "4Gi"
+            "cpu": "250m",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "250m",
-            "memory": "3Gi"
+            "cpu": "150m",
+            "memory": "1Gi"
           }
         },
         "postCommit": {},
@@ -190,7 +192,7 @@
         }
       },
       "spec": {
-        "completionDeadlineSeconds": 600,
+        "completionDeadlineSeconds": 900,
         "triggers": [
           {
             "type": "ImageChange"
@@ -223,6 +225,10 @@
               {
                 "name": "ASSET_PATH",
                 "value": "${BASE_PATH}/"
+              },
+              {
+                "name": "SKIP_NPM_INSTALL",
+                "value": "true"
               }
             ]
           }
@@ -235,12 +241,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "500m",
-            "memory": "4Gi"
+            "cpu": "250m",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "350m",
-            "memory": "3Gi"
+            "cpu": "100m",
+            "memory": "1Gi"
           }
         },
         "nodeSelector": null

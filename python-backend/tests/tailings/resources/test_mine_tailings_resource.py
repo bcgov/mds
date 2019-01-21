@@ -1,7 +1,7 @@
 import json, uuid, requests
 from tests.constants import TEST_MINE_GUID, TEST_TAILINGS_STORAGE_FACILITY_NAME2, TEST_TAILINGS_STORAGE_FACILITY_NAME1, DUMMY_USER_KWARGS
 
-from app.api.mines.mine.models.mine_identity import MineIdentity
+from app.api.mines.mine.models.mine import Mine
 from unittest import mock
 
 TAILING_REQUIRED_DOCUMENTS = {
@@ -73,8 +73,8 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, auth_head
 
 #     #add a new mine to test data
 #     new_mine_guid = 'b6e1c212-aa7d-4f30-8c37-f7e3837be561'
-#     mine_identity2 = MineIdentity(mine_guid=uuid.UUID(new_mine_guid), **DUMMY_USER_KWARGS)
-#     mine_identity2.save()
+#     mine2 = Mine(mine_guid=uuid.UUID(new_mine_guid), **DUMMY_USER_KWARGS)
+#     mine2.save()
 
 #     with mock.patch('requests.get') as documents_get_mock:
 #         documents_get_mock.return_value = MockResponse(TAILING_REQUIRED_DOCUMENTS, 200)

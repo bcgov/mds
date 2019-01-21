@@ -6,7 +6,6 @@ import spock.lang.*
 
 import pages.*
 import utils.*
-import dataObjects.ManagerProfileData
 
 
 @Title("MDS-MineProfilePage")
@@ -18,7 +17,7 @@ class  SummarySpec extends GebReportingSpec {
         to MineProfilePage
 
         then: "I should see profile of the Mine"
-        assert mineNumber == "Mine No.: "+Const.MINE_NUMBER
+        assert mineNumber == Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
     }
 }

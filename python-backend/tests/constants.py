@@ -1,7 +1,8 @@
 # Test Constants
+DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
+
 TEST_MINE_GUID = '4fc855aa-728a-48f2-a3df-85ce1336b01a'
 
-TEST_MINE_DETAIL_GUID = '94de18e5-5239-4df0-aa2d-b21961d4721e'
 TEST_MINE_NAME = 'test_mine_name'
 TEST_MINE_NO = 'BLAH000'
 
@@ -65,18 +66,11 @@ TEST_MINE_TENURE_TYPE_CODES = ['COL', 'MIN', 'PLR', 'BCL']
 TEST_MINE_TENURE_TYPE_DESCRIPTIONS = ['Coal', 'Mineral', 'Placer', 'BC Land']
 
 TEST_MINE_DISTURBANCE_CODES = ['SUR', 'UND', 'CWA', 'MIL']
-TEST_MINE_DISTURBANCE_DESCRIPTIONS = [
-    'Surface', 'Underground', 'Coal Wash', 'Mill'
-]
+TEST_MINE_DISTURBANCE_DESCRIPTIONS = ['Surface', 'Underground', 'Coal Wash', 'Mill']
 
 TEST_MINE_COMMODITY_CODES = ['TO', 'MC', 'CG', 'SA', 'AE', 'AL']
 TEST_MINE_COMMODITY_DESCRIPTIONS = [
-    'Thermal Coal',
-    'Metallurgic',
-    'Construction Aggregate',
-    'Sand and Gravel',
-    'Agate',
-    'Aluminum'
+    'Thermal Coal', 'Metallurgic', 'Construction Aggregate', 'Sand and Gravel', 'Agate', 'Aluminum'
 ]
 
 TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID = 'bd5ef43b-379a-41a0-aa00-c5b632e9c329'
@@ -103,6 +97,9 @@ TEST_EXPECTED_DOCUMENT_NAME1 = 'Expected Document 1'
 TEST_EXPECTED_DOCUMENT_GUID2 = 'f6c98d68-e565-41f3-9cea-d3cb4542c814'
 TEST_EXPECTED_DOCUMENT_NAME2 = 'Expected Document 2'
 
+TEST_EXPECTED_DOCUMENT_STATUS_GUID1 = 'bf24f56b-d6ad-4e20-8ce8-9bf92ad4d910'
+TEST_EXPECTED_DOCUMENT_STATUS_GUID2 = 'bf22fa6b-d6ad-4e20-8ce8-9bf92ad4d910'
+
 TEST_MINE_DOCUMENT_NAME1 = 'Mine Document 1'
 TEST_DOCUMENT_MANAGER_FILE_GUID = 'a7cd9625-887c-4cc6-9faa-9396a1718a8f'
 
@@ -120,14 +117,8 @@ TEST_MINE_PARTY_APPT_TYPE_DESCRIPTION2 = 'Buzzing Bumblebees be ballin'
 
 TEST_MINE_PARTY_APPT_GUID = '2484d785-a3c7-47db-b296-edb284a3c160'
 
-DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-
 # Auth Constants
-TOKEN_HEADER = {
-    "alg": "RS256",
-    "typ": "JWT",
-    "kid": "flask-jwt-oidc-test-client"
-}
+TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}
 
 BASE_AUTH_CLAIMS = {
     "iss": "test_issuer",
@@ -156,7 +147,7 @@ FULL_AUTH_CLAIMS = {
     "email": "test-email",
     "given_name": "test-given-name",
     "realm_access": {
-        "roles": ["mds-mine-view", "mds-mine-create", "idir"]
+        "roles": ["mds-mine-view", "mds-mine-create", "mds-mine-admin", "idir"]
     }
 }
 
@@ -171,5 +162,47 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "username": "test-user",
     "realm_access": {
         "roles": ["mds-mine-view", "idir"]
+    }
+}
+
+CREATE_ONLY_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
+    "aud": "test_audience",
+    "exp": 21531718745,
+    "iat": 1531718745,
+    "jti": "flask-jwt-oidc-test-support",
+    "typ": "Bearer",
+    "username": "test-user",
+    "realm_access": {
+        "roles": ["mds-mine-create", "idir"]
+    }
+}
+
+ADMIN_ONLY_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
+    "aud": "test_audience",
+    "exp": 21531718745,
+    "iat": 1531718745,
+    "jti": "flask-jwt-oidc-test-support",
+    "typ": "Bearer",
+    "username": "test-user",
+    "realm_access": {
+        "roles": ["mds-mine-admin", "idir"]
+    }
+}
+
+PROPONENT_ONLY_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
+    "aud": "test_audience",
+    "exp": 21531718745,
+    "iat": 1531718745,
+    "jti": "flask-jwt-oidc-test-support",
+    "typ": "Bearer",
+    "username": "test-proponent",
+    "realm_access": {
+        "roles": ["minespace-proponent"]
     }
 }

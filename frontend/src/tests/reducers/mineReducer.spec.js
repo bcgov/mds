@@ -7,6 +7,8 @@ const baseExpectedValue = {
   mineNameList: [],
   minesPageData: {},
   mineGuid: false,
+  mineBasicInfoList: [],
+  mineDocuments: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

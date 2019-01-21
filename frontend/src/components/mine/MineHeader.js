@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { Menu, Icon, Divider, Button, Popover } from "antd";
-import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT } from "@/constants/assets";
+import { Menu, Divider, Button, Dropdown, Tag } from "antd";
+import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { ConditionalButton } from "../common/ConditionalButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -24,6 +25,7 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  transformedMineTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.strings)).isRequired,
 };
 
 class MineHeader extends Component {
@@ -65,42 +67,6 @@ class MineHeader extends Component {
       });
   };
 
-  createMineTypePopUp = (mineTypes) =>
-    mineTypes.map((type) => (
-      <div key={type.mine_type_guid}>
-        <p className="bold">{this.props.mineTenureHash[type.mine_tenure_type_code]}</p>
-        <Divider style={{ margin: "0", marginBottom: "5px", backgroundColor: "#404040" }} />
-        <div className="inline-flex">
-          <div>
-            <p>Commodity:</p>
-          </div>
-          <div>
-            {type.mine_type_detail &&
-              type.mine_type_detail.map(({ mine_commodity_code }) => (
-                <span>
-                  {mine_commodity_code &&
-                    `${this.props.mineCommodityOptionsHash[mine_commodity_code]}, `}
-                </span>
-              ))}
-          </div>
-        </div>
-        <div className="inline-flex">
-          <div>
-            <p>Disturbance:</p>
-          </div>
-          <div>
-            {type.mine_type_detail &&
-              type.mine_type_detail.map(({ mine_disturbance_code }) => (
-                <span>
-                  {mine_disturbance_code &&
-                    `${this.props.mineDisturbanceOptionsHash[mine_disturbance_code]}, `}
-                </span>
-              ))}
-          </div>
-        </div>
-      </div>
-    ));
-
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
@@ -112,12 +78,12 @@ class MineHeader extends Component {
   openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
     const initialValues = {
-      name: mine.mine_detail[0] ? mine.mine_detail[0].mine_name : null,
+      name: mine.mine_name ? mine.mine_name : null,
       latitude: mine.mine_location[0] ? mine.mine_location[0].latitude : null,
       longitude: mine.mine_location[0] ? mine.mine_location[0].longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
-      major_mine_ind: mine.mine_detail[0] ? mine.mine_detail[0].major_mine_ind : false,
-      mine_region: mine.mine_detail[0] ? mine.mine_detail[0].region_code : null,
+      major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
+      mine_region: mine.region_code ? mine.region_code : null,
     };
 
     this.props.openModal({
@@ -170,81 +136,99 @@ class MineHeader extends Component {
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
-          <div className="inline-flex between">
-            <h1>{this.props.mine.mine_detail[0].mine_name} </h1>
-            <ConditionalButton
-              isDropdown
-              overlay={menu}
-              string={<Icon type="ellipsis" theme="outlined" style={{ fontSize: "30px" }} />}
-            />
+          <div className="inline-flex between center-mobile">
+            <h1>{this.props.mine.mine_name} </h1>
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                <Button type="primary">
+                  <div className="padding-small">
+                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
           </div>
-          <Divider />
-          <h5>Mine No.: {this.props.mine.mine_detail[0].mine_no} </h5>
+          <Divider className="custom-large-divider" />
+          <div className="inline-flex between block-mobile">
+            <div className="inline-flex padding-small">
+              <p className="field-title">Mine No. </p>
+              <p> {this.props.mine.mine_no} </p>
+            </div>
+            <div className="inline-flex padding-small">
+              <p className="field-title">Mine Class </p>
+              <p>{this.props.mine.major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</p>
+            </div>
+            <div className="inline-flex padding-small">
+              <p className="field-title">TSF</p>
+              <p>
+                {this.props.mine.mine_tailings_storage_facility.length > 0
+                  ? this.props.mine.mine_tailings_storage_facility.length
+                  : String.EMPTY_FIELD}
+              </p>
+            </div>
+          </div>
           {this.props.mine.mine_status[0] && (
-            <div className="inline-flex">
-              <div>
-                <h5>Operating Status: </h5>
-              </div>
-              <div>
-                <img
-                  alt="status"
-                  src={
-                    this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
-                  }
-                />
-              </div>
-              <div>
-                <h5>
-                  {this.props.mine.mine_status[0].status_labels.map((label, i) => (
-                    <span className="mine__status" key={i}>
-                      {label}
-                    </span>
-                  ))}
-                </h5>
-              </div>
+            <div className="inline-flex padding-small">
+              <p className="field-title">Operating Status </p>
+              <img
+                alt="status"
+                className="dashboard__header--card__content--status__img"
+                src={
+                  this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
+                }
+              />
+              {this.props.mine.mine_status[0] ? (
+                this.props.mine.mine_status[0].status_labels.map((label) => (
+                  <p className="mine__status" key={label}>
+                    {label}
+                  </p>
+                ))
+              ) : (
+                <p>{String.EMPTY_FIELD}</p>
+              )}
             </div>
           )}
           {!this.props.mine.mine_status[0] && (
-            <div>
-              <h5>
-                Operating Status:
-                {String.EMPTY_FIELD}
-              </h5>
+            <div className="inline-flex padding-small">
+              <p className="field-title">Operating Status</p>
+              <p>{String.EMPTY_FIELD}</p>
             </div>
           )}
-          <h5>
-            Tenure:{" "}
-            {this.props.mine.mine_type[0] ? (
-              <Popover
-                style={{ widht: "400px", backgroundColor: "white" }}
-                content={this.createMineTypePopUp(this.props.mine.mine_type)}
-                placement="bottomRight"
-                trigger="click"
-              >
-                <Button className="btn--dropdown">
-                  {this.props.mine.mine_type.map((tenure) => (
-                    <span className="mine_tenure" key={tenure.mine_tenure_type_guid}>
-                      {this.props.mineTenureHash[tenure.mine_tenure_type_code]}
-                    </span>
-                  ))}
-                  <Icon type="down" style={{ fontSize: "14px" }} />
-                </Button>
-              </Popover>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Tenure</p>
+            <p>
+              {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
+                this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
+                  <span className="mine_tenure" key={tenure}>
+                    {this.props.mineTenureHash[tenure]}
+                  </span>
+                ))
+              ) : (
+                <p>{String.EMPTY_FIELD}</p>
+              )}
+            </p>
+          </div>
+          <div className="inline-flex padding-small wrap">
+            <p className="field-title">Commodity</p>
+            {this.props.transformedMineTypes.mine_commodity_code.length > 0 ? (
+              this.props.transformedMineTypes.mine_commodity_code.map((code) => (
+                <Tag key={code}>{this.props.mineCommodityOptionsHash[code]}</Tag>
+              ))
             ) : (
-              String.EMPTY_FIELD
+              <p>{String.EMPTY_FIELD}</p>
             )}
-          </h5>
-          <h5>
-            {this.props.mine.mine_detail[0].major_mine_ind
-              ? String.MAJOR_MINE
-              : String.REGIONAL_MINE}
-          </h5>
-          <h5>
-            TSF:{" "}
-            {this.props.mine.mine_tailings_storage_facility.length > 0
-              ? this.props.mine.mine_tailings_storage_facility.length
-              : String.EMPTY_FIELD}
-          </h5>
+          </div>
+          <div className="inline-flex padding-small wrap">
+            <p className="field-title">Disturbance</p>
+            {this.props.transformedMineTypes.mine_disturbance_code.length > 0 ? (
+              this.props.transformedMineTypes.mine_disturbance_code.map((code) => (
+                <Tag key={code}>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
+              ))
+            ) : (
+              <p>{String.EMPTY_FIELD}</p>
+            )}
+          </div>
         </div>
         <div className="dashboard__header--card__map">
           <MineMap mine={this.props.mine} />
@@ -265,8 +249,8 @@ class MineHeader extends Component {
             </div>
             <p className="p-white">
               Region:{" "}
-              {this.props.mine.mine_detail[0].region_code
-                ? this.props.mineRegionHash[this.props.mine.mine_detail[0].region_code]
+              {this.props.mine.region_code
+                ? this.props.mineRegionHash[this.props.mine.region_code]
                 : String.EMPTY_FIELD}
             </p>
           </div>

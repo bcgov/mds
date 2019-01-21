@@ -7,7 +7,8 @@ from flask_restplus import Resource, reqparse
 
 from ..models.document import ExpectedDocument
 
-from app.extensions import jwt, api
+from app.extensions import api
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -25,7 +26,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             'exp_doc_guid':
             'Required: Mine number or guid. returns list of expected documents for the mine'
         })
-    @jwt.requires_roles(["mds-mine-view"])
+    @requires_role_mine_view
     def get(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(
@@ -40,7 +41,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         'exp_doc_guid':
         'Required: Mine number or guid. Updates expected document'
     })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(
@@ -82,7 +83,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             'exp_doc_guid':
             'Required: Mine number or guid. Deletes expected document.'
         })
-    @jwt.requires_roles(["mds-mine-create"])
+    @requires_role_mine_create
     def delete(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(

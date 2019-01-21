@@ -16,3 +16,6 @@ export { default as GROUP_MINERS } from "../assets/images/GroupOfMiners.svg";
 export { default as BRAND_PENCIL } from "../assets/images/BrandPencil.svg";
 export { default as BRAND_DOCUMENT } from "../assets/images/BrandDocument.svg";
 export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";
+export { default as EDIT } from "../assets/images/Edit.svg";
+export { default as LOGOUT } from "../assets/images/Logout.svg";
+export { default as ADMIN } from "../assets/images/Admin.svg";

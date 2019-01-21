@@ -2,6 +2,7 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
@@ -9,11 +10,13 @@ from app.extensions import db
 class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
     mine_location_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine_identity.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     latitude = db.Column(db.Numeric(9, 7), nullable=False)
     longitude = db.Column(db.Numeric(11, 7), nullable=False)
+    geom = db.Column(Geometry('POINT', 3005))
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineLocation %r>' % self.mine_guid
@@ -37,16 +40,16 @@ class MineLocation(AuditMixin, Base):
         return cls.query.filter_by(mine_location_guid=_id).first()
 
     @classmethod
-    def create_mine_location(cls, mine_identity, random_location, user_kwargs, save=True):
+    def create_mine_location(cls, mine, random_location, user_kwargs, save=True):
         mine_location = cls(
             mine_location_guid=uuid.uuid4(),
-            mine_guid=mine_identity.mine_guid,
+            mine_guid=mine.mine_guid,
             latitude=random_location.get('latitude', 0),
             longitude=random_location.get('longitude', 0),
+            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)), float(random_location.get('latitude', 0))),
             effective_date=datetime.today(),
             expiry_date=datetime.today(),
-            **user_kwargs
-        )
+            **user_kwargs)
         if save:
             mine_location.save(commit=False)
         return mine_location

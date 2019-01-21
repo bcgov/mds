@@ -1,13 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Col, Row } from "antd";
 import { required } from "@/utils/Validate";
 import { createDropDownList } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mine: PropTypes.object,
+  mine: CustomPropTypes.mine,
 };
 
 const defaultProps = {
@@ -26,8 +26,8 @@ export const EngineerOfRecordOptions = (props) => {
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="mine_tailings_storage_facility_guid"
-            name="mine_tailings_storage_facility_guid"
+            id="related_guid"
+            name="related_guid"
             label="TSF *"
             placeholder="Select a TSF"
             component={renderConfig.SELECT}

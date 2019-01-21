@@ -22,8 +22,15 @@ export const createReducer = (reducer, name) => (state, action) => {
   return reducer(state, action);
 };
 // Function to create state object using the id as the key (used in src/reducers/<customReducer>)
-export const createItemMap = (array, idField) =>
-  array.reduce((result, item) => ({ [item[idField]]: item, ...result }), {});
+export const createItemMap = (array, idField) => {
+  const mapping = {};
+  // NOTE: Implementation chosen for performance
+  // Please do not refactor to use immutable data
+  array.forEach((item) => {
+    mapping[item[idField]] = item;
+  });
+  return mapping;
+};
 
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
@@ -37,3 +44,6 @@ export const createLabelHash = (obj) =>
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+
+export const formatTitleString = (input) =>
+  input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
