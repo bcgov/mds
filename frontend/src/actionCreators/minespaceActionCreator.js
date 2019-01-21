@@ -64,7 +64,7 @@ export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.DELETE_MINESPACE_USER));

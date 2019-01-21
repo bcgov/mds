@@ -2,6 +2,7 @@ import pytest
 import json, uuid, requests
 from tests.constants import TEST_MINE_GUID, TEST_TAILINGS_STORAGE_FACILITY_NAME2, TEST_TAILINGS_STORAGE_FACILITY_NAME1, DUMMY_USER_KWARGS
 from app.api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.extensions import db
 
 TEST_MINESPACE_USER_EMAIL1 = "email1@srv.com"
@@ -90,7 +91,27 @@ def test_post_minespace_user_new_email(test_client, auth_headers, setup_info):
     assert post_resp.status_code == 200, post_resp.response
 
     new_mu = MinespaceUser.find_by_email(data["email"])
+    db.session.delete(new_mu.mines[0])
     db.session.delete(new_mu)
     db.session.commit()
 
     assert json.loads(post_resp.data.decode())["email"] == data["email"]
+
+
+def test_delete_minespace_success(test_client, auth_headers, setup_info):
+    new_mu = MinespaceUser.create_minespace_user(email="TESTEMAIL@email.com")
+    db.session.commit()
+    del_resp = test_client.delete(
+        '/users/minespace/' + str(new_mu.user_id), headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 204, del_resp.response
+
+
+def test_delete_minespace_not_found(test_client, auth_headers, setup_info):
+    del_resp = test_client.delete(
+        '/users/minespace/11112233', headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 404, del_resp.response
+
+
+def test_delete_minespace_missing_id(test_client, auth_headers, setup_info):
+    del_resp = test_client.delete('/users/minespace', headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 400, del_resp.response
