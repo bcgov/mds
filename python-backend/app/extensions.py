@@ -13,4 +13,4 @@ api = Api(prefix=Config.BASE_PATH, doc='{}/'.format(Config.BASE_PATH),
 
 documents = UploadSet('document', AllExcept(EXECUTABLES + SCRIPTS))
 
-file_upload_middleware = TusFilter(None, "/documents/expected/upload")
+file_upload_middleware = TusFilter(None,upload_path="/documents/expected/upload")

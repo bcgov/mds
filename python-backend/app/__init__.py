@@ -44,7 +44,9 @@ def register_extensions(app):
 
     db.init_app(app)
     jwt.init_app(app)
-    file_upload_middleware.app = app
+
+    file_upload_middleware.app = app.wsgi_app
+    app.wsgi_app = file_upload_middleware
 
     CORS(app)
     Compress(app)
