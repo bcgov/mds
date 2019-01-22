@@ -40,6 +40,11 @@ class Mine(AuditMixin, Base):
         lazy='joined')
     mine_type = db.relationship(
         'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='joined')
+    mine_party_appt = db.relationship(
+        'MinePartyAppointment',
+        backref="mine",
+        lazy='joined')
+
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
