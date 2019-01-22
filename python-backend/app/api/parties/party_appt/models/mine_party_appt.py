@@ -1,7 +1,9 @@
 from datetime import datetime
 import re
 import uuid
+import requests
 
+from flask import request, current_app
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -24,6 +26,8 @@ class MinePartyAppointment(AuditMixin, Base):
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    processed_by = db.Column(db.String(60), nullable=False, server_default=FetchedValue())
+    processed_on = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
     #type specific foreign keys
     mine_tailings_storage_facility_guid = db.Column(
@@ -35,6 +39,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
+
     mine_party_appt_type = db.relationship(
         'MinePartyAppointmentType',
         backref='mine_party_appt',
@@ -99,6 +104,36 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_manager_history_by_mine_no(cls, mine_no):
+        # send internal API call to fetch matching mine record
+        mines_url = current_app.config['MINES_URL'] + '/mines/' + str(mine_no)
+        auth_headers = request.headers.get('Authorization')
+        if not auth_headers:
+            return None, 401, 'Unauthorized'
+
+        headers = {'Authorization': auth_headers}
+        response = requests.get(url=mines_url, headers=headers)
+        if not response:
+            return None, 400, 'Unexpected error'
+        if response.status_code != 200:
+            return None, response.status_code, response.reason
+
+        # fetch mine history by mine_guid
+        try:
+            json_response = response.json()
+        except:
+            return None, 400, 'Unexpected error'
+
+        related_mine_guid = json_response.get('guid')
+        if not related_mine_guid:
+            return None, 404, 'Mine not found'
+
+        records = cls.query.filter_by(mine_guid=related_mine_guid).all()
+        if len(records) == 0:
+            return None, 404, 'No Mine Manager history found'
+        return records, 200, 'OK'
+
+    @classmethod
     def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
         try:
             built_query = cls.query.filter_by(deleted_ind=False)
@@ -114,18 +149,30 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def to_csv(cls, records, columns):
+        rows = [','.join(columns)]
+        for record in records:
+            row = []
+            for column in columns:
+                row.append(str(getattr(record, column)))
+            rows.append(','.join(row))
+        return '\n'.join(rows)
+
+    @classmethod
     def create_mine_party_appt(cls,
                                mine_guid,
                                party_guid,
-                               permit_guid,
                                mine_party_appt_type_code,
+                               processed_by,
                                user_kwargs,
+                               permit_guid=None,
                                save=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
             permit_guid=permit_guid,
             mine_party_appt_type_code="PMT",
+            processed_by=processed_by,
             **user_kwargs)
         if save:
             mpa.save(commit=False)
