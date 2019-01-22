@@ -7,6 +7,7 @@ import {
   getMineTenureTypes,
   getMineDisturbanceOptions,
   getMineCommodityOptions,
+  getDropdownCommodityOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -99,5 +100,15 @@ describe("mineSelectors", () => {
       [STATIC_CONTENT]: storeState,
     };
     expect(getMineCommodityOptions(localMockState)).toEqual(mineCommodityOptions);
+  });
+
+  it("`getDropdownCommodityOptions` calls `staticContentReducer.getMineCommodityOptions`", () => {
+    const storeAction = storeCommodityOptions(Mock.COMMODITY_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownCommodityOptions = Mock.DROPDOWN_COMMODITY_OPTIONS;
+    expect(getDropdownCommodityOptions(localMockState)).toEqual(mockDropdownCommodityOptions);
   });
 });

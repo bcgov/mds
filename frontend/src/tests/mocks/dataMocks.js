@@ -628,6 +628,21 @@ export const COMMODITY_OPTIONS = {
   ],
 };
 
+export const DROPDOWN_COMMODITY_OPTIONS = [
+  {
+    value: "TO",
+    label: "Thermal Coal",
+  },
+  {
+    value: "MC",
+    label: "Metallurgic",
+  },
+  {
+    value: "CG",
+    label: "Construction Aggregate",
+  },
+];
+
 export const CONDITIONAL_COMMODITY_OPTIONS = {
   BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
   COL: [
