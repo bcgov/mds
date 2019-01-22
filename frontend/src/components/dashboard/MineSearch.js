@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Input, Icon, Button, Row, Col } from "antd";
+import { AutoComplete, Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
@@ -18,7 +18,6 @@ const propTypes = {
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.array,
   isMapView: PropTypes.bool,
-  searchValue: PropTypes.string,
 };
 
 const defaultProps = {
@@ -61,8 +60,8 @@ export class MineSearch extends Component {
    * filter mineList with new search input;
    */
   handleSearch = (value = {}) => {
-    const search = value.target && value.target.value;
-    const { commodity, region, status, tenure, tsf, major } = search ? {} : value;
+    const { commodity, region, status, tenure, tsf, major, search } = value;
+
     this.props.handleMineSearch({
       search,
       tsf,
@@ -110,32 +109,17 @@ export class MineSearch extends Component {
       <div>
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-            <Input
-              defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
-              placeholder="Search for a mine using name, ID, or permit number"
-              onChange={this.handleSearch}
-              suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
-            />
+            <span className="advanced-search__container">
+              <AdvancedSearchForm
+                {...this.props}
+                onSubmit={this.handleSearch}
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+                isAdvanceSearch={this.state.isAdvanceSearch}
+                handleSearch={this.handleSearch}
+              />
+            </span>
           </Col>
         </Row>
-        {/* TODO: Enable when backend supports advanced search */}
-        <Row style={{ display: "none" }}>
-          <Col md={{ span: 20, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-            <Button className="btn--dropdown" onClick={this.toggleAdvancedSearch}>
-              {this.state.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
-              <Icon type={this.state.isAdvanceSearch ? "up" : "down"} />
-            </Button>
-          </Col>
-        </Row>
-        {this.state.isAdvanceSearch && (
-          <div className="advanced-search__container">
-            <AdvancedSearchForm
-              {...this.props}
-              onSubmit={this.handleSearch}
-              handleSearch={this.handleSearch}
-            />
-          </div>
-        )}
       </div>
     );
   }
