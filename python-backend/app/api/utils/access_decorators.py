@@ -6,7 +6,6 @@ MINE_CREATE = "mds-mine-create"
 MINE_ADMIN = "mds-mine-admin"
 MINESPACE_PROPONENT = "minespace-proponent"
 
-
 def requires_role_mine_view(func):
     return _inner_wrapper(func, MINE_VIEW)
 

@@ -33,6 +33,8 @@ class Config(object):
                                      'http://localhost:5000')
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://localhost:5000')
+    MINES_URL = os.environ.get('MINES_URL',
+                               'http://localhost:5000')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_INSPECTION_URL = os.environ.get('NRIS_INSPECTION_URL', None)

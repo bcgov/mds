@@ -10,6 +10,7 @@ import modalReducer from "@/reducers/modalReducer";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import { createReducer } from "@/utils/helpers";
 import staticContentReducer from "@/reducers/staticContentReducer";
+import minespaceReducer from "@/reducers/minespaceReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -20,6 +21,7 @@ export const reducerObject = {
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
+  [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
   [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),

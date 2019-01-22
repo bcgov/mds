@@ -8,4 +8,4 @@ def test_get_mine_party_appt_type(test_client, auth_headers):
         '/parties/mines/relationship-types', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data) == 4  #number from seed data
+    assert len(get_data) == 5  #number from seed data
