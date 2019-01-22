@@ -8,7 +8,7 @@ import * as routes from "@/constants/routes";
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(["unauthorized"]),
+  type: PropTypes.oneOf(["unauthorized", "no-mines"]),
 };
 
 const defaultProps = {
@@ -25,6 +25,15 @@ const NullScreen = (props) => (
           <b> mds@gov.bc.ca</b> to request access
         </p>
         <Link to={routes.HOME.route}>Go Back</Link>
+      </div>
+    )}
+    {props.type === "no-mines" && (
+      <div className="no-nav-bar">
+        <h3>You are not authorized to manage information for any mines.</h3>
+        <p>
+          Please contact your MDS administrator at <a href="mailto:MDS@gov.bc.ca">MDS@gov.bc.ca</a>{" "}
+          for assistance.
+        </p>
       </div>
     )}
   </div>
