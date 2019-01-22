@@ -5,7 +5,7 @@ import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
-  partyRelationshipTypeLabel: PropTypes.string.isRequired,
+  partyRelationshipTitle: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
@@ -13,20 +13,20 @@ const propTypes = {
   removePartyRelationship: PropTypes.func.isRequired,
   otherDetails: PropTypes.object,
   isEditable: PropTypes.bool.isRequired,
+  compact: PropTypes.bool.isRequired,
 };
 
 export const Permittee = (props) => {
   const permit = props.mine.mine_permit.find(
     ({ permit_guid }) => permit_guid === props.partyRelationship.related_guid
   );
-  const permitPartyRelationshipTypeLabel = `${
-    props.partyRelationshipTypeLabel
-  } - PERMIT NO. ${permit && permit.permit_no}`;
+  const subtitle = `${permit && permit.permit_no}`;
 
   return (
     <DefaultContact
       partyRelationship={props.partyRelationship}
-      partyRelationshipTypeLabel={permitPartyRelationshipTypeLabel}
+      partyRelationshipTitle={props.partyRelationshipTitle}
+      partyRelationshipSubTitle={subtitle}
       handleChange={props.handleChange}
       mine={props.mine}
       openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
@@ -34,6 +34,7 @@ export const Permittee = (props) => {
       removePartyRelationship={props.removePartyRelationship}
       otherDetails={props.otherDetails}
       isEditable={props.isEditable}
+      compact={props.compact}
     />
   );
 };
