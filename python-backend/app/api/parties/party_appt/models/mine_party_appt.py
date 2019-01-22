@@ -26,7 +26,7 @@ class MinePartyAppointment(AuditMixin, Base):
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
-    processed_by = db.Column(db.String(60), nullable=False, server_default=FetchedValue())
+    processed_by = db.Column(db.String(60), server_default=FetchedValue())
     processed_on = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
     #type specific foreign keys
@@ -163,8 +163,8 @@ class MinePartyAppointment(AuditMixin, Base):
                                mine_guid,
                                party_guid,
                                mine_party_appt_type_code,
-                               processed_by,
                                user_kwargs,
+                               processed_by=processed_by,
                                permit_guid=None,
                                save=True):
         mpa = cls(
