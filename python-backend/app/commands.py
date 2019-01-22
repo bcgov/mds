@@ -50,6 +50,7 @@ def register_commands(app):
                 permittee_party,
                 mine_permit.permit_guid,
                 'PMT',
+                DUMMY_USER_KWARGS.get('update_user'),
                 DUMMY_USER_KWARGS,
                 save=True)
 
