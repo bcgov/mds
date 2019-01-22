@@ -13,11 +13,13 @@ const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
   existingFilesDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   onSelectExisting: PropTypes.func.isRequired,
+  onFileLoad: PropTypes.func,
 };
 
 const defaultProps = {
   maxFileSize: undefined,
   acceptedFileTypesMap: undefined,
+  onFileLoad: undefined,
 };
 
 class FilePicker extends Component {
@@ -43,10 +45,11 @@ class FilePicker extends Component {
             <Field
               id="fileUpload"
               name="fileUpload"
+              component={FileUpload}
               uploadUrl={this.props.uploadUrl}
               maxFileSize={this.props.maxFileSize}
               acceptedFileTypesMap={this.props.acceptedFileTypesMap}
-              component={FileUpload}
+              onFileLoad={this.props.onFileLoad}
             />
           </Form.Item>
         ) : (

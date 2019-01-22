@@ -31,9 +31,11 @@ class MineTailingsFilePicker extends Component {
     const data = { mine_document_guid: mineDocumentGuid };
     this.props
       .addMineDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, data)
-      .then(() => {
-        this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid);
-      });
+      .then(() => this.refreshUploadedFiles());
+  };
+
+  refreshUploadedFiles = () => {
+    this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid);
   };
 
   render() {
@@ -51,6 +53,7 @@ class MineTailingsFilePicker extends Component {
         acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
         existingFilesDropdown={fileDropdown}
         onSelectExisting={this.handleFileSelect}
+        onFileLoad={this.refreshUploadedFiles}
       />
     );
   }

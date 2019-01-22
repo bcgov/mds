@@ -14,11 +14,13 @@ const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
+  onFileLoad: PropTypes.func,
 };
 
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
+  onFileLoad: null
 };
 
 class FileUpload extends React.Component {
@@ -34,7 +36,7 @@ class FileUpload extends React.Component {
       process: {
         url: this.props.uploadUrl,
         headers: createRequestHeader().headers,
-        onload: null,
+        onload: this.props.onFileLoad,
         onerror: null,
       },
     };
