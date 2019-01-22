@@ -4,6 +4,7 @@ import * as MineTypes from "@/customPropTypes/mines";
 import * as PermitTypes from "@/customPropTypes/permits";
 import * as PartyTypes from "@/customPropTypes/parties";
 import * as DocumentTypes from "@/customPropTypes/documents";
+import * as MinespaceTypes from "@/customPropTypes/minespace";
 
 export default {
   ...CommonTypes,
@@ -11,4 +12,5 @@ export default {
   ...PermitTypes,
   ...PartyTypes,
   ...DocumentTypes,
+  ...MinespaceTypes,
 };
