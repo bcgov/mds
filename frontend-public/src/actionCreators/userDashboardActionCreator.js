@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { request, success, error, clear } from "@/actions/genericActions";
+import { request, success, error } from "@/actions/genericActions";
 import * as userMineInfoActions from "@/actions/userMineInfoActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as API from "@/constants/API";
@@ -24,7 +24,6 @@ export const fetchUserMineInfo = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_USER_MINE_INFO));
-      dispatch(clear(reducerTypes.GET_USER_MINE_INFO));
       dispatch(hideLoading());
     });
 };
