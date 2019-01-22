@@ -114,7 +114,7 @@ class MinePartyAppointment(AuditMixin, Base):
         headers = {'Authorization': auth_headers}
         response = requests.get(url=mines_url, headers=headers)
         if not response:
-            return None, 400, 'Unexpected error'
+            return None, 500, 'Server error'
         if response.status_code != 200:
             return None, response.status_code, response.reason
 
@@ -122,7 +122,7 @@ class MinePartyAppointment(AuditMixin, Base):
         try:
             json_response = response.json()
         except:
-            return None, 400, 'Unexpected error'
+            return None, 500, 'Server error'
 
         related_mine_guid = json_response.get('guid')
         if not related_mine_guid:
