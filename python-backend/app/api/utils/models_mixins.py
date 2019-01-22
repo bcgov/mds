@@ -10,20 +10,34 @@ from app.extensions import db
 
 
 class UserBoundQuery(db.Query):
-    current_user_constrained = True
+    user_constrained = True
 
-    def user_unconstrained_unsafe(self):
+    def unconstrained_unsafe(self):
         rv = self._clone()
-        rv.current_user_constrained = False
+        rv.user_constrained = False
         return rv
 
 
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
-def ensure_user_constrained(query):
-    for desc in query.column_descriptions:
-        if hasattr(desc['type'], 'mine_guid') and query.current_user_constrained:
-            query = query.enable_assertions(False).filter_by(
-                mine_guid='2c6c8e31-e56f-4982-87e9-044cefc8b0b3')
+def ensure_constrained(query):
+    from ... import auth
+
+    if not query.user_constrained:
+        return query
+
+    mzero = query._mapper_zero()
+    if mzero is not None:
+        tenant = auth.get_current_tenant()
+
+        #use reflection to get current model
+        cls = mzero.class_
+
+        #if query includes mine_guid, apply filter on mine_guid
+        #NOTE: this may not work when using .with_entities . For our purposes, this should be fine. Try
+        #if (cls.hasattr('mine_guid')):
+        for desc in query.column_descriptions:
+            if hasattr(desc['type'], 'mine_guid') and query.user_constrained:
+                query = query.enable_assertions(False).filter(cls.mine_guid.in_(tenant.mine_ids))
 
     return query
 
