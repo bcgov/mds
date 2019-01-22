@@ -17,22 +17,3 @@
     padding-bottom: $default-padding-md;
   }
 }
-
-.user-upload-document-btn {
-  color: $font-colour !important;
-  box-shadow: none;
-  border-style: none !important;
-  &:hover {
-    border-style: none !important;
-    border: 0px;
-  }
-}
-
-.modal-cancel-btn {
-  color: $primary-btn-color !important;
-  border-color: $primary-btn-color;
-  &:hover {
-    color: $primary-btn-color-hover !important;
-    border-color: $primary-btn-border-color-hover !important;
-  }
-}

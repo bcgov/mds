@@ -198,7 +198,7 @@ export class MineInfo extends Component {
                           </Col>
                           <Col span={4} align="right">
                             <Button
-                              className="full-mobile user-upload-document-btn"
+                              className="full-mobile"
                               type="primary"
                               ghost
                               onClick={(event) =>
