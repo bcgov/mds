@@ -15,7 +15,7 @@ const setupProps = () => {
 };
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineComplianceInfo = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchUserMineInfo = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
