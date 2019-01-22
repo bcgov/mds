@@ -20,6 +20,7 @@ const propTypes = {
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
+  // FilePond expects this default to be null instead of ()=>{}
   onFileLoad: null
 };
 
