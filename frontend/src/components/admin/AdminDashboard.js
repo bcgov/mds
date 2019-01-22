@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Input, Button } from "antd";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
 
 /**
@@ -29,17 +30,23 @@ export class AdminDashboard extends Component {
   render() {
     return (
       <div className="landing-page">
-        <div className="landing-page__header" />
-        <div className="landing-page__content">
+        <div className="landing-page__header">
           <h1>Admin View</h1>
-          <h2>Pull Mine Manager History</h2>
-          <Input
-            placeholder="Enter a Mine Number"
-            value={this.state.mineNo}
-            onChange={this.handleChange}
-            style={{ width: "50%", "max-width": "300px" }}
-          />
-          <Button onClick={this.handleDownload}>Download History</Button>
+        </div>
+        <div className="landing-page__content">
+          <div className="tab__content">
+            <h2>Pull Mine Manager History</h2>
+            <Input
+              placeholder="Enter a Mine Number"
+              value={this.state.mineNo}
+              onChange={this.handleChange}
+              style={{ width: "50%", "max-width": "300px" }}
+            />
+            <Button onClick={this.handleDownload}>Download History</Button>
+          </div>
+          <div className="tab__content">
+            <MinespaceUserManagement />
+          </div>
         </div>
       </div>
     );
