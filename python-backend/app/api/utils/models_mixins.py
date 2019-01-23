@@ -10,11 +10,11 @@ from app.extensions import db
 
 
 class UserBoundQuery(db.Query):
-    user_constrained = True
+    user_bound = True
 
-    def unconstrained_unsafe(self):
+    def unbound_unsafe(self):
         rv = self._clone()
-        rv.user_constrained = False
+        rv.user_bound = False
         return rv
 
 
@@ -22,28 +22,28 @@ class UserBoundQuery(db.Query):
 def ensure_constrained(query):
     from ... import auth
 
-    if not query.user_constrained:
+    if not query.user_bound:
         return query
 
     mzero = query._mapper_zero()
     if mzero is not None:
-        tenant = auth.get_current_tenant()
+        user_security = auth.get_current_user_security()
 
-        #use reflection to get current model
-        cls = mzero.class_
+        if user_security.is_restricted():
+            #use reflection to get current model
+            cls = mzero.class_
 
-        #if query includes mine_guid, apply filter on mine_guid
-        #NOTE: this may not work when using .with_entities . For our purposes, this should be fine. Try
-        #if (cls.hasattr('mine_guid')):
-        for desc in query.column_descriptions:
-            if hasattr(desc['type'], 'mine_guid') and query.user_constrained:
-                query = query.enable_assertions(False).filter(cls.mine_guid.in_(tenant.mine_ids))
+            #if model includes mine_guid, apply filter on mine_guid.
+            if hasattr(cls, 'mine_guid') and query.user_bound:
+                query = query.enable_assertions(False).filter(
+                    cls.mine_guid.in_(user_security.mine_ids))
 
     return query
 
 
 class Base(db.Model):
     __abstract__ = True
+    #set default query_class on base class
     query_class = UserBoundQuery
 
     def save(self, commit=True):

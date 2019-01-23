@@ -310,7 +310,7 @@ class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
 
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
-    #@requires_role_mine_view
+    @requires_role_mine_view
     def get(self):
         search_term = request.args.get('search')
         if search_term:
