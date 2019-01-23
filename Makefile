@@ -54,7 +54,7 @@ restore-last-env:
 
 pause-30:
 	@echo "+\n++ Pausing 30 seconds\n+"
-ifneq ($(POSIXSHELL),)  
+ifneq ($(POSIXSHELL),)
 	@sleep 30
 else
 	@timeout 30
@@ -89,6 +89,10 @@ backend-run:
 backend-entry:
 	@echo "+\n++ Entering backend container ...\n+"
 	@docker exec -it mds_backend bash
+
+cache:
+	@echo "+\n++ Running redis...\n+"
+	@docker-compose up -d redis
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"

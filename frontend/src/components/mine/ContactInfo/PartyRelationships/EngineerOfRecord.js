@@ -5,7 +5,7 @@ import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
-  partyRelationshipTypeLabel: PropTypes.string.isRequired,
+  partyRelationshipTitle: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
@@ -13,6 +13,7 @@ const propTypes = {
   removePartyRelationship: PropTypes.func.isRequired,
   otherDetails: PropTypes.object,
   isEditable: PropTypes.bool.isRequired,
+  compact: PropTypes.bool.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
@@ -20,13 +21,13 @@ export const EngineerOfRecord = (props) => {
     ({ mine_tailings_storage_facility_guid }) =>
       mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
   );
-  const eorPartyRelationshipTypeLabel = `${props.partyRelationshipTypeLabel} - ${tsf &&
-    tsf.mine_tailings_storage_facility_name}`;
+  const subtitle = `${tsf && tsf.mine_tailings_storage_facility_name}`;
 
   return (
     <DefaultContact
       partyRelationship={props.partyRelationship}
-      partyRelationshipTypeLabel={eorPartyRelationshipTypeLabel}
+      partyRelationshipTitle={props.partyRelationshipTitle}
+      partyRelationshipSubTitle={subtitle}
       handleChange={props.handleChange}
       mine={props.mine}
       openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
@@ -34,6 +35,7 @@ export const EngineerOfRecord = (props) => {
       removePartyRelationship={props.removePartyRelationship}
       otherDetails={props.otherDetails}
       isEditable={props.isEditable}
+      compact={props.compact}
     />
   );
 };
