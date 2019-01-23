@@ -72,3 +72,21 @@ body {
 .large-padding-top {
   padding-top: $default-padding-lg;
 }
+
+.gov-blue {
+  background: $gov-blue;
+}
+
+.margin-small {
+  margin: $default-margin-sm;
+}
+
+.lightest-grey-bg {
+  background: $lightest-grey;
+}
+
+.uploaded-file {
+  font-size: $default-p;
+  font-weight: $semi-bold;
+  color: $p-color;
+}

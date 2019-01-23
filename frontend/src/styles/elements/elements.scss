@@ -3,6 +3,7 @@ h2,
 h3,
 h4,
 h5,
+h6,
 p {
   padding: 0;
   margin: 0;
@@ -53,6 +54,16 @@ h5 {
   text-transform: uppercase;
   @include mobile {
     font-size: $mobile-h5;
+  }
+}
+
+h6 {
+  font-size: $default-h6;
+  font-weight: $bold;
+  color: $h6-color;
+  text-transform: uppercase;
+  @include mobile {
+    font-size: $mobile-h6;
   }
 }
 
