@@ -58,7 +58,7 @@ export class PartyProfile extends Component {
     this.props.fetchPartyRelationshipTypes();
   }
 
-  getPartyRelationshipTypeLabel(partyRelationship) {
+  getpartyRelationshipTitle(partyRelationship) {
     const partyRelationshipType = this.props.partyRelationshipTypes.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
     );
@@ -132,7 +132,7 @@ export class PartyProfile extends Component {
                           {this.getMineName(partyRelationship.mine_guid)}
                         </Link>
                       </Col>
-                      <Col span={8}>{this.getPartyRelationshipTypeLabel(partyRelationship)}</Col>
+                      <Col span={8}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
                       <Col span={8}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;
