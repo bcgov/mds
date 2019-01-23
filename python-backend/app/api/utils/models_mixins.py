@@ -3,15 +3,16 @@ from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 
 from app.extensions import db
+from flask import g
 
 
 class UserBoundQuery(db.Query):
-    user_bound = True
+    _user_bound = True
 
     #for use when intentionally needing to make an unsafe query
     def unbound_unsafe(self):
         rv = self._clone()
-        rv.user_bound = False
+        rv._user_bound = False
         return rv
 
 
@@ -20,7 +21,7 @@ class UserBoundQuery(db.Query):
 def ensure_constrained(query):
     from ... import auth
 
-    if not query.user_bound:
+    if not query._user_bound:
         return query
 
     mzero = query._mapper_zero()
@@ -32,7 +33,7 @@ def ensure_constrained(query):
             cls = mzero.class_
 
             #if model includes mine_guid, apply filter on mine_guid.
-            if hasattr(cls, 'mine_guid') and query.user_bound:
+            if hasattr(cls, 'mine_guid') and query._user_bound:
                 query = query.enable_assertions(False).filter(
                     cls.mine_guid.in_(user_security.mine_ids))
 
@@ -40,9 +41,12 @@ def ensure_constrained(query):
 
 
 class Base(db.Model):
-    __abstract__ = True
-    #set default query_class on base class
-    query_class = UserBoundQuery
+    __abstract__ = True\
+
+    #Check if we are executing in the context of flask, otherwise we are running from CLI or another task.
+    if (g):
+        #Set default query_class on base class.
+        query_class = UserBoundQuery
 
     def save(self, commit=True):
         db.session.add(self)
