@@ -165,6 +165,34 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/redis.dc.json',
+                    'params':[
+                            'NAME':"mds-redis",
+                            'DATABASE_SERVICE_NAME':"mds-redis${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.redis.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.redis.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.redis.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.redis.memory_limit}",
+                            'REDIS_VERSION':"3.2"
+                    ]
+                ],
+                [
+                    'file':'openshift/postgresql.dc.json',
+                    'params':[
+                            'NAME':"mds-postgresql",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
+                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAME':"mds-postgresql",
+                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/_nodejs.dc.json',
                     'params':[
                             'NAME':"mds-frontend",
@@ -317,6 +345,12 @@ environments {
                     memory_request = "384Mi"
                     memory_limit = "768Mi"
                 }
+                redis {
+                    cpu_request = "20m"
+                    cpu_limit = "50m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
+                }
             }
             deployment {
                 env {
@@ -398,6 +432,12 @@ environments {
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
                 }
+                redis {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
             }
             deployment {
                 env {
@@ -471,6 +511,12 @@ environments {
                     cpu_limit = "500m"
                     memory_request = "2.5Gi"
                     memory_limit = "4Gi"
+                }
+                redis {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
                 }
             }
             keycloak {
