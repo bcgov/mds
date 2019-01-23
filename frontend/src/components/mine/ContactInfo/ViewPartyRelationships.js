@@ -157,9 +157,8 @@ export class ViewPartyRelationships extends Component {
   renderInactiveRelationships = (partyRelationships) => {
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        !x.end_date ||
-        (Date.parse(x.end_date) >= new Date() &&
-          (!x.start_date || Date.parse(x.start_date) <= new Date()))
+        (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+        (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
       (x) => !activeRelationships.includes(x)
@@ -300,9 +299,8 @@ export class ViewPartyRelationships extends Component {
           {partyRelationshipsInGroup
             .filter(
               (x) =>
-                !x.end_date ||
-                (Date.parse(x.end_date) >= new Date() &&
-                  (!x.start_date || Date.parse(x.start_date) <= new Date()))
+                (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                (!x.start_date || Date.parse(x.start_date) <= new Date())
             )
             .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}
