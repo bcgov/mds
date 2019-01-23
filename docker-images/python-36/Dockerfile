@@ -13,5 +13,5 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
 COPY requirements.txt ${APP_ROOT}/src
 RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
-       pip install -U setuptools wheel && \
+       pip install -U pip==18.1 setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
