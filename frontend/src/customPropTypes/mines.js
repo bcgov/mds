@@ -26,3 +26,11 @@ export const minePageData = shape({
   total: PropTypes.numnber,
   total_pages: PropTypes.numnber,
 });
+
+export const mineName = shape({
+  guid: PropTypes.string.isRequired,
+  mine_name: PropTypes.string.isRequired,
+  mine_no: PropTypes.string.isRequired,
+  latitude: PropTypes.string,
+  longitude: PropTypes.string,
+});

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import { Pagination, Tabs, Col, Divider, notification, Button } from "antd";
 import queryString from "query-string";
@@ -20,6 +21,10 @@ import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getCommodityOptionHash,
+  getMineStatusOptions,
+  getMineRegionOptions,
+  getMineTenureTypes,
+  getDropdownCommodityOptions,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -32,7 +37,6 @@ import MineMap from "@/components/maps/MineMap";
 import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
-import { debounce } from "lodash";
 
 /**
  * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -68,12 +72,13 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
-        major: false,
-        tsf: false,
+        major: [],
+        tsf: [],
         status: [],
         region: [],
         tenure: [],
         commodity: [],
+        search: [],
       },
     };
   }
@@ -112,9 +117,16 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { status, commodity, region, tenure, major, tsf, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      status,
+      commodity,
+      region,
+      tenure,
+      major,
+      tsf,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
@@ -122,8 +134,9 @@ export class Dashboard extends Component {
         commodity: format(commodity),
         region: format(region),
         tenure: format(tenure),
-        major: major === "true",
-        tsf: tsf === "true",
+        major,
+        tsf,
+        search,
         ...remainingParams,
       },
     });
@@ -133,13 +146,14 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    const { major, tsf, status, region, tenure, commodity } = this.state.params;
+    const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
       router.MINE_DASHBOARD.dynamicRoute({
         page,
         per_page,
         major,
         tsf,
+        search,
         status: status && status.join(","),
         region: region && region.join(","),
         tenure: tenure && tenure.join(","),
@@ -340,18 +354,24 @@ export class Dashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <div className="right center-mobile">
-            <AuthorizationWrapper permission={Permission.CREATE}>
-              <Button
-                className="full-mobile"
-                type="primary"
-                onClick={(event) =>
-                  this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
-                }
-              >
-                {ModalContent.CREATE_MINE_RECORD}
-              </Button>
-            </AuthorizationWrapper>
+          <div className="inline-flex between center-mobile center-mobile">
+            <div>
+              <h1>Mine Lookup</h1>
+              <p>To find a mine summary, search in the list or map section below.</p>
+            </div>
+            <div>
+              <AuthorizationWrapper permission={Permission.CREATE}>
+                <Button
+                  className="full-mobile"
+                  type="primary"
+                  onClick={(event) =>
+                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
+                  }
+                >
+                  {ModalContent.CREATE_MINE_RECORD}
+                </Button>
+              </AuthorizationWrapper>
+            </div>
           </div>
         </div>
         <div className="landing-page__content">{this.renderCorrectView()}</div>
@@ -367,6 +387,10 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineStatusOptions: getMineStatusOptions(state),
+  mineRegionOptions: getMineRegionOptions(state),
+  mineTenureTypes: getMineTenureTypes(state),
+  mineCommodityOptions: getDropdownCommodityOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

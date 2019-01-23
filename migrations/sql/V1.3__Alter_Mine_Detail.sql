@@ -1,1 +1,0 @@
-ALTER TABLE mine_detail ADD major boolean DEFAULT FALSE;

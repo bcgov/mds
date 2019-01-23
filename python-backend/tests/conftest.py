@@ -12,6 +12,7 @@ from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.mines.location.models.mine_location import MineLocation
@@ -51,6 +52,9 @@ def auth_headers(app):
     base_auth_token = _jwt.create_jwt(BASE_AUTH_CLAIMS, TOKEN_HEADER)
     full_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS, TOKEN_HEADER)
     view_only_auth_token = _jwt.create_jwt(VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     return {
         'base_auth_header': {
             'Authorization': 'Bearer ' + base_auth_token
@@ -60,6 +64,15 @@ def auth_headers(app):
         },
         'view_only_auth_header': {
             'Authorization': 'Bearer ' + view_only_auth_token
+        },
+        'create_only_auth_header': {
+            'Authorization': 'Bearer ' + create_only_auth_token
+        },
+        'admin_only_auth_header': {
+            'Authorization': 'Bearer ' + admin_only_auth_token
+        },
+        'proponent_only_auth_header': {
+            'Authorization': 'Bearer ' + proponent_only_auth_token
         },
     }
 
@@ -189,6 +202,18 @@ def setup_data(session):
         mine_operation_status_sub_reason_code.save()
 
     session.commit()
+
+    # Insert Operation Code Xref
+    for status_k, status_v in MINE_OPERATION_STATUS.items():
+        for reason_k, reason_v in MINE_OPERATION_STATUS_REASON.items():
+            for sub_k, sub_v in MINE_OPERATION_STATUS_SUB_REASON.items():
+                mine_status_xref = MineStatusXref(
+                    mine_status_xref_guid=uuid.uuid4(),
+                    mine_operation_status_code=status_v['value'],
+                    mine_operation_status_reason_code=reason_v['value'],
+                    mine_operation_status_sub_reason_code=sub_v['value'],
+                    **DUMMY_USER_KWARGS)
+                mine_status_xref.save()
 
     # Test Person Data
     person = Party(
@@ -359,6 +384,13 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mpat4.save()
 
+    mpat5 = MinePartyAppointmentType(
+        mine_party_appt_type_code='MMG',
+        description='Mine Manager',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
+    mpat5.save()
+
     # Test Permittee Data
     permittee = MinePartyAppointment(
         mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
@@ -368,6 +400,14 @@ def setup_data(session):
         permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
         **DUMMY_USER_KWARGS)
     permittee.save()
+
+    mine_manager = MinePartyAppointment.create_mine_party_appt(
+        mine_guid=uuid.UUID(TEST_MINE_GUID),
+        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
+        mine_party_appt_type_code='MMG',
+        processed_by=DUMMY_USER_KWARGS.get('update_user'),
+        user_kwargs=DUMMY_USER_KWARGS)
+    mine_manager.save()
 
     mpa = MinePartyAppointment(
         mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,

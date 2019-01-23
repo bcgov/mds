@@ -52,6 +52,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
                 start_date=data.get('start_date'),
                 end_date=data.get('end_date'),
+                processed_by=self.get_user_info(),
                 **self.get_create_update_dict())
 
             if new_mpa.mine_party_appt_type_code == "EOR":
