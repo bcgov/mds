@@ -102,7 +102,16 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
 
         mpa.assign_related_guid(data.get('related_guid'))
 
-        mpa.save()
+        try:
+            mpa.save()
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+        except alch_exceptions.IntegrityError as e:
+            if "daterange_excl" in str(e):
+                mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
+                    data.get('mine_party_appt_type_code')).description
+                self.raise_error(500, f'Error: Date ranges for {mpa_type_name} must not overlap')
+
         return mpa.json()
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment guid to be deleted'})
