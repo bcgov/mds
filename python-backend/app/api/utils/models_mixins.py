@@ -8,6 +8,7 @@ from app.extensions import db
 class UserBoundQuery(db.Query):
     user_bound = True
 
+    #for use when intentionally needing to make an unsafe query
     def unbound_unsafe(self):
         rv = self._clone()
         rv.user_bound = False
