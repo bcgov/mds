@@ -4,8 +4,8 @@
 
 DO $$
 DECLARE
-    old_row   integer;
-    new_row   integer;
+    old_row integer;
+    new_row integer;
 BEGIN
     RAISE NOTICE 'Start updating mine profile:';
     RAISE NOTICE '.. Step 1 of 2: Scan new mine records in MMS';
@@ -21,8 +21,32 @@ BEGIN
         major_mine_ind    boolean
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
+
     -- Upsert data into ETL_PROFILE from MMS
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    UPDATE ETL_PROFILE
+    SET mine_nm = mms.mmsmin.mine_nm  ,
+        reg_cd = mms.mmsmin.reg_cd    ,
+        mine_typ = mms.mmsmin.mine_typ,
+        lat_dec = mms.mmsmin.lat_dec  ,
+        major_mine_ind = (mms.mmsmin.min_lnk = 'Y'),
+        lon_dec = mms.mmsmin.lon_dec
+    FROM mms.mmsmin
+    WHERE mms.mmsmin.mine_no = ETL_PROFILE.mine_no;
+    SELECT count(*) FROM ETL_PROFILE INTO old_row;
+    RAISE NOTICE '....# of mine records to be updated in MDS: %', old_row;
+
+    -- If new rows have been added since the last ETL, only insert the new ones.
     -- Generate a random UUID for mine_guid
+    WITH mms_new AS(
+        SELECT *
+        FROM mms.mmsmin mms_profile
+        WHERE NOT EXISTS (
+            SELECT  1
+            FROM    ETL_PROFILE
+            WHERE   mine_no = mms_profile.mine_no
+        )
+    )
     INSERT INTO ETL_PROFILE (
         mine_guid       ,
         mine_no         ,
@@ -34,19 +58,16 @@ BEGIN
         major_mine_ind  )
     SELECT
         gen_random_uuid()  ,
-        mms.mine_no    ,
-        mms.mine_nm    ,
-        mms.reg_cd     ,
-        mms.mine_typ   ,
-        mms.lat_dec    ,
-        mms.lon_dec    ,
-        CASE
-            WHEN mms.min_lnk = 'Y' THEN TRUE
-            ELSE FALSE
-        END AS major_mine_ind
-    FROM mms.mmsmin mms;
+        mms_new.mine_no    ,
+        mms_new.mine_nm    ,
+        mms_new.reg_cd     ,
+        mms_new.mine_typ   ,
+        mms_new.lat_dec    ,
+        mms_new.lon_dec    ,
+        (mms_new.min_lnk = 'Y')
+    FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row;
-    RAISE NOTICE '....# of mine records pulled from MMS: %', (new_row-old_row);
+    RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
 END $$;
 
 
