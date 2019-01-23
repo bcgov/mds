@@ -30,6 +30,7 @@ python-dateutil==2.7.3
 python-dotenv==0.8.2
 python-editor==1.0.3
 pytz==2018.5
+redis==3.0.1
 requests==2.20.0
 six==1.11.0
 SQLAlchemy==1.2.10
