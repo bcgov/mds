@@ -7,6 +7,11 @@ const dispatchProps = {};
 
 const setupProps = () => {
   props.userInfo = { perferred_username: "MockName" };
+  props.userMineInfo = {
+    guid: "1234mn-sgf2gj-1234sjfg",
+    mine_no: "test",
+    mine_name: "test",
+  };
 };
 
 const setupDispatchProps = () => {
