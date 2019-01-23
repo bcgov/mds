@@ -1,9 +1,5 @@
 import React from "react";
 
-/**
- * @constant RenderField - Ant Design `Input` component for redux-form.
- */
-
 const QuestionSidebar = () => (
   <div className="sidebar-block">
     <div className="sidebar-block-title">

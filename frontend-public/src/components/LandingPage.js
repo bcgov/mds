@@ -41,7 +41,7 @@ export const LandingPage = () => (
     <Row>
       <Col xs={1} md={4} lg={4} />
       <Col xs={22} md={16} lg={16}>
-        <Divider />
+        <Divider className="gov-blue" />
       </Col>
       <Col xs={1} md={4} lg={4} />
     </Row>
@@ -112,9 +112,15 @@ export const LandingPage = () => (
               Business BCeID account.
             </p>
             <div className="sidebar-button">
-              <Button type="primary" size="large" block>
-                <span>Get a BCeID</span>
-              </Button>
+              <a
+                href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button type="primary" size="large" block>
+                  <span>Get a BCeID</span>
+                </Button>
+              </a>
             </div>
           </div>
         </div>

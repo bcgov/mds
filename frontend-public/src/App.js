@@ -6,6 +6,7 @@ import PublicRoutes from "./routes/PublicRoutes";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 
 const App = () => {
   const { Content } = Layout;
@@ -17,6 +18,7 @@ const App = () => {
           <Content className="content">
             <PrivateRoutes />
             <PublicRoutes />
+            <ModalWrapper />
             <BackTop>
               <Button type="primary">
                 <Icon type="arrow-up" theme="outlined" />
