@@ -17,7 +17,7 @@ from ...expected.models.mine_expected_document_xref import MineExpectedDocumentX
 from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_mine_create
+from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -30,7 +30,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'expected_document_guid':
             'Required: The guid of the expected document that this upload will be satisfying.'
         })
-    @requires_role_mine_create
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self):#, expected_document_guid):
 
         # self.parser.add_argument('file', type=FileStorage, location='files', action='append')
@@ -111,7 +111,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         # return result
         return "end of upload" 
 
-    @requires_role_mine_create
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, expected_document_guid=None, mine_document_guid=None):
 
         if expected_document_guid is None or mine_document_guid is None:

@@ -5,6 +5,8 @@ import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineInfoReducer from "@/reducers/userMineInfoReducer";
+import modalReducer from "@/reducers/modalReducer";
+import staticContentReducer from "@/reducers/staticContentReducer";
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -19,6 +21,8 @@ export const reducerObject = {
   loadingBar: loadingBarReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineInfoReducer,
+  [reducerTypes.MODAL]: modalReducer,
+  [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),
 };
 

@@ -31,3 +31,6 @@ export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
 export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
+export const MINE_MANAGER_HISTORY = (mineNo) =>
+  `/parties/mines/manager-history/csv?mine_no=${mineNo}`;
+export const MINESPACE_USER = "/users/minespace";

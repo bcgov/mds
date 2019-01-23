@@ -51,7 +51,7 @@ BEGIN
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         CASE
-            WHEN mine_no IN (SELECT mine_no FROM mms.mmsminm) THEN TRUE
+            WHEN mms_new.min_lnk = 'Y' THEN TRUE
             ELSE FALSE
         END AS major_mine_ind
     FROM mms_new;
