@@ -60,7 +60,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-21"
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-36"
             },
             "importPolicy": {},
             "referencePolicy": {
