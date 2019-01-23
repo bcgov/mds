@@ -3,7 +3,7 @@ import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy import or_
+from sqlalchemy import or_, exc as alch_exceptions
 
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
@@ -74,6 +74,13 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             new_mpa.save()
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
+        except alch_exceptions.IntegrityError as e:
+            if "daterange_excl" in str(e):
+                mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
+                    data.get('mine_party_appt_type_code')).description
+                self.raise_error(500, f'Error: Date ranges for {mpa_type_name} must not overlap')
+            else:
+                self.raise_error(500, "Error: {}".format(e))
         return new_mpa.json()
 
     @api.doc(
