@@ -50,8 +50,8 @@ def register_extensions(app):
     # Please make sure to remove this after the first actual usage of redis
     # in the application.
     # Docs: https://flask-caching.readthedocs.io/en/latest/
-    cache.set('test-key', 'Redis works', timeout=5 * 60)
-    print(cache.get('test-key'))
+    # cache.set('test-key', 'Redis works', timeout=5 * 60)
+    # print(cache.get('test-key'))
 
     CORS(app)
     Compress(app)
