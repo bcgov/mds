@@ -279,6 +279,8 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
                 ],
@@ -381,6 +383,9 @@ environments {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/${vars.git.changeId}"
                 }
+                'mds-redis' {
+                    HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
@@ -468,6 +473,9 @@ environments {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
                 }
+                'mds-redis' {
+                    HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
@@ -554,6 +562,9 @@ environments {
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = ""
+                }
+                'mds-redis' {
+                    HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
