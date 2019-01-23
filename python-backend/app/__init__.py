@@ -15,7 +15,7 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, file_upload_middleware
+from app.extensions import db, jwt, api, documents
 
 
 def create_app(test_config=None):
@@ -44,9 +44,6 @@ def register_extensions(app):
 
     db.init_app(app)
     jwt.init_app(app)
-
-    file_upload_middleware.app = app.wsgi_app
-    app.wsgi_app = file_upload_middleware
 
     CORS(app)
     Compress(app)
