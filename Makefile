@@ -14,7 +14,6 @@ rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate
 backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
-cache: cache-build | cache-run
 project: project-build | project-run
 rebuild: project-build
 reset:  stop | clean
@@ -91,11 +90,7 @@ backend-entry:
 	@echo "+\n++ Entering backend container ...\n+"
 	@docker exec -it mds_backend bash
 
-cache-build:
-	@echo "+\n++ Performing redis build ...\n+"
-	@docker-compose build --force-rm redis
-
-cache-run:
+cache:
 	@echo "+\n++ Running redis...\n+"
 	@docker-compose up -d redis
 
