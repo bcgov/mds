@@ -8,14 +8,15 @@ from flask_restplus import Resource, reqparse
 from ..models.document_status import ExpectedDocumentStatus
 
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view
+from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):
-    # @requires_role_mine_view
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         mine_exp_docs_status = ExpectedDocumentStatus.find_all_document_status()
         return {
-            'options': list(map(lambda x: x.json(), mine_exp_docs_status) if mine_exp_docs_status else [])
+            'options':
+            list(map(lambda x: x.json(), mine_exp_docs_status) if mine_exp_docs_status else [])
         }

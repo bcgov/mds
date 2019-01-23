@@ -19,7 +19,7 @@ from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -308,7 +308,7 @@ class MineListByName(Resource):
     MINE_LIST_RESULT_LIMIT = 500
 
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
-    @requires_role_mine_view
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         search_term = request.args.get('search')
         if search_term:

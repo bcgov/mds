@@ -1,6 +1,6 @@
 import Home from "@/components/Home";
 import UserDashboard from "@/components/dashboard/UserDashboard";
-import MineInfo from "@/components/dashboard/MineInfo";
+import MineInfo from "@/components/dashboard/mine_info/MineInfo";
 
 export const HOME = {
   route: "/",
@@ -13,7 +13,7 @@ export const DASHBOARD = {
 };
 
 export const MINE_INFO = {
-  route: "/dashboard/mine/:mine_id",
-  dynamicRoute: (mine_id) => `/dashboard/mine/${mine_id}`,
+  route: "/dashboard/mine/:mineId",
+  dynamicRoute: (mineId) => `/dashboard/mine/${mineId}`,
   component: MineInfo,
 };

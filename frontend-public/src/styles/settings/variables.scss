@@ -34,9 +34,14 @@ $primary-btn-color: $nav-blue;
 $primary-btn-color-hover: darken($primary-btn-color, 20%);
 $primary-btn-border-color-hover: $primary-btn-color-hover;
 
-$secondary-btn-color: $pure-white;
-$secondary-btn-color-hover: darken($gov-yellow, 20%);
-$secondary-btn-border-color-hover: $secondary-btn-color-hover;
+$secondary-btn-color: $nav-blue;
+$secondary-btn-color-hover: darken($nav-blue, 20%);
+$secondary-btn-border-color-hover: $nav-blue;
+
+$tertiary-btn-color: $pure-white;
+$tertiary-btn-color-hover: darken($gov-yellow, 20%);
+$tertiary-btn-border-color: $pure-white;
+$tertiary-btn-border-color-hover: darken($gov-yellow, 20%);
 
 // Font Size
 $title-h1: 36px;
@@ -79,3 +84,5 @@ $default-padding-md: 10px;
 $default-padding-lg: 20px;
 $default-padding-xl: 30px;
 $default-padding-xxl: 50px;
+
+$default-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
