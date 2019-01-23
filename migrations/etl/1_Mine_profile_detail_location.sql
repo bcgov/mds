@@ -22,17 +22,7 @@ BEGIN
     );
     SELECT count(*) FROM ETL_PROFILE into old_row;
     -- Upsert data into ETL_PROFILE from MMS
-    -- If new rows have been added since the last ETL, only insert the new ones.
     -- Generate a random UUID for mine_guid
-    WITH mms_new AS(
-        SELECT *
-        FROM mms.mmsmin mms_profile
-        WHERE NOT EXISTS (
-            SELECT  1
-            FROM    ETL_PROFILE
-            WHERE   mine_no = mms_profile.mine_no
-        )
-    )
     INSERT INTO ETL_PROFILE (
         mine_guid       ,
         mine_no         ,
@@ -44,19 +34,19 @@ BEGIN
         major_mine_ind  )
     SELECT
         gen_random_uuid()  ,
-        mms_new.mine_no    ,
-        mms_new.mine_nm    ,
-        mms_new.reg_cd     ,
-        mms_new.mine_typ   ,
-        mms_new.lat_dec    ,
-        mms_new.lon_dec    ,
+        mms.mine_no    ,
+        mms.mine_nm    ,
+        mms.reg_cd     ,
+        mms.mine_typ   ,
+        mms.lat_dec    ,
+        mms.lon_dec    ,
         CASE
-            WHEN mms_new.min_lnk = 'Y' THEN TRUE
+            WHEN mms.min_lnk = 'Y' THEN TRUE
             ELSE FALSE
         END AS major_mine_ind
-    FROM mms_new;
+    FROM mms.mmsmin mms;
     SELECT count(*) FROM ETL_PROFILE INTO new_row;
-    RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
+    RAISE NOTICE '....# of mine records pulled from MMS: %', (new_row-old_row);
 END $$;
 
 
