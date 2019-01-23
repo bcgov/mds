@@ -1,10 +1,6 @@
 from datetime import datetime
 
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy import or_
-from sqlalchemy.ext.declarative import declared_attr
-from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import UUID
 
 from app.extensions import db
 
@@ -18,6 +14,7 @@ class UserBoundQuery(db.Query):
         return rv
 
 
+#add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
 def ensure_constrained(query):
     from ... import auth
