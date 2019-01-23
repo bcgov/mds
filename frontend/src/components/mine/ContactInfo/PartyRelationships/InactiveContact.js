@@ -7,7 +7,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   partyRelationshipTypeCode: PropTypes.string.isRequired,
-  partyRelationshipTypeLabel: PropTypes.string.isRequired,
+  partyRelationshipTitle: PropTypes.string.isRequired,
   mine: CustomPropTypes.mine.isRequired,
 };
 
@@ -42,7 +42,7 @@ export class InactiveContact extends Component {
       >
         <div className="inline-flex between wrap">
           <div>
-            <h3>{this.props.partyRelationshipTypeLabel}</h3>
+            <h3>{this.props.partyRelationshipTitle}</h3>
             <p>
               <Icon type="clock-circle" />
               &nbsp;&nbsp;None Active
