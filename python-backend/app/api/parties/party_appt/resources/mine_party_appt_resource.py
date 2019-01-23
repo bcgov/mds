@@ -97,19 +97,17 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if not mpa:
             return self.create_error_payload(404, 'mine party appointment not found'), 404
         # Only accepting these parameters
-        mpa.start_date = data.get('start_date')
-        mpa.end_date = data.get('end_date')
-
-        mpa.assign_related_guid(data.get('related_guid'))
-
+        mpa.start_date = data.get('start_date', mpa.start_date)
+        mpa.end_date = data.get('end_date', mpa.end_date)
+        if "related_guid" in data.keys():
+            mpa.assign_related_guid(data.get('related_guid'))
         try:
             mpa.save()
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
-                mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
-                    data.get('mine_party_appt_type_code')).description
+                mpa_type_name = mpa.mine_party_appt_type.description
                 self.raise_error(500, f'Error: Date ranges for {mpa_type_name} must not overlap')
 
         return mpa.json()
