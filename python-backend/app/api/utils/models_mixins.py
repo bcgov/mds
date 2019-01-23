@@ -20,10 +20,7 @@ class UserBoundQuery(db.Query):
 def ensure_constrained(query):
     from ... import auth
 
-    if not query._user_bound:
-        return query
-
-    if not auth.apply_security:
+    if not query._user_bound or not auth.apply_security:
         return query
 
     mzero = query._mapper_zero()
