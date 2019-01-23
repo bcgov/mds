@@ -3,7 +3,6 @@ from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 
 from app.extensions import db
-from flask import g
 
 
 class UserBoundQuery(db.Query):
@@ -22,6 +21,9 @@ def ensure_constrained(query):
     from ... import auth
 
     if not query._user_bound:
+        return query
+
+    if not auth.apply_security:
         return query
 
     mzero = query._mapper_zero()
@@ -43,10 +45,8 @@ def ensure_constrained(query):
 class Base(db.Model):
     __abstract__ = True\
 
-    #Check if we are executing in the context of flask, otherwise we are running from CLI or another task.
-    if (g):
-        #Set default query_class on base class.
-        query_class = UserBoundQuery
+    #Set default query_class on base class.
+    query_class = UserBoundQuery
 
     def save(self, commit=True):
         db.session.add(self)

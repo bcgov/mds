@@ -34,7 +34,9 @@ from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppo
 
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
+from app import auth
 
+auth.apply_security = False
 
 @pytest.fixture(scope="session")
 def app(request):

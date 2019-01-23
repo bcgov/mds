@@ -8,9 +8,12 @@ from .api.utils.include.user_info import User
 from .api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINESPACE_PROPONENT
 
+global apply_security
+apply_security = True
+
 
 class UserSecurity(object):
-    def __init__(self, user_id: int, access: Optional[Set[UUID]] = None):
+    def __init__(self, user_id: Optional[int] = None, access: Optional[Set[UUID]] = None):
         self.access = access or {}
         self.user_id = user_id
 
@@ -18,6 +21,8 @@ class UserSecurity(object):
         return "<{} mine_ids={}>".format(type(self).__name__, self.mine_ids)
 
     def is_restricted(self):
+        if not self.user_id:
+            return False
         return get_user_is_proponent()
 
     @cached_property
@@ -64,6 +69,6 @@ def get_current_user_security():
     rv = getattr(g, 'current_user_security', None)
     if rv == None:
         user = get_current_user()
-        rv = UserSecurity(user_id=user.user_id)
+        rv = UserSecurity(user_id=user.user_id if user else None)
         g.current_user_security = rv
     return rv
