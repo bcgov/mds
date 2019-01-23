@@ -9,16 +9,7 @@ VALID_REALM = [
 class User:
     def get_user_raw_info(self):
         token = jwt.get_token_auth_header()
-        jwks = jwt.get_jwks()
-        unverified_header = jwt_jose.get_unverified_header(token)
-        rsa_key = jwt.get_rsa_key(jwks, unverified_header["kid"])
-        return jwt_jose.decode(
-            token,
-            rsa_key,
-            algorithms=jwt.algorithms,
-            audience=jwt.audience,
-            issuer=jwt.issuer
-        )
+        return jwt_jose.get_unverified_claims(token)      
 
     def get_user_email(self):
         raw_info = self.get_user_raw_info()
