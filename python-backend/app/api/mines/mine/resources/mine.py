@@ -6,8 +6,6 @@ from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
-from ..... import auth
-
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
 

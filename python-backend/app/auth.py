@@ -6,7 +6,7 @@ from uuid import UUID
 from typing import Mapping, Optional, Set
 from .api.utils.include.user_info import User
 from .api.users.minespace.models.minespace_user import MinespaceUser
-from app.api.utils.access_decorators import MINE_VIEW
+from app.api.utils.access_decorators import MINESPACE_PROPONENT
 
 
 class UserSecurity(object):
@@ -48,7 +48,7 @@ def get_current_user():
 
 def get_user_is_proponent():
     token_data = User().get_user_raw_info()
-    is_proponent = MINE_VIEW in token_data["realm_access"]["roles"]
+    is_proponent = MINESPACE_PROPONENT in token_data["realm_access"]["roles"]
     return is_proponent
 
 
