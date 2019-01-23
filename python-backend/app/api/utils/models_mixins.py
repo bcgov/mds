@@ -40,7 +40,7 @@ def ensure_constrained(query):
 
 
 class Base(db.Model):
-    __abstract__ = True\
+    __abstract__ = True
 
     #Set default query_class on base class.
     query_class = UserBoundQuery
