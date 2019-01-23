@@ -141,7 +141,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-python-36-rhel7:3.6.1-21"
+              "name": "rhscl-python-36-rhel7:3.6.1-36"
             },
             "env": []
           }
