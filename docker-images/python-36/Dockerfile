@@ -14,5 +14,5 @@ COPY requirements.txt ${APP_ROOT}/src
 RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     python3 -m pip install --upgrade pip && \
-    pip install -U setuptools wheel && \
-    cd ${APP_ROOT}/src && pip install -r requirements.txt
+    pip3 install -U setuptools wheel && \
+    cd ${APP_ROOT}/src && pip3 install -r requirements.txt
