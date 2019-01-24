@@ -113,6 +113,14 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/dbbackup.bc.json',
+                    'params':[
+                        'NAME':"mds-dbbackup",
+                        'SUFFIX': "${app.build.suffix}",
+                        'VERSION':"${app.build.version}"
+                    ]
+                ],
+                [
                     'file':'openshift/flyway.bc.json',
                     'params':[
                             'NAME':"mds-flyway-migration",
