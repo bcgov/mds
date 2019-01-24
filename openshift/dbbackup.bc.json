@@ -122,6 +122,12 @@
       "description": "The tag given to the built image.",
       "required": true,
       "value": "latest"
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Suffix to name individual builds",
+      "required": true,
+      "value": "latest"
     }
   ]
 }
