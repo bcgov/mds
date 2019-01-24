@@ -384,6 +384,13 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mpat4.save()
 
+    mpat5 = MinePartyAppointmentType(
+        mine_party_appt_type_code='MMG',
+        description='Mine Manager',
+        grouping_level=1,
+        **DUMMY_USER_KWARGS)
+    mpat5.save()
+
     # Test Permittee Data
     permittee = MinePartyAppointment(
         mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
@@ -393,14 +400,6 @@ def setup_data(session):
         permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
         **DUMMY_USER_KWARGS)
     permittee.save()
-
-    mpa = MinePartyAppointment(
-        mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
-        **DUMMY_USER_KWARGS)
-    mpa.save()
 
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),

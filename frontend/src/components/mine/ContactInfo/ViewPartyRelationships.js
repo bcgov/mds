@@ -157,9 +157,8 @@ export class ViewPartyRelationships extends Component {
   renderInactiveRelationships = (partyRelationships) => {
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        !x.end_date ||
-        (Date.parse(x.end_date) >= new Date() &&
-          (!x.start_date || Date.parse(x.start_date) <= new Date()))
+        (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+        (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
       (x) => !activeRelationships.includes(x)
@@ -181,7 +180,7 @@ export class ViewPartyRelationships extends Component {
         <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={typeCode}>
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
-            partyRelationshipTypeLabel={
+            partyRelationshipTitle={
               this.props.partyRelationshipTypesList.find((x) => x.value === typeCode).label
             }
             mine={this.props.mine}
@@ -193,11 +192,11 @@ export class ViewPartyRelationships extends Component {
   getGroupTitle = (group) => {
     switch (group) {
       case 3:
-        return "Key Contacts";
+        return "MAIN CONTACTS";
       case 2:
-        return "Specialists";
+        return "SPECIALISTS";
       default:
-        return "Other Contacts";
+        return "OTHER CONTACTS";
     }
   };
 
@@ -249,7 +248,7 @@ export class ViewPartyRelationships extends Component {
     )
       return <div />;
 
-    const partyRelationshipTypeLabel = this.props.partyRelationshipTypesList.find(
+    const partyRelationshipTitle = this.props.partyRelationshipTypesList.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
     ).label;
 
@@ -265,7 +264,7 @@ export class ViewPartyRelationships extends Component {
       >
         <Contact
           partyRelationship={partyRelationship}
-          partyRelationshipTypeLabel={partyRelationshipTypeLabel}
+          partyRelationshipTitle={partyRelationshipTitle}
           handleChange={this.props.handleChange}
           mine={this.props.mine}
           openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
@@ -291,7 +290,7 @@ export class ViewPartyRelationships extends Component {
       partyRelationshipsInGroup.length !== 0 && [
         <Row gutter={16}>
           <Col span={24}>
-            <h2>{this.getGroupTitle(group)}</h2>
+            <h4>{this.getGroupTitle(group)}</h4>
             <Divider />
           </Col>
         </Row>,
@@ -300,9 +299,8 @@ export class ViewPartyRelationships extends Component {
           {partyRelationshipsInGroup
             .filter(
               (x) =>
-                !x.end_date ||
-                (Date.parse(x.end_date) >= new Date() &&
-                  (!x.start_date || Date.parse(x.start_date) <= new Date()))
+                (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                (!x.start_date || Date.parse(x.start_date) <= new Date())
             )
             .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}

@@ -79,6 +79,8 @@ $default-h4: 1.25rem; //20px
 $mobile-h4: 1.125rem; //18px
 $default-h5: 1.25rem; //20px
 $mobile-h5: 1.125rem; //18px
+$default-h6: 0.875rem; //14px
+$mobile-h6: 0.75rem; //12px
 $default-p: 1rem; //16px
 
 $table-header: 1.125rem;
@@ -95,6 +97,7 @@ $h2-color: $darkest-grey;
 $h3-color: $medium-grey;
 $h4-color: $medium-grey;
 $h5-color: $darkest-grey;
+$h6-color: $medium-grey;
 $p-color: $darkest-grey;
 $a-color: $hover-blue;
 $a-color-hover: darken($a-color, 20%);
