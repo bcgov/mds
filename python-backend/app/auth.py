@@ -21,15 +21,12 @@ class UserSecurity(object):
         return "<{} mine_ids={}>".format(type(self).__name__, self.mine_ids)
 
     def is_restricted(self):
-        if not self.user_id:
-            return False
         return get_user_is_proponent()
 
     @cached_property
     def mine_ids(self) -> Set[UUID]:
         if not self.user_id:
-            return None
-
+            return []
         return get_mine_access()
 
     def get_permission(self, mine_id: UUID):
