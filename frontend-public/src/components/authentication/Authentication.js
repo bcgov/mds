@@ -29,14 +29,14 @@ export class Authentication extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <Link to={routes.DASHBOARD.route}>
-          <Button type="secondary" className="login-btn">
+          <Button type="tertiary" className="login-btn">
             Log in
           </Button>
         </Link>
       );
     }
     return (
-      <Button type="secondary" className="login-btn" onClick={this.handleLogout}>
+      <Button type="tertiary" className="login-btn" onClick={this.handleLogout}>
         Logout
       </Button>
     );

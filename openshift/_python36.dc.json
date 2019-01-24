@@ -64,6 +64,15 @@
       "value": "template.mds-nris-secret"
     },
     {
+      "name": "REDIS_CONFIG_NAME",
+      "required": false,
+      "value": "template.mds-redis-secret"
+    },
+    {
+      "name": "CACHE_REDIS_HOST",
+      "required": true
+    },
+    {
       "name": "DOCUMENT_CAPACITY",
       "required": true
     },
@@ -322,6 +331,19 @@
                   {
                     "name": "FLASK_RUN_HOST",
                     "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "CACHE_REDIS_HOST",
+                    "value": "${CACHE_REDIS_HOST}"
+                  },
+                  {
+                    "name": "CACHE_REDIS_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${REDIS_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
                   },
                   {
                     "name": "JWT_OIDC_WELL_KNOWN_CONFIG",

@@ -8,7 +8,7 @@ import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Perm
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
-  partyRelationshipTypeLabel: PropTypes.string.isRequired,
+  partyRelationshipTitle: PropTypes.string.isRequired,
   handleChange: PropTypes.func,
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func,
@@ -16,6 +16,7 @@ const propTypes = {
   removePartyRelationship: PropTypes.func,
   otherDetails: PropTypes.object,
   isEditable: PropTypes.bool,
+  compact: PropTypes.bool,
 };
 
 const doNothing = () => {};
@@ -34,6 +35,7 @@ const defaultProps = {
     doNothing();
   },
   isEditable: false,
+  compact: false,
 };
 
 export const Contact = (props) => {
@@ -41,46 +43,13 @@ export const Contact = (props) => {
 
   switch (props.partyRelationship.mine_party_appt_type_code) {
     case "EOR":
-      component = (
-        <EngineerOfRecord
-          partyRelationship={props.partyRelationship}
-          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
-          handleChange={props.handleChange}
-          mine={props.mine}
-          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
-          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
-          removePartyRelationship={props.removePartyRelationship}
-          isEditable={props.isEditable}
-        />
-      );
+      component = <EngineerOfRecord {...props} />;
       break;
     case "PMT":
-      component = (
-        <Permittee
-          partyRelationship={props.partyRelationship}
-          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
-          handleChange={props.handleChange}
-          mine={props.mine}
-          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
-          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
-          removePartyRelationship={props.removePartyRelationship}
-          isEditable={props.isEditable}
-        />
-      );
+      component = <Permittee {...props} />;
       break;
     default:
-      component = (
-        <DefaultContact
-          partyRelationship={props.partyRelationship}
-          partyRelationshipTypeLabel={props.partyRelationshipTypeLabel}
-          handleChange={props.handleChange}
-          mine={props.mine}
-          openEditPartyRelationshipModal={props.openEditPartyRelationshipModal}
-          onSubmitEditPartyRelationship={props.onSubmitEditPartyRelationship}
-          removePartyRelationship={props.removePartyRelationship}
-          isEditable={props.isEditable}
-        />
-      );
+      component = <DefaultContact {...props} />;
       break;
   }
   return component;
