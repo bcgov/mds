@@ -565,8 +565,8 @@ BEGIN
         create_timestamp         ,
         update_user              ,
         update_timestamp         ,
-        effective_date           ,
-        expiry_date
+        start_date               ,
+        end_date
     )
     SELECT
         mine_party_appt_guid,
