@@ -72,3 +72,8 @@ def get_current_user_security():
         rv = UserSecurity(user_id=user.user_id if user else None)
         g.current_user_security = rv
     return rv
+
+
+def clear_cache():
+    g.current_user_security = None
+    g.current_user = None
