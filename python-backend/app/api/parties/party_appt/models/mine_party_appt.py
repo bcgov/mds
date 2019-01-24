@@ -164,8 +164,8 @@ class MinePartyAppointment(AuditMixin, Base):
                                party_guid,
                                mine_party_appt_type_code,
                                user_kwargs,
-                               start_date,
-                               end_date,
+                               start_date=None,
+                               end_date=None,
                                processed_by=processed_by,
                                permit_guid=None,
                                save=True):
