@@ -8,7 +8,7 @@ DECLARE
     new_row integer;
 BEGIN
     RAISE NOTICE 'Start updating mine profile:';
-    RAISE NOTICE '.. Step 1 of 2: Scan new mine records in MMS';
+    RAISE NOTICE '.. Step 1 of 5: Scan new mine records in MMS';
     -- This is the intermediary table that will be used to store mine profile from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
         mine_guid         uuid          ,
@@ -97,7 +97,7 @@ DECLARE
     new_row         integer;
     update_row      integer;
 BEGIN
-    RAISE NOTICE '.. Step 2 of 3: Update mine in MDS';
+    RAISE NOTICE '.. Step 2 of 5: Update mine in MDS';
     SELECT count(*) FROM mine into old_row;
 
     -- Upsert data from ETL_PROFILE into mine table
@@ -153,16 +153,28 @@ END $$;
 
 DO $$
 DECLARE
-    location_row    integer;
+    old_row         integer;
+    new_row         integer;
 BEGIN
-    -- Upsert data from new_record into mine_location
+    RAISE NOTICE '.. Step 3 of 5: Transform location data';
+    -- This is the intermediary table that will be used to store transformed
+    -- mine location data
+    CREATE TABLE IF NOT EXISTS ETL_LOCATION (
+        mine_guid       uuid                ,
+        mine_no         varchar(7)          ,
+        latitude        numeric(9,7)        ,
+        longitude       numeric(11,7)       ,
+        geom            geometry(Point,3005)
+    );
+    SELECT count(*) FROM ETL_LOCATION into old_row;
+
     WITH new_record AS (
         SELECT *
         FROM ETL_PROFILE
         WHERE NOT EXISTS (
             SELECT  1
-            FROM    mine_location
-            WHERE   mine_no = ETL_PROFILE.mine_no
+            FROM    ETL_LOCATION
+            WHERE   mine_guid = ETL_PROFILE.mine_guid
         )
     ), pmt_now AS (
         SELECT
@@ -196,21 +208,15 @@ BEGIN
             permit_no != ''
             AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
     )
-    INSERT INTO mine_location(
-        mine_location_guid  ,
+    INSERT INTO ETL_LOCATION(
         mine_guid           ,
+        mine_no             ,
         latitude            ,
         longitude           ,
-        geom                ,
-        effective_date      ,
-        expiry_date         ,
-        create_user         ,
-        create_timestamp    ,
-        update_user         ,
-        update_timestamp    )
+        geom                )
     SELECT
-        gen_random_uuid()   ,
-        new.mine_guid       ,
+        new.mine_guid,
+        new.mine_no  ,
         COALESCE(
             -- Preferred Latitude
             (
@@ -238,7 +244,7 @@ BEGIN
             ),
             -- Default Latitude
             new.lat_dec
-        ) AS latitude,
+        ) AS lat_dec,
         COALESCE(
             -- Preferred Longitude
             (
@@ -266,14 +272,8 @@ BEGIN
             ),
             -- Default Longitude
             new.lon_dec
-        ) AS longitude,
-        ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec),3005),
-        now()               ,
-        '9999-12-31'::date  ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()
+        ) AS lon_dec,
+        ST_SetSRID(ST_MakePoint(new.lon_dec, new.lat_dec), 3005)
     FROM new_record new
     WHERE
         -- Present + valid in MMSMIN
@@ -290,8 +290,84 @@ BEGIN
                 AND (lat_dec IS NOT NULL AND lon_dec IS NOT NULL)
                 AND (lat_dec <> 0 AND lon_dec <> 0)
         ) > 0;
-    SELECT count(*) FROM mine_location into location_row;
+    SELECT count(*) FROM ETL_LOCATION into new_row;
+    RAISE NOTICE '....# of new mine location records found in MMS: %', (new_row-old_row);
+END $$;
 
+
+
+
+DO $$
+DECLARE
+    old_row         integer;
+    new_row         integer;
+    update_row      integer;
+BEGIN
+    RAISE NOTICE '.. Step 4 of 5: Update mine_location in MDS';
+    SELECT count(*) FROM mine_location into old_row;
+
+    -- Upsert data from ETL_LOCATION into mine_location
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    UPDATE mine_location
+        SET latitude         = ETL_LOCATION.latitude ,
+            longitude        = ETL_LOCATION.longitude,
+            geom             = ETL_LOCATION.geom     ,
+            update_user      = 'mms_migration'       ,
+            update_timestamp = now()
+    FROM ETL_LOCATION
+    WHERE ETL_LOCATION.mine_guid = mine.mine_guid;
+    SELECT count(*) FROM mine, ETL_LOCATION WHERE ETL_LOCATION.mine_guid = mine.mine_guid INTO update_row;
+    RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
+
+    WITH new_record AS (
+        SELECT *
+        FROM ETL_LOCATION
+        WHERE NOT EXISTS (
+            SELECT  1
+            FROM    mine_location
+            WHERE   mine_guid = ETL_LOCATION.mine_guid
+        )
+    )
+    INSERT INTO mine_location(
+        mine_location_guid  ,
+        mine_guid           ,
+        latitude            ,
+        longitude           ,
+        geom                ,
+        effective_date      ,
+        expiry_date         ,
+        create_user         ,
+        create_timestamp    ,
+        update_user         ,
+        update_timestamp    )
+    SELECT
+        gen_random_uuid()   ,
+        new.mine_guid       ,
+        new.latitude        ,
+        new.longitude       ,
+        new.geom            ,
+        now()               ,
+        '9999-12-31'::date  ,
+        'mms_migration'     ,
+        now()               ,
+        'mms_migration'     ,
+        now()
+    FROM new_record new;
+    SELECT count(*) FROM mine_location into new_row;
+    RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
+    RAISE NOTICE 'Finish updating mine list in MDS';
+END $$;
+
+
+
+
+DO $$
+DECLARE
+    old_row integer;
+    new_row integer;
+BEGIN
+    RAISE NOTICE '.. Step 5 of 5: Update mine_status in MDS';
+    -- TODO: Add update-in-place for mine status and logging
     -- Upsert data from new_record into mine_type
     WITH new_record AS (
         SELECT
@@ -329,8 +405,6 @@ BEGIN
     FROM new_record new
     WHERE
         mine_typ = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
-
-
-    RAISE NOTICE '....Total mine records with location info in the MDS: %.', location_row;
+    RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
     RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
