@@ -27,7 +27,6 @@ BEGIN
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_PROFILE
     SET mine_name      = mms.mmsmin.mine_nm ,
-        mine_type      = mms.mmsmin.mine_typ,
         lat_dec        = mms.mmsmin.lat_dec ,
         lon_dec        = mms.mmsmin.lon_dec ,
         major_mine_ind = (
@@ -41,6 +40,13 @@ BEGIN
                 WHEN '4' THEN 'NE'
                 WHEN '5' THEN 'NW'
                 ELSE null
+            END,
+        mine_type = CASE
+                WHEN mms.mmsmin.mine_typ = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
+                WHEN mms.mmsmin.mine_typ = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
+                WHEN mms.mmsmin.mine_typ = ANY('{PS,PU}'::text[]) THEN 'PLR'
+                WHEN mms.mmsmin.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
+                ELSE NULL
             END
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_PROFILE.mine_no;
@@ -79,15 +85,22 @@ BEGIN
             WHEN '3' THEN 'SE'
             WHEN '4' THEN 'NE'
             WHEN '5' THEN 'NW'
-            ELSE null
+            ELSE NULL
         END AS mine_region ,
-        mms_new.mine_typ   ,
+        CASE
+            WHEN mms_new.mine_typ = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
+            WHEN mms_new.mine_typ = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
+            WHEN mms_new.mine_typ = ANY('{PS,PU}'::text[]) THEN 'PLR'
+            WHEN mms_new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
+            ELSE NULL
+        END AS mine_type   ,
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL)
     FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row;
     RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
+    RAISE NOTICE '....Total mine records in ETL_PROFILE: %.', new_row;
 END $$;
 
 
@@ -113,6 +126,7 @@ BEGIN
     FROM ETL_PROFILE
     WHERE ETL_PROFILE.mine_guid = mine.mine_guid;
     SELECT count(*) FROM mine, ETL_PROFILE WHERE ETL_PROFILE.mine_guid = mine.mine_guid INTO update_row;
+    RAISE NOTICE '....# of mine records in MDS: %', old_row;
     RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
 
     WITH new_record AS (
@@ -171,7 +185,7 @@ BEGIN
     );
     SELECT count(*) FROM ETL_LOCATION into old_row;
 
-    -- Upsert data into ETL_PROFILE from MMS
+    -- Upsert data into ETL_LOCATION from MMS
     RAISE NOTICE '.. Sync existing records with latest ETL_PROFILE data';
     UPDATE ETL_LOCATION
     SET mine_guid = ETL_PROFILE.mine_guid,
@@ -309,7 +323,8 @@ BEGIN
                 AND (lat_dec <> 0 AND lon_dec <> 0)
         ) > 0;
     SELECT count(*) FROM ETL_LOCATION into new_row;
-    RAISE NOTICE '....# of new mine location records found in MMS: %', (new_row-old_row);
+    RAISE NOTICE '....# of new mine_location records found in MMS: %', (new_row-old_row);
+    RAISE NOTICE '....Total mine_location records in ETL_LOCATION: %.', new_row;
 END $$;
 
 
@@ -335,8 +350,10 @@ BEGIN
     FROM ETL_LOCATION
     WHERE ETL_LOCATION.mine_guid = mine_location.mine_guid;
     SELECT count(*) FROM mine, ETL_LOCATION WHERE ETL_LOCATION.mine_guid = mine.mine_guid INTO update_row;
+    RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
 
+    RAISE NOTICE '.. Insert new ETL_LOCATION records into mine_location';
     WITH new_record AS (
         SELECT *
         FROM ETL_LOCATION
@@ -374,7 +391,6 @@ BEGIN
     SELECT count(*) FROM mine_location into new_row;
     RAISE NOTICE '....# of new mine_location records loaded into MDS: %.', (new_row-old_row);
     RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
-    RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
 
 
@@ -382,12 +398,26 @@ END $$;
 
 DO $$
 DECLARE
-    old_row integer;
-    new_row integer;
+    old_row    integer;
+    new_row    integer;
+    update_row integer;
 BEGIN
     RAISE NOTICE '.. Step 5 of 5: Update mine_status in MDS';
-    -- TODO: Add update-in-place for mine status and logging
+    SELECT count(*) FROM mine_type into old_row;
+
     -- Upsert data from new_record into mine_type
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    UPDATE mine_type
+        SET mine_tenure_type_code = ETL_PROFILE.mine_type,
+            update_user           = 'mms_migration'                  ,
+            update_timestamp      = now()
+    FROM ETL_PROFILE
+    WHERE ETL_PROFILE.mine_guid = mine_type.mine_guid;
+    SELECT count(*) FROM mine_type, ETL_PROFILE WHERE mine_type.mine_guid = ETL_PROFILE.mine_guid INTO update_row;
+    RAISE NOTICE '....# of mine_type records in MDS: %', old_row;
+    RAISE NOTICE '....# of mine_type records updated in MDS: %', update_row;
+
+    RAISE NOTICE '.. Insert new ETL_PROFILE records into mine_type';
     WITH new_record AS (
         SELECT
             mine_guid,
@@ -396,7 +426,7 @@ BEGIN
         WHERE NOT EXISTS (
             SELECT  1
             FROM    mine_type
-            WHERE   mine_no = ETL_PROFILE.mine_no
+            WHERE   mine_guid = ETL_PROFILE.mine_guid
         )
     )
     INSERT INTO mine_type(
@@ -410,13 +440,7 @@ BEGIN
     SELECT
         gen_random_uuid()   ,
         new.mine_guid       ,
-        CASE
-          when new.mine_type = ANY('{CX,CS,CU}'::text[]) THEN 'COL'
-          when new.mine_type = ANY('{MS,MU,LS,IS,IU}'::text[]) THEN 'MIN'
-          when new.mine_type = ANY('{PS,PU}'::text[]) THEN 'PLR'
-          when new.mine_type = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
-          ELSE null
-        END AS mine_tenure_type_code,
+        new.mine_type       ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
@@ -424,6 +448,8 @@ BEGIN
     FROM new_record new
     WHERE
         mine_type = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
-    RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
+    SELECT count(*) FROM mine_type into new_row;
+    RAISE NOTICE '....# of new mine_type records inserted into MDS: %', (new_row-old_row);
+    RAISE NOTICE '....Total mine_type records in MDS: %.', new_row;
     RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
