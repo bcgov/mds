@@ -45,6 +45,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
+              "namespace": "openshift",
               "name": "rhscl-postgresql-10-rhel7:latest"
             },
             "dockerfilePath": "Dockerfile"
