@@ -191,28 +191,42 @@ BEGIN
 
     -- Upsert data into ETL_LOCATION from MMS
     RAISE NOTICE '.. Sync existing records with latest ETL_PROFILE data';
-    -- TODO: Convert to a temporary table instead of repeating CTEs
-    WITH pmt_now AS (
-        SELECT
-            lat_dec,
-            lon_dec,
-            permit_no,
-            mms.mmsnow.mine_no,
-            CASE
-              -- Approved Date if available
-              WHEN mms.mmspmt.appr_dt IS NOT NULL
-              THEN extract(epoch from mms.mmspmt.appr_dt)::bigint
-              -- Update Number if available
-              WHEN mms.mmsnow.upd_no IS NOT NULL
-              THEN mms.mmsnow.upd_no::integer
-              ELSE NULL::integer
-            END AS latest
-        FROM mms.mmsnow, mms.mmspmt
-        WHERE
-            mms.mmsnow.cid = mms.mmspmt.cid
-            AND lat_dec IS NOT NULL
-            AND lon_dec IS NOT NULL
-    ), pmt_now_preferred AS (
+    CREATE TEMP TABLE pmt_now (
+        lat_dec   numeric(9,7) ,
+        lon_dec   numeric(11,7),
+        permit_no varchar(12)  ,
+        mine_no   varchar(10)  ,
+        latest    bigint
+    );
+
+    INSERT INTO pmt_now(
+        lat_dec ,
+        lon_dec ,
+        permit_no,
+        mine_no  ,
+        latest
+    )
+    SELECT
+        lat_dec,
+        lon_dec,
+        permit_no,
+        mms.mmsnow.mine_no,
+        CASE
+          -- Approved Date if available
+          WHEN mms.mmspmt.appr_dt IS NOT NULL
+          THEN extract(epoch from mms.mmspmt.appr_dt)::bigint
+          -- Update Number if available
+          WHEN mms.mmsnow.upd_no IS NOT NULL
+          THEN mms.mmsnow.upd_no::integer
+          ELSE NULL::integer
+        END AS latest
+    FROM mms.mmsnow, mms.mmspmt
+    WHERE
+        mms.mmsnow.cid = mms.mmspmt.cid
+        AND lat_dec IS NOT NULL
+        AND lon_dec IS NOT NULL;
+
+    WITH pmt_now_preferred AS (
         SELECT
             lat_dec,
             lon_dec,
@@ -317,26 +331,6 @@ BEGIN
             FROM    ETL_LOCATION
             WHERE   mine_guid = ETL_PROFILE.mine_guid
         )
-    ), pmt_now AS (
-        SELECT
-            lat_dec,
-            lon_dec,
-            permit_no,
-            mms.mmsnow.mine_no,
-            CASE
-              -- Approved Date if available
-              WHEN mms.mmspmt.appr_dt IS NOT NULL
-              THEN extract(epoch from mms.mmspmt.appr_dt)::bigint
-              -- Update Number if available
-              WHEN mms.mmsnow.upd_no IS NOT NULL
-              THEN mms.mmsnow.upd_no::integer
-              ELSE NULL::integer
-            END AS latest
-        FROM mms.mmsnow, mms.mmspmt
-        WHERE
-            mms.mmsnow.cid = mms.mmspmt.cid
-            AND lat_dec IS NOT NULL
-            AND lon_dec IS NOT NULL
     ), pmt_now_preferred AS (
         SELECT
             lat_dec,
