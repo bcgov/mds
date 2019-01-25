@@ -85,7 +85,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
-        mines_permit_join_query = Mine.query.join(Permit)
+        mines_permit_join_query = Mine.query
         # Filter by search_term if provided
         if search_term:
             search_term = search_term.strip()
