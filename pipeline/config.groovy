@@ -378,10 +378,10 @@ environments {
                     memory_limit = "256Mi"
                 }
                 backup {
-                    cpu_request = "500m"
-                    cpu_limit = "750m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
                 }
             }
             deployment {
@@ -476,7 +476,7 @@ environments {
                 }
                 backup {
                     cpu_request = "1m"
-                    cpu_limit = "1m"
+                    cpu_limit = "15m"
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
