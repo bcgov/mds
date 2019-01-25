@@ -181,7 +181,8 @@
                 "command": [
                   "bash",
                   "-c",
-                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate)"
+                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate)",
+                  "cd $FLYWAY_HOME && ./flyway -user=$PG_USER -url=jdbc:postgresql://$DB_HOST/mds_test migrate"
                 ]
               }
             },
