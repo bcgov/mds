@@ -87,7 +87,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         params={
             'mine_party_appt_guid':
-            'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date]'
+            'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date, and related_guid'
         })
     @requires_role_mine_create
     def put(self, mine_party_appt_guid=None):
@@ -97,9 +97,9 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
             return self.create_error_payload(404, 'mine party appointment not found'), 404
-        # Only accepting these parameters
-        mpa.start_date = data.get('start_date', mpa.start_date)
-        mpa.end_date = data.get('end_date', mpa.end_date)
+
+        mpa.start_date = data.get('start_date')
+        mpa.end_date = data.get('end_date')
         if "related_guid" in data.keys():
             mpa.assign_related_guid(data.get('related_guid'))
         try:
