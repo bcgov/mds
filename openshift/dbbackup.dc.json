@@ -95,6 +95,7 @@
                 "name": "backup",
                 "image": " ",
                 "ports": [],
+                "command": ["bash", "-c", "cat"],
                 "env": [
                   {
                     "name": "BACKUP_STRATEGY",
