@@ -401,22 +401,6 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     permittee.save()
 
-    mine_manager = MinePartyAppointment.create_mine_party_appt(
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_party_appt_type_code='MMG',
-        processed_by=DUMMY_USER_KWARGS.get('update_user'),
-        user_kwargs=DUMMY_USER_KWARGS)
-    mine_manager.save()
-
-    mpa = MinePartyAppointment(
-        mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
-        **DUMMY_USER_KWARGS)
-    mpa.save()
-
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         document_name=TEST_MINE_DOCUMENT_NAME1,
