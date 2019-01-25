@@ -2,6 +2,7 @@ alembic==1.0.0
 aniso8601==3.0.2
 atomicwrites==1.1.5
 attrs==18.1.0
+cached_property==1.5.1
 click==6.7
 Flask==1.0.2
 Flask-APScheduler==1.11.0
