@@ -18,9 +18,10 @@ from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
-from app.extensions import api
+from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....constants import MINE_MAP_CACHE
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
@@ -58,9 +59,12 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                records = MineMapViewLocation.query.all()
-                result = list((map(lambda x: x.json_for_map(), records)))
-                return {'mines': result}
+                map_result = cache.get(MINE_MAP_CACHE)
+                if not map_result:
+                    records = MineMapViewLocation.query.all()
+                    map_result = list((map(lambda x: x.json_for_map(), records)))
+                    cache.set(MINE_MAP_CACHE, map_result, timeout=300)
+                return {'mines': map_result}
 
             paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
             mines = paginated_mine_query.all()
@@ -135,7 +139,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if status_filter_term:
             status_filter_term_array = status_filter_term.split(',')
             status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
-            status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_filter_term_array)
+            status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(
+                status_filter_term_array)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
                 status_filter_term_array)
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
