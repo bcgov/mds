@@ -10,7 +10,7 @@ CREATE OR REPLACE FUNCTION transform_mine_region(code varchar) RETURNS varchar A
                    WHEN '3' THEN 'SE'
                    WHEN '4' THEN 'NE'
                    WHEN '5' THEN 'NW'
-                   ELSE null
+                   ELSE NULL
                END;
     END;
 $$ LANGUAGE plpgsql;
@@ -179,7 +179,6 @@ DECLARE
     update_row      integer;
 BEGIN
     RAISE NOTICE '.. Step 3 of 5: Transform location data';
-    -- TODO: Test that this returns more than 5333 records now
     -- This is the intermediary table that will be used to store transformed
     -- mine location data
     CREATE TABLE IF NOT EXISTS ETL_LOCATION (
@@ -457,7 +456,7 @@ BEGIN
         update_timestamp = now()
     FROM ETL_LOCATION
     WHERE ETL_LOCATION.mine_guid = mine_location.mine_guid;
-    SELECT count(*) FROM mine, ETL_LOCATION WHERE ETL_LOCATION.mine_guid = mine.mine_guid INTO update_row;
+    SELECT count(*) FROM mine_location, ETL_LOCATION WHERE mine_location.mine_guid = ETL_LOCATION.mine_guid INTO update_row;
     RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
 
@@ -521,10 +520,9 @@ BEGIN
         update_timestamp      = now()
     FROM ETL_PROFILE
     WHERE
-        ETL_PROFILE.mine_guid = mine_type.mine_guid;
+        ETL_PROFILE.mine_guid = mine_type.mine_guid
         AND
-        -- Matches business logic requirements
-        mine_type = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
+        mine_type IS NOT NULL;
     SELECT count(*) FROM mine_type, ETL_PROFILE WHERE mine_type.mine_guid = ETL_PROFILE.mine_guid INTO update_row;
     RAISE NOTICE '....# of mine_type records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_type records updated in MDS: %', update_row;
@@ -558,8 +556,7 @@ BEGIN
         'mms_migration'     ,
         now()
     FROM new_record new
-    WHERE
-        mine_type = ANY('{CX,CS,CU,MS,MU,LS,IS,IU,PS,PU,Q,CM,SG}'::text[]);
+    WHERE mine_type IS NOT NULL;
     SELECT count(*) FROM mine_type into new_row;
     RAISE NOTICE '....# of new mine_type records inserted into MDS: %', (new_row-old_row);
     RAISE NOTICE '....Total mine_type records in MDS: %.', new_row;
