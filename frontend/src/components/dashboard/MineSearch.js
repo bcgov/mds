@@ -33,7 +33,7 @@ export class MineSearch extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchMineNameList();
+    // this.props.fetchMineNameList();
   }
 
   /**
