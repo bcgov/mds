@@ -96,8 +96,6 @@
                 "image": " ",
                 "ports": [],
                 "command": [
-                  "bash",
-                  "-c",
                   "if [[ $ENVIRONMENT_NAME != 'prod' ]]; then tail -f /dev/null; else ./backup.sh fi"
                 ],
                 "env": [
