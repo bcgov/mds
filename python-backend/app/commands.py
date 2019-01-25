@@ -50,6 +50,8 @@ def register_commands(app):
                 party_guid=permittee_party,
                 permit_guid=mine_permit.permit_guid,
                 mine_party_appt_type_code='PMT',
+                start_date=None,
+                end_date=None,
                 processed_by=DUMMY_USER_KWARGS.get('update_user'),
                 user_kwargs=DUMMY_USER_KWARGS,
                 save=True)

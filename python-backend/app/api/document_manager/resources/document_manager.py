@@ -11,19 +11,15 @@ from flask_uploads import UploadNotAllowed
 
 from ..models.document_manager import DocumentManager
 from app.extensions import api, documents
-from ...utils.access_decorators import requires_role_mine_create
 from ...utils.resources_mixins import UserMixin, ErrorMixin
+from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
+    parser.add_argument('file', type=FileStorage, location='files', action='append')
     parser.add_argument(
-        'file', type=FileStorage, location='files', action='append')
-    parser.add_argument(
-        'folder',
-        type=str,
-        required=True,
-        help='The sub folder path to store the document in.')
+        'folder', type=str, required=True, help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
@@ -32,7 +28,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
 
-    @requires_role_mine_create
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self):
 
         try:
@@ -54,19 +50,16 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         for upload in data['file']:
             try:
                 file_guid = uuid.uuid4()
-                original_file_name, file_extension = os.path.splitext(
-                    upload.filename)
+                original_file_name, file_extension = os.path.splitext(upload.filename)
 
-                upload_response = documents.save(
-                    upload, folder, (str(file_guid) + file_extension))
+                upload_response = documents.save(upload, folder, (str(file_guid) + file_extension))
                 real_path = documents.path(upload_response)
                 filename = (original_file_name + file_extension)
 
                 #create the readable path by removing the guids and replacing them with the more readable versions.
-                pretty_path = re.sub(r'\b' + folder + r'\b', pretty_folder,
-                                     real_path)
-                pretty_path = re.sub(r'\b' + str(file_guid) + r'\b',
-                                     original_file_name, pretty_path)
+                pretty_path = re.sub(r'\b' + folder + r'\b', pretty_folder, real_path)
+                pretty_path = re.sub(r'\b' + str(file_guid) + r'\b', original_file_name,
+                                     pretty_path)
 
                 document_info = DocumentManager(
                     document_guid=file_guid,
@@ -89,8 +82,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
             except Exception as e:
                 errors.append({
-                    'message':
-                    'An unexpected error has occured: ' + str(e),
+                    'message': 'An unexpected error has occured: ' + str(e),
                 })
                 continue
 
@@ -100,27 +92,21 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'errors': errors,
         }
 
-    @api.doc(
-        params={
-            'document_guid':
-            'Required: Document guid. Returns the file associated to this guid.'
-        })
+    @api.doc(params={
+        'document_guid': 'Required: Document guid. Returns the file associated to this guid.'
+    })
     #TODO: removed authoization until token/redis system in place
     #@requires_role_mine_create
     def get(self, document_guid=None):
 
         if not document_guid:
-            return self.create_error_payload(401,
-                                             'Must provide a document guid.')
+            return self.create_error_payload(401, 'Must provide a document guid.')
 
-        document_manager_doc = DocumentManager.find_by_document_manager_guid(
-            document_guid)
+        document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
 
         if not document_manager_doc:
             return self.create_error_payload(
-                401,
-                f'Could not find a document with the document guid: {document_guid}'
-            )
+                401, f'Could not find a document with the document guid: {document_guid}')
         else:
             return send_file(
                 filename_or_fp=document_manager_doc.full_storage_path,

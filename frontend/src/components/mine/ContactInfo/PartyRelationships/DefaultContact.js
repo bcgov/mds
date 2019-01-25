@@ -25,8 +25,7 @@ const defaultProps = {
   partyRelationshipSubTitle: "",
 };
 
-export const DefaultContact = (props) => {
-  return (
+export const DefaultContact = (props) => (
     <Card
       headStyle={{
         background: "#EEEEEE",
@@ -91,7 +90,7 @@ export const DefaultContact = (props) => {
           </span>,
         ]}
       </div>
-      {props.otherDetails && props.otherDetails}
+      {props.otherDetails}
       <div className="right">
         {props.isEditable && !props.compact && (
           <AuthorizationWrapper permission={Permission.CREATE}>
@@ -113,7 +112,6 @@ export const DefaultContact = (props) => {
       </div>
     </Card>
   );
-};
 
 DefaultContact.propTypes = propTypes;
 DefaultContact.defaultProps = defaultProps;
