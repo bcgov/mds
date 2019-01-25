@@ -88,6 +88,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mines_permit_join_query = Mine.query.join(Permit)
         # Filter by search_term if provided
         if search_term:
+            search_term = search_term.strip()
             name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
