@@ -98,7 +98,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd /  && if [[ $ENVIRONMENT_NAME != 'prod' ]]; then tail -f /dev/null; else ./backup.sh fi"
+                  "cd / && if [[ $ENVIRONMENT_NAME != 'prod' ]]; then tail -f /dev/null; else ./backup.sh; fi"
                 ],
                 "args": [],
                 "env": [
