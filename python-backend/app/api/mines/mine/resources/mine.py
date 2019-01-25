@@ -62,9 +62,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 map_result = cache.get(MINE_MAP_CACHE)
                 if not map_result:
                     records = MineMapViewLocation.query.all()
-                    map_result = list((map(lambda x: x.json_for_map(), records)))
-                    cache.set(MINE_MAP_CACHE, map_result, timeout=300)
-                return {'mines': map_result}
+                    map_result = {'mines': list((map(lambda x: x.json_for_map(), records)))}
+                    cache.set(MINE_MAP_CACHE, map_result, timeout=43140)
+                return map_result
 
             paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
             mines = paginated_mine_query.all()
