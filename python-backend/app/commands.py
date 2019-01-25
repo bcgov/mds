@@ -24,6 +24,9 @@ from .api.mines.status.models.mine_operation_status_sub_reason_code import MineO
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db
+from app import auth
+
+auth.apply_security = False
 
 
 def register_commands(app):
