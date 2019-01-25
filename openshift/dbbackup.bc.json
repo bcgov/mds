@@ -10,7 +10,49 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}"
+        "name": "rhscl-postgres-10-rhel7",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Postgres10 Base Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "latest",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
       }
     },
     {
@@ -44,8 +86,8 @@
           "type": "Docker",
           "dockerStrategy": {
             "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest"
+              "kind": "ImageStreamTag",
+              "name": "rhscl-postgres-10-rhel7:latest"
             },
             "dockerfilePath": "Dockerfile"
           }
