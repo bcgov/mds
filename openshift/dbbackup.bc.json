@@ -44,7 +44,7 @@
           "type": "Docker",
           "dockerStrategy": {
             "from": {
-              "kind": "ImageStreamTag",
+              "kind": "DockerImage",
               "name": "registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest"
             },
             "dockerfilePath": "Dockerfile"
