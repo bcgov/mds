@@ -72,7 +72,7 @@
         ],
         "replicas": 1,
         "selector": {
-          "name": "${NAME}${SUFFIX"
+          "name": "${NAME}${SUFFIX}"
         },
         "template": {
           "metadata": {
