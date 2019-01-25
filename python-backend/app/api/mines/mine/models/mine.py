@@ -16,35 +16,31 @@ class Mine(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='joined')
+    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
     mine_location = db.relationship(
         'MineLocation',
         backref='mine=',
         order_by='desc(MineLocation.update_timestamp)',
         lazy='joined')
     mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='joined')
+        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='select')
     mine_status = db.relationship(
-        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='select')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
-        lazy='joined')
+        lazy='select')
     mine_expected_documents = db.relationship(
         'MineExpectedDocument',
         primaryjoin=
         "and_(MineExpectedDocument.mine_guid == Mine.mine_guid, MineExpectedDocument.active_ind==True)",
         backref='mine',
         order_by='desc(MineExpectedDocument.due_date)',
-        lazy='joined')
+        lazy='select')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='joined')
-    mine_party_appt = db.relationship(
-        'MinePartyAppointment',
-        backref="mine",
-        lazy='joined')
-
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid

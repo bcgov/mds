@@ -46,6 +46,25 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
 
+    def get_jwks():
+        return {
+            "keys": [{
+                "kid":
+                "2OPIGEkCbAO1GdvGpA5t-JM4ija0ZiEc6KivsbRR3wg",
+                "kty":
+                "RSA",
+                "alg":
+                "RS256",
+                "use":
+                "sig",
+                "n":
+                "noUqxfdvWAJIpYQxzaTj_ZTMZbvXhpuvls7jyXHYqlNXGRLWkr9aaHw-PFbv3GCmbf-JFgyyAYL8ueV_7afPJDyxUbIAKqr2RwSi9tbRqBjfMxp9Uf2FfWPdRbz2LoTa8JR1J-akvafix0lHtZ78gNDiM8g3FwmM1yC2s-FZbl90pJM5ME9GzGlE8GqMMs63rgdUU3wyWWwBxHZzWECzX1XGUBym3ofShguaU1rOm6fbfDaTOv9VhaL-vAoxrJgmWeLE7bES_yA_7V1uKXmmz7bGi11_mJl_LT0BE6s752bdqDBApvD3zy2VE7Q8hnxTGA5EUt1w5DjEQ1bMg4u4gQ",
+                "e":
+                "AQAB"
+            }]
+        }
+
+    jwt.get_jwks = get_jwks
     # Following is a simple example to demonstrate redis connection working
     # Please make sure to remove this after the first actual usage of redis
     # in the application.
