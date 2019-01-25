@@ -115,7 +115,7 @@ app {
                 [
                     'file':'openshift/dbbackup.bc.json',
                     'params':[
-                        'NAME':"mds-dbbackup",
+                        'NAME':"mds-database-backup",
                         'SUFFIX': "${app.build.suffix}",
                         'VERSION':"${app.build.version}"
                     ]
