@@ -404,5 +404,15 @@ MINE_REGION_OPTIONS = [
     }
 ]
 
+#Cache prefixes
+NRIS_MMLIST_JOB = "processed_list"
+NRIS_MAJOR_MINE_LIST = "major_mine_list"
+NRIS_JOB_PREFIX = "nris_sched_job_"
+NRIS_CACHE_PREFIX = "nris_"
+
+#Cache Timeouts
+TIMEOUT_30_MINUTES = 1800
+TIMEOUT_24_HOURS = 86340
+TIMEOUT_12_HOURS = 43140
 
 

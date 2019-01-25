@@ -40,11 +40,7 @@ class Mine(AuditMixin, Base):
         lazy='joined')
     mine_type = db.relationship(
         'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='joined')
-    mine_party_appt = db.relationship(
-        'MinePartyAppointment',
-        backref="mine",
-        lazy='joined')
-
+    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='joined')
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
@@ -137,6 +133,10 @@ class Mine(AuditMixin, Base):
     @classmethod
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).first()
+
+    @classmethod
+    def find_all_major_mines(cls):
+        return cls.query.filter_by(major_mine_ind=True).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

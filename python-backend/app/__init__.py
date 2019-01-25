@@ -1,5 +1,6 @@
 import sys
 import json
+import os
 
 from flask import Flask
 from flask_cors import CORS
@@ -15,7 +16,8 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, cache
+from app.extensions import db, jwt, api, documents, cache, sched
+from app.api.scheduled_jobs import _schedule_jobs
 
 
 def create_app(test_config=None):
@@ -39,13 +41,16 @@ def create_app(test_config=None):
 
 
 def register_extensions(app):
+
     api.app = app
     api.init_app(app)
-
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-
+    sched.init_app(app)
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+        sched.start()
+        _schedule_jobs(app)
     # Following is a simple example to demonstrate redis connection working
     # Please make sure to remove this after the first actual usage of redis
     # in the application.
