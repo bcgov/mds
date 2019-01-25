@@ -98,8 +98,10 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if not mpa:
             return self.create_error_payload(404, 'mine party appointment not found'), 404
 
-        mpa.start_date = data.get('start_date')
-        mpa.end_date = data.get('end_date')
+        if 'start_date' in data.keys():
+            mpa.start_date = data.get('start_date')
+        if 'end_date' in data.keys():
+            mpa.end_date = data.get('end_date')
         if "related_guid" in data.keys():
             mpa.assign_related_guid(data.get('related_guid'))
         try:
