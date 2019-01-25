@@ -476,7 +476,7 @@ environments {
                 }
                 backup {
                     cpu_request = "1m"
-                    cpu_limit = "15m"
+                    cpu_limit = "5m"
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
