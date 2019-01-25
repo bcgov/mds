@@ -8,6 +8,8 @@ from .api.utils.include.user_info import User
 from .api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINESPACE_PROPONENT
 
+# This is for use when the database models are being used outside of the context of a flask application.
+# Eg. Unit tests, create data.
 global apply_security
 apply_security = True
 
