@@ -19,8 +19,9 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('party_guid', type=str, help='guid of the party.')
     parser.add_argument('mine_party_appt_type_code', type=str, help='code for the type of appt.')
     parser.add_argument('related_guid', type=str)
-    parser.add_argument('start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
-    parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d'))
+    parser.add_argument(
+        'start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
     @requires_role_mine_view

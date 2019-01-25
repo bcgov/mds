@@ -137,8 +137,8 @@ export class ViewPartyRelationships extends Component {
   onSubmitEditPartyRelationship = (values) => {
     const payload = this.state.selectedPartyRelationship;
 
-    if (values.start_date) payload.start_date = values.start_date;
-    if (values.end_date) payload.end_date = values.end_date;
+    payload.start_date = values.start_date;
+    payload.end_date = values.end_date;
     payload.related_guid = values.related_guid || payload.related_guid;
 
     this.props.updatePartyRelationship(payload).then(() => {
