@@ -563,4 +563,7 @@ BEGIN
     RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
 
--- TODO: Drop all created functions
+-- Drop all created functions
+DROP FUNCTION IF EXISTS transform_mine_region(code varchar);
+DROP FUNCTION IF EXISTS transform_mine_type_code(code varchar);
+DROP FUNCTION IF EXISTS transform_major_mine_ind(code varchar);
