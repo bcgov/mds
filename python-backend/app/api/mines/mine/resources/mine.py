@@ -48,7 +48,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_no_or_guid':
             'Mine number or guid. If not provided a paginated list of mines will be returned.'
         })
-    @requires_role_mine_view
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
