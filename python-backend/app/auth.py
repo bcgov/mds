@@ -73,6 +73,7 @@ def get_current_user_security():
     return rv
 
 
+# For unit tests only
 def clear_cache():
     g.current_user_security = None
     g.current_user = None
