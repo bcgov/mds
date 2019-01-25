@@ -173,6 +173,21 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
+                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
@@ -314,6 +329,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+            BACKUP_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -361,6 +377,12 @@ environments {
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                 }
+                backup {
+                    cpu_request = "500m"
+                    cpu_limit = "750m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }
             }
             deployment {
                 env {
@@ -404,6 +426,7 @@ environments {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
+            BACKUP_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -451,6 +474,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
+                backup {
+                    cpu_request = "1m"
+                    cpu_limit = "1m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
+                }
             }
             deployment {
                 env {
@@ -494,6 +523,7 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
+            BACKUP_PVC_SIZE = '50Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -531,6 +561,12 @@ environments {
                 redis {
                     cpu_request = "100m"
                     cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
+                backup {
+                    cpu_request = "100m"
+                    cpu_limit = "450m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
