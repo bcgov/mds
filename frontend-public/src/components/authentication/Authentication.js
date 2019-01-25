@@ -1,64 +1,65 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Menu, Dropdown, Button, Icon } from "antd";
+import * as route from "@/constants/routes";
 import PropTypes from "prop-types";
-import * as routes from "@/constants/routes";
-import { logoutUser } from "@/actions/authenticationActions";
-import { getKeycloak, isAuthenticated } from "@/selectors/authenticationSelectors";
+import { SSO_BCEID_LOGIN_ENDPOINT } from "@/constants/API";
+import { signOutFromSiteMinder } from "@/actionCreators/authenticationActionCreator";
+import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 
 /**
  * @class Logout.js is a small component which contains all keycloak logic to log a user out, NOTE: due to idir issues, Logout does not work as it should.
  */
 
 const propTypes = {
-  logoutUser: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  keycloak: { logout: PropTypes.func.isRequired }.isRequired,
+  userInfo: PropTypes.objectOf(PropTypes.string),
 };
 
-export class Authentication extends Component {
-  handleLogout = () => {
-    this.props.keycloak.logout();
-    localStorage.removeItem("jwt");
-    this.props.logoutUser();
-  };
+const defaultProps = {
+  userInfo: {},
+};
 
-  render() {
-    if (!this.props.isAuthenticated) {
-      return (
-        <Link to={routes.DASHBOARD.route}>
-          <Button type="tertiary" className="login-btn">
-            Log in
-          </Button>
-        </Link>
-      );
-    }
+export const Authentication = (props) => {
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Button type="tertiary" onClick={signOutFromSiteMinder}>
+          logout
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+
+  if (!props.isAuthenticated) {
     return (
-      <Button type="tertiary" className="login-btn" onClick={this.handleLogout}>
-        Logout
-      </Button>
+      <a href={SSO_BCEID_LOGIN_ENDPOINT}>
+        <Button type="tertiary" className="login-btn">
+          Log in
+        </Button>
+      </a>
     );
   }
-}
+  return (
+    <div className="inline align-bot">
+      <Link to={route.DASHBOARD.route}>My Mines</Link>
+      <Dropdown overlay={menu}>
+        <a className="ant-dropdown-link" href="#">
+          {props.userInfo.email}
+          <Icon type="down" />
+        </a>
+      </Dropdown>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
-  keycloak: getKeycloak(state),
+  userInfo: getUserInfo(state),
   isAuthenticated: isAuthenticated(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      logoutUser,
-    },
-    dispatch
-  );
-
 Authentication.propTypes = propTypes;
+Authentication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Authentication);
+export default connect(mapStateToProps)(Authentication);

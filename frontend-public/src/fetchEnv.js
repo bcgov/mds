@@ -18,6 +18,5 @@ export default function fetchEnv() {
       KEYCLOAK.clientId = env.keycloak_clientId;
       KEYCLOAK.resource = env.keycloak_resource;
       KEYCLOAK.url = env.keycloak_url;
-      KEYCLOAK.idpHint = env.keycloak_idpHint;
     });
 }

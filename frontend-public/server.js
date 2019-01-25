@@ -1,6 +1,6 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
-const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 let BASE_PATH = process.env.BASE_PATH;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
@@ -24,17 +24,13 @@ const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
   maxAge: "1y",
 });
 
-app.get(`${BASE_PATH}/env`, function(req, res) {
+app.get(`${BASE_PATH}/env`, (req, res) => {
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
     keycloak_url: process.env.KEYCLOAK_URL,
-    keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
-    keycloak_role_admin: process.env.KEYCLOAK_ROLE_ADMIN,
-    keycloak_role_create: process.env.KEYCLOAK_ROLE_CREATE,
-    keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW,
   });
 });
 
