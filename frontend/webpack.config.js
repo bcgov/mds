@@ -64,7 +64,7 @@ const commonConfig = merge([
       // Adding timestamp to builds
       function() {
         this.plugin("watch-run", (watching, callback) => {
-          console.log(`Begin compile at ${  new Date()}`);
+          console.log(`Begin compile at ${new Date()}`);
           callback();
         });
       },

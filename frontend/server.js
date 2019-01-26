@@ -1,6 +1,6 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
-const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 let BASE_PATH = process.env.BASE_PATH;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
@@ -11,10 +11,19 @@ if (dotenv.parsed) {
   PORT = dotenv.parsed.PORT || PORT;
 }
 
+// maxAge and mustRevalidate control how the client cache application files. The settings
+// below allows the client to cache content, but once the maxAge (seconds) has elapased the
+// client must check to see if the content is stale. Our app serves content with eTags, so
+// this results in a status 304 Not Modified response, unless the content has been updated.
+// For our webpack bundles, they will be redownloaded as they are not served with eTags.
+//
+// If our bundle content has actually changed, it will have generated a new file name and be
+// downloaded immediately.
 const app = express();
 app.use(
   cacheControl({
-    noStore: true,
+    mustRevalidate: true,
+    maxAge: 43200,
     private: true,
   })
 );
@@ -24,7 +33,7 @@ const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
   maxAge: "1y",
 });
 
-app.get(`${BASE_PATH}/env`, function(req, res) {
+app.get(`${BASE_PATH}/env`, (req, res) => {
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,

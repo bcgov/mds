@@ -180,7 +180,7 @@ exports.bundleOptimization = ({ options } = {}) => ({
         cache: true,
         parallel: true,
         uglifyOptions: {
-          compress: false,
+          compress: {},
         },
       }),
     ],
