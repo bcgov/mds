@@ -149,7 +149,7 @@ export class MinePin extends Component {
           singlePopupTemplate: popupTemplate,
           spatialReference: new SpatialReference({ wkid: 3005 }),
           clusterToScale: 200000,
-          data: fclData,
+          data: null,
         };
 
         const fcl = FlareClusterLayer.FlareClusterLayer(options);
