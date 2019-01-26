@@ -3,8 +3,6 @@ import { loadModules } from "react-arcgis";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import MapPopup from "@/components/maps/MapPopup";
-import { renderToString } from "react-dom/server";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
 
 /**
@@ -28,26 +26,6 @@ const defaultProps = {
 
 export class MinePin extends Component {
   state = { graphic: null, isFullMap: false };
-
-  popupTemplate(id) {
-    const { mine_name } = this.props.mines[id];
-    const content = renderToString(<MapPopup id={id} />);
-    return {
-      title: mine_name,
-      content,
-    };
-  }
-
-  points = (id) => {
-    if (this.props.mines[id].mine_location[0]) {
-      return {
-        type: "point",
-        longitude: this.props.mines[id].mine_location[0].longitude,
-        latitude: this.props.mines[id].mine_location[0].latitude,
-      };
-    }
-    return null;
-  };
 
   componentWillMount() {
     const fclURL = `${window.location.origin}${
@@ -126,22 +104,15 @@ export class MinePin extends Component {
           content: "{templateContent}",
         });
 
-        const fclData = mineIds.reduce((result, id) => {
-          const point = this.points(id);
-          if (!point) {
-            return result;
-          }
-          const y = Number(point.latitude);
-          const x = Number(point.longitude);
-          const templateInfo = this.popupTemplate(id);
-          result.push({
-            y,
-            x,
-            templateTitle: templateInfo.title,
-            templateContent: templateInfo.content,
+        const fclData = [];
+        mineIds.forEach((mineId) => {
+          fclData.push({
+            y: Number(this.props.mines[mineId].mine_location[0].latitude),
+            x: Number(this.props.mines[mineId].mine_location[0].longitude),
+            templateTitle: this.props.mines[mineId].mine_name,
+            templateContent: `<a href=\"/dashboard/${mineId}/summary\" data-reactroot=\"\"><button type=\"button\" class=\"ant-btn ant-btn-primary\"><span>View Mine</span></button></a>`,
           });
-          return result;
-        }, []);
+        });
 
         const options = {
           id: "flare-cluster-layer",
@@ -149,7 +120,7 @@ export class MinePin extends Component {
           singlePopupTemplate: popupTemplate,
           spatialReference: new SpatialReference({ wkid: 3005 }),
           clusterToScale: 200000,
-          data: null,
+          data: fclData,
         };
 
         const fcl = FlareClusterLayer.FlareClusterLayer(options);
