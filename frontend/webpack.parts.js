@@ -179,9 +179,6 @@ exports.bundleOptimization = ({ options } = {}) => ({
       new UglifyWebpackPlugin({
         cache: true,
         parallel: true,
-        uglifyOptions: {
-          compress: false,
-        },
       }),
     ],
   },
