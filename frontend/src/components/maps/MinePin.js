@@ -104,13 +104,18 @@ export class MinePin extends Component {
           content: "{templateContent}",
         });
 
+        const mapPopupString = renderToString(<MapPopup id="${mineId}" />);
+
+        // The previous reduce function processing point data was safer and more dynamic, but slow with
+        // large datasets taking 5-10 seconds for 50000 points. The code below is ~50ms for 50000 points
+        // and uses significantly lower memory.
         const fclData = [];
         mineIds.forEach((mineId) => {
           fclData.push({
             y: Number(this.props.mines[mineId].mine_location[0].latitude),
             x: Number(this.props.mines[mineId].mine_location[0].longitude),
             templateTitle: this.props.mines[mineId].mine_name,
-            templateContent: `<a href=\"/dashboard/${mineId}/summary\" data-reactroot=\"\"><button type=\"button\" class=\"ant-btn ant-btn-primary\"><span>View Mine</span></button></a>`,
+            templateContent: `${mapPopupString}`,
           });
         });
 
