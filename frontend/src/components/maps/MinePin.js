@@ -106,7 +106,7 @@ export class MinePin extends Component {
           content: "{templateContent}",
         });
 
-        const mapPopupString = renderToString(<MapPopup id="${mineId}" />);
+        const mapPopupString = renderToString(<MapPopup id="{mineId}" />);
 
         // The previous reduce function processing point data was safer and more dynamic, but slow with
         // large datasets taking 5-10 seconds for 50000 points. The code below is ~50ms for 50000 points
@@ -117,7 +117,7 @@ export class MinePin extends Component {
             y: Number(this.props.mines[mineId].mine_location[0].latitude),
             x: Number(this.props.mines[mineId].mine_location[0].longitude),
             templateTitle: this.props.mines[mineId].mine_name,
-            templateContent: `${mapPopupString}`,
+            templateContent: mapPopupString.replace("{mineId}", mineId),
           });
         });
 
