@@ -11,7 +11,7 @@ if (dotenv.parsed) {
   PORT = dotenv.parsed.PORT || PORT;
 }
 
-// maxAge and mustRevalidate control how the client cache application files. The settings
+// maxAge and mustRevalidate control how the client caches application files. The settings
 // below allows the client to cache content, but the client must check to see if the content
 // is stale. Our app serves content with eTags, so this results in a status 304 Not Modified
 // response, unless the content has been updated.
