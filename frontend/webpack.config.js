@@ -145,7 +145,6 @@ const prodConfig = merge([
   }),
   parts.bundleOptimization({
     options: {
-      chunks: "all",
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,

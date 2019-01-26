@@ -3,6 +3,8 @@ import { loadModules } from "react-arcgis";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { renderToString } from "react-dom/server";
+import MapPopup from "@/components/maps/MapPopup";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
 
 /**
