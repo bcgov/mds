@@ -59,6 +59,12 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
+                # Below caches the mine map response object in redis with a 12 hour timeout.
+                # Generating this object takes 4-8 seconds with 50,000 points.
+                # TODO: Use some custom representation of this data vs JSON.
+                # JSONifying the response object has notable overhead, and the
+                # json string is massive (with 50,000 points: 1s to jsonify,
+                # uncompressed 16mb, 2.7mb compressed).
                 map_result = cache.get(MINE_MAP_CACHE)
                 if not map_result:
                     records = MineMapViewLocation.query.all()

@@ -5,6 +5,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
+# NOTE: Be careful about relationships defined in the mine model paticularly. lazy='joined' will cause the relationship
+# to be joined and loaded immediately, so that data will load even when we may not need or want it.
+# lazy='select' will lazy load that data when the property is first accessed. There are other options as well
+# that may be best in different situations: https://docs.sqlalchemy.org/en/latest/orm/loading_relationships.html
+
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
@@ -17,6 +22,7 @@ class Mine(AuditMixin, Base):
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
+    #mine_location is almost always used, and it's faster if we set this to joined.
     mine_location = db.relationship(
         'MineLocation',
         backref='mine=',
