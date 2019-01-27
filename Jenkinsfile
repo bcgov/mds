@@ -4,10 +4,12 @@ pipeline {
         disableResume()
     }
     stages {
-        input {
+        stage('Build-Confirmation') {
+            input {
                 message "Do you want to build?"
                 ok "Yes!"
             }
+        }
         stage('Build') {
             agent { label 'master' }
             steps {
