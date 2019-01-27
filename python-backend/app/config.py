@@ -55,9 +55,6 @@ class Config(object):
     # 100MB file limit
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
-    JSON_SORT_KEYS = False
-    JSONIFY_PRETTYPRINT_REGULAR = False
-
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
