@@ -9,6 +9,9 @@ pipeline {
                 message "Do you want to build?"
                 ok "Yes!"
             }
+            steps {
+                echo "GOT INPUT"
+            }
         }
         stage('Build') {
             agent { label 'master' }
