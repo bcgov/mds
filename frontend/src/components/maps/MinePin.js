@@ -108,7 +108,7 @@ export class MinePin extends Component {
 
         const mapPopupString = renderToString(<MapPopup id="{mineId}" />);
 
-        // The previous reduce function processing point data was safer and more dynamic, but slow with
+        // The previous code processing point data was nicely seperated into functions, but slow with
         // large datasets taking 5-10 seconds for 50000 points. The code below is ~50ms for 50000 points
         // and uses significantly lower memory.
         const fclData = [];
