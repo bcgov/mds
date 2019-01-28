@@ -7,9 +7,9 @@
   border-bottom: 1px solid $gov-yellow;
   padding: 0 $default-padding-lg $default-margin-md $default-padding-xxl;
   top: 0;
-  @include mobile {
-    padding: 0px;
-    min-height: 110px;
+  @include tablet {
+    padding: 10px;
+    min-height: 80px;
   }
 }
 
@@ -33,7 +33,7 @@
   }
 }
 
-#header-dropdown {
+.header-dropdown {
   margin-top: 20px;
   color: $gov-yellow;
   font-style: italic;

@@ -6,7 +6,7 @@ import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 
 export const Header = () => (
-  <div className="header inline-flex between tablet-block tablet-center">
+  <div className="header inline-flex between">
     <div>
       <Link to={routes.HOME.route}>
         <img alt="bc_gov_logo" src={BC_GOV} />

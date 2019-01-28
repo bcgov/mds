@@ -4,11 +4,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getRedirect } from "@/selectors/authenticationSelectors";
-import {
-  authenticateUser,
-  unAuthenticateUser,
-  signOutFromSSO,
-} from "@/actionCreators/authenticationActionCreator";
+import { authenticateUser, unAuthenticateUser } from "@/actionCreators/authenticationActionCreator";
+import { signOutFromSSO } from "@/utils/authenticationHelpers";
 import queryString from "query-string";
 import { RETURN_PAGE_TYPE } from "../constants/strings";
 import Loading from "@/components/common/Loading";
@@ -24,23 +21,16 @@ export class ReturnPage extends Component {
   componentDidMount() {
     // grab the code and redirect type from the redirect url
     const { type, code } = queryString.parse(this.props.location.search);
-    switch (type) {
-      case RETURN_PAGE_TYPE.LOGIN:
-        if (code) {
-          // exchange code for token, store user info in redux, redirect to Dashboard
-          this.props.authenticateUser(code);
-        }
-        break;
-      case RETURN_PAGE_TYPE.SITEMINDER_LOGOUT:
-        // just returned from SiteMinder, sign out from SSO this time
-        signOutFromSSO();
-        break;
-      case RETURN_PAGE_TYPE.LOGOUT:
-        // finished logging out from SSO, clear redux & token and redirect home
-        this.props.unAuthenticateUser();
-        break;
-      default:
-        break;
+    if (code) {
+      // exchange code for token, store user info in redux, redirect to Dashboard
+      this.props.authenticateUser(code);
+    }
+    if (type === RETURN_PAGE_TYPE.SITEMINDER_LOGOUT) {
+      // just returned from SiteMinder, sign out from SSO this time
+      signOutFromSSO();
+    } else if (type === RETURN_PAGE_TYPE.LOGOUT) {
+      // finished logging out from SSO, clear redux & token and redirect home
+      this.props.unAuthenticateUser();
     }
   }
 

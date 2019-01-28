@@ -43,12 +43,6 @@ body {
   justify-content: space-between;
 }
 
-.tablet-block {
-  @include tablet {
-    display: block;
-  }
-}
-
 .full {
   width: 100%;
   height: 100%;

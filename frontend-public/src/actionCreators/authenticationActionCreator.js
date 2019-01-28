@@ -51,14 +51,6 @@ export const authenticateUser = (code) => (dispatch) => {
     });
 };
 
-export const signOutFromSSO = () => {
-  window.open(API.SSO_LOGOUT_ENDPOINT, "_self");
-};
-
-export const signOutFromSiteMinder = () => {
-  window.open(API.SITEMINDER_LOGOUT_ENDPOINT, "_self");
-};
-
 export const unAuthenticateUser = () => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");

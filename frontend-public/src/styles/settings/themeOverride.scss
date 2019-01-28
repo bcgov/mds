@@ -4,8 +4,6 @@
   background-color: $pure-white;
   border-color: $secondary-btn-color;
   &:hover {
-    color: $secondary-btn-color;
-    background-color: $pure-white;
     border: 1px solid $secondary-btn-border-color-hover;
   }
 }
@@ -15,7 +13,6 @@
   background-color: $primary-btn-color;
   border-color: $primary-btn-color;
   &:hover {
-    color: $pure-white;
     background-color: $primary-btn-color-hover;
     border: 1px solid $primary-btn-border-color-hover;
   }
@@ -79,10 +76,13 @@
 
 .ant-dropdown-menu {
   background-color: $nav-blue;
+  border-radius: 0;
+  top: 14px;
 }
 
 .ant-dropdown-menu-item,
 .ant-dropdown-menu-submenu-title {
+  color: $gov-yellow;
   & .ant-btn-tertiary {
     width: 100%;
     border: none;
