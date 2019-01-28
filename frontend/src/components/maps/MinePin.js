@@ -113,12 +113,14 @@ export class MinePin extends Component {
         // and uses significantly lower memory.
         const fclData = [];
         mineIds.forEach((mineId) => {
-          fclData.push({
-            y: Number(this.props.mines[mineId].mine_location[0].latitude),
-            x: Number(this.props.mines[mineId].mine_location[0].longitude),
-            templateTitle: this.props.mines[mineId].mine_name,
-            templateContent: mapPopupString.replace("{mineId}", mineId),
-          });
+          if (this.props.mines[id].mine_location[0]) {
+            fclData.push({
+              y: Number(this.props.mines[mineId].mine_location[0].latitude),
+              x: Number(this.props.mines[mineId].mine_location[0].longitude),
+              templateTitle: this.props.mines[mineId].mine_name,
+              templateContent: mapPopupString.replace("{mineId}", mineId),
+            });
+          }
         });
 
         const options = {
