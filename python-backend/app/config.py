@@ -56,7 +56,6 @@ class Config(object):
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
     SCHEDULER_API_ENABLED = True
-    SCHEDULER_TIMEZONE = 'Canada/Pacific'
 
 
 class TestConfig(Config):
