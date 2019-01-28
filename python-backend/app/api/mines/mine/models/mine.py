@@ -23,11 +23,7 @@ class Mine(AuditMixin, Base):
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_location = db.relationship(
-        'MineLocation',
-        backref='mine=',
-        order_by='desc(MineLocation.update_timestamp)',
-        lazy='joined')
+    mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
 
@@ -71,7 +67,8 @@ class Mine(AuditMixin, Base):
             'region_code':
             self.mine_region,
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
-            'mine_location': [item.json() for item in self.mine_location],
+            'mine_location':
+            self.mine_location.json(),
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
@@ -109,18 +106,17 @@ class Mine(AuditMixin, Base):
             'mine_note': self.mine_note,
             'major_mine_ind': self.major_mine_ind,
             'region_code': self.mine_region,
-            'mine_location': [item.json() for item in self.mine_location]
+            'mine_location': self.mine_location.json()
         }
 
     def json_by_name(self):
         return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
-        mine_location = self.mine_location[0] if self.mine_location else None
         return {
             'guid': str(self.mine_guid),
-            'latitude': str(mine_location.latitude) if mine_location else '',
-            'longitude': str(mine_location.longitude) if mine_location else ''
+            'latitude': str(self.mine_location.latitude) if self.mine_location else '',
+            'longitude': str(self.mine_location.longitude) if self.mine_location else ''
         }
 
     def json_by_permit(self):
