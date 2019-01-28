@@ -73,6 +73,7 @@ BEGIN
     RAISE NOTICE '....# of mine records updated in ETL_PROFILE: %', update_row;
 
     -- If new rows have been added since the last ETL, only insert the new ones.
+    -- Exclude major mines
     -- Generate a random UUID for mine_guid
     RAISE NOTICE '.. Insert new MMS mine records into ETL_PROFILE';
     WITH mms_new AS(
@@ -102,7 +103,8 @@ BEGIN
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         transform_major_mine_ind(mms_new.min_lnk)
-    FROM mms_new;
+    FROM mms_new
+    WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
     SELECT count(*) FROM ETL_PROFILE INTO new_row;
     RAISE NOTICE '....# of new mine records found in MMS: %', (new_row-old_row);
     RAISE NOTICE '....Total mine records in ETL_PROFILE: %.', new_row;
