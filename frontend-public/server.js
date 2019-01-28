@@ -19,7 +19,7 @@ const app = express();
 app.use(
   cacheControl({
     mustRevalidate: true,
-    maxAge: 43200,
+    maxAge: 0,
     private: true,
   })
 );
