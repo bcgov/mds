@@ -201,27 +201,14 @@ def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
 def test_no_NRIS_Token(test_client, auth_headers, setup_info):
 
     with mock.patch('requests.get') as nris_data_mock:
-        nris_data_mock.side_effect = [requests.HTTPError(response=MockResponse(None, 500)), MockResponse(setup_info.get('NRIS_Mock_data'), 200)]
+        nris_data_mock.side_effect = [requests.exceptions.HTTPError(response=MockResponse(None, 403)), MockResponse(setup_info.get('NRIS_Mock_data'), 200)]
 
         get_resp = test_client.get(
-            '/mines/compliance/1234567',
+            '/mines/compliance/11223343',
             headers=auth_headers['full_auth_header'])
 
         get_data = json.loads(get_resp.data.decode())
         
-        assert get_resp.status_code == 500
+        assert get_resp.status_code == 403
         assert get_data['error']['message'] is not None
-
-def test_no_NRIS_Data(test_client, auth_headers, setup_info):
-
-    with mock.patch('requests.get') as nris_data_mock:
-        nris_data_mock.side_effect = [MockResponse({'access_token':'1234-121241-241241-241'}, 200), requests.HTTPError(response=MockResponse(None, 500))]
-
-        get_resp = test_client.get(
-            '/mines/compliance/1234567',
-            headers=auth_headers['full_auth_header'])
-
-        get_data = json.loads(get_resp.data.decode())
         
-        assert get_resp.status_code == 500
-        assert get_data['error']['message'] is not None
