@@ -61,8 +61,8 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
-            'start_date': str(self.start_date or ''),
-            'end_date': str(self.end_date or ''),
+            'start_date': str(self.start_date) if self.start_date else None,
+            'end_date': str(self.end_date) if self.end_date else None,
             'party': self.party.json(show_mgr=False) if self.party else str({})
         }
         related_guid = ""
@@ -164,6 +164,8 @@ class MinePartyAppointment(AuditMixin, Base):
                                party_guid,
                                mine_party_appt_type_code,
                                user_kwargs,
+                               start_date=None,
+                               end_date=None,
                                processed_by=processed_by,
                                permit_guid=None,
                                save=True):
@@ -172,6 +174,8 @@ class MinePartyAppointment(AuditMixin, Base):
             party_guid=party_guid,
             permit_guid=permit_guid,
             mine_party_appt_type_code="PMT",
+            start_date=start_date,
+            end_date=end_date,
             processed_by=processed_by,
             **user_kwargs)
         if save:

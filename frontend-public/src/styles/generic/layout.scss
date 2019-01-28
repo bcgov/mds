@@ -35,6 +35,20 @@ body {
   display: inline-block;
 }
 
+.inline-flex {
+  @include flex;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.tablet-block {
+  @include tablet {
+    display: block;
+  }
+}
+
 .full {
   width: 100%;
   height: 100%;

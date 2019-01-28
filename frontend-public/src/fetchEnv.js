@@ -12,7 +12,7 @@ export default function fetchEnv() {
         return DEFAULT_ENVIRONMENT;
       }
     })
-    .catch((error) => DEFAULT_ENVIRONMENT)
+    .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
       KEYCLOAK.clientId = env.keycloak_clientId;

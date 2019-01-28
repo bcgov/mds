@@ -59,10 +59,9 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
-const isActive = (partyRelationship) =>
-  !partyRelationship.end_date ||
-  (Date.parse(partyRelationship.end_date) >= new Date() &&
-    (!partyRelationship.start_date || Date.parse(partyRelationship.start_date) <= new Date()));
+const isActive = (pr) =>
+  (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
+  (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
 export const MineSummary = (props) => {
   if (props.partyRelationships.length === 0) {

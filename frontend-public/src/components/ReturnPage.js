@@ -24,7 +24,6 @@ export class ReturnPage extends Component {
   componentDidMount() {
     // grab the code and redirect type from the redirect url
     const { type, code } = queryString.parse(this.props.location.search);
-
     switch (type) {
       case RETURN_PAGE_TYPE.LOGIN:
         if (code) {

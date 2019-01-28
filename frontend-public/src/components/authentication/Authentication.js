@@ -26,7 +26,7 @@ export const Authentication = (props) => {
     <Menu>
       <Menu.Item>
         <Button type="tertiary" onClick={signOutFromSiteMinder}>
-          logout
+          Log out
         </Button>
       </Menu.Item>
     </Menu>
@@ -43,12 +43,14 @@ export const Authentication = (props) => {
   }
   return (
     <div className="inline align-bot">
-      <Link to={route.DASHBOARD.route}>My Mines</Link>
+      <Link to={route.DASHBOARD.route}>
+        <span id="header-link">My Mines</span>
+      </Link>
       <Dropdown overlay={menu}>
-        <a className="ant-dropdown-link" href="#">
+        <Button ghost id="header-dropdown">
           {props.userInfo.email}
           <Icon type="down" />
-        </a>
+        </Button>
       </Dropdown>
     </div>
   );

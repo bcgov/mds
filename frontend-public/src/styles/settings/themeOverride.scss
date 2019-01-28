@@ -1,5 +1,4 @@
 // BUTTON
-// BUTTON
 .ant-btn-secondary {
   color: $secondary-btn-color;
   background-color: $pure-white;
@@ -58,7 +57,7 @@
 }
 
 .ant-btn-background-ghost {
-  color: $font-colour !important;
+  color: $font-colour;
   box-shadow: none;
   border-style: none !important;
   &:hover {
@@ -75,5 +74,18 @@
     color: $tertiary-btn-color-hover;
     border: 1px solid $tertiary-btn-border-color-hover;
     background: transparent;
+  }
+}
+
+.ant-dropdown-menu {
+  background-color: $nav-blue;
+}
+
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  & .ant-btn-tertiary {
+    width: 100%;
+    border: none;
+    text-align: right;
   }
 }
