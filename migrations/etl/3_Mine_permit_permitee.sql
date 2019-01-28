@@ -46,7 +46,10 @@ BEGIN
     ---- AND with non-empty permit number
     permit_list AS (
         SELECT
-            mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+            COALESCE(mine_no, '')||
+            COALESCE(permit_no, '')||
+            COALESCE(recv_dt, '9999-12-31'::date)||
+            COALESCE(iss_dt, '9999-12-31'::date) AS combo_id,
             max(cid) permit_cid
         FROM mms.mmspmt permit_info
         WHERE
