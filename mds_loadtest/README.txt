@@ -9,15 +9,16 @@ To install requirements run:
 
 'pip install -r requirements.txt'
 
-Get a bearer token from the network console after successfully loging into the app.
+Get a bearer token from the network console after successfully logging into the app.
 Add it to the constants.py file
 NOTE:  It will only last a day.
 
-
 To run api tests run:
 
+'make test-api-local'
 
-To run web tests run:
-locust -f scripts/web_locust_file.py --host=http://localhost:3000
+To run frontend tests run:
+
+'make test-web-local'
 
 Go to localhost:8089 to run jobs.
