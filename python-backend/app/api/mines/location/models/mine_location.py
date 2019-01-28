@@ -4,7 +4,8 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
-from app.extensions import db
+from app.extensions import db, cache
+from ....constants import MINE_MAP_CACHE
 
 
 class MineLocation(AuditMixin, Base):
@@ -46,10 +47,12 @@ class MineLocation(AuditMixin, Base):
             mine_guid=mine.mine_guid,
             latitude=random_location.get('latitude', 0),
             longitude=random_location.get('longitude', 0),
-            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)), float(random_location.get('latitude', 0))),
+            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)),
+                                             float(random_location.get('latitude', 0))),
             effective_date=datetime.today(),
             expiry_date=datetime.today(),
             **user_kwargs)
         if save:
             mine_location.save(commit=False)
+            cache.delete(MINE_MAP_CACHE)
         return mine_location

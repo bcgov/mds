@@ -258,6 +258,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 longitude=lon,
                 **self.get_create_update_dict())
             location.save()
+            cache.delete(MINE_MAP_CACHE)
         mine_status = self.mine_status_processor(status, mine.mine_guid) if status else None
         return {
             'mine_guid': str(mine.mine_guid),
@@ -333,6 +334,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 longitude=lon,
                 **self.get_create_update_dict())
             location.save()
+            cache.delete(MINE_MAP_CACHE)
 
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None

@@ -26,6 +26,8 @@ class Config(object):
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
     JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
+    # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
+    JWT_OIDC_CACHING_ENABLED = True
 
     # Microservice URLs
     DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
@@ -67,6 +69,8 @@ class TestConfig(Config):
     JWT_OIDC_TEST_AUDIENCE = "test_audience"
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
+    # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
+    JWT_OIDC_CACHING_ENABLED = True
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
 
     JWT_OIDC_TEST_KEYS = {
