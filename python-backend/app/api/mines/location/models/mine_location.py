@@ -27,8 +27,8 @@ class MineLocation(AuditMixin, Base):
         return {
             'mine_location_guid': str(self.mine_location_guid),
             'mine_guid': str(self.mine_guid),
-            'latitude': str(lat) if lat else None,
-            'longitude': str(lon) if lon else None,
+            'latitude': str(lat) if lat else '',
+            'longitude': str(lon) if lon else '',
         }
 
     @classmethod
