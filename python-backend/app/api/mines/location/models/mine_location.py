@@ -54,5 +54,4 @@ class MineLocation(AuditMixin, Base):
             **user_kwargs)
         if save:
             mine_location.save(commit=False)
-            cache.delete(MINE_MAP_CACHE)
         return mine_location
