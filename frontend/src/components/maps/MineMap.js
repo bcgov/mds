@@ -123,7 +123,6 @@ class MineMap extends Component {
   render() {
     if (this.props.mine) {
       const { mine } = this.props;
-      alert(JSON.stringify(mine.mine_location));
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
@@ -135,7 +134,7 @@ class MineMap extends Component {
               mine.mine_location ? mine.mine_location.longitude : String.DEFAULT_LONG,
               mine.mine_location ? mine.mine_location.latitude : String.DEFAULT_LAT,
             ],
-            zoom: mine.mine_location[0] ? 8 : 5,
+            zoom: mine.mine_location ? 8 : 5,
             constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
