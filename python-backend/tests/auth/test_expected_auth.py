@@ -29,7 +29,8 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
-    [(DocumentManagerResource, "get", []), (DocumentManagerResource, "post", [MINE_CREATE]),
+    [(DocumentManagerResource, "get", []),
+     (DocumentManagerResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedDocumentStatusResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (ExpectedDocumentResource, "get", [MINE_VIEW]),
      (ExpectedDocumentResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
@@ -46,7 +47,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MinePartyApptResource, "post", [MINE_CREATE]), (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
      (MinePartyApptTypeResource, "get", [MINE_VIEW]), (MineRegionResource, "get", [MINE_VIEW]),
-     (MineResource, "get", [MINE_VIEW]), (MineResource, "post", [MINE_CREATE]),
+     (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (MineResource, "post", [MINE_CREATE]),
      (MineResource, "put", [MINE_CREATE]), (MineStatusResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "post", [MINE_CREATE]),

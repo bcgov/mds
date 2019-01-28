@@ -11,8 +11,8 @@ class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
     mine_location_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    latitude = db.Column(db.Numeric(9, 7), nullable=False)
-    longitude = db.Column(db.Numeric(11, 7), nullable=False)
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
     geom = db.Column(Geometry('POINT', 3005))
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(
@@ -27,8 +27,8 @@ class MineLocation(AuditMixin, Base):
         return {
             'mine_location_guid': str(self.mine_location_guid),
             'mine_guid': str(self.mine_guid),
-            'latitude': str(lat),
-            'longitude': str(lon),
+            'latitude': str(lat) if lat else None,
+            'longitude': str(lon) if lon else None,
         }
 
     @classmethod
@@ -46,7 +46,8 @@ class MineLocation(AuditMixin, Base):
             mine_guid=mine.mine_guid,
             latitude=random_location.get('latitude', 0),
             longitude=random_location.get('longitude', 0),
-            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)), float(random_location.get('latitude', 0))),
+            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)),
+                                             float(random_location.get('latitude', 0))),
             effective_date=datetime.today(),
             expiry_date=datetime.today(),
             **user_kwargs)
