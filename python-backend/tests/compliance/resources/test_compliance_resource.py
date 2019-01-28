@@ -9,6 +9,9 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from unittest import mock
 
+from app.extensions import cache
+from app.api.constants import NRIS_CACHE_PREFIX
+
 def get_date_one_month_ahead():
     date = datetime.now() + relativedelta(months=1)
     return date.strftime('%Y-%m-%d %H:%M')
@@ -172,7 +175,7 @@ def setup_info(test_client):
             }]
 
     yield dict(NRIS_Mock_data=NRIS_Mock_data, expected_data=expected_data)
-
+    cache.delete(NRIS_CACHE_PREFIX + 'token')
 
 def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
 
@@ -212,3 +215,16 @@ def test_no_NRIS_Token(test_client, auth_headers, setup_info):
         assert get_resp.status_code == 403
         assert get_data['error']['message'] is not None
         
+def test_no_NRIS_Data(test_client, auth_headers, setup_info):
+
+    with mock.patch('requests.get') as nris_mock_return:
+        nris_mock_return.side_effect = [MockResponse({'access_token':'1234-121241-241241-241'}, 200), requests.HTTPError(response=MockResponse(None, 404))]
+
+        get_resp = test_client.get(
+            '/mines/compliance/2349087',
+            headers=auth_headers['full_auth_header'])
+
+        get_data = json.loads(get_resp.data.decode())
+        
+        assert get_resp.status_code == 404
+        assert get_data['error']['message'] is not None

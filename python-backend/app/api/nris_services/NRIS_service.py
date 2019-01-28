@@ -20,7 +20,7 @@ def _get_datetime_from_NRIS_data(date):
 
 
 def _get_NRIS_token():
-    result = cache.get(NRIS_CACHE_PREFIX + "token")
+    result = cache.get(NRIS_CACHE_PREFIX + 'token')
 
     if result is None:
         params = {
@@ -45,7 +45,7 @@ def _get_NRIS_token():
                 result = None
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_CACHE_PREFIX + "token", result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
 
     return result
 

@@ -18,7 +18,6 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
         result = cache.get(NRIS_CACHE_PREFIX + mine_no)
 
         if result is None:
-
             try:
                 response_data = NRIS_service._get_EMPR_data_from_NRIS(mine_no)
             except requests.exceptions.Timeout:
