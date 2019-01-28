@@ -25,6 +25,7 @@ class MineLocationResource(Resource, ErrorMixin):
             return {
                 'mines':
                 list(
-                    map(lambda x: x.json_by_location(),
-                        [x for x in Mine.query.all() if x.latitude]))
+                    map(lambda x: x.json_by_location(), [
+                        x for x in Mine.query.all() if x.mine_location and x.mine_location.latitude
+                    ]))
             }
