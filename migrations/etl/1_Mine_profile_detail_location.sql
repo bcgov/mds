@@ -60,11 +60,11 @@ BEGIN
     -- Upsert data into ETL_PROFILE from MMS
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_PROFILE
-    SET mine_name      = mms.mmsmin.mine_nm ,
+    SET mine_name      = mms.mmsmin.mine_nm,
         latitude       = mms.mmsmin.lat_dec,
         longitude      = mms.mmsmin.lon_dec,
         major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
-        mine_region    = transform_mine_region(mms.mmsmin.reg_cd),
+        mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
         mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ)
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_PROFILE.mine_no;
@@ -104,7 +104,7 @@ BEGIN
         transform_major_mine_ind(mms_new.min_lnk)
     FROM mms_new;
     SELECT count(*) FROM ETL_PROFILE INTO new_row;
-    RAISE NOTICE '....# of new mine record found in MMS: %', (new_row-old_row);
+    RAISE NOTICE '....# of new mine records found in MMS: %', (new_row-old_row);
     RAISE NOTICE '....Total mine records in ETL_PROFILE: %.', new_row;
 END $$;
 
@@ -503,14 +503,14 @@ DECLARE
     new_row    integer;
     update_row integer;
 BEGIN
-    RAISE NOTICE '.. Step 5 of 5: Update mine_status in MDS';
+    RAISE NOTICE '.. Step 5 of 5: Update mine_type in MDS';
     SELECT count(*) FROM mine_type into old_row;
 
     -- Upsert data from new_record into mine_type
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE mine_type
     SET mine_tenure_type_code = ETL_PROFILE.mine_type,
-        update_user           = 'mms_migration'                  ,
+        update_user           = 'mms_migration'      ,
         update_timestamp      = now()
     FROM ETL_PROFILE
     WHERE
@@ -556,6 +556,8 @@ BEGIN
     RAISE NOTICE '....Total mine_type records in MDS: %.', new_row;
     RAISE NOTICE 'Finish updating mine list in MDS';
 END $$;
+
+
 
 -- Drop all created functions
 DROP FUNCTION IF EXISTS transform_mine_region(code varchar);
