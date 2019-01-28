@@ -1,8 +1,9 @@
 import decimal
 import uuid
 from datetime import datetime
+import json
 
-from flask import request
+from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
@@ -59,18 +60,29 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
+
                 # Below caches the mine map response object in redis with a 12 hour timeout.
-                # Generating this object takes 4-8 seconds with 50,000 points.
-                # TODO: Use some custom representation of this data vs JSON.
-                # JSONifying the response object has notable overhead, and the
-                # json string is massive (with 50,000 points: 1s to jsonify,
-                # uncompressed 16mb, 2.7mb compressed).
+                # Generating and jsonifying this object takes 4-8 seconds with 50,000 points.
+                # It's more efficient to store the json to avoid reinitialzing all of the objects
+                # and jsonifying on each resposne, so a flask response is returned to avoid
+                # flask_restplus from re-jsonifying the data.
+                #
+                # TODO: Use some custom representation of this data vs JSON. The
+                # json string is massive (with 50,000 points: 16mb uncompress, 2.7mb compressed).
+                # A quick test of delimented data brings this down to ~1mb.
+
                 map_result = cache.get(MINE_MAP_CACHE)
                 if not map_result:
                     records = MineMapViewLocation.query.all()
-                    map_result = {'mines': list((map(lambda x: x.json_for_map(), records)))}
+                    map_result = json.dumps(
+                        {
+                            'mines': list((map(lambda x: x.json_for_map(), records)))
+                        },
+                        separators=(',', ':'))
                     cache.set(MINE_MAP_CACHE, map_result, timeout=43140)
-                return map_result
+                response = make_response(map_result)
+                response.headers['content-type'] = 'application/json'
+                return response
 
             paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
             mines = paginated_mine_query.all()
