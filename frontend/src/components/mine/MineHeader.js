@@ -79,8 +79,8 @@ class MineHeader extends Component {
     event.preventDefault();
     const initialValues = {
       name: mine.mine_name ? mine.mine_name : null,
-      latitude: mine.mine_location[0] ? mine.mine_location[0].latitude : null,
-      longitude: mine.mine_location[0] ? mine.mine_location[0].longitude : null,
+      latitude: mine.mine_location ? mine.mine_location.latitude : null,
+      longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.region_code ? mine.region_code : null,
