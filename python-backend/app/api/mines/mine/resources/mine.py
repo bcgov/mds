@@ -296,7 +296,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'latitude and longitude must both be empty, or both provided')
         if mine.mine_location:
             #update existing record
-            #raise Exception("update the mine_location")
             if "latitude" in data.keys():
                 mine.mine_location.latitude = lat
             if "longitude" in data.keys():
