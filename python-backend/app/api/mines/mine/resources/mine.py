@@ -61,27 +61,39 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
 
-                # Below caches the mine map response object in redis with a 12 hour timeout.
-                # Generating and jsonifying this object takes 4-8 seconds with 50,000 points.
-                # It's more efficient to store the json to avoid reinitialzing all of the objects
-                # and jsonifying on each resposne, so a flask response is returned to avoid
-                # flask_restplus from re-jsonifying the data.
+                # Below caches the mine map response object in redis with a timeout.
+                # Generating and jsonifying the map data takes 4-7 seconds with 50,000 points,
+                # so caching seems justified.
                 #
                 # TODO: Use some custom representation of this data vs JSON. The
-                # json string is massive (with 50,000 points: 16mb uncompress, 2.7mb compressed).
-                # A quick test of delimented data brings this down to ~1mb.
-
+                # json string is massive (with 50,000 points: 16mb uncompressed, 2.5mb compressed).
+                # A quick test using delimented data brings this down to ~1mb compressed.
                 map_result = cache.get(MINE_MAP_CACHE)
+                last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
                 if not map_result:
                     records = MineMapViewLocation.query.all()
+                    last_modified = datetime.now()
+
+                    # jsonify then store in cache
                     map_result = json.dumps(
                         {
                             'mines': list((map(lambda x: x.json_for_map(), records)))
                         },
                         separators=(',', ':'))
                     cache.set(MINE_MAP_CACHE, map_result, timeout=43140)
+                    cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=43140)
+
+                # It's more efficient to store the json to avoid re-initializing all of the objects
+                # and jsonifying on every request, so a flask response is returned to prevent
+                # flask_restplus from jsonifying the data again, which would mangle the json.
                 response = make_response(map_result)
                 response.headers['content-type'] = 'application/json'
+
+                # While we're at it, let's set a last modified date and have flask return not modified
+                # if it hasn't so the client doesn't download it again unless needed.
+                response.last_modified = last_modified
+                response.make_conditional(request)
+
                 return response
 
             paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
