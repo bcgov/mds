@@ -68,7 +68,7 @@ class Mine(AuditMixin, Base):
             self.mine_region,
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_location':
-            self.mine_location.json(),
+            self.mine_location.json() if self.mine_location else None,
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
@@ -106,18 +106,24 @@ class Mine(AuditMixin, Base):
             'mine_note': self.mine_note,
             'major_mine_ind': self.major_mine_ind,
             'region_code': self.mine_region,
-            'mine_location': self.mine_location.json()
+            'mine_location': self.mine_location.json() if self.mine_location else None
         }
 
     def json_by_name(self):
         return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
-        return {
-            'guid': str(self.mine_guid),
-            'latitude': str(self.mine_location.latitude) if self.mine_location else '',
-            'longitude': str(self.mine_location.longitude) if self.mine_location else ''
-        }
+        #this will get cleaned up when mine_location and mine are merged
+        result = {'guid': str(self.mine_guid)}
+        if self.mine_location:
+            result['latitude'] = str(
+                self.mine_location.latitude) if self.mine_location.latitude else ''
+            result['longitude'] = str(
+                self.mine_location.longitude) if self.mine_location.longitude else ''
+        else:
+            result['latitude'] = ''
+            result['longitude'] = ''
+        return result
 
     def json_by_permit(self):
         return {

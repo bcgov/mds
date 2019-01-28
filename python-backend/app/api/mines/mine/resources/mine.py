@@ -73,7 +73,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 map_result = cache.get(MINE_MAP_CACHE)
                 last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
                 if not map_result:
-                    records = MineMapViewLocation.query.all()
+                    records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
                     last_modified = datetime.now()
 
                     # jsonify then store in cache
@@ -336,7 +336,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             if "longitude" in data.keys():
                 mine.mine_location.longitude = lon
             mine.mine_location.save()
-        if lat or lon and not mine.mine_location:
+        if lat and lon and not mine.mine_location:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
