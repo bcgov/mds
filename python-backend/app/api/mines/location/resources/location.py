@@ -21,4 +21,11 @@ class MineLocationResource(Resource, ErrorMixin):
                 return mine_location.json()
             return self.create_error_payload(404, 'Mine Location not found'), 404
         else:
-            return {'mines': list(map(lambda x: x.json_by_location(), Mine.query.all()))}
+            #only return results where lat is populated
+            return {
+                'mines':
+                list(
+                    map(lambda x: x.json_by_location(), [
+                        x for x in Mine.query.all() if x.mine_location and x.mine_location.latitude
+                    ]))
+            }

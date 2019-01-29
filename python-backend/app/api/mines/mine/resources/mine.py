@@ -60,7 +60,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                records = MineMapViewLocation.query.all()
+                records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
                 result = list((map(lambda x: x.json_for_map(), records)))
                 return {'mines': result}
 
@@ -301,7 +301,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             if "longitude" in data.keys():
                 mine.mine_location.longitude = lon
             mine.mine_location.save()
-        if lat or lon and not mine.mine_location:
+        if lat and lon and not mine.mine_location:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
