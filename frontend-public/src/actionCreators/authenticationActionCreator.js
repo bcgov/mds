@@ -9,6 +9,10 @@ import * as API from "@/constants/API";
 export const unAuthenticateUser = () => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");
+  notification.success({
+    message: "You have successfully logged out",
+    duration: 10,
+  });
 };
 
 export const getUserInfoFromToken = (token) => (dispatch) => {
