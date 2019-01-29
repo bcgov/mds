@@ -15,7 +15,8 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, cache
+from app.extensions import db, jwt, api, documents, cache#, upload_manager
+from app.api.utils.tus import tus_manager
 
 
 def create_app(test_config=None):
@@ -45,6 +46,9 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
+    
+    upload_manager = tus_manager()
+    upload_manager.init_app(app, upload_folder='uploads/')
 
     # Following is a simple example to demonstrate redis connection working
     # Please make sure to remove this after the first actual usage of redis

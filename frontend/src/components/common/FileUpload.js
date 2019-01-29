@@ -40,9 +40,9 @@ class FileUpload extends React.Component {
             filetype: file.type,
           },
           headers: createRequestHeader().headers,
-          onError: (err) => {
-            error(err);
-          },
+          // onError: (err) => {
+          //   error(err);
+          // },
           onProgress: (bytesUploaded, bytesTotal)=> {
             progress(true, bytesUploaded, bytesTotal);
           },
