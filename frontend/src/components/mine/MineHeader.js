@@ -138,7 +138,10 @@ class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>{this.props.mine.mine_name} </h1>
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="primary">
                   <div className="padding-small">
