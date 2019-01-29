@@ -14,11 +14,11 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
-  url: "<URL>",
+  url: "https://sso-test.pathfinder.gov.bc.ca",
   "ssl-required": "external",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
-  clientId: "<CLIENT_ID>",
-  siteminderURL: "<siteminder_url>",
+  clientId: "mines-application-local",
+  siteminderURL: "https://logontest.gov.bc.ca",
 };

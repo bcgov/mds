@@ -6,6 +6,11 @@ import * as authenticationActions from "@/actions/authenticationActions";
 import queryString from "query-string";
 import * as API from "@/constants/API";
 
+export const unAuthenticateUser = () => (dispatch) => {
+  dispatch(authenticationActions.logoutUser());
+  localStorage.removeItem("jwt");
+};
+
 export const getUserInfoFromToken = (token) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
@@ -23,6 +28,7 @@ export const getUserInfoFromToken = (token) => (dispatch) => {
         message: "Unable to get user Information at this time. Try again",
         duration: 10,
       });
+      dispatch(unAuthenticateUser());
       dispatch(error(reducerTypes.GET_USER_INFO));
     });
 };
@@ -49,9 +55,4 @@ export const authenticateUser = (code) => (dispatch) => {
       });
       dispatch(error(reducerTypes.AUTHENTICATE_USER));
     });
-};
-
-export const unAuthenticateUser = () => (dispatch) => {
-  dispatch(authenticationActions.logoutUser());
-  localStorage.removeItem("jwt");
 };
