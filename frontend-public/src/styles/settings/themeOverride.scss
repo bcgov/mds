@@ -80,9 +80,7 @@
   top: 14px;
 }
 
-.ant-dropdown-menu-item,
-.ant-dropdown-menu-submenu-title {
-  color: $gov-yellow;
+.ant-dropdown-menu-item {
   & .ant-btn-tertiary {
     width: 100%;
     border: none;
