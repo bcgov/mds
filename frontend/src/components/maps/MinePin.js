@@ -39,11 +39,11 @@ export class MinePin extends Component {
   }
 
   points = (id) => {
-    if (this.props.mines[id].mine_location[0]) {
+    if (this.props.mines[id].mine_location) {
       return {
         type: "point",
-        longitude: this.props.mines[id].mine_location[0].longitude,
-        latitude: this.props.mines[id].mine_location[0].latitude,
+        longitude: this.props.mines[id].mine_location.longitude,
+        latitude: this.props.mines[id].mine_location.latitude,
       };
     }
     return null;
