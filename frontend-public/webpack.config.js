@@ -4,7 +4,7 @@ const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
-const dotenv = require("dotenv").config({ path: `${__dirname  }/.env` });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 const parts = require("./webpack.parts");
 
@@ -64,7 +64,7 @@ const commonConfig = merge([
       // Adding timestamp to builds
       function() {
         this.plugin("watch-run", (watching, callback) => {
-          console.log("Begin compile at " + new Date());
+          console.log(`Begin compile at ${new Date()}`);
           callback();
         });
       },
@@ -149,7 +149,7 @@ const prodConfig = merge([
         commons: {
           test: /[\\/]node_modules[\\/]/,
           name: "vendor",
-          chunks: "initial",
+          chunks: "all",
         },
       },
     },

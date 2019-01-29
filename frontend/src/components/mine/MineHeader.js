@@ -79,8 +79,8 @@ class MineHeader extends Component {
     event.preventDefault();
     const initialValues = {
       name: mine.mine_name ? mine.mine_name : null,
-      latitude: mine.mine_location[0] ? mine.mine_location[0].latitude : null,
-      longitude: mine.mine_location[0] ? mine.mine_location[0].longitude : null,
+      latitude: mine.mine_location ? mine.mine_location.latitude : null,
+      longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.region_code ? mine.region_code : null,
@@ -138,7 +138,10 @@ class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>{this.props.mine.mine_name} </h1>
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="primary">
                   <div className="padding-small">
@@ -236,14 +239,14 @@ class MineHeader extends Component {
             <div className="inline-flex between">
               <p className="p-white">
                 Lat:{" "}
-                {this.props.mine.mine_location[0]
-                  ? this.props.mine.mine_location[0].latitude
+                {this.props.mine.mine_location
+                  ? this.props.mine.mine_location.latitude
                   : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
                 Long:{" "}
-                {this.props.mine.mine_location[0]
-                  ? this.props.mine.mine_location[0].longitude
+                {this.props.mine.mine_location
+                  ? this.props.mine.mine_location.longitude
                   : String.EMPTY_FIELD}
               </p>
             </div>

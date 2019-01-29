@@ -38,9 +38,9 @@ def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
 
 
 def generate_mine_no():
-    mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
+    mine_no = random_key_gen(prefix='B', key_length=6, letters=False)
     while Mine.find_by_mine_no(mine_no):
-        mine_no = random_key_gen(prefix='BLAH', key_length=4, letters=False)
+        mine_no = random_key_gen(prefix='B', key_length=6, letters=False)
     return mine_no
 
 
