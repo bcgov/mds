@@ -1,5 +1,5 @@
 -- 3. Migrate mine permit and permittee info
--- Dependency: ETL_PROFILE table
+-- Dependency: ETL_MINE table
 
 DO $$
 DECLARE
@@ -47,10 +47,7 @@ BEGIN
     ---- AND with non-empty permit number
     permit_list AS (
         SELECT
-            COALESCE(mine_no, '')||
-            COALESCE(permit_no, '')||
-            COALESCE(recv_dt, '9999-12-31'::date)||
-            COALESCE(iss_dt, '9999-12-31'::date) AS combo_id,
+            mine_no||permit_no||recv_dt||iss_dt AS combo_id,
             max(cid) permit_cid
         FROM mms.mmspmt permit_info
         WHERE
@@ -69,7 +66,7 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            ETL_PROFILE.mine_guid   ,
+            ETL_MINE.mine_guid   ,
             permit_info.mine_no     ,
             permit_info.permit_no   ,
             permit_info.cid AS permit_cid   ,
@@ -82,7 +79,7 @@ BEGIN
             END AS sta_cd           ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
-        INNER JOIN ETL_PROFILE ON ETL_PROFILE.mine_no = permit_info.mine_no
+        INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
         WHERE permit_info.cid IN (
             SELECT permit_cid
             FROM new_permit_list

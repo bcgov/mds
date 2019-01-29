@@ -1,5 +1,5 @@
 -- 1. Migrate MINE PROFILE
--- Create the ETL_PROFILE table
+-- Create the ETL_MINE table
 
 -- Transformation functions
 CREATE OR REPLACE FUNCTION transform_mine_region(code varchar) RETURNS varchar AS $$
@@ -47,7 +47,7 @@ BEGIN
     -- This is the intermediary table that will be used to store regional mine data from MMS
     -- It contains the mines relevant to the ETL process and should be used in place
     -- of the mines table
-    CREATE TABLE IF NOT EXISTS ETL_PROFILE (
+    CREATE TABLE IF NOT EXISTS ETL_MINE (
         mine_guid         uuid          ,
         mine_no           varchar(7)    ,
         mine_name         varchar(60)   ,
@@ -57,11 +57,11 @@ BEGIN
         longitude         numeric(11,7) ,
         major_mine_ind    boolean
     );
-    SELECT count(*) FROM ETL_PROFILE into old_row;
+    SELECT count(*) FROM ETL_MINE into old_row;
 
-    -- Upsert data into ETL_PROFILE from MMS
+    -- Upsert data into ETL_MINE from MMS
     RAISE NOTICE '.. Update existing records with latest MMS data';
-    UPDATE ETL_PROFILE
+    UPDATE ETL_MINE
     SET mine_name      = mms.mmsmin.mine_nm,
         latitude       = mms.mmsmin.lat_dec,
         longitude      = mms.mmsmin.lon_dec,
@@ -69,25 +69,25 @@ BEGIN
         mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
         mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ)
     FROM mms.mmsmin
-    WHERE mms.mmsmin.mine_no = ETL_PROFILE.mine_no;
-    SELECT count(*) FROM ETL_PROFILE, mms.mmsmin WHERE ETL_PROFILE.mine_no = mms.mmsmin.mine_no INTO update_row;
-    RAISE NOTICE '....# of mine records in ETL_PROFILE: %', old_row;
-    RAISE NOTICE '....# of mine records updated in ETL_PROFILE: %', update_row;
+    WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
+    SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
+    RAISE NOTICE '....# of mine records in ETL_MINE: %', old_row;
+    RAISE NOTICE '....# of mine records updated in ETL_MINE: %', update_row;
 
     -- If new rows have been added since the last ETL, only insert the new ones.
     -- Exclude major mines
     -- Generate a random UUID for mine_guid
-    RAISE NOTICE '.. Insert new MMS mine records into ETL_PROFILE';
+    RAISE NOTICE '.. Insert new MMS mine records into ETL_MINE';
     WITH mms_new AS(
         SELECT *
         FROM mms.mmsmin mms_profile
         WHERE NOT EXISTS (
             SELECT  1
-            FROM    ETL_PROFILE
+            FROM    ETL_MINE
             WHERE   mine_no = mms_profile.mine_no
         )
     )
-    INSERT INTO ETL_PROFILE (
+    INSERT INTO ETL_MINE (
         mine_guid       ,
         mine_no         ,
         mine_name       ,
@@ -107,9 +107,9 @@ BEGIN
         transform_major_mine_ind(mms_new.min_lnk)
     FROM mms_new
     WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
-    SELECT count(*) FROM ETL_PROFILE INTO new_row;
+    SELECT count(*) FROM ETL_MINE INTO new_row;
     RAISE NOTICE '....# of new mine records found in MMS: %', (new_row-old_row);
-    RAISE NOTICE '....Total mine records in ETL_PROFILE: %.', new_row;
+    RAISE NOTICE '....Total mine records in ETL_MINE: %.', new_row;
 END $$;
 
 
@@ -124,27 +124,27 @@ BEGIN
     RAISE NOTICE '.. Step 2 of 5: Update mine in MDS';
     SELECT count(*) FROM mine into old_row;
 
-    -- Upsert data from ETL_PROFILE into mine table
+    -- Upsert data from ETL_MINE into mine table
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE mine
-    SET mine_name        = ETL_PROFILE.mine_name     ,
-        mine_region      = ETL_PROFILE.mine_region   ,
-        major_mine_ind   = ETL_PROFILE.major_mine_ind,
+    SET mine_name        = ETL_MINE.mine_name     ,
+        mine_region      = ETL_MINE.mine_region   ,
+        major_mine_ind   = ETL_MINE.major_mine_ind,
         update_user      = 'mms_migration'           ,
         update_timestamp = now()
-    FROM ETL_PROFILE
-    WHERE ETL_PROFILE.mine_guid = mine.mine_guid;
-    SELECT count(*) FROM mine, ETL_PROFILE WHERE ETL_PROFILE.mine_guid = mine.mine_guid INTO update_row;
+    FROM ETL_MINE
+    WHERE ETL_MINE.mine_guid = mine.mine_guid;
+    SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
     RAISE NOTICE '....# of mine records in MDS: %', old_row;
     RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
 
     WITH new_record AS (
         SELECT *
-        FROM ETL_PROFILE
+        FROM ETL_MINE
         WHERE NOT EXISTS (
             SELECT  1
             FROM    mine
-            WHERE   mine_guid = ETL_PROFILE.mine_guid
+            WHERE   mine_guid = ETL_MINE.mine_guid
         )
     )
     INSERT INTO mine(
@@ -194,7 +194,7 @@ BEGIN
     SELECT count(*) FROM ETL_LOCATION into old_row;
 
     -- Upsert data into ETL_LOCATION from MMS
-    RAISE NOTICE '.. Sync existing records with latest ETL_PROFILE data';
+    RAISE NOTICE '.. Sync existing records with latest ETL_MINE data';
     -- Create temp table for upsert process
     CREATE TEMP TABLE IF NOT EXISTS pmt_now (
         lat_dec   numeric(9,7) ,
@@ -245,14 +245,14 @@ BEGIN
             AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
     )
     UPDATE ETL_LOCATION
-    SET mine_guid = ETL_PROFILE.mine_guid,
-        mine_no   = ETL_PROFILE.mine_no  ,
+    SET mine_guid = ETL_MINE.mine_guid,
+        mine_no   = ETL_MINE.mine_no  ,
         latitude  = COALESCE(
             -- Preferred Latitude
             (
                 SELECT lat_dec
                 FROM pmt_now_preferred
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -260,7 +260,7 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM pmt_now
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -268,19 +268,19 @@ BEGIN
             (
                 SELECT lat_dec
                 FROM mms.mmsnow
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
             -- Default Latitude
-            ETL_PROFILE.latitude
+            ETL_MINE.latitude
         ),
         longitude = COALESCE(
             -- Preferred Longitude
             (
                 SELECT lon_dec
                 FROM pmt_now_preferred
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -288,7 +288,7 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM pmt_now
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY latest DESC
                 LIMIT 1
             ),
@@ -296,46 +296,46 @@ BEGIN
             (
                 SELECT lon_dec
                 FROM mms.mmsnow
-                WHERE mine_no = ETL_PROFILE.mine_no
+                WHERE mine_no = ETL_MINE.mine_no
                 ORDER BY upd_no DESC
                 LIMIT 1
             ),
             -- Default Longitude
-            ETL_PROFILE.longitude
+            ETL_MINE.longitude
         )
-    FROM ETL_PROFILE
+    FROM ETL_MINE
     WHERE
-        ETL_PROFILE.mine_guid = ETL_LOCATION.mine_guid
+        ETL_MINE.mine_guid = ETL_LOCATION.mine_guid
         AND
         -- Matches business logic requirements
         (
             (
                 -- Present + valid in MMSMIN
-                (ETL_PROFILE.latitude IS NOT NULL AND ETL_PROFILE.longitude IS NOT NULL)
+                (ETL_MINE.latitude IS NOT NULL AND ETL_MINE.longitude IS NOT NULL)
                 AND
-                (ETL_PROFILE.latitude <> 0 AND ETL_PROFILE.longitude <> 0)
+                (ETL_MINE.latitude <> 0 AND ETL_MINE.longitude <> 0)
             ) OR (
             -- Present + valid in MMSNOW
                 SELECT COUNT(mine_no)
                 FROM mms.mmsnow
                 WHERE
-                    ETL_PROFILE.mine_no = mine_no
+                    ETL_MINE.mine_no = mine_no
                     AND (lat_dec IS NOT NULL AND lon_dec IS NOT NULL)
                     AND (lat_dec <> 0 AND lon_dec <> 0)
             ) > 0
         );
-    SELECT count(*) FROM ETL_LOCATION, ETL_PROFILE WHERE ETL_LOCATION.mine_guid = ETL_PROFILE.mine_guid INTO update_row;
+    SELECT count(*) FROM ETL_LOCATION, ETL_MINE WHERE ETL_LOCATION.mine_guid = ETL_MINE.mine_guid INTO update_row;
     RAISE NOTICE '....# of records in ETL_LOCATION: %', old_row;
     RAISE NOTICE '....# of records updated in ETL_LOCATION: %', update_row;
 
-    RAISE NOTICE '.. Insert new ETL_PROFILE records into ETL_LOCATION';
+    RAISE NOTICE '.. Insert new ETL_MINE records into ETL_LOCATION';
     WITH new_record AS (
         SELECT *
-        FROM ETL_PROFILE
+        FROM ETL_MINE
         WHERE NOT EXISTS (
             SELECT  1
             FROM    ETL_LOCATION
-            WHERE   mine_guid = ETL_PROFILE.mine_guid
+            WHERE   mine_guid = ETL_MINE.mine_guid
         )
     ), pmt_now_preferred AS (
         SELECT
@@ -515,28 +515,28 @@ BEGIN
     -- Upsert data from new_record into mine_type
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE mine_type
-    SET mine_tenure_type_code = ETL_PROFILE.mine_type,
+    SET mine_tenure_type_code = ETL_MINE.mine_type,
         update_user           = 'mms_migration'      ,
         update_timestamp      = now()
-    FROM ETL_PROFILE
+    FROM ETL_MINE
     WHERE
-        ETL_PROFILE.mine_guid = mine_type.mine_guid
+        ETL_MINE.mine_guid = mine_type.mine_guid
         AND
         mine_type IS NOT NULL;
-    SELECT count(*) FROM mine_type, ETL_PROFILE WHERE mine_type.mine_guid = ETL_PROFILE.mine_guid INTO update_row;
+    SELECT count(*) FROM mine_type, ETL_MINE WHERE mine_type.mine_guid = ETL_MINE.mine_guid INTO update_row;
     RAISE NOTICE '....# of mine_type records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_type records updated in MDS: %', update_row;
 
-    RAISE NOTICE '.. Insert new ETL_PROFILE records into mine_type';
+    RAISE NOTICE '.. Insert new ETL_MINE records into mine_type';
     WITH new_record AS (
         SELECT
             mine_guid,
             mine_type
-        FROM ETL_PROFILE
+        FROM ETL_MINE
         WHERE NOT EXISTS (
             SELECT  1
             FROM    mine_type
-            WHERE   mine_guid = ETL_PROFILE.mine_guid
+            WHERE   mine_guid = ETL_MINE.mine_guid
         )
     )
     INSERT INTO mine_type(

@@ -1,5 +1,5 @@
 --  Migrate MINE MANAGER (first name, last name)
--- Dependency: ETL_PROFILE table
+-- Dependency: ETL_MINE table
 
 DO $$
 DECLARE
@@ -184,7 +184,7 @@ BEGIN
         mms.person_combo_id     ,
         mms.mgr_combo_id
     FROM new_manager_info mms
-    INNER JOIN ETL_PROFILE mds ON mds.mine_no = mms.mine_no;
+    INNER JOIN ETL_MINE mds ON mds.mine_no = mms.mine_no;
     SELECT count(*) FROM ETL_MANAGER INTO new_row;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);
 END $$;
