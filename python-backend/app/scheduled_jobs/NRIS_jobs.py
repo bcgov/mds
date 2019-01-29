@@ -1,11 +1,11 @@
 from app.extensions import cache, sched
-from .nris_services import NRIS_service
-from .mines.mine.models.mine import Mine
-from .constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
+from app.api.nris_services import NRIS_service
+from app.apimines.mine.models.mine import Mine
+from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
 
 
 #the schedule of these jobs is set using server time (UTC)
-def _schedule_jobs(app):
+def _schedule_NRIS_jobs(app):
     app.apscheduler.add_job(
         func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=9, minute=0)
     app.apscheduler.add_job(

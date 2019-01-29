@@ -17,7 +17,7 @@ from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, documents, cache, sched
-from app.api.scheduled_jobs import _schedule_jobs
+from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 
 
 def create_app(test_config=None):
