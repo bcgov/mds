@@ -34,7 +34,7 @@ import { USER_ROLES } from "@/constants/environment";
 
 const propTypes = {
   permission: PropTypes.string.isRequired,
-  isRegionalMine: PropTypes.bool,
+  isMajorMine: PropTypes.bool,
   children: PropTypes.element.isRequired,
 };
 
