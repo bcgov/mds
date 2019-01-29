@@ -288,6 +288,8 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
                     ]
                 ],
@@ -378,6 +380,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 0
+                elastic_service_name = "MDS Dev"
             }
             modules {
                 'mds-frontend' {
@@ -475,6 +479,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "production"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Test"
             }
             modules {
                 'mds-frontend' {
@@ -572,6 +578,8 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
+                elastic_enabled = 0
+                elastic_service_name = "MDS Prod"
             }
             modules {
                 'mds-frontend' {

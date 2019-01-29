@@ -104,6 +104,14 @@
       "name": "MDS_ELASTIC_SECRET",
       "required": false,
       "value": "template.mds-elastic-secret"
+    },
+    {
+      "name": "ELASTIC_ENABLED",
+      "value": "0"
+    },
+    {
+      "name": "ELASTIC_SERVICE_NAME",
+      "value": "MDS Dev"
     }
   ],
   "objects": [
@@ -331,21 +339,11 @@
                   },
                   {
                     "name": "ELASTIC_ENABLED",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "enabled"
-                      }
-                    }
+                    "value": "${ELASTIC_ENABLED}"
                   },
                   {
                     "name": "ELASTIC_SERVICE_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "service-name"
-                      }
-                    }
+                    "value": "${ELASTIC_SERVICE_NAME}"
                   },
                   {
                     "name": "ELASTIC_SECRET_TOKEN",
