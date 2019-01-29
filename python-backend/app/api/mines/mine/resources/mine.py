@@ -1,4 +1,4 @@
-import decimal
+from decimal import Decimal
 import uuid
 from datetime import datetime
 
@@ -28,8 +28,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('name', type=str, help='Name of the mine.')
     parser.add_argument('note', type=str, help='Any additional notes to be added to the mine.')
     parser.add_argument('tenure_number_id', type=int, help='Tenure number for the mine.')
-    parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
-    parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
+    parser.add_argument(
+        'longitude', type=lambda x: Decimal(x) if x else None, help='Longitude point for the mine.')
+    parser.add_argument(
+        'latitude', type=lambda x: Decimal(x) if x else None, help='Latitude point for the mine.')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -58,7 +60,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                records = MineMapViewLocation.query.all()
+                records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
                 result = list((map(lambda x: x.json_for_map(), records)))
                 return {'mines': result}
 
@@ -290,8 +292,16 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
 
-        # Location validation
-        if lat and lon:
+        if (lat and not lon) or (lon and not lat):
+            self.raise_error(400, 'latitude and longitude must both be empty, or both provided')
+        if mine.mine_location:
+            #update existing record
+            if "latitude" in data.keys():
+                mine.mine_location.latitude = lat
+            if "longitude" in data.keys():
+                mine.mine_location.longitude = lon
+            mine.mine_location.save()
+        if lat and lon and not mine.mine_location:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
