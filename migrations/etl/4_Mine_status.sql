@@ -1,5 +1,6 @@
 -- 4. Migrate MINE STATUS
 -- Create the ETL_STATUS table
+-- Dependency: ETL_PROFILE table
 
 -- Transformation functions
 CREATE OR REPLACE FUNCTION transform_status_code(code varchar) RETURNS varchar AS $$
@@ -34,9 +35,9 @@ BEGIN
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_STATUS
     SET status_code = transform_status_code(mms.mmsmin.sta_cd)
-    FROM mms.mmsmin, mine
+    FROM mms.mmsmin, ETL_PROFILE
     WHERE
-        mms.mmsmin.mine_no = mine.mine_no
+        mms.mmsmin.mine_no = ETL_PROFILE.mine_no
         AND
         -- NULL is not a valid mine status option (no matching mine_status_xref record)
         transform_status_code(sta_cd) IS NOT NULL;
@@ -59,12 +60,12 @@ BEGIN
         mine_no    ,
         status_code)
     SELECT
-        mine.mine_guid,
-        mine.mine_no  ,
+        ETL_PROFILE.mine_guid,
+        ETL_PROFILE.mine_no  ,
         transform_status_code(mms_new.sta_cd)
-    FROM mms_new, mine
+    FROM mms_new, ETL_PROFILE
     WHERE
-        mine.mine_no = mms_new.mine_no
+        ETL_PROFILE.mine_no = mms_new.mine_no
         AND
         -- NULL is not a valid mine status option (no matching mine_status_xref record)
         transform_status_code(sta_cd) IS NOT NULL;
@@ -144,4 +145,4 @@ END $$;
 
 
 -- Drop all created functions
-DROP FUNCTION transform_status_code(code varchar)
+DROP FUNCTION transform_status_code(code varchar);

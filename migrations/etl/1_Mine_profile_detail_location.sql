@@ -44,7 +44,9 @@ DECLARE
 BEGIN
     RAISE NOTICE 'Start updating mine profile:';
     RAISE NOTICE '.. Step 1 of 5: Scan new mine records in MMS';
-    -- This is the intermediary table that will be used to store mine profile from the MMS database.
+    -- This is the intermediary table that will be used to store regional mine data from MMS
+    -- It contains the mines relevant to the ETL process and should be used in place
+    -- of the mines table
     CREATE TABLE IF NOT EXISTS ETL_PROFILE (
         mine_guid         uuid          ,
         mine_no           varchar(7)    ,
@@ -182,7 +184,7 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 3 of 5: Transform location data';
     -- This is the intermediary table that will be used to store transformed
-    -- mine location data
+    -- regional mine location data
     CREATE TABLE IF NOT EXISTS ETL_LOCATION (
         mine_guid       uuid                ,
         mine_no         varchar(7)          ,
@@ -193,7 +195,8 @@ BEGIN
 
     -- Upsert data into ETL_LOCATION from MMS
     RAISE NOTICE '.. Sync existing records with latest ETL_PROFILE data';
-    CREATE TEMP TABLE pmt_now (
+    -- Create temp table for upsert process
+    CREATE TEMP TABLE IF NOT EXISTS pmt_now (
         lat_dec   numeric(9,7) ,
         lon_dec   numeric(11,7),
         permit_no varchar(12)  ,
@@ -228,6 +231,7 @@ BEGIN
         AND lat_dec IS NOT NULL
         AND lon_dec IS NOT NULL;
 
+    -- Update existing ETL_LOCATION records
     WITH pmt_now_preferred AS (
         SELECT
             lat_dec,

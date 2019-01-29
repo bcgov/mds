@@ -1,4 +1,5 @@
 -- 3. Migrate mine permit and permittee info
+-- Dependency: ETL_PROFILE table
 
 DO $$
 DECLARE
@@ -68,7 +69,7 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            mine.mine_guid   ,
+            ETL_PROFILE.mine_guid   ,
             permit_info.mine_no     ,
             permit_info.permit_no   ,
             permit_info.cid AS permit_cid   ,
@@ -81,8 +82,7 @@ BEGIN
             END AS sta_cd           ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
-        INNER JOIN mine ON
-            mine.mine_no=permit_info.mine_no
+        INNER JOIN ETL_PROFILE ON ETL_PROFILE.mine_no = permit_info.mine_no
         WHERE permit_info.cid IN (
             SELECT permit_cid
             FROM new_permit_list
@@ -223,7 +223,7 @@ BEGIN
             '3'::numeric AS source
         FROM permit_info
         INNER JOIN mms.mmsmin mine_info ON
-            mine_info.mine_no=permit_info.mine_no
+            mine_info.mine_no = permit_info.mine_no
         WHERE permit_info.permit_cid IN
             (
                 SELECT permit_cid
@@ -427,7 +427,7 @@ BEGIN
         permittee_info.effective_date
     FROM permit_info
     INNER JOIN permittee_new_wContact permittee_info ON
-        permittee_info.permit_cid=permit_info.permit_cid;
+        permittee_info.permit_cid = permit_info.permit_cid;
     SELECT count(*) FROM ETL_PERMIT INTO new_row;
     RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
     RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
