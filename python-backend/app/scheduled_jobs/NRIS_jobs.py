@@ -1,6 +1,6 @@
 from app.extensions import cache, sched
 from app.api.nris_services import NRIS_service
-from app.apimines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
 
 
