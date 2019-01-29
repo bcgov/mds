@@ -5,7 +5,6 @@ import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
 import queryString from "query-string";
 import * as API from "@/constants/API";
-import * as environment from "@/constants/environment";
 
 export const getUserInfoFromToken = (token) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
@@ -20,8 +19,6 @@ export const getUserInfoFromToken = (token) => (dispatch) => {
       dispatch(authenticationActions.authenticateUser(response.data));
     })
     .catch(() => {
-      console.log(API);
-      console.log(environment);
       notification.error({
         message: "Unable to get user Information at this time. Try again",
         duration: 10,
