@@ -10,6 +10,7 @@ export const {
   getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
+  getOptionsLoaded,
 } = staticContentReducer;
 
 export const getMineTenureTypesHash = createSelector(
