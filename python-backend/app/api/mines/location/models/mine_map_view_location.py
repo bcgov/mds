@@ -39,3 +39,12 @@ class MineMapViewLocation(Base):
                 'longitude': str(self.longitude)
             }
         }
+
+    def compact_for_map(self):
+        return ''.join([
+            str(self.mine_guid), '|',
+            str(self.mine_name), '|',
+            str(self.mine_no), '|',
+            str(self.latitude), '|',
+            str(self.longitude)
+        ])
