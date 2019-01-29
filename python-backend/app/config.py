@@ -19,6 +19,7 @@ class Config(object):
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
+    ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
     SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -26,7 +27,8 @@ class Config(object):
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
     JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
-    ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
+    # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
+    JWT_OIDC_CACHING_ENABLED = True
 
     # Microservice URLs
     DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
@@ -62,6 +64,7 @@ class Config(object):
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     TESTING = os.environ.get('TESTING', True)
+    CACHE_TYPE = "null"
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS,
                                                        Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
