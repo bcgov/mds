@@ -148,3 +148,7 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const setOptionsLoaded = () => (dispatch) => {
+  dispatch(staticContentActions.loadedOptions(true));
+};
