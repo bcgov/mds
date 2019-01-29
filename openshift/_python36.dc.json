@@ -99,6 +99,11 @@
     {
       "name": "REPLICA_MAX",
       "value": "1"
+    },
+    {
+      "name": "MDS_ELASTIC_SECRET",
+      "required": false,
+      "value": "template.mds-elastic-secret"
     }
   ],
   "objects": [
@@ -321,6 +326,42 @@
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_API_SECRET}",
                         "key": "inspection-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_ENABLED",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "enabled"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_SERVICE_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "service-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_SECRET_TOKEN",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "secret-token"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_SERVER_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "server-url"
                       }
                     }
                   },

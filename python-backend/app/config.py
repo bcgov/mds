@@ -59,6 +59,12 @@ class Config(object):
     # 100MB file limit
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
+    # Elastic config
+    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED','0')
+    ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', None)
+    ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
+    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', None)
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
