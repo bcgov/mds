@@ -34,3 +34,8 @@ export const storeMineTSFRequiredDocuments = (payload) => ({
   type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
   payload,
 });
+
+export const loadedOptions = (payload) => ({
+  type: ActionTypes.OPTIONS_LOADED,
+  payload,
+});

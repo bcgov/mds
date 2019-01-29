@@ -9,8 +9,8 @@ def test_utils_random_key_gen():
 
 def test_generate_mine_no(test_client):
     random_mine_no = generate_mine_no()
-    assert 'BLAH' in random_mine_no
-    assert len(random_mine_no) == 8
+    assert 'B' in random_mine_no
+    assert len(random_mine_no) == 7
 
 
 def test_generate_mine_name():

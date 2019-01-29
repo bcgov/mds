@@ -18,6 +18,7 @@ const baseExpectedValue = {
   mineTSFRequiredReports: [],
   mineTenureTypes: [],
   mineCommodityOptions: [],
+  optionsLoaded: false,
 };
 
 // Creates deep copy of javascript object instead of setting a reference
