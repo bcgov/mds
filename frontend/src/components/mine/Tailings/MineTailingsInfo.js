@@ -33,7 +33,6 @@ import * as String from "@/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
