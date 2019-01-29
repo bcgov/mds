@@ -1,4 +1,4 @@
-This repo contains scripts for running load tests. The framework we are using is called Locust,
+This directory contains scripts for running load tests. The framework we are using is called Locust,
 which is an open source program written in Python. It's very simple to setup and get going,
 which is the main reason why we chose it.
 
@@ -9,8 +9,10 @@ To install requirements run:
 
 'pip install -r requirements.txt'
 
+Save a copy of  'loadTestConstants.EXAMPLE.py' as 'loadTestConstants.py'
+
 Get a bearer token from the network console after successfully logging into the app.
-Add it to the constants.py file
+Add it to the loadTestConstants.py file.
 NOTE:  It will only last a day.
 
 To run api tests run:

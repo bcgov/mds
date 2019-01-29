@@ -1,9 +1,9 @@
 import json
-from locust import HttpLocust, TaskSet, seq_task, task
-import constants
+from locust import HttpLocust, TaskSet, task
+import loadTestConstants
 
-BEARER_TOKEN_STRING ="Bearer " + constants.BEARER_TOKEN
-MINE_GUID = constants.MINE_GUID
+BEARER_TOKEN_STRING ="Bearer " + loadTestConstants.BEARER_TOKEN
+MINE_GUID = loadTestConstants.MINE_GUID
 class UserBehavior(TaskSet):
 
     def on_start(self):
@@ -32,15 +32,17 @@ class UserBehavior(TaskSet):
     #Get mine summary data
     @task(1)
     def get_mine(self):
-        self.client.get("/mines/" + constants.MINE_GUID, headers={"Authorization": BEARER_TOKEN_STRING})
+        self.client.get("/mines/" + MINE_GUID, headers={"Authorization": BEARER_TOKEN_STRING})
 
     #Get mine parties
     @task(1)
     def get_mine_parties(self):
-        self.client.get("/parties/mines?mine_guid=" + constants.MINE_GUID,
+        self.client.get("/parties/mines?mine_guid=" + MINE_GUID,
                               headers={"Authorization": BEARER_TOKEN_STRING})
 
     # #Get mine and compliance information
+    # This remains commented out unless the tester wants to test the compliance response times.
+    # Compliance testing relies on the NRIS database.
     # @task(2)
     # def get_mine_compliance(self):
     #     with self.client.get("/mines/"+constants.MINE_GUID, headers={"Authorization": BEARER_TOKEN_STRING}) as response:

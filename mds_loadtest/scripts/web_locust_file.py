@@ -1,8 +1,8 @@
 from locust import HttpLocust, TaskSet, seq_task, task
-import constants
+import loadTestConstants
 
-BEARER_TOKEN_STRING ="Bearer " + constants.BEARER_TOKEN
-MINE_GUID = constants.MINE_GUID
+BEARER_TOKEN_STRING ="Bearer " + loadTestConstants.BEARER_TOKEN
+MINE_GUID = loadTestConstants.MINE_GUID
 class UserBehavior(TaskSet):
 
     def on_start(self):
@@ -60,7 +60,7 @@ class UserBehavior(TaskSet):
     #Test map response
     @task(1)
     def map(self):
-        self.client.get("/dashboard?page = 1 & per_page = 25 & map = true",
+        self.client.get("/dashboard?page=1&per_page=25&map=true",
                         headers={"Authorization": BEARER_TOKEN_STRING})
 
     #Load mine page tabs

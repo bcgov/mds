@@ -1,0 +1,2 @@
+BEARER_TOKEN=""
+MINE_GUID = ""
