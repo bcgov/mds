@@ -59,6 +59,10 @@ BEGIN
     );
     SELECT count(*) FROM ETL_MINE into old_row;
 
+    -- Migration step from previous ETL process
+    -- Delete all major mines from the ETL_MINE table
+    DELETE FROM ETL_MINE WHERE major_mine_ind = TRUE;
+
     -- Upsert data into ETL_MINE from MMS
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_MINE
