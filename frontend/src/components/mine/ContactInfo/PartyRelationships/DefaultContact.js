@@ -26,92 +26,93 @@ const defaultProps = {
 };
 
 export const DefaultContact = (props) => (
-    <Card
-      headStyle={{
-        background: "#EEEEEE",
-        borderTop: "1px solid #CCCCCC",
-        borderRight: "1px solid #CCCCCC",
-        borderLeft: "1px solid #CCCCCC",
-      }}
-      bodyStyle={{
-        borderBottom: "4px solid #CCCCCC",
-        borderRight: "1px solid #CCCCCC",
-        borderLeft: "1px solid #CCCCCC",
-      }}
-      title={
-        <div className="inline-flex between wrap">
-          <div>
-            <h3>{props.partyRelationshipTitle}</h3>
-            {props.partyRelationshipSubTitle && <p>{props.partyRelationshipSubTitle}</p>}
-          </div>
-          {!props.compact && (
-            <div className="right">
-              <Link
-                to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-                  props.mine.guid,
-                  props.partyRelationship.mine_party_appt_type_code
-                )}
-              >
-                <Button style={{ marginRight: "0" }}>See History</Button>
-              </Link>
-            </div>
-          )}
+  <Card
+    headStyle={{
+      background: "#EEEEEE",
+      borderTop: "1px solid #CCCCCC",
+      borderRight: "1px solid #CCCCCC",
+      borderLeft: "1px solid #CCCCCC",
+    }}
+    bodyStyle={{
+      borderBottom: "4px solid #CCCCCC",
+      borderRight: "1px solid #CCCCCC",
+      borderLeft: "1px solid #CCCCCC",
+    }}
+    title={
+      <div className="inline-flex between wrap">
+        <div>
+          <h3>{props.partyRelationshipTitle}</h3>
+          {props.partyRelationshipSubTitle && <p>{props.partyRelationshipSubTitle}</p>}
         </div>
-      }
-      bordered={false}
-    >
-      <div>
-        <h4>
-          <Link
-            style={{ fontSize: "1.5rem", fontWeight: "bold" }}
-            to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}
-          >
-            {formatTitleString(props.partyRelationship.party.name)}
-          </Link>
-        </h4>
-        <br />
-        <h6>Email Address</h6>
-        <a href={`mailto:${props.partyRelationship.party.email}`}>
-          {props.partyRelationship.party.email}
-        </a>
-        <br />
-        <br />
-        <h6>Phone Number</h6>
-        {props.partyRelationship.party.phone_no}{" "}
-        {props.partyRelationship.party.phone_ext
-          ? `x${props.partyRelationship.party.phone_ext}`
-          : ""}
-        {!props.compact && [
-          <br />,
-          <br />,
-          <h6>{props.partyRelationshipTitle} Since</h6>,
-          <span>
-            {props.partyRelationship.start_date ? props.partyRelationship.start_date : "Unknown"}
-          </span>,
-        ]}
-      </div>
-      {props.otherDetails}
-      <div className="right">
-        {props.isEditable && !props.compact && (
-          <AuthorizationWrapper permission={Permission.CREATE}>
-            <Button
-              type="primary"
-              onClick={() =>
-                props.openEditPartyRelationshipModal(
-                  props.partyRelationship,
-                  props.onSubmitEditPartyRelationship,
-                  props.handleChange,
-                  props.mine
-                )
-              }
+        {!props.compact && (
+          <div className="right">
+            <Link
+              to={router.RELATIONSHIP_PROFILE.dynamicRoute(
+                props.mine.guid,
+                props.partyRelationship.mine_party_appt_type_code
+              )}
             >
-              Update
-            </Button>
-          </AuthorizationWrapper>
+              <Button style={{ marginRight: "0" }}>See History</Button>
+            </Link>
+          </div>
         )}
       </div>
-    </Card>
-  );
+    }
+    bordered={false}
+  >
+    <div>
+      <h4>
+        <Link
+          style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+          to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}
+        >
+          {formatTitleString(props.partyRelationship.party.name)}
+        </Link>
+      </h4>
+      <br />
+      <h6>Email Address</h6>
+      <a href={`mailto:${props.partyRelationship.party.email}`}>
+        {props.partyRelationship.party.email}
+      </a>
+      <br />
+      <br />
+      <h6>Phone Number</h6>
+      {props.partyRelationship.party.phone_no}{" "}
+      {props.partyRelationship.party.phone_ext ? `x${props.partyRelationship.party.phone_ext}` : ""}
+      {!props.compact && [
+        <br />,
+        <br />,
+        <h6>{props.partyRelationshipTitle} Since</h6>,
+        <span>
+          {props.partyRelationship.start_date ? props.partyRelationship.start_date : "Unknown"}
+        </span>,
+      ]}
+    </div>
+    {props.otherDetails}
+    <div className="right">
+      {props.isEditable && !props.compact && (
+        <AuthorizationWrapper
+          permission={Permission.CREATE}
+          isMajorMine={props.mine.major_mine_ind}
+        >
+          <Button
+            type="primary"
+            onClick={() =>
+              props.openEditPartyRelationshipModal(
+                props.partyRelationship,
+                props.onSubmitEditPartyRelationship,
+                props.handleChange,
+                props.mine
+              )
+            }
+          >
+            Update
+          </Button>
+        </AuthorizationWrapper>
+      )}
+    </div>
+  </Card>
+);
 
 DefaultContact.propTypes = propTypes;
 DefaultContact.defaultProps = defaultProps;
