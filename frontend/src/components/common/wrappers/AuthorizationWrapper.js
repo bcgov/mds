@@ -28,18 +28,25 @@ import { USER_ROLES } from "@/constants/environment";
     </AuthorizationWrapper>
   </Menu>
  * 
- *
+ * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated, 
+ * therefore all eidt buttons will be hidden from regional Mines.
  */
 
 const propTypes = {
   permission: PropTypes.string.isRequired,
+  isRegionalMine: PropTypes.bool,
   children: PropTypes.element.isRequired,
 };
 
+const defaultProps = {
+  isMajorMine: true,
+};
 export const AuthorizationWrapper = (props) =>
-  props.userRoles.includes(USER_ROLES[props.permission]) && <div>{...props.children}</div>;
+  props.userRoles.includes(USER_ROLES[props.permission]) &&
+  props.isMajorMine && <div>{...props.children}</div>;
 
 AuthorizationWrapper.propTypes = propTypes;
+AuthorizationWrapper.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),
