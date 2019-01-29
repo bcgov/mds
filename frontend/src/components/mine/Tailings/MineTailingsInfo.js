@@ -181,7 +181,10 @@ export class MineTailingsInfo extends Component {
             </Row>
           ))}
           <div className="center">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Button
                 className="full-mobile"
                 type="primary"
@@ -280,7 +283,10 @@ export class MineTailingsInfo extends Component {
                           ))}
                     </Col>
                     <Col span={4} align="right">
-                      <AuthorizationWrapper permission={Permission.CREATE}>
+                      <AuthorizationWrapper
+                        permission={Permission.CREATE}
+                        isMajorMine={this.props.mine.major_mine_ind}
+                      >
                         <div className="inline-flex">
                           <Button
                             className="full-mobile"
@@ -320,7 +326,10 @@ export class MineTailingsInfo extends Component {
           <div key="0">
             <Row gutter={16} justify="center" align="top">
               <Col span={8} align="left">
-                <AuthorizationWrapper permission={Permission.CREATE}>
+                <AuthorizationWrapper
+                  permission={Permission.CREATE}
+                  isMajorMine={this.props.mine.major_mine_ind}
+                >
                   <Button
                     type="secondary"
                     ghost
