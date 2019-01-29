@@ -7,6 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.permission = "role_admin";
+  props.isMajorMine = true;
   props.userRoles = Mock.USER_ACCESS_DATA;
   props.children = <div>helo</div>;
 };
