@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import { USER_ROLES } from "@/constants/environment";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -28,18 +29,27 @@ import { USER_ROLES } from "@/constants/environment";
     </AuthorizationWrapper>
   </Menu>
  * 
- *
+ * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated, 
+ * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
  */
 
 const propTypes = {
   permission: PropTypes.string.isRequired,
+  isMajorMine: PropTypes.bool,
   children: PropTypes.element.isRequired,
 };
 
+const defaultProps = {
+  isMajorMine: true,
+};
 export const AuthorizationWrapper = (props) =>
-  props.userRoles.includes(USER_ROLES[props.permission]) && <div>{...props.children}</div>;
+  props.userRoles.includes(USER_ROLES[props.permission]) &&
+  (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
+    <div>{...props.children}</div>
+  );
 
 AuthorizationWrapper.propTypes = propTypes;
+AuthorizationWrapper.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),

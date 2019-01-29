@@ -46,7 +46,10 @@ class MineTenureInfo extends Component {
         <div>
           <NullScreen type="tenure" />
           <div className="center">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Button
                 type="primary"
                 onClick={(event) =>
@@ -82,7 +85,10 @@ class MineTenureInfo extends Component {
             </tbody>
           </table>
           <div className="right center-mobile">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Button
                 type="primary"
                 onClick={(event) =>
