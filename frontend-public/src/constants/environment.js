@@ -5,6 +5,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca",
+  siteminder_url: "https://logontest.gov.bc.ca",
 };
 
 export const ENVIRONMENT = {
@@ -19,4 +20,5 @@ export const KEYCLOAK = {
   "public-client": true,
   "confidential-port": 0,
   clientId: "<CLIENT_ID>",
+  siteminderURL: "<siteminder_url>",
 };

@@ -14,9 +14,11 @@ export default function fetchEnv() {
     })
     .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
+      console.log(env);
       ENVIRONMENT.apiUrl = env.apiUrl;
       KEYCLOAK.clientId = env.keycloak_clientId;
       KEYCLOAK.resource = env.keycloak_resource;
       KEYCLOAK.url = env.keycloak_url;
+      KEYCLOAK.siteminderURL = env.siteminder_url;
     });
 }
