@@ -16,6 +16,7 @@ import {
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
+  setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
@@ -23,6 +24,7 @@ import {
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
+  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import {
   fetchPartyRelationshipTypes,
@@ -49,6 +51,7 @@ const propTypes = {
   updateMineRecord: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   permittees: PropTypes.objectOf(CustomPropTypes.permittee),
@@ -56,6 +59,7 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
+  optionsLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -72,12 +76,15 @@ export class MineDashboard extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchStatusOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineDisturbanceOptions();
-    this.props.fetchMineCommodityOptions();
-    this.props.fetchPartyRelationshipTypes();
+    if (!this.props.optionsLoaded) {
+      this.props.fetchStatusOptions();
+      this.props.fetchRegionOptions();
+      this.props.fetchMineTenureTypes();
+      this.props.fetchMineDisturbanceOptions();
+      this.props.fetchMineCommodityOptions();
+      this.props.fetchPartyRelationshipTypes();
+      this.props.setOptionsLoaded();
+    }
     this.props.fetchPartyRelationships({ mine_guid: id });
 
     if (activeTab) {
@@ -176,6 +183,7 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
+  optionsLoaded: getOptionsLoaded(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -194,6 +202,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
+      setOptionsLoaded,
     },
     dispatch
   );
