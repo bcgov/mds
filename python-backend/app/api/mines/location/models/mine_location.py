@@ -5,7 +5,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db, cache
-from ....constants import MINE_MAP_CACHE
 
 
 class MineLocation(AuditMixin, Base):

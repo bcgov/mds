@@ -61,6 +61,7 @@ class Config(object):
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     TESTING = os.environ.get('TESTING', True)
+    CACHE_TYPE = "null"
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS,
                                                        Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
@@ -69,8 +70,6 @@ class TestConfig(Config):
     JWT_OIDC_TEST_AUDIENCE = "test_audience"
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
-    # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
-    JWT_OIDC_CACHING_ENABLED = True
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
 
     JWT_OIDC_TEST_KEYS = {
