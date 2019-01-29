@@ -30,7 +30,7 @@ import * as Permission from "@/constants/permissions";
   </Menu>
  * 
  * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated, 
- * therefore all eidt buttons will be hidden from regional Mines -- Admin can view/edit everything
+ * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
  */
 
 const propTypes = {
