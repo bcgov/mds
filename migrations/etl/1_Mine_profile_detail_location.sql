@@ -1,4 +1,4 @@
--- 1. Migrate MINE PROFILE
+-- 1. ETL mine data from MMS
 -- Create the ETL_MINE table
 
 -- Transformation functions
@@ -42,7 +42,7 @@ DECLARE
     new_row    integer;
     update_row integer;
 BEGIN
-    RAISE NOTICE 'Start updating mine profile:';
+    RAISE NOTICE 'Start updating mine data:';
     RAISE NOTICE '.. Step 1 of 5: Scan new mine records in MMS';
     -- This is the intermediary table that will be used to store regional mine data from MMS
     -- It contains the mines relevant to the ETL process and should be used in place
@@ -80,11 +80,11 @@ BEGIN
     RAISE NOTICE '.. Insert new MMS mine records into ETL_MINE';
     WITH mms_new AS(
         SELECT *
-        FROM mms.mmsmin mms_profile
+        FROM mms.mmsmin
         WHERE NOT EXISTS (
             SELECT  1
             FROM    ETL_MINE
-            WHERE   mine_no = mms_profile.mine_no
+            WHERE   mine_no = mms.mmsmin.mine_no
         )
     )
     INSERT INTO ETL_MINE (
