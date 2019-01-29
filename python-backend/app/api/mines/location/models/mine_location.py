@@ -4,7 +4,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
-from app.extensions import db
+from app.extensions import db, cache
 
 
 class MineLocation(AuditMixin, Base):
@@ -22,13 +22,15 @@ class MineLocation(AuditMixin, Base):
         return '<MineLocation %r>' % self.mine_guid
 
     def json(self):
+        if not self.latitude:
+            return None
         lat = self.latitude
         lon = self.longitude
         return {
             'mine_location_guid': str(self.mine_location_guid),
             'mine_guid': str(self.mine_guid),
-            'latitude': str(lat) if lat else None,
-            'longitude': str(lon) if lon else None,
+            'latitude': str(lat),
+            'longitude': str(lon),
         }
 
     @classmethod

@@ -5,6 +5,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
+# NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
+# to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
+# lazy='select' will lazy load that data when the property is first accessed. There are other options as well
+# that may be best in different situations: https://docs.sqlalchemy.org/en/latest/orm/loading_relationships.html
+
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
@@ -16,27 +21,33 @@ class Mine(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='joined')
+
+    #Almost always used and 1:1, so these are joined
     mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='joined')
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+
+    #Almost always used, but faster to use selectin to load related data
+    mine_permit = db.relationship(
+        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='selectin')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
-        lazy='joined')
+        lazy='selectin')
+    mine_type = db.relationship(
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
+
+    #Not always desired, set to lazy load using select
+    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
     mine_expected_documents = db.relationship(
         'MineExpectedDocument',
         primaryjoin=
         "and_(MineExpectedDocument.mine_guid == Mine.mine_guid, MineExpectedDocument.active_ind==True)",
         backref='mine',
         order_by='desc(MineExpectedDocument.due_date)',
-        lazy='joined')
-    mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='joined')
-    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='joined')
+        lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
@@ -57,7 +68,7 @@ class Mine(AuditMixin, Base):
             self.mine_region,
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_location':
-            self.mine_location.json(),
+            self.mine_location.json() if self.mine_location else None,
             'mine_permit': [item.json() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
@@ -95,18 +106,24 @@ class Mine(AuditMixin, Base):
             'mine_note': self.mine_note,
             'major_mine_ind': self.major_mine_ind,
             'region_code': self.mine_region,
-            'mine_location': self.mine_location.json()
+            'mine_location': self.mine_location.json() if self.mine_location else None
         }
 
     def json_by_name(self):
         return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
-        return {
-            'guid': str(self.mine_guid),
-            'latitude': str(self.mine_location.latitude) if self.mine_location else '',
-            'longitude': str(self.mine_location.longitude) if self.mine_location else ''
-        }
+        #this will get cleaned up when mine_location and mine are merged
+        result = {'guid': str(self.mine_guid)}
+        if self.mine_location:
+            result['latitude'] = str(
+                self.mine_location.latitude) if self.mine_location.latitude else ''
+            result['longitude'] = str(
+                self.mine_location.longitude) if self.mine_location.longitude else ''
+        else:
+            result['latitude'] = ''
+            result['longitude'] = ''
+        return result
 
     def json_by_permit(self):
         return {
