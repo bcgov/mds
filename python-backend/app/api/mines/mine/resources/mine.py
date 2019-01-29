@@ -1,8 +1,9 @@
-import decimal
+from decimal import Decimal
 import uuid
 from datetime import datetime
+import json
 
-from flask import request
+from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
@@ -18,9 +19,10 @@ from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
-from app.extensions import api
+from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....constants import MINE_MAP_CACHE
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
@@ -28,8 +30,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('name', type=str, help='Name of the mine.')
     parser.add_argument('note', type=str, help='Any additional notes to be added to the mine.')
     parser.add_argument('tenure_number_id', type=int, help='Tenure number for the mine.')
-    parser.add_argument('longitude', type=decimal.Decimal, help='Longitude point for the mine.')
-    parser.add_argument('latitude', type=decimal.Decimal, help='Latitude point for the mine.')
+    parser.add_argument(
+        'longitude', type=lambda x: Decimal(x) if x else None, help='Longitude point for the mine.')
+    parser.add_argument(
+        'latitude', type=lambda x: Decimal(x) if x else None, help='Latitude point for the mine.')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -47,7 +51,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_no_or_guid':
             'Mine number or guid. If not provided a paginated list of mines will be returned.'
         })
-    @requires_role_mine_view
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
             mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -58,9 +62,41 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             # Handle MapView request
             _map = request.args.get('map', None, type=str)
             if _map and _map.lower() == 'true':
-                records = MineMapViewLocation.query.all()
-                result = list((map(lambda x: x.json_for_map(), records)))
-                return {'mines': result}
+
+                # Below caches the mine map response object in redis with a timeout.
+                # Generating and jsonifying the map data takes 4-7 seconds with 50,000 points,
+                # so caching seems justified.
+                #
+                # TODO: Use some custom representation of this data vs JSON. The
+                # json string is massive (with 50,000 points: 16mb uncompressed, 2.5mb compressed).
+                # A quick test using delimented data brings this down to ~1mb compressed.
+                map_result = cache.get(MINE_MAP_CACHE)
+                last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
+                if not map_result:
+                    records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
+                    last_modified = datetime.now()
+
+                    # jsonify then store in cache
+                    map_result = json.dumps(
+                        {
+                            'mines': list((map(lambda x: x.json_for_map(), records)))
+                        },
+                        separators=(',', ':'))
+                    cache.set(MINE_MAP_CACHE, map_result, timeout=43140)
+                    cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=43140)
+
+                # It's more efficient to store the json to avoid re-initializing all of the objects
+                # and jsonifying on every request, so a flask response is returned to prevent
+                # flask_restplus from jsonifying the data again, which would mangle the json.
+                response = make_response(map_result)
+                response.headers['content-type'] = 'application/json'
+
+                # While we're at it, let's set a last modified date and have flask return not modified
+                # if it hasn't so the client doesn't download it again unless needed.
+                response.last_modified = last_modified
+                response.make_conditional(request)
+
+                return response
 
             paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
             mines = paginated_mine_query.all()
@@ -85,33 +121,33 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
-        mines_permit_join_query = Mine.query.join(Permit)
+        mines_query = Mine.query
         # Filter by search_term if provided
         if search_term:
             search_term = search_term.strip()
             name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines_query = Mine.query.filter(name_filter | number_filter)
+            mines_name_query = Mine.query.filter(name_filter | number_filter)
             permit_query = Mine.query.join(Permit).filter(permit_filter)
-            mines_permit_join_query = mines_query.union(permit_query)
+            mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
             major_mine_filter = Mine.major_mine_ind.is_(major_mine_filter_term == "true")
             major_mine_query = Mine.query.filter(major_mine_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(major_mine_query)
+            mines_query = mines_query.intersect(major_mine_query)
         # Filter by TSF, if provided
         if tsf_filter_term == "true" or tsf_filter_term == "false":
             tsf_filter = Mine.mine_tailings_storage_facilities != None if tsf_filter_term == "true" else \
                 Mine.mine_tailings_storage_facilities == None
             tsf_query = Mine.query.filter(tsf_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(tsf_query)
+            mines_query = mines_query.intersect(tsf_query)
         # Filter by region, if provided
         if region_code_filter_term:
             region_filter_term_array = region_code_filter_term.split(',')
             region_filter = Mine.mine_region.in_(region_filter_term_array)
             region_query = Mine.query.filter(region_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(region_query)
+            mines_query = mines_query.intersect(region_query)
         # Filter by commodity if provided
         if commodity_filter_terms:
             commodity_filter_term_array = commodity_filter_terms.split(',')
@@ -121,7 +157,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 .join(MineType) \
                 .join(MineTypeDetail) \
                 .filter(commodity_filter, mine_type_active_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(commodity_query)
+            mines_query = mines_query.intersect(commodity_query)
         # Create a filter on tenure if one is provided
         if tenure_filter_term:
             tenure_filter_term_array = tenure_filter_term.split(',')
@@ -130,12 +166,13 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             tenure_query = Mine.query \
                 .join(MineType) \
                 .filter(tenure_filter, mine_type_active_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(tenure_query)
+            mines_query = mines_query.intersect(tenure_query)
         # Create a filter on mine status if one is provided
         if status_filter_term:
             status_filter_term_array = status_filter_term.split(',')
             status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
-            status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(status_filter_term_array)
+            status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(
+                status_filter_term_array)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
                 status_filter_term_array)
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
@@ -143,11 +180,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 .join(MineStatus) \
                 .join(MineStatusXref) \
                 .filter(all_status_filter)
-            mines_permit_join_query = mines_permit_join_query.intersect(status_query)
+            mines_query = mines_query.intersect(status_query)
 
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
-        mines_permit_join_query = apply_sort(mines_permit_join_query, sort_criteria)
-        return apply_pagination(mines_permit_join_query, page, items_per_page)
+        mines_query = apply_sort(mines_query, sort_criteria)
+        return apply_pagination(mines_query, page, items_per_page)
 
     def mine_operation_code_processor(self, mine_status, index):
         try:
@@ -223,6 +260,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 longitude=lon,
                 **self.get_create_update_dict())
             location.save()
+            cache.delete(MINE_MAP_CACHE)
         mine_status = self.mine_status_processor(status, mine.mine_guid) if status else None
         return {
             'mine_guid': str(mine.mine_guid),
@@ -289,8 +327,16 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
 
-        # Location validation
-        if lat and lon:
+        if (lat and not lon) or (lon and not lat):
+            self.raise_error(400, 'latitude and longitude must both be empty, or both provided')
+        if mine.mine_location:
+            #update existing record
+            if "latitude" in data.keys():
+                mine.mine_location.latitude = lat
+            if "longitude" in data.keys():
+                mine.mine_location.longitude = lon
+            mine.mine_location.save()
+        if lat and lon and not mine.mine_location:
             location = MineLocation(
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
@@ -298,6 +344,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 longitude=lon,
                 **self.get_create_update_dict())
             location.save()
+            cache.delete(MINE_MAP_CACHE)
 
         # Status validation
         self.mine_status_processor(status, mine.mine_guid) if status else None

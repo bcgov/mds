@@ -24,6 +24,9 @@ from .api.mines.status.models.mine_operation_status_sub_reason_code import MineO
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db
+from app import auth
+
+auth.apply_security = False
 
 
 def register_commands(app):
@@ -50,6 +53,8 @@ def register_commands(app):
                 party_guid=permittee_party,
                 permit_guid=mine_permit.permit_guid,
                 mine_party_appt_type_code='PMT',
+                start_date=None,
+                end_date=None,
                 processed_by=DUMMY_USER_KWARGS.get('update_user'),
                 user_kwargs=DUMMY_USER_KWARGS,
                 save=True)
