@@ -89,12 +89,13 @@ export class AdvancedSearchForm extends Component {
               <Col md={12} xs={24}>
                 {/* TODO: Remove label, get placeholder text displaying properly */}
                 <Field
-                  label="Select Mine Class"
+                  // label="Select Mine Class"
                   id="major"
                   name="major"
-                  placeholder="Select Mine Class"
+                  // placeholder="Select Mine Class"
                   component={renderConfig.SELECT}
                   data={[
+                    { value: "", label: "Major and Regional Mines" },
                     { value: "true", label: "Major Mine" },
                     { value: "false", label: "Regional Mine" },
                   ]}
@@ -103,14 +104,15 @@ export class AdvancedSearchForm extends Component {
               <Col md={12} xs={24}>
                 {/* TODO: Remove label, get placeholder text displaying properly */}
                 <Field
-                  label="Select TSF"
+                  // label="Select TSF"
                   id="tsf"
                   name="tsf"
-                  placeholder="Select TSF"
+                  // placeholder="Select TSF"
                   component={renderConfig.SELECT}
                   data={[
-                    { value: "false", label: "No TSF" },
-                    { value: "true", label: "One Or More TSFs" },
+                    { value: "", label: "Mines With and Without TSFs" },
+                    { value: "false", label: "Mines Without TSFs" },
+                    { value: "true", label: "Mines With TSFs" },
                   ]}
                 />
               </Col>
