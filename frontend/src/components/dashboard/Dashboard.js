@@ -370,7 +370,7 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <AuthorizationWrapper permission={Permission.CREATE}>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   className="full-mobile"
                   type="primary"
