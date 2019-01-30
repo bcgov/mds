@@ -7,6 +7,8 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MineRegionResource(Resource, UserMixin, ErrorMixin):
+    #@api.doc(params={'mine_status_guid': 'Mine status guid.'})
+    #@requires_role_mine_view
     def get(self):
         proxy_response = requests.get(
             'https://maps.gov.bc.ca/arcserver/rest/services/mpcm/bcgwago/mapserver/465',
