@@ -33,7 +33,6 @@ import * as String from "@/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -69,18 +68,6 @@ export class MineTailingsInfo extends Component {
     this.props.fetchExpectedDocumentStatusOptions();
     this.props.fetchMineTailingsRequiredDocuments();
   }
-
-  handleAddTailingsSubmit = (value) => {
-    this.props
-      .createTailingsStorageFacility({
-        ...value,
-        mine_guid: this.props.mine.guid,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
-  };
 
   handleAddReportSubmit = (value) => {
     const requiredReport = this.props.mineTSFRequiredReports.find(
@@ -137,14 +124,6 @@ export class MineTailingsInfo extends Component {
     });
   }
 
-  openAddTailingsModal(event, onSubmit, title) {
-    event.preventDefault();
-    this.props.openModal({
-      props: { onSubmit, title },
-      content: modalConfig.ADD_TAILINGS,
-    });
-  }
-
   openEditReportModal(event, onSubmit, title, statusOptions, doc) {
     this.setState({
       selectedDocument: doc,
@@ -169,38 +148,18 @@ export class MineTailingsInfo extends Component {
   render() {
     return (
       <div>
-        <div>
-          <br />
-          <br />
-          {this.props.mine.mine_tailings_storage_facility.map((facility, id) => (
-            <Row key={id} gutter={16}>
-              <Col span={6}>
-                <h3>{facility.mine_tailings_storage_facility_name}</h3>
-              </Col>
-              <Col span={6} />
-            </Row>
-          ))}
-          <div className="center">
-            <AuthorizationWrapper
-              permission={Permission.CREATE}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Button
-                className="full-mobile"
-                type="primary"
-                onClick={(event) =>
-                  this.openAddTailingsModal(
-                    event,
-                    this.handleAddTailingsSubmit,
-                    ModalContent.ADD_TAILINGS
-                  )
-                }
-              >
-                {ModalContent.ADD_TAILINGS}
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        </div>
+        {this.props.mine.mine_tailings_storage_facility.map((facility) => (
+          <Row
+            key={facility.mine_tailings_storage_facility_guid}
+            gutter={16}
+            style={{ marginBottom: "10px" }}
+          >
+            <Col span={6}>
+              <h3>{facility.mine_tailings_storage_facility_name}</h3>
+              <p>No TSF registry data available</p>
+            </Col>
+          </Row>
+        ))}
         <br />
         <br />
         <div>
