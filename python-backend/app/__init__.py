@@ -51,13 +51,7 @@ def register_extensions(app):
         sched.init_app(app)
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
-            _schedule_jobs(app)
-    # Following is a simple example to demonstrate redis connection working
-    # Please make sure to remove this after the first actual usage of redis
-    # in the application.
-    # Docs: https://flask-caching.readthedocs.io/en/latest/
-    # cache.set('test-key', 'Redis works', timeout=5 * 60)
-    # print(cache.get('test-key'))
+            _schedule_NRIS_jobs(app)
 
     CORS(app)
     Compress(app)

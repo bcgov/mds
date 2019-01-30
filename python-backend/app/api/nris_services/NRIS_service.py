@@ -41,9 +41,6 @@ def _get_NRIS_token():
             except:
                 raise
 
-            if resp.status_code != 200:
-                result = None
-
             result = resp.json().get('access_token')
             cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
 
