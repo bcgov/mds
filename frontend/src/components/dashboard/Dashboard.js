@@ -15,7 +15,9 @@ import {
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
+  setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
+import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
@@ -25,6 +27,7 @@ import {
   getMineRegionOptions,
   getMineTenureTypes,
   getDropdownCommodityOptions,
+  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/MineList";
 import MineSearch from "@/components/dashboard/MineSearch";
@@ -48,6 +51,7 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
+  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -57,6 +61,8 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
+  optionsLoaded: PropTypes.bool.isRequired,
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
 export class Dashboard extends Component {
@@ -95,11 +101,15 @@ export class Dashboard extends Component {
         })
       );
     }
-    this.props.fetchStatusOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineDisturbanceOptions();
-    this.props.fetchMineCommodityOptions();
+    if (!this.props.optionsLoaded) {
+      this.props.fetchStatusOptions();
+      this.props.fetchRegionOptions();
+      this.props.fetchMineTenureTypes();
+      this.props.fetchMineDisturbanceOptions();
+      this.props.fetchMineCommodityOptions();
+      this.props.fetchPartyRelationshipTypes();
+      this.props.setOptionsLoaded();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -360,7 +370,7 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <AuthorizationWrapper permission={Permission.CREATE}>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   className="full-mobile"
                   type="primary"
@@ -391,6 +401,7 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineTenureTypes: getMineTenureTypes(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
+  optionsLoaded: getOptionsLoaded(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -405,6 +416,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineDisturbanceOptions,
       openModal,
       closeModal,
+      setOptionsLoaded,
+      fetchPartyRelationshipTypes,
     },
     dispatch
   );

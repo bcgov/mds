@@ -1,5 +1,5 @@
 --  Migrate MINE MANAGER (first name, last name)
---Create the ETL_PROFILE table
+-- Dependency: ETL_MINE table
 
 DO $$
 DECLARE
@@ -184,8 +184,7 @@ BEGIN
         mms.person_combo_id     ,
         mms.mgr_combo_id
     FROM new_manager_info mms
-    INNER JOIN mine mds ON
-        mds.mine_no=mms.mine_no;
+    INNER JOIN ETL_MINE mds ON mds.mine_no = mms.mine_no;
     SELECT count(*) FROM ETL_MANAGER INTO new_row;
     RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);
 END $$;
@@ -279,8 +278,8 @@ BEGIN
         mine_guid           ,
         party_guid          ,
         mine_party_appt_type_code,
-        effective_date      ,
-        expiry_date         ,
+        start_date          ,
+        end_date            ,
         create_user         ,
         create_timestamp    ,
         update_user         ,

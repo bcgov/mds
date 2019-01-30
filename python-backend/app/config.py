@@ -16,8 +16,7 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-        DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
+    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     SQLALCHEMY_DATABASE_URI = DB_URL
@@ -27,14 +26,13 @@ class Config(object):
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
     JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
+    # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
+    JWT_OIDC_CACHING_ENABLED = True
 
     # Microservice URLs
-    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL',
-                                     'http://localhost:5000')
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
-                                          'http://localhost:5000')
-    MINES_URL = os.environ.get('MINES_URL',
-                               'http://localhost:5000')
+    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5000')
+    MINES_URL = os.environ.get('MINES_URL', 'http://localhost:5000')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_INSPECTION_URL = os.environ.get('NRIS_INSPECTION_URL', None)
@@ -44,7 +42,8 @@ class Config(object):
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
     CACHE_REDIS_PORT = os.environ.get('CACHE_REDIS_PORT', 6379)
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'pass')
-    CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST, CACHE_REDIS_PORT)
+    CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
+                                                    CACHE_REDIS_PORT)
 
     # Constant config
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
@@ -54,8 +53,7 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 300
 
     # Flask-uploads configs
-    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST',
-                                            '/app/document_uploads')
+    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     # 100MB file limit
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
@@ -63,10 +61,10 @@ class Config(object):
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     TESTING = os.environ.get('TESTING', True)
+    CACHE_TYPE = "null"
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
-    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-        Config.DB_USER, Config.DB_PASS, Config.DB_HOST, Config.DB_PORT,
-        DB_NAME_TEST)
+    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS,
+                                                       Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)
     SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = "test_audience"

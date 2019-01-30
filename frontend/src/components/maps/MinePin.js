@@ -3,8 +3,8 @@ import { loadModules } from "react-arcgis";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import MapPopup from "@/components/maps/MapPopup";
 import { renderToString } from "react-dom/server";
+import MapPopup from "@/components/maps/MapPopup";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
 
 /**
@@ -28,26 +28,6 @@ const defaultProps = {
 
 export class MinePin extends Component {
   state = { graphic: null, isFullMap: false };
-
-  popupTemplate(id) {
-    const { mine_name } = this.props.mines[id];
-    const content = renderToString(<MapPopup id={id} />);
-    return {
-      title: mine_name,
-      content,
-    };
-  }
-
-  points = (id) => {
-    if (this.props.mines[id].mine_location) {
-      return {
-        type: "point",
-        longitude: this.props.mines[id].mine_location.longitude,
-        latitude: this.props.mines[id].mine_location.latitude,
-      };
-    }
-    return null;
-  };
 
   componentWillMount() {
     const fclURL = `${window.location.origin}${
@@ -126,22 +106,22 @@ export class MinePin extends Component {
           content: "{templateContent}",
         });
 
-        const fclData = mineIds.reduce((result, id) => {
-          const point = this.points(id);
-          if (!point) {
-            return result;
+        const mapPopupString = renderToString(<MapPopup id="{mineId}" />);
+
+        // The previous code processing point data was nicely seperated into functions, but slow with
+        // large datasets taking 5-10 seconds for 50000 points. The code below is ~50ms for 50000 points
+        // and uses significantly lower memory.
+        const fclData = [];
+        mineIds.forEach((mineId) => {
+          if (this.props.mines[mineId].mine_location) {
+            fclData.push({
+              y: Number(this.props.mines[mineId].mine_location.latitude),
+              x: Number(this.props.mines[mineId].mine_location.longitude),
+              templateTitle: this.props.mines[mineId].mine_name,
+              templateContent: mapPopupString.replace("{mineId}", mineId),
+            });
           }
-          const y = Number(point.latitude);
-          const x = Number(point.longitude);
-          const templateInfo = this.popupTemplate(id);
-          result.push({
-            y,
-            x,
-            templateTitle: templateInfo.title,
-            templateContent: templateInfo.content,
-          });
-          return result;
-        }, []);
+        });
 
         const options = {
           id: "flare-cluster-layer",
