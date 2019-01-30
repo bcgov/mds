@@ -4,45 +4,54 @@ import requests
 import json
 import functools
 
+from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
+from app.extensions import cache
+from ..constants import NRIS_CACHE_PREFIX, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
 
 
-def get_NRIS_token():
-    params = {
-        'disableDeveloperFilter': 'true',
-        'grant_type': 'client_credentials',
-        'scope': 'NRISWS.*'
-    }
-    url = current_app.config['NRIS_TOKEN_URL']
-    if url is None:
-        raise TypeError('Could not load the NRIS URL.')
-    else:
-        resp = requests.get(
-            url=url,
-            params=params,
-            auth=(current_app.config['NRIS_USER_NAME'], current_app.config['NRIS_PASS']))
-        try:
-            resp.raise_for_status()
-        except:
-            raise
-
-        if resp.status_code != 200:
-            return None
-
-        return resp.json().get('access_token')
+def _get_datetime_from_NRIS_data(date):
+    return datetime.strptime(date, '%Y-%m-%d %H:%M')
 
 
-def get_EMPR_data_from_NRIS(mine_no):
+def _get_NRIS_token():
+    result = cache.get(NRIS_CACHE_PREFIX + 'token')
 
+    if result is None:
+        params = {
+            'disableDeveloperFilter': 'true',
+            'grant_type': 'client_credentials',
+            'scope': 'NRISWS.*'
+        }
+        url = current_app.config['NRIS_TOKEN_URL']
+        if url is None:
+            raise TypeError('Could not load the NRIS URL.')
+        else:
+            resp = requests.get(
+                url=url,
+                params=params,
+                auth=(current_app.config['NRIS_USER_NAME'], current_app.config['NRIS_PASS']))
+            try:
+                resp.raise_for_status()
+            except:
+                raise
+
+            result = resp.json().get('access_token')
+            cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
+
+    return result
+
+
+def _get_EMPR_data_from_NRIS(mine_no):
     current_date = datetime.now()
 
     try:
-        token = get_NRIS_token()
+        token = _get_NRIS_token()
     except:
         raise
 
@@ -75,3 +84,87 @@ def get_EMPR_data_from_NRIS(mine_no):
             raise
 
         return empr_nris_resp.json()
+
+
+def _process_NRIS_data(data, mine_no):
+    data = sorted(
+        data,
+        key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
+        reverse=True)
+
+    most_recent = data[0]
+
+    advisories = 0
+    warnings = 0
+    num_open_orders = 0
+    num_overdue_orders = 0
+    section_35_orders = 0
+    open_orders_list = []
+
+    for report in data:
+        report_date = _get_datetime_from_NRIS_data(report.get('assessmentDate'))
+        one_year_ago = datetime.now() - relativedelta(years=1)
+
+        prefix, inspector = report.get('assessor').split('\\')
+
+        inspection = report.get('inspection')
+        stops = inspection.get('stops')
+        order_count = 1
+
+        for stop in stops:
+
+            stop_orders = stop.get('stopOrders')
+            stop_advisories = stop.get('stopAdvisories')
+            stop_warnings = stop.get('stopWarnings')
+
+            for order in stop_orders:
+                if order.get('orderStatus') == 'Open':
+
+                    legislation = order.get('orderLegislations')
+                    permit = order.get('orderPermits')
+                    section = None
+
+                    if legislation:
+                        section = legislation[0].get('section')
+                    elif permit:
+                        section = permit[0].get('permitSectionNumber')
+
+                    order_to_add = {
+                        'order_no': f'{report.get("assessmentId")}-{order_count}',
+                        'violation': section,
+                        'report_no': report.get('assessmentId'),
+                        'inspector': inspector,
+                        'due_date': order.get('orderCompletionDate'),
+                        'overdue': False,
+                    }
+
+                    num_open_orders += 1
+
+                    if order.get(
+                            'orderCompletionDate') is not None and _get_datetime_from_NRIS_data(
+                                order.get('orderCompletionDate')) < datetime.now():
+                        num_overdue_orders += 1
+                        order_to_add['overdue'] = True
+
+                    open_orders_list.append(order_to_add)
+                    order_count += 1
+
+                if order.get('orderAuthoritySection') == 'Section 35':
+                    section_35_orders += 1
+
+            if one_year_ago < report_date:
+                advisories += len(stop_advisories)
+                warnings += len(stop_warnings)
+
+    overview = {
+        'last_inspection': most_recent.get('assessmentDate'),
+        'inspector': inspector,
+        'num_open_orders': num_open_orders,
+        'num_overdue_orders': num_overdue_orders,
+        'advisories': advisories,
+        'warnings': warnings,
+        'section_35_orders': section_35_orders,
+        'open_orders': open_orders_list,
+    }
+    cache.set(NRIS_CACHE_PREFIX + mine_no, overview, timeout=TIMEOUT_24_HOURS)
+    return overview
