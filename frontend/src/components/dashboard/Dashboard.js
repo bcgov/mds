@@ -86,6 +86,7 @@ export class Dashboard extends Component {
         commodity: [],
         search: [],
       },
+      mapRef: React.createRef(),
     };
   }
 
@@ -185,6 +186,7 @@ export class Dashboard extends Component {
           showCoordinates: true,
           mineName: newVal[2],
         });
+        window.scrollTo(0, this.state.mapRef.current.offsetTop);
       } else {
         this.setState({
           lat: String.DEFAULT_LAT,
@@ -200,6 +202,7 @@ export class Dashboard extends Component {
         showCoordinates: true,
         mineName: null,
       });
+      window.scrollTo(0, this.state.mapRef.current.offsetTop);
     }
   };
 
@@ -350,7 +353,7 @@ export class Dashboard extends Component {
                 </div>
               )}
               <div>
-                <MineMap {...this.state} />
+                <MineMap ref={this.state.mapRef} {...this.state} />
               </div>
             </TabPane>
           </Tabs>
