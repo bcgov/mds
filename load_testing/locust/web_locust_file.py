@@ -1,8 +1,11 @@
 from locust import HttpLocust, TaskSet, seq_task, task
-import loadTestConstants
+from config import Config
 
-BEARER_TOKEN_STRING ="Bearer " + loadTestConstants.BEARER_TOKEN
-MINE_GUID = loadTestConstants.MINE_GUID
+
+BEARER_TOKEN_STRING ="Bearer " + Config.BEARER_TOKEN
+MINE_GUID = Config.MINE_GUID
+
+
 class UserBehavior(TaskSet):
 
     def on_start(self):
