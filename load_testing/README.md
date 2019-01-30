@@ -9,10 +9,10 @@ To install requirements run:
 
 'pip install -r requirements.txt'
 
-Save a copy of  'loadTestConstants.EXAMPLE.py' as 'loadTestConstants.py'
+Save a copy of  '.envEXAMPLE.py' as '.env'
 
 Get a bearer token from the network console after successfully logging into the app.
-Add it to the loadTestConstants.py file.
+Add it to the .env file.
 NOTE:  It will only last a day.
 
 To run api tests run:
