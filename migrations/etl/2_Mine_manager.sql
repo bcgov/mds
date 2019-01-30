@@ -23,13 +23,7 @@ BEGIN
     );
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
-
-
-
-
-
-
-
+    -- TODO: Add proper logging
     --1. Mine with valid manager attached
     WITH now_manager AS (
         SELECT
@@ -176,18 +170,12 @@ BEGIN
         email           = mms.email          ,
         effective_date  = mms.effective_date ,
         person_combo_id = mms.person_combo_id,
-        mgr_combo_id    = mms.mgr_combo_id   )
+        mgr_combo_id    = mms.mgr_combo_id
     FROM existing_manager_info mms
     WHERE
         ETL_MANAGER.mine_no = mms.mine_no
         AND
         ETL_MANAGER.party_guid = mms.party_guid;
-
-
-
-
-
-
 
     --1. Mine with valid manager attached
     WITH now_manager  AS(
@@ -369,7 +357,7 @@ BEGIN
     -- Upsert party data from ETL_MANAGER
     UPDATE party
     SET first_name       = etl.first_name    ,
-        surname          = etl.surname       ,
+        party_name       = etl.surname       ,
         phone_no         = etl.phone_no      ,
         phone_ext        = 'N/A'             ,
         email            = etl.email         ,
@@ -441,27 +429,13 @@ BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
     SELECT count(*) FROM mine_party_appt INTO old_row;
 
-    -- Upsert mine manager data from ETL_MANAGER
-    UPDATE mine_party_appt
-    SET effective_date   = etl.effective_date,
-        expiry_date      = '9999-12-31'::date,
-        update_user      = 'mms_migration'   ,
-        update_timestamp = now()
-    FROM ETL_MANAGER etl
-    WHERE
-        -- FIXME: There can (and will?) be more than one record per mine for a particular party
-        -- how do we know which record to update?
-        -- MMS: mine1, jim, started today, ends next week
-        -- MDS records:
-        -- mine1, jim, started a fortnight ago, ended last week
-        -- mine1, jim, started yesterday, ends today
-        -- Do I update a record? Insert a new one?
-        mine_party_appt.mine_guid = etl.mine_guid
-        AND
-        mine_party_appt.party_guid = etl.party_guid
-        AND
-        mine_party_appt.mine_party_appt_type_code = 'MMG';
-
+    -- TODO: Add logging for purged rows
+    RAISE NOTICE 'Purge mine_party_appts from ETL mines';
+    DELETE FROM mine_party_appt
+    WHERE mine_guid IN (
+        SELECT mine_guid
+        FROM ETL_MINE
+    );
 
     --select only new record
     WITH new_manager AS
