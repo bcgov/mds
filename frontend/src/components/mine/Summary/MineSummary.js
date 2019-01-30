@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import * as String from "@/constants/strings";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
+import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
@@ -23,12 +24,14 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  summaryPermits: PropTypes.arrayOf(CustomPropTypes.permit),
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   summaryPartyRelationships: [],
+  summaryPermits: [],
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -59,6 +62,15 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
+const renderSummaryPermit = (permit, partyRelationships) => {
+  if (partyRelationships.length === 0) return <div>{String.LOADING}</div>;
+  return (
+    <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={6} key={permit.permit_guid}>
+      {" "}
+      <PermitCard permit={permit} PartyRelationships={partyRelationships} />
+    </Col>
+  );
+};
 const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
@@ -72,24 +84,52 @@ export const MineSummary = (props) => {
     <div>
       <Row gutter={16}>
         <Col span={24}>
-          <h4>MAIN CONTACTS</h4>
-          <Divider />
+          <Row gutter={16}>
+            <Col span={24}>
+              <h4>MAIN CONTACTS</h4>
+              <Divider />
+            </Col>
+          </Row>
+          <Row gutter={16} type="flex" justify="center">
+            {props.summaryPartyRelationships
+              .filter(isActive)
+              .map((partyRelationship) =>
+                renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)
+              )}
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <div className="right">
+                <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "contact-information")}>
+                  See All Contacts
+                </Link>
+              </div>
+            </Col>
+          </Row>
         </Col>
-      </Row>
-      <Row gutter={16} type="flex" justify="center">
-        {props.summaryPartyRelationships
-          .filter(isActive)
-          .map((partyRelationship) =>
-            renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)
-          )}
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <div className="right">
-            <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "contact-information")}>
-              See All Contacts
-            </Link>
-          </div>
+          <Row gutter={16}>
+            <Col span={24}>
+              <h4>Permits</h4>
+              <Divider />
+            </Col>
+          </Row>
+          <Row gutter={16} type="flex" justify="center">
+            {props.mine.mine_permit.map((permit) =>
+              renderSummaryPermit(permit, props.summaryPartyRelationships)
+            )}
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <div className="right">
+                <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "permit")}>
+                  See All Permits
+                </Link>
+              </div>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </div>
