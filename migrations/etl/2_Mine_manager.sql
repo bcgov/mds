@@ -3,8 +3,10 @@
 
 DO $$
 DECLARE
-    old_row   integer   ;
-    new_row   integer   ;
+    old_row    integer;
+    insert_row integer;
+    update_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE 'Start updating mine manager:';
     RAISE NOTICE '.. Step 1 of 3: Scan new managers in MMS';
@@ -23,7 +25,7 @@ BEGIN
     );
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
-    -- TODO: Add proper logging
+    RAISE NOTICE '.. Update existing records with latest MMS data';
     --1. Mine with valid manager attached
     WITH now_manager AS (
         SELECT
@@ -160,23 +162,31 @@ BEGIN
             person.effective_date
         FROM existing_manager manager
         INNER JOIN person_info person
-            ON person.person_combo_id=manager.person_combo_id
+            ON person.person_combo_id = manager.person_combo_id
+    ),
+    --9. Update info for a given party at a specific mine
+    updated_rows AS (
+        UPDATE ETL_MANAGER
+        SET first_name      = mms.first_name     ,
+            surname         = mms.surname        ,
+            phone_no        = mms.phone_no       ,
+            email           = mms.email          ,
+            effective_date  = mms.effective_date ,
+            person_combo_id = mms.person_combo_id,
+            mgr_combo_id    = mms.mgr_combo_id
+        FROM existing_manager_info mms
+        WHERE
+            ETL_MANAGER.mine_no = mms.mine_no
+            AND
+            ETL_MANAGER.party_guid = mms.party_guid
+        RETURNING 1
     )
-    -- Update info for a given party at a specific mine
-    UPDATE ETL_MANAGER
-    SET first_name      = mms.first_name     ,
-        surname         = mms.surname        ,
-        phone_no        = mms.phone_no       ,
-        email           = mms.email          ,
-        effective_date  = mms.effective_date ,
-        person_combo_id = mms.person_combo_id,
-        mgr_combo_id    = mms.mgr_combo_id
-    FROM existing_manager_info mms
-    WHERE
-        ETL_MANAGER.mine_no = mms.mine_no
-        AND
-        ETL_MANAGER.party_guid = mms.party_guid;
+    SELECT count(*) FROM updated_rows INTO update_row;
+    RAISE NOTICE '....# of records in ETL_MANAGER: %', old_row;
+    RAISE NOTICE '....# of records updated in ETL_MANAGER: %', update_row;
 
+
+    RAISE NOTICE '.. Insert new MMS mine manager records into ETL_MANAGER';
     --1. Mine with valid manager attached
     WITH now_manager  AS(
         SELECT
@@ -314,33 +324,39 @@ BEGIN
         FROM new_manager manager
         INNER JOIN person_info person   ON
             person.person_combo_id=manager.person_combo_id
+    ),
+    --9. Insert new records
+    inserted_rows AS (
+        INSERT INTO ETL_MANAGER (
+            mine_guid               ,
+            mine_no                 ,
+            party_guid              ,
+            first_name              ,
+            surname                 ,
+            phone_no                ,
+            email                   ,
+            effective_date          ,
+            person_combo_id         ,
+            mgr_combo_id            )
+        SELECT
+            mds.mine_guid           ,
+            mms.mine_no             ,
+            mms.party_guid          ,
+            mms.first_name          ,
+            mms.surname             ,
+            mms.phone_no            ,
+            mms.email               ,
+            mms.effective_date      ,
+            mms.person_combo_id     ,
+            mms.mgr_combo_id
+        FROM new_manager_info mms
+        INNER JOIN ETL_MINE mds ON mds.mine_no = mms.mine_no
+        RETURNING 1
     )
-    INSERT INTO ETL_MANAGER (
-        mine_guid               ,
-        mine_no                 ,
-        party_guid              ,
-        first_name              ,
-        surname                 ,
-        phone_no                ,
-        email                   ,
-        effective_date          ,
-        person_combo_id         ,
-        mgr_combo_id            )
-    SELECT
-        mds.mine_guid           ,
-        mms.mine_no             ,
-        mms.party_guid          ,
-        mms.first_name          ,
-        mms.surname             ,
-        mms.phone_no            ,
-        mms.email               ,
-        mms.effective_date      ,
-        mms.person_combo_id     ,
-        mms.mgr_combo_id
-    FROM new_manager_info mms
-    INNER JOIN ETL_MINE mds ON mds.mine_no = mms.mine_no;
-    SELECT count(*) FROM ETL_MANAGER INTO new_row;
-    RAISE NOTICE '.... # of new manager records loaded into MDS: %', (new_row-old_row);
+    SELECT count(*) FROM inserted_rows INTO insert_row;
+    SELECT count(*) FROM ETL_MANAGER INTO total_row;
+    RAISE NOTICE '.... # of new manager records loaded into MDS: %', insert_row;
+    RAISE NOTICE '....Total records in ETL_MANAGER: %.', total_row;
 END $$;
 
 
@@ -348,31 +364,40 @@ END $$;
 
 DO $$
 DECLARE
-    old_row integer;
-    new_row integer;
+    old_row    integer;
+    update_row integer;
+    insert_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE '.. Step 2 of 3: Update contact details for new person';
     SELECT count(*) FROM party INTO old_row;
 
     -- Upsert party data from ETL_MANAGER
-    UPDATE party
-    SET first_name       = etl.first_name    ,
-        party_name       = etl.surname       ,
-        phone_no         = etl.phone_no      ,
-        phone_ext        = 'N/A'             ,
-        email            = etl.email         ,
-        effective_date   = etl.effective_date,
-        expiry_date      = '9999-12-31'::date,
-        update_user      = 'mms_migration'   ,
-        update_timestamp = now()             ,
-        party_type_code  = 'PER'
-    FROM ETL_MANAGER etl
-    WHERE party.party_guid = etl.party_guid;
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    WITH updated_rows AS (
+      UPDATE party
+      SET first_name       = etl.first_name    ,
+          party_name       = etl.surname       ,
+          phone_no         = etl.phone_no      ,
+          phone_ext        = 'N/A'             ,
+          email            = etl.email         ,
+          effective_date   = etl.effective_date,
+          expiry_date      = '9999-12-31'::date,
+          update_user      = 'mms_migration'   ,
+          update_timestamp = now()             ,
+          party_type_code  = 'PER'
+      FROM ETL_MANAGER etl
+      WHERE party.party_guid = etl.party_guid
+      RETURNING 1
+    )
+    SELECT COUNT(*) FROM updated_rows INTO update_row;
+    RAISE NOTICE '....# of records in party: %', old_row;
+    RAISE NOTICE '....# of records updated in party: %', update_row;
 
 
-    WITH
+    RAISE NOTICE '.. Insert new MMS ETL_MANAGER records into party';
     --Select only new entry in ETL_Manager table
-    new_manager AS(
+    WITH new_manager AS(
         SELECT DISTINCT ON (party_guid)
             party_guid     ,
             first_name     ,
@@ -385,58 +410,72 @@ BEGIN
             SELECT  party_guid
             FROM    party
         )
+    ), inserted_rows AS (
+        INSERT INTO party(
+            party_guid      ,
+            first_name      ,
+            party_name      ,
+            phone_no        ,
+            phone_ext       ,
+            email           ,
+            effective_date  ,
+            expiry_date     ,
+            create_user     ,
+            create_timestamp,
+            update_user     ,
+            update_timestamp,
+            party_type_code
+        )
+        SELECT
+            party_guid          ,
+            first_name          ,
+            surname             ,
+            phone_no            ,
+            'N/A'               ,
+            email               ,
+            effective_date      ,
+            '9999-12-31'::date  ,
+            'mms_migration'     ,
+            now()               ,
+            'mms_migration'     ,
+            now()               ,
+            'PER'
+        FROM new_manager
+        RETURNING 1
     )
-    INSERT INTO party(
-        party_guid      ,
-        first_name      ,
-        party_name      ,
-        phone_no        ,
-        phone_ext       ,
-        email           ,
-        effective_date  ,
-        expiry_date     ,
-        create_user     ,
-        create_timestamp,
-        update_user     ,
-        update_timestamp,
-        party_type_code
-    )
-    SELECT
-        party_guid          ,
-        first_name          ,
-        surname             ,
-        phone_no            ,
-        'N/A'               ,
-        email               ,
-        effective_date      ,
-        '9999-12-31'::date  ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()               ,
-        'PER'
-    FROM new_manager;
-    SELECT count(*) FROM party INTO new_row;
-    RAISE NOTICE '.... # new person records MMS: %', (new_row-old_row);
-    RAISE NOTICE '.... Total person records MMS: %', (new_row);
+    SELECT count(*) FROM inserted_rows INTO insert_row;
+    SELECT count(*) FROM party INTO total_row;
+    RAISE NOTICE '.... # of person records loaded into MDS: %', insert_row;
+    RAISE NOTICE '....Total records in party: %.', total_row;
 END $$;
 
 DO $$
 DECLARE
-    old_row integer;
-    new_row integer;
+    old_row    integer;
+    update_row integer;
+    insert_row integer;
+    delete_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
     SELECT count(*) FROM mine_party_appt INTO old_row;
 
-    -- TODO: Add logging for purged rows
-    RAISE NOTICE 'Purge mine_party_appts from ETL mines';
-    DELETE FROM mine_party_appt
-    WHERE mine_guid IN (
-        SELECT mine_guid
-        FROM ETL_MINE
-    );
+    RAISE NOTICE '..Purge mine_party_appts from ETL mines';
+    RAISE NOTICE '....# of records in mine_party_appt: %', old_row;
+    WITH deleted_rows AS (
+        DELETE FROM mine_party_appt
+        WHERE mine_guid IN (
+            SELECT mine_guid
+            FROM ETL_MINE
+        )
+        RETURNING 1
+    )
+    SELECT COUNT(*) FROM deleted_rows INTO delete_row;
+    SELECT count(*) FROM mine_party_appt INTO old_row;
+    RAISE NOTICE '....# of records removed from mine_party_appt: %', delete_row;
+    RAISE NOTICE '....# of records remaining in mine_party_appt: %', old_row;
 
+    RAISE NOTICE '.. Insert latest MMS records from ETL_MANAGER into mine_party_appt';
     --select only new record
     WITH new_manager AS
     (
@@ -452,33 +491,36 @@ BEGIN
             AND
                 mine_party_appt_type_code = 'MMG'
         )
+    ), inserted_rows AS (
+        INSERT INTO mine_party_appt(
+            mine_party_appt_guid,
+            mine_guid           ,
+            party_guid          ,
+            mine_party_appt_type_code,
+            start_date          ,
+            end_date            ,
+            create_user         ,
+            create_timestamp    ,
+            update_user         ,
+            update_timestamp
+        )
+        SELECT
+            gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
+            new.mine_guid       ,
+            new.party_guid      ,
+            'MMG'               ,
+            new.effective_date  ,
+            '9999-12-31'::date  ,
+            'mms_migration'     ,
+            now()               ,
+            'mms_migration'     ,
+            now()
+        FROM new_manager new
+        RETURNING 1
     )
-    INSERT INTO mine_party_appt(
-        mine_party_appt_guid,
-        mine_guid           ,
-        party_guid          ,
-        mine_party_appt_type_code,
-        start_date          ,
-        end_date            ,
-        create_user         ,
-        create_timestamp    ,
-        update_user         ,
-        update_timestamp
-    )
-    SELECT
-        gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
-        new.mine_guid       ,
-        new.party_guid      ,
-        'MMG'               ,
-        new.effective_date  ,
-        '9999-12-31'::date  ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()
-    FROM new_manager new;
-    SELECT count(*) FROM mine_party_appt INTO new_row;
-    RAISE NOTICE '.... # new manager assignment: %', (new_row-old_row);
-    RAISE NOTICE '.... Total mine reords with manager information: %', (new_row);
+    SELECT count(*) FROM inserted_rows INTO insert_row;
+    SELECT count(*) FROM mine_party_appt INTO total_row;
+    RAISE NOTICE '.... # new manager assignment: %', insert_row;
+    RAISE NOTICE '.... Total mine manager appt records: %', total_row;
     RAISE NOTICE 'Finish updating mine manager.';
 END $$;
