@@ -9,7 +9,7 @@ To install requirements run:
 
 'pip install -r requirements.txt'
 
-Save a copy of  '.envEXAMPLE.py' as '.env'
+Save a copy of  '.envEXAMPLE' as '.env'
 
 Get a bearer token from the network console after successfully logging into the app.
 Add it to the .env file.
