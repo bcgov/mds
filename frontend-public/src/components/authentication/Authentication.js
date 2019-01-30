@@ -5,7 +5,7 @@ import { Menu, Dropdown, Button, Icon, Divider } from "antd";
 import * as route from "@/constants/routes";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import { SSO_BCEID_LOGIN_ENDPOINT } from "@/constants/API";
+import * as ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
@@ -53,7 +53,7 @@ export const Authentication = (props) => {
 
   if (!props.isAuthenticated) {
     return (
-      <a href={SSO_BCEID_LOGIN_ENDPOINT}>
+      <a href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}${ENV.BCEID_HINT}`}>
         <Button type="tertiary" className="login-btn">
           Log in
         </Button>

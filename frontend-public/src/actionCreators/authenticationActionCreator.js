@@ -4,7 +4,7 @@ import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
 import queryString from "query-string";
-import * as API from "@/constants/API";
+import * as ENV from "@/constants/environment";
 
 export const unAuthenticateUser = () => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
@@ -18,7 +18,7 @@ export const unAuthenticateUser = () => (dispatch) => {
 export const getUserInfoFromToken = (token) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
-    .get(API.GET_USER_INFO_FROM_SSO, {
+    .get(ENV.KEYCLOAK.userInfoURL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -41,12 +41,12 @@ export const authenticateUser = (code) => (dispatch) => {
   const data = {
     code,
     grant_type: "authorization_code",
-    redirect_uri: API.SSO_LOGIN_REDIRECT_URI,
-    client_id: API.SSO_CLIENT_ID,
+    redirect_uri: ENV.BCEID_LOGIN_REDIRECT_URI,
+    client_id: ENV.KEYCLOAK.clientId,
   };
   dispatch(request(reducerTypes.AUTHENTICATE_USERR));
   return axios
-    .post(API.GET_TOKEN_FROM_SSO, queryString.stringify(data))
+    .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
       dispatch(success(reducerTypes.AUTHENTICATE_USER));
       localStorage.setItem("jwt", response.data.access_token);

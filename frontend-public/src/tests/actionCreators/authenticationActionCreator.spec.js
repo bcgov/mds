@@ -7,7 +7,7 @@ import {
   unAuthenticateUser,
 } from "@/actionCreators/authenticationActionCreator";
 import * as genericActions from "@/actions/genericActions";
-import * as API from "@/constants/API";
+import * as ENV from "@/constants/environment";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 describe("`getUserInfoFromToken` action creator", () => {
-  const url = API.GET_USER_INFO_FROM_SSO;
+  const url = ENV.KEYCLOAK.userInfoURL;
   const token = "2434";
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
@@ -42,19 +42,19 @@ describe("`getUserInfoFromToken` action creator", () => {
     return getUserInfoFromToken()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 });
 
 describe("`authenticateUser` action creator", () => {
-  const url = API.GET_TOKEN_FROM_SSO;
+  const url = ENV.KEYCLOAK.tokenURL;
   const code = "2434";
   const data = {
     code,
     grant_type: "authorization_code",
-    redirect_uri: API.SSO_LOGIN_REDIRECT_URI,
-    client_id: API.SSO_CLIENT_ID,
+    redirect_uri: ENV.BCEID_LOGIN_REDIRECT_URI,
+    client_id: ENV.KEYCLOAK.clientId,
   };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };

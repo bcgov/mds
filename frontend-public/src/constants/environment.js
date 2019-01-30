@@ -14,11 +14,21 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
-  url: "https://sso-test.pathfinder.gov.bc.ca",
   "ssl-required": "external",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
-  clientId: "mines-application-local",
-  siteminderURL: "https://logontest.gov.bc.ca",
+  clientId: "<CLIENT_ID>",
+  loginURL: "<URL>",
+  tokenURL: "<URL>",
+  userInfoURL: "<URL>",
+  keycloakLogoutURL: "<URL>",
+  siteMinderLogoutURL: "<URL>",
 };
+
+export const BCEID_LOGIN_REDIRECT_URI = `${window.location.origin}/return-page?type=login`;
+export const BCEID_HINT = "&kc_idp_hint=bceid";
+export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${window.location.origin}/return-page?type=logout`;
+export const SITEMINDER_LOGOUT_REDIRECT_URI = `${
+  window.location.origin
+}/return-page?type=smlogout&retnow=1`;

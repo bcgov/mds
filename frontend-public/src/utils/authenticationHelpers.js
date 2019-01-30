@@ -1,9 +1,9 @@
-import * as API from "@/constants/API";
+import * as ENV from "@/constants/environment";
 
 export const signOutFromSSO = () => {
-  window.open(API.SSO_LOGOUT_ENDPOINT, "_self");
+  window.open(`${ENV.KEYCLOAK.keycloakLogoutURL}${ENV.KEYCLOAK_LOGOUT_REDIRECT_URI}`, "_self");
 };
 
 export const signOutFromSiteMinder = () => {
-  window.open(API.SITEMINDER_LOGOUT_ENDPOINT, "_self");
+  window.open(`${ENV.KEYCLOAK.siteMinderLogoutURL}${ENV.SITEMINDER_LOGOUT_REDIRECT_URI}`, "_self");
 };
