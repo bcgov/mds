@@ -1,64 +1,29 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Keycloak from "keycloak-js";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import { isAuthenticated, getKeycloak } from "@/selectors/authenticationSelectors";
-import { authenticateUser, storeKeycloakData } from "@/actions/authenticationActions";
-import { KEYCLOAK } from "@/constants/environment";
+import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import NullScreen from "@/components/common/NullScreen";
-import Loading from "@/components/common/Loading";
+import { getUserInfoFromToken } from "@/actionCreators/authenticationActionCreator";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
 
-export const AuthenticationGuard = (WrappedComponent) => {
-  /**
-   * Initializes the KeyCloak client and enables
-   * redirects directly to IDIR login page.
-   *
-   * The method uses async/awaits instead of promises
-   * because we were facing troubles with promise resolving
-   * and changing state.
-   *
-   */
+export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   class authenticationGuard extends Component {
     componentDidMount() {
-      this.keycloakInit();
-    }
-
-    async keycloakInit() {
-      // Initialize client
-      const keycloak = Keycloak(KEYCLOAK);
-      await keycloak.init();
-
-      // Prompt for login using IDIR if not authenticated
-      if (!keycloak.authenticated) {
-        await keycloak.login({
-          idpHint: KEYCLOAK.idpHint,
-        });
+      const token = localStorage.getItem("jwt");
+      if (token && !this.props.isAuthenticated) {
+        this.props.getUserInfoFromToken(token);
       }
-
-      // Fetch user info and roles and store them in local storage
-      const userInfo = await keycloak.loadUserInfo();
-      localStorage.setItem("jwt", keycloak.token);
-      this.props.storeKeycloakData(keycloak);
-      this.props.authenticateUser(userInfo);
     }
 
     render() {
-      if (this.props.keycloak) {
-        if (this.props.isAuthenticated) {
-          return <WrappedComponent {...this.props} />;
-        }
-        // Add this block back in once there are user permissions to check against, ie user logs in with BCeID but permissions have not been updated on keycloak.
-        // if (!this.props.isAuthenticated) {
-        //   return <NullScreen type="unauthorized" />;
-        // }
-        return <Loading />;
+      if (this.props.isAuthenticated || isPublic) {
+        return <WrappedComponent {...this.props} />;
       }
-      return <Loading />;
+      return <NullScreen type="unauthorized" />;
     }
   }
 
@@ -66,14 +31,12 @@ export const AuthenticationGuard = (WrappedComponent) => {
 
   const mapStateToProps = (state) => ({
     isAuthenticated: isAuthenticated(state),
-    keycloak: getKeycloak(state),
   });
 
   const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
       {
-        authenticateUser,
-        storeKeycloakData,
+        getUserInfoFromToken,
       },
       dispatch
     );

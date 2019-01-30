@@ -5,6 +5,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
+  siteminder_url: "https://logontest.gov.bc.ca",
 };
 
 export const ENVIRONMENT = {
@@ -13,11 +14,20 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
-  url: "<URL>",
-  idpHint: "idir",
   "ssl-required": "external",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
   clientId: "<CLIENT_ID>",
+  loginURL: "<URL>",
+  tokenURL: "<URL>",
+  userInfoURL: "<URL>",
+  keycloakLogoutURL: "<URL>",
+  siteMinderLogoutURL: "<URL>",
 };
+
+const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
+export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
+export const BCEID_HINT = "&kc_idp_hint=bceid";
+export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=logout`;
+export const SITEMINDER_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=smlogout&retnow=1`;

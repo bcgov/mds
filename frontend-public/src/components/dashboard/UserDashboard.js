@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
-
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import { getUserMineInfo } from "@/selectors/userMineInfoSelector";
 import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
@@ -26,7 +25,7 @@ export class UserDashboard extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchUserMineInfo().then(() => this.setState({ isLoaded: !this.state.isLoaded }));
+    this.props.fetchUserMineInfo().then(() => this.setState({ isLoaded: true }));
   }
 
   render() {
@@ -36,7 +35,7 @@ export class UserDashboard extends Component {
     const { mines } = this.props.userMineInfo;
     return (
       <div className="user-dashboard-padding">
-        {mines.length > 0 && (
+        {mines && mines.length > 0 && (
           <Row gutter={16}>
             <Col xs={1} sm={1} md={2} lg={4} />
             <Col xs={22} sm={22} md={14} lg={12}>
@@ -48,7 +47,7 @@ export class UserDashboard extends Component {
               </div>
               <ul className="user-mine-list">
                 {mines.map((mine) => (
-                  <li>
+                  <li key={mine.guid}>
                     <Link to={routes.MINE_INFO.dynamicRoute(mine.guid)}>{mine.mine_name}</Link>
                   </li>
                 ))}
@@ -64,7 +63,7 @@ export class UserDashboard extends Component {
             <Col xs={1} sm={1} md={2} lg={4} />
           </Row>
         )}
-        {mines.length === 0 && <NullScreen type="no-mines" />}
+        {mines && mines.length === 0 && <NullScreen type="no-mines" />}
       </div>
     );
   }
