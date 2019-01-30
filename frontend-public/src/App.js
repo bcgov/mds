@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import { Layout, BackTop, Button, Icon } from "antd";
@@ -7,6 +8,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
+import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 
 const App = () => {
   const { Content } = Layout;
@@ -32,4 +34,7 @@ const App = () => {
   );
 };
 
-export default hot(module)(App);
+export default compose(
+  hot(module),
+  AuthenticationGuard(true) // isPublic === true
+)(App);
