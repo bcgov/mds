@@ -72,6 +72,10 @@
       "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
     },
     {
+      "name": "SITEMINDER_URL",
+      "value": "https://logontest.gov.bc.ca"
+    },
+    {
       "name": "KEYCLOAK_IDP_HINT",
       "value": "idir"
     },
@@ -257,6 +261,10 @@
                   {
                     "name": "KEYCLOAK_ROLE_VIEW",
                     "value": "${KEYCLOAK_ROLE_VIEW}"
+                  },
+                  {
+                    "name": "SITEMINDER_URL",
+                    "value": "${SITEMINDER_URL}"
                   }
                 ],
                 "resources": {
