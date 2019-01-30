@@ -20,13 +20,13 @@ export default function fetchEnv() {
       KEYCLOAK.siteMinderLogoutURL = `${env.siteminder_url}/clp-cgi/logoff.cgi?returl=`;
       KEYCLOAK.loginURL = `${
         env.keycloak_url
-      }/auth/realms/mds/protocol/openid-connect/auth?response_type=code&client_id=${
+      }/realms/mds/protocol/openid-connect/auth?response_type=code&client_id=${
         env.keycloak_clientId
       }&redirect_uri=`;
       KEYCLOAK.keycloakLogoutURL = `${
         env.keycloak_url
-      }/auth/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
-      KEYCLOAK.tokenURL = `${env.keycloak_url}/auth/realms/mds/protocol/openid-connect/token`;
-      KEYCLOAK.userInfoURL = `${env.keycloak_url}/auth/realms/mds/protocol/openid-connect/userinfo`;
+      }/realms/mds/protocol/openid-connect/logout?redirect_uri=`;
+      KEYCLOAK.tokenURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/token`;
+      KEYCLOAK.userInfoURL = `${env.keycloak_url}/realms/mds/protocol/openid-connect/userinfo`;
     });
 }

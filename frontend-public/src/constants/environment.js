@@ -4,7 +4,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
-  keycloak_url: "https://sso-test.pathfinder.gov.bc.ca",
+  keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
   siteminder_url: "https://logontest.gov.bc.ca",
 };
 
@@ -26,9 +26,8 @@ export const KEYCLOAK = {
   siteMinderLogoutURL: "<URL>",
 };
 
-export const BCEID_LOGIN_REDIRECT_URI = `${window.location.origin}/return-page?type=login`;
+const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
+export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
 export const BCEID_HINT = "&kc_idp_hint=bceid";
-export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${window.location.origin}/return-page?type=logout`;
-export const SITEMINDER_LOGOUT_REDIRECT_URI = `${
-  window.location.origin
-}/return-page?type=smlogout&retnow=1`;
+export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=logout`;
+export const SITEMINDER_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=smlogout&retnow=1`;
