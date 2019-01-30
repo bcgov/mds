@@ -148,6 +148,10 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).first()
 
     @classmethod
+    def find_all_major_mines(cls):
+        return cls.query.filter_by(major_mine_ind=True).all()
+
+    @classmethod
     def find_by_mine_no_or_guid(cls, _id):
         result = cls.find_by_mine_guid(_id)
         if result is None:
