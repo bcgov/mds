@@ -123,4 +123,4 @@ psql --dbname=mds --username=mds --host=localhost --password --port=5432
 
 ## Authentication Workflow
 
-![KeyCloak Authentication / Authorization](![mds-keycloak](https://user-images.githubusercontent.com/25966613/52016147-a302a800-2498-11e9-87ce-e59bd0464656.png)
+![KeyCloak Authentication / Authorization](https://user-images.githubusercontent.com/25966613/52016147-a302a800-2498-11e9-87ce-e59bd0464656.png)
