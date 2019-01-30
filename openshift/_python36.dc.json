@@ -99,6 +99,13 @@
     {
       "name": "REPLICA_MAX",
       "value": "1"
+    },
+    {
+      "name": "ENVIRONMENT_NAME",
+      "displayName": "Environment Name (Environment Id)",
+      "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
+      "required": false,
+      "value": "dev"
     }
   ],
   "objects": [
@@ -364,6 +371,10 @@
                   {
                     "name": "UPLOADED_DOCUMENT_DEST",
                     "value": "${UPLOADED_DOCUMENT_DEST}"
+                  },
+                  {
+                    "name": "ENVIRONMENT_NAME",
+                    "value": "${ENVIRONMENT_NAME}"
                   }
                 ],
                 "resources": {

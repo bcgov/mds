@@ -22,7 +22,7 @@ from ....utils.random import generate_mine_no
 from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import MINE_MAP_CACHE
+from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
@@ -82,8 +82,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                             'mines': list((map(lambda x: x.json_for_map(), records)))
                         },
                         separators=(',', ':'))
-                    cache.set(MINE_MAP_CACHE, map_result, timeout=43140)
-                    cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=43140)
+                    cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
+                    cache.set(
+                        MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
 
                 # It's more efficient to store the json to avoid re-initializing all of the objects
                 # and jsonifying on every request, so a flask response is returned to prevent
