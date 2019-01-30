@@ -23,6 +23,172 @@ BEGIN
     );
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
+
+
+
+
+
+
+
+    --1. Mine with valid manager attached
+    WITH now_manager AS (
+        SELECT
+            SUBSTRING(now_contact.cid from 1 for 7) AS mine_no      ,
+            contact_info.cid                        AS contact_cid  ,
+            contact_info.add_dt                     AS add_dt
+        FROM mms.mmsccc now_contact
+        INNER JOIN mms.mmsccn contact_info on
+            contact_info.cid=now_contact.cid_ccn
+        WHERE
+            SUBSTRING(now_contact.type_ind from 3 for 1) = 'Y'
+    ),
+    --2. Latest NoW with manager attached
+    latest_now AS (
+        SELECT
+            mine_no                 ,
+            MAX(add_dt)        add_dt
+        FROM now_manager
+        GROUP BY
+            mine_no
+    ),
+    --3. Latest manager if more than 1 is attached
+    latest_manager AS (
+        SELECT
+            mine_no                         ,
+            MAX(contact_cid) AS contact_cid
+        FROM now_manager
+        WHERE mine_no||add_dt IN (
+            SELECT mine_no||add_dt
+            FROM latest_now
+        )
+        GROUP BY mine_no
+    ),
+    --4. Select existing manager record
+    existing_manager AS (
+        SELECT
+            mine_no                         ,
+            contact_cid AS person_combo_id  ,
+            mine_no||contact_cid AS mgr_combo_id
+        FROM latest_manager
+        where mine_no||contact_cid IN (
+            SELECT  mgr_combo_id
+            FROM    ETL_MANAGER
+        )
+    ),
+    --5. Check if manager is an existing person
+    existing_person AS (
+        SELECT DISTINCT ON (person_combo_id)
+            person_combo_id
+        FROM existing_manager
+        WHERE person_combo_id IN (
+            SELECT  person_combo_id
+            FROM    ETL_Manager
+        )
+    ),
+    --6. Extract contact info and formatting
+    existing_person_info AS(
+        SELECT
+            cid AS person_combo_id  ,
+            COALESCE(NULLIF(regexp_replace(contact_info.name,' ', '', 'g'),''),'Unknown') first_name,
+            COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname ,
+            NULLIF(regexp_replace(phone, '\D', '','g'),'')::numeric phone_no                        , --Extract numbers only from phone_no field
+            COALESCE(NULLIF(regexp_replace(contact_info.email,' ', '', 'g'),''),'Unknown') email    ,
+            COALESCE(contact_info.add_dt,now()) effective_date
+        FROM mms.mmsccn contact_info
+        WHERE cid IN (
+            SELECT  person_combo_id
+            FROM    existing_person
+        )
+    ),
+    -- Remove the extra digit in phone number
+    existing_person_info_get_phone AS(
+        SELECT
+            gen_random_uuid() AS party_guid   ,
+            person_combo_id                   ,
+            first_name                        ,
+            surname                           ,
+            CASE
+                WHEN phone_no>=10^10 AND phone_no<2*10^10 THEN (phone_no-10^10 )::varchar--Remove country code for phone_no
+                WHEN phone_no>10^9 AND phone_no<10^10 THEN (phone_no)::varchar
+                ELSE 'Unknown'
+            END AS phone_no ,
+            email           ,
+            effective_date
+        FROM existing_person_info
+    ),
+    --Format phone number field to match MDS party table schema
+    existing_person_info_format_phone AS (
+        SELECT
+            party_guid      ,
+            person_combo_id ,
+            first_name      ,
+            surname         ,
+            CASE
+                WHEN phone_no = 'Unknown' THEN phone_no
+                ELSE
+                    SUBSTRING(phone_no from 1 for 3)||'-'||
+                    SUBSTRING(phone_no from 4 for 3)||'-'||
+                    SUBSTRING(phone_no from 7 for 4)
+            END AS phone_no ,
+            email           ,
+            effective_date
+        FROM existing_person_info_get_phone
+    ),
+    --7. Complete list of person info for existing manager record
+    person_info AS (
+        SELECT * FROM existing_person_info_format_phone
+        UNION
+        SELECT
+            party_guid      ,
+            person_combo_id ,
+            first_name      ,
+            surname         ,
+            phone_no        ,
+            email           ,
+            effective_date
+        FROM ETL_MANAGER
+        WHERE person_combo_id IN (
+            SELECT  DISTINCT person_combo_id
+            FROM    existing_manager
+        )
+    ),
+    --8. Complete list of existing regional mine manager
+    existing_manager_info AS (
+        SELECT
+            manager.mine_no         ,
+            manager.person_combo_id ,
+            manager.mgr_combo_id    ,
+            person.party_guid       ,
+            person.first_name       ,
+            person.surname          ,
+            person.phone_no         ,
+            person.email            ,
+            person.effective_date
+        FROM existing_manager manager
+        INNER JOIN person_info person
+            ON person.person_combo_id=manager.person_combo_id
+    )
+    -- Update info for a given party at a specific mine
+    UPDATE ETL_MANAGER
+    SET first_name      = mms.first_name     ,
+        surname         = mms.surname        ,
+        phone_no        = mms.phone_no       ,
+        email           = mms.email          ,
+        effective_date  = mms.effective_date ,
+        person_combo_id = mms.person_combo_id,
+        mgr_combo_id    = mms.mgr_combo_id   )
+    FROM existing_manager_info mms
+    WHERE
+        ETL_MANAGER.mine_no = mms.mine_no
+        AND
+        ETL_MANAGER.party_guid = mms.party_guid;
+
+
+
+
+
+
+
     --1. Mine with valid manager attached
     WITH now_manager  AS(
         SELECT
@@ -199,6 +365,23 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 2 of 3: Update contact details for new person';
     SELECT count(*) FROM party INTO old_row;
+
+    -- Upsert party data from ETL_MANAGER
+    UPDATE party
+    SET first_name       = etl.first_name    ,
+        surname          = etl.surname       ,
+        phone_no         = etl.phone_no      ,
+        phone_ext        = 'N/A'             ,
+        email            = etl.email         ,
+        effective_date   = etl.effective_date,
+        expiry_date      = '9999-12-31'::date,
+        update_user      = 'mms_migration'   ,
+        update_timestamp = now()             ,
+        party_type_code  = 'PER'
+    FROM ETL_MANAGER etl
+    WHERE party.party_guid = etl.party_guid;
+
+
     WITH
     --Select only new entry in ETL_Manager table
     new_manager AS(
@@ -257,6 +440,29 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
     SELECT count(*) FROM mine_party_appt INTO old_row;
+
+    -- Upsert mine manager data from ETL_MANAGER
+    UPDATE mine_party_appt
+    SET effective_date   = etl.effective_date,
+        expiry_date      = '9999-12-31'::date,
+        update_user      = 'mms_migration'   ,
+        update_timestamp = now()
+    FROM ETL_MANAGER etl
+    WHERE
+        -- FIXME: There can (and will?) be more than one record per mine for a particular party
+        -- how do we know which record to update?
+        -- MMS: mine1, jim, started today, ends next week
+        -- MDS records:
+        -- mine1, jim, started a fortnight ago, ended last week
+        -- mine1, jim, started yesterday, ends today
+        -- Do I update a record? Insert a new one?
+        mine_party_appt.mine_guid = etl.mine_guid
+        AND
+        mine_party_appt.party_guid = etl.party_guid
+        AND
+        mine_party_appt.mine_party_appt_type_code = 'MMG';
+
+
     --select only new record
     WITH new_manager AS
     (
