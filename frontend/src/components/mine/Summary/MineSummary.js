@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider, Card } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
@@ -65,7 +65,7 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
 const renderSummaryPermit = (permit, partyRelationships) => {
   if (partyRelationships.length === 0) return <div>{String.LOADING}</div>;
   return (
-    <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={6} key={permit.permit_guid}>
+    <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
       {" "}
       <PermitCard permit={permit} PartyRelationships={partyRelationships} />
     </Col>
@@ -128,6 +128,92 @@ export const MineSummary = (props) => {
                   See All Permits
                 </Link>
               </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Row gutter={16}>
+            <Col span={8}>
+              <h4>Compliance</h4>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Card
+                headStyle={{
+                  borderTop: "1px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                bodyStyle={{
+                  background: "#EEEEEE",
+                  borderBottom: "4px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                title={
+                  <div className="center">
+                    <h1>May 29 2019</h1>
+                  </div>
+                }
+                bordered={false}
+              >
+                <div className="center">
+                  <h4>Last Inspection Date</h4>
+                </div>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card
+                headStyle={{
+                  borderTop: "1px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                bodyStyle={{
+                  background: "#EEEEEE",
+                  borderBottom: "4px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                title={
+                  <div className="center">
+                    <h1>9900</h1>
+                  </div>
+                }
+                bordered={false}
+              >
+                <div className="center">
+                  <h4>Open Orders</h4>
+                </div>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card
+                headStyle={{
+                  borderTop: "1px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                bodyStyle={{
+                  background: "#EEEEEE",
+                  borderBottom: "4px solid #CCCCCC",
+                  borderRight: "1px solid #CCCCCC",
+                  borderLeft: "1px solid #CCCCCC",
+                }}
+                title={
+                  <div className="center">
+                    <h1>999</h1>
+                  </div>
+                }
+                bordered={false}
+              >
+                <div className="center">
+                  <h4>Overdue Orders</h4>
+                </div>
+              </Card>
             </Col>
           </Row>
         </Col>

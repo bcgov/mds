@@ -21,7 +21,6 @@ export const PermitCard = (props) => {
   const permittees = PartyRelationships.filter((pr) =>
     ["PMT"].includes(pr.mine_party_appt_type_code)
   );
-  console.log(permittees);
   return (
     <div>
       <h4>{formatTitleString(permit.permit_no)}</h4>
