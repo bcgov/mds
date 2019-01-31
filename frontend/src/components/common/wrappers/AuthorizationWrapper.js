@@ -8,7 +8,7 @@ import * as Permission from "@/constants/permissions";
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
  * if the role passed in matches the user permissions.
- * 
+ *
  * NOTE: If the childComponent is an ant design child component**
  * IE. Menu.Item,
  * <Menu>
@@ -16,9 +16,9 @@ import * as Permission from "@/constants/permissions";
  * </Menu>
  *  The implicit flow of passing props down to children could be interrupted.
  * Ie, Menu passes onItemHover down to Menu.Item, with AuthorizationWrapper wrapping Menu.Item, it no longer has access
- * to onItemHover, as a solution, a <div className="custom-menu-item" /> will be used in place of Menu.Item and will inherit all CSS from 
+ * to onItemHover, as a solution, a <div className="custom-menu-item" /> will be used in place of Menu.Item and will inherit all CSS from
  * Menu.Item.
- * NavBar.js use case example: 
+ * NavBar.js use case example:
  * <Menu>
     <AuthorizationWrapper permission="role_admin">
       <div className="custom-menu-item">
@@ -28,8 +28,8 @@ import * as Permission from "@/constants/permissions";
       </div>
     </AuthorizationWrapper>
   </Menu>
- * 
- * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated, 
+ *
+ * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated,
  * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
  */
 
@@ -45,7 +45,7 @@ const defaultProps = {
 export const AuthorizationWrapper = (props) =>
   props.userRoles.includes(USER_ROLES[props.permission]) &&
   (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
-    <div>{...props.children}</div>
+    <div>{Object.assign(props.children)}</div>
   );
 
 AuthorizationWrapper.propTypes = propTypes;
