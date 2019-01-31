@@ -9,11 +9,14 @@ import {
   getPartyRelationships,
   getSummaryPartyRelationships,
 } from "@/selectors/partiesSelectors";
+import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
+
 import { connect } from "react-redux";
 import * as String from "@/constants/strings";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
+import { formatDate } from "@/utils/helpers";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
@@ -24,14 +27,14 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  summaryPermits: PropTypes.arrayOf(CustomPropTypes.permit),
+  mineComplianceInfo: PropTypes.object,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   summaryPartyRelationships: [],
-  summaryPermits: [],
+  mineComplianceInfo: {},
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -135,87 +138,90 @@ export const MineSummary = (props) => {
       <Row gutter={16}>
         <Col span={24}>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={24}>
               <h4>Compliance</h4>
+              <Divider />
             </Col>
           </Row>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Card
-                headStyle={{
-                  borderTop: "1px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                bodyStyle={{
-                  background: "#EEEEEE",
-                  borderBottom: "4px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                title={
+          {props.mineComplianceInfo && (
+            <Row gutter={16} type="flex" justify="center">
+              <Col span={6}>
+                <Card
+                  headStyle={{
+                    borderTop: "1px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  bodyStyle={{
+                    background: "#EEEEEE",
+                    borderBottom: "4px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  title={
+                    <div className="center">
+                      <h1>{formatDate(props.mineComplianceInfo.last_inspection)}</h1>
+                    </div>
+                  }
+                  bordered={false}
+                >
                   <div className="center">
-                    <h1>May 29 2019</h1>
+                    <h4>Last Inspection Date</h4>
                   </div>
-                }
-                bordered={false}
-              >
-                <div className="center">
-                  <h4>Last Inspection Date</h4>
-                </div>
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card
-                headStyle={{
-                  borderTop: "1px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                bodyStyle={{
-                  background: "#EEEEEE",
-                  borderBottom: "4px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                title={
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card
+                  headStyle={{
+                    borderTop: "1px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  bodyStyle={{
+                    background: "#EEEEEE",
+                    borderBottom: "4px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  title={
+                    <div className="center">
+                      <h1>{props.mineComplianceInfo.num_open_orders}</h1>
+                    </div>
+                  }
+                  bordered={false}
+                >
                   <div className="center">
-                    <h1>9900</h1>
+                    <h4>Open Orders</h4>
                   </div>
-                }
-                bordered={false}
-              >
-                <div className="center">
-                  <h4>Open Orders</h4>
-                </div>
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card
-                headStyle={{
-                  borderTop: "1px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                bodyStyle={{
-                  background: "#EEEEEE",
-                  borderBottom: "4px solid #CCCCCC",
-                  borderRight: "1px solid #CCCCCC",
-                  borderLeft: "1px solid #CCCCCC",
-                }}
-                title={
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card
+                  headStyle={{
+                    borderTop: "1px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  bodyStyle={{
+                    background: "#EEEEEE",
+                    borderBottom: "4px solid #CCCCCC",
+                    borderRight: "1px solid #CCCCCC",
+                    borderLeft: "1px solid #CCCCCC",
+                  }}
+                  title={
+                    <div className="center">
+                      <h1>{props.mineComplianceInfo.num_overdue_orders}</h1>
+                    </div>
+                  }
+                  bordered={false}
+                >
                   <div className="center">
-                    <h1>999</h1>
+                    <h4>Overdue Orders</h4>
                   </div>
-                }
-                bordered={false}
-              >
-                <div className="center">
-                  <h4>Overdue Orders</h4>
-                </div>
-              </Card>
-            </Col>
-          </Row>
+                </Card>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
     </div>
@@ -226,6 +232,7 @@ const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   summaryPartyRelationships: getSummaryPartyRelationships(state),
+  mineComplianceInfo: getMineComplianceInfo(state),
 });
 
 MineSummary.propTypes = propTypes;

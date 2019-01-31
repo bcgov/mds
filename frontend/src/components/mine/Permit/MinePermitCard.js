@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-
-import * as router from "@/constants/routes";
 import { formatTitleString } from "@/utils/helpers";
-import { Link } from "react-router-dom";
 
 const propTypes = {
   permit: PropTypes.objectOf(CustomPropTypes.permit),
