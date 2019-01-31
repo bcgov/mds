@@ -61,6 +61,10 @@ body {
   }
 }
 
+.flex-center {
+  justify-content: center;
+}
+
 .block-mobile {
   @include mobile {
     display: block;
@@ -131,6 +135,12 @@ body {
     padding-right: 5px;
   }
   padding: $default-padding-sm;
+}
+
+.padding-large {
+  &--right {
+    padding-right: $default-padding-lg;
+  }
 }
 
 .margin-small {

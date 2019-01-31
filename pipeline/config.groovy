@@ -477,7 +477,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "production"
+                node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
