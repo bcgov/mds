@@ -11,10 +11,11 @@ class DocumentManager(AuditMixin, Base):
     __tablename__ = 'document_manager'
     document_manager_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     document_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    full_storage_path = db.Column(db.String(150), nullable=True)
-    upload_date = db.Column(db.DateTime, nullable=False)
+    full_storage_path = db.Column(db.String(150), nullable=False)
+    upload_started_date = db.Column(db.DateTime, nullable=False)
+    upload_completed_date = db.Column(db.DateTime, nullable=True)
     file_display_name = db.Column(db.String(40), nullable=False)
-    path_display_name = db.Column(db.String(150), nullable=True)
+    path_display_name = db.Column(db.String(150), nullable=False)
 
     def __repr__(self):
         return '<DocumentManager %r>' % self.party_guid
@@ -24,7 +25,8 @@ class DocumentManager(AuditMixin, Base):
             'document_manager_id': str(self.document_manager_id),
             'document_guid': str(self.document_guid),
             'full_storage_path': str(self.full_storage_path),
-            'upload_date': str(self.upload_date),
+            'upload_started_date': str(self.upload_started_date),
+            'upload_completed_date': str(self.upload_completed_date),
             'file_display_name': str(self.file_display_name),
             'path_display_name': str(self.path_display_name)
         }
