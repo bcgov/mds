@@ -85,10 +85,7 @@ def register_routes(app):
         return json.loads({"error": str(traceback)})
 
 def register_apm(app):    
-    print(app.config['ELASTIC_ENABLED'], file=sys.stderr)
-    print('heres1', file=sys.stderr)
     if app.config['ELASTIC_ENABLED'] == '1':
-        print('heres', file=sys.stderr)
         app.config['ELASTIC_APM'] ={
             'SERVICE_NAME': app.config['ELASTIC_SERVICE_NAME'],
             'SECRET_TOKEN': app.config['ELASTIC_SECRET_TOKEN'],
