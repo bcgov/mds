@@ -117,6 +117,16 @@
 
 .ant-card-body {
   padding: 20px;
+  border-bottom: 4px solid $card-body-border-color;
+  border-right: 1px solid $card-body-border-color;
+  border-left: 1px solid $card-body-border-color;
+}
+
+.ant-card-head {
+  background: $card-body-background-color;
+  border-top: 1px solid $card-body-border-color;
+  border-right: 1px solid $card-body-border-color;
+  border-left: 1px solid $card-body-border-color;
 }
 
 .ant-card-bordered {
@@ -184,4 +194,8 @@
   &:hover {
     background-color: #d9d3e0;
   }
+}
+
+.ant-card-head {
+  height: 120px;
 }

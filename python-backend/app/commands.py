@@ -26,8 +26,6 @@ from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db
 from app import auth
 
-auth.apply_security = False
-
 
 def register_commands(app):
     DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
@@ -64,6 +62,8 @@ def register_commands(app):
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
+        from . import auth
+        auth.apply_security = False
         """
         Creates dummy data in the database. If threading=True
         Use Threading and multiprocessing to create records in chunks of 100.
@@ -123,6 +123,9 @@ def register_commands(app):
 
     @app.cli.command()
     def delete_data():
+        from . import auth
+        auth.apply_security = False
+
         meta = db.metadata
         for table in reversed(meta.sorted_tables):
             if 'view' in table.name:
