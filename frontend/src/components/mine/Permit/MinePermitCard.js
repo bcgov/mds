@@ -20,22 +20,20 @@ export const PermitCard = (props) => {
     ["PMT"].includes(pr.mine_party_appt_type_code)
   );
   return (
-    <Card bordered={false}>
-      <div>
-        <h4>{formatTitleString(permit.permit_no)}</h4>
-        <br />
-        <h6>Last Amended</h6>
-        <span>{permit.issue_date}</span>
-        <br />
-        <br />
-        <h6>Permittee</h6>
-        <span>
-          {permittees.find((pmts) => pmts.related_guid.includes(permit.permit_guid)).party.name}
-        </span>
-        <br />
-        <br />
-      </div>
-    </Card>
+    <div>
+      <h4>{formatTitleString(permit.permit_no)}</h4>
+      <br />
+      <h6>Last Amended</h6>
+      <span>{permit.issue_date}</span>
+      <br />
+      <br />
+      <h6>Permittee</h6>
+      <span>
+        {permittees.find((pmts) => pmts.related_guid.includes(permit.permit_guid)).party.name}
+      </span>
+      <br />
+      <br />
+    </div>
   );
 };
 
