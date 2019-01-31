@@ -19,3 +19,4 @@ export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";
 export { default as EDIT } from "../assets/images/Edit.svg";
 export { default as LOGOUT } from "../assets/images/Logout.svg";
 export { default as ADMIN } from "../assets/images/Admin.svg";
+export { default as WARNING } from "../assets/images/warning.svg";
