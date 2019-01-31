@@ -383,7 +383,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
-                elastic_enabled = 0
+                elastic_enabled = 1
                 elastic_service_name = "MDS Dev"
             }
             modules {
@@ -583,7 +583,7 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
-                elastic_enabled = 0
+                elastic_enabled = 1
                 elastic_service_name = "MDS Prod"
             }
             modules {
