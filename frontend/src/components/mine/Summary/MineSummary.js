@@ -41,15 +41,7 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   ).description;
 
   return (
-    <Col
-      xs={24}
-      sm={24}
-      md={24}
-      lg={12}
-      xl={8}
-      xxl={6}
-      key={partyRelationship.mine_party_appt_guid}
-    >
+    <Col md={24} lg={12} xl={8} xxl={6} key={partyRelationship.mine_party_appt_guid}>
       <Contact
         mine={mine}
         partyRelationship={partyRelationship}
@@ -61,14 +53,14 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
 };
 
 const renderSummaryPermit = (permit, partyRelationships) => (
-  <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
+  <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
     {" "}
     <PermitCard permit={permit} PartyRelationships={partyRelationships} />
   </Col>
 );
 
 const renderSummaryTSF = (tsf, partyRelationships) => (
-  <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4} key={tsf.mine_tailings_storage_facility_guid}>
+  <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={tsf.mine_tailings_storage_facility_guid}>
     {" "}
     <TSFCard tailingsStorageFacility={tsf} PartyRelationships={partyRelationships} />
   </Col>

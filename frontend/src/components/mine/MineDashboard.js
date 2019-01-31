@@ -81,6 +81,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true);
+      // true = Only get compliance if it already cached
     });
     if (!this.props.optionsLoaded) {
       this.props.fetchStatusOptions();
