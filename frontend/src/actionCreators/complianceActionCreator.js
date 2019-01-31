@@ -11,11 +11,15 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const fetchMineComplianceInfo = (mineNo) => (dispatch) => {
+export const fetchMineComplianceInfo = (mineNo, cacheOnly = false) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
+  let url = `${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}`;
+  if (cacheOnly) {
+    url += `?cacheOnly=True`;
+  }
   return axios
-    .get(`${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}`, createRequestHeader())
+    .get(url, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_COMPLIANCE_INFO));
       dispatch(complianceActions.storeMineComplianceInfo(response.data));

@@ -80,7 +80,7 @@ export class MineDashboard extends Component {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
-      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no);
+      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true);
     });
     if (!this.props.optionsLoaded) {
       this.props.fetchStatusOptions();
