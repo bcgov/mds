@@ -16,13 +16,12 @@ import { formatDate } from "@/utils/helpers";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
 };
 
 const defaultProps = {
-  mine: {},
   mineComplianceInfo: {},
 };
 
