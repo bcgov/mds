@@ -112,22 +112,17 @@
 .ant-card {
   margin-bottom: 20px;
   text-align: left;
-  border-radius: 25px;
+  border: 1px solid $card-body-border-color;
 }
 
 .ant-card-body {
   padding: 20px;
   border-bottom: 4px solid $card-body-border-color;
-  border-right: 1px solid $card-body-border-color;
-  border-left: 1px solid $card-body-border-color;
 }
 
 .ant-card-head {
   min-height: 90px;
   background: $card-body-background-color;
-  border-top: 1px solid $card-body-border-color;
-  border-right: 1px solid $card-body-border-color;
-  border-left: 1px solid $card-body-border-color;
 }
 
 // ROW
