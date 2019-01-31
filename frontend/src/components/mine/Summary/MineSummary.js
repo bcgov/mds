@@ -23,7 +23,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  mineComplianceInfo: PropTypes.object,
+  mineComplianceInfo: PropTypes.objectOf(CustomPropTypes.mineComplianceInfo),
 };
 
 const defaultProps = {

@@ -20,11 +20,11 @@ export const mineTypes = shape({
 });
 
 export const minePageData = shape({
-  current_page: PropTypes.numnber,
-  items_per_page: PropTypes.numnber,
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
   mines: PropTypes.arrayOf(mine),
-  total: PropTypes.numnber,
-  total_pages: PropTypes.numnber,
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
 });
 
 export const mineName = shape({
@@ -33,4 +33,15 @@ export const mineName = shape({
   mine_no: PropTypes.string.isRequired,
   latitude: PropTypes.string,
   longitude: PropTypes.string,
+});
+
+export const mineComplianceInfo = shape({
+  advisories: PropTypes.number.isRequired,
+  inspector: PropTypes.string.isRequired,
+  last_inspection: PropTypes.string.isRequired,
+  num_open_orders: PropTypes.number.isRequired,
+  num_overdue_orders: PropTypes.number.isRequired,
+  open_orders: PropTypes.array,
+  section_35_orders: PropTypes.number.isRequired,
+  warnings: PropTypes.number.isRequired,
 });

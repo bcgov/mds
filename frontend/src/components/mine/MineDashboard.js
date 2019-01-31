@@ -62,7 +62,7 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
-  mineComplianceInfo: PropTypes.object,
+  mineComplianceInfo: PropTypes.objectOf(CustomPropTypes.mineComplianceInfo),
   fetchMineComplianceInfo: PropTypes.func.isRequired,
 };
 
