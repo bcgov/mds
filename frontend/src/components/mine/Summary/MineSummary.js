@@ -135,15 +135,16 @@ export const MineSummary = (props) => {
           </Row>
         </Col>
       </Row>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Row gutter={16}>
-            <Col span={24}>
-              <h4>Compliance</h4>
-              <Divider />
-            </Col>
-          </Row>
-          {props.mineComplianceInfo && (
+      {props.mineComplianceInfo && props.mineComplianceInfo.last_inspection && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Compliance</h4>
+                <Divider />
+              </Col>
+            </Row>
+
             <Row gutter={16} type="flex" justify="center">
               <Col span={6}>
                 <Card
@@ -221,9 +222,9 @@ export const MineSummary = (props) => {
                 </Card>
               </Col>
             </Row>
-          )}
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };
