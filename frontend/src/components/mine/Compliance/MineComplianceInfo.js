@@ -133,9 +133,6 @@ export class MineComplianceInfo extends Component {
         {this.state.isLoading && <Loading />}
         {!this.state.isLoading && (
           <div>
-            <h2>Compliance Overview</h2>
-            <br />
-            <br />
             {this.props.mineComplianceInfo && (
               <div>
                 <Row gutter={16} justify="center" align="top">
