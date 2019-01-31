@@ -18,7 +18,7 @@ import { formatDate } from "@/utils/helpers";
 const propTypes = {
   mine: PropTypes.object.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
-  mineComplianceInfo: PropTypes.objectOf(CustomPropTypes.mineComplianceInfo),
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
 };
 
 const defaultProps = {

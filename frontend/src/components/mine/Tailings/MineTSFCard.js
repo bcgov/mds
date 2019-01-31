@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  tailings_storage_facility: PropTypes.objectOf(CustomPropTypes.permit),
+  tailings_storage_facility: CustomPropTypes.object,
   PartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
 
