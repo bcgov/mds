@@ -186,7 +186,8 @@ export class Dashboard extends Component {
           showCoordinates: true,
           mineName: newVal[2],
         });
-        window.scrollTo(0, this.mapRef.current.offsetTop + 193);
+        // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
+        window.scrollTo({ top: this.mapRef.current.offsetTop + 145, behavior: "smooth" });
       } else {
         this.setState({
           lat: String.DEFAULT_LAT,
@@ -202,7 +203,7 @@ export class Dashboard extends Component {
         showCoordinates: true,
         mineName: null,
       });
-      window.scrollTo(0, this.mapRef.current.offsetTop + 193);
+      window.scrollTo({ top: this.mapRef.current.offsetTop + 145, behavior: "smooth" });
     }
   };
 
@@ -333,26 +334,28 @@ export class Dashboard extends Component {
                   <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                 </Col>
               </div>
-              {this.state.mineName && (
-                <div className="center center-mobile">
-                  <h2>
-                    Results for: <span className="p">{this.state.mineName}</span>
-                  </h2>
-                </div>
-              )}
-              {this.state.showCoordinates && (
-                <div className="center">
-                  <div className="inline-flex evenly center-mobile">
+              <div ref={this.mapRef}>
+                {this.state.mineName && (
+                  <div className="center center-mobile">
                     <h2>
-                      Latitude: <span className="p">{this.state.lat}</span>
-                    </h2>
-                    <h2>
-                      Longitude: <span className="p">{this.state.long}</span>
+                      Results for: <span className="p">{this.state.mineName}</span>
                     </h2>
                   </div>
-                </div>
-              )}
-              <div ref={this.mapRef}>
+                )}
+                {this.state.showCoordinates && (
+                  <div className="center">
+                    <div className="inline-flex evenly center-mobile">
+                      <h2>
+                        Latitude: <span className="p">{this.state.lat}</span>
+                      </h2>
+                      <h2>
+                        Longitude: <span className="p">{this.state.long}</span>
+                      </h2>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div>
                 <MineMap {...this.state} />
               </div>
             </TabPane>
