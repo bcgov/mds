@@ -1,6 +1,6 @@
 import * as ActionTypes from "@/constants/actionTypes";
 import * as ReducerTypes from "@/constants/reducerTypes";
-
+import * as route from "@/constants/routes";
 /**
  * @file authenticationReducer.js
  * all data associated with a users record is handled witnin this reducer.
@@ -8,7 +8,7 @@ import * as ReducerTypes from "@/constants/reducerTypes";
 const initialState = {
   isAuthenticated: false,
   userInfo: {},
-  keycloak: {},
+  redirect: false,
 };
 
 const authenticationReducer = (state = initialState, action) => {
@@ -18,18 +18,14 @@ const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         userInfo: action.payload.userInfo,
-      };
-    case ActionTypes.STORE_KEYCLOAK_DATA:
-      return {
-        ...state,
-        keycloak: action.payload.data,
+        redirect: route.DASHBOARD.route,
       };
     case ActionTypes.LOGOUT:
       return {
         ...state,
         isAuthenticated: false,
         userInfo: {},
-        keycloak: {},
+        redirect: route.HOME.route,
       };
     default:
       return state;
@@ -38,6 +34,6 @@ const authenticationReducer = (state = initialState, action) => {
 
 export const isAuthenticated = (state) => state[ReducerTypes.AUTHENTICATION].isAuthenticated;
 export const getUserInfo = (state) => state[ReducerTypes.AUTHENTICATION].userInfo;
-export const getKeycloak = (state) => state[ReducerTypes.AUTHENTICATION].keycloak;
+export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
 
 export default authenticationReducer;

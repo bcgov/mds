@@ -1,64 +1,95 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Menu, Dropdown, Button, Icon, Divider } from "antd";
+import * as route from "@/constants/routes";
+import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import * as routes from "@/constants/routes";
-import { logoutUser } from "@/actions/authenticationActions";
-import { getKeycloak, isAuthenticated } from "@/selectors/authenticationSelectors";
+import * as ENV from "@/constants/environment";
+import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
+import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
+import { MENU } from "@/constants/assets";
 
 /**
- * @class Logout.js is a small component which contains all keycloak logic to log a user out, NOTE: due to idir issues, Logout does not work as it should.
+ * @class Authentication.js contains various authentication states, and available links for authenticated users,
+ * MediaQueries are used to switch the menu to a hamburger menu when viewed on mobile.
  */
 
 const propTypes = {
-  logoutUser: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  keycloak: { logout: PropTypes.func.isRequired }.isRequired,
+  userInfo: PropTypes.objectOf(PropTypes.string),
 };
 
-export class Authentication extends Component {
-  handleLogout = () => {
-    this.props.keycloak.logout();
-    localStorage.removeItem("jwt");
-    this.props.logoutUser();
-  };
+const defaultProps = {
+  userInfo: {},
+};
 
-  render() {
-    if (!this.props.isAuthenticated) {
-      return (
-        <Link to={routes.DASHBOARD.route}>
-          <Button type="tertiary" className="login-btn">
-            Log in
-          </Button>
-        </Link>
-      );
-    }
+export const Authentication = (props) => {
+  const hamburgerMenu = (
+    <Menu>
+      <Menu.Item>
+        <Button type="tertiary">
+          <Link to={route.DASHBOARD.route}>My Mines</Link>
+        </Button>
+      </Menu.Item>
+      <Divider style={{ margin: "0" }} />
+      <Menu.Item>
+        <Button type="tertiary" onClick={signOutFromSiteMinder}>
+          Log out
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Button type="tertiary" onClick={signOutFromSiteMinder}>
+          Log out
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+
+  if (!props.isAuthenticated) {
     return (
-      <Button type="tertiary" className="login-btn" onClick={this.handleLogout}>
-        Logout
-      </Button>
+      <a href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}${ENV.BCEID_HINT}`}>
+        <Button type="tertiary" className="login-btn">
+          Log in
+        </Button>
+      </a>
     );
   }
-}
+  return (
+    <div className="inline align-bot">
+      <MediaQuery minWidth={701}>
+        <Link to={route.DASHBOARD.route}>
+          <span className="header-link">My Mines</span>
+        </Link>
+        <Dropdown overlay={menu}>
+          <Button ghost className="header-dropdown">
+            {props.userInfo.email}
+            <Icon type="down" />
+          </Button>
+        </Dropdown>
+      </MediaQuery>
+      <MediaQuery maxWidth={700}>
+        <Dropdown overlay={hamburgerMenu}>
+          <Button ghost className="header-dropdown">
+            <img src={MENU} alt="menu" />
+          </Button>
+        </Dropdown>
+      </MediaQuery>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
-  keycloak: getKeycloak(state),
+  userInfo: getUserInfo(state),
   isAuthenticated: isAuthenticated(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      logoutUser,
-    },
-    dispatch
-  );
-
 Authentication.propTypes = propTypes;
+Authentication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Authentication);
+export default connect(mapStateToProps)(Authentication);
