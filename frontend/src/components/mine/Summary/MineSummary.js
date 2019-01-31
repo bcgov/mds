@@ -255,6 +255,16 @@ export const MineSummary = (props) => {
                   renderSummaryTSF(tsf, props.partyRelationships.filter(isActive))
                 )}
               </Row>
+
+              <Row gutter={16}>
+                <Col span={24}>
+                  <div className="right">
+                    <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "tailings")}>
+                      See Tailings Storage Facilities
+                    </Link>
+                  </div>
+                </Col>
+              </Row>
             </Col>
           </Row>
         )}
