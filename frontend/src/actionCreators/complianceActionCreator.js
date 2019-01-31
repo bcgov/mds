@@ -14,10 +14,10 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 export const fetchMineComplianceInfo = (mineNo, cacheOnly = false) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
-  let url = `${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}`;
-  if (cacheOnly) {
-    url += `?cacheOnly=True`;
-  }
+
+  const queryParam = cacheOnly ? `?cacheOnly=True` : "";
+  const url = `${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}${queryParam}`;
+
   return axios
     .get(url, createRequestHeader())
     .then((response) => {

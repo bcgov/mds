@@ -14,9 +14,7 @@ const defaultProps = {
 };
 
 export const PermitCard = (props) => {
-  const pmt = props.PartyRelationships.filter((pr) =>
-    ["PMT"].includes(pr.mine_party_appt_type_code)
-  )
+  const pmt = props.PartyRelationships.filter((pr) => pr.mine_party_appt_type_code === "PMT")
     .filter((pmts) => pmts.related_guid.includes(props.permit.permit_guid))
     .sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0];
 
