@@ -386,9 +386,9 @@ BEGIN
     --Combine the formatted contact info for records
     permittee_wContact AS (
         SELECT
-            permittee.permit_cid    ,
-            permittee.party_combo_id,
-            permittee.source        ,
+            permittee.permit_cid             ,
+            permittee.party_combo_id         ,
+            permittee.source                 ,
             name_and_type.party_guid         ,
             name_and_type.first_name         ,
             name_and_type.party_name         ,
