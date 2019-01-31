@@ -290,7 +290,8 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
                     ]
                 ],
                 [
@@ -477,7 +478,7 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "production"
+                node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
             }
             modules {
