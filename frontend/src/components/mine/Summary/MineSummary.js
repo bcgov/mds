@@ -4,11 +4,7 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
-import {
-  getPartyRelationshipTypes,
-  getPartyRelationships,
-  getSummaryPartyRelationships,
-} from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 
 import { connect } from "react-redux";
@@ -16,6 +12,7 @@ import * as String from "@/constants/strings";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
+import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { formatDate } from "@/utils/helpers";
 
 /**
@@ -26,14 +23,12 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  summaryPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: PropTypes.object,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
-  summaryPartyRelationships: [],
   mineComplianceInfo: {},
 };
 
@@ -74,6 +69,25 @@ const renderSummaryPermit = (permit, partyRelationships) => {
     </Col>
   );
 };
+
+const renderSummaryTSF = (tsf, partyRelationships) => {
+  if (partyRelationships.length === 0) return <div>{String.LOADING}</div>;
+  return (
+    <Col
+      xs={24}
+      sm={24}
+      md={12}
+      lg={8}
+      xl={6}
+      xxl={4}
+      key={tsf.mine_tailings_storage_facility_guid}
+    >
+      {" "}
+      <TSFCard tailingsStorageFacility={tsf} PartyRelationships={partyRelationships} />
+    </Col>
+  );
+};
+
 const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
@@ -94,8 +108,9 @@ export const MineSummary = (props) => {
             </Col>
           </Row>
           <Row gutter={16} type="flex" justify="center">
-            {props.summaryPartyRelationships
+            {props.partyRelationships
               .filter(isActive)
+              .filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
               .map((partyRelationship) =>
                 renderPartyRelationship(props.mine, partyRelationship, props.partyRelationshipTypes)
               )}
@@ -121,7 +136,7 @@ export const MineSummary = (props) => {
           </Row>
           <Row gutter={16} type="flex" justify="center">
             {props.mine.mine_permit.map((permit) =>
-              renderSummaryPermit(permit, props.summaryPartyRelationships)
+              renderSummaryPermit(permit, props.partyRelationships)
             )}
           </Row>
           <Row gutter={16}>
@@ -225,6 +240,24 @@ export const MineSummary = (props) => {
           </Col>
         </Row>
       )}
+      {props.mine.mine_tailings_storage_facility &&
+        props.mine.mine_tailings_storage_facility.length > 0 && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <h4>Tailing Storage Facilities</h4>
+                  <Divider />
+                </Col>
+              </Row>
+              <Row gutter={16} type="flex" justify="center">
+                {props.mine.mine_tailings_storage_facility.map((tsf) =>
+                  renderSummaryTSF(tsf, props.partyRelationships)
+                )}
+              </Row>
+            </Col>
+          </Row>
+        )}
     </div>
   );
 };
@@ -232,7 +265,6 @@ export const MineSummary = (props) => {
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
-  summaryPartyRelationships: getSummaryPartyRelationships(state),
   mineComplianceInfo: getMineComplianceInfo(state),
 });
 
