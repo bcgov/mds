@@ -44,7 +44,7 @@ BEGIN
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
 
-WITH
+    WITH
     -- Filter on permit records; Select only the records:
     ---- with valid permit status (closed:z or approved: a)
     ---- AND with non-empty permit number
@@ -175,7 +175,7 @@ WITH
         SELECT
             permit_cid
         FROM existing_permit_list
-        WHERE permit_cid IN (
+        WHERE permit_cid NOT IN (
             SELECT permit_cid
             FROM  permittee_from_attached_contact
         )
@@ -369,12 +369,12 @@ WITH
             existing_permittee.permit_cid    ,
             existing_permittee.party_combo_id,
             existing_permittee.source        ,
-            name_and_type.party_guid    ,
-            name_and_type.first_name    ,
-            name_and_type.party_name    ,
-            name_and_type.party_type    ,
-            contact.phone_no            ,
-            contact.email               ,
+            name_and_type.party_guid         ,
+            name_and_type.first_name         ,
+            name_and_type.party_name         ,
+            name_and_type.party_type         ,
+            contact.phone_no                 ,
+            contact.email                    ,
             COALESCE(existing_permittee.effective_date , now()) AS effective_date
         FROM permittee_info_wCombo existing_permittee
         INNER JOIN permittee_name_and_type name_and_type ON
