@@ -39,6 +39,10 @@ body {
   @include flex;
 }
 
+.flex-center {
+  justify-content: center;
+}
+
 .between {
   justify-content: space-between;
 }
@@ -79,6 +83,10 @@ body {
 
 .large-padding-top {
   padding-top: $default-padding-lg;
+}
+
+.large-padding-right {
+  padding-right: $default-padding-lg;
 }
 
 .gov-blue {
