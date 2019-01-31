@@ -122,7 +122,7 @@ export const MineSummary = (props) => {
           <Col span={18}>
             <Row gutter={16}>
               <Col span={24}>
-                <h4>Permits</h4>
+                <h4>PERMITS</h4>
                 <Divider />
               </Col>
             </Row>
@@ -148,7 +148,7 @@ export const MineSummary = (props) => {
           <Col span={18}>
             <Row gutter={16}>
               <Col span={24}>
-                <h4>Compliance</h4>
+                <h4>COMPLIANCE</h4>
                 <Divider />
               </Col>
             </Row>
@@ -230,7 +230,7 @@ export const MineSummary = (props) => {
             <Col span={18}>
               <Row gutter={16}>
                 <Col span={24}>
-                  <h4>Tailing Storage Facilities</h4>
+                  <h4>TAILINGS STORAGE FACILTIES</h4>
                   <Divider />
                 </Col>
               </Row>
