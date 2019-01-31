@@ -15,6 +15,7 @@
     "filepond": "^3.7.6",
     "filepond-plugin-file-validate-size": "^2.0.0",
     "filepond-plugin-file-validate-type": "^1.2.1",
+    "filepond-polyfill": "^1.0.2",
     "hoist-non-react-statics": "^3.2.1",
     "keycloak-js": "^4.2.1",
     "less-loader": "^4.1.0",
