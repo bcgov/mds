@@ -160,7 +160,7 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
             <Row gutter={16}>
-              <Col span={8}>
+              <Col span={8} xs={24}>
                 <Card
                   className="compliance-card"
                   title={
@@ -177,7 +177,7 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col span={8} xs={12}>
                 <Card
                   className="compliance-card"
                   title={
@@ -195,7 +195,7 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col span={8} xs={12}>
                 <Card
                   className="compliance-card"
                   title={
