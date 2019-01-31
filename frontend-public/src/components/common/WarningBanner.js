@@ -9,7 +9,7 @@ const propTypes = {
 
 const renderIEBanner = () => (
   <div className="inline-flex flex-center">
-    <img src={WARNING} alt="warning" className="padding-large--right" />
+    <img src={WARNING} alt="warning" className="large-padding-right" />
     <div>
       <h2>Internet Explorer is not a supported browser.</h2>
       <p>If you continue with this browser the application may not work as intended.</p>
@@ -37,13 +37,7 @@ const renderIEBanner = () => (
 );
 
 const WarningBanner = (props) => (
-  <Alert
-    style={{ backgroundColor: "#F3CD65" }}
-    message={renderIEBanner()}
-    type="warning"
-    closable
-    onClose={props.onClose}
-  />
+  <Alert message={renderIEBanner()} type="warning" closable onClose={props.onClose} />
 );
 
 WarningBanner.propTypes = propTypes;

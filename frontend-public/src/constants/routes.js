@@ -1,10 +1,16 @@
 import Home from "@/components/Home";
 import UserDashboard from "@/components/dashboard/UserDashboard";
-import MineInfo from "@/components/dashboard/mine_info/MineInfo";
+import MineInfo from "@/components/dashboard/mineInfo/MineInfo";
+import ReturnPage from "@/components/ReturnPage";
 
 export const HOME = {
   route: "/",
   component: Home,
+};
+
+export const RETURN_PAGE = {
+  route: "/return-page",
+  component: ReturnPage,
 };
 
 export const DASHBOARD = {

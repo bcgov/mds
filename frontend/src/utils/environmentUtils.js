@@ -1,4 +1,4 @@
-import { KEYCLOAK, DEFAULT_ENVIRONMENT } from "@/constants/environment";
+import { ENVIRONMENT } from "@/constants/environment";
 
 /**
  * detect IE
@@ -38,4 +38,4 @@ export const detectIE = () => {
   return false;
 };
 
-export const detectTestEnvironment = () => KEYCLOAK.url === DEFAULT_ENVIRONMENT.keycloak_url;
+export const detectTestEnvironment = () => ENVIRONMENT.environment === "test";

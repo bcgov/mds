@@ -14,23 +14,20 @@ import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
  */
 
 export class Home extends Component {
-  state = { isIE: true, isTest: false };
+  state = { isIE: false, isTest: false };
 
   componentDidMount() {
     this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
   }
 
   handleIEClose = () => {
-    this.setState({ isIE: false });
+    // this.setState({ isIE: false });
   };
 
   render() {
     const { Content } = Layout;
     return (
       <Layout className="layout">
-        {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
-        {this.state.isTest && <WarningBanner type="test" />}
-        <WarningBanner onClose={this.handleClose} type="IE" />
         <div className="header">
           <NavBar />
           <LoadingBar
@@ -44,6 +41,8 @@ export class Home extends Component {
             }}
           />
         </div>
+        {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
+        {this.state.isTest && <WarningBanner type="test" />}
         <Content className="content">
           <DashboardRoutes />
           <AdminDashboardRoutes />
