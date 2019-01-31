@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 from flask_restplus import Resource
+from flask import request
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
@@ -16,8 +17,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
     def get(self, mine_no=None):
 
         result = cache.get(NRIS_CACHE_PREFIX + mine_no)
-
-        if result is None:
+        if not request.args.get('cacheOnly') and result is None:
             try:
                 response_data = NRIS_service._get_EMPR_data_from_NRIS(mine_no)
             except requests.exceptions.Timeout:
@@ -34,5 +34,4 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                 result = None
             else:
                 result = NRIS_service._process_NRIS_data(response_data, mine_no)
-
         return result
