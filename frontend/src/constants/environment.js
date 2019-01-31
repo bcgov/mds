@@ -1,6 +1,7 @@
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
+  environment: "development",
   mapPortalId: "e926583cd0114cd19ebc591f344e30dc",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
@@ -14,6 +15,7 @@ export const DEFAULT_ENVIRONMENT = {
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   mapPortalId: "<ARCGIS_PORTAL_MAP_ID>",
+  environment: "<ENV>",
 };
 
 export const KEYCLOAK = {
