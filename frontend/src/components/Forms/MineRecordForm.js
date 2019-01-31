@@ -67,6 +67,7 @@ export class MineRecordForm extends Component {
    * overrides the default behaviour to set a defautValue top the new block
    */
   componentWillReceiveProps(nextProps) {
+    console.log(this.props.form);
     const defaultValue = {
       mine_tenure_type_code: "",
       mine_commodity_code: [],
