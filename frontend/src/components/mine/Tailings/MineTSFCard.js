@@ -14,9 +14,9 @@ const defaultProps = {
 
 export const TSFCard = (props) => {
   const { tailingsStorageFacility, PartyRelationships } = props;
-  const tsf_eor = PartyRelationships.find(
+  const tsf_eor = PartyRelationships.filter(
     (pr) => pr.related_guid === tailingsStorageFacility.mine_tailings_storage_facility_guid
-  );
+  ).sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0];
   return (
     <div>
       <h4>{tailingsStorageFacility.mine_tailings_storage_facility_name}</h4>

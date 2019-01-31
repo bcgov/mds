@@ -252,7 +252,7 @@ export const MineSummary = (props) => {
               </Row>
               <Row gutter={16} type="flex" justify="center">
                 {props.mine.mine_tailings_storage_facility.map((tsf) =>
-                  renderSummaryTSF(tsf, props.partyRelationships)
+                  renderSummaryTSF(tsf, props.partyRelationships.filter(isActive))
                 )}
               </Row>
             </Col>
