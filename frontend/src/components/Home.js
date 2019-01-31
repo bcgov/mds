@@ -21,7 +21,7 @@ export class Home extends Component {
   }
 
   handleIEClose = () => {
-    // this.setState({ isIE: false });
+    this.setState({ isIE: false });
   };
 
   render() {
