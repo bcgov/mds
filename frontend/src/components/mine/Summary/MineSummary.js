@@ -85,15 +85,15 @@ export const MineSummary = (props) => {
 
   return (
     <div>
-      <Row gutter={16}>
-        <Col span={24}>
+      <Row gutter={16} type="flex" justify="center">
+        <Col span={18}>
           <Row gutter={16}>
             <Col span={24}>
               <h4>MAIN CONTACTS</h4>
               <Divider />
             </Col>
           </Row>
-          <Row gutter={16} type="flex" justify="center">
+          <Row gutter={16} type="flex">
             {props.summaryPartyRelationships
               .filter(isActive)
               .map((partyRelationship) =>
@@ -111,15 +111,15 @@ export const MineSummary = (props) => {
           </Row>
         </Col>
       </Row>
-      <Row gutter={16}>
-        <Col span={24}>
+      <Row gutter={16} type="flex" justify="center">
+        <Col span={18}>
           <Row gutter={16}>
             <Col span={24}>
               <h4>Permits</h4>
               <Divider />
             </Col>
           </Row>
-          <Row gutter={16} type="flex" justify="center">
+          <Row gutter={16} type="flex">
             {props.mine.mine_permit.map((permit) =>
               renderSummaryPermit(permit, props.summaryPartyRelationships)
             )}
@@ -136,29 +136,18 @@ export const MineSummary = (props) => {
         </Col>
       </Row>
       {props.mineComplianceInfo && props.mineComplianceInfo.last_inspection && (
-        <Row gutter={16}>
-          <Col span={24}>
+        <Row gutter={16} type="flex" justify="center">
+          <Col span={18}>
             <Row gutter={16}>
               <Col span={24}>
                 <h4>Compliance</h4>
                 <Divider />
               </Col>
             </Row>
-
-            <Row gutter={16} type="flex" justify="center">
-              <Col span={6}>
+            <Row gutter={16}>
+              <Col span={8}>
                 <Card
-                  headStyle={{
-                    borderTop: "1px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
-                  bodyStyle={{
-                    background: "#EEEEEE",
-                    borderBottom: "4px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
+                  className="compliance-card"
                   title={
                     <div className="center">
                       <h1>{formatDate(props.mineComplianceInfo.last_inspection)}</h1>
@@ -171,19 +160,9 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <Card
-                  headStyle={{
-                    borderTop: "1px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
-                  bodyStyle={{
-                    background: "#EEEEEE",
-                    borderBottom: "4px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
+                  className="compliance-card"
                   title={
                     <div className="center">
                       <h1>{props.mineComplianceInfo.num_open_orders}</h1>
@@ -196,19 +175,9 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <Card
-                  headStyle={{
-                    borderTop: "1px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
-                  bodyStyle={{
-                    background: "#EEEEEE",
-                    borderBottom: "4px solid #CCCCCC",
-                    borderRight: "1px solid #CCCCCC",
-                    borderLeft: "1px solid #CCCCCC",
-                  }}
+                  className="compliance-card"
                   title={
                     <div className="center">
                       <h1>{props.mineComplianceInfo.num_overdue_orders}</h1>
@@ -220,6 +189,16 @@ export const MineSummary = (props) => {
                     <h4>Overdue Orders</h4>
                   </div>
                 </Card>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "compliance")}>
+                    See All Compliance
+                  </Link>
+                </div>
               </Col>
             </Row>
           </Col>
