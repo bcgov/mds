@@ -177,7 +177,7 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <Row type="flex" justify="center" align="middle">
-                      <img alt="Open Orders" src={DOC} />
+                      <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
                       &nbsp;
                       <span className="info-display">
                         {props.mineComplianceInfo.num_open_orders}
@@ -196,7 +196,11 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <Row type="flex" justify="center" align="middle">
-                      <img alt="Overdue Orders" src={OVERDUEDOC} />
+                      <img
+                        alt="Overdue Orders"
+                        src={OVERDUEDOC}
+                        style={{ height: 40, paddingRight: 5 }}
+                      />
                       &nbsp;
                       <span className="info-display">
                         {props.mineComplianceInfo.num_overdue_orders}
