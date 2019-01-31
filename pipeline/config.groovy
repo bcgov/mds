@@ -290,7 +290,8 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
                     ]
                 ],
                 [
