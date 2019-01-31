@@ -165,7 +165,9 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{formatDate(props.mineComplianceInfo.last_inspection)}</h1>
+                      <p className="info-display">
+                        {formatDate(props.mineComplianceInfo.last_inspection)}
+                      </p>
                     </div>
                   }
                   bordered={false}
@@ -180,7 +182,7 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{props.mineComplianceInfo.num_open_orders}</h1>
+                      <p className="info-display">{props.mineComplianceInfo.num_open_orders}</p>
                     </div>
                   }
                   bordered={false}
@@ -195,7 +197,7 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{props.mineComplianceInfo.num_overdue_orders}</h1>
+                      <p className="info-display">{props.mineComplianceInfo.num_overdue_orders}</p>
                     </div>
                   }
                   bordered={false}
