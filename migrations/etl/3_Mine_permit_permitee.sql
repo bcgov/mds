@@ -12,8 +12,10 @@ DECLARE
     company_keyword_ci  varchar :='ltd|limited|co.|holdings
         |Contracting|llp|Consultants|Enterprise|service|city
         |ulc|Association|Partnership|Trucking|Property|Division|Industries|Developments';
-    old_row         integer;
-    new_row         integer;
+    old_row    integer;
+    insert_row integer;
+    update_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE 'Start updating mine permit info:';
     RAISE NOTICE '.. Step 1 of 4: Scan new permit info in MMS';
@@ -41,6 +43,377 @@ BEGIN
         effective_date date
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
+
+WITH
+    -- Filter on permit records; Select only the records:
+    ---- with valid permit status (closed:z or approved: a)
+    ---- AND with non-empty permit number
+    permit_list AS (
+        SELECT
+            mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+            max(cid) permit_cid
+        FROM mms.mmspmt permit_info
+        WHERE
+            (sta_cd ~* 'z'  OR sta_cd ~* 'a')
+            AND
+            ((permit_no !~ '^ *$' AND  permit_no IS NOT NULL))
+        GROUP BY combo_id
+    ),
+    existing_permit_list AS (
+        SELECT permit_cid
+        FROM permit_list
+        WHERE permit_cid IN (
+            SELECT permit_cid
+            FROM ETL_PERMIT
+        )
+    ),
+    permit_info AS (
+        SELECT
+            ETL_MINE.mine_guid   ,
+            permit_info.mine_no     ,
+            permit_info.permit_no   ,
+            permit_info.cid AS permit_cid   ,
+            COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt   ,
+            COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt   ,
+            COALESCE(permit_info.permit_expiry_dt,'9999-12-31'::date) permit_expiry_dt,
+            CASE permit_info.sta_cd
+                WHEN 'Z' THEN 'C' --closed
+                ELSE 'O' --open
+            END AS sta_cd           ,
+            permit_info.upd_no
+        FROM mms.mmspmt permit_info
+        INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
+        WHERE permit_info.cid IN (
+            SELECT permit_cid
+            FROM existing_permit_list
+        )
+    ),
+    --Permittee source 1: From company info documented in attached contact in NoW
+    --Number of attached contact for each record in permit_list
+    permit_contact_list AS(
+        SELECT
+            id_ref.cid AS permit_cid    ,
+            count(cid_ccn) AS contact_number
+        FROM mms.mmsccc id_ref
+        WHERE cid IN (
+            SELECT permit_cid
+            FROM existing_permit_list
+        )
+        GROUP BY id_ref.cid
+    ),
+    --For permit record with more than 1 attached contact
+    --Select the contact indicated as Permittee
+    --If more than 1 contact is indicated as permittee
+    --Select the one with maximum contact id (cid_ccn)
+    permit_with_multi_contact AS (
+        SELECT permit_cid
+        FROM  permit_contact_list
+        WHERE permit_contact_list.contact_number>1
+    ),
+    permittee_selection AS (
+        SELECT
+            cid  AS permit_cid  ,
+            max(cid_ccn) AS contact_cid
+        FROM mms.mmsccc id_ref
+        WHERE
+            SUBSTRING(id_ref.type_ind, 4, 1)='Y'
+            AND
+            cid IN (
+                SELECT permit_cid
+                FROM  permit_contact_list
+                WHERE permit_contact_list.contact_number>1
+            )
+        GROUP BY cid
+    ),
+    --The rest are either with multiple attached contact but non of them
+    --are marked as permittee, or with only one attached contact.
+    permittee_default_list AS (
+        SELECT permit_cid
+        FROM permit_contact_list
+        WHERE permit_cid NOT IN (
+            SELECT permit_cid
+            FROM permittee_selection
+        )
+    ),
+    permittee_default AS (
+        SELECT
+            id_ref.cid AS permit_cid    ,
+            max(id_ref.cid_ccn) AS contact_cid
+        FROM mms.mmsccc id_ref
+        WHERE cid IN (
+            SELECT permit_cid
+            FROM permittee_default_list
+        )
+        GROUP BY id_ref.cid
+    ),
+    --List of permit-permittee id reference
+    permit_attached_permittee_list AS (
+        SELECT *
+        FROM permittee_selection
+        UNION
+        SELECT *
+        FROM permittee_default
+    ),
+    --List of permittee info from attached contact
+    permittee_from_attached_contact AS (
+        SELECT
+            permittee_list.permit_cid                       ,
+            contact_info.add_dt ::date AS effective_date    ,
+            company_info.cmp_nm  AS permittee_nm            ,
+            company_info.tel_no                             ,
+            company_info.email                              ,
+            '1'::numeric AS source
+        FROM permit_attached_permittee_list permittee_list
+        INNER JOIN mms.mmsccn contact_info ON
+            permittee_list.contact_cid=contact_info.cid
+        INNER JOIN mms.mmscmp company_info ON
+            contact_info.cmp_cd=company_info.cmp_cd
+    ),
+    -- Permittee source 2: From company info documented in NoW
+    -- Use source 2 for permit record with no permittee contact attached
+    permit_list_no_attached_permittee AS (
+        SELECT
+            permit_cid
+        FROM existing_permit_list
+        WHERE permit_cid IN (
+            SELECT permit_cid
+            FROM  permittee_from_attached_contact
+        )
+    ),
+    permittee_from_now_company_info AS (
+        SELECT
+            permit_list.permit_cid              ,
+            now.str_dt ::date AS effective_date ,
+            company.cmp_nm AS permittee_nm      ,
+            company.tel_no                      ,
+            company.email                       ,
+            '2'::numeric AS source
+        FROM permit_list_no_attached_permittee permit_list
+        INNER JOIN mms.mmsnow now ON
+            now.cid=permit_list.permit_cid
+        INNER JOIN mms.mmscmp company ON
+            company.cmp_cd = now.cmp_cd
+    ),
+    -- Permittee source 3: Current permittee from mine_info (mms.mmsmin)
+    -- If permit record has no permittee attached or cmp_name in its Now
+    -- Use current permittee by default extracted from the mine_info
+    permit_list_others AS (
+        SELECT permit_cid
+        FROM existing_permit_list
+        EXCEPT
+        (
+            SELECT permit_cid
+            FROM permittee_from_now_company_info
+            UNION
+            SELECT permit_cid
+            FROM permittee_from_attached_contact
+        )
+    ),
+    permittee_from_mine_info AS (
+        SELECT
+            permit_info.permit_cid  ,
+            CASE
+                WHEN mine_info.entered_date ~ 'XXXX/XX/XX'
+                THEN current_date
+                ELSE to_date(mine_info.entered_date, 'YYYY/MM/DD')
+            END AS effective_date,
+            mine_info.cmp_nm AS permittee_nm    ,
+            mine_info.ctel_no AS tel_no         ,
+            mine_info.cemail AS email           ,
+            '3'::numeric AS source
+        FROM permit_info
+        INNER JOIN mms.mmsmin mine_info ON
+            mine_info.mine_no = permit_info.mine_no
+        WHERE permit_info.permit_cid IN
+            (
+                SELECT permit_cid
+                FROM  permit_list_others
+            )
+    ),
+    --Combine permittee info extracted from all 3 source
+    permittee_info AS (
+        SELECT * FROM permittee_from_attached_contact
+        UNION
+        SELECT * FROM permittee_from_now_company_info
+        UNION
+        SELECT * FROM permittee_from_mine_info
+    ),
+    --Add party_combo_id
+    permittee_info_wCombo AS (
+        SELECT
+            permit_cid      ,
+            effective_date  ,
+            permittee_nm    ,
+            tel_no          ,
+            email           ,
+            source          ,
+            concat(permittee_nm,tel_no) AS party_combo_id
+        FROM permittee_info
+    ),
+    --New record in MMS that does not exist in MDS ETL table
+    permittee_existing_record AS (
+        SELECT
+            DISTINCT ON (party_combo_id)
+            gen_random_uuid() AS party_guid,
+            party_combo_id  ,
+            effective_date  ,
+            permittee_nm    ,
+            tel_no          ,
+            email           ,
+            source
+        FROM permittee_info_wCombo
+        WHERE party_combo_id IN (
+            SELECT party_combo_id
+            FROM ETL_PERMIT
+        )
+    ),
+    --Formatting permittee name
+    permittee_org AS (
+        SELECT
+            party_combo_id            ,
+            party_guid                ,
+            NULL AS first_name        ,
+            permittee_nm AS party_name,
+            'ORG' ::text AS party_type
+        FROM permittee_existing_record
+        WHERE
+            permittee_nm ~* company_keyword_special
+            OR
+            permittee_nm ~ company_keyword_cs
+            OR
+            permittee_nm ~* company_keyword_ci
+    ),
+    permittee_person AS (
+        SELECT
+            party_combo_id  ,
+            party_guid      ,
+            CASE
+                WHEN permittee_nm ~ ','
+                THEN split_part(permittee_nm,', ',1 )
+                WHEN permittee_nm ~ ' '
+                THEN split_part(permittee_nm,' ', 1 )
+                ELSE NULL
+            END AS first_name,
+            CASE
+                WHEN permittee_nm ~ ','
+                THEN COALESCE(NULLIF(regexp_replace
+                (
+                    trim(leading from permittee_nm, split_part(permittee_nm,',', 1 )||', '),
+                    ' ', '', 'b'),''),'N/A'
+                )
+                WHEN permittee_nm ~ ' '
+                THEN COALESCE(NULLIF(regexp_replace
+                (
+                    trim(leading from permittee_nm, split_part(permittee_nm,' ',1 )||' '),
+                    ' ', '', 'b'),''),'N/A'
+                )
+                ELSE permittee_nm
+            END AS party_name,
+            'PER' ::text AS party_type
+        FROM permittee_existing_record
+        WHERE party_combo_id NOT IN (
+            SELECT party_combo_id
+            FROM permittee_org
+        )
+    ),
+    permittee_name_and_type AS (
+        SELECT
+            party_combo_id     ,
+            party_guid         ,
+            first_name::varchar,
+            party_name         ,
+            party_type
+        FROM permittee_org
+        UNION
+        SELECT * FROM permittee_person
+
+    ),
+    --Extract only the numbers in phone info field, get rid of special char such as '()'
+    permittee_contact_phone_format AS(
+        SELECT
+            party_combo_id,
+            NULLIF(regexp_replace(tel_no, '\D', '','g'),'')::numeric phone_no,
+            email
+        FROM permittee_existing_record
+    ),
+    --Format bad phone data, get rid of country code, filter out invalid phone number such as 999999999
+    permittee_contact_filter AS(
+        SELECT
+            party_combo_id,
+            CASE
+                WHEN phone_no>=10^10 AND phone_no<2*10^10 THEN (phone_no-10^10 )::varchar
+                WHEN phone_no>10^9 AND phone_no<10^10 THEN (phone_no)::varchar
+                ELSE 'Unknown'
+            END AS phone_no,
+            email
+        FROM permittee_contact_phone_format
+    ),
+    --Format phone and email in MDS syntax
+    permittee_contact AS (
+        SELECT
+            party_combo_id,
+            CASE
+                WHEN filtered.phone_no = 'Unknown' THEN filtered.phone_no
+                ELSE
+                    SUBSTRING(filtered.phone_no from 1 for 3)||'-'||
+                    SUBSTRING(filtered.phone_no from 4 for 3)||'-'||
+                    SUBSTRING(filtered.phone_no from 7 for 4)
+            END AS phone_no,
+            COALESCE(NULLIF(regexp_replace(filtered.email,' ', '', 'g'),''),'Unknown') email
+        FROM permittee_contact_filter filtered
+    ),
+    --Combine the formatted contact info for existing records
+    permittee_existing_wContact AS (
+
+        SELECT
+            existing_permittee.permit_cid    ,
+            existing_permittee.party_combo_id,
+            existing_permittee.source        ,
+            name_and_type.party_guid    ,
+            name_and_type.first_name    ,
+            name_and_type.party_name    ,
+            name_and_type.party_type    ,
+            contact.phone_no            ,
+            contact.email               ,
+            COALESCE(existing_permittee.effective_date , now()) AS effective_date
+        FROM permittee_info_wCombo existing_permittee
+        INNER JOIN permittee_name_and_type name_and_type ON
+            name_and_type.party_combo_id=existing_permittee.party_combo_id
+        INNER JOIN permittee_contact contact ON
+            contact.party_combo_id=existing_permittee.party_combo_id
+    ),
+    -- Update existing records
+    updated_rows AS (
+        UPDATE ETL_PERMIT
+        SET
+            --permit info
+            source = permittee_info.source                ,
+            mine_guid = permit_info.mine_guid             ,
+            mine_no = permit_info.mine_no                 ,
+            permit_no = permit_info.permit_no             ,
+            received_date = permit_info.recv_dt           ,
+            issue_date = permit_info.iss_dt               ,
+            expiry_date = permit_info.permit_expiry_dt    ,
+            permit_status_code = permit_info.sta_cd       ,
+            --permittee info
+            party_combo_id = permittee_info.party_combo_id,
+            party_guid = permittee_info.party_guid        ,
+            first_name = permittee_info.first_name        ,
+            party_name = permittee_info.party_name        ,
+            party_type = permittee_info.party_type        ,
+            phone_no = permittee_info.phone_no            ,
+            email = permittee_info.email                  ,
+            effective_date = permittee_info.effective_date
+        FROM permit_info
+        INNER JOIN permittee_existing_wContact permittee_info ON
+            permittee_info.permit_cid = permit_info.permit_cid
+        RETURNING 1
+    )
+    SELECT COUNT(*) FROM updated_rows INTO update_row;
+    RAISE NOTICE '....# of records in ETL_PERMIT: %', old_row;
+    RAISE NOTICE '....# of records updated in ETL_PERMIT: %', update_row;
+
+    RAISE NOTICE '.. Insert new records into ETL_PERMIT';
     WITH
     -- Filter on permit records; Select only the records:
     ---- with valid permit status (closed:z or approved: a)
@@ -378,56 +751,59 @@ BEGIN
             name_and_type.party_combo_id=new_permittee.party_combo_id
         INNER JOIN permittee_contact contact ON
             contact.party_combo_id=new_permittee.party_combo_id
+    ), inserted_rows AS (
+        INSERT INTO ETL_PERMIT(
+            mine_party_appt_guid,
+            --permit info
+            permit_guid         ,
+            source              ,
+            mine_guid           ,
+            mine_no             ,
+            permit_no           ,
+            received_date       ,
+            issue_date          ,
+            expiry_date         ,
+            permit_status_code  ,
+            --permittee info
+            party_combo_id      ,
+            party_guid          ,
+            first_name          ,
+            party_name          ,
+            party_type          ,
+            phone_no            ,
+            email               ,
+            effective_date
+        )
+        SELECT
+            gen_random_uuid()       ,
+            --permit info
+            gen_random_uuid()       ,--permit_guid
+            permittee_info.source   ,
+            permit_info.mine_guid   ,
+            permit_info.mine_no     ,
+            permit_info.permit_no   ,
+            permit_info.recv_dt     ,
+            permit_info.iss_dt      ,
+            permit_info.permit_expiry_dt    ,
+            permit_info.sta_cd              ,
+            --permittee info
+            permittee_info.party_combo_id   ,
+            permittee_info.party_guid       ,
+            permittee_info.first_name       ,
+            permittee_info.party_name       ,
+            permittee_info.party_type       ,
+            permittee_info.phone_no         ,
+            permittee_info.email            ,
+            permittee_info.effective_date
+        FROM permit_info
+        INNER JOIN permittee_new_wContact permittee_info ON
+            permittee_info.permit_cid = permit_info.permit_cid
+        RETURNING 1
     )
-    INSERT INTO ETL_PERMIT(
-        mine_party_appt_guid,
-        --permit info
-        permit_guid         ,
-        source              ,
-        mine_guid           ,
-        mine_no             ,
-        permit_no           ,
-        received_date       ,
-        issue_date          ,
-        expiry_date         ,
-        permit_status_code  ,
-        --permittee info
-        party_combo_id      ,
-        party_guid          ,
-        first_name          ,
-        party_name          ,
-        party_type          ,
-        phone_no            ,
-        email               ,
-        effective_date
-    )
-    SELECT
-        gen_random_uuid()       ,
-        --permit info
-        gen_random_uuid()       ,--permit_guid
-        permittee_info.source   ,
-        permit_info.mine_guid   ,
-        permit_info.mine_no     ,
-        permit_info.permit_no   ,
-        permit_info.recv_dt     ,
-        permit_info.iss_dt      ,
-        permit_info.permit_expiry_dt    ,
-        permit_info.sta_cd              ,
-        --permittee info
-        permittee_info.party_combo_id   ,
-        permittee_info.party_guid       ,
-        permittee_info.first_name       ,
-        permittee_info.party_name       ,
-        permittee_info.party_type       ,
-        permittee_info.phone_no         ,
-        permittee_info.email            ,
-        permittee_info.effective_date
-    FROM permit_info
-    INNER JOIN permittee_new_wContact permittee_info ON
-        permittee_info.permit_cid = permit_info.permit_cid;
-    SELECT count(*) FROM ETL_PERMIT INTO new_row;
-    RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
-    RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
+    SELECT count(*) FROM inserted_rows INTO insert_row;
+    SELECT count(*) FROM ETL_PERMIT INTO total_row;
+    RAISE NOTICE '.... # of new permit records loaded into ETL_PERMIT: %', insert_row;
+    RAISE NOTICE '....Total records in ETL_PERMIT: %.', total_row;
 END $$;
 
 
@@ -435,10 +811,36 @@ END $$;
 DO $$
 DECLARE
     old_row  integer;
-    new_row  integer;
+    update_row integer;
+    insert_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE '.. Step 2 of 4: Update permit info';
     SELECT count(*) FROM permit INTO old_row;
+
+    -- Upsert permit data from ETL_PERMIT
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    WITH updated_rows AS (
+      UPDATE permit
+      SET
+          received_date      = etl.received_date,
+          issue_date         = etl.issue_date   ,
+          update_user        = 'mms_migration'  ,
+          update_timestamp   = now()            ,
+          expiry_date        = etl.expiry_date  ,
+          permit_status_code = etl.permit_status_code
+      FROM ETL_PERMIT etl
+      WHERE
+          permit.mine_guid = etl.mine_guid
+          AND
+          permit.permit_no = etl.permit_no
+      RETURNING 1
+    )
+    SELECT COUNT(*) FROM updated_rows INTO update_row;
+    RAISE NOTICE '....# of records in permit: %', old_row;
+    RAISE NOTICE '....# of records updated in permit: %', update_row;
+
+    RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit';
     WITH
     --Select only new entry in ETL_PERMIT table
     new_permit AS (
@@ -448,46 +850,76 @@ BEGIN
             SELECT permit_guid
             FROM permit
         )
+    ), inserted_rows AS (
+        INSERT INTO permit (
+            permit_guid         ,
+            mine_guid           ,
+            permit_no           ,
+            received_date       ,
+            issue_date          ,
+            permit_status_code  ,
+            create_user         ,
+            create_timestamp    ,
+            update_user         ,
+            update_timestamp    ,
+            expiry_date
+        )
+        SELECT
+            permit_guid         ,
+            mine_guid           ,
+            permit_no           ,
+            received_date       ,
+            issue_date          ,
+            permit_status_code  ,
+            'mms_migration'     ,
+            now()               ,
+            'mms_migration'     ,
+            now()               ,
+            expiry_date
+        FROM new_permit
+        RETURNING 1
     )
-    INSERT INTO permit (
-        permit_guid         ,
-        mine_guid           ,
-        permit_no           ,
-        received_date       ,
-        issue_date          ,
-        permit_status_code  ,
-        create_user         ,
-        create_timestamp    ,
-        update_user         ,
-        update_timestamp    ,
-        expiry_date
-    )
-    SELECT
-        permit_guid         ,
-        mine_guid           ,
-        permit_no           ,
-        received_date       ,
-        issue_date          ,
-        permit_status_code  ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()               ,
-        expiry_date
-    FROM new_permit;
-    SELECT COUNT(*) FROM permit INTO new_row;
-    RAISE NOTICE '.... # of new permit records loaded into MDS: %', (new_row-old_row);
-    RAISE NOTICE '.... # of total permit records in MDS: %', new_row;
+    SELECT COUNT(*) FROM inserted_rows INTO insert_row;
+    SELECT COUNT(*) FROM permit INTO total_row;
+    RAISE NOTICE '.... # of new permit records loaded into MDS: %', insert_row;
+    RAISE NOTICE '.... # of total permit records in MDS: %', total_row;
 END $$;
 
 
 DO $$
 DECLARE
     old_row  integer;
-    new_row  integer;
+    update_row integer;
+    insert_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE '.. Step 3 of 4: Update party info';
     SELECT count(*) FROM party INTO old_row;
+
+
+    -- Upsert permit data from ETL_PERMIT
+    RAISE NOTICE '.. Update existing records with latest MMS data';
+    WITH updated_rows AS (
+      UPDATE party
+      SET
+        first_name       = etl.first_name    ,
+        party_name       = etl.party_name    ,
+        phone_no         = etl.phone_no      ,
+        email            = etl.email         ,
+        effective_date   = etl.effective_date,
+        expiry_date      = etl.expiry_date   ,
+        update_user      = 'mms_migration'   ,
+        update_timestamp = now()             ,
+        party_type_code  = etl.party_type
+      FROM ETL_PERMIT etl
+      WHERE party.party_guid = etl.party_guid
+      RETURNING 1
+    )
+    SELECT COUNT(*) FROM updated_rows INTO update_row;
+    RAISE NOTICE '....# of records in party: %', old_row;
+    RAISE NOTICE '....# of records updated in party: %', update_row;
+
+    RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into party';
     WITH
     --Select only new entry in ETL_PERMIT table
     new_party AS (
@@ -505,47 +937,71 @@ BEGIN
             SELECT  party_guid
             FROM    party
         )
+    ), inserted_rows AS (
+        INSERT INTO party (
+            party_guid       ,
+            first_name       ,
+            party_name       ,
+            phone_no         ,
+            email            ,
+            effective_date   ,
+            expiry_date      ,
+            create_user      ,
+            create_timestamp ,
+            update_user      ,
+            update_timestamp ,
+            -- ignore middle name as such info does not exist in MMS
+            party_type_code
+        )
+        SELECT
+            party_guid      ,
+            first_name      ,
+            party_name      ,
+            phone_no        ,
+            email           ,
+            effective_date  ,
+            expiry_date     ,
+            'mms_migration' ,
+            now()           ,
+            'mms_migration' ,
+            now()           ,
+            party_type
+        FROM new_party
+        RETURNING 1
     )
-    INSERT INTO party (
-        party_guid       ,
-        first_name       ,
-        party_name       ,
-        phone_no         ,
-        email            ,
-        effective_date   ,
-        expiry_date      ,
-        create_user      ,
-        create_timestamp ,
-        update_user      ,
-        update_timestamp ,
-        -- ignore middle name as such info does not exist in MMS
-        party_type_code
-    )
-    SELECT
-        party_guid      ,
-        first_name      ,
-        party_name      ,
-        phone_no        ,
-        email           ,
-        effective_date  ,
-        expiry_date     ,
-        'mms_migration' ,
-        now()           ,
-        'mms_migration' ,
-        now()           ,
-        party_type
-    FROM new_party;
-    SELECT count(*) FROM party INTO new_row;
-    RAISE NOTICE '.... # of new party records loaded into MDS: %', (new_row-old_row);
+    SELECT COUNT(*) FROM inserted_rows INTO insert_row;
+    SELECT COUNT(*) FROM party INTO total_row;
+    RAISE NOTICE '.... # of new party records loaded into MDS: %', insert_row;
+    RAISE NOTICE '.... # of total party records in MDS: %', total_row;
 END $$;
 
 DO $$
 DECLARE
-    old_row integer;
-    new_row integer;
+    old_row    integer;
+    update_row integer;
+    insert_row integer;
+    delete_row integer;
+    total_row  integer;
 BEGIN
     RAISE NOTICE '.. Step 4 of 4: Update party_appt info';
     SELECT count(*) FROM mine_party_appt INTO old_row;
+
+    RAISE NOTICE '..Purge mine_party_appts from ETL mines';
+    RAISE NOTICE '....# of records in mine_party_appt: %', old_row;
+    WITH deleted_rows AS (
+        DELETE FROM mine_party_appt
+        WHERE mine_guid IN (
+            SELECT mine_guid
+            FROM ETL_MINE
+        )
+        RETURNING 1
+    )
+    SELECT COUNT(*) FROM deleted_rows INTO delete_row;
+    SELECT count(*) FROM mine_party_appt INTO old_row;
+    RAISE NOTICE '....# of records removed from mine_party_appt: %', delete_row;
+    RAISE NOTICE '....# of records remaining in mine_party_appt: %', old_row;
+
+    RAISE NOTICE '.. Insert latest MMS records from ETL_MANAGER into mine_party_appt';
     --select only new record
     WITH new_party_appt AS (
         SELECT *
@@ -554,34 +1010,38 @@ BEGIN
             SELECT party_guid
             FROM mine_party_appt
         )
+    ), inserted_rows AS (
+        INSERT INTO mine_party_appt (
+            mine_party_appt_guid     ,
+            permit_guid              ,
+            party_guid               ,
+            mine_guid                ,
+            mine_party_appt_type_code,
+            create_user              ,
+            create_timestamp         ,
+            update_user              ,
+            update_timestamp         ,
+            start_date               ,
+            end_date
+        )
+        SELECT
+            mine_party_appt_guid,
+            permit_guid         ,
+            party_guid          ,
+            mine_guid           ,
+            'PMT'               ,
+            'mms_migration'     ,
+            now()               ,
+            'mms_migration'     ,
+            now()               ,
+            issue_date          ,
+            expiry_date
+        FROM new_party_appt
+        RETURNING 1
     )
-    INSERT INTO mine_party_appt (
-        mine_party_appt_guid     ,
-        permit_guid              ,
-        party_guid               ,
-        mine_guid                ,
-        mine_party_appt_type_code,
-        create_user              ,
-        create_timestamp         ,
-        update_user              ,
-        update_timestamp         ,
-        start_date               ,
-        end_date
-    )
-    SELECT
-        mine_party_appt_guid,
-        permit_guid         ,
-        party_guid          ,
-        mine_guid           ,
-        'PMT'               ,
-        'mms_migration'     ,
-        now()               ,
-        'mms_migration'     ,
-        now()               ,
-        issue_date          ,
-        expiry_date
-    FROM new_party_appt;
-    SELECT count(*) FROM mine_party_appt INTO new_row;
-    RAISE NOTICE '.... # of new permittee records loaded into MDS: %', (new_row-old_row);
-    RAISE NOTICE '.... # of total permittee records in MDS: %', new_row;
+    SELECT count(*) FROM inserted_rows INTO insert_row;
+    SELECT count(*) FROM mine_party_appt INTO total_row;
+    RAISE NOTICE '.... # new permittee records loaded into MDS: %', insert_row;
+    RAISE NOTICE '.... Total permittee records in MDS: %', total_row;
+    RAISE NOTICE 'Finish updating permits and permittees.';
 END $$;

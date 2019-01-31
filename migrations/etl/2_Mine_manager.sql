@@ -355,7 +355,7 @@ BEGIN
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;
     SELECT count(*) FROM ETL_MANAGER INTO total_row;
-    RAISE NOTICE '.... # of new manager records loaded into MDS: %', insert_row;
+    RAISE NOTICE '.... # of new manager records loaded into ETL_MANAGER: %', insert_row;
     RAISE NOTICE '....Total records in ETL_MANAGER: %.', total_row;
 END $$;
 
@@ -460,7 +460,7 @@ BEGIN
     RAISE NOTICE '.. Step 3 of 3: Update mine manager assignment';
     SELECT count(*) FROM mine_party_appt INTO old_row;
 
-    RAISE NOTICE '..Purge mine_party_appts from ETL mines';
+    RAISE NOTICE '..Purge mine managers from ETL mines';
     RAISE NOTICE '....# of records in mine_party_appt: %', old_row;
     WITH deleted_rows AS (
         DELETE FROM mine_party_appt
@@ -468,6 +468,7 @@ BEGIN
             SELECT mine_guid
             FROM ETL_MINE
         )
+        AND mine_party_appt_type_code = 'MMG'
         RETURNING 1
     )
     SELECT COUNT(*) FROM deleted_rows INTO delete_row;
