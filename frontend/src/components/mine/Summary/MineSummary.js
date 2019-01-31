@@ -126,30 +126,32 @@ export const MineSummary = (props) => {
           </Row>
         </Col>
       </Row>
-      <Row gutter={16} type="flex" justify="center">
-        <Col span={18}>
-          <Row gutter={16}>
-            <Col span={24}>
-              <h4>Permits</h4>
-              <Divider />
-            </Col>
-          </Row>
-          <Row gutter={16} type="flex">
-            {props.mine.mine_permit.map((permit) =>
-              renderSummaryPermit(permit, props.partyRelationships)
-            )}
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <div className="right">
-                <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "permit")}>
-                  See All Permits
-                </Link>
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+      {props.mine.mine_permit && props.mine.mine_permit.length > 0 && (
+        <Row gutter={16} type="flex" justify="center">
+          <Col span={18}>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Permits</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row gutter={16} type="flex">
+              {props.mine.mine_permit.map((permit) =>
+                renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+              )}
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "permit")}>
+                    See All Permits
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )}
       {props.mineComplianceInfo && props.mineComplianceInfo.last_inspection && (
         <Row gutter={16} type="flex" justify="center">
           <Col span={18}>
