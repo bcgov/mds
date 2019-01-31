@@ -483,7 +483,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "production"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
-                elastic_enabled = 1
+                elastic_enabled = 0
                 elastic_service_name = "MDS Test"
             }
             modules {
