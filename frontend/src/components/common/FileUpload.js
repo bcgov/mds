@@ -5,6 +5,7 @@ import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import tus from "tus-js-client";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
@@ -20,8 +21,7 @@ const propTypes = {
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
-  // FilePond expects this default to be null instead of ()=>{}
-  onFileLoad: null
+  onFileLoad: () => {},
 };
 
 class FileUpload extends React.Component {
@@ -33,12 +33,35 @@ class FileUpload extends React.Component {
     };
 
     this.server = {
-      url: ENVIRONMENT.apiUrl,
-      process: {
-        url: this.props.uploadUrl,
-        headers: createRequestHeader().headers,
-        onload: this.props.onFileLoad,
-        onerror: null,
+      process: (fieldName, file, metadata, load, error, progress, abort) => {
+        const upload = new tus.Upload(file, {
+          endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+          retryDelays: [100, 1000, 3000],
+          removeFingerprintOnSuccess: true,
+          chunkSize: 10485760,
+          metadata: {
+            filename: file.name,
+          },
+          headers: createRequestHeader().headers,
+          onError: (err) => {
+            error(err);
+          },
+          onProgress: (bytesUploaded, bytesTotal) => {
+            progress(true, bytesUploaded, bytesTotal);
+          },
+          onSuccess: () => {
+            load(upload.url.split("/").pop());
+            this.props.onFileLoad();
+          },
+        });
+        // Start the upload
+        upload.start();
+        return {
+          abort: () => {
+            upload.abort();
+            abort();
+          },
+        };
       },
     };
   }
