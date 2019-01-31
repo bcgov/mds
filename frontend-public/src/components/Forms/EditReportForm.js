@@ -5,7 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
-import MineFilePicker from "@/components/dashboard/mine_info/MineFilePicker";
+import MineFilePicker from "@/components/dashboard/mineInfo/MineFilePicker";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
 

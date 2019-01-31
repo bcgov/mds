@@ -1,5 +1,6 @@
 import sys
 import json
+import os
 
 from flask import Flask
 from flask import request, current_app
@@ -16,8 +17,9 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, cache
 from elasticapm.contrib.flask import ElasticAPM
+from app.extensions import db, jwt, api, documents, cache, sched
+from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 
 
 def create_app(test_config=None):
@@ -42,19 +44,17 @@ def create_app(test_config=None):
 
 
 def register_extensions(app):
+
     api.app = app
     api.init_app(app)
-
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-
-    # Following is a simple example to demonstrate redis connection working
-    # Please make sure to remove this after the first actual usage of redis
-    # in the application.
-    # Docs: https://flask-caching.readthedocs.io/en/latest/
-    # cache.set('test-key', 'Redis works', timeout=5 * 60)
-    # print(cache.get('test-key'))
+    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+        sched.init_app(app)
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
+            _schedule_NRIS_jobs(app)
 
     CORS(app)
     Compress(app)
@@ -84,14 +84,16 @@ def register_routes(app):
         _, value, traceback = sys.exc_info()
         return json.loads({"error": str(traceback)})
 
-def register_apm(app):
-    with app.app_context():
-        if current_app.config['ELASTIC_ENABLED'] == 1:
-            app.config['ELASTIC_APM'] ={
-                'SERVICE_NAME': current_app.config['ELASTIC_SERVICE_NAME'],
-                'SECRET_TOKEN': current_app.config['ELASTIC_SECRET_TOKEN'],
-                'SERVER_URL': current_app.config['ELASTIC_SERVER_URL'],
-                'DEBUG': True
-            }
-            apm = ElasticAPM(app)
-        return None
+def register_apm(app):    
+    print(app.config['ELASTIC_ENABLED'], file=sys.stderr)
+    print('heres1', file=sys.stderr)
+    if app.config['ELASTIC_ENABLED'] == '1':
+        print('heres', file=sys.stderr)
+        app.config['ELASTIC_APM'] ={
+            'SERVICE_NAME': app.config['ELASTIC_SERVICE_NAME'],
+            'SECRET_TOKEN': app.config['ELASTIC_SECRET_TOKEN'],
+            'SERVER_URL': app.config['ELASTIC_SERVER_URL'],
+            'DEBUG': True
+        }
+        apm = ElasticAPM(app)
+    return None

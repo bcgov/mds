@@ -245,7 +245,9 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+
                     ]
                 ],
                 [
@@ -325,6 +327,7 @@ environments {
                 idpHint = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -424,6 +427,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -567,6 +571,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {
                 env {
