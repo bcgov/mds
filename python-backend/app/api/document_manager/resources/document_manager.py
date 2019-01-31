@@ -10,7 +10,7 @@ from flask_restplus import Resource, reqparse
 from flask_uploads import UploadNotAllowed
 
 from ..models.document_manager import DocumentManager
-from app.extensions import api, documents
+from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
 

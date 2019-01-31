@@ -4,7 +4,6 @@ import json
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource
-from flask_uploads import configure_uploads
 from flask_compress import Compress
 
 from app.api.parties.namespace.parties import api as parties_api
@@ -28,8 +27,6 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_object(test_config)
-
-    configure_uploads(app, documents)
 
     register_extensions(app)
     register_routes(app)
