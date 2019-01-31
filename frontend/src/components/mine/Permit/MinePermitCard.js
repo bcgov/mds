@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { formatTitleString } from "@/utils/helpers";
+import { Card } from "antd";
 
 const propTypes = {
   permit: PropTypes.objectOf(CustomPropTypes.permit),
@@ -19,18 +20,22 @@ export const PermitCard = (props) => {
     ["PMT"].includes(pr.mine_party_appt_type_code)
   );
   return (
-    <div>
-      <h4>{formatTitleString(permit.permit_no)}</h4>
-      <br />
-      <h6>Last Amended</h6>
-      <span>{permit.issue_date}</span>
-      <h6>Permittee</h6>
-      <span>
-        {permittees.find((pmts) => pmts.related_guid.includes(permit.permit_guid)).party.name}
-      </span>
-      <br />
-      <br />
-    </div>
+    <Card bordered={false}>
+      <div>
+        <h4>{formatTitleString(permit.permit_no)}</h4>
+        <br />
+        <h6>Last Amended</h6>
+        <span>{permit.issue_date}</span>
+        <br />
+        <br />
+        <h6>Permittee</h6>
+        <span>
+          {permittees.find((pmts) => pmts.related_guid.includes(permit.permit_guid)).party.name}
+        </span>
+        <br />
+        <br />
+      </div>
+    </Card>
   );
 };
 

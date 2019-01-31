@@ -223,15 +223,15 @@ export const MineSummary = (props) => {
       )}
       {props.mine.mine_tailings_storage_facility &&
         props.mine.mine_tailings_storage_facility.length > 0 && (
-          <Row gutter={16}>
-            <Col span={24}>
+          <Row gutter={16} type="flex" justify="center">
+            <Col span={18}>
               <Row gutter={16}>
                 <Col span={24}>
                   <h4>Tailing Storage Facilities</h4>
                   <Divider />
                 </Col>
               </Row>
-              <Row gutter={16} type="flex" justify="center">
+              <Row gutter={16}>
                 {props.mine.mine_tailings_storage_facility.map((tsf) =>
                   renderSummaryTSF(tsf, props.partyRelationships.filter(isActive))
                 )}
