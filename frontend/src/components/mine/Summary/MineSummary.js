@@ -160,15 +160,17 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
             <Row gutter={16}>
-              <Col span={8} xs={24}>
+              <Col lg={8} xs={24}>
                 <Card
                   className="compliance-card"
                   title={
-                    <div className="center">
-                      <span className="info-display">
-                        {formatDate(props.mineComplianceInfo.last_inspection)}
-                      </span>
-                    </div>
+                    <Row type="flex" justify="center" align="middle">
+                      <div className="center">
+                        <span className="info-display">
+                          {formatDate(props.mineComplianceInfo.last_inspection)}
+                        </span>
+                      </div>
+                    </Row>
                   }
                   bordered={false}
                 >
@@ -177,16 +179,17 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={8} xs={12}>
+              <Col lg={8} xs={12}>
                 <Card
                   className="compliance-card"
                   title={
-                    <div className="center">
+                    <Row type="flex" justify="center" align="middle">
                       <img alt="Open Orders" src={DOC} />
+                      &nbsp;
                       <span className="info-display">
                         {props.mineComplianceInfo.num_open_orders}
                       </span>
-                    </div>
+                    </Row>
                   }
                   bordered={false}
                 >
@@ -195,16 +198,17 @@ export const MineSummary = (props) => {
                   </div>
                 </Card>
               </Col>
-              <Col span={8} xs={12}>
+              <Col lg={8} xs={12}>
                 <Card
                   className="compliance-card"
                   title={
-                    <div className="center">
+                    <Row type="flex" justify="center" align="middle">
                       <img alt="Overdue Orders" src={OVERDUEDOC} />
+                      &nbsp;
                       <span className="info-display">
                         {props.mineComplianceInfo.num_overdue_orders}
                       </span>
-                    </div>
+                    </Row>
                   }
                   bordered={false}
                 >
