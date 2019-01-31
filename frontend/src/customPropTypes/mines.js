@@ -1,6 +1,7 @@
 import { PropTypes, shape, arrayOf } from "prop-types";
 import { minePermit } from "@/customPropTypes/permits";
 import { mineExpectedDocument } from "@/customPropTypes/documents";
+import { tailingsStorageFacility } from "@/customPropTypes/tailings";
 
 export const mine = shape({
   guid: PropTypes.string.isRequired,
@@ -11,6 +12,7 @@ export const mine = shape({
   major_mine_ind: PropTypes.bool,
   mine_permit: arrayOf(minePermit),
   mine_expected_documents: arrayOf(mineExpectedDocument),
+  mine_tailings_storage_facility: arrayOf(tailingsStorageFacility),
 });
 
 export const mineTypes = shape({
