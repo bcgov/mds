@@ -14,7 +14,7 @@ import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { formatDate } from "@/utils/helpers";
-
+import { DOC, OVERDUEDOC } from "@/constants/assets";
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
@@ -165,7 +165,9 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{formatDate(props.mineComplianceInfo.last_inspection)}</h1>
+                      <span className="info-display">
+                        {formatDate(props.mineComplianceInfo.last_inspection)}
+                      </span>
                     </div>
                   }
                   bordered={false}
@@ -180,7 +182,10 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{props.mineComplianceInfo.num_open_orders}</h1>
+                      <img alt="Open Orders" src={DOC} />
+                      <span className="info-display">
+                        {props.mineComplianceInfo.num_open_orders}
+                      </span>
                     </div>
                   }
                   bordered={false}
@@ -195,7 +200,10 @@ export const MineSummary = (props) => {
                   className="compliance-card"
                   title={
                     <div className="center">
-                      <h1>{props.mineComplianceInfo.num_overdue_orders}</h1>
+                      <img alt="Overdue Orders" src={OVERDUEDOC} />
+                      <span className="info-display">
+                        {props.mineComplianceInfo.num_overdue_orders}
+                      </span>
                     </div>
                   }
                   bordered={false}
