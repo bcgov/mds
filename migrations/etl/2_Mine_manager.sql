@@ -464,11 +464,18 @@ BEGIN
     RAISE NOTICE '....# of records in mine_party_appt: %', old_row;
     WITH deleted_rows AS (
         DELETE FROM mine_party_appt
-        WHERE mine_guid IN (
-            SELECT mine_guid
-            FROM ETL_MINE
-        )
-        AND mine_party_appt_type_code = 'MMG'
+        WHERE
+            mine_guid IN (
+                SELECT mine_guid
+                FROM ETL_MANAGER
+            )
+            AND
+            party_guid IN (
+                SELECT party_guid
+                FROM ETL_MANAGER
+            )
+            AND
+            mine_party_appt_type_code = 'MMG'
         RETURNING 1
     )
     SELECT COUNT(*) FROM deleted_rows INTO delete_row;
