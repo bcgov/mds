@@ -25,6 +25,7 @@ const setupProps = () => {
   props.conditionalDisturbanceOptions = MOCK.CONDITIONAL_DISTURBANCE_OPTIONS;
   props.conditionalCommodityOptions = MOCK.CONDITIONAL_COMMODITY_OPTIONS.options;
   props.currentMineTypes = MOCK.MINE_TYPES;
+  props.submitting = false;
 };
 
 beforeEach(() => {

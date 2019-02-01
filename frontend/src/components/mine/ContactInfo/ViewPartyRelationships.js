@@ -31,8 +31,9 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handlePartySubmit: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
@@ -74,7 +75,12 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  onPartySubmit = (values, type) => this.props.handlePartySubmit(values, type);
+  onPartySubmit = (values, type) => {
+    const payload = { type, ...values };
+    return this.props.createParty(payload).then(() => {
+      this.props.fetchParties();
+    });
+  };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
@@ -96,6 +102,7 @@ export class ViewPartyRelationships extends Component {
         mine,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
+      clearOnSubmit: true,
     });
   };
 
