@@ -360,7 +360,7 @@ export class ViewPartyRelationships extends Component {
                 <Button type="primary">
                   <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
                     <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                    Add New Contact
+                    &nbsp; Add New Contact
                   </div>
                 </Button>
               </Dropdown>
