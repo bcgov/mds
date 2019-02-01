@@ -220,11 +220,11 @@
             "env": [
               {
                 "name": "BASE_PATH",
-                "value": "${BASE_PATH}"
+                "value": ""
               },
               {
                 "name": "ASSET_PATH",
-                "value": "${BASE_PATH}/"
+                "value": "/"
               },
               {
                 "name": "SKIP_NPM_INSTALL",

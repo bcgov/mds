@@ -69,14 +69,10 @@ if [ "$SKIP_NPM_INSTALL" == false ]; then
 fi
 
 #do not fail when there is no build script
-echo "---> Building in dev mode"
+echo "---> Building application"
 export BUILD_DIR=$DEV_BUILD_DIR
-npm run build --if-present
-
-echo "---> Building in production mode"
 export BASE_PATH=
 export ASSET_PATH=/
-export BUILD_DIR=$PROD_BUILD_DIR
 npm run build --if-present
 
 # Clear the npm's cache and tmp directories only if they are not a docker volumes
