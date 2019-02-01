@@ -30,6 +30,8 @@ import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
+import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
+
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
@@ -60,12 +62,15 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  fetchMineComplianceInfo: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   permittees: [],
   permitteesIds: [],
   mineTenureHash: {},
+  mineComplianceInfo: {},
 };
 
 export class MineDashboard extends Component {
@@ -75,6 +80,8 @@ export class MineDashboard extends Component {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
+      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true);
+      // true = Only get compliance if it already cached
     });
     if (!this.props.optionsLoaded) {
       this.props.fetchStatusOptions();
@@ -133,6 +140,7 @@ export class MineDashboard extends Component {
                       mine={mine}
                       permittees={this.props.permittees}
                       permitteeIds={this.props.permitteeIds}
+                      mineComplianceInfo={this.props.mineComplianceInfo}
                     />
                   </div>
                 </TabPane>
@@ -203,6 +211,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
       setOptionsLoaded,
+      fetchMineComplianceInfo,
     },
     dispatch
   );
