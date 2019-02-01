@@ -362,6 +362,10 @@
                     "value": "${BASE_PATH}"
                   },
                   {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "http://localhost:5000${BASE_PATH}"
+                  },
+                  {
                     "name": "UPLOADED_DOCUMENT_DEST",
                     "value": "${UPLOADED_DOCUMENT_DEST}"
                   }
