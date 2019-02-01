@@ -56,11 +56,12 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, 'File type is forbidden'), 400
 
         document_guid = str(uuid.uuid4())
+        base_folder = current_app.config['UPLOADED_DOCUMENT_DEST']
         folder = data.get('folder')
-        folder = os.path.join('document_uploads', folder)
+        folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get('pretty_folder')
-        pretty_path = os.path.join('document_uploads', pretty_folder, filename)
+        pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
         try:
             if not os.path.exists(folder):
