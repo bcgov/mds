@@ -5,7 +5,7 @@ import json
 
 from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
-from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -123,6 +123,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
         mines_query = Mine.query
+        # Adding a filter to remove deleted mines
+        mines_query = Mine.query
         # Filter by search_term if provided
         if search_term:
             search_term = search_term.strip()
@@ -182,7 +184,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 .join(MineStatusXref) \
                 .filter(all_status_filter)
             mines_query = mines_query.intersect(status_query)
-
+        deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
+        mines_query = apply_filters(mines_query, deleted_filter)
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mines_query = apply_sort(mines_query, sort_criteria)
         return apply_pagination(mines_query, page, items_per_page)
