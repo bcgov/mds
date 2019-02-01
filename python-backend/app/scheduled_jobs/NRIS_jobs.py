@@ -21,7 +21,7 @@ def _schedule_NRIS_jobs(app):
 def _cache_major_mines_list():
     with sched.app.app_context():
         cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
-        major_mines = Mine.find_all_major_mines()
+        major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
         major_mine_list = []
         for mine in major_mines:
             major_mine_list.append(mine.mine_no)
