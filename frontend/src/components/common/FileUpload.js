@@ -52,8 +52,9 @@ class FileUpload extends React.Component {
             progress(true, bytesUploaded, bytesTotal);
           },
           onSuccess: () => {
-            load(upload.url.split("/").pop());
-            this.props.onFileLoad();
+            const documentGuid = upload.url.split("/").pop()
+            load(documentGuid);
+            this.props.onFileLoad(file.name, documentGuid);
           },
         });
         // Start the upload
