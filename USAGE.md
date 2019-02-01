@@ -117,3 +117,10 @@ There are plenty more make targets to use in the Makefile, so be sure to look th
 psql --dbname=mds --username=mds --host=localhost --password --port=5432
 ```
 
+## Architecture Diagrams
+
+![High Level Architecture](https://user-images.githubusercontent.com/25966613/51941464-83e91500-23c9-11e9-8a02-fa17a91c8411.png)
+
+## Authentication Workflow
+
+![KeyCloak Authentication / Authorization](https://user-images.githubusercontent.com/25966613/52016147-a302a800-2498-11e9-87ce-e59bd0464656.png)

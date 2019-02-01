@@ -24,6 +24,8 @@ export const reducerObject = {
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),
+  [reducerTypes.AUTHENTICATE_USER]: createReducer(networkReducer, reducerTypes.AUTHENTICATE_USER),
+  [reducerTypes.GET_USER_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_INFO),
 };
 
 export const rootReducer = combineReducers(reducerObject);

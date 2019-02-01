@@ -113,6 +113,14 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/dbbackup.bc.json',
+                    'params':[
+                        'NAME':"mds-database-backup",
+                        'SUFFIX': "${app.build.suffix}",
+                        'VERSION':"${app.build.version}"
+                    ]
+                ],
+                [
                     'file':'openshift/flyway.bc.json',
                     'params':[
                             'NAME':"mds-flyway-migration",
@@ -165,6 +173,21 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
+                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
@@ -174,22 +197,6 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.redis.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.redis.memory_limit}",
                             'REDIS_VERSION':"3.2"
-                    ]
-                ],
-                [
-                    'file':'openshift/postgresql.dc.json',
-                    'params':[
-                            'NAME':"mds-postgresql",
-                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
-                            'IMAGE_STREAM_NAMESPACE':'',
-                            'IMAGE_STREAM_NAME':"mds-postgresql",
-                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
-                            'POSTGRESQL_DATABASE':'mds',
-                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -238,7 +245,9 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+
                     ]
                 ],
                 [
@@ -281,7 +290,10 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
                     ]
                 ],
                 [
@@ -306,6 +318,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+            BACKUP_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -315,6 +328,7 @@ environments {
                 idpHint = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -353,6 +367,12 @@ environments {
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                 }
+                backup {
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
+                }
             }
             deployment {
                 env {
@@ -364,6 +384,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Dev"
             }
             modules {
                 'mds-frontend' {
@@ -396,6 +418,7 @@ environments {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
+            BACKUP_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -405,6 +428,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -443,6 +467,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
+                backup {
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
+                }
             }
             deployment {
                 env {
@@ -452,8 +482,10 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "production"
+                node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Test"
             }
             modules {
                 'mds-frontend' {
@@ -486,6 +518,7 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
+            BACKUP_PVC_SIZE = '50Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -526,6 +559,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
+                backup {
+                    cpu_request = "100m"
+                    cpu_limit = "450m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
             }
             keycloak {
                 clientId = "mines-application-prod"
@@ -533,6 +572,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {
                 env {
@@ -544,6 +584,8 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Prod"
             }
             modules {
                 'mds-frontend' {

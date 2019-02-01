@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
+import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
@@ -15,13 +16,13 @@ import { formatDate } from "@/utils/helpers";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
-  mineComplianceInfo: PropTypes.object,
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
 };
 
 const defaultProps = {
-  mine: {},
+  mineComplianceInfo: {},
 };
 
 export class MineComplianceInfo extends Component {
@@ -132,9 +133,6 @@ export class MineComplianceInfo extends Component {
         {this.state.isLoading && <Loading />}
         {!this.state.isLoading && (
           <div>
-            <h2>Compliance Overview</h2>
-            <br />
-            <br />
             {this.props.mineComplianceInfo && (
               <div>
                 <Row gutter={16} justify="center" align="top">

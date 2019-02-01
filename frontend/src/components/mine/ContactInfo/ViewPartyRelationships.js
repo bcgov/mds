@@ -344,7 +344,10 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Dropdown
                 className="full-height"
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}
@@ -353,7 +356,7 @@ export class ViewPartyRelationships extends Component {
                 <Button type="primary">
                   <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
                     <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                    Add New Contact
+                    &nbsp; Add New Contact
                   </div>
                 </Button>
               </Dropdown>

@@ -9,12 +9,12 @@ const PrivateRoutes = () => (
       <Route
         exact
         path={routes.DASHBOARD.route}
-        component={AuthenticationGuard(routes.DASHBOARD.component)}
+        component={AuthenticationGuard()(routes.DASHBOARD.component)}
       />
       <Route
         exact
         path={routes.MINE_INFO.route}
-        component={AuthenticationGuard(routes.MINE_INFO.component)}
+        component={AuthenticationGuard()(routes.MINE_INFO.component)}
       />
     </Switch>
   </div>

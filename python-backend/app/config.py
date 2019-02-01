@@ -19,6 +19,7 @@ class Config(object):
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
+    ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
     SQLALCHEMY_DATABASE_URI = DB_URL
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -56,6 +57,13 @@ class Config(object):
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     # 100MB file limit
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+
+    # Elastic config
+    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED','0')
+    ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', None)
+    ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
+    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', None)
+    SCHEDULER_API_ENABLED = False
 
 
 class TestConfig(Config):

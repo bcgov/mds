@@ -35,6 +35,18 @@ body {
   display: inline-block;
 }
 
+.inline-flex {
+  @include flex;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.between {
+  justify-content: space-between;
+}
+
 .full {
   width: 100%;
   height: 100%;
@@ -71,6 +83,10 @@ body {
 
 .large-padding-top {
   padding-top: $default-padding-lg;
+}
+
+.large-padding-right {
+  padding-right: $default-padding-lg;
 }
 
 .gov-blue {
