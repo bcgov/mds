@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { getMineDocuments } from "@/selectors/mineSelectors";
 import {
   fetchMineDocuments,
-  addMineDocumentToExpectedDocument,
+  addDocumentToExpectedDocument,
   fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
@@ -16,7 +16,7 @@ import FilePicker from "@/components/common/FilePicker";
 
 const propTypes = {
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
-  addMineDocumentToExpectedDocument: PropTypes.func.isRequired,
+  addDocumentToExpectedDocument: PropTypes.func.isRequired,
   fetchMineDocuments: PropTypes.func.isRequired,
   mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -27,15 +27,20 @@ class MineTailingsFilePicker extends Component {
     this.props.fetchMineDocuments(this.props.selectedDocument.mine_guid);
   }
 
-  handleFileSelect = (mineDocumentGuid) => {
-    const data = { mine_document_guid: mineDocumentGuid };
-    this.props
-      .addMineDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, data)
-      .then(() => this.refreshUploadedFiles());
+  handleFileSelect = (mine_document_guid) => {
+    const data = { mine_document_guid };
+    this.pushDocument(data);
   };
 
-  refreshUploadedFiles = () => {
-    this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid);
+  handleFileLoad = (filename, document_manager_guid) => {
+    const data = { filename, document_manager_guid };
+    this.pushDocument(data);
+  };
+
+  pushDocument = (formData) => {
+    this.props
+      .addDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, formData)
+      .then(() => this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid));
   };
 
   render() {
@@ -53,7 +58,7 @@ class MineTailingsFilePicker extends Component {
         acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
         existingFilesDropdown={fileDropdown}
         onSelectExisting={this.handleFileSelect}
-        onFileLoad={this.refreshUploadedFiles}
+        onFileLoad={this.handleFileLoad}
       />
     );
   }
@@ -67,7 +72,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineDocuments,
-      addMineDocumentToExpectedDocument,
+      addDocumentToExpectedDocument,
       fetchMineRecordById,
     },
     dispatch
