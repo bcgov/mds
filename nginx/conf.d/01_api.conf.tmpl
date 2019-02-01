@@ -5,6 +5,6 @@
 # Proxy incoming requests for /api to the backend container
 
 location ${PATH_PREFIX}/api/ {
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_pass ${API_SERVICE_URL}/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }

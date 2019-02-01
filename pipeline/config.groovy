@@ -96,7 +96,7 @@ app {
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}/minespace",
+                            'BASE_PATH': "",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
                             'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
@@ -386,11 +386,11 @@ environments {
             modules {
                 'mds-frontend' {
                     HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/${vars.git.changeId}/minespace"
+                    PATH = ""
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -399,7 +399,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = ""
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
@@ -488,7 +488,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/minespace"
+                    PATH = ""
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
