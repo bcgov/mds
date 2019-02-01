@@ -16,12 +16,14 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  chunkSize: PropTypes.number,
 };
 
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
   onFileLoad: () => {},
+  chunkSize: 52428800, //50MB
 };
 
 class FileUpload extends React.Component {
@@ -38,7 +40,7 @@ class FileUpload extends React.Component {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
           removeFingerprintOnSuccess: true,
-          chunkSize: 10485760,
+          chunkSize: this.props.chunkSize,
           metadata: {
             filename: file.name,
           },
