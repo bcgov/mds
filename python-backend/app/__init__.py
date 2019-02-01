@@ -17,7 +17,7 @@ from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from elasticapm.contrib.flask import ElasticAPM
-from app.extensions import db, jwt, api, documents, cache, sched
+from app.extensions import db, jwt, api, cache, sched
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 
 
