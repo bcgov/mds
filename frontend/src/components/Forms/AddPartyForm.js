@@ -10,6 +10,7 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   isPerson: PropTypes.bool,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export const AddPartyForm = (props) => (
@@ -95,7 +96,12 @@ export const AddPartyForm = (props) => (
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Button className="full-mobile" type="primary" htmlType="submit">
+        <Button
+          className="full-mobile"
+          type="primary"
+          htmlType="submit"
+          disabled={props.submitting}
+        >
           {props.isPerson ? "Create Personnel" : "Create Company"}
         </Button>
       </div>

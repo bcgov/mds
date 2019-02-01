@@ -38,6 +38,7 @@ const propTypes = {
   conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+  submitting: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -67,7 +68,6 @@ export class MineRecordForm extends Component {
    * overrides the default behaviour to set a defautValue top the new block
    */
   componentWillReceiveProps(nextProps) {
-    console.log(this.props.form);
     const defaultValue = {
       mine_tenure_type_code: "",
       mine_commodity_code: [],
@@ -393,7 +393,12 @@ export class MineRecordForm extends Component {
           >
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            disabled={this.props.submitting}
+          >
             {this.props.title}
           </Button>
         </div>

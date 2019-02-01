@@ -36,8 +36,9 @@ export class MineContactInfo extends Component {
    * add new parties (firstName, surname || companyName) to db.
    */
   handlePartySubmit = (values, type) => {
+    console.log("I WAS CALLLEDDD");
     const payload = { type, ...values };
-    this.props.createParty(payload).then(() => {
+    return this.props.createParty(payload).then(() => {
       this.props.fetchParties();
     });
   };
@@ -61,8 +62,6 @@ export class MineContactInfo extends Component {
 
 MineContactInfo.propTypes = propTypes;
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -75,7 +74,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineContactInfo);
+export default connect(mapDispatchToProps)(MineContactInfo);

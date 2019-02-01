@@ -11,6 +11,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export const AddTenureNumberForm = (props) => (
@@ -40,7 +41,7 @@ export const AddTenureNumberForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">
+      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
         {props.title}
       </Button>
     </div>

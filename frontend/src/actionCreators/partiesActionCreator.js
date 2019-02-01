@@ -187,7 +187,7 @@ export const fetchPartyRelationships = (parms) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
       dispatch(partyActions.storePartyRelationships(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
