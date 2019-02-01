@@ -292,7 +292,8 @@ app {
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
                     ]
                 ],
                 [
