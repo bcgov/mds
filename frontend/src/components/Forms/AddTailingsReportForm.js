@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Dropdown } from "antd";
+import { Form, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, exactLength, number } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
@@ -12,6 +12,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   mineTSFRequiredReportsDropDown: PropTypes.array.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export const AddTailingsReportForm = (props) => (
@@ -39,7 +40,7 @@ export const AddTailingsReportForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">
+      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
         {props.title}
       </Button>
     </div>

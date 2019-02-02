@@ -11,6 +11,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.partyRelationship = { mine_party_appt_type_code: "EOR" };
+  props.submitting = false;
 };
 
 beforeEach(() => {
