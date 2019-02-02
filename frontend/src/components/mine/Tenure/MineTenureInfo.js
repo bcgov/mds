@@ -26,10 +26,12 @@ const defaultProps = {
 class MineTenureInfo extends Component {
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
-    this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name).then(() => {
-      this.props.fetchMineRecordById(id);
-      this.props.closeModal();
-    });
+    return this.props
+      .updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name)
+      .then(() => {
+        this.props.fetchMineRecordById(id);
+        this.props.closeModal();
+      });
   };
 
   openModal(event, onSubmit, title) {
@@ -46,7 +48,10 @@ class MineTenureInfo extends Component {
         <div>
           <NullScreen type="tenure" />
           <div className="center">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Button
                 type="primary"
                 onClick={(event) =>
@@ -82,7 +87,10 @@ class MineTenureInfo extends Component {
             </tbody>
           </table>
           <div className="right center-mobile">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Button
                 type="primary"
                 onClick={(event) =>

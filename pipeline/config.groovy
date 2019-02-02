@@ -245,7 +245,9 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+
                     ]
                 ],
                 [
@@ -288,7 +290,10 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}"
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
                     ]
                 ],
                 [
@@ -323,6 +328,7 @@ environments {
                 idpHint = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -378,6 +384,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Dev"
             }
             modules {
                 'mds-frontend' {
@@ -420,6 +428,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
                 node {
@@ -473,8 +482,10 @@ environments {
                 namespace = 'empr-mds-test'
                 suffix = "-test"
                 application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "production"
+                node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Test"
             }
             modules {
                 'mds-frontend' {
@@ -561,6 +572,7 @@ environments {
                 idpHint = "idir"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {
                 env {
@@ -572,6 +584,8 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Prod"
             }
             modules {
                 'mds-frontend' {

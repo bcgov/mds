@@ -13,6 +13,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.partyRelationshipType = MOCK.PARTYRELATIONSHIPTYPES[0];
+  props.submitting = false;
 };
 
 beforeEach(() => {

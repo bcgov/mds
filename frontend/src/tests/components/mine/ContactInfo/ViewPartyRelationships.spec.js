@@ -10,7 +10,8 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.handleChange = jest.fn();
-  dispatchProps.handlePartySubmit = jest.fn();
+  dispatchProps.createParty = jest.fn();
+  dispatchProps.fetchParties = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.addPartyRelationship = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());

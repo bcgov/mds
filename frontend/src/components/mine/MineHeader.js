@@ -31,7 +31,7 @@ const propTypes = {
 class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props
+    return this.props
       .updateMineRecord(
         this.props.mine.guid,
         { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
@@ -55,8 +55,7 @@ class MineHeader extends Component {
     });
   };
 
-  handleAddTailings = (value) => {
-    this.props
+  handleAddTailings = (value) => this.props
       .createTailingsStorageFacility({
         ...value,
         mine_guid: this.props.mine.guid,
@@ -65,7 +64,6 @@ class MineHeader extends Component {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
-  };
 
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
@@ -138,7 +136,10 @@ class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>{this.props.mine.mine_name} </h1>
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="primary">
                   <div className="padding-small">

@@ -18,6 +18,7 @@ const propTypes = {
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -106,7 +107,12 @@ export const AddPartyRelationshipForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit">
+        <Button
+          className="full-mobile"
+          type="primary"
+          htmlType="submit"
+          disabled={props.submitting}
+        >
           {props.title}
         </Button>
       </div>

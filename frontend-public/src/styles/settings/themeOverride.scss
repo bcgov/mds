@@ -1,12 +1,9 @@
 // BUTTON
-// BUTTON
 .ant-btn-secondary {
   color: $secondary-btn-color;
   background-color: $pure-white;
   border-color: $secondary-btn-color;
   &:hover {
-    color: $secondary-btn-color;
-    background-color: $pure-white;
     border: 1px solid $secondary-btn-border-color-hover;
   }
 }
@@ -16,7 +13,6 @@
   background-color: $primary-btn-color;
   border-color: $primary-btn-color;
   &:hover {
-    color: $pure-white;
     background-color: $primary-btn-color-hover;
     border: 1px solid $primary-btn-border-color-hover;
   }
@@ -58,7 +54,7 @@
 }
 
 .ant-btn-background-ghost {
-  color: $font-colour !important;
+  color: $font-colour;
   box-shadow: none;
   border-style: none !important;
   &:hover {
@@ -76,4 +72,23 @@
     border: 1px solid $tertiary-btn-border-color-hover;
     background: transparent;
   }
+}
+
+.ant-dropdown-menu {
+  background-color: $nav-blue;
+  border-radius: 0;
+  top: 14px;
+}
+
+.ant-dropdown-menu-item {
+  & .ant-btn-tertiary {
+    width: 100%;
+    border: none;
+    text-align: right;
+  }
+}
+
+.ant-alert-warning {
+  background-color: $gov-yellow;
+  top: 70px;
 }
