@@ -1,6 +1,6 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { AddTailingsForm } from '@/components/Forms/AddTailingsForm';
+import React from "react";
+import { shallow } from "enzyme";
+import { AddTailingsForm } from "@/components/Forms/AddTailingsForm";
 
 const dispatchProps = {};
 const props = {};
@@ -11,16 +11,17 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.title = 'mockTitle';
-}
+  props.title = "mockTitle";
+  props.submitting = false;
+};
 
 beforeEach(() => {
   setupDispatchProps();
   setupProps();
 });
 
-describe('AddTailingsForm', () => {
-  it('renders properly', () => {
+describe("AddTailingsForm", () => {
+  it("renders properly", () => {
     const component = shallow(<AddTailingsForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
