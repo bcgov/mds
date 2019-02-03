@@ -37,7 +37,7 @@ export class AddPartyRelationshipModal extends Component {
 
   handlePartySubmit = (values) => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    this.props.onPartySubmit(values, type);
+    return this.props.onPartySubmit(values, type);
   };
 
   renderRadioButtonGroup = (person, organization) =>

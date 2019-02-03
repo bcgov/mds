@@ -62,7 +62,7 @@ export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_MINESPACE_USER));
       dispatch(hideLoading());
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({
         message: String.ERROR,
         duration: 10,
