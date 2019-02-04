@@ -28,13 +28,11 @@ class MineTailingsFilePicker extends Component {
   }
 
   handleFileSelect = (mine_document_guid) => {
-    const data = { mine_document_guid };
-    this.pushDocument(data);
+    this.pushDocument({ mine_document_guid });
   };
 
   handleFileLoad = (filename, document_manager_guid) => {
-    const data = { filename, document_manager_guid };
-    this.pushDocument(data);
+    this.pushDocument({ filename, document_manager_guid });
   };
 
   pushDocument = (formData) => {
