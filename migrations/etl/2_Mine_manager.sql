@@ -24,50 +24,28 @@ BEGIN
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
     --1. Mine with valid manager attached
-    WITH now_manager  AS(
-        SELECT
-            SUBSTRING(now_contact.cid from 1 for 7) AS mine_no      ,
-            contact_info.cid                        AS contact_cid  ,
-            contact_info.add_dt                     AS add_dt
-        FROM mms.mmsccc now_contact
-        INNER JOIN mms.mmsccn contact_info on
-            contact_info.cid=now_contact.cid_ccn
-        WHERE
-            SUBSTRING(now_contact.type_ind from 3 for 1) = 'Y'
-    ),
-    --2. Latest NoW with manager attached
-    latest_now AS(
-        SELECT
-            mine_no                 ,
-            MAX(add_dt)        add_dt
-        FROM now_manager
-        GROUP BY
-            mine_no
-    ),
-    --3. Latest manager if more than 1 is attached
-    latest_manager AS (
-        SELECT
-            mine_no                         ,
-            MAX(contact_cid) AS contact_cid
-        FROM now_manager
-        WHERE mine_no||add_dt IN (
-            SELECT mine_no||add_dt
-            FROM latest_now
-        )
-        GROUP BY mine_no
-    ),
-    --4. Select new manager record
-    new_manager AS (
-        SELECT
-            mine_no                         ,
-            contact_cid AS person_combo_id  ,
-            mine_no||contact_cid AS mgr_combo_id
-        FROM latest_manager
-        where mine_no||contact_cid NOT IN (
+   
+    -- Steps 1-4 replaced with this 
+    -- gets a mines newest notice of work, 
+    -- joins that to contact table (mmsccn) through mmsccc (filtering by type MM flag, third char in ind string)
+    -- filtering on regional mines as well
+    WITH new_manager AS(
+    SELECT m.mine_no as mine_no, c.cid_ccn as person_combo_id, m.mine_no||c.cid_ccn as mgr_combo_id
+        FROM mms.mmsmin m,
+        OUTER JOIN 
+            (SELECT n.mine_no, Max(n.cid) cid FROM mms.mmsnow n
+            GROUP BY n.mine_no) latest_now ON m.mine_no = latest_now.mine_no, --get the latest NoW, business process shows the latest NoW is where mine manager is updated.
+        OUTER JOIN mms.mmsccc c ON latest_now.cid = c.cid,
+        OUTER JOIN mms.mmsccn cn ON c.cid_ccn = cn.cid
+        WHERE (m.min_lnk = 'N' OR m.min_lnk is null) --pulling all regional mines, Major mine mine managers come from a differernt table MMSMINM
+        AND SubStr(c.type_ind,3,1) = 'Y' --where type_ind indicates a mine manager selected in the NoW
+        AND m.mine_no||c.cid_ccn NOT IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
         )
-    ),
+    )
+
+
     --5. Check if manager is a new person
     new_person AS (
         SELECT DISTINCT ON (person_combo_id)
