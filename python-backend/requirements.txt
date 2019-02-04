@@ -4,6 +4,7 @@ atomicwrites==1.1.5
 attrs==18.1.0
 cached_property==1.5.1
 click==6.7
+elastic-apm[flask]==4.0.3
 Flask==1.0.2
 Flask-APScheduler==1.11.0
 Flask-Caching==1.4.0

@@ -32,16 +32,6 @@ export class MineContactInfo extends Component {
     this.props.fetchParties();
   }
 
-  /**
-   * add new parties (firstName, surname || companyName) to db.
-   */
-  handlePartySubmit = (values, type) => {
-    const payload = { type, ...values };
-    this.props.createParty(payload).then(() => {
-      this.props.fetchParties();
-    });
-  };
-
   handleChange = (value) => {
     this.props.fetchParties(value);
   };
@@ -49,19 +39,13 @@ export class MineContactInfo extends Component {
   render() {
     return (
       <div>
-        <ViewPartyRelationships
-          {...this.props}
-          handleChange={this.handleChangeDebounced}
-          handlePartySubmit={this.handlePartySubmit}
-        />
+        <ViewPartyRelationships {...this.props} handleChange={this.handleChangeDebounced} />
       </div>
     );
   }
 }
 
 MineContactInfo.propTypes = propTypes;
-
-const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -76,6 +60,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(MineContactInfo);
