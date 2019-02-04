@@ -7,7 +7,7 @@ import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
-import { HOME, PROFILE, ADMIN } from "@/constants/assets";
+import { LOGO, PROFILE, ADMIN } from "@/constants/assets";
 import Logout from "../authentication/Logout";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
@@ -47,7 +47,7 @@ export class NavBar extends Component {
             per_page: String.DEFAULT_PER_PAGE,
           })}
         >
-          <img alt="Home" className="menu__img" src={HOME} />
+          <img alt="Home" className="menu__img" src={LOGO} />
         </Link>
         <Dropdown overlay={this.menu} placement="bottomLeft">
           <button type="button" className="menu__btn">

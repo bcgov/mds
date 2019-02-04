@@ -38,6 +38,7 @@ const propTypes = {
   conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+  submitting: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -392,7 +393,12 @@ export class MineRecordForm extends Component {
           >
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            disabled={this.props.submitting}
+          >
             {this.props.title}
           </Button>
         </div>
