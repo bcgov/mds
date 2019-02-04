@@ -32,6 +32,7 @@
     "react-redux-loading-bar": "^4.0.5",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.2.2",
+    "react-scroll": "^1.7.10",
     "redux": "^4.0.0",
     "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
