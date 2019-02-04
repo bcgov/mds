@@ -29,22 +29,33 @@ BEGIN
     -- gets a mines newest notice of work, 
     -- joins that to contact table (mmsccn) through mmsccc (filtering by type MM flag, third char in ind string)
     -- filtering on regional mines as well
-    WITH new_manager AS(
-    SELECT m.mine_no as mine_no, c.cid_ccn as person_combo_id, m.mine_no||c.cid_ccn as mgr_combo_id
-        FROM mms.mmsmin m,
-        OUTER JOIN 
-            (SELECT n.mine_no, Max(n.cid) cid FROM mms.mmsnow n
-            GROUP BY n.mine_no) latest_now ON m.mine_no = latest_now.mine_no, --get the latest NoW, business process shows the latest NoW is where mine manager is updated.
-        OUTER JOIN mms.mmsccc c ON latest_now.cid = c.cid,
-        OUTER JOIN mms.mmsccn cn ON c.cid_ccn = cn.cid
-        WHERE (m.min_lnk = 'N' OR m.min_lnk is null) --pulling all regional mines, Major mine mine managers come from a differernt table MMSMINM
-        AND SubStr(c.type_ind,3,1) = 'Y' --where type_ind indicates a mine manager selected in the NoW
-        AND m.mine_no||c.cid_ccn NOT IN (
-            SELECT  mgr_combo_id
-            FROM    ETL_MANAGER
-        )
-    )
 
+    WITH regional_mine AS (
+        SELECT m.mine_no mine_no
+        FROM mms.mmsmin m
+        WHERE (m.min_lnk = 'N' OR m.min_lnk is null)
+    ),
+
+    WITH latest_now AS (
+        SELECT n.mine_no mine_no, Max(n.cid) cid
+        FROM mms.mmsnow n
+        WHERE n.mine_no in (SELECT mine_no from regional_mine)
+        GROUP BY n.mine_no
+    ),
+    
+
+    WITH latest_now_ccc AS ( --contact connection
+        SELECT regional_mine.mine_no mine_no, regional_mine.cid cid, ccc.cid_ccn contact_cid
+        FROM mms.mmsccc ccc 
+        WHERE SubStr(ccc.type_ind,3,1) = 'Y'
+        AND ccc.cid in (SELECT cid from regional_mine)
+    ),
+
+    WITH new_manager AS (
+        SELECT latest_now.mine_no mine_no, cn.cid person_combo_id, latest_now.mine_no||cn.cid as mgr_combo_id
+        FROM mms.mmsccn cn
+        WHERE cn.cid in (SELECT contact_cid from latest_now_ccc)
+    ),
 
     --5. Check if manager is a new person
     new_person AS (
@@ -64,7 +75,7 @@ BEGIN
             COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname ,
             NULLIF(regexp_replace(phone, '\D', '','g'),'')::numeric phone_no                        , --Extract numbers only from phone_no field
             COALESCE(NULLIF(regexp_replace(contact_info.email,' ', '', 'g'),''),'Unknown') email    ,
-            COALESCE(contact_info.add_dt,now()) effective_date
+            COALESCE(contact_info.add_dt,now()) effective_date --add_dt is the date the record was last updated... maybe not best date for effective date. maybe use mmsnow.entered_date
         FROM mms.mmsccn contact_info
         WHERE cid IN (
             SELECT  person_combo_id
