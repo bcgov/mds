@@ -77,10 +77,12 @@ export class MineTailingsInfo extends Component {
       document_name: requiredReport.req_document_name,
       req_document_guid: requiredReport.req_document_guid,
     };
-    this.props.createMineExpectedDocument(this.props.mine.guid, newRequiredReport).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineRecordById(this.props.mine.guid);
-    });
+    return this.props
+      .createMineExpectedDocument(this.props.mine.guid, newRequiredReport)
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineRecordById(this.props.mine.guid);
+      });
   };
 
   handleEditReportSubmit = (value) => {
@@ -89,7 +91,7 @@ export class MineTailingsInfo extends Component {
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
     updatedDocument.exp_document_status_guid = value.tsf_report_status;
-    this.props
+    return this.props
       .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
       .then(() => {
         this.props.closeModal();
