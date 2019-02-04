@@ -26,10 +26,12 @@ const defaultProps = {
 class MineTenureInfo extends Component {
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
-    this.props.updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name).then(() => {
-      this.props.fetchMineRecordById(id);
-      this.props.closeModal();
-    });
+    return this.props
+      .updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name)
+      .then(() => {
+        this.props.fetchMineRecordById(id);
+        this.props.closeModal();
+      });
   };
 
   openModal(event, onSubmit, title) {

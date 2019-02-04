@@ -1,6 +1,7 @@
 import { map } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
+import "filepond-polyfill";
 import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";

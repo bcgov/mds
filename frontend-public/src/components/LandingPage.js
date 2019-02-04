@@ -78,7 +78,6 @@ export const LandingPage = () => (
             Wait for an email confirming that your employees/delegates have been added to MineSpace.
           </li>
           <li>Log in to the system.</li>
-          <li>If you require a tutorial on how to use the system, watch this video.</li>
           <li>
             If you run into any issues before or during the submission process, please contact us.
           </li>
