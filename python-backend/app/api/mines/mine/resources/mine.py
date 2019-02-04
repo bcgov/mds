@@ -123,8 +123,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
         mines_query = Mine.query
-        # Adding a filter to remove deleted mines
-        mines_query = Mine.query
         # Filter by search_term if provided
         if search_term:
             search_term = search_term.strip()
