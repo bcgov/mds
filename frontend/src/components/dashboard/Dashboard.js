@@ -229,7 +229,7 @@ export class Dashboard extends Component {
 
   handleSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props
+    return this.props
       .createMineRecord({ ...value, mine_status: mineStatus })
       .then(() => {
         this.props.closeModal();

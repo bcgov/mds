@@ -18,6 +18,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   statusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export const EditTailingsReportForm = (props) => (
@@ -89,7 +90,7 @@ export const EditTailingsReportForm = (props) => (
       >
         <Button type="secondary">Cancel</Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">
+      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
         {props.title}
       </Button>
     </div>
