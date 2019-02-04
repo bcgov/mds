@@ -38,7 +38,8 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    register_apm(app)
+    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+        register_apm(app)
 
     return app
 
