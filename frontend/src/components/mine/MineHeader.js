@@ -62,7 +62,8 @@ class MineHeader extends Component {
     });
   };
 
-  handleAddTailings = (value) => this.props
+  handleAddTailings = (value) =>
+    this.props
       .createTailingsStorageFacility({
         ...value,
         mine_guid: this.props.mine.guid,
@@ -238,7 +239,6 @@ class MineHeader extends Component {
               <p>{String.EMPTY_FIELD}</p>
             )}
           </div>
-          {/* jon stuff           */}
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Notes</p>
             <div>
