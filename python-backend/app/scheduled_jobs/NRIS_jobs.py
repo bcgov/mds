@@ -20,7 +20,7 @@ def _schedule_NRIS_jobs(app):
 # caches a list of mine numbers for all major mines and each major mine indavidually
 # to indicate whether of not it has been processed.
 def _cache_major_mines_list():
-    with sched.app.app_context() as app:
+    with sched.app.app_context():
         cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
         major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
         major_mine_list = []
@@ -33,7 +33,7 @@ def _cache_major_mines_list():
 
 # Using the cached list of major mines procees them if they are not already set to true.
 def _cache_all_NRIS_major_mines_data():
-    with sched.app.app_context() as app:
+    with sched.app.app_context():
         major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
         if major_mine_list is None:
             return
