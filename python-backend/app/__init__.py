@@ -50,11 +50,11 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    # if app.config.get('ENVIRONMENT_NAME') == 'prod':
-    sched.init_app(app)
-    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-        sched.start()
-        _schedule_NRIS_jobs(app)
+    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+        sched.init_app(app)
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
+            _schedule_NRIS_jobs(app)
 
     CORS(app)
     Compress(app)
