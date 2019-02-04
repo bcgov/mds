@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { Menu, Divider, Button, Dropdown, Tag } from "antd";
-import { ELLIPSE, BRAND_PENCIL, RED_ELLIPSE, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
+import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
+import {
+  ELLIPSE,
+  BRAND_PENCIL,
+  RED_ELLIPSE,
+  BRAND_DOCUMENT,
+  EDIT,
+  INFOCIRCLE,
+} from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -84,6 +91,7 @@ class MineHeader extends Component {
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.region_code ? mine.region_code : null,
+      note: mine.mine_note ? mine.mine_note : null,
     };
 
     this.props.openModal({
@@ -231,6 +239,32 @@ class MineHeader extends Component {
             ) : (
               <p>{String.EMPTY_FIELD}</p>
             )}
+          </div>
+          {/* jon stuff           */}
+          <div className="inline-flex padding-small wrap">
+            <p className="field-title">Notes</p>
+            <div>
+              {this.props.mine.mine_note ? (
+                <Popover
+                  content={this.props.mine.mine_note}
+                  overlayStyle={{ width: "50%", padding: "20px" }}
+                  title="Mine Notes"
+                  trigger="click"
+                >
+                  <Button ghost style={{ padding: 0, margin: 0, height: 0 }}>
+                    View Notes{" "}
+                    <img
+                      alt="info"
+                      className="padding-small"
+                      src={INFOCIRCLE}
+                      style={{ padding: 0, margin: 0 }}
+                    />
+                  </Button>
+                </Popover>
+              ) : (
+                <p>{String.EMPTY_FIELD}</p>
+              )}
+            </div>
           </div>
         </div>
         <div className="dashboard__header--card__map">

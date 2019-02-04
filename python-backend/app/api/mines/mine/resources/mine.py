@@ -296,13 +296,12 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Mine not found'), 404
 
         # Mine Detail
-        if mine_name or mine_note or major_mine_ind is not None:
+        if mine_name or major_mine_ind is not None:
             try:
                 mine.update_user = self.get_update_user()
                 if mine_name:
                     mine.mine_name = mine_name
-                if mine_note:
-                    mine.mine_note = mine_note
+                mine.mine_note = mine_note
                 if major_mine_ind is not None:
                     mine.major_mine_ind = major_mine_ind
                 if region:
