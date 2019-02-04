@@ -24,36 +24,34 @@ BEGIN
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
     --1. Mine with valid manager attached
-   
-    -- Steps 1-4 replaced with this 
-    -- gets a mines newest notice of work, 
-    -- joins that to contact table (mmsccn) through mmsccc (filtering by type MM flag, third char in ind string)
-    -- filtering on regional mines as well
 
+    --Step 1: Get regional mine_no's
     WITH regional_mine AS (
-        SELECT m.mine_no mine_no
-        FROM mms.mmsmin m
-        WHERE (m.min_lnk = 'N' OR m.min_lnk is null)
+        SELECT mine_no
+        FROM mms.mmsmin
+        WHERE (min_lnk = 'N' OR min_lnk is null)
     ),
 
-    WITH latest_now AS (
+    --Step 2, Get most recent NOW 
+    latest_now AS (
         SELECT n.mine_no mine_no, Max(n.cid) cid
         FROM mms.mmsnow n
         WHERE n.mine_no in (SELECT mine_no from regional_mine)
         GROUP BY n.mine_no
     ),
-    
-
-    WITH latest_now_ccc AS ( --contact connection
-        SELECT regional_mine.mine_no mine_no, regional_mine.cid cid, ccc.cid_ccn contact_cid
+     --Step 3, get contact connection that is a Mine Manager
+    latest_now_ccc AS ( --contact connection
+        SELECT latest_now.mine_no mine_no, latest_now.cid cid, ccc.cid_ccn contact_cid
         FROM mms.mmsccc ccc 
+        LEFT JOIN latest_now ON latest_now.cid = ccc.cid
         WHERE SubStr(ccc.type_ind,3,1) = 'Y'
-        AND ccc.cid in (SELECT cid from regional_mine)
+        AND ccc.cid in (SELECT cid from latest_now)
     ),
-
-    WITH new_manager AS (
-        SELECT latest_now.mine_no mine_no, cn.cid person_combo_id, latest_now.mine_no||cn.cid as mgr_combo_id
+    -- Step 4, get contact from contact connection
+    new_manager AS (
+        SELECT latest_now_ccc.mine_no mine_no, cn.cid person_combo_id, latest_now_ccc.mine_no||cn.cid as mgr_combo_id
         FROM mms.mmsccn cn
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid   
         WHERE cn.cid in (SELECT contact_cid from latest_now_ccc)
     ),
 
