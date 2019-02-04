@@ -8,7 +8,7 @@ import {
   RED_ELLIPSE,
   BRAND_DOCUMENT,
   EDIT,
-  INFOCIRCLE,
+  INFO_CIRCLE,
 } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -254,7 +254,7 @@ class MineHeader extends Component {
                     <img
                       alt="info"
                       className="padding-small"
-                      src={INFOCIRCLE}
+                      src={INFO_CIRCLE}
                       style={{ padding: 0, margin: 0 }}
                     />
                   </Button>
