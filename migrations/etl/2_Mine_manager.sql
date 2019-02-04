@@ -465,20 +465,18 @@ BEGIN
     WITH deleted_rows AS (
         DELETE FROM mine_party_appt
         WHERE
-            mine_guid IN (
-                SELECT mine_guid
+            -- Only records known to ETL_MANAGER
+            CONCAT(mine_guid, party_guid) IN (
+                SELECT CONCAT(mine_guid, party_guid)
                 FROM ETL_MANAGER
             )
-            AND
-            party_guid IN (
-                SELECT party_guid
-                FROM ETL_MANAGER
-            )
+            -- Only on mines in ETL process
             AND
             mine_guid IN (
                 SELECT mine_guid
                 FROM ETL_MINE
             )
+            -- Only appts for Mine Managers
             AND
             mine_party_appt_type_code = 'MMG'
         RETURNING 1

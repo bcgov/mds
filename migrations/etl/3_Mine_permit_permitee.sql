@@ -430,17 +430,7 @@ BEGIN
     SELECT
         gen_random_uuid()            ,
         --permit info
-        -- Only generate a permit guid for new permits
-        CASE
-            WHEN
-                permit_info.permit_cid NOT IN (
-                  SELECT ETL_PERMIT.permit_cid
-                  FROM ETL_PERMIT
-                )
-                AND permit_info.permit_cid IS NOT NULL
-            THEN  gen_random_uuid()
-            ELSE NULL
-        END AS permit_guid           ,
+        gen_random_uuid()            ,
         permittee_info.source        ,
         permit_info.mine_guid        ,
         permit_info.mine_no          ,
@@ -763,20 +753,19 @@ BEGIN
     WITH deleted_rows AS (
         DELETE FROM mine_party_appt
         WHERE
-            mine_guid IN (
-                SELECT mine_guid
+            -- Only records known to ETL_PERMIT
+            CONCAT(mine_guid, party_guid, permit_guid) IN (
+                SELECT CONCAT(mine_guid, party_guid, permit_guid)
                 FROM ETL_PERMIT
             )
-            AND
-            party_guid IN (
-                SELECT party_guid
-                FROM ETL_PERMIT
-            )
+            -- Only on mines in ETL process
             AND
             mine_guid IN (
                 SELECT mine_guid
                 FROM ETL_MINE
             )
+            -- Only permit records
+            AND permit_guid IS NOT NULL
         RETURNING 1
     )
     SELECT COUNT(*) FROM deleted_rows INTO delete_row;
@@ -784,16 +773,8 @@ BEGIN
     RAISE NOTICE '....# of records removed from mine_party_appt: %', delete_row;
     RAISE NOTICE '....# of records remaining in mine_party_appt: %', old_row;
 
-    RAISE NOTICE '.. Insert latest MMS records from ETL_MANAGER into mine_party_appt';
-    --select only new record
-    WITH new_party_appt AS (
-        SELECT *
-        FROM ETL_PERMIT
-        WHERE party_guid NOT IN (
-            SELECT party_guid
-            FROM mine_party_appt
-        )
-    ), inserted_rows AS (
+    RAISE NOTICE '.. Insert latest MMS records from ETL_PERMIT into mine_party_appt';
+    WITH inserted_rows AS (
         INSERT INTO mine_party_appt (
             mine_party_appt_guid     ,
             permit_guid              ,
@@ -808,20 +789,27 @@ BEGIN
             end_date
         )
         SELECT
-            new_party_appt.mine_party_appt_guid    ,
-            new_party_appt.permit_guid             ,
-            new_party_appt.party_guid              ,
-            new_party_appt.mine_guid,
-            'PMT'                   ,
-            'mms_migration'         ,
-            now()                   ,
-            'mms_migration'         ,
-            now()                   ,
-            issue_date              ,
+            ETL_PERMIT.mine_party_appt_guid,
+            ETL_PERMIT.permit_guid         ,
+            ETL_PERMIT.party_guid          ,
+            ETL_PERMIT.mine_guid           ,
+            'PMT'                          ,
+            'mms_migration'                ,
+            now()                          ,
+            'mms_migration'                ,
+            now()                          ,
+            issue_date                     ,
             expiry_date
-        FROM new_party_appt
+        FROM ETL_PERMIT
         INNER JOIN ETL_MINE ON
-            new_party_appt.mine_guid = ETL_MINE.mine_guid
+            ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+        -- This prevents invalid inserts (of appt records for mines
+        -- without the associated permit. This is a bandaid for a
+        -- deeper issue. ETL_PERMIT contains (mine_guid, permit_guid)
+        -- pairs that don't exist in the permit table
+        WHERE CONCAT(ETL_PERMIT.permit_guid, ETL_PERMIT.mine_guid) IN (
+            SELECT CONCAT(permit_guid, mine_guid) from permit
+        )
         RETURNING 1
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;
