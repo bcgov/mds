@@ -38,8 +38,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
-        register_apm(app)
+    register_apm(app)
 
     return app
 
@@ -51,11 +50,11 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
-        sched.init_app(app)
-        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-            sched.start()
-            _schedule_NRIS_jobs(app)
+    # if app.config.get('ENVIRONMENT_NAME') == 'prod':
+    sched.init_app(app)
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+        sched.start()
+        _schedule_NRIS_jobs(app)
 
     CORS(app)
     Compress(app)
