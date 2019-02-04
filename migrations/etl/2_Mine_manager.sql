@@ -475,6 +475,11 @@ BEGIN
                 FROM ETL_MANAGER
             )
             AND
+            mine_guid IN (
+                SELECT mine_guid
+                FROM ETL_MINE
+            )
+            AND
             mine_party_appt_type_code = 'MMG'
         RETURNING 1
     )

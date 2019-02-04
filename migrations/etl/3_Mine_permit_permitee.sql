@@ -430,7 +430,17 @@ BEGIN
     SELECT
         gen_random_uuid()            ,
         --permit info
-        gen_random_uuid()            ,
+        -- Only generate a permit guid for new permits
+        CASE
+            WHEN
+                permit_info.permit_cid NOT IN (
+                  SELECT ETL_PERMIT.permit_cid
+                  FROM ETL_PERMIT
+                )
+                AND permit_info.permit_cid IS NOT NULL
+            THEN  gen_random_uuid()
+            ELSE NULL
+        END AS permit_guid           ,
         permittee_info.source        ,
         permit_info.mine_guid        ,
         permit_info.mine_no          ,
@@ -593,7 +603,7 @@ BEGIN
       WHERE
           permit.mine_guid = etl.mine_guid
           AND
-          permit.permit_no = etl.permit_no
+          permit.permit_guid = etl.permit_guid
       RETURNING 1
     )
     SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -625,18 +635,20 @@ BEGIN
             expiry_date
         )
         SELECT
-            permit_guid         ,
-            mine_guid           ,
-            permit_no           ,
-            received_date       ,
-            issue_date          ,
-            permit_status_code  ,
-            'mms_migration'     ,
-            now()               ,
-            'mms_migration'     ,
-            now()               ,
-            expiry_date
+            new_permit.permit_guid         ,
+            new_permit.mine_guid           ,
+            new_permit.permit_no           ,
+            new_permit.received_date       ,
+            new_permit.issue_date          ,
+            new_permit.permit_status_code  ,
+            'mms_migration'                ,
+            now()                          ,
+            'mms_migration'                ,
+            now()                          ,
+            new_permit.expiry_date
         FROM new_permit
+        INNER JOIN ETL_MINE ON
+            new_permit.mine_guid = ETL_MINE.mine_guid
         RETURNING 1
     )
     SELECT COUNT(*) FROM inserted_rows INTO insert_row;
@@ -760,6 +772,11 @@ BEGIN
                 SELECT party_guid
                 FROM ETL_PERMIT
             )
+            AND
+            mine_guid IN (
+                SELECT mine_guid
+                FROM ETL_MINE
+            )
         RETURNING 1
     )
     SELECT COUNT(*) FROM deleted_rows INTO delete_row;
@@ -791,18 +808,20 @@ BEGIN
             end_date
         )
         SELECT
-            mine_party_appt_guid,
-            permit_guid         ,
-            party_guid          ,
-            mine_guid           ,
-            'PMT'               ,
-            'mms_migration'     ,
-            now()               ,
-            'mms_migration'     ,
-            now()               ,
-            issue_date          ,
+            new_party_appt.mine_party_appt_guid    ,
+            new_party_appt.permit_guid             ,
+            new_party_appt.party_guid              ,
+            new_party_appt.mine_guid,
+            'PMT'                   ,
+            'mms_migration'         ,
+            now()                   ,
+            'mms_migration'         ,
+            now()                   ,
+            issue_date              ,
             expiry_date
         FROM new_party_appt
+        INNER JOIN ETL_MINE ON
+            new_party_appt.mine_guid = ETL_MINE.mine_guid
         RETURNING 1
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;
