@@ -29,7 +29,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
-    [(DocumentManagerResource, "get", []),
+    [(DocumentManagerResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedDocumentStatusResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (ExpectedDocumentResource, "get", [MINE_VIEW]),

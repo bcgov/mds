@@ -12,7 +12,7 @@ from flask_uploads import UploadNotAllowed
 from ..models.document_manager import DocumentManager
 from app.extensions import api, documents
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ...utils.access_decorators import requires_any_of, MINE_CREATE, MINE_VIEW, MINESPACE_PROPONENT
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
@@ -95,18 +95,17 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={
         'document_guid': 'Required: Document guid. Returns the file associated to this guid.'
     })
-    #TODO: removed authoization until token/redis system in place
-    #@requires_role_mine_create
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, document_guid=None):
 
         if not document_guid:
-            return self.create_error_payload(401, 'Must provide a document guid.')
+            return self.create_error_payload(400, 'Must provide a document guid.'), 400
 
         document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
 
         if not document_manager_doc:
             return self.create_error_payload(
-                401, f'Could not find a document with the document guid: {document_guid}')
+                400, f'Could not find a document with the document guid: {document_guid}'), 400
         else:
             return send_file(
                 filename_or_fp=document_manager_doc.full_storage_path,
