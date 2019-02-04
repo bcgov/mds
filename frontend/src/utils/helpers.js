@@ -1,5 +1,12 @@
 import moment from "moment";
 import { reset } from "redux-form";
+import axios from "axios";
+import { createRequestHeader } from "@/utils/RequestHeaders";
+import { ENVIRONMENT } from "@/constants/environment";
+import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+
+const fileDownload = require("js-file-download");
+
 /**
  * Helper function to clear redux form after submission
  *
@@ -47,3 +54,15 @@ export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").forma
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+export const downloadFileFromDocumentManager = (docManagerGuid, filename) => {
+  if (!docManagerGuid || !filename) {
+    throw new Error("Must provide both docManagerGuid and filename");
+  }
+
+  // TODO: Update url when Document Manager moves to its own microservice.
+  const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docManagerGuid}`;
+  axios.get(url, { responseType: "arraybuffer", ...createRequestHeader() }).then((response) => {
+    fileDownload(response.data, filename);
+  });
+};
