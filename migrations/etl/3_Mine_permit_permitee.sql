@@ -477,7 +477,6 @@ BEGIN
         SET
             --permit info
             source             = info.source            ,
-            mine_guid          = info.mine_guid         ,
             mine_no            = info.mine_no           ,
             permit_no          = info.permit_no         ,
             received_date      = info.received_date     ,
@@ -486,7 +485,6 @@ BEGIN
             permit_status_code = info.permit_status_code,
             --permittee info
             party_combo_id     = info.party_combo_id    ,
-            party_guid         = info.party_guid        ,
             first_name         = info.first_name        ,
             party_name         = info.party_name        ,
             party_type         = info.party_type        ,
@@ -495,9 +493,11 @@ BEGIN
             effective_date     = info.effective_date
         FROM all_permit_info info
         WHERE
-            ETL_PERMIT.permit_cid = info.permit_cid
-            OR
-            ETL_PERMIT.party_combo_id = info.party_combo_id
+            ETL_PERMIT.mine_guid = info.mine_guid
+            AND
+            ETL_PERMIT.party_guid = info.party_guid
+            AND
+            ETL_PERMIT.permit_guid = info.permit_guid
         RETURNING 1
     )
     SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -532,7 +532,7 @@ BEGIN
         SELECT
             gen_random_uuid()      ,
             --permit info
-            gen_random_uuid()      ,
+            info.permit_guid       ,
             info.source            ,
             info.mine_guid         ,
             info.mine_no           ,
@@ -664,15 +664,15 @@ BEGIN
     WITH updated_rows AS (
       UPDATE party
       SET
-        first_name       = etl.first_name    ,
-        party_name       = etl.party_name    ,
-        phone_no         = etl.phone_no      ,
-        email            = etl.email         ,
-        effective_date   = etl.effective_date,
-        expiry_date      = etl.expiry_date   ,
-        update_user      = 'mms_migration'   ,
-        update_timestamp = now()             ,
-        party_type_code  = etl.party_type
+          first_name       = etl.first_name    ,
+          party_name       = etl.party_name    ,
+          phone_no         = etl.phone_no      ,
+          email            = etl.email         ,
+          effective_date   = etl.effective_date,
+          expiry_date      = etl.expiry_date   ,
+          update_user      = 'mms_migration'   ,
+          update_timestamp = now()             ,
+          party_type_code  = etl.party_type
       FROM ETL_PERMIT etl
       WHERE party.party_guid = etl.party_guid
       RETURNING 1
@@ -803,13 +803,6 @@ BEGIN
         FROM ETL_PERMIT
         INNER JOIN ETL_MINE ON
             ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
-        -- This prevents invalid inserts (of appt records for mines
-        -- without the associated permit. This is a bandaid for a
-        -- deeper issue. ETL_PERMIT contains (mine_guid, permit_guid)
-        -- pairs that don't exist in the permit table
-        WHERE CONCAT(ETL_PERMIT.permit_guid, ETL_PERMIT.mine_guid) IN (
-            SELECT CONCAT(permit_guid, mine_guid) from permit
-        )
         RETURNING 1
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;
