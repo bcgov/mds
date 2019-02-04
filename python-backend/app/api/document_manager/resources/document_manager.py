@@ -12,6 +12,7 @@ from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from app.api.constants import TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
@@ -27,10 +28,6 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'filename', type=str, required=True, help='File name + extension of the document.')
 
-    tus_api_version = '1.0.0'
-    tus_api_supported_versions = '1.0.0'
-    redis_timeout = 86400  # 1 day
-    forbidden_filetypes = ('js', 'php', 'pl', 'py', 'rb', 'sh', 'so', 'exe', 'dll')
     def redis_key_file_size(self, id): return f'document-manager/{id}/file-size'
     def redis_key_offset(self, id): return f'document-manager/{id}/offset'
     def redis_key_file_path(self, id): return f'document-manager/{id}/file-path'
@@ -52,7 +49,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         filename = data.get('filename')
         if not filename:
             return self.create_error_payload(400, 'File name cannot be empty'), 400
-        if filename.endswith(self.forbidden_filetypes):
+        if filename.endswith(FORBIDDEN_FILETYPES):
             return self.create_error_payload(400, 'File type is forbidden'), 400
 
         document_guid = str(uuid.uuid4())
@@ -72,10 +69,10 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(500, 'Unable to create file'), 500
 
         cache.set(self.redis_key_file_size(document_guid),
-                  file_size, self.redis_timeout)
-        cache.set(self.redis_key_offset(document_guid), 0, self.redis_timeout)
+                  file_size, TIMEOUT_24_HOURS)
+        cache.set(self.redis_key_offset(document_guid), 0, TIMEOUT_24_HOURS)
         cache.set(self.redis_key_file_path(document_guid),
-                  file_path, self.redis_timeout)
+                  file_path, TIMEOUT_24_HOURS)
 
         document_info = DocumentManager(
             document_guid=document_guid,
@@ -89,8 +86,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
         response = make_response(
             jsonify(document_manager_guid=document_guid), 201)
-        response.headers['Tus-Resumable'] = self.tus_api_version
-        response.headers['Tus-Version'] = self.tus_api_supported_versions
+        response.headers['Tus-Resumable'] = TUS_API_VERSION
+        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers[
             'Location'] = f'http://localhost:5000/document-manager/{document_guid}'
         response.headers['Upload-Offset'] = 0
@@ -99,7 +96,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         return response
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def patch(self, document_guid):
+    def patch(self, document_guid=None):
         if document_guid is None:
             return self.create_error_payload(400, 'Must specify document GUID in PATCH'), 400
 
@@ -141,11 +138,11 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         else:
             # File upload still in progress
             cache.set(self.redis_key_offset(document_guid),
-                      new_offset, self.redis_timeout)
+                      new_offset, TIMEOUT_24_HOURS)
 
         response = make_response("", 204)
-        response.headers['Tus-Resumable'] = self.tus_api_version
-        response.headers['Tus-Version'] = self.tus_api_supported_versions
+        response.headers['Tus-Resumable'] = TUS_API_VERSION
+        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers['Upload-Offset'] = new_offset
         response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
         return response
@@ -160,8 +157,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'File does not exist'), 404
 
         response = make_response("", 200)
-        response.headers['Tus-Resumable'] = self.tus_api_version
-        response.headers['Tus-Version'] = self.tus_api_supported_versions
+        response.headers['Tus-Resumable'] = TUS_API_VERSION
+        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers['Upload-Offset'] = cache.get(
             self.redis_key_offset(document_guid))
         response.headers['Upload-Length'] = cache.get(
