@@ -53,7 +53,7 @@ BEGIN
         mine_name         varchar(60)   ,
         mine_region       varchar(2)    ,
         mine_type         varchar(3)    ,
-        latitude          numeric(9,7)  ,
+        latitude          numeric(11,7)  ,
         longitude         numeric(11,7) ,
         major_mine_ind    boolean
     );
@@ -194,7 +194,7 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 3 of 5: Transform location data';
     -- This is the intermediary table that will be used to store transformed
-    -- regional mine location data
+    -- mine location data
     CREATE TABLE IF NOT EXISTS ETL_LOCATION (
         mine_guid       uuid                ,
         mine_no         varchar(7)          ,
@@ -207,7 +207,7 @@ BEGIN
     RAISE NOTICE '.. Sync existing records with latest ETL_MINE data';
     -- Create temp table for upsert process
     CREATE TEMP TABLE IF NOT EXISTS pmt_now (
-        lat_dec   numeric(9,7) ,
+        lat_dec   numeric(11,7) ,
         lon_dec   numeric(11,7),
         permit_no varchar(12)  ,
         mine_no   varchar(10)  ,
@@ -442,6 +442,8 @@ BEGIN
     SELECT count(*) FROM ETL_LOCATION into new_row;
     RAISE NOTICE '....# of new mine_location records found in MMS: %', (new_row-old_row);
     RAISE NOTICE '....Total mine_location records in ETL_LOCATION: %.', new_row;
+
+    DROP TABLE pmt_now;
 END $$;
 
 
@@ -458,15 +460,21 @@ BEGIN
 
     -- Upsert data from ETL_LOCATION into mine_location
     RAISE NOTICE '.. Update existing records with latest MMS data';
-    UPDATE mine_location
-    SET latitude         = ETL_LOCATION.latitude ,
-        longitude        = ETL_LOCATION.longitude,
-        geom             = ST_SetSRID(ST_MakePoint(ETL_LOCATION.longitude, ETL_LOCATION.latitude), 3005),
-        update_user      = 'mms_migration'      ,
-        update_timestamp = now()
-    FROM ETL_LOCATION
-    WHERE ETL_LOCATION.mine_guid = mine_location.mine_guid;
-    SELECT count(*) FROM mine_location, ETL_LOCATION WHERE mine_location.mine_guid = ETL_LOCATION.mine_guid INTO update_row;
+    WITH updated_rows AS (
+        UPDATE mine_location
+        SET latitude         = ETL_LOCATION.latitude ,
+            longitude        = ETL_LOCATION.longitude,
+            geom             = ST_SetSRID(ST_MakePoint(ETL_LOCATION.longitude, ETL_LOCATION.latitude), 3005),
+            update_user      = 'mms_migration'      ,
+            update_timestamp = now()
+        FROM ETL_LOCATION
+        INNER JOIN ETL_MINE
+            ON ETL_LOCATION.mine_guid = ETL_MINE.mine_guid
+        WHERE
+            ETL_LOCATION.mine_guid = mine_location.mine_guid
+        RETURNING 1
+    )
+    SELECT count(*) FROM updated_rows INTO update_row;
     RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
 

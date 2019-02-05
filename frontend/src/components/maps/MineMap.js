@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { notification } from "antd";
-import { WebMap, Map } from "react-arcgis";
-import { loadModules } from "react-arcgis";
+import { WebMap, Map, loadModules } from "react-arcgis";
 import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
 import MinePin from "./MinePin";
