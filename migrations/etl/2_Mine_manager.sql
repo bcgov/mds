@@ -47,18 +47,18 @@ BEGIN
         FROM mms.mmsccc ccc 
         LEFT JOIN latest_now ON latest_now.cid = ccc.cid
         WHERE SubStr(ccc.type_ind,3,1) = 'Y'
-    ),
-    -- Step 4, get contact from contact connection
+    ),    -- Step 4, get contact from contact connection
+
+    --4. Select existing manager record
     existing_manager AS (
         SELECT latest_now_ccc.mine_no mine_no, cn.cid person_combo_id, latest_now_ccc.mine_no||cn.cid as mgr_combo_id
         FROM mms.mmsccn cn
         LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid 
-        AND latest_now_ccc.mine_no||cn.cid IN (
+        WHERE latest_now_ccc.mine_no||cn.cid IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
         )
     ),
-
     --5. Check if manager is an existing person
     existing_person AS (
         SELECT DISTINCT ON (person_combo_id)
@@ -175,8 +175,6 @@ BEGIN
 
 
     RAISE NOTICE '.. Insert new MMS mine manager records into ETL_MANAGER';
-    --1. Mine with valid manager attached
-
     --Step 1: Get regional mine_no's
     WITH regional_mine AS (
         SELECT mine_no
@@ -202,8 +200,8 @@ BEGIN
     new_manager AS (
         SELECT latest_now_ccc.mine_no mine_no, cn.cid person_combo_id, latest_now_ccc.mine_no||cn.cid as mgr_combo_id
         FROM mms.mmsccn cn
-        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid  
-        AND latest_now_ccc.mine_no||cn.cid IN (
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid   
+        WHERE latest_now_ccc.mine_no||cn.cid NOT IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
         )
