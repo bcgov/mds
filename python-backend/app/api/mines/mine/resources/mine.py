@@ -302,8 +302,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine.update_user = self.get_update_user()
                 if mine_name:
                     mine.mine_name = mine_name
-                if mine_note:
-                    mine.mine_note = mine_note
+                mine.mine_note = mine_note
                 if major_mine_ind is not None:
                     mine.major_mine_ind = major_mine_ind
                 if region:
