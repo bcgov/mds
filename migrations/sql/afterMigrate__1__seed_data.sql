@@ -99,7 +99,7 @@ VALUES
     ('SE', 'South East Region', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-
+-- There is a ticket in the backlog to modify this table. The pattern below is a workaround to prevent duplicate document status records from being created until then.
 INSERT INTO mine_expected_document_status
     (
     description,
@@ -107,13 +107,25 @@ INSERT INTO mine_expected_document_status
     create_user,
     update_user
     )
-VALUES
-    ('Not Received', 10, 'system-mds', 'system-mds'),
-    ('Received / Pending Review', 20, 'system-mds', 'system-mds'),
-    ('Review In Progress', 30, 'system-mds', 'system-mds'),
-    ('Accepted', 40, 'system-mds', 'system-mds'),
-    ('Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
-ON CONFLICT DO NOTHING;
+    SELECT 'Not Received', 10, 'system-mds', 'system-mds'
+    where 'Not Received' not in (select description
+    from mine_expected_document_status)
+UNION
+    SELECT 'Received / Pending Review', 20, 'system-mds', 'system-mds'
+    where 'Received / Pending Review' not in (select description
+    from mine_expected_document_status)
+UNION
+    SELECT 'Review In Progress', 30, 'system-mds', 'system-mds'
+    where 'Review In Progress' not in (select description
+    from mine_expected_document_status)
+UNION
+    SELECT 'Accepted', 40, 'system-mds', 'system-mds'
+    where 'Accepted' not in (select description
+    from mine_expected_document_status)
+UNION
+    SELECT 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds'
+    where 'Rejected / Waiting On Update' not in (select description
+    from mine_expected_document_status);
 
 INSERT INTO mine_tenure_type_code
     (
