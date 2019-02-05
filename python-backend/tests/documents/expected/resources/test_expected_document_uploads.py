@@ -36,8 +36,14 @@ def setup_info(test_client):
         document_manager_guid=TEST_DOCUMENT_MANAGER_GUID1,
         document_name='file.txt',
         **DUMMY_USER_KWARGS)
-
     mine_document.save()
+
+    orphaned_mine_document = MineDocument(
+        mine_guid=TEST_MINE_GUID,
+        document_manager_guid=TEST_DOCUMENT_MANAGER_GUID2,
+        document_name='file2.txt',
+        **DUMMY_USER_KWARGS)
+    orphaned_mine_document.save()
 
     expected_document = MineExpectedDocument(
         exp_document_guid=TEST_EXPECTED_DOCUMENT_GUID,
@@ -58,6 +64,7 @@ def setup_info(test_client):
         document_manager_guid1=str(TEST_DOCUMENT_MANAGER_GUID1),
         document_manager_guid2=str(TEST_DOCUMENT_MANAGER_GUID2),
         mine_document=mine_document,
+        orphaned_mine_document=orphaned_mine_document,
         expected_document=expected_document,
     )
 
@@ -81,7 +88,7 @@ def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info)
 
 def test_put_existing_file(test_client, auth_headers, setup_info):
     expected_doc = setup_info.get('expected_document')
-    existing_mine_doc = setup_info.get('mine_document')
+    existing_mine_doc = setup_info.get('orphaned_mine_document')
     document_count= len(expected_doc.mine_documents)
 
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
