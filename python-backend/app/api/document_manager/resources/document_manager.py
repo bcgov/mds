@@ -172,7 +172,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     })
     # TODO: removed authoization until token/redis system in place
     # @requires_role_mine_create
-    def get(self, document_guid):
+    def get(self, document_guid=None):
         if not document_guid:
             return self.create_error_payload(400, 'Must provide a document guid.'), 400
 
