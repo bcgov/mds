@@ -68,37 +68,27 @@ def setup_info(test_client):
 
 
 def test_happy_path_file_upload(test_client, auth_headers, setup_info):
-
     with mock.patch('requests.post') as mock_request:
-
         mock_request.return_value = MockResponse({
             'status': 200,
-            'errors': [],
-            'document_manager_guids': {
-                setup_info.get('document_manager_guid1'): 'file1.docx',
-                setup_info.get('document_manager_guid2'): 'file2.pdf'
-            }
+            'some_data': 'this is some data'
         }, 200)
 
-        data = {
-            'file': [setup_info.get('file_upload_1'),
-                     setup_info.get('file_upload_2')],
+        headers = {
+            'Authorization': auth_headers['full_auth_header']['Authorization'],
+            'Upload-Metadata': 'filename aFile.name'
         }
-        post_resp = test_client.post(
+        resp = test_client.post(
             '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
             '/document',
-            headers=auth_headers['full_auth_header'],
-            data=data)
+            headers=headers)
+        assert resp.status_code == 200
 
-        post_data = json.loads(post_resp.data.decode())
-
-        assert post_resp.status_code == 200
-        assert 'file1.docx' in post_data['files']
-        assert 'file2.pdf' in post_data['files']
+        resp_data = json.loads(resp.data.decode())
+        assert resp_data['some_data'] == 'this is some data'
 
 
 def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
-
     post_resp = test_client.post(
         '/documents/expected/' + str(uuid.uuid4()) + '/document',
         headers=auth_headers['full_auth_header'],
@@ -106,7 +96,7 @@ def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info)
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_resp.status_code == 404
     assert post_data['error']['message'] is not None
 
 
@@ -115,14 +105,11 @@ def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
 
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
 
-    post_resp = test_client.post(
+    post_resp = test_client.put(
         '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
         '/document',
         headers=auth_headers['full_auth_header'],
         data=data)
-
-    post_data = json.loads(post_resp.data.decode())
-
     assert post_resp.status_code == 200
 
 
@@ -167,7 +154,7 @@ def test_remove_file_no_doc(test_client, auth_headers, setup_info):
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 404
     assert post_data['error']['message'] is not None
 
 
@@ -181,5 +168,5 @@ def test_remove_file_no_exp_doc(test_client, auth_headers, setup_info):
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 404
     assert post_data['error']['message'] is not None
