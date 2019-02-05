@@ -22,13 +22,13 @@ class DocumentManager(AuditMixin, Base):
 
     def json(self):
         return {
-            'document_manager_id': str(self.document_manager_id),
+            'document_manager_id': self.document_manager_id,
             'document_guid': str(self.document_guid),
-            'full_storage_path': str(self.full_storage_path),
+            'full_storage_path': self.full_storage_path,
             'upload_started_date': str(self.upload_started_date),
-            'upload_completed_date': str(self.upload_completed_date),
-            'file_display_name': str(self.file_display_name),
-            'path_display_name': str(self.path_display_name)
+            'upload_completed_date': str(self.upload_completed_date) if self.upload_completed_date else None,
+            'file_display_name': self.file_display_name,
+            'path_display_name': self.path_display_name
         }
 
     @classmethod
