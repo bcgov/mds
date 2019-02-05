@@ -67,30 +67,9 @@ def setup_info(test_client):
     db.session.commit()
 
 
-def test_happy_path_file_upload(test_client, auth_headers, setup_info):
-    with mock.patch('requests.post') as mock_request:
-        mock_request.return_value = MockResponse({
-            'status': 200,
-            'some_data': 'this is some data'
-        }, 200)
-
-        headers = {
-            'Authorization': auth_headers['full_auth_header']['Authorization'],
-            'Upload-Metadata': 'filename aFile.name'
-        }
-        resp = test_client.post(
-            '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
-            '/document',
-            headers=headers)
-        assert resp.status_code == 200
-
-        resp_data = json.loads(resp.data.decode())
-        assert resp_data['some_data'] == 'this is some data'
-
-
 def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info):
     post_resp = test_client.post(
-        '/documents/expected/' + str(uuid.uuid4()) + '/document',
+        f'/documents/expected/{str(uuid.uuid4())}/document',
         headers=auth_headers['full_auth_header'],
         data={})
 
@@ -100,27 +79,41 @@ def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info)
     assert post_data['error']['message'] is not None
 
 
-def test_file_upload_with_existing_file(test_client, auth_headers, setup_info):
+def test_put_existing_file(test_client, auth_headers, setup_info):
+    expected_doc = setup_info.get('expected_document')
     existing_mine_doc = setup_info.get('mine_document')
+    document_count= len(expected_doc.mine_documents)
 
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
-
     post_resp = test_client.put(
-        '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
-        '/document',
+        f'/documents/expected/{str(expected_doc.exp_document_guid)}/document',
         headers=auth_headers['full_auth_header'],
         data=data)
+
     assert post_resp.status_code == 200
+    assert len(expected_doc.mine_documents) == document_count + 1
+
+
+def test_put_new_file(test_client, auth_headers, setup_info):
+    expected_doc = setup_info.get('expected_document')
+    document_count= len(expected_doc.mine_documents)
+    
+    data = {'document_manager_guid': str(uuid.uuid4()), 'filename':'a_file.pdf'}
+    post_resp = test_client.put(
+        f'/documents/expected/{str(expected_doc.exp_document_guid)}/document',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+
+    assert post_resp.status_code == 200
+    assert len(expected_doc.mine_documents) == document_count + 1
 
 
 def test_happy_path_file_removal(test_client, auth_headers, setup_info):
-
     mine_document = setup_info.get('mine_document')
     expected_document = setup_info.get('expected_document')
 
     post_resp = test_client.delete(
-        '/documents/expected/' + str(expected_document.exp_document_guid) + '/document/' + str(
-            mine_document.mine_document_guid),
+        f'/documents/expected/{str(expected_document.exp_document_guid)}/document/{str(mine_document.mine_document_guid)}',
         headers=auth_headers['full_auth_header'])
 
     post_data = json.loads(post_resp.data.decode())
@@ -131,11 +124,10 @@ def test_happy_path_file_removal(test_client, auth_headers, setup_info):
 
 
 def test_remove_file_no_doc_guid(test_client, auth_headers, setup_info):
-
     expected_document = setup_info.get('expected_document')
 
     post_resp = test_client.delete(
-        '/documents/expected/' + str(expected_document.exp_document_guid) + '/document',
+        f'/documents/expected/{str(expected_document.exp_document_guid)}/document',
         headers=auth_headers['full_auth_header'])
 
     post_data = json.loads(post_resp.data.decode())
@@ -148,8 +140,7 @@ def test_remove_file_no_doc(test_client, auth_headers, setup_info):
     expected_document = setup_info.get('expected_document')
 
     post_resp = test_client.delete(
-        '/documents/expected/' + str(expected_document.exp_document_guid) + '/document/' + str(
-            uuid.uuid4()),
+        f'/documents/expected/{str(expected_document.exp_document_guid)}/document/{str(uuid.uuid4())}',
         headers=auth_headers['full_auth_header'])
 
     post_data = json.loads(post_resp.data.decode())
@@ -162,8 +153,7 @@ def test_remove_file_no_exp_doc(test_client, auth_headers, setup_info):
     mine_document = setup_info.get('mine_document')
 
     post_resp = test_client.delete(
-        '/documents/expected/' + str(uuid.uuid4()) + '/document/' + str(
-            mine_document.mine_document_guid),
+        f'/documents/expected/{str(uuid.uuid4())}/document/{str(mine_document.mine_document_guid)}',
         headers=auth_headers['full_auth_header'])
 
     post_data = json.loads(post_resp.data.decode())
