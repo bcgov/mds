@@ -76,7 +76,7 @@ def test_happy_path_file_upload(test_client, auth_headers, setup_info):
 
         headers = {
             'Authorization': auth_headers['full_auth_header']['Authorization'],
-            'Upload-Metadata': 'filename aFile.name'
+            'Upload-Metadata': 'filename YSBmaWxlbmFtZQ=='
         }
         resp = test_client.post(
             '/documents/expected/' + str(setup_info.get('expected_document').exp_document_guid) +
