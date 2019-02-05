@@ -72,7 +72,7 @@ BEGIN
         major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
         mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
         mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ),
-        deleted_ind    = CASE WHEN LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE
+        deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
     SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
