@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
+import NullScreen from "@/components/common/NullScreen";
 
 const DashboardRoutes = () => (
   <Switch>
@@ -12,6 +13,8 @@ const DashboardRoutes = () => (
       path={routes.RELATIONSHIP_PROFILE.route}
       component={routes.RELATIONSHIP_PROFILE.component}
     />
+    <Route exact path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
+    <Route render={() => <NullScreen type="404" />} />
   </Switch>
 );
 
