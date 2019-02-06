@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Element, scroller } from "react-scroll";
+
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import { Pagination, Tabs, Col, Divider, notification, Button } from "antd";
@@ -185,6 +187,9 @@ export class Dashboard extends Component {
           showCoordinates: true,
           mineName: newVal[2],
         });
+        // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
+        scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
+        // window.scrollTo(0, this.mapRef.current.offsetTop);
       } else {
         this.setState({
           lat: String.DEFAULT_LAT,
@@ -200,6 +205,8 @@ export class Dashboard extends Component {
         showCoordinates: true,
         mineName: null,
       });
+      // window.scrollTo(0, this.mapRef.current.offsetTop);
+      scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
     }
   };
 
@@ -225,7 +232,7 @@ export class Dashboard extends Component {
 
   handleSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props
+    return this.props
       .createMineRecord({ ...value, mine_status: mineStatus })
       .then(() => {
         this.props.closeModal();
@@ -330,25 +337,28 @@ export class Dashboard extends Component {
                   <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                 </Col>
               </div>
-              {this.state.mineName && (
+              <div>
                 <div className="center center-mobile">
-                  <h2>
-                    Results for: <span className="p">{this.state.mineName}</span>
-                  </h2>
+                  {this.state.mineName && (
+                    <h2>
+                      Results for: <span className="p">{this.state.mineName}</span>
+                    </h2>
+                  )}
                 </div>
-              )}
-              {this.state.showCoordinates && (
                 <div className="center">
                   <div className="inline-flex evenly center-mobile">
-                    <h2>
-                      Latitude: <span className="p">{this.state.lat}</span>
-                    </h2>
-                    <h2>
-                      Longitude: <span className="p">{this.state.long}</span>
-                    </h2>
+                    {this.state.showCoordinates && [
+                      <h2>
+                        Latitude: <span className="p">{this.state.lat}</span>
+                      </h2>,
+                      <h2>
+                        Longitude: <span className="p">{this.state.long}</span>
+                      </h2>,
+                    ]}
                   </div>
                 </div>
-              )}
+              </div>
+              <Element name="test2" />
               <div>
                 <MineMap {...this.state} />
               </div>

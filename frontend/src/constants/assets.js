@@ -1,5 +1,5 @@
 // all static image files
-export { default as HOME } from "../assets/images/Home.svg";
+export { default as LOGO } from "../assets/images/Logo.svg";
 export { default as PROFILE } from "../assets/images/Profile.svg";
 export { default as ELLIPSE } from "../assets/images/Ellipse.svg";
 export { default as RED_ELLIPSE } from "../assets/images/Ellipse-red.svg";
@@ -19,3 +19,7 @@ export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";
 export { default as EDIT } from "../assets/images/Edit.svg";
 export { default as LOGOUT } from "../assets/images/Logout.svg";
 export { default as ADMIN } from "../assets/images/Admin.svg";
+export { default as INFO_CIRCLE } from "../assets/images/InfoCircle.svg";
+export { default as WARNING } from "../assets/images/warning.svg";
+export { default as DOC } from "../assets/images/doc.svg";
+export { default as OVERDUEDOC } from "../assets/images/overdue-doc.svg";

@@ -3,10 +3,12 @@ import json
 import os
 
 from flask import Flask
+from flask import request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource
 from flask_uploads import configure_uploads
 from flask_compress import Compress
+from elasticapm.contrib.flask import ElasticAPM
 
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.mines.namespace.mines import api as mines_api
@@ -36,6 +38,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+    register_apm(app)
 
     return app
 
@@ -80,3 +83,15 @@ def register_routes(app):
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
         return json.loads({"error": str(traceback)})
+
+
+def register_apm(app):
+    if app.config['ELASTIC_ENABLED'] == '1':
+        app.config['ELASTIC_APM'] = {
+            'SERVICE_NAME': app.config['ELASTIC_SERVICE_NAME'],
+            'SECRET_TOKEN': app.config['ELASTIC_SECRET_TOKEN'],
+            'SERVER_URL': app.config['ELASTIC_SERVER_URL'],
+            'DEBUG': True
+        }
+        apm = ElasticAPM(app)
+    return None

@@ -27,17 +27,6 @@ const defaultProps = {
 
 export const DefaultContact = (props) => (
   <Card
-    headStyle={{
-      background: "#EEEEEE",
-      borderTop: "1px solid #CCCCCC",
-      borderRight: "1px solid #CCCCCC",
-      borderLeft: "1px solid #CCCCCC",
-    }}
-    bodyStyle={{
-      borderBottom: "4px solid #CCCCCC",
-      borderRight: "1px solid #CCCCCC",
-      borderLeft: "1px solid #CCCCCC",
-    }}
     title={
       <div className="inline-flex between wrap">
         <div>

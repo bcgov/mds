@@ -5,7 +5,7 @@ import json
 
 from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
-from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -182,7 +182,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 .join(MineStatusXref) \
                 .filter(all_status_filter)
             mines_query = mines_query.intersect(status_query)
-
+        deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
+        mines_query = apply_filters(mines_query, deleted_filter)
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mines_query = apply_sort(mines_query, sort_criteria)
         return apply_pagination(mines_query, page, items_per_page)
@@ -301,8 +302,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine.update_user = self.get_update_user()
                 if mine_name:
                     mine.mine_name = mine_name
-                if mine_note:
-                    mine.mine_note = mine_note
+                mine.mine_note = mine_note
                 if major_mine_ind is not None:
                     mine.major_mine_ind = major_mine_ind
                 if region:

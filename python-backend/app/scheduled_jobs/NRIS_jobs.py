@@ -1,3 +1,4 @@
+import requests
 from app.extensions import cache, sched
 from app.api.nris_services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
@@ -13,7 +14,7 @@ def _schedule_NRIS_jobs(app):
         trigger='cron',
         id='get_major_mine_NRIS_data',
         hour=9,
-        minute=10)
+        minute=5)
 
 
 # caches a list of mine numbers for all major mines and each major mine indavidually
@@ -21,7 +22,7 @@ def _schedule_NRIS_jobs(app):
 def _cache_major_mines_list():
     with sched.app.app_context():
         cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
-        major_mines = Mine.find_all_major_mines()
+        major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
         major_mine_list = []
         for mine in major_mines:
             major_mine_list.append(mine.mine_no)
@@ -40,5 +41,16 @@ def _cache_all_NRIS_major_mines_data():
         for mine in major_mine_list:
             if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
                 cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
-                data = NRIS_service._get_EMPR_data_from_NRIS(mine)
-                NRIS_service._process_NRIS_data(data, mine)
+                try:
+                    data = NRIS_service._get_EMPR_data_from_NRIS(mine)
+                except requests.exceptions.Timeout:
+                    pass
+                except requests.exceptions.HTTPError as errhttp:
+                    #log error
+                    pass
+                except TypeError as e:
+                    #log error
+                    pass
+
+                if data is not None and len(data) > 0:
+                    NRIS_service._process_NRIS_data(data, mine)

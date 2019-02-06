@@ -31,8 +31,9 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handlePartySubmit: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
@@ -49,6 +50,13 @@ const defaultProps = {
   partyRelationshipTypesList: [],
   partyRelationships: [],
 };
+
+const groupPermits = (permits) =>
+  permits.reduce((acc, permit) => {
+    acc[permit.permit_no] = acc[permit.permit_no] || [];
+    acc[permit.permit_no].push(permit);
+    return acc;
+  }, {});
 
 export class ViewPartyRelationships extends Component {
   constructor(props) {
@@ -68,14 +76,17 @@ export class ViewPartyRelationships extends Component {
       end_date: values.end_date,
     };
 
-    this.props.addPartyRelationship(payload).then(() => {
+    return this.props.addPartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
       this.props.closeModal();
     });
   };
 
   onPartySubmit = (values, type) => {
-    this.props.handlePartySubmit(values, type);
+    const payload = { type, ...values };
+    return this.props.createParty(payload).then(() => {
+      this.props.fetchParties();
+    });
   };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
@@ -98,10 +109,11 @@ export class ViewPartyRelationships extends Component {
         mine,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
+      clearOnSubmit: true,
     });
   };
 
-  handleAddTailings = (value) => {
+  handleAddTailings = (value) =>
     this.props
       .createTailingsStorageFacility({
         ...value,
@@ -111,7 +123,6 @@ export class ViewPartyRelationships extends Component {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
-  };
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
@@ -141,7 +152,7 @@ export class ViewPartyRelationships extends Component {
     payload.end_date = values.end_date;
     payload.related_guid = values.related_guid || payload.related_guid;
 
-    this.props.updatePartyRelationship(payload).then(() => {
+    return this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
       this.props.closeModal();
     });
@@ -277,10 +288,19 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
+    const groupedPermits = Object.values(groupPermits(this.props.mine.mine_permit));
+    const filteredPartyRelationships = partyRelationships.filter(
+      (partyRelationship) =>
+        partyRelationship.mine_party_appt_type_code !== "PMT" ||
+        groupedPermits
+          .map((permits) => permits[0].permit_guid)
+          .includes(partyRelationship.related_guid)
+    );
+
     const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
       (x) => x.grouping_level === group
     );
-    const partyRelationshipsInGroup = partyRelationships.filter((x) =>
+    const partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
       partyRelationshipTypesInGroup.some(
         (y) => y.mine_party_appt_type_code == x.mine_party_appt_type_code
       )
@@ -356,7 +376,7 @@ export class ViewPartyRelationships extends Component {
                 <Button type="primary">
                   <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
                     <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                    Add New Contact
+                    &nbsp; Add New Contact
                   </div>
                 </Button>
               </Dropdown>
