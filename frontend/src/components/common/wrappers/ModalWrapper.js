@@ -24,7 +24,7 @@ const defaultProps = {
 export class ModalWrapper extends Component {
   constructor(props) {
     super(props);
-    // listens for browser back || forward button click and invokes funtion to close the modal,
+    // listens for browser back || forward button click and invokes function to close the modal,
     window.onpopstate = this.onBrowserButtonEvent;
   }
 
