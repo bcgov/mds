@@ -93,17 +93,24 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            ETL_MINE.mine_guid   ,
-            permit_info.mine_no     ,
-            permit_info.permit_no   ,
-            permit_info.cid AS permit_cid   ,
-            COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt   ,
-            COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt   ,
-            COALESCE(permit_info.permit_expiry_dt,'9999-12-31'::date) permit_expiry_dt,
+            ETL_MINE.mine_guid                                       ,
+            permit_info.mine_no                                      ,
+            permit_info.permit_no                                    ,
+            permit_info.cid AS permit_cid                            ,
+            COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt,
+            COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt,
+            COALESCE(
+                (
+                    SELECT end_dt
+                    FROM mms.mmsnow
+                    WHERE mms.mmsnow.cid = permit_info.cid
+                ),
+                '9999-12-31'::date
+            ) permit_expiry_dt                   ,
             CASE permit_info.sta_cd
                 WHEN 'Z' THEN 'C' --closed
                 ELSE 'O' --open
-            END AS sta_cd           ,
+            END AS sta_cd                                            ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
         INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
@@ -664,14 +671,14 @@ BEGIN
     WITH updated_rows AS (
       UPDATE party
       SET
-          first_name       = etl.first_name    ,
-          party_name       = etl.party_name    ,
-          phone_no         = etl.phone_no      ,
-          email            = etl.email         ,
-          effective_date   = etl.effective_date,
-          expiry_date      = etl.expiry_date   ,
-          update_user      = 'mms_migration'   ,
-          update_timestamp = now()             ,
+          first_name       = etl.first_name            ,
+          party_name       = etl.party_name            ,
+          phone_no         = etl.phone_no              ,
+          email            = etl.email                 ,
+          effective_date   = etl.effective_date        ,
+          expiry_date      = etl.authorization_end_date,
+          update_user      = 'mms_migration'           ,
+          update_timestamp = now()                     ,
           party_type_code  = etl.party_type
       FROM ETL_PERMIT etl
       WHERE party.party_guid = etl.party_guid
@@ -686,13 +693,13 @@ BEGIN
     --Select only new entry in ETL_PERMIT table
     new_party AS (
         SELECT DISTINCT ON (party_guid)
-            party_guid      ,
-            first_name      ,
-            party_name      ,
-            phone_no        ,
-            email           ,
-            effective_date  ,
-            expiry_date     ,
+            party_guid            ,
+            first_name            ,
+            party_name            ,
+            phone_no              ,
+            email                 ,
+            effective_date        ,
+            authorization_end_date,
             party_type
         FROM ETL_PERMIT
         WHERE party_guid NOT IN (
@@ -716,17 +723,17 @@ BEGIN
             party_type_code
         )
         SELECT
-            party_guid      ,
-            first_name      ,
-            party_name      ,
-            phone_no        ,
-            email           ,
-            effective_date  ,
-            expiry_date     ,
-            'mms_migration' ,
-            now()           ,
-            'mms_migration' ,
-            now()           ,
+            party_guid            ,
+            first_name            ,
+            party_name            ,
+            phone_no              ,
+            email                 ,
+            effective_date        ,
+            authorization_end_date,
+            'mms_migration'       ,
+            now()                 ,
+            'mms_migration'       ,
+            now()                 ,
             party_type
         FROM new_party
         RETURNING 1
@@ -799,7 +806,7 @@ BEGIN
             'mms_migration'                ,
             now()                          ,
             issue_date                     ,
-            expiry_date
+            authorization_end_date
         FROM ETL_PERMIT
         INNER JOIN ETL_MINE ON
             ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
