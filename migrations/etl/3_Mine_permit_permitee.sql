@@ -793,7 +793,9 @@ BEGIN
             update_user              ,
             update_timestamp         ,
             start_date               ,
-            end_date
+            end_date                 ,
+            processed_by             ,
+            processed_on
         )
         SELECT
             ETL_PERMIT.mine_party_appt_guid,
@@ -806,7 +808,9 @@ BEGIN
             'mms_migration'                ,
             now()                          ,
             issue_date                     ,
-            authorization_end_date
+            authorization_end_date         ,
+            'mms_migration'                ,
+            now()
         FROM ETL_PERMIT
         INNER JOIN ETL_MINE ON
             ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
