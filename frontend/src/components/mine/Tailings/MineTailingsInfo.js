@@ -22,7 +22,8 @@ import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
-import { createDropDownList, downloadFileFromDocumentManager } from "@/utils/helpers";
+import { createDropDownList } from "@/utils/helpers";
+import downloadFileFromDocumentManager from "@/utils/independentNetworkCalls";
 import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
