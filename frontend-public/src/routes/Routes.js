@@ -2,10 +2,16 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
+import NullScreen from "@/components/common/NullScreen";
 
-const PrivateRoutes = () => (
+const Routes = () => (
   <div>
     <Switch>
+      {/* PUBLIC ROUTES */}
+      <Route exact path={routes.HOME.route} component={routes.HOME.component} />
+      <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} />
+
+      {/* PRIVATE ROUTES */}
       <Route
         exact
         path={routes.DASHBOARD.route}
@@ -16,8 +22,11 @@ const PrivateRoutes = () => (
         path={routes.MINE_INFO.route}
         component={AuthenticationGuard()(routes.MINE_INFO.component)}
       />
+
+      {/* 404 - ROUTE NOT FOUND */}
+      <Route render={() => <NullScreen type="404" />} />
     </Switch>
   </div>
 );
 
-export default PrivateRoutes;
+export default Routes;
