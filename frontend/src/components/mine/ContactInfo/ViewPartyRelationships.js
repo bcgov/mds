@@ -51,6 +51,13 @@ const defaultProps = {
   partyRelationships: [],
 };
 
+const groupPermits = (permits) =>
+  permits.reduce((acc, permit) => {
+    acc[permit.permit_no] = acc[permit.permit_no] || [];
+    acc[permit.permit_no].push(permit);
+    return acc;
+  }, {});
+
 export class ViewPartyRelationships extends Component {
   constructor(props) {
     super(props);
@@ -281,10 +288,19 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
+    const groupedPermits = Object.values(groupPermits(this.props.mine.mine_permit));
+    const filteredPartyRelationships = partyRelationships.filter(
+      (partyRelationship) =>
+        partyRelationship.mine_party_appt_type_code !== "PMT" ||
+        groupedPermits
+          .map((permits) => permits[0].permit_guid)
+          .includes(partyRelationship.related_guid)
+    );
+
     const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
       (x) => x.grouping_level === group
     );
-    const partyRelationshipsInGroup = partyRelationships.filter((x) =>
+    const partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
       partyRelationshipTypesInGroup.some(
         (y) => y.mine_party_appt_type_code == x.mine_party_appt_type_code
       )
