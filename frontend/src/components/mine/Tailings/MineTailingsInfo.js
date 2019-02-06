@@ -23,7 +23,7 @@ import {
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/independentNetworkCalls";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
