@@ -1,12 +1,5 @@
 import moment from "moment";
 import { reset } from "redux-form";
-import axios from "axios";
-import { createRequestHeader } from "@/utils/RequestHeaders";
-import { ENVIRONMENT } from "@/constants/environment";
-import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
-
-const fileDownload = require("js-file-download");
-
 /**
  * Helper function to clear redux form after submission
  *
