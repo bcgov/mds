@@ -11,7 +11,7 @@ from flask_restplus import Resource, reqparse
 from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ...utils.access_decorators import requires_any_of, MINE_CREATE, MINE_VIEW, MINESPACE_PROPONENT
 from app.api.constants import TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
@@ -169,8 +169,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={
         'document_guid': 'Required: Document guid. Returns the file associated to this guid.'
     })
-    # TODO: removed authoization until token/redis system in place
-    # @requires_role_mine_create
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, document_guid=None):
         if not document_guid:
             return self.create_error_payload(400, 'Must provide a document guid.'), 400

@@ -23,9 +23,7 @@ import {
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
-
-import { ENVIRONMENT } from "@/constants/environment";
-import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -104,13 +102,6 @@ export class MineTailingsInfo extends Component {
     this.props.removeExpectedDocument(exp_doc_guid).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
     });
-  };
-
-  getFileFromDocumentManager = (docMgrFileGuid) => {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
   };
 
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
@@ -235,7 +226,7 @@ export class MineTailingsInfo extends Component {
                               <a
                                 key={id}
                                 onClick={() =>
-                                  this.getFileFromDocumentManager(file.document_manager_guid)
+                                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
                                 }
                               >
                                 {file.document_name}
