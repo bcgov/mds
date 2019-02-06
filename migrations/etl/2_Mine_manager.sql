@@ -26,47 +26,39 @@ BEGIN
     SELECT count(*) FROM ETL_MANAGER into old_row;
 
     RAISE NOTICE '.. Update existing records with latest MMS data';
-    --1. Mine with valid manager attached
-    WITH now_manager AS (
-        SELECT
-            SUBSTRING(now_contact.cid from 1 for 7) AS mine_no      ,
-            contact_info.cid                        AS contact_cid  ,
-            contact_info.add_dt                     AS add_dt
-        FROM mms.mmsccc now_contact
-        INNER JOIN mms.mmsccn contact_info on
-            contact_info.cid=now_contact.cid_ccn
-        WHERE
-            SUBSTRING(now_contact.type_ind from 3 for 1) = 'Y'
+
+    --Step 1: Get regional mine_no's
+    WITH regional_mine AS (
+        SELECT mine_no
+        FROM mms.mmsmin
+        WHERE (min_lnk = 'N' OR min_lnk is null)
     ),
-    --2. Latest NoW with manager attached
+
+    --Step 2, Get most recent NOW
     latest_now AS (
-        SELECT
-            mine_no                 ,
-            MAX(add_dt)        add_dt
-        FROM now_manager
-        GROUP BY
-            mine_no
+        SELECT n.mine_no mine_no, Max(n.cid) cid
+        FROM mms.mmsnow n
+        WHERE n.mine_no in (SELECT mine_no from regional_mine)
+        GROUP BY n.mine_no
     ),
-    --3. Latest manager if more than 1 is attached
-    latest_manager AS (
-        SELECT
-            mine_no                         ,
-            MAX(contact_cid) AS contact_cid
-        FROM now_manager
-        WHERE mine_no||add_dt IN (
-            SELECT mine_no||add_dt
-            FROM latest_now
-        )
-        GROUP BY mine_no
-    ),
+     --Step 3, get contact connection that is a Mine Manager
+    latest_now_ccc AS ( --contact connection
+        SELECT latest_now.mine_no mine_no,
+               latest_now.cid cid,
+               ccc.cid_ccn contact_cid
+        FROM mms.mmsccc ccc
+        LEFT JOIN latest_now ON latest_now.cid = ccc.cid
+        WHERE SubStr(ccc.type_ind,3,1) = 'Y'
+    ),    -- Step 4, get contact from contact connection
+
     --4. Select existing manager record
     existing_manager AS (
-        SELECT
-            mine_no                         ,
-            contact_cid AS person_combo_id  ,
-            mine_no||contact_cid AS mgr_combo_id
-        FROM latest_manager
-        where mine_no||contact_cid IN (
+        SELECT latest_now_ccc.mine_no mine_no,
+               cn.cid person_combo_id,
+               latest_now_ccc.mine_no||cn.cid as mgr_combo_id
+        FROM mms.mmsccn cn
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid
+        WHERE latest_now_ccc.mine_no||cn.cid IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
         )
@@ -187,51 +179,42 @@ BEGIN
 
 
     RAISE NOTICE '.. Insert new MMS mine manager records into ETL_MANAGER';
-    --1. Mine with valid manager attached
-    WITH now_manager  AS(
-        SELECT
-            SUBSTRING(now_contact.cid from 1 for 7) AS mine_no      ,
-            contact_info.cid                        AS contact_cid  ,
-            contact_info.add_dt                     AS add_dt
-        FROM mms.mmsccc now_contact
-        INNER JOIN mms.mmsccn contact_info on
-            contact_info.cid=now_contact.cid_ccn
-        WHERE
-            SUBSTRING(now_contact.type_ind from 3 for 1) = 'Y'
+    --Step 1: Get regional mine_no's
+    WITH regional_mine AS (
+        SELECT mine_no
+        FROM mms.mmsmin
+        WHERE (min_lnk = 'N' OR min_lnk is null)
     ),
-    --2. Latest NoW with manager attached
-    latest_now AS(
-        SELECT
-            mine_no                 ,
-            MAX(add_dt)        add_dt
-        FROM now_manager
-        GROUP BY
-            mine_no
+
+    --Step 2, Get most recent NOW
+    latest_now AS (
+        SELECT n.mine_no mine_no, Max(n.cid) cid
+        FROM mms.mmsnow n
+        WHERE n.mine_no in (SELECT mine_no from regional_mine)
+        GROUP BY n.mine_no
     ),
-    --3. Latest manager if more than 1 is attached
-    latest_manager AS (
-        SELECT
-            mine_no                         ,
-            MAX(contact_cid) AS contact_cid
-        FROM now_manager
-        WHERE mine_no||add_dt IN (
-            SELECT mine_no||add_dt
-            FROM latest_now
-        )
-        GROUP BY mine_no
+     --Step 3, get contact connection that is a Mine Manager
+    latest_now_ccc AS ( --contact connection
+        SELECT  latest_now.mine_no mine_no,
+                latest_now.cid cid,
+                ccc.cid_ccn contact_cid
+        FROM mms.mmsccc ccc
+        LEFT JOIN latest_now ON latest_now.cid = ccc.cid
+        WHERE SubStr(ccc.type_ind,3,1) = 'Y'
     ),
-    --4. Select new manager record
+    -- Step 4, get contact from contact connection
     new_manager AS (
-        SELECT
-            mine_no                         ,
-            contact_cid AS person_combo_id  ,
-            mine_no||contact_cid AS mgr_combo_id
-        FROM latest_manager
-        where mine_no||contact_cid NOT IN (
+        SELECT latest_now_ccc.mine_no mine_no,
+               cn.cid person_combo_id,
+               latest_now_ccc.mine_no||cn.cid as mgr_combo_id
+        FROM mms.mmsccn cn
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid
+        WHERE latest_now_ccc.mine_no||cn.cid NOT IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
         )
     ),
+
     --5. Check if manager is a new person
     new_person AS (
         SELECT DISTINCT ON (person_combo_id)
@@ -250,7 +233,7 @@ BEGIN
             COALESCE(NULLIF(regexp_replace(contact_info.l_name,' ', '', 'g'),''),'Unknown') surname ,
             NULLIF(regexp_replace(phone, '\D', '','g'),'')::numeric phone_no                        , --Extract numbers only from phone_no field
             COALESCE(NULLIF(regexp_replace(contact_info.email,' ', '', 'g'),''),'Unknown') email    ,
-            COALESCE(contact_info.add_dt,now()) effective_date
+            COALESCE(contact_info.add_dt,now()) effective_date --add_dt is the date the record was last updated... maybe not best date for effective date. maybe use mmsnow.entered_date
         FROM mms.mmsccn contact_info
         WHERE cid IN (
             SELECT  person_combo_id
@@ -379,7 +362,7 @@ BEGIN
       SET first_name       = etl.first_name    ,
           party_name       = etl.surname       ,
           phone_no         = etl.phone_no      ,
-          phone_ext        = 'N/A'             ,
+          phone_ext        = null              ,
           email            = etl.email         ,
           effective_date   = etl.effective_date,
           expiry_date      = '9999-12-31'::date,
@@ -431,7 +414,7 @@ BEGIN
             first_name          ,
             surname             ,
             phone_no            ,
-            'N/A'               ,
+            null                ,
             email               ,
             effective_date      ,
             '9999-12-31'::date  ,
@@ -527,6 +510,7 @@ BEGIN
             'mms_migration'     ,
             now()
         FROM new_manager new
+        ON CONFLICT DO NOTHING
         RETURNING 1
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;

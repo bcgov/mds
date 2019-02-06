@@ -55,7 +55,8 @@ BEGIN
         mine_type         varchar(3)    ,
         latitude          numeric(11,7)  ,
         longitude         numeric(11,7) ,
-        major_mine_ind    boolean
+        major_mine_ind    boolean,
+	deleted_ind       boolean
     );
     SELECT count(*) FROM ETL_MINE into old_row;
 
@@ -72,7 +73,7 @@ BEGIN
         major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
         mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
         mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ),
-        deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
+    deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
     SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -111,7 +112,7 @@ BEGIN
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
         transform_major_mine_ind(mms_new.min_lnk),
-        CASE WHEN lower(mms.mmsmin.mine_nm) LIKE '%delete%' OR lower(mms.mmsmin.mine_nm) LIKE '%deleted%' OR lower(mms.mmsmin.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE
+    CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
     FROM mms_new
     WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
     SELECT count(*) FROM ETL_MINE INTO new_row;
