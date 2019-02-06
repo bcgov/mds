@@ -51,15 +51,3 @@ export const createLabelHash = (obj) =>
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
-
-export const downloadFileFromDocumentManager = (docManagerGuid, filename) => {
-  if (!docManagerGuid || !filename) {
-    throw new Error("Must provide both docManagerGuid and filename");
-  }
-
-  // TODO: Update url when Document Manager moves to its own microservice.
-  const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docManagerGuid}`;
-  axios.get(url, { responseType: "arraybuffer", ...createRequestHeader() }).then((response) => {
-    fileDownload(response.data, filename);
-  });
-};

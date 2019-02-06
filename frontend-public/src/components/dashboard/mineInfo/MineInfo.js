@@ -19,7 +19,7 @@ import { RED_CLOCK } from "@/constants/assets";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
-import { downloadFileFromDocumentManager } from "@/utils/helpers";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
