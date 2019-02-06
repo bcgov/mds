@@ -10,9 +10,9 @@ import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/select
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
-  content: PropTypes.func,
-  props: PropTypes.object,
-  clearOnSubmit: PropTypes.bool,
+  content: PropTypes.func.isRequired,
+  props: PropTypes.objectOf(PropTypes.string),
+  clearOnSubmit: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -22,10 +22,25 @@ const defaultProps = {
 };
 
 export class ModalWrapper extends Component {
+  constructor(props) {
+    super(props);
+    // listens for browser back || forward button click and invokes funtion to close the modal,
+    window.onpopstate = this.onBrowserButtonEvent;
+  }
+
+  onBrowserButtonEvent = () => {
+    this.props.closeModal();
+  };
+
   render() {
-    const { isModalOpen, content: ChildComponent, props, closeModal, clearOnSubmit } = this.props;
+    const ChildComponent = this.props.content;
     return (
-      <Modal title={props.title} visible={isModalOpen} closable={false} footer={null}>
+      <Modal
+        title={this.props.props.title}
+        visible={this.props.isModalOpen}
+        closable={false}
+        footer={null}
+      >
         <LoadingBar
           scope="modal"
           style={{
@@ -39,7 +54,11 @@ export class ModalWrapper extends Component {
           }}
         />
         {ChildComponent && (
-          <ChildComponent closeModal={closeModal} clearOnSubmit={clearOnSubmit} {...props} />
+          <ChildComponent
+            closeModal={this.props.closeModal}
+            clearOnSubmit={this.props.clearOnSubmit}
+            {...this.props.props}
+          />
         )}
       </Modal>
     );
