@@ -1,6 +1,5 @@
 import moment from "moment";
 import { reset } from "redux-form";
-
 /**
  * Helper function to clear redux form after submission
  *
