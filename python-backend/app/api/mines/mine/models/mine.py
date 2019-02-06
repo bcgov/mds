@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
@@ -18,7 +19,7 @@ class Mine(AuditMixin, Base):
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
 
@@ -139,17 +140,17 @@ class Mine(AuditMixin, Base):
     def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).first()
+            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
         except ValueError:
             return None
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.filter_by(mine_no=_id).first()
+        return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_all_major_mines(cls):
-        return cls.query.filter_by(major_mine_ind=True).all()
+        return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):
