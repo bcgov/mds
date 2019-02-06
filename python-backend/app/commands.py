@@ -164,12 +164,21 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    @sched.app.cli.command()
-    def _run_nris_jobs():
-        with sched.app.app_context():
-            print('Started NRIS job to cache Major Mines list.')
-            NRIS_jobs._cache_major_mines_list()
-            print('Completed caching the Major Mines list.')
-            print('Caching all NRIS data for Major Mines')
-            NRIS_jobs._cache_all_NRIS_major_mines_data()
-            print('Done!')
+    #Had to define this function twice since the annotation used is different based on the environment.
+    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+
+        @sched.app.cli.command()
+        def _run_nris_jobs():
+            with sched.app.app_context():
+                print('Started NRIS job to cache Major Mines list.')
+                NRIS_jobs._cache_major_mines_list()
+                print('Completed caching the Major Mines list.')
+                print('Caching all NRIS data for Major Mines')
+                NRIS_jobs._cache_all_NRIS_major_mines_data()
+                print('Done!')
+
+    else:
+
+        @app.cli.command()
+        def _run_nris_jobs():
+            print('This function is only implemented in a production environment.')
