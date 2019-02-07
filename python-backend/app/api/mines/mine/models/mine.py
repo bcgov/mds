@@ -149,6 +149,17 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
+    def find_by_mine_name(cls, term = ''):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
+            mines = mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
+
+    @classmethod
     def find_all_major_mines(cls):
         return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
 

@@ -354,21 +354,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
 
 class MineListByName(Resource):
-    MINE_LIST_RESULT_LIMIT = 500
 
     @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         search_term = request.args.get('search')
-        if search_term:
-            name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
-            number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
-            permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines_q = Mine.query.filter(name_filter | number_filter)
-            permit_q = Mine.query.join(Permit).filter(permit_filter)
-            mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
-        else:
-            mines = Mine.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
-
+        mines = Mine.find_by_mine_name(search_term)
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result}

@@ -73,22 +73,12 @@ export class MineSearch extends Component {
     this.setState({ isAdvanceSearch: !this.state.isAdvanceSearch });
   };
 
-  transformData = (data) => {
-    if (data) {
-      const dataList = [];
-      data.map((opt) => {
-        const search = opt.mine_name.concat(" - ", opt.mine_no);
-        const coordinates = opt.longitude.concat(",", opt.latitude);
-        const mineDetails = coordinates.concat(",", opt.mine_name);
-        dataList.push(
-          <AutoComplete.Option key={opt.guid} value={mineDetails}>
-            {search}
-          </AutoComplete.Option>
-        );
-      });
-      return dataList;
-    }
-  };
+  transformData = (data) =>
+    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", guid }) => (
+      <AutoComplete.Option key={guid} value={`${longitude},${latitude},${mine_name}`}>
+        {`${mine_name} - ${mine_no}`}
+      </AutoComplete.Option>
+    ));
 
   render() {
     if (this.props.isMapView) {
