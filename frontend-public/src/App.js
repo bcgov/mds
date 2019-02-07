@@ -3,8 +3,7 @@ import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import { Layout, BackTop, Button, Icon } from "antd";
-import PublicRoutes from "./routes/PublicRoutes";
-import PrivateRoutes from "./routes/PrivateRoutes";
+import Routes from "./routes/Routes";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
@@ -32,8 +31,7 @@ class App extends Component {
             <Header />
             {this.state.isIE && <WarningBanner onClose={this.handleBannerClose} />}
             <Content className="content">
-              <PrivateRoutes />
-              <PublicRoutes />
+              <Routes />
               <ModalWrapper />
               <BackTop>
                 <Button type="primary">
