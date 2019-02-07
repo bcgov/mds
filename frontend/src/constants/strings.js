@@ -42,3 +42,6 @@ export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=25";
 // mine types
 export const MAJOR_MINE = "Major mine";
 export const REGIONAL_MINE = "Regional mine";
+
+export const NRIS_REPORT_URL_PREFIX =
+  "https://a100.gov.bc.ca/int/cvis/nris/nris.html?fromRoleSelect=true#/inspection/";

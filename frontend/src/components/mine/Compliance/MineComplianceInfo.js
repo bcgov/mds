@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Row, Col, Divider, Pagination } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
@@ -11,6 +12,7 @@ import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
+import { NRIS_REPORT_URL_PREFIX } from "@/constants/strings";
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
  */
@@ -96,9 +98,13 @@ export class MineComplianceInfo extends Component {
                     </h6>
                   </Col>
                   <Col id={`Report-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
+                    <a
+                      href={NRIS_REPORT_URL_PREFIX + order.report_no}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {order.report_no === null ? "-" : order.report_no}
-                    </h6>
+                    </a>
                   </Col>
                   <Col id={`inspector-${id}`} span={4}>
                     <h6 className={order.overdue ? "bold" : null}>
