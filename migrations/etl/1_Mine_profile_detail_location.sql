@@ -55,7 +55,8 @@ BEGIN
         mine_type         varchar(3)    ,
         latitude          numeric(11,7)  ,
         longitude         numeric(11,7) ,
-        major_mine_ind    boolean
+        major_mine_ind    boolean,
+	deleted_ind       boolean
     );
     SELECT count(*) FROM ETL_MINE into old_row;
 
@@ -71,7 +72,8 @@ BEGIN
         longitude      = mms.mmsmin.lon_dec,
         major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
         mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
-        mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ)
+        mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ),
+    deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
     SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -99,7 +101,8 @@ BEGIN
         mine_type       ,
         latitude        ,
         longitude       ,
-        major_mine_ind  )
+        major_mine_ind  ,
+        deleted_ind     )
     SELECT
         gen_random_uuid()  ,
         mms_new.mine_no    ,
@@ -108,7 +111,8 @@ BEGIN
         transform_mine_type_code(mms_new.mine_typ),
         mms_new.lat_dec    ,
         mms_new.lon_dec    ,
-        transform_major_mine_ind(mms_new.min_lnk)
+        transform_major_mine_ind(mms_new.min_lnk),
+    CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
     FROM mms_new
     WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
     SELECT count(*) FROM ETL_MINE INTO new_row;
@@ -134,7 +138,8 @@ BEGIN
     SET mine_name        = ETL_MINE.mine_name     ,
         mine_region      = ETL_MINE.mine_region   ,
         major_mine_ind   = ETL_MINE.major_mine_ind,
-        update_user      = 'mms_migration'           ,
+        deleted_ind      = ETL_MINE.deleted_ind   ,
+        update_user      = 'mms_migration'        ,
         update_timestamp = now()
     FROM ETL_MINE
     WHERE ETL_MINE.mine_guid = mine.mine_guid;
@@ -157,6 +162,7 @@ BEGIN
         mine_name           ,
         mine_region         ,
         major_mine_ind      ,
+        deleted_ind         ,
         create_user         ,
         create_timestamp    ,
         update_user         ,
@@ -166,7 +172,8 @@ BEGIN
         new.mine_no         ,
         new.mine_name       ,
         new.mine_region     ,
-        major_mine_ind      ,
+        new.major_mine_ind  ,
+        new.deleted_ind     ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,

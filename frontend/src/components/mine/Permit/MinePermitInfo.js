@@ -67,21 +67,25 @@ const groupPermits = (permits) =>
     return acc;
   }, {});
 
-const getPermittees = (partyRelationships, latest) => partyRelationships
-    .filter(({ related_guid }) => related_guid === latest.permit_guid)
+const getPermittees = (partyRelationships, permits) =>
+  partyRelationships
+    .filter(({ related_guid }) =>
+      permits.map((permit) => permit.permit_guid).includes(related_guid)
+    )
     .sort((order1, order2) => {
       const date1 = Date.parse(order1.due_date) || 0;
       const date2 = Date.parse(order2.due_date) || 0;
       return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
     });
 
-const getPermitteeName = (permittees) => permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
+const getPermitteeName = (permittees) =>
+  permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
 const transformRowData = (permits, partyRelationships) => {
   const latest = permits[0];
   const first = permits[permits.length - 1];
 
-  const permittees = getPermittees(partyRelationships, latest);
+  const permittees = getPermittees(partyRelationships, permits);
   const permitteeName =
     partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
 

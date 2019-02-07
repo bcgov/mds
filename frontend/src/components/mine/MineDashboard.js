@@ -149,7 +149,7 @@ export class MineDashboard extends Component {
                     <MinePermitInfo mine={mine} />
                   </div>
                 </TabPane>
-                <TabPane tab="Contact Information" key="contact-information">
+                <TabPane tab="Contact Information" key="contacts">
                   <div className="tab__content">
                     <MineContactInfo mine={mine} />
                   </div>

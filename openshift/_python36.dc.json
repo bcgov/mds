@@ -119,6 +119,10 @@
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
       "value": "dev"
+    },
+    {
+      "name": "API_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -409,7 +413,7 @@
                   },
                   {
                     "name": "DOCUMENT_MANAGER_URL",
-                    "value": "http://localhost:5000${BASE_PATH}"
+                    "value": "${API_URL}"
                   },
                   {
                     "name": "UPLOADED_DOCUMENT_DEST",

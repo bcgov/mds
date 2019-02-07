@@ -11,7 +11,7 @@ from flask_restplus import Resource, reqparse
 from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-from ...utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ...utils.access_decorators import requires_any_of, MINE_CREATE, MINE_VIEW, MINESPACE_PROPONENT
 from app.api.constants import TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
@@ -64,6 +64,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             if not os.path.exists(folder):
                 os.makedirs(folder)
             with open(file_path, "wb") as f:
+                f.seek(file_size -1)
                 f.write(b"\0")
         except IOError as e:
             return self.create_error_payload(500, 'Unable to create file'), 500
@@ -88,8 +89,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             jsonify(document_manager_guid=document_guid), 201)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers[
-            'Location'] = f'http://localhost:5000/document-manager/{document_guid}'
+        response.headers['Location'] = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Location,Upload-Offset"
         response.autocorrect_location_header = False
@@ -170,8 +170,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={
         'document_guid': 'Required: Document guid. Returns the file associated to this guid.'
     })
-    # TODO: removed authoization until token/redis system in place
-    # @requires_role_mine_create
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, document_guid=None):
         if not document_guid:
             return self.create_error_payload(400, 'Must provide a document guid.'), 400
