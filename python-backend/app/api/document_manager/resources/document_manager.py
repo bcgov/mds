@@ -66,7 +66,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             with open(file_path, "wb") as f:
                 f.write(b"\0")
         except IOError as e:
-            return self.create_error_payload(500, 'Unable to create file'), 500
+            return self.create_error_payload(500, f'Unable to create file:{str(e)}'), 500
 
         cache.set(self.redis_key_file_size(document_guid),
                   file_size, TIMEOUT_24_HOURS)
