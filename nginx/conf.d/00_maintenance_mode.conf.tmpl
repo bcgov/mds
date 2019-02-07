@@ -15,5 +15,6 @@ if (-f /opt/app-root/src/html/maintenance_on.html){
 error_page 503 @maintenance;
 
 location @maintenance {
-    index /opt/app-root/src/html/maintenance_on.html;
+    root /opt/app-root/src/html;
+    index maintenance_on.html;
 }
