@@ -64,6 +64,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             if not os.path.exists(folder):
                 os.makedirs(folder)
             with open(file_path, "wb") as f:
+                f.seek(file_size -1)
                 f.write(b"\0")
         except IOError as e:
             return self.create_error_payload(500, 'Unable to create file'), 500
