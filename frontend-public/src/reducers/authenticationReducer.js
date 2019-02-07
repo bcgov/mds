@@ -3,7 +3,7 @@ import * as ReducerTypes from "@/constants/reducerTypes";
 import * as route from "@/constants/routes";
 /**
  * @file authenticationReducer.js
- * all data associated with a users record is handled witnin this reducer.
+ * all data associated with a users record is handled within this reducer.
  */
 const initialState = {
   isAuthenticated: false,

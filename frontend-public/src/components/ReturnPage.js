@@ -9,8 +9,11 @@ import { signOutFromSSO } from "@/utils/authenticationHelpers";
 import queryString from "query-string";
 import { RETURN_PAGE_TYPE } from "../constants/strings";
 import Loading from "@/components/common/Loading";
+import * as route from "@/constants/routes";
 
 export class ReturnPage extends Component {
+  state = { redirect: null };
+
   static propTypes = {
     location: PropTypes.shape({ search: PropTypes.string }).isRequired,
     unAuthenticateUser: PropTypes.func.isRequired,
@@ -32,9 +35,17 @@ export class ReturnPage extends Component {
       // finished logging out from SSO, clear redux & token and redirect home
       this.props.unAuthenticateUser();
     }
+
+    // if a user manually navigates to this route, (thus type would not exist), they will be redirected home
+    if (!type) {
+      this.setState({ redirect: route.HOME.route });
+    }
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to={this.state.redirect} />;
+    }
     // props.redirect gets set after a user login and logouts.
     if (this.props.redirect) {
       return <Redirect push to={this.props.redirect} />;
