@@ -20,6 +20,7 @@ const propTypes = {
     "view-mine-manager",
     "contacts",
     "unauthorized-page",
+    "404",
   ]),
 };
 
@@ -85,6 +86,12 @@ const NullScreen = (props) => (
       <div className="no-nav-bar">
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.UNAUTHORIZED_PAGE}</h3>
+      </div>
+    )}
+    {props.type === "404" && (
+      <div className="no-nav-bar">
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>404 - Page not found</h3>
       </div>
     )}
     {props.type === "view-mine-manager" && (
