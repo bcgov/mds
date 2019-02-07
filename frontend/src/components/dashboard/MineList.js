@@ -25,29 +25,45 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
+    render: (text, record) => (
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">{text}</Link>
+    ),
   },
   {
     title: "Mine No.",
     width: 100,
     dataIndex: "mineNo",
+    render: (text, record) => (
+      <div title="Mine Number">
+        {text}
+        {!text && <div>{record.emptyField}</div>}
+      </div>
+    ),
   },
   {
     title: "Operational Status",
-    dataIndex: "operationalStatus",
     width: 150,
+    dataIndex: "operationalStatus",
+    render: (text, record) => (
+      <div title="Operational Status">
+        {text}
+        {!text && <div>{record.emptyField}</div>}
+      </div>
+    ),
   },
   {
     title: "Permit No.",
     dataIndex: "permit",
     width: 150,
     render: (text, record) => (
-      <div>
-        {text &&
-          uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
-            <div key={permit_guid}>{permit_no}</div>
-          ))}
-        {!text && <div>{record.emptyField}</div>}
+      <div title="Permit Number">
+        <ul className="mine-list__permits">
+          {text &&
+            uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
+              <li key={permit_guid}>{permit_no}</li>
+            ))}
+          {!text && <li>{record.emptyField}</li>}
+        </ul>
       </div>
     ),
   },
@@ -55,13 +71,19 @@ const columns = [
     title: "Region",
     dataIndex: "region",
     width: 150,
+    render: (text, record) => (
+      <div title="Region">
+        {text}
+        {!text && <div>{record.emptyField}</div>}
+      </div>
+    ),
   },
   {
     title: "Tenure",
     dataIndex: "tenure",
     width: 150,
     render: (text, record) => (
-      <div>
+      <div title="Tenure">
         {text &&
           text.map((tenure) => (
             <span className="mine_tenure" key={tenure.mine_type_guid}>
@@ -77,7 +99,7 @@ const columns = [
     dataIndex: "commodity",
     width: 150,
     render: (text, record) => (
-      <div>
+      <div title="Commodity">
         {text &&
           text.map(({ mine_type_detail, mine_type_guid }) => (
             <div key={mine_type_guid}>
@@ -95,6 +117,11 @@ const columns = [
     title: "TSF",
     dataIndex: "tsf",
     width: 150,
+    render: (text) => (
+      <div title="TSF">
+        {text}
+      </div>
+    ),
   },
 ];
 
@@ -121,6 +148,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
 export const MineList = (props) => (
   <Table
     align="center"
+    className="mine-list"
     pagination={false}
     columns={columns}
     dataSource={transformRowData(
@@ -130,7 +158,6 @@ export const MineList = (props) => (
       props.mineTenureHash,
       props.mineCommodityOptionsHash
     )}
-    scroll={{ x: 1500 }}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
   />
 );
