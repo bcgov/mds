@@ -1,3 +1,53 @@
+.ant-table-body {
+  overflow-x: auto;
+}
+
+@include tablet {
+  .ant-table table {
+    min-width: 100%;
+    font-size: 0.875rem; // 14px to allow some breathing room on smaller devices
+  }
+
+  .ant-table-thead {
+    display: none;
+  }
+
+  .ant-table-tbody > tr {
+    display: block;
+    border-top: 2px solid $lightest-grey;
+  }
+
+  .ant-table-tbody > tr > td {
+    display: block !important;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+
+    &:first-child {
+      padding-top: 1rem;
+    }
+
+    &:last-child {
+      padding-bottom: 1rem;
+    }
+
+    // Cell content wrapper allows us to add names for each column on smaller devices
+    div:first-of-type::before {
+      content: attr(title);
+      display: inline-block;
+      vertical-align: top;
+      padding-right: 1rem;
+      width: 50%;
+      max-width: 10rem;
+      font-weight: 500;
+    }
+  }
+
+  .ant-table-tbody > tr > td:last-child {
+    border-bottom: 0;
+  }
+}
+
+// Nested Table
 .nested-table {
   tr {
     &.ant-table-expanded-row {
@@ -12,8 +62,4 @@
   .ant-table-thead > tr > th {
     background: #fbfbfb;
   }
-}
-
-.ant-table-thead > tr > th {
-  vertical-align: bottom;
 }
