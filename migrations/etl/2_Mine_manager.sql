@@ -34,7 +34,7 @@ BEGIN
         WHERE (min_lnk = 'N' OR min_lnk is null)
     ),
 
-    --Step 2, Get most recent NOW 
+    --Step 2, Get most recent NOW
     latest_now AS (
         SELECT n.mine_no mine_no, Max(n.cid) cid
         FROM mms.mmsnow n
@@ -44,20 +44,20 @@ BEGIN
      --Step 3, get contact connection that is a Mine Manager
     latest_now_ccc AS ( --contact connection
         SELECT latest_now.mine_no mine_no,
-               latest_now.cid cid, 
+               latest_now.cid cid,
                ccc.cid_ccn contact_cid
-        FROM mms.mmsccc ccc 
+        FROM mms.mmsccc ccc
         LEFT JOIN latest_now ON latest_now.cid = ccc.cid
         WHERE SubStr(ccc.type_ind,3,1) = 'Y'
     ),    -- Step 4, get contact from contact connection
 
     --4. Select existing manager record
     existing_manager AS (
-        SELECT latest_now_ccc.mine_no mine_no, 
-               cn.cid person_combo_id, 
+        SELECT latest_now_ccc.mine_no mine_no,
+               cn.cid person_combo_id,
                latest_now_ccc.mine_no||cn.cid as mgr_combo_id
         FROM mms.mmsccn cn
-        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid 
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid
         WHERE latest_now_ccc.mine_no||cn.cid IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
@@ -186,7 +186,7 @@ BEGIN
         WHERE (min_lnk = 'N' OR min_lnk is null)
     ),
 
-    --Step 2, Get most recent NOW 
+    --Step 2, Get most recent NOW
     latest_now AS (
         SELECT n.mine_no mine_no, Max(n.cid) cid
         FROM mms.mmsnow n
@@ -195,20 +195,20 @@ BEGIN
     ),
      --Step 3, get contact connection that is a Mine Manager
     latest_now_ccc AS ( --contact connection
-        SELECT  latest_now.mine_no mine_no, 
-                latest_now.cid cid, 
+        SELECT  latest_now.mine_no mine_no,
+                latest_now.cid cid,
                 ccc.cid_ccn contact_cid
-        FROM mms.mmsccc ccc 
+        FROM mms.mmsccc ccc
         LEFT JOIN latest_now ON latest_now.cid = ccc.cid
         WHERE SubStr(ccc.type_ind,3,1) = 'Y'
     ),
     -- Step 4, get contact from contact connection
     new_manager AS (
-        SELECT latest_now_ccc.mine_no mine_no, 
-               cn.cid person_combo_id, 
+        SELECT latest_now_ccc.mine_no mine_no,
+               cn.cid person_combo_id,
                latest_now_ccc.mine_no||cn.cid as mgr_combo_id
         FROM mms.mmsccn cn
-        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid   
+        LEFT JOIN latest_now_ccc ON latest_now_ccc.contact_cid = cn.cid
         WHERE latest_now_ccc.mine_no||cn.cid NOT IN (
             SELECT  mgr_combo_id
             FROM    ETL_MANAGER
@@ -510,6 +510,7 @@ BEGIN
             'mms_migration'     ,
             now()
         FROM new_manager new
+        ON CONFLICT DO NOTHING
         RETURNING 1
     )
     SELECT count(*) FROM inserted_rows INTO insert_row;
