@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
-import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
@@ -45,7 +44,6 @@ export class Home extends Component {
         {this.state.isTest && <WarningBanner type="test" />}
         <Content className="content">
           <DashboardRoutes />
-          <AdminDashboardRoutes />
           <BackTop>
             <Button type="primary">
               <Icon type="arrow-up" theme="outlined" />

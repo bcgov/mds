@@ -16,7 +16,6 @@ const Routes = () => (
         })}
       />
       <Route path={routes.DASHBOARD.route} component={routes.DASHBOARD.component} />
-      <Route render={() => <div>404 - Not Found</div>} />
     </Switch>
   </div>
 );
