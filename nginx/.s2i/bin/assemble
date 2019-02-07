@@ -1,0 +1,73 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 's2i-nginx' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#   https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [[ "$1" == "-h" ]]; then
+    # If the 's2i-nginx' assemble script is executed with '-h' flag,
+    # print the usage.
+    exec /usr/libexec/s2i/usage
+fi
+
+NGINX_STATIC_DIR=${NGINX_STATIC_DIR-html}
+NGINX_CONF_FILE=${NGINX_CONF_FILE-nginx.conf}
+NGINX_CONF_DIR=${NGINX_CONF_DIR-conf.d}
+NGINX_AUX_DIR=${NGINX_AUX_DIR-aux}
+
+# Restore artifacts from the previous build (if they exist).
+#
+restore_build_artifacts() {
+    if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+      echo "---> Restoring build artifacts..."
+      mv /tmp/artifacts/. ./
+    fi
+}
+
+copy_static_files() {
+    echo "---> Copying static files"
+    if [ -d /tmp/src/"${NGINX_STATIC_DIR}" ]; then
+        cp -Rf /tmp/src/"${NGINX_STATIC_DIR}"/. ./html
+        chmod -R 777 html
+    fi
+}
+
+copy_server_configs() {
+    echo "---> Copying nginx config"
+    if [ -n "${NGINX_CONF_FILE}" -a -f /tmp/src/"${NGINX_CONF_FILE}" ]; then
+        echo -e "---> Copying nginx config file ${NGINX_CONF_FILE}"
+        cp /tmp/src/"${NGINX_CONF_FILE}" /opt/app-root/etc/nginx.conf
+    fi
+    if [ -n "${NGINX_CONF_DIR}" -a -d /tmp/src/"${NGINX_CONF_DIR}" ]; then
+        echo -e "---> Copying files from config dir ${NGINX_CONF_DIR}"
+        cp -Rf /tmp/src/"${NGINX_CONF_DIR}"/. /opt/app-root/etc/nginx.conf.d
+    fi
+    if [ -n "${NGINX_CONF_DIR}" -a -d /tmp/src/"${NGINX_CONF_DIR}" ]; then
+        echo -e "---> Copying files from config dir ${NGINX_CONF_DIR}"
+        cp -Rf /tmp/src/"${NGINX_CONF_DIR}"/. /opt/app-root/etc/nginx.conf.d
+    fi
+}
+
+copy_aux_dir() {
+    if [ -d /tmp/src/"${NGINX_AUX_DIR}" ]; then
+        echo "---> Copying auxiliary files"
+        mkdir /opt/app-root/etc/aux
+        cp -Rf /tmp/src/"${NGINX_AUX_DIR}"/. /opt/app-root/etc/aux
+    fi
+}
+
+cleanup() {
+    echo "---> cleanup"
+    rm -f /opt/app-root/run/nginx.pid $NGINX_VAR_DIR/log/nginx/error.log
+    chmod a+rwx /opt/app-root/etc/nginx.conf.d
+}
+
+restore_build_artifacts
+copy_static_files
+copy_server_configs
+copy_aux_dir
+
+cleanup
