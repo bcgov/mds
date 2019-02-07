@@ -8,7 +8,7 @@ import * as routes from "@/constants/routes";
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(["unauthorized", "no-mines"]),
+  type: PropTypes.oneOf(["unauthorized", "no-mines", "404"]),
 };
 
 const defaultProps = {
@@ -25,6 +25,12 @@ const NullScreen = (props) => (
           <b> mds@gov.bc.ca</b> to request access
         </p>
         <Link to={routes.HOME.route}>Go Back</Link>
+      </div>
+    )}
+    {props.type === "404" && (
+      <div className="no-nav-bar">
+        <h3>404 - Page not found</h3>
+        <Link to={routes.HOME.route}>Go Home</Link>
       </div>
     )}
     {props.type === "no-mines" && (
