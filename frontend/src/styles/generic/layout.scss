@@ -102,7 +102,7 @@ body {
   padding: $default-padding-lg $default-padding-xxl;
 
   @include mobile {
-    padding: 0 $default-padding-sm;
+    padding: 0 $default-padding-lg;
   }
 }
 
