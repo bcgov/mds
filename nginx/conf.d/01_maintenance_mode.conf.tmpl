@@ -14,8 +14,8 @@ location / {
 
 #error pages
 error_page 503 /maintenance_on.html;
-location ^~ /maintenance_on.html {
+location = /maintenance_on.html {
     root /opt/app-root/src/html/;
     internal;
-    break;
+    last;
 }    
