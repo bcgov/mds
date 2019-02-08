@@ -32,10 +32,6 @@ class ExpectedDocumentStatus(AuditMixin, Base):
         return cls.query.filter_by(exp_document_status_code=code).first()
 
     @classmethod
-    def find_by_expected_document_description(cls, description):
-        return cls.query.filter_by(description=description).first()
-
-    @classmethod
     def find_all_document_status(cls):
         try:
             return cls.query.filter_by(active_ind=True).all()
