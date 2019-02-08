@@ -6,16 +6,16 @@
 # invoked by shell script
 
 #maintainence mode redirect
-location ${PATH_PREFIX}/ {
-    add_header X-debug-message5 'checking for maintenance file';
+location / {
+    #add_header X-debug-message5 'checking for maintenance file';
     if (-f /opt/app-root/src/html/maintenance_on.html){
         return 503;
     }
 }
 
 #error pages
-error_page 503 ${PATH_PREFIX}/maintenance_on.html;
-location = ${PATH_PREFIX}/maintenance_on.html {
+error_page 503 /maintenance_on.html;
+location = /maintenance_on.html {
     add_header X-debug-message 'matched maintenance_on location';
     root /opt/app-root/src/html/;
     internal;
