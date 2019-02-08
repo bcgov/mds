@@ -1,0 +1,12 @@
+# ----------------------------------------------------------------------
+# | Frontend application                                               |
+# ----------------------------------------------------------------------
+
+# Proxy incoming requests on the base path to the frontend application
+
+location ${PATH_PREFIX}/ {
+        add_header X-debug-message4 'matched frontend location';
+        proxy_pass ${FRONTEND_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_buffering    off;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}
