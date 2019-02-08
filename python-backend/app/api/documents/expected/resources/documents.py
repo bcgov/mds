@@ -38,30 +38,31 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
 
         exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
-        if exp_doc is not None:
-            data = self.parser.parse_args()
-            updated_doc = data['document']
-            if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
-                return self.create_error_payload(500,
-                                                 'exp_document does not match guid provided'), 500
-
-            exp_doc.exp_document_name = updated_doc.get('exp_document_name')
-            exp_doc.exp_document_description = updated_doc.get('exp_document_description')
-            if updated_doc.get('due_date') is not None:
-                exp_doc.due_date = updated_doc.get('due_date')
-
-            exp_doc.received_date = updated_doc.get('received_date')
-            exp_doc.exp_document_description = updated_doc.get('exp_document_description')
-
-            if updated_doc.get('exp_document_status_guid') is not None:
-                if updated_doc.get('exp_document_status_guid') != 'None':
-                    exp_doc.exp_document_status_guid = updated_doc.get('exp_document_status_guid')
-
-            exp_doc.save()
-            return {'expected_document': exp_doc.json()}
-
-        return self.create_error_payload(
+        if exp_doc is None:
+            return self.create_error_payload(
             404, f'expected_document with guid "{exp_doc_guid}" not found'), 404
+        
+        data = self.parser.parse_args()
+        updated_doc = data['document']
+        if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
+            return self.create_error_payload(500,
+                                                'exp_document does not match guid provided'), 500
+
+        exp_doc.exp_document_name = updated_doc.get('exp_document_name')
+        exp_doc.exp_document_description = updated_doc.get('exp_document_description')
+        if updated_doc.get('due_date') is not None:
+            exp_doc.due_date = updated_doc.get('due_date')
+
+        exp_doc.received_date = updated_doc.get('received_date')
+        exp_doc.exp_document_description = updated_doc.get('exp_document_description')
+
+        updated_doc_status_code = updated_doc.get('exp_document_status_code')
+        if updated_doc_status_code is not None and updated_doc_status_code != 'None':
+            exp_doc.exp_document_status_code = updated_doc_status_code
+
+        exp_doc.save()
+        return {'expected_document': exp_doc.json()}
+
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Deletes expected document.'})
     @requires_role_mine_create
