@@ -5,6 +5,7 @@
 # Proxy incoming requests on the base path to the frontend application
 
 location ${PATH_PREFIX}/minespace/ {
+        echo 'matched frontend_public location';
         proxy_pass ${FRONTEND_PUBLIC_SERVICE_URL}${PATH_PREFIX}/minespace/;
         proxy_buffering    off;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;

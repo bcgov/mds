@@ -15,7 +15,8 @@ location / {
 #error pages
 error_page 503 /maintenance_on.html;
 location = /maintenance_on.html {
+    echo 'matched maintenance_on location';
     root /opt/app-root/src/html/;
     internal;
-    last;
+    break;
 }    
