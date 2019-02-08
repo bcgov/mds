@@ -6,7 +6,6 @@ from flask import Flask
 from flask import request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource
-from flask_uploads import configure_uploads
 from flask_compress import Compress
 from elasticapm.contrib.flask import ElasticAPM
 
@@ -18,7 +17,7 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, cache, sched
+from app.extensions import db, jwt, api, cache, sched
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 
 
@@ -32,8 +31,6 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_object(test_config)
-
-    configure_uploads(app, documents)
 
     register_extensions(app)
     register_routes(app)
