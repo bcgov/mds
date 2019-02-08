@@ -39,6 +39,11 @@ class ExpectedDocument(AuditMixin, Base):
         backref='exp_document_guid',
         order_by='desc(RequiredDocument.req_document_name)',
         lazy='joined')
+    expected_document_status = db.relationship(
+        'ExpectedDocumentStatus',
+        backref='exp_documents',
+        uselist=False,
+        lazy='joined')
 
     def json(self):
         return {
@@ -49,7 +54,7 @@ class ExpectedDocument(AuditMixin, Base):
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
             'received_date': str(self.received_date),
-            'exp_document_status_code': str(self.exp_document_status_code)
+            'exp_document_status': self.expected_document_status.json()
         }
 
     @classmethod

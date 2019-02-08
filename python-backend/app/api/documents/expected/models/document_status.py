@@ -23,8 +23,8 @@ class ExpectedDocumentStatus(AuditMixin, Base):
 
     def json(self):
         return {
-            'value': str(self.exp_document_status_code),
-            'label': str(self.description),
+            'exp_document_status_code': self.exp_document_status_code,
+            'description': self.description,
         }
 
     @classmethod
