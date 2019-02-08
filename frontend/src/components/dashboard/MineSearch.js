@@ -8,6 +8,7 @@ import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import AdvancedSearchForm from "@/components/Forms/AdvancedSearchForm";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
@@ -16,12 +17,15 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleMineSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
-  mineNameList: PropTypes.array,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
 };
 
 const defaultProps = {
   mineNameList: [],
+  handleMineSearch: () => {},
+  handleCoordinateSearch: () => {},
+  isMapView: false,
 };
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
@@ -71,7 +75,7 @@ export class MineSearch extends Component {
   };
 
   toggleAdvancedSearch = () => {
-    this.setState({ isAdvanceSearch: !this.state.isAdvanceSearch });
+    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
   transformData = (data) =>
