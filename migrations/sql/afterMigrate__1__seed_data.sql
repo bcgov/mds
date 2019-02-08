@@ -100,33 +100,22 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
--- There is a ticket in the backlog to modify this table. The pattern below is a workaround to prevent duplicate document status records from being created until then.
-INSERT INTO mine_expected_document_status
+INSERT INTO mine_expected_document_status_code
     (
+    exp_document_status_code,
     description,
     display_order,
     create_user,
     update_user
     )
-    SELECT 'Not Received', 10, 'system-mds', 'system-mds'
-    where 'Not Received' not in (select description
-    from mine_expected_document_status)
-UNION
-    SELECT 'Received / Pending Review', 20, 'system-mds', 'system-mds'
-    where 'Received / Pending Review' not in (select description
-    from mine_expected_document_status)
-UNION
-    SELECT 'Review In Progress', 30, 'system-mds', 'system-mds'
-    where 'Review In Progress' not in (select description
-    from mine_expected_document_status)
-UNION
-    SELECT 'Accepted', 40, 'system-mds', 'system-mds'
-    where 'Accepted' not in (select description
-    from mine_expected_document_status)
-UNION
-    SELECT 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds'
-    where 'Rejected / Waiting On Update' not in (select description
-    from mine_expected_document_status);
+VALUES
+    ('NRE', 'Not Received', 10, 'system-mds', 'system-mds'),
+    ('RPR', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
+    ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
+    ('RJD', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 
 INSERT INTO mine_tenure_type_code
     (
