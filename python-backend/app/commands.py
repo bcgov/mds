@@ -162,3 +162,20 @@ def register_commands(app):
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
             raise
+
+    @app.cli.command()
+    def _run_etl():
+        with app.app_context():
+            print('calling stored function')
+            db.session.execute('DO $$ BEGIN PERFORM transfer_mine_information(); END $$;')
+            print('called the function')
+            print('calling stored function')
+            db.session.execute('DO $$ BEGIN PERFORM transfer_mine_manager_information(); END $$;')
+            print('called the function')
+            print('calling stored function')
+            db.session.execute(
+                'DO $$ BEGIN PERFORM transfer_premit_permitee_information(); END $$;')
+            print('called the function')
+            print('calling stored function')
+            db.session.execute('DO $$ BEGIN PERFORM transfer_mine_status_information(); END $$;')
+            print('called the function')
