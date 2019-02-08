@@ -11,7 +11,7 @@ import {
   removeExpectedDocument,
   removeMineDocumentFromExpectedDocument,
   removeMineType,
-  addMineDocumentToExpectedDocument,
+  addDocumentToExpectedDocument,
   fetchMineDocuments,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
@@ -282,26 +282,26 @@ describe("`removeMineDocumentFromExpectedDocument` action creator", () => {
   });
 });
 
-describe("`addMineDocumentToExpectedDocument` action creator", () => {
+describe("`addDocumentToExpectedDocument` action creator", () => {
   const expDocGuid = "12345-6789";
   const url = ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expDocGuid);
 
-  it("Request with new file, dispatches `success` with correct response", () => {
-    const payload = { file: "a file" };
+  it("Request with new upload, dispatches `success` with correct response", () => {
+    const payload = { filename: "a file", document_manager_guid:"a GIUD" };
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, payload).reply(200, mockResponse);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
-  it("Request with existing file, dispatches `success` with correct response", () => {
+  it("Request with existing mine document, dispatches `success` with correct response", () => {
     const payload = { mine_document_guid: "555-6789" };
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, payload).reply(200, mockResponse);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -310,8 +310,8 @@ describe("`addMineDocumentToExpectedDocument` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     const payload = {};
-    mockAxios.onPost(url, payload).reply(400, MOCK.ERROR);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(400, MOCK.ERROR);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
