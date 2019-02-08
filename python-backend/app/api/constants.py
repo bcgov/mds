@@ -417,3 +417,8 @@ TIMEOUT_12_HOURS = 43140
 
 #Redis Map Cache
 MINE_MAP_CACHE = "MINE_MAP_CACHE"
+
+#Document Manager constants
+TUS_API_VERSION = '1.0.0'
+TUS_API_SUPPORTED_VERSIONS = '1.0.0'
+FORBIDDEN_FILETYPES = ('js', 'php', 'pl', 'py', 'rb', 'sh', 'so', 'exe', 'dll')
