@@ -9,7 +9,7 @@ import uuid
 from unittest import mock
 from datetime import datetime
 
-from tests.constants import TEST_EXPECTED_DOCUMENT_GUID1, TEST_REQUIRED_REPORT_GUID1, TEST_EXPECTED_DOCUMENT_NAME1, TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_STATUS_GUID1, DUMMY_USER_KWARGS
+from tests.constants import TEST_EXPECTED_DOCUMENT_GUID1, TEST_REQUIRED_REPORT_GUID1, TEST_EXPECTED_DOCUMENT_NAME1, TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_STATUS_CODE1, DUMMY_USER_KWARGS
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.extensions import db
@@ -46,7 +46,7 @@ def setup_info(test_client):
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
         due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
-        exp_document_status_guid=TEST_EXPECTED_DOCUMENT_STATUS_GUID1,
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
         **DUMMY_USER_KWARGS)
 
     expected_document.mine_documents.append(mine_document)
