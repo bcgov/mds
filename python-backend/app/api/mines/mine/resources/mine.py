@@ -353,12 +353,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return mine.json()
 
 
-class MineListByName(Resource):
-
-    @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
+class MineListSearch(Resource):
+    @api.doc(params={
+        'name': 'Search term in mine name.',
+        'term': 'Search term in mine name, mine number, and permit.'
+        })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        search_term = request.args.get('search')
-        mines = Mine.find_by_mine_name(search_term)
+        name_search = request.args.get('name')
+        search_term = request.args.get('term')
+        if search_term:
+            mines = Mine.find_by_name_no_permit(search_term)
+        else:
+            mines = Mine.find_by_mine_name(name_search)
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result}

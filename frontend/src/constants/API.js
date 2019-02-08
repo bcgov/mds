@@ -1,3 +1,5 @@
+import queryString from "query-string";
+
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
@@ -8,8 +10,7 @@ export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/par
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
 export const PERMITTEE = "/permits/permittees";
-export const MINE_NAME_LIST = (search) =>
-  search ? `/mines/names?search=${search}` : "/mines/names";
+export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
 export const MINE_COMPLIANCE_INFO = "/mines/compliance";

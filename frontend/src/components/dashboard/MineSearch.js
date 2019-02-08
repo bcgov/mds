@@ -44,10 +44,11 @@ export class MineSearch extends Component {
    *  If the user has typed more than 3 characters filter the search
    * If they clear the search, revert back to default search set
    */
-  handleChange = (value) => {
-    if (value.length > 2) {
-      this.props.fetchMineNameList(value);
-    } else if (value.length === 0) {
+  handleChange = (name) => {
+    if (name.length > 2) {
+      // Only used by the map view, which searches by name
+      this.props.fetchMineNameList({ name });
+    } else if (name.length === 0) {
       this.props.fetchMineNameList();
     }
   };

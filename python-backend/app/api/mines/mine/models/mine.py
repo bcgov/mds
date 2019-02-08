@@ -149,12 +149,26 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_name(cls, term = ''):
+    def find_by_mine_name(cls, term = None):
         MINE_LIST_RESULT_LIMIT = 500
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
             mines = mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
+
+    @classmethod
+    def find_by_name_no_permit(cls, term = None):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            number_filter = Mine.mine_no.ilike('%{}%'.format(term))
+            permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
+            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            mines = mines_q.union(permit_q).limit(cls.MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
         return mines
