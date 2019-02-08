@@ -5,7 +5,7 @@
 # Proxy incoming requests for /api to the backend container
 
 location ${PATH_PREFIX}/api/ {
-        echo 'matched api location';
+        add_header X-debug-message2 'matched api location';
         proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
