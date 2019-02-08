@@ -7,6 +7,7 @@
 
 #maintainence mode redirect
 location / {
+    add_header X-debug-message5 'checking for maintenance file';
     if (-f /opt/app-root/src/html/maintenance_on.html){
         return 503;
     }
