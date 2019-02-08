@@ -16,11 +16,10 @@ import {
 } from "@/actionCreators/userDashboardActionCreator";
 import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/staticContentActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
-import { ENVIRONMENT } from "@/constants/environment";
-import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -60,13 +59,6 @@ export class MineInfo extends Component {
       this.setState({ isLoaded: true });
     });
   }
-
-  getFileFromDocumentManager = (docMgrFileGuid) => {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
-  };
 
   handleEditReportSubmit = () => {
     const updatedDocument = this.state.selectedDocument;
@@ -188,7 +180,7 @@ export class MineInfo extends Component {
                                   <div key={file.mine_document_guid}>
                                     <a
                                       onClick={() =>
-                                        this.getFileFromDocumentManager(file.document_manager_guid)
+                                        downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
                                       }
                                     >
                                       {file.document_name}

@@ -56,7 +56,7 @@ export const MINE_RESPONSE = {
       region_code: "NE",
       mine_permit: [
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -86,7 +86,7 @@ export const MINE_RESPONSE = {
           ],
         },
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
@@ -127,7 +127,7 @@ export const MINE_RESPONSE = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_location: 
+      mine_location:
         {
           longitude: null,
           latitude: null,
@@ -206,7 +206,7 @@ export const MINES = {
       region_code: "NE",
       mine_permit: [
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -236,7 +236,7 @@ export const MINES = {
           ],
         },
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
@@ -277,7 +277,7 @@ export const MINES = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_location: 
+      mine_location:
         {
           longitude: null,
           latitude: null,
