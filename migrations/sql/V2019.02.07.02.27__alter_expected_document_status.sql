@@ -4,7 +4,7 @@ ALTER TABLE mine_expected_document ADD COLUMN exp_document_status_code character
 
 DROP TABLE mine_expected_document_status;
 CREATE TABLE mine_expected_document_status_code (
-    exp_document_status_code character varying(3) PRIMARY KEY,
+    exp_document_status_code character varying(3) PRIMARY KEY DEFAULT 'MIA',
     description character varying(100) NOT NULL,
     display_order smallint NOT NULL,
     active_ind boolean DEFAULT true NOT NULL,
