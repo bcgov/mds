@@ -56,9 +56,11 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         exp_doc.received_date = updated_doc.get('received_date')
         exp_doc.exp_document_description = updated_doc.get('exp_document_description')
 
-        updated_doc_status_code = updated_doc.get('exp_document_status_code')
-        if updated_doc_status_code is not None and updated_doc_status_code != 'None':
-            exp_doc.exp_document_status_code = updated_doc_status_code
+        updated_doc_status = updated_doc.get('exp_document_status')
+        if updated_doc_status is not None:
+            updated_doc_status_code = updated_doc_status.get('exp_document_status_code')
+            if updated_doc_status_code is not None:
+                exp_doc.exp_document_status_code = updated_doc_status_code
 
         exp_doc.save()
         return {'expected_document': exp_doc.json()}
