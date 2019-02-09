@@ -282,7 +282,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         tenure = data.get('tenure_number_id')
         lat = data.get('latitude')
-        lon = data.get'longitude')
+        lon = data.get('longitude')
         mine_name = data.get('name')
         mine_note = data.get('note')
         status = data.get('mine_status')

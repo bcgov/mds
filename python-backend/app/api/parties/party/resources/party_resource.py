@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy import or_
 
 from ..models.party import Party
 from ....constants import PARTY_STATUS_CODE
@@ -86,7 +84,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Unexpected party id in Url.')
         data = PartyResource.parser.parse_args()
         party_context = self.create_party_context(data.get('type'), data.get('party_name'),
-                                                  data.get('first_name')
+                                                  data.get('first_name'))
 
         try:
             party = Party(
