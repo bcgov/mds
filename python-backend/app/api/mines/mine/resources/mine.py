@@ -232,20 +232,20 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
         data = self.parser.parse_args()
-        lat = data['latitude']
-        lon = data['longitude']
-        note = data['note']
+        lat = data.get('latitude')
+        lon = data.get('longitude')
+        note = data.get('note')
         location = None
         mine_region = None
-        status = data['mine_status']
-        major_mine_ind = data['major_mine_ind']
-        mine_region = data['mine_region']
+        status = data.get('mine_status')
+        major_mine_ind = data.get('major_mine_ind')
+        mine_region = data.get('mine_region')
         mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
-                mine_name=data['name'],
+                mine_name=data.get('name'),
                 mine_note=note if note else '',
                 major_mine_ind=major_mine_ind,
                 mine_region=mine_region,
@@ -280,14 +280,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
         data = self.parser.parse_args()
-        tenure = data['tenure_number_id']
-        lat = data['latitude']
-        lon = data['longitude']
-        mine_name = data['name']
-        mine_note = data['note']
-        status = data['mine_status']
-        major_mine_ind = data['major_mine_ind']
-        region = data['mine_region']
+        tenure = data.get('tenure_number_id')
+        lat = data.get('latitude')
+        lon = data.get'longitude')
+        mine_name = data.get('name')
+        mine_note = data.get('note')
+        status = data.get('mine_status')
+        major_mine_ind = data.get('major_mine_ind')
+        region = data.get('mine_region')
 
         if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
                 and not region and major_mine_ind is None):

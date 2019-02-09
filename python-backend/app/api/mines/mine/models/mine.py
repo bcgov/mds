@@ -183,12 +183,12 @@ class Mine(AuditMixin, Base):
 
     @validates('mine_note')
     def validate_mine_note(self, key, mine_note):
-        if len(mine_note) > 300:
+        if mine_note and len(mine_note) > 300:
             raise AssertionError('Mine note must not exceed 300 characters.')
         return mine_note
 
     @validates('mine_no')
     def validate_mine_no(self, key, mine_no):
-        if len(mine_no) > 10:
+        if mine_no and len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no

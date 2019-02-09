@@ -40,8 +40,8 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         exp_doc = ExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is not None:
             data = self.parser.parse_args()
-            updated_doc = data['document']
-            if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
+            updated_doc = data.get('document')
+            if str(exp_doc.exp_document_guid) != updated_doc.get('exp_document_guid'):
                 return self.create_error_payload(500,
                                                  'exp_document does not match guid provided'), 500
 
