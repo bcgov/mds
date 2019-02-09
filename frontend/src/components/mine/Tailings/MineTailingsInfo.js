@@ -45,10 +45,6 @@ const propTypes = {
   createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  selectedDocument: null,
-};
-
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
 
@@ -315,7 +311,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineTailingsInfo.propTypes = propTypes;
-MineTailingsInfo.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
