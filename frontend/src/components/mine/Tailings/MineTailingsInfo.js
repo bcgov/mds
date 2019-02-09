@@ -26,6 +26,10 @@ import { createDropDownList } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 
+/**
+ * @class  MineTailingsInfo - all tenure information related to the mine.
+ */
+
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -45,9 +49,6 @@ const defaultProps = {
   selectedDocument: null,
 };
 
-/**
- * @class  MineTailingsInfo - all tenure information related to the mine.
- */
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
 
