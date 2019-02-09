@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { Row, Col, Divider, Icon, Button } from "antd";
 
 import { getMine } from "@/selectors/userMineInfoSelector";
-import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
@@ -14,7 +13,6 @@ import {
   fetchMineRecordById,
   updateExpectedDocument,
 } from "@/actionCreators/userDashboardActionCreator";
-import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/staticContentActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -28,9 +26,7 @@ const propTypes = {
       mineId: PropTypes.string,
     },
   }).isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -41,7 +37,6 @@ export class MineInfo extends Component {
 
   componentDidMount() {
     const { mineId } = this.props.match.params;
-    this.props.fetchExpectedDocumentStatusOptions();
     this.props.fetchMineRecordById(mineId).then(() => {
       this.setState({ isLoaded: true });
     });
@@ -58,14 +53,14 @@ export class MineInfo extends Component {
       });
   };
 
-  openEditReportModal(event, onSubmit, title, statusOptions, doc) {
+  openEditReportModal(event, onSubmit, title, doc) {
     this.setState({
       selectedDocument: doc,
     });
     event.preventDefault();
 
     this.props.openModal({
-      props: { onSubmit, title, statusOptions, selectedDocument: doc },
+      props: { onSubmit, title, selectedDocument: doc },
       content: modalConfig.EDIT_REPORT,
     });
   }
@@ -177,7 +172,6 @@ export class MineInfo extends Component {
                                   event,
                                   this.handleEditReportSubmit,
                                   ModalContent.EDIT_REPORT(doc.exp_document_name, moment().year()),
-                                  this.props.expectedDocumentStatusOptions,
                                   doc
                                 )
                               }
@@ -201,7 +195,6 @@ export class MineInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mine: getMine(state),
 });
 
@@ -209,7 +202,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchExpectedDocumentStatusOptions,
       openModal,
       closeModal,
       updateExpectedDocument,
