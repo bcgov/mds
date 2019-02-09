@@ -8,6 +8,11 @@ export const mineDocument = shape({
   active_ind: PropTypes.string,
 });
 
+export const mineExpectedDocumentStatus = shape({
+  exp_document_status_code: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+})
+
 export const mineExpectedDocument = shape({
   exp_document_guid: PropTypes.string.isRequired,
   req_document_guid: PropTypes.string,
@@ -16,6 +21,6 @@ export const mineExpectedDocument = shape({
   exp_document_description: PropTypes.string,
   related_documents: arrayOf(mineDocument),
   received_date: PropTypes.string,
-  exp_document_status_code: PropTypes.string,
+  exp_document_status: mineExpectedDocumentStatus.isRequired,
   due_date: PropTypes.string,
 });
