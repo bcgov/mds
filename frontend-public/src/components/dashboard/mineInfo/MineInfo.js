@@ -28,7 +28,7 @@ const propTypes = {
       mineId: PropTypes.string,
     },
   }).isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
@@ -36,19 +36,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  expectedDocumentStatusOptions: [],
-};
-
-const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return "Loading...";
-  if (!doc) return "Loading...";
-
-  return doc.exp_document_status_guid === "None"
-    ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
-        .label;
-};
 export class MineInfo extends Component {
   state = { isLoaded: false, selectedDocument: {} };
 
@@ -136,10 +123,7 @@ export class MineInfo extends Component {
                   .map((doc, id) => {
                     const isOverdue =
                       Date.parse(doc.due_date) < new Date() &&
-                      (doc.exp_document_status_guid === "None" ||
-                        (this.props.expectedDocumentStatusOptions[0] &&
-                          doc.exp_document_status_guid ===
-                            this.props.expectedDocumentStatusOptions[0].value));
+                      doc.exp_document_status.exp_document_status_code === "MIA";
                     return (
                       <div key={doc.exp_document_guid}>
                         <Row gutter={16} justify="center" align="top">
@@ -165,12 +149,7 @@ export class MineInfo extends Component {
                           </Col>
                           <Col id={`status-${id}`} span={4}>
                             <h6 className={isOverdue ? "bold" : null}>
-                              <DocumentStatusText
-                                doc={doc}
-                                expectedDocumentStatusOptions={
-                                  this.props.expectedDocumentStatusOptions
-                                }
-                              />
+                              {doc ? doc.exp_document_status.description : "Loading..."}
                             </h6>
                           </Col>
                           <Col span={4}>
@@ -239,7 +218,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineInfo.propTypes = propTypes;
-MineInfo.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
