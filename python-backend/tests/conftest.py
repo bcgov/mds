@@ -327,14 +327,14 @@ def setup_data(session):
     required_document3.save()
 
     expected_document_status1 = ExpectedDocumentStatus(
-        exp_document_status_code=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_CODE1),
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
         description="Not Received",
         display_order=10,
         **DUMMY_USER_KWARGS)
     expected_document_status1.save()
 
     expected_document_status2 = ExpectedDocumentStatus(
-        exp_document_status_code=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_CODE2),
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE2,
         description="Pending Review",
         display_order=20,
         **DUMMY_USER_KWARGS)
