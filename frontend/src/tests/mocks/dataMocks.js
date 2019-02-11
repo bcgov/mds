@@ -43,7 +43,10 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
           related_documents: [],
         },
       ],
@@ -146,7 +149,10 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
           related_documents: [],
         },
       ],
@@ -185,7 +191,10 @@ export const MINES = {
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
           related_documents: [],
         },
       ],
@@ -294,7 +303,10 @@ export const MINES = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
           related_documents: [],
         },
       ],
@@ -535,11 +547,11 @@ export const PERMITTEE = {
 
 export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
   options: [
-    { value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Received" },
-    { value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Received / Pending Review" },
-    { value: "155330ff-5b2e-418a-b8f5-674a25cdcbac", label: "Review In Progress" },
-    { value: "621a1e27-737a-4106-b92b-1c6c153c9d0a", label: "Accepted" },
-    { value: "3358c881-f2b5-4f58-be41-a89f820302a0", label: "Rejected / Waiting On Update" },
+    { exp_document_status_code: "MIA", description: "Not Received" },
+    { exp_document_status_code: "PRE", description: "Received / Pending Review" },
+    { exp_document_status_code: "RIP", description: "Review In Progress" },
+    { exp_document_status_code: "ACC", description: "Accepted" },
+    { exp_document_status_code: "REJ", description: "Rejected / Waiting On Update" },
   ],
 };
 
