@@ -1,5 +1,5 @@
 import uuid
-from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID2, TEST_EXPECTED_DOCUMENT_NAME2, TEST_EXPECTED_DOCUMENT_STATUS_GUID1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID2, TEST_EXPECTED_DOCUMENT_NAME2, TEST_EXPECTED_DOCUMENT_STATUS_CODE1, DUMMY_USER_KWARGS
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 
 
@@ -16,7 +16,7 @@ def test_expected_documents_find_by_mine_guid_after_insert(test_client, auth_hea
         exp_document_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID2),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME2,
-        exp_document_status_guid=TEST_EXPECTED_DOCUMENT_STATUS_GUID1,
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
         **DUMMY_USER_KWARGS)
     expected_document2.save()
 

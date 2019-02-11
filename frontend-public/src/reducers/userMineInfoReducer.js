@@ -9,7 +9,6 @@ import { USER_MINE_INFO } from "@/constants/reducerTypes";
 const initialState = {
   userMineInfo: {},
   mine: {},
-  expectedDocumentStatusOptions: [],
   mineDocuments: [],
 };
 
