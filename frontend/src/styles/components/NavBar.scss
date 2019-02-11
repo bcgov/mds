@@ -2,7 +2,7 @@
   @include flex;
   position: fixed;
   z-index: 1000;
-  width: 100vw;
+  width: 100%;
   justify-content: space-between;
   background-color: $nav-color;
   border-bottom: 1px solid $nav-border-color;

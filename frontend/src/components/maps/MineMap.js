@@ -140,7 +140,7 @@ class MineMap extends Component {
       return (
         // Fallback to default map if any of the layers fail to load
         <Map
-          style={{ width: "100vw", height: "100vh" }}
+          style={{ width: "100%", height: "100vh" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [this.props.long, this.props.lat],
@@ -159,7 +159,7 @@ class MineMap extends Component {
       // this.props.lat & this.props.long get changed in Dashboard.js
       <WebMap
         id={ENVIRONMENT.mapPortalId}
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100%", height: "100vh" }}
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
           center: [this.props.long, this.props.lat],
