@@ -1,7 +1,7 @@
 import { PropTypes, shape } from "prop-types";
 
 export const permit = shape({
-  expiry_date: PropTypes.string,
+  authorization_end_date: PropTypes.string,
   issue_date: PropTypes.string,
   mine_guid: PropTypes.string,
   permit_guid: PropTypes.string,
@@ -14,5 +14,5 @@ export const minePermit = shape({
   permit_guid: PropTypes.string.isRequired,
   issue_date: PropTypes.string.isRequired,
   permit_no: PropTypes.string.isRequired,
-  expiry_date: PropTypes.string.isRequired,
+  authorization_end_date: PropTypes.string.isRequired,
 });
