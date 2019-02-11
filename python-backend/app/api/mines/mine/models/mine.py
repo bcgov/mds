@@ -4,6 +4,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from ....utils.models_mixins import AuditMixin, Base
+from ....permits.permit.models.permit import Permit
 from app.extensions import db
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -168,7 +169,7 @@ class Mine(AuditMixin, Base):
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
             permit_q = Mine.query.join(Permit).filter(permit_filter)
-            mines = mines_q.union(permit_q).limit(cls.MINE_LIST_RESULT_LIMIT).all()
+            mines = mines_q.union(permit_q).limit(MINE_LIST_RESULT_LIMIT).all()
         else:
             mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
         return mines
