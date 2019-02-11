@@ -18,6 +18,7 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import * as String from "@/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -144,7 +145,7 @@ export class MineInfo extends Component {
                           </Col>
                           <Col id={`status-${id}`} span={4}>
                             <h6 className={isOverdue ? "bold" : null}>
-                              {doc ? doc.exp_document_status.description : "Loading..."}
+                              {doc ? doc.exp_document_status.description : String.LOADING}
                             </h6>
                           </Col>
                           <Col span={4}>
