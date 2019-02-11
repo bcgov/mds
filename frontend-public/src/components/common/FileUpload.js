@@ -23,7 +23,7 @@ const propTypes = {
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
-  onFileLoad: () => {},
+  onFileLoad: null,
   chunkSize: 1048576, //1MB
 };
 
