@@ -6,6 +6,7 @@ import { FilePond, File, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import tus from "tus-js-client";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
@@ -16,13 +17,14 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  chunkSize: PropTypes.number,
 };
 
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
-  // FilePond expects this default to be null instead of ()=>{}
-  onFileLoad: null,
+  onFileLoad: () => {},
+  chunkSize: 1048576, //1MB
 };
 
 class FileUpload extends React.Component {
@@ -34,12 +36,36 @@ class FileUpload extends React.Component {
     };
 
     this.server = {
-      url: ENVIRONMENT.apiUrl,
-      process: {
-        url: this.props.uploadUrl,
-        headers: createRequestHeader().headers,
-        onload: this.props.onFileLoad,
-        onerror: null,
+      process: (fieldName, file, metadata, load, error, progress, abort) => {
+        const upload = new tus.Upload(file, {
+          endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+          retryDelays: [100, 1000, 3000],
+          removeFingerprintOnSuccess: true,
+          chunkSize: this.props.chunkSize,
+          metadata: {
+            filename: file.name,
+          },
+          headers: createRequestHeader().headers,
+          onError: (err) => {
+            error(err);
+          },
+          onProgress: (bytesUploaded, bytesTotal) => {
+            progress(true, bytesUploaded, bytesTotal);
+          },
+          onSuccess: () => {
+            const documentGuid = upload.url.split("/").pop()
+            load(documentGuid);
+            this.props.onFileLoad(file.name, documentGuid);
+          },
+        });
+        // Start the upload
+        upload.start();
+        return {
+          abort: () => {
+            upload.abort();
+            abort();
+          },
+        };
       },
     };
   }

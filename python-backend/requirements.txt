@@ -14,7 +14,6 @@ Flask-Migrate==2.2.1
 flask-restplus==0.11.0
 Flask-SQLAlchemy==2.3.2
 flask_jwt_oidc==0.1.5
-Flask-Uploads==0.2.1
 GeoAlchemy2==0.5.0
 itsdangerous==0.24
 Jinja2==2.10

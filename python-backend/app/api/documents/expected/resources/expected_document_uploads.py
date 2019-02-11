@@ -1,10 +1,11 @@
 import decimal
 import uuid
+import base64
 import requests
 import json
 
 from datetime import datetime
-from flask import request, current_app
+from flask import request, current_app, Response
 from flask_restplus import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
@@ -23,8 +24,10 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
+    parser.add_argument('mine_document_guid', type=str)
+    parser.add_argument('document_manager_guid', type=str)
+    parser.add_argument('filename', type=str)
 
-    @api.expect(parser)
     @api.doc(
         params={
             'expected_document_guid':
@@ -32,101 +35,115 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         })
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, expected_document_guid):
+        if not expected_document_guid:
+            return self.create_error_payload(400, 'Expected Document GUID is required'), 400
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(
+            expected_document_guid)
+        if not expected_document:
+            return self.create_error_payload(404, 'Expected Document not found'), 404
 
-        self.parser.add_argument('file', type=FileStorage, location='files', action='append')
-        self.parser.add_argument('mine_document_guid', type=str)
-        try:
-            data = self.parser.parse_args()
+        metadata = self._parse_request_metadata()
+        if not metadata or not metadata.get('filename'):
+            return self.create_error_payload(400, 'Filename not found in request metadata header'), 400
 
-        except exceptions.RequestEntityTooLarge:
-            return self.create_error_payload(
-                413,
-                f'The maximum file upload size is {current_app.config["MAX_CONTENT_LENGTH"]/1024/1024}MB please ensure all files are this size.'
-            ), 413
+        folder, pretty_folder = self._parse_upload_folders(expected_document)
+        data = {'folder': folder, 'pretty_folder': pretty_folder,
+                'filename': metadata.get('filename')}
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
 
+        resp = requests.post(
+            url=document_manager_URL,
+            headers={key: value for (key, value)
+                     in request.headers if key != 'Host'},
+            data=data,
+            cookies=request.cookies,
+        )
+
+        response = Response(resp.content, resp.status_code,
+                            resp.raw.headers.items())
+        return response
+     
+
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    def put(self, expected_document_guid):
+        if not expected_document_guid:
+            return self.create_error_payload(400, 'Expected Document GUID is required'), 400       
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
         if not expected_document:
-            return self.create_error_payload(400, f'expected document not found'), 400
-        mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
-        document_category = expected_document.required_document.req_document_category.req_document_category
+            return self.create_error_payload(404, 'Expected Document not found'), 404
 
+        data = self.parser.parse_args()
         if data.get('mine_document_guid'):
-            existing_mine_doc = MineDocument.find_by_mine_document_guid(
+            # Associating existing mine document
+            mine_doc = MineDocument.find_by_mine_document_guid(
                 data.get('mine_document_guid'))
-            if not existing_mine_doc:
-                return self.create_error_payload(400, 'mine_document not found'), 400
+            if not mine_doc:
+                return self.create_error_payload(404, 'Mine Document not found'), 404
 
-            expected_document.mine_documents.append(existing_mine_doc)
+            expected_document.mine_documents.append(mine_doc)
             db.session.commit()
-            result = expected_document.json()
-        else:  #expecting a new file
-            if not data['file']:
-                return self.create_error_payload(
-                    400, 'expecting mine_document_guid or new file, neither found'), 400
+        elif data.get('document_manager_guid'):
+            # Register and associate a new file upload
+            filename = data.get('filename')
+            if not filename:
+                return self.create_error_payload(400, 'Must supply filename for new file upload'), 400
+            
+            mine_doc = MineDocument(
+                    mine_guid=expected_document.mine_guid,
+                    document_manager_guid=data.get('document_manager_guid'),
+                    document_name=filename,
+                    **self.get_create_update_dict())
 
-            if document_category:
-                folder = 'mines/' + str(mine.mine_guid) + '/' + str(document_category)
-                pretty_folder = 'mines/' + str(mine.mine_no) + '/' + str(document_category)
-            else:
-                folder = 'mines/' + str(mine.mine_guid) + '/documents'
-                pretty_folder = 'mines/' + str(mine.mine_no) + '/documents'
+            expected_document.mine_documents.append(mine_doc)
+            db.session.commit()
+        else:
+            return self.create_error_payload(400, 'Must specify either Mine Document GIUD or Docuemnt Manager GUID'), 400
+ 
+        return expected_document.json()           
 
-            document_manager_URL = current_app.config['DOCUMENT_MANAGER_URL'] + '/document-manager'
-
-            files = []
-
-            for file in data['file']:
-                files.append(('file', (file.filename, file, file.mimetype)))
-
-            args = {'folder': folder, 'pretty_folder': pretty_folder}
-            headers = {'Authorization': request.headers.get('Authorization')}
-
-            response = requests.post(
-                url=document_manager_URL, data=args, files=files, headers=headers)
-            json_response = response.json()
-
-            errors = json_response['errors']
-            document_guids = json_response['document_manager_guids']
-            filenames = []
-
-            try:
-                for key, value in document_guids.items():
-                    doc = MineDocument(
-                        mine_guid=expected_document.mine_guid,
-                        document_manager_guid=key,
-                        document_name=value,
-                        **self.get_create_update_dict())
-
-                    expected_document.mine_documents.append(doc)
-                    db.session.add(expected_document)
-                    filenames.append(value)
-
-                db.session.commit()
-
-            except DBAPIError:
-                #log the error here and return a pretty error message
-                db.session.rollback()
-                return self.create_error_payload(500, 'An unexpected error occured')
-            result = {'status': 200, 'errors': errors, 'files': filenames}
-        return result
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, expected_document_guid=None, mine_document_guid=None):
-
         if expected_document_guid is None or mine_document_guid is None:
             return self.create_error_payload(
-                400, 'Must provide a expected document guid and a mine document guid.'), 400
+                400, 'Must provide a expected document guid and a mine document guid'), 400
 
-        expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
-        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+        expected_document = MineExpectedDocument.find_by_exp_document_guid(
+            expected_document_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(
+            mine_document_guid)
 
         if expected_document is None or mine_document is None:
             return self.create_error_payload(
-                400,
-                f'Failed to remove the document either the expected document or the mine document was not found.'
-            ), 400
+                404,
+                'Either the Expected Document or the Mine Document was not found'
+            ), 404
 
         expected_document.mine_documents.remove(mine_document)
         expected_document.save()
 
-        return {'status': 200, 'message': 'The document was removed succesfully.'}
+        return {'status': 200, 'message': 'The document was removed succesfully'}
+
+    def _parse_upload_folders(self, expected_document):
+        mine = Mine.find_by_mine_guid(str(expected_document.mine_guid))
+        document_category = expected_document.required_document.req_document_category.req_document_category
+
+        if not document_category:
+            document_category = 'documents'
+
+        folder = f'mines/{str(mine.mine_guid)}/{document_category}'
+        pretty_folder = f'mines/{mine.mine_no}/{document_category}'
+
+        return folder, pretty_folder
+
+    def _parse_request_metadata(self):
+        request_metadata = request.headers.get("Upload-Metadata")
+        metadata = {}
+        if not request_metadata:
+            return metadata
+
+        for key_value in request_metadata.split(","):
+            (key, value) = key_value.split(" ")
+            metadata[key] = base64.b64decode(value).decode("utf-8")
+
+        return metadata

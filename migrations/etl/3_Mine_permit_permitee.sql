@@ -21,54 +21,54 @@ BEGIN
     RAISE NOTICE '.. Step 1 of 4: Scan permit info in MMS';
     -- This is the intermediary table that will be used to store mine permit and permittee info from the MMS database.
     CREATE TABLE IF NOT EXISTS ETL_PERMIT(
-        mine_party_appt_guid      uuid            ,
+        mine_party_appt_guid   uuid                  ,
         --permit info
-        permit_guid         uuid                  ,
-        source              numeric               ,
-        mine_guid           uuid                  ,
-        mine_no             character varying(12) ,
-        permit_no           character varying(12) ,
-        permit_cid          character varying(30) ,
-        received_date       date                  ,
-        issue_date          date                  ,
-        expiry_date         date                  ,
-        permit_status_code  character varying(2)  ,
+        permit_guid            uuid                  ,
+        source                 numeric               ,
+        mine_guid              uuid                  ,
+        mine_no                character varying(12) ,
+        permit_no              character varying(12) ,
+        permit_cid             character varying(30) ,
+        received_date          date                  ,
+        issue_date             date                  ,
+        authorization_end_date date                  ,
+        permit_status_code     character varying(2)  ,
         --permittee info
-        party_guid          uuid                  ,
-        party_combo_id      character varying(200),
-        first_name character varying(100)         ,
-        party_name character varying(100)         ,
-        party_type character varying(3)           ,
-        phone_no character varying(12)            ,
-        email character varying(254)              ,
-        effective_date date
+        party_guid             uuid                  ,
+        party_combo_id         character varying(200),
+        first_name             character varying(100),
+        party_name             character varying(100),
+        party_type             character varying(3)  ,
+        phone_no               character varying(12) ,
+        email                  character varying(254),
+        effective_date         date
     );
     SELECT count(*) FROM ETL_PERMIT into old_row;
 
     CREATE TEMP TABLE IF NOT EXISTS all_permit_info (
-        mine_party_appt_guid uuid                  ,
+        mine_party_appt_guid uuid                    ,
         --permit info
-        permit_guid          uuid                  ,
-        source               numeric               ,
-        mine_guid            uuid                  ,
-        mine_no              character varying(12) ,
-        permit_no            character varying(12) ,
-        permit_cid           character varying(30) ,
-        received_date        date                  ,
-        issue_date           date                  ,
-        expiry_date          date                  ,
-        permit_status_code   character varying(2)  ,
+        permit_guid            uuid                  ,
+        source                 numeric               ,
+        mine_guid              uuid                  ,
+        mine_no                character varying(12) ,
+        permit_no              character varying(12) ,
+        permit_cid             character varying(30) ,
+        received_date          date                  ,
+        issue_date             date                  ,
+        authorization_end_date date                  ,
+        permit_status_code     character varying(2)  ,
         --permittee info
-        party_guid           uuid                  ,
-        party_combo_id       character varying(200),
-        first_name           character varying(100),
-        party_name           character varying(100),
-        party_type           character varying(3)  ,
-        phone_no             character varying(12) ,
-        email                character varying(254),
-        effective_date       date                  ,
-        new_permit           boolean               ,
-        new_permittee        boolean
+        party_guid             uuid                  ,
+        party_combo_id         character varying(200),
+        first_name             character varying(100),
+        party_name             character varying(100),
+        party_type             character varying(3)  ,
+        phone_no               character varying(12) ,
+        email                  character varying(254),
+        effective_date         date                  ,
+        new_permit             boolean               ,
+        new_permittee          boolean
     );
 
     CREATE INDEX ON all_permit_info (permit_cid);
@@ -93,17 +93,24 @@ BEGIN
     ),
     permit_info AS (
         SELECT
-            ETL_MINE.mine_guid   ,
-            permit_info.mine_no     ,
-            permit_info.permit_no   ,
-            permit_info.cid AS permit_cid   ,
-            COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt   ,
-            COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt   ,
-            COALESCE(permit_info.permit_expiry_dt,'9999-12-31'::date) permit_expiry_dt,
+            ETL_MINE.mine_guid                                       ,
+            permit_info.mine_no                                      ,
+            permit_info.permit_no                                    ,
+            permit_info.cid AS permit_cid                            ,
+            COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt,
+            COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt,
+            COALESCE(
+                (
+                    SELECT end_dt
+                    FROM mms.mmsnow
+                    WHERE mms.mmsnow.cid = permit_info.cid
+                ),
+                '9999-12-31'::date
+            ) permit_expiry_dt                   ,
             CASE permit_info.sta_cd
                 WHEN 'Z' THEN 'C' --closed
                 ELSE 'O' --open
-            END AS sta_cd           ,
+            END AS sta_cd                                            ,
             permit_info.upd_no
         FROM mms.mmspmt permit_info
         INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
@@ -403,28 +410,28 @@ BEGIN
             contact.party_combo_id=permittee.party_combo_id
     )
     INSERT INTO all_permit_info (
-        mine_party_appt_guid,
+        mine_party_appt_guid  ,
         --permit info
-        permit_guid         ,
-        source              ,
-        mine_guid           ,
-        mine_no             ,
-        permit_no           ,
-        permit_cid          ,
-        received_date       ,
-        issue_date          ,
-        expiry_date         ,
-        permit_status_code  ,
+        permit_guid           ,
+        source                ,
+        mine_guid             ,
+        mine_no               ,
+        permit_no             ,
+        permit_cid            ,
+        received_date         ,
+        issue_date            ,
+        authorization_end_date,
+        permit_status_code    ,
         --permittee info
-        party_guid          ,
-        party_combo_id      ,
-        first_name          ,
-        party_name          ,
-        party_type          ,
-        phone_no            ,
-        email               ,
-        effective_date      ,
-        new_permit          ,
+        party_guid            ,
+        party_combo_id        ,
+        first_name            ,
+        party_name            ,
+        party_type            ,
+        phone_no              ,
+        email                 ,
+        effective_date        ,
+        new_permit            ,
         new_permittee
     )
     SELECT
@@ -476,21 +483,21 @@ BEGIN
         UPDATE ETL_PERMIT
         SET
             --permit info
-            source             = info.source            ,
-            mine_no            = info.mine_no           ,
-            permit_no          = info.permit_no         ,
-            received_date      = info.received_date     ,
-            issue_date         = info.issue_date        ,
-            expiry_date        = info.expiry_date       ,
-            permit_status_code = info.permit_status_code,
+            source                 = info.source                ,
+            mine_no                = info.mine_no               ,
+            permit_no              = info.permit_no             ,
+            received_date          = info.received_date         ,
+            issue_date             = info.issue_date            ,
+            authorization_end_date = info.authorization_end_date,
+            permit_status_code     = info.permit_status_code    ,
             --permittee info
-            party_combo_id     = info.party_combo_id    ,
-            first_name         = info.first_name        ,
-            party_name         = info.party_name        ,
-            party_type         = info.party_type        ,
-            phone_no           = info.phone_no          ,
-            email              = info.email             ,
-            effective_date     = info.effective_date
+            party_combo_id         = info.party_combo_id        ,
+            first_name             = info.first_name            ,
+            party_name             = info.party_name            ,
+            party_type             = info.party_type            ,
+            phone_no               = info.phone_no              ,
+            email                  = info.email                 ,
+            effective_date         = info.effective_date
         FROM all_permit_info info
         WHERE
             ETL_PERMIT.mine_guid = info.mine_guid
@@ -509,47 +516,47 @@ BEGIN
         INSERT INTO ETL_PERMIT(
             mine_party_appt_guid,
             --permit info
-            permit_guid         ,
-            source              ,
-            mine_guid           ,
-            mine_no             ,
-            permit_no           ,
-            permit_cid          ,
-            received_date       ,
-            issue_date          ,
-            expiry_date         ,
-            permit_status_code  ,
+            permit_guid           ,
+            source                ,
+            mine_guid             ,
+            mine_no               ,
+            permit_no             ,
+            permit_cid            ,
+            received_date         ,
+            issue_date            ,
+            authorization_end_date,
+            permit_status_code    ,
             --permittee info
-            party_combo_id      ,
-            party_guid          ,
-            first_name          ,
-            party_name          ,
-            party_type          ,
-            phone_no            ,
-            email               ,
+            party_combo_id        ,
+            party_guid            ,
+            first_name            ,
+            party_name            ,
+            party_type            ,
+            phone_no              ,
+            email                 ,
             effective_date
         )
         SELECT
-            gen_random_uuid()      ,
+            gen_random_uuid()          ,
             --permit info
-            info.permit_guid       ,
-            info.source            ,
-            info.mine_guid         ,
-            info.mine_no           ,
-            info.permit_no         ,
-            info.permit_cid        ,
-            info.received_date     ,
-            info.issue_date        ,
-            info.expiry_date       ,
-            info.permit_status_code,
+            info.permit_guid           ,
+            info.source                ,
+            info.mine_guid             ,
+            info.mine_no               ,
+            info.permit_no             ,
+            info.permit_cid            ,
+            info.received_date         ,
+            info.issue_date            ,
+            info.authorization_end_date,
+            info.permit_status_code    ,
             --permittee info
-            info.party_combo_id    ,
-            info.party_guid        ,
-            info.first_name        ,
-            info.party_name        ,
-            info.party_type        ,
-            info.phone_no          ,
-            info.email             ,
+            info.party_combo_id        ,
+            info.party_guid            ,
+            info.first_name            ,
+            info.party_name            ,
+            info.party_type            ,
+            info.phone_no              ,
+            info.email                 ,
             info.effective_date
         FROM all_permit_info info
         WHERE
@@ -583,12 +590,12 @@ BEGIN
     WITH updated_rows AS (
       UPDATE permit
       SET
-          received_date      = etl.received_date,
-          issue_date         = etl.issue_date   ,
-          update_user        = 'mms_migration'  ,
-          update_timestamp   = now()            ,
-          expiry_date        = etl.expiry_date  ,
-          permit_status_code = etl.permit_status_code
+          received_date          = etl.received_date         ,
+          issue_date             = etl.issue_date            ,
+          update_user            = 'mms_migration'           ,
+          update_timestamp       = now()                     ,
+          authorization_end_date = etl.authorization_end_date,
+          permit_status_code     = etl.permit_status_code
       FROM ETL_PERMIT etl
       WHERE
           permit.mine_guid = etl.mine_guid
@@ -622,7 +629,7 @@ BEGIN
             create_timestamp    ,
             update_user         ,
             update_timestamp    ,
-            expiry_date
+            authorization_end_date
         )
         SELECT
             new_permit.permit_guid         ,
@@ -635,7 +642,7 @@ BEGIN
             now()                          ,
             'mms_migration'                ,
             now()                          ,
-            new_permit.expiry_date
+            new_permit.authorization_end_date
         FROM new_permit
         INNER JOIN ETL_MINE ON
             new_permit.mine_guid = ETL_MINE.mine_guid
@@ -664,14 +671,14 @@ BEGIN
     WITH updated_rows AS (
       UPDATE party
       SET
-          first_name       = etl.first_name    ,
-          party_name       = etl.party_name    ,
-          phone_no         = etl.phone_no      ,
-          email            = etl.email         ,
-          effective_date   = etl.effective_date,
-          expiry_date      = etl.expiry_date   ,
-          update_user      = 'mms_migration'   ,
-          update_timestamp = now()             ,
+          first_name       = etl.first_name            ,
+          party_name       = etl.party_name            ,
+          phone_no         = etl.phone_no              ,
+          email            = etl.email                 ,
+          effective_date   = etl.effective_date        ,
+          expiry_date      = etl.authorization_end_date,
+          update_user      = 'mms_migration'           ,
+          update_timestamp = now()                     ,
           party_type_code  = etl.party_type
       FROM ETL_PERMIT etl
       WHERE party.party_guid = etl.party_guid
@@ -686,13 +693,13 @@ BEGIN
     --Select only new entry in ETL_PERMIT table
     new_party AS (
         SELECT DISTINCT ON (party_guid)
-            party_guid      ,
-            first_name      ,
-            party_name      ,
-            phone_no        ,
-            email           ,
-            effective_date  ,
-            expiry_date     ,
+            party_guid            ,
+            first_name            ,
+            party_name            ,
+            phone_no              ,
+            email                 ,
+            effective_date        ,
+            authorization_end_date,
             party_type
         FROM ETL_PERMIT
         WHERE party_guid NOT IN (
@@ -716,17 +723,17 @@ BEGIN
             party_type_code
         )
         SELECT
-            party_guid      ,
-            first_name      ,
-            party_name      ,
-            phone_no        ,
-            email           ,
-            effective_date  ,
-            expiry_date     ,
-            'mms_migration' ,
-            now()           ,
-            'mms_migration' ,
-            now()           ,
+            party_guid            ,
+            first_name            ,
+            party_name            ,
+            phone_no              ,
+            email                 ,
+            effective_date        ,
+            authorization_end_date,
+            'mms_migration'       ,
+            now()                 ,
+            'mms_migration'       ,
+            now()                 ,
             party_type
         FROM new_party
         RETURNING 1
@@ -786,7 +793,9 @@ BEGIN
             update_user              ,
             update_timestamp         ,
             start_date               ,
-            end_date
+            end_date                 ,
+            processed_by             ,
+            processed_on
         )
         SELECT
             ETL_PERMIT.mine_party_appt_guid,
@@ -799,7 +808,9 @@ BEGIN
             'mms_migration'                ,
             now()                          ,
             issue_date                     ,
-            expiry_date
+            authorization_end_date         ,
+            'mms_migration'                ,
+            now()
         FROM ETL_PERMIT
         INNER JOIN ETL_MINE ON
             ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
