@@ -30,7 +30,8 @@ export class UploadedFilesList extends React.Component {
 
   canUnlink = (selectedDoc) => {
     const dueDateCheck = moment(selectedDoc.due_date, "YYYY-MM-DD") > moment();
-    const statusCheck = selectedDoc.exp_document_status.exp_document_status_code in ['MIA', 'PRE']
+    const code = selectedDoc.exp_document_status.exp_document_status_code;
+    const statusCheck = code === "MIA" || code === "PRE";
     return dueDateCheck && statusCheck;
   };
 
