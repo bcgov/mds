@@ -248,6 +248,7 @@ export const fetchMineNameList = (params = {}) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
+      console.log("response.data", response.data);
       dispatch(mineActions.storeMineNameList(response.data));
       dispatch(hideLoading());
     })
