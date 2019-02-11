@@ -42,16 +42,16 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def post(self, mine_guid):
         data = self.parser.parse_args()
-        doc_list = data.get('documents')
+        doc_list = data['documents']
         mine_new_docs = []
         not_received = ExpectedDocumentStatus.find_by_expected_document_description('Not Received')
         for new_doc in doc_list:
             if new_doc['req_document_guid'] is not None:
-                req_doc = RequiredDocument.find_by_req_doc_guid(new_doc.get('req_document_guid'))
+                req_doc = RequiredDocument.find_by_req_doc_guid(new_doc['req_document_guid'])
 
             mine_exp_doc = MineExpectedDocument(
-                req_document_guid=new_doc.get('req_document_guid'),
-                exp_document_name=new_doc.get('document_name'),
+                req_document_guid=new_doc['req_document_guid'],
+                exp_document_name=new_doc['document_name'],
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid=mine_guid,
                 exp_document_status_guid=not_received.exp_document_status_guid,

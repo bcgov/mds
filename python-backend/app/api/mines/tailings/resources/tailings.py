@@ -45,13 +45,13 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
     def post(self, mine_tailings_storage_facility_guid=None):
         if not mine_tailings_storage_facility_guid:
             data = self.parser.parse_args()
-            mine_guid = data.get('mine_guid')
+            mine_guid = data['mine_guid']
             # see if this would be the first TSF
             mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
             is_mine_first_tsf = len(mine_tsf_list) == 0
             mine_tsf = MineTailingsStorageFacility(
                 mine_guid=mine_guid,
-                mine_tailings_storage_facility_name=data.get('tsf_name'),
+                mine_tailings_storage_facility_name=data['tsf_name'],
                 **self.get_create_update_dict())
             db.session.add(mine_tsf)
             if is_mine_first_tsf:
@@ -66,22 +66,22 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             500,
                             'get_tsf_req_docs returned error' + str(get_tsf_docs_resp.status_code))
 
-                    tsf_required_documents = get_tsf_docs_resp.json().get('required_documents')
+                    tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
                             'req_document_guid':
-                            tsf_req_doc.get('req_document_guid'),
+                            tsf_req_doc['req_document_guid'],
                             'document_name':
-                            tsf_req_doc.get('req_document_name'),
+                            tsf_req_doc['req_document_name'],
                             'document_description':
-                            tsf_req_doc.get('req_document_description'),
+                            tsf_req_doc['req_document_description'],
                             'document_category':
-                            tsf_req_doc.get('req_document_category'),
+                            tsf_req_doc['req_document_category'],
                             'document_due_date_type':
-                            tsf_req_doc.get('req_document_due_date_type'),
+                            tsf_req_doc['req_document_due_date_type'],
                             'document_due_date_period_months':
-                            tsf_req_doc.get('req_document_due_date_period_months')
+                            tsf_req_doc['req_document_due_date_period_months']
                         })
                     #raise Exception(str(new_expected_documents) + str(request.headers))
                     doc_assignment_response = requests.post(

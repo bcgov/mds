@@ -83,14 +83,14 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         if party_guid:
             self.raise_error(400, 'Error: Unexpected party id in Url.')
         data = PartyResource.parser.parse_args()
-        party_context = self.create_party_context(data.get('type'), data.get('party_name'),
-                                                  data.get('first_name'))
+        party_context = self.create_party_context(data['type'], data['party_name'],
+                                                  data['first_name'])
 
         try:
             party = Party(
                 party_guid=uuid.uuid4(),
-                phone_no=data.get('phone_no'),
-                email=data.get('email'),
+                phone_no=data['phone_no'],
+                email=data['email'],
                 phone_ext=data.get('phone_ext', None),
                 **self.get_create_update_dict(),
                 **party_context)

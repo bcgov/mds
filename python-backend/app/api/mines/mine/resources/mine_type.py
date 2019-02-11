@@ -18,8 +18,8 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
     def post(self):
         data = self.parser.parse_args()
 
-        mine_guid = data.get('mine_guid')
-        mine_tenure_type_code = data.get('mine_tenure_type_code')
+        mine_guid = data['mine_guid']
+        mine_tenure_type_code = data['mine_tenure_type_code']
 
         if not mine_guid:
             self.raise_error(400, 'Error: Missing mine_guid.')
