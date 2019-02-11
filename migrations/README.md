@@ -37,7 +37,7 @@ cd $FLYWAY_HOME/etl
 psql -f FILENAME.sql
 ```
 
-Note: If you want to run scripts against a seperate db first. You can pass different parameters to the psql client such as : `psql -d DATABASE_NAME -f FILENAME.sql`
+Note: If you want to run scripts against a separate db first. You can pass different parameters to the psql client such as : `psql -d DATABASE_NAME -f FILENAME.sql`
 
 #### ASSUMPTIONS:
 
