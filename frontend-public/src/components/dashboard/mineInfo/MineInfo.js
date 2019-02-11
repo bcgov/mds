@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { Row, Col, Divider, Icon, Button } from "antd";
 
 import { getMine } from "@/selectors/userMineInfoSelector";
-import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
@@ -14,12 +13,12 @@ import {
   fetchMineRecordById,
   updateExpectedDocument,
 } from "@/actionCreators/userDashboardActionCreator";
-import { fetchExpectedDocumentStatusOptions } from "@/actionCreators/staticContentActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import * as String from "@/constants/strings";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -28,33 +27,17 @@ const propTypes = {
       mineId: PropTypes.string,
     },
   }).isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  expectedDocumentStatusOptions: [],
-};
-
-const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return "Loading...";
-  if (!doc) return "Loading...";
-
-  return doc.exp_document_status_guid === "None"
-    ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
-        .label;
-};
 export class MineInfo extends Component {
   state = { isLoaded: false, selectedDocument: {} };
 
   componentDidMount() {
     const { mineId } = this.props.match.params;
-    this.props.fetchExpectedDocumentStatusOptions();
     this.props.fetchMineRecordById(mineId).then(() => {
       this.setState({ isLoaded: true });
     });
@@ -71,14 +54,14 @@ export class MineInfo extends Component {
       });
   };
 
-  openEditReportModal(event, onSubmit, title, statusOptions, doc) {
+  openEditReportModal(event, onSubmit, title, doc) {
     this.setState({
       selectedDocument: doc,
     });
     event.preventDefault();
 
     this.props.openModal({
-      props: { onSubmit, title, statusOptions, selectedDocument: doc },
+      props: { onSubmit, title, selectedDocument: doc },
       content: modalConfig.EDIT_REPORT,
     });
   }
@@ -136,10 +119,7 @@ export class MineInfo extends Component {
                   .map((doc, id) => {
                     const isOverdue =
                       Date.parse(doc.due_date) < new Date() &&
-                      (doc.exp_document_status_guid === "None" ||
-                        (this.props.expectedDocumentStatusOptions[0] &&
-                          doc.exp_document_status_guid ===
-                            this.props.expectedDocumentStatusOptions[0].value));
+                      doc.exp_document_status.exp_document_status_code === "MIA";
                     return (
                       <div key={doc.exp_document_guid}>
                         <Row gutter={16} justify="center" align="top">
@@ -165,12 +145,7 @@ export class MineInfo extends Component {
                           </Col>
                           <Col id={`status-${id}`} span={4}>
                             <h6 className={isOverdue ? "bold" : null}>
-                              <DocumentStatusText
-                                doc={doc}
-                                expectedDocumentStatusOptions={
-                                  this.props.expectedDocumentStatusOptions
-                                }
-                              />
+                              {doc ? doc.exp_document_status.description : String.LOADING}
                             </h6>
                           </Col>
                           <Col span={4}>
@@ -198,7 +173,6 @@ export class MineInfo extends Component {
                                   event,
                                   this.handleEditReportSubmit,
                                   ModalContent.EDIT_REPORT(doc.exp_document_name, moment().year()),
-                                  this.props.expectedDocumentStatusOptions,
                                   doc
                                 )
                               }
@@ -222,7 +196,6 @@ export class MineInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mine: getMine(state),
 });
 
@@ -230,7 +203,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchExpectedDocumentStatusOptions,
       openModal,
       closeModal,
       updateExpectedDocument,
@@ -239,7 +211,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineInfo.propTypes = propTypes;
-MineInfo.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
