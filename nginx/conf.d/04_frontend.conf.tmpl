@@ -4,14 +4,7 @@
 
 # Proxy incoming requests on the base path to the frontend application
 
-
-
 location ${PATH_PREFIX}/ {
-        #maintainence mode redirect
-        if (-f /opt/app-root/src/html/maintenance_on.html){
-                return 503;
-        }       
-
         add_header X-debug-message4 'matched frontend location';
         proxy_pass ${FRONTEND_SERVICE_URL}${PATH_PREFIX}/;
         proxy_buffering    off;
