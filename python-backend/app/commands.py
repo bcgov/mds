@@ -167,7 +167,7 @@ def register_commands(app):
     def _run_etl():
         with app.app_context():
             print('calling stored function')
-            db.session.execute('DO $$ BEGIN PERFORM transfer_mine_information(); END $$;')
+            db.session.execute('select transfer_mine_information();')
             print('called the function')
             print('calling stored function')
             db.session.execute('DO $$ BEGIN PERFORM transfer_mine_manager_information(); END $$;')
