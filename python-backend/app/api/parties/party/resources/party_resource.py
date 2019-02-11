@@ -91,7 +91,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 party_guid=uuid.uuid4(),
                 phone_no=data.get('phone_no'),
                 email=data.get('email'),
-                phone_ext=data.get('phone_ext') if data.get('phone_ext') else None,
+                phone_ext=data.get('phone_ext', None),
                 **self.get_create_update_dict(),
                 **party_context)
         except AssertionError as e:

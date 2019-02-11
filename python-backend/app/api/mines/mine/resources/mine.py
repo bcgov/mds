@@ -232,14 +232,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
         data = self.parser.parse_args()
-        lat = data.get('latitude')
-        lon = data.get('longitude')
-        note = data.get('note')
+        lat = data['latitude']
+        lon = data['longitude']
+        note = data['note']
         location = None
         mine_region = None
-        status = data.get('mine_status')
-        major_mine_ind = data.get('major_mine_ind')
-        mine_region = data.get('mine_region')
+        status = data['mine_status']
+        major_mine_ind = data['major_mine_ind']
+        mine_region = data['mine_region']
         mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             mine = Mine(
