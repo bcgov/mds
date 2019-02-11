@@ -5,7 +5,10 @@
 # Proxy incoming requests on the base path to the frontend application
 
 location ${PATH_PREFIX}/minespace/ {
-        add_header X-debug-message3 'matched frontend_public location';
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }      
+
         proxy_pass ${FRONTEND_PUBLIC_SERVICE_URL}${PATH_PREFIX}/minespace/;
         proxy_buffering    off;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
