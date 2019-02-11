@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { renderToString } from "react-dom/server";
 import MapPopup from "@/components/maps/MapPopup";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
-
+import { SMALL_PIN } from "@/constants/assets";
 /**
  * @class MinePin.js must be the child of arcGIS <Map /> or <Screen />,
  * MinePin is connected to redux to access/display all mines information - reusable on any view will display the correct state.
@@ -63,7 +63,7 @@ export class MinePin extends Component {
         }
 
         const defaultSym = {
-          url: `${window.location.origin}${process.env.BASE_PATH}/public/small-pin.svg`,
+          url: SMALL_PIN,
           width: this.state.isFullMap ? "40" : "80",
           height: this.state.isFullMap ? "40" : "80",
           type: "picture-marker",
@@ -134,6 +134,7 @@ export class MinePin extends Component {
 
         const fcl = FlareClusterLayer.FlareClusterLayer(options);
         fcl.title = "Mine Pins";
+        fcl.refreshOnStationary = true;
         this.props.map.layers.remove(fcl);
         this.props.map.layers.add(fcl);
       }
