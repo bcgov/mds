@@ -15,5 +15,16 @@ CREATE TABLE mine_expected_document_status_code (
 );
 ALTER TABLE mine_expected_document_status_code OWNER TO mds;
 
+INSERT INTO mine_expected_document_status_code
+   (
+   exp_document_status_code,
+   description,
+   display_order,
+   create_user,
+   update_user
+   )
+VALUES
+   ('MIA', 'Not Received', 10, 'system-mds', 'system-mds');
+
 ALTER TABLE mine_expected_document
     ADD CONSTRAINT mine_expected_document_exp_document_status_code_fkey FOREIGN KEY (exp_document_status_code) REFERENCES mine_expected_document_status_code(exp_document_status_code) DEFERRABLE INITIALLY DEFERRED;
