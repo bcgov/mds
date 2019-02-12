@@ -1,4 +1,3 @@
-from datetime import datetime
 import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -46,7 +45,7 @@ def register_commands(app):
                                              ]) if prev_party_guid else party.party_guid
 
             db.session.commit()
-            #raise Exception(str(mine_permit.permit_guid) + str(mine_permit.mine_guid))
+            # raise Exception(str(mine_permit.permit_guid) + str(mine_permit.mine_guid))
             mpa = MinePartyAppointment.create_mine_party_appt(
                 mine_guid=mine_permit.mine_guid,
                 party_guid=permittee_party,
@@ -78,7 +77,8 @@ def register_commands(app):
                 batch_size = 100
                 num = int(num)
 
-                # Break num into a list of ints of size batch_size, then append remainder. E.g. 520 -> [100, 100, 100, 100, 100, 20]
+                # Break num into a list of ints of size batch_size, then append remainder.
+                # E.g. 520 -> [100, 100, 100, 100, 100, 20]
                 full_batches = int(num / batch_size)
                 batches = [batch_size] * full_batches
                 batches.append(num % batch_size)
