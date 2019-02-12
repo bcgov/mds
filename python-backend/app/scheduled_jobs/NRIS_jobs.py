@@ -5,17 +5,23 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
 from elasticapm import Client
 from app.config import Config
+from elasticapm.handlers.logging import LoggingHandler
+from flask import current_app
 
 
 def register_apm(func):
     def wrapper(args):
-        client = Client(Config.ELASTIC_APM)
-        print(f'elastic client created')
+        client = Client(current_app.config['ELASTIC_APM'])
+        handler = LoggingHandler(client=client)
+        handler.setLevel(logging.WARN)
+        current_app.logger.addHandler(handler)
+
+        current_app.logger.warn(f'registered apm for function {func}')
         try:
             func(args)
-            client.capture_message('FOUND ALL THE PRIMES')
+            current_app.logger.warn(f'{func} finished without errors')
         except Exception as e:
-            client.capture_exception()
+            current_app.logger.warn(f'{func} threw exception: {str(e)}')
             raise e
 
     return wrapper
