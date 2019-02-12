@@ -1,5 +1,5 @@
--- 1. ETL mine data from MMS
--- Create the ETL_MINE table
+-- Query performance optimization
+SET max_parallel_workers_per_gather TO 8;
 
 -- Transformation functions
 CREATE OR REPLACE FUNCTION transform_mine_region(code varchar) RETURNS varchar AS $$
@@ -35,7 +35,8 @@ $$ LANGUAGE plpgsql;
 
 
 
-
+-- 1. ETL mine data from MMS
+-- Create the ETL_MINE table
 DO $$
 DECLARE
     old_row    integer;
@@ -58,6 +59,8 @@ BEGIN
         major_mine_ind    boolean,
 	deleted_ind       boolean
     );
+    CREATE INDEX ON ETL_MINE (mine_no);
+    CREATE INDEX ON ETL_MINE (mine_guid);
     SELECT count(*) FROM ETL_MINE into old_row;
 
     -- Migration step from previous ETL process
@@ -202,6 +205,8 @@ BEGIN
         latitude        numeric(9,7)        ,
         longitude       numeric(11,7)
     );
+    CREATE INDEX ON ETL_LOCATION (mine_no);
+    CREATE INDEX ON ETL_LOCATION (mine_guid);
     SELECT count(*) FROM ETL_LOCATION into old_row;
 
     -- Upsert data into ETL_LOCATION from MMS

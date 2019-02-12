@@ -1,9 +1,7 @@
-import re
-
 from cached_property import cached_property
-from flask import g, request
+from flask import g
 from uuid import UUID
-from typing import Mapping, Optional, Set
+from typing import Optional, Set
 from .api.utils.include.user_info import User
 from .api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINESPACE_PROPONENT
@@ -51,7 +49,7 @@ def get_current_user():
 
 
 def get_user_is_proponent():
-    #The flask-jwt-oidc library throws an exception if a token does not exist.
+    # The flask-jwt-oidc library throws an exception if a token does not exist.
     token_data = User().get_user_raw_info()
     try:
         is_proponent = MINESPACE_PROPONENT in token_data["realm_access"]["roles"]
@@ -66,7 +64,7 @@ def get_user_email():
 
 def get_current_user_security():
     rv = getattr(g, 'current_user_security', None)
-    if rv == None:
+    if rv is None:
         user = get_current_user()
         rv = UserSecurity(user_id=user.user_id if user else None)
         g.current_user_security = rv
