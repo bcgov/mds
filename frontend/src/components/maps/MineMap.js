@@ -80,20 +80,14 @@ class MineMap extends Component {
     await loadModules([
       "esri/widgets/LayerList",
       "esri/widgets/Expand",
-      "esri/widgets/BasemapGallery",
       "esri/widgets/ScaleBar",
       "esri/widgets/Legend",
-    ]).then(([LayerListWidget, Expand, BasemapGallery, ScaleBar, Legend]) => {
+    ]).then(([LayerListWidget, Expand, ScaleBar, Legend]) => {
       const widgetPositionArray = {};
 
       widgetPositionArray["top-left"] = new LayerListWidget({
         view,
         container: document.createElement("layer_list"),
-      });
-
-      widgetPositionArray["top-right"] = new BasemapGallery({
-        view,
-        container: document.createElement("map_gallery"),
       });
 
       widgetPositionArray["bottom-left"] = new Legend({
