@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 
 import CustomPropTypes from "@/customPropTypes";
 import { getMine } from "@/selectors/userMineInfoSelector";
-import { getExpectedDocumentStatusOptions } from "@/selectors/staticContentSelectors";
 import {
   removeMineDocumentFromExpectedDocument,
   fetchMineRecordById,
@@ -16,7 +15,6 @@ import {
 const propTypes = {
   selectedDocId: PropTypes.string.isRequired,
   mine: CustomPropTypes.mine.isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   removeMineDocumentFromExpectedDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
 };
@@ -30,12 +28,9 @@ export class UploadedFilesList extends React.Component {
   };
 
   canUnlink = (selectedDoc) => {
-    const docStatus = this.props.expectedDocumentStatusOptions.find(
-      (status) => status.value === selectedDoc.exp_document_status_guid
-    );
     const dueDateCheck = moment(selectedDoc.due_date, "YYYY-MM-DD") > moment();
-    const statusCheck =
-      docStatus.label === "Not Received" || docStatus.label === "Received / Pending Review";
+    const code = selectedDoc.exp_document_status.exp_document_status_code;
+    const statusCheck = code === "MIA" || code === "PRE";
     return dueDateCheck && statusCheck;
   };
 
@@ -94,7 +89,6 @@ UploadedFilesList.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   mine: getMine(state),
-  expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

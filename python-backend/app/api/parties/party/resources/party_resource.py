@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 import uuid
 
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy import or_
 
 from ..models.party import Party
 from ....constants import PARTY_STATUS_CODE
@@ -93,7 +91,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 party_guid=uuid.uuid4(),
                 phone_no=data['phone_no'],
                 email=data['email'],
-                phone_ext=data['phone_ext'] if data['phone_ext'] else None,
+                phone_ext=data.get('phone_ext'),
                 **self.get_create_update_dict(),
                 **party_context)
         except AssertionError as e:
@@ -109,10 +107,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         party_exists = Party.find_by_party_guid(party_guid)
         if not party_exists:
             return self.create_error_payload(404, 'Party not found'), 404
-        party_type_code = data['type']
+        party_type_code = data.get('type')
         if party_type_code == PARTY_STATUS_CODE['per']:
-            first_name = data['first_name'] if data['first_name'] else party_exists.first_name
-            party_name = data['party_name'] if data['party_name'] else party_exists.party_name
+            first_name = data.get('first_name', party_exists.first_name)
+            party_name = data.get('party_name', party_exists.party_name)
             party_name_exists = Party.find_by_name(first_name, party_name)
             if party_name_exists:
                 self.raise_error(
@@ -121,7 +119,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             party_exists.first_name = first_name
             party_exists.party_name = party_name
         elif party_type_code == PARTY_STATUS_CODE['org']:
-            party_name = data['party_name'] if data['party_name'] else party_exists.party_name
+            party_name = data.get('party_name', party_exists.party_name)
             party_name_exists = Party.find_by_party_name(party_name)
             if party_name_exists:
                 self.raise_error(400,

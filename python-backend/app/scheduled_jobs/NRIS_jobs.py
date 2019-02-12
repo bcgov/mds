@@ -17,7 +17,7 @@ def _schedule_NRIS_jobs(app):
         minute=5)
 
 
-# caches a list of mine numbers for all major mines and each major mine indavidually
+# caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
 def _cache_major_mines_list():
     with sched.app.app_context():
