@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import MinePin from "./MinePin";
 import LocationPin from "./LocationPin";
 import * as String from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineMap.js  is an arcGIS <Map /> component,
@@ -13,7 +14,7 @@ import * as String from "@/constants/strings";
  * MineMap.js is located on Landing page as well as Mine Summary page.
  */
 const propTypes = {
-  mine: PropTypes.object,
+  mine: CustomPropTypes.mine,
   lat: PropTypes.number,
   long: PropTypes.number,
 };
@@ -26,20 +27,20 @@ const defaultProps = {
 
 class MineMap extends Component {
   state = {
-    map: {},
     view: {},
     center: null,
-    zoom: 5,
     mapFailedToLoad: false,
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.lat != this.props.lat || nextProps.long != this.props.long) {
-      const newView = this.state.view;
+    if (nextProps.lat !== this.props.lat || nextProps.long !== this.props.long) {
       const center = [nextProps.long, nextProps.lat];
-      newView.center = center;
-      newView.zoom = 10;
-      this.setState({ view: newView, center });
+      this.setState((prevState) => {
+        const newView = prevState.view;
+        newView.center = center;
+        newView.zoom = 10;
+        return { view: newView, center };
+      });
     }
   }
 
@@ -51,13 +52,13 @@ class MineMap extends Component {
     if (!this.props.mine) {
       this.renderWidgets(view);
     }
-    this.setState({ map, view });
+    this.setState({ view });
   };
 
   /**
    * handleFail displays a warning and loads a default base map with mine pins
    */
-  handleFail = (error) => {
+  handleFail = () => {
     notification.warn({
       message: String.MAP_UNAVAILABLE,
       duration: 10,
@@ -76,7 +77,7 @@ class MineMap extends Component {
    * Adds widgets to a given MapView instance
    * @param {MapView} view
    */
-  async renderWidgets(view) {
+  renderWidgets = async (view) => {
     await loadModules([
       "esri/widgets/LayerList",
       "esri/widgets/Expand",
@@ -95,14 +96,14 @@ class MineMap extends Component {
         container: document.createElement("legend"),
       });
 
-      for (const position in widgetPositionArray) {
+      Object.keys(widgetPositionArray).forEach((position) => {
         // Cast all the widgets under an expandable div and add them to the UI
         const currentWidget = new Expand({
           view,
           content: widgetPositionArray[position],
         });
         view.ui.add(currentWidget, position);
-      }
+      });
 
       const scaleBar = new ScaleBar({
         view,
@@ -111,11 +112,10 @@ class MineMap extends Component {
       });
       view.ui.add(scaleBar, "bottom-right");
     });
-  }
+  };
 
   render() {
     if (this.props.mine) {
-      const { mine } = this.props;
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
@@ -124,10 +124,14 @@ class MineMap extends Component {
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [
-              mine.mine_location ? mine.mine_location.longitude : String.DEFAULT_LONG,
-              mine.mine_location ? mine.mine_location.latitude : String.DEFAULT_LAT,
+              this.props.mine.mine_location
+                ? this.props.mine.mine_location.longitude
+                : String.DEFAULT_LONG,
+              this.props.mine.mine_location
+                ? this.props.mine.mine_location.latitude
+                : String.DEFAULT_LAT,
             ],
-            zoom: mine.mine_location ? 8 : 5,
+            zoom: this.props.mine.mine_location ? 8 : 5,
             constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
