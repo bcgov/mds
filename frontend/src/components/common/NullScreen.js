@@ -89,9 +89,10 @@ const NullScreen = (props) => (
       </div>
     )}
     {props.type === "404" && (
-      <div className="no-nav-bar">
-        <img alt="mine_img" src={NO_MINE} />
-        <h3>404 - Page not found</h3>
+      <div className="background">
+        <h1>404</h1>
+        <h3>Uh Oh, we can't seem to find the page you're looking for.</h3>
+        <h3> Please go back to the homepage below.</h3>
       </div>
     )}
     {props.type === "view-mine-manager" && (

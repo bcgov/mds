@@ -7,6 +7,7 @@ import queryString from "query-string";
 import * as ENV from "@/constants/environment";
 
 export const unAuthenticateUser = () => (dispatch) => {
+  console.log("unAuthenticateUser, two i was called??");
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");
   notification.success({
@@ -16,6 +17,7 @@ export const unAuthenticateUser = () => (dispatch) => {
 };
 
 export const getUserInfoFromToken = (token) => (dispatch) => {
+  console.log("getUserInfoFromToken, three i was called??");
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
     .get(ENV.KEYCLOAK.userInfoURL, {

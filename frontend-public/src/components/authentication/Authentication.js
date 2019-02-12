@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Menu, Dropdown, Button, Icon, Divider } from "antd";
@@ -24,65 +24,71 @@ const defaultProps = {
   userInfo: {},
 };
 
-export const Authentication = (props) => {
-  const hamburgerMenu = (
-    <Menu>
-      <Menu.Item>
-        <Button type="tertiary">
-          <Link to={route.DASHBOARD.route}>My Mines</Link>
-        </Button>
-      </Menu.Item>
-      <Divider style={{ margin: "0" }} />
-      <Menu.Item>
-        <Button type="tertiary" onClick={signOutFromSiteMinder}>
-          Log out
-        </Button>
-      </Menu.Item>
-    </Menu>
-  );
+export class Authentication extends Component {
+  handleLogout = () => {
+    console.log("I WAS CALLED, WHYYYYYYYYY");
+    signOutFromSiteMinder();
+  };
 
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <Button type="tertiary" onClick={signOutFromSiteMinder}>
-          Log out
-        </Button>
-      </Menu.Item>
-    </Menu>
-  );
+  render() {
+    const hamburgerMenu = (
+      <Menu>
+        <Menu.Item>
+          <Button type="tertiary">
+            <Link to={route.DASHBOARD.route}>My Mines</Link>
+          </Button>
+        </Menu.Item>
+        <Divider style={{ margin: "0" }} />
+        <Menu.Item>
+          <Button type="tertiary" onClick={this.handleLogout}>
+            Log out
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
 
-  if (!props.isAuthenticated) {
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <Button type="tertiary" onClick={this.handleLogout}>
+            Log out
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+    if (!this.props.isAuthenticated) {
+      return (
+        <a href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}${ENV.BCEID_HINT}`}>
+          <Button type="tertiary" className="login-btn">
+            Log in
+          </Button>
+        </a>
+      );
+    }
     return (
-      <a href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}${ENV.BCEID_HINT}`}>
-        <Button type="tertiary" className="login-btn">
-          Log in
-        </Button>
-      </a>
+      <div className="inline align-bot">
+        <MediaQuery minWidth={701}>
+          <Link to={route.DASHBOARD.route}>
+            <span className="header-link">My Mines</span>
+          </Link>
+          <Dropdown overlay={menu}>
+            <Button ghost className="header-dropdown">
+              {this.props.userInfo.email}
+              <Icon type="down" />
+            </Button>
+          </Dropdown>
+        </MediaQuery>
+        <MediaQuery maxWidth={700}>
+          <Dropdown overlay={hamburgerMenu}>
+            <Button ghost className="header-dropdown">
+              <img src={MENU} alt="menu" />
+            </Button>
+          </Dropdown>
+        </MediaQuery>
+      </div>
     );
   }
-  return (
-    <div className="inline align-bot">
-      <MediaQuery minWidth={701}>
-        <Link to={route.DASHBOARD.route}>
-          <span className="header-link">My Mines</span>
-        </Link>
-        <Dropdown overlay={menu}>
-          <Button ghost className="header-dropdown">
-            {props.userInfo.email}
-            <Icon type="down" />
-          </Button>
-        </Dropdown>
-      </MediaQuery>
-      <MediaQuery maxWidth={700}>
-        <Dropdown overlay={hamburgerMenu}>
-          <Button ghost className="header-dropdown">
-            <img src={MENU} alt="menu" />
-          </Button>
-        </Dropdown>
-      </MediaQuery>
-    </div>
-  );
-};
+}
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
