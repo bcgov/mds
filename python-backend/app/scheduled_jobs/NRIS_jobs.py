@@ -4,11 +4,11 @@ from app.api.nris_services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
 from elasticapm import Client
-
+from app.config import ELASTIC_APM
 
 def register_apm(func):
     def wrapper(args):
-        client = Client({'SERVICE_NAME': 'CRON_JOBS'})
+        client = Client(ELASTIC_APM)
         print(f'elastic client created')
         try:
             func(args)
