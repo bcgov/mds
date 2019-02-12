@@ -7,6 +7,7 @@ from elasticapm import Client
 from app.config import Config
 from elasticapm.handlers.logging import LoggingHandler
 from flask import current_app
+import logging
 
 
 def register_apm(func):
