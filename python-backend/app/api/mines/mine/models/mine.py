@@ -3,8 +3,12 @@ import uuid
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
+from ....utils.models_mixins import AuditMixin, Base
+# FIXME: Model import from outside of its namespace
+# This breaks micro-service architecture and is done
+# for search performance until search can be refactored
+from ....permits.permit.models.permit import Permit
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -147,6 +151,31 @@ class Mine(AuditMixin, Base):
     @classmethod
     def find_by_mine_no(cls, _id):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
+
+    @classmethod
+    def find_by_mine_name(cls, term = None):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
+            mines = mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
+
+    @classmethod
+    def find_by_name_no_permit(cls, term = None):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            number_filter = Mine.mine_no.ilike('%{}%'.format(term))
+            permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
+            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            mines = mines_q.union(permit_q).limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
 
     @classmethod
     def find_all_major_mines(cls):
