@@ -168,6 +168,7 @@ def register_commands(app):
             print('calling stored function')
             db.session.execute('select transfer_mine_information();')
             print('called the function')
+            db.session.execute('commit;')
             # print('calling stored function')
             # db.session.execute('select transfer_mine_manager_information();')
             # print('called the function')
