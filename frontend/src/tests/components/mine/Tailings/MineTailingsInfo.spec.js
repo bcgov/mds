@@ -9,7 +9,7 @@ const dispatchProps = {};
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   props.match = {};
-  props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS;
+  props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options;
   props.mineTSFRequiredReports = MOCK.MINE_TSF_REQUIRED_REPORTS;
 };
 

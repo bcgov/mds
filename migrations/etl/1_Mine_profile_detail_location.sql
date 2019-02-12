@@ -1,5 +1,5 @@
--- 1. ETL mine data from MMS
--- Create the ETL_MINE table
+-- Query performance optimization
+SET max_parallel_workers_per_gather TO 8;
 
 -- Transformation functions
 CREATE OR REPLACE FUNCTION transform_mine_region(code varchar) RETURNS varchar AS $$
@@ -35,7 +35,8 @@ $$ LANGUAGE plpgsql;
 
 
 
-
+-- 1. ETL mine data from MMS
+-- Create the ETL_MINE table
 DO $$
 DECLARE
     old_row    integer;
@@ -58,6 +59,8 @@ BEGIN
         major_mine_ind    boolean,
 	deleted_ind       boolean
     );
+    CREATE INDEX ON ETL_MINE (mine_no);
+    CREATE INDEX ON ETL_MINE (mine_guid);
     SELECT count(*) FROM ETL_MINE into old_row;
 
     -- Migration step from previous ETL process
@@ -67,13 +70,13 @@ BEGIN
     -- Upsert data into ETL_MINE from MMS
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_MINE
-    SET mine_name      = mms.mmsmin.mine_nm,
-        latitude       = mms.mmsmin.lat_dec,
-        longitude      = mms.mmsmin.lon_dec,
-        major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
-        mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
+    SET mine_name      = mms.mmsmin.mine_nm                           ,
+        latitude       = mms.mmsmin.lat_dec                           ,
+        longitude      = mms.mmsmin.lon_dec                           ,
+        major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk) ,
+        mine_region    = transform_mine_region(mms.mmsmin.reg_cd)     ,
         mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ),
-    deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
+        deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
     SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -104,15 +107,15 @@ BEGIN
         major_mine_ind  ,
         deleted_ind     )
     SELECT
-        gen_random_uuid()  ,
-        mms_new.mine_no    ,
-        mms_new.mine_nm    ,
-        transform_mine_region(mms_new.reg_cd),
+        gen_random_uuid()                         ,
+        mms_new.mine_no                           ,
+        mms_new.mine_nm                           ,
+        transform_mine_region(mms_new.reg_cd)     ,
         transform_mine_type_code(mms_new.mine_typ),
-        mms_new.lat_dec    ,
-        mms_new.lon_dec    ,
-        transform_major_mine_ind(mms_new.min_lnk),
-    CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
+        mms_new.lat_dec                           ,
+        mms_new.lon_dec                           ,
+        transform_major_mine_ind(mms_new.min_lnk) ,
+        CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
     FROM mms_new
     WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
     SELECT count(*) FROM ETL_MINE INTO new_row;
@@ -202,13 +205,15 @@ BEGIN
         latitude        numeric(9,7)        ,
         longitude       numeric(11,7)
     );
+    CREATE INDEX ON ETL_LOCATION (mine_no);
+    CREATE INDEX ON ETL_LOCATION (mine_guid);
     SELECT count(*) FROM ETL_LOCATION into old_row;
 
     -- Upsert data into ETL_LOCATION from MMS
     RAISE NOTICE '.. Sync existing records with latest ETL_MINE data';
     -- Create temp table for upsert process
     CREATE TEMP TABLE IF NOT EXISTS pmt_now (
-        lat_dec   numeric(11,7) ,
+        lat_dec   numeric(11,7),
         lon_dec   numeric(11,7),
         permit_no varchar(12)  ,
         mine_no   varchar(10)  ,
@@ -535,7 +540,7 @@ BEGIN
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE mine_type
     SET mine_tenure_type_code = ETL_MINE.mine_type,
-        update_user           = 'mms_migration'      ,
+        update_user           = 'mms_migration'   ,
         update_timestamp      = now()
     FROM ETL_MINE
     WHERE

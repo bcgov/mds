@@ -43,7 +43,7 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status_code: "MIA",
           related_documents: [],
         },
       ],
@@ -56,7 +56,7 @@ export const MINE_RESPONSE = {
       region_code: "NE",
       mine_permit: [
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -86,7 +86,7 @@ export const MINE_RESPONSE = {
           ],
         },
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
@@ -127,7 +127,7 @@ export const MINE_RESPONSE = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_location: 
+      mine_location:
         {
           longitude: null,
           latitude: null,
@@ -148,7 +148,7 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status_code: "MIA",
           related_documents: [],
         },
       ],
@@ -187,7 +187,7 @@ export const MINES = {
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status_code: "MIA",
           related_documents: [],
         },
       ],
@@ -206,7 +206,7 @@ export const MINES = {
       region_code: "NE",
       mine_permit: [
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -236,7 +236,7 @@ export const MINES = {
           ],
         },
         {
-          expiry_date: "9999-12-31",
+          authorization_end_date: "9999-12-31",
           issue_date: "9999-12-31",
           mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
@@ -277,7 +277,7 @@ export const MINES = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_location: 
+      mine_location:
         {
           longitude: null,
           latitude: null,
@@ -297,7 +297,7 @@ export const MINES = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status_guid: "22ea095d-ba50-4691-9384-3474ed75da68",
+          exp_document_status_code: "MIA",
           related_documents: [],
         },
       ],
@@ -538,11 +538,11 @@ export const PERMITTEE = {
 
 export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
   options: [
-    { value: "22ea095d-ba50-4691-9384-3474ed75da68", label: "Not Received" },
-    { value: "f98ea3af-9046-4c16-8543-f4eca759a1f1", label: "Received / Pending Review" },
-    { value: "155330ff-5b2e-418a-b8f5-674a25cdcbac", label: "Review In Progress" },
-    { value: "621a1e27-737a-4106-b92b-1c6c153c9d0a", label: "Accepted" },
-    { value: "3358c881-f2b5-4f58-be41-a89f820302a0", label: "Rejected / Waiting On Update" },
+    { value: "MIA", label: "Not Received" },
+    { value: "PRE", label: "Received / Pending Review" },
+    { value: "RIP", label: "Review In Progress" },
+    { value: "ACC", label: "Accepted" },
+    { value: "REJ", label: "Rejected / Waiting On Update" },
   ],
 };
 
