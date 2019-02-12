@@ -15,7 +15,6 @@ from ..models.mine_type_detail import MineTypeDetail
 
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
-from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
@@ -23,6 +22,10 @@ from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+# FIXME: Model import from outside of its namespace
+# This breaks micro-service architecture and is done
+# for search performance until search can be refactored
+from ....permits.permit.models.permit import Permit
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):

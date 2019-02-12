@@ -3,9 +3,12 @@ import uuid
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from ....utils.models_mixins import AuditMixin, Base
-from ....permits.permit.models.permit import Permit
 from app.extensions import db
+from ....utils.models_mixins import AuditMixin, Base
+# FIXME: Model import from outside of its namespace
+# This breaks micro-service architecture and is done
+# for search performance until search can be refactored
+from ....permits.permit.models.permit import Permit
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
