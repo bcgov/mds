@@ -12,7 +12,7 @@ export const fetchUserMineInfo = () => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_USER_MINE_INFO));
   return axios
-    .get(`${ENVIRONMENT.apiUrl + API.MINE_NAME_LIST}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.USER_MINE_INFO}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_MINE_INFO));
       dispatch(userMineInfoActions.storeUserMineInfo(response.data));

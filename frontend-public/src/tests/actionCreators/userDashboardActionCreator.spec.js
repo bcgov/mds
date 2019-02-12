@@ -77,7 +77,7 @@ describe("`updateExpectedDocument` action creator", () => {
 });
 
 describe("`fetchUserMineInfo` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_NAME_LIST;
+  const url = ENVIRONMENT.apiUrl + API.USER_MINE_INFO;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
