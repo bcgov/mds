@@ -1,8 +1,15 @@
-ALTER TABLE mine_expected_document DROP CONSTRAINT mine_expected_document_exp_document_status_guid_fkey;
-ALTER TABLE mine_expected_document DROP COLUMN exp_document_status_guid;
-ALTER TABLE mine_expected_document ADD COLUMN exp_document_status_code character varying(3) NOT NULL DEFAULT 'MIA';
+ALTER TABLE mine_expected_document DROP CONSTRAINT if exists mine_expected_document_exp_document_status_guid_fkey;
+
+
+ALTER TABLE mine_expected_document DROP COLUMN IF EXISTS exp_document_status_guid;
+ALTER TABLE mine_expected_document ADD COLUMN IF NOT EXISTS exp_document_status_code character varying(3) NOT NULL DEFAULT 'MIA';
 
 DROP TABLE IF EXISTS mine_expected_document_status;
+
+
+ALTER TABLE mine_expected_document DROP CONSTRAINT if exists mine_expected_document_exp_document_status_code_fkey;
+DROP TABLE IF EXISTS mine_expected_document_status_code;
+
 CREATE TABLE mine_expected_document_status_code (
     exp_document_status_code character varying(3) PRIMARY KEY DEFAULT 'MIA',
     description character varying(100) NOT NULL,
@@ -25,6 +32,7 @@ INSERT INTO mine_expected_document_status_code
    )
 VALUES
    ('MIA', 'Not Received', 10, 'system-mds', 'system-mds');
+
 
 ALTER TABLE mine_expected_document
     ADD CONSTRAINT mine_expected_document_exp_document_status_code_fkey FOREIGN KEY (exp_document_status_code) REFERENCES mine_expected_document_status_code(exp_document_status_code) DEFERRABLE INITIALLY DEFERRED;
