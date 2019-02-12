@@ -12,6 +12,7 @@ def register_apm(func):
         print(f'elastic client created')
         try:
             func(args)
+            client.capture_message('FOUND ALL THE PRIMES')
         except Exception as e:
             client.capture_exception()
             raise e
