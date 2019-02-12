@@ -8,6 +8,7 @@ import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import AdvancedSearchForm from "@/components/Forms/AdvancedSearchForm";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
@@ -16,12 +17,15 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleMineSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
-  mineNameList: PropTypes.array,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
 };
 
 const defaultProps = {
   mineNameList: [],
+  handleMineSearch: () => {},
+  handleCoordinateSearch: () => {},
+  isMapView: false,
 };
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
@@ -44,10 +48,11 @@ export class MineSearch extends Component {
    *  If the user has typed more than 3 characters filter the search
    * If they clear the search, revert back to default search set
    */
-  handleChange = (value) => {
-    if (value.length > 2) {
-      this.props.fetchMineNameList(value);
-    } else if (value.length === 0) {
+  handleChange = (name) => {
+    if (name.length > 2) {
+      // Only used by the map view, which searches by name
+      this.props.fetchMineNameList({ name });
+    } else if (name.length === 0) {
       this.props.fetchMineNameList();
     }
   };
@@ -70,25 +75,15 @@ export class MineSearch extends Component {
   };
 
   toggleAdvancedSearch = () => {
-    this.setState({ isAdvanceSearch: !this.state.isAdvanceSearch });
+    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
-  transformData = (data) => {
-    if (data) {
-      const dataList = [];
-      data.map((opt) => {
-        const search = opt.mine_name.concat(" - ", opt.mine_no);
-        const coordinates = opt.longitude.concat(",", opt.latitude);
-        const mineDetails = coordinates.concat(",", opt.mine_name);
-        dataList.push(
-          <AutoComplete.Option key={opt.guid} value={mineDetails}>
-            {search}
-          </AutoComplete.Option>
-        );
-      });
-      return dataList;
-    }
-  };
+  transformData = (data) =>
+    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", guid }) => (
+      <AutoComplete.Option key={guid} value={`${longitude},${latitude},${mine_name},${guid}`}>
+        {`${mine_name} - ${mine_no}`}
+      </AutoComplete.Option>
+    ));
 
   render() {
     if (this.props.isMapView) {
