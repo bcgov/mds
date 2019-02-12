@@ -3,6 +3,20 @@ from app.extensions import cache, sched
 from app.api.nris_services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
+from elasticapm import Client
+
+
+def register_apm(func):
+    def wrapper(args):
+        client = Client({'SERVICE_NAME': 'CRON_JOBS'})
+        print(f'elastic client created')
+        try:
+            func(args)
+        except Exception as e:
+            client.capture_exception()
+            raise e
+
+    return wrapper
 
 
 #the schedule of these jobs is set using server time (UTC)
@@ -15,6 +29,18 @@ def _schedule_NRIS_jobs(app):
         id='get_major_mine_NRIS_data',
         hour=9,
         minute=5)
+
+
+@register_apm
+def busy_apm_function(top):
+    top = int(top)
+    for x in range(top):
+        isPrime = True
+        for n in range(2, x - 1):
+            if x % n == 0:
+                isPrime = False
+        if isPrime:
+            print(f'{x} is prime')
 
 
 # caches a list of mine numbers for all major mines and each major mine individually

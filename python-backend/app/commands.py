@@ -24,6 +24,8 @@ from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, 
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db
 
+from .scheduled_jobs.NRIS_jobs import busy_apm_function
+
 
 def register_commands(app):
     DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
@@ -161,3 +163,8 @@ def register_commands(app):
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
             raise
+
+    @app.cli.command()
+    @click.argument('num')
+    def test_apm_method(num):
+        busy_apm_function(num)
