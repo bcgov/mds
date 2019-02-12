@@ -10,10 +10,15 @@ import { Icon, Input, AutoComplete } from "antd";
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
 };
-const RenderAutoComplete = ({ data, placeholder, handleChange, handleSelect }) => (
+
+const defaultProps = {
+  placeholder: "",
+};
+
+const RenderAutoComplete = (props) => (
   <AutoComplete
     defaultActiveFirstOption={false}
     notFoundContent="Not Found"
@@ -21,18 +26,23 @@ const RenderAutoComplete = ({ data, placeholder, handleChange, handleSelect }) =
     dropdownMatchSelectWidth
     backfill
     style={{ width: "100%" }}
-    dataSource={data}
-    placeholder={placeholder}
+    dataSource={props.data}
+    placeholder={props.placeholder}
     filterOption={(input, option) =>
       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
-    onSelect={handleSelect}
-    onChange={handleChange}
+    onSelect={props.handleSelect}
+    onChange={props.handleChange}
   >
-    <Input id="search" suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />} />
+    <Input
+      autoComplete="off"
+      id="search"
+      suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
+    />
   </AutoComplete>
 );
 
 RenderAutoComplete.propTypes = propTypes;
+RenderAutoComplete.defaultProps = defaultProps;
 
 export default RenderAutoComplete;
