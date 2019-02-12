@@ -62,12 +62,23 @@ export class MinePin extends Component {
           mineIds = this.props.mineIds;
         }
 
-        const defaultSym = {
-          url: SMALL_PIN,
+        // const defaultSym = {
+        //   url: SMALL_PIN,
+        //   width: this.state.isFullMap ? "40" : "80",
+        //   height: this.state.isFullMap ? "40" : "80",
+        //   type: "picture-marker",
+        // };
+        // "M45.8358 19.1496L45.0265 18.5622L45.0122 18.582L44.9988 18.6024L45.8358 19.1496ZM25.1566 19.1392L25.9949 18.5939L25.9813 18.573L25.9666 18.5528L25.1566 19.1392ZM35.4732 35L34.635 35.5453L35.4711 36.8307L36.3102 35.5472L35.4732 35ZM47 11.9512C47 14.6636 46.2563 16.868 45.0265 18.5622L46.6451 19.737C48.1469 17.668 49 15.0427 49 11.9512H47ZM35.5 1C41.8941 1 47 5.94486 47 11.9512H49C49 4.75662 42.9131 -1 35.5 -1V1ZM24 11.9512C24 5.94486 29.1059 1 35.5 1V-1C28.0869 -1 22 4.75662 22 11.9512H24ZM25.9666 18.5528C24.741 16.8598 24 14.6587 24 11.9512H22C22 15.037 22.85 17.6583 24.3466 19.7256L25.9666 18.5528ZM36.3115 34.4547L25.9949 18.5939L24.3183 19.6844L34.635 35.5453L36.3115 34.4547ZM44.9988 18.6024L34.6362 34.4528L36.3102 35.5472L46.6728 19.6968L44.9988 18.6024Z",
+
+        const defaultSym = new SimpleMarkerSymbol({
+          size: 25,
           width: this.state.isFullMap ? "40" : "80",
           height: this.state.isFullMap ? "40" : "80",
-          type: "picture-marker",
-        };
+          path:
+            "M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z",
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [247, 54, 251, 1],
+        });
 
         const renderer = new ClassBreaksRenderer({
           defaultSymbol: defaultSym,
@@ -134,7 +145,6 @@ export class MinePin extends Component {
 
         const fcl = FlareClusterLayer.FlareClusterLayer(options);
         fcl.title = "Mine Pins";
-        fcl.refreshOnStationary = true;
         this.props.map.layers.remove(fcl);
         this.props.map.layers.add(fcl);
       }
