@@ -13,16 +13,17 @@ import logging
 def register_apm(func):
     def wrapper(args):
         client = Client(current_app.config['ELASTIC_APM'])
-        handler = LoggingHandler(client=client)
-        handler.setLevel(logging.WARN)
-        current_app.logger.addHandler(handler)
-
-        current_app.logger.warn(f'registered apm for function {func}')
+        # handler = LoggingHandler(client=client)
+        # handler.setLevel(logging.WARN)
+        # current_app.logger.addHandler(handler)
+        client.begin_transaction('processors')
+        #current_app.logger.warn(f'registered apm for function {func}')
         try:
             func(args)
-            current_app.logger.warn(f'{func} finished without errors')
+            client.end_transaction(f'{func.__name__} finished with no errors')
         except Exception as e:
-            current_app.logger.warn(f'{func} threw exception: {str(e)}')
+            client.end_transaction(f'{func.__name__} finished with errors: {str(e)}')
+            #current_app.logger.warn(f'{func} threw exception: {str(e)}')
             raise e
 
     return wrapper
