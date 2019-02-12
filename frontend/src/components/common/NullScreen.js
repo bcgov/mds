@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS } from "@/constants/assets";
+import { Link } from "react-router-dom";
+import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS, COMPUTER_404 } from "@/constants/assets";
 import * as String from "@/constants/strings";
+import * as route from "@/constants/routes";
 
 /**
  * @constant NullScreen is a reusable view for when there is no data to display, add more views when required.
@@ -88,13 +90,6 @@ const NullScreen = (props) => (
         <h3>{String.UNAUTHORIZED_PAGE}</h3>
       </div>
     )}
-    {props.type === "404" && (
-      <div className="background">
-        <h1>404</h1>
-        <h3>Uh Oh, we can't seem to find the page you're looking for.</h3>
-        <h3> Please go back to the homepage below.</h3>
-      </div>
-    )}
     {props.type === "view-mine-manager" && (
       <div className="center">
         <img alt="mine_img" src={GROUP_MINERS} />
@@ -106,6 +101,19 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
+      </div>
+    )}
+    {props.type === "404" && (
+      <div className="no-nav-bar">
+        <img alt="mine_img" src={COMPUTER_404} />
+        <h1>Uh Oh!</h1>
+        <p>
+          We can't seem to find the page you're looking for. It may have moved, or no longer exists.
+        </p>
+        <p>
+          {" "}
+          <Link to={route.MINE_DASHBOARD.route}>Return to the home page</Link> to get back on track.
+        </p>
       </div>
     )}
   </div>

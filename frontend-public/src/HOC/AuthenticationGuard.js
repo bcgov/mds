@@ -14,7 +14,6 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   class authenticationGuard extends Component {
     componentDidMount() {
       const token = localStorage.getItem("jwt");
-      console.log(token);
       if (token && !this.props.isAuthenticated) {
         this.props.getUserInfoFromToken(token);
       }

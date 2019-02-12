@@ -1,6 +1,6 @@
 .null-screen {
-  // text-align: center;
-  // margin-top: $default-margin-lg;
+  text-align: center;
+  margin-top: $default-margin-lg;
 
   @include mobile {
     margin: 0;
@@ -22,19 +22,4 @@
   .no-nav-bar {
     @include center(true, true);
   }
-}
-
-.background {
-  // // background: blue url("./../assets/images/404Background.png") no-repeat fixed center;
-  // /* The image used */
-  // background-image: url("./../assets/images/404Background.png");
-
-  // /* Full height */
-  // height: 100vh;
-  // width: 100vw;
-
-  // /* Center and scale the image nicely */
-  // background-position: center;
-  // background-repeat: no-repeat;
-  // background-size: cover;
 }

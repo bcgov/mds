@@ -26,7 +26,6 @@ const defaultProps = {
 
 export class Authentication extends Component {
   handleLogout = () => {
-    console.log("I WAS CALLED, WHYYYYYYYYY");
     signOutFromSiteMinder();
   };
 
