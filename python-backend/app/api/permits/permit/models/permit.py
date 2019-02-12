@@ -17,7 +17,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    expiry_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
 
@@ -32,7 +32,7 @@ class Permit(AuditMixin, Base):
             'permit_status_code': self.permit_status_code,
             'received_date': self.received_date.isoformat(),
             'issue_date': self.issue_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat()
+            'authorization_end_date': self.authorization_end_date.isoformat()
         }
 
     @classmethod

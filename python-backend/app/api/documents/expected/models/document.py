@@ -23,6 +23,8 @@ class ExpectedDocument(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('mds_required_document.req_document_guid'), nullable=True)
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    
+    exp_document_status_code = db.Column(db.String(3), db.ForeignKey('mine_expected_document_status_code.exp_document_status_code'), nullable=False, server_default=FetchedValue())
     # Data Columns
     exp_document_name = db.Column(db.String(100), nullable=False)
     exp_document_description = db.Column(db.String(300))
@@ -30,14 +32,17 @@ class ExpectedDocument(AuditMixin, Base):
     due_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    exp_document_status_guid = db.Column(
-        UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
     #relationships
     required_document = db.relationship(
         'RequiredDocument',
         backref='exp_document_guid',
         order_by='desc(RequiredDocument.req_document_name)',
+        lazy='joined')
+    expected_document_status = db.relationship(
+        'ExpectedDocumentStatus',
+        backref='exp_documents',
+        uselist=False,
         lazy='joined')
 
     def json(self):
@@ -49,7 +54,7 @@ class ExpectedDocument(AuditMixin, Base):
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
             'received_date': str(self.received_date),
-            'exp_document_status_guid': str(self.exp_document_status_guid)
+            'exp_document_status': self.expected_document_status.json()
         }
 
     @classmethod

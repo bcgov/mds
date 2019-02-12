@@ -496,7 +496,9 @@ BEGIN
             create_user         ,
             create_timestamp    ,
             update_user         ,
-            update_timestamp
+            update_timestamp    ,
+            processed_by        ,
+            processed_on
         )
         SELECT
             gen_random_uuid()   ,-- Generate a random UUID for mgr_appointment_guid
@@ -505,6 +507,8 @@ BEGIN
             'MMG'               ,
             new.effective_date  ,
             '9999-12-31'::date  ,
+            'mms_migration'     ,
+            now()               ,
             'mms_migration'     ,
             now()               ,
             'mms_migration'     ,

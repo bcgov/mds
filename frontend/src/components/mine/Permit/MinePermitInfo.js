@@ -95,7 +95,7 @@ const transformRowData = (permits, partyRelationships) => {
     permitNo: latest.permit_no || Strings.EMPTY_FIELD,
     firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
     permittee: permitteeName,
-    authorizationEndDate: latest.expiry_date ? formatDate(latest.expiry_date) : Strings.EMPTY_FIELD,
+    authorizationEndDate: latest.authorization_end_date ? formatDate(latest.authorization_end_date) : Strings.EMPTY_FIELD,
     permittees,
     status: Strings.EMPTY_FIELD,
   };

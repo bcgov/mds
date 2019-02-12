@@ -241,11 +241,11 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     });
 };
 
-export const fetchMineNameList = (search = null) => (dispatch) => {
+export const fetchMineNameList = (params = {}) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(search), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(mineActions.storeMineNameList(response.data));
@@ -335,17 +335,17 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
     });
 };
 
-export const addMineDocumentToExpectedDocument = (expectedDocumentGuid, payload) => (dispatch) => {
+export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
   return axios
-    .post(
+    .put(
       ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expectedDocumentGuid),
       payload,
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
       return response;
     })
@@ -354,7 +354,7 @@ export const addMineDocumentToExpectedDocument = (expectedDocumentGuid, payload)
         message: err.response ? err.response.data.error.message : String.ERROR,
         duration: 10,
       });
-      dispatch(error(reducerTypes.ADD_MINE_DOCUMENT_TO_EXPECTED_DOCUMENT));
+      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
       dispatch(hideLoading());
     });
 };

@@ -23,10 +23,9 @@ import {
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
-
-import { ENVIRONMENT } from "@/constants/environment";
-import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
+
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
@@ -37,30 +36,15 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
-  expectedDocumentStatusOptions: PropTypes.array,
+  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.mineExpectedDocumentStatus)
+    .isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
   removeExpectedDocument: PropTypes.func.isRequired,
-  selectedDocument: PropTypes.object,
   mineTSFRequiredReports: PropTypes.array.isRequired,
   fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
   createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  expectedDocumentStatusOptions: [],
-};
-
-const DocumentStatusText = ({ doc, expectedDocumentStatusOptions }) => {
-  if (!expectedDocumentStatusOptions[0]) return String.LOADING;
-  if (!doc) return String.LOADING;
-
-  return doc.exp_document_status_guid === "None"
-    ? expectedDocumentStatusOptions[0].label
-    : expectedDocumentStatusOptions.find(({ value }) => value === doc.exp_document_status_guid)
-        .label;
-};
-/*
-  return  */
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
 
@@ -90,7 +74,9 @@ export class MineTailingsInfo extends Component {
     updatedDocument.exp_document_name = value.tsf_report_name;
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
-    updatedDocument.exp_document_status_guid = value.tsf_report_status;
+    updatedDocument.exp_document_status = this.props.expectedDocumentStatusOptions.find(
+      ({ exp_document_status_code }) => exp_document_status_code === value.tsf_report_status
+    );
     return this.props
       .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
       .then(() => {
@@ -106,13 +92,6 @@ export class MineTailingsInfo extends Component {
     });
   };
 
-  getFileFromDocumentManager = (docMgrFileGuid) => {
-    const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docMgrFileGuid}`;
-    window.open(url, "_blank");
-    // Document_manager GET endpoint is unathenticated right now.
-    // TODO: updated this when Document manager tokens are implmeneted.
-  };
-
   openAddReportModal(event, onSubmit, title, mineTSFRequiredReports) {
     event.preventDefault();
     const mineTSFRequiredReportsDropDown = createDropDownList(
@@ -126,7 +105,7 @@ export class MineTailingsInfo extends Component {
     });
   }
 
-  openEditReportModal(event, onSubmit, title, statusOptions, doc) {
+  openEditReportModal(event, onSubmit, title, doc) {
     this.setState({
       selectedDocument: doc,
     });
@@ -137,9 +116,13 @@ export class MineTailingsInfo extends Component {
         tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
         tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
         tsf_report_received_date: doc.received_date === "None" ? null : doc.received_date,
-        tsf_report_status:
-          doc.exp_document_status_guid === "None" ? null : doc.exp_document_status_guid,
+        tsf_report_status: doc.exp_document_status.exp_document_status_code,
       };
+      const statusOptions = createDropDownList(
+        this.props.expectedDocumentStatusOptions,
+        "description",
+        "exp_document_status_code"
+      );
       this.props.openModal({
         props: { onSubmit, title, statusOptions, initialValues, selectedDocument: doc },
         content: modalConfig.EDIT_TAILINGS_REPORT,
@@ -196,10 +179,7 @@ export class MineTailingsInfo extends Component {
             .map((doc, id) => {
               const isOverdue =
                 Date.parse(doc.due_date) < new Date() &&
-                (doc.exp_document_status_guid === "None" ||
-                  (this.props.expectedDocumentStatusOptions[0] &&
-                    doc.exp_document_status_guid ===
-                      this.props.expectedDocumentStatusOptions[0].value));
+                doc.exp_document_status.exp_document_status_code === "MIA";
               return (
                 <div key={doc.exp_document_guid}>
                   <Row gutter={16} justify="center" align="top">
@@ -221,10 +201,7 @@ export class MineTailingsInfo extends Component {
                     </Col>
                     <Col id={`status-${id}`} span={4}>
                       <h6 className={isOverdue ? "bold" : null}>
-                        <DocumentStatusText
-                          doc={doc}
-                          expectedDocumentStatusOptions={this.props.expectedDocumentStatusOptions}
-                        />
+                        {doc ? doc.exp_document_status.description : String.LOADING}
                       </h6>
                     </Col>
                     <Col span={3}>
@@ -235,7 +212,7 @@ export class MineTailingsInfo extends Component {
                               <a
                                 key={id}
                                 onClick={() =>
-                                  this.getFileFromDocumentManager(file.document_manager_guid)
+                                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
                                 }
                               >
                                 {file.document_name}
@@ -258,7 +235,6 @@ export class MineTailingsInfo extends Component {
                                 event,
                                 this.handleEditReportSubmit,
                                 ModalContent.EDIT_TAILINGS_REPORT,
-                                this.props.expectedDocumentStatusOptions,
                                 doc
                               )
                             }
@@ -335,7 +311,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineTailingsInfo.propTypes = propTypes;
-MineTailingsInfo.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

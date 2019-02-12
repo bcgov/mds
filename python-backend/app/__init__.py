@@ -3,12 +3,9 @@ import json
 import os
 
 from flask import Flask
-from flask import request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource
-from flask_uploads import configure_uploads
 from flask_compress import Compress
-from elasticapm.contrib.flask import ElasticAPM
 
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.mines.namespace.mines import api as mines_api
@@ -18,7 +15,7 @@ from app.api.document_manager.namespace.document_manager import api as document_
 from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, documents, cache, sched
+from app.extensions import db, jwt, api, cache, sched, apm
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 
 
@@ -33,12 +30,9 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_object(test_config)
 
-    configure_uploads(app, documents)
-
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    register_apm(app)
 
     return app
 
@@ -50,14 +44,16 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
+    apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+
+    CORS(app)
+    Compress(app)
+
     if app.config.get('ENVIRONMENT_NAME') == 'prod':
         sched.init_app(app)
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_NRIS_jobs(app)
-
-    CORS(app)
-    Compress(app)
 
     return None
 
@@ -72,6 +68,7 @@ def register_routes(app):
     api.add_namespace(document_api)
     api.add_namespace(document_manager_api)
     api.add_namespace(users_api)
+
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
@@ -83,15 +80,3 @@ def register_routes(app):
     def default_error_handler(error):
         _, value, traceback = sys.exc_info()
         return json.loads({"error": str(traceback)})
-
-
-def register_apm(app):
-    if app.config['ELASTIC_ENABLED'] == '1':
-        app.config['ELASTIC_APM'] = {
-            'SERVICE_NAME': app.config['ELASTIC_SERVICE_NAME'],
-            'SECRET_TOKEN': app.config['ELASTIC_SECRET_TOKEN'],
-            'SERVER_URL': app.config['ELASTIC_SERVER_URL'],
-            'DEBUG': True
-        }
-        apm = ElasticAPM(app)
-    return None

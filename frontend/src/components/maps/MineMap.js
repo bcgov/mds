@@ -80,20 +80,14 @@ class MineMap extends Component {
     await loadModules([
       "esri/widgets/LayerList",
       "esri/widgets/Expand",
-      "esri/widgets/BasemapGallery",
       "esri/widgets/ScaleBar",
       "esri/widgets/Legend",
-    ]).then(([LayerListWidget, Expand, BasemapGallery, ScaleBar, Legend]) => {
+    ]).then(([LayerListWidget, Expand, ScaleBar, Legend]) => {
       const widgetPositionArray = {};
 
       widgetPositionArray["top-left"] = new LayerListWidget({
         view,
         container: document.createElement("layer_list"),
-      });
-
-      widgetPositionArray["top-right"] = new BasemapGallery({
-        view,
-        container: document.createElement("map_gallery"),
       });
 
       widgetPositionArray["bottom-left"] = new Legend({
@@ -146,7 +140,7 @@ class MineMap extends Component {
       return (
         // Fallback to default map if any of the layers fail to load
         <Map
-          style={{ width: "100vw", height: "100vh" }}
+          style={{ width: "100%", height: "100vh" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [this.props.long, this.props.lat],
@@ -165,7 +159,7 @@ class MineMap extends Component {
       // this.props.lat & this.props.long get changed in Dashboard.js
       <WebMap
         id={ENVIRONMENT.mapPortalId}
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100%", height: "100vh" }}
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
           center: [this.props.long, this.props.lat],

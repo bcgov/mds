@@ -293,7 +293,8 @@ app {
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}"
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api",
                     ]
                 ],
                 [

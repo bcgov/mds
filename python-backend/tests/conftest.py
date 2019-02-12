@@ -327,14 +327,14 @@ def setup_data(session):
     required_document3.save()
 
     expected_document_status1 = ExpectedDocumentStatus(
-        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID1),
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
         description="Not Received",
         display_order=10,
         **DUMMY_USER_KWARGS)
     expected_document_status1.save()
 
     expected_document_status2 = ExpectedDocumentStatus(
-        exp_document_status_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_STATUS_GUID2),
+        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE2,
         description="Pending Review",
         display_order=20,
         **DUMMY_USER_KWARGS)
@@ -347,7 +347,7 @@ def setup_data(session):
         exp_document_name=TEST_EXPECTED_DOCUMENT_NAME1,
         due_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
         received_date=datetime.strptime('1984-06-18', '%Y-%m-%d'),
-        exp_document_status_guid=expected_document_status1.exp_document_status_guid,
+        exp_document_status_code=expected_document_status1.exp_document_status_code,
         **DUMMY_USER_KWARGS)
     expected_document1.save()
 
