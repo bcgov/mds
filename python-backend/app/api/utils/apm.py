@@ -22,7 +22,7 @@ def register_apm(func):
                     f'{func.__name__} - finished with error {e.__class__.__name__}')
                 raise e
         else:
-            print(f'create ElasticAPM client... running <{func.__name__}> without APM')
+            print(f'could not create ElasticAPM client... running <{func.__name__}> without APM')
             func(*args, **kwargs)
 
     return wrapper
