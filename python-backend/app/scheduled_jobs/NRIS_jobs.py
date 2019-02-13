@@ -11,12 +11,12 @@ import logging
 
 
 def register_apm(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         client = Client(sched.app.app_context().app.
                         config['ELASTIC_APM'])  #this works in both sched and flask runtimes
         client.begin_transaction('scheduled_jobs')
         try:
-            func()
+            func(*args, **kwargs)
             client.end_transaction(f'{func.__name__} - finished with no errors')
         except Exception as e:
             client.end_transaction(f'{func.__name__} - finished with errors: {str(e)}')
