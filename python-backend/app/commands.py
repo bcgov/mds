@@ -165,6 +165,5 @@ def register_commands(app):
             raise
 
     @app.cli.command()
-    @click.argument('num')
-    def test_apm_method(num):
-        busy_apm_function(num)
+    def test_apm_method():
+        busy_apm_function()
