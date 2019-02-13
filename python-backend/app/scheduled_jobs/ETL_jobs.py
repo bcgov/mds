@@ -7,7 +7,7 @@ from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_
 
 #the schedule of these jobs is set using server time (UTC)
 def _schedule_ETL_jobs(app):
-    app.apscheduler.add_job(func=_run_ETL, trigger='cron', id='ETL', hour=21, minute=10)
+    app.apscheduler.add_job(func=_run_ETL, trigger='cron', id='ETL', hour=21, minute=30)
 
 
 def _run_ETL():
