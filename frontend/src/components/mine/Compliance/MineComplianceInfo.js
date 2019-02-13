@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Row, Col, Divider, Pagination } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
