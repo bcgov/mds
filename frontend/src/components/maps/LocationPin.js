@@ -20,6 +20,20 @@ const defaultProps = {
 export class LocationPin extends Component {
   state = { graphic: null };
 
+  componentWillMount() {
+    this.renderGraphic(this.props.center);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.center !== this.props.center) {
+      this.renderGraphic(nextProps.center);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.view.graphics.remove(this.state.graphic);
+  }
+
   renderGraphic = (props) => {
     loadModules([
       "esri/Graphic",
@@ -50,20 +64,6 @@ export class LocationPin extends Component {
       this.setState({ graphic });
     });
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.center !== this.props.center) {
-      this.renderGraphic(nextProps.center);
-    }
-  }
-
-  componentWillMount() {
-    this.renderGraphic(this.props.center);
-  }
-
-  componentWillUnmount() {
-    this.props.view.graphics.remove(this.state.graphic);
-  }
 
   render() {
     return null;
