@@ -100,20 +100,22 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
-INSERT INTO mine_expected_document_status
+INSERT INTO mine_expected_document_status_code
     (
+    exp_document_status_code,
     description,
     display_order,
     create_user,
     update_user
     )
 VALUES
-    ('Not Received', 10, 'system-mds', 'system-mds'),
-    ('Received / Pending Review', 20, 'system-mds', 'system-mds'),
-    ('Review In Progress', 30, 'system-mds', 'system-mds'),
-    ('Accepted', 40, 'system-mds', 'system-mds'),
-    ('Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
+    ('MIA', 'Not Received', 10, 'system-mds', 'system-mds'),
+    ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
+    ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
 
 INSERT INTO mine_tenure_type_code
     (

@@ -4,7 +4,6 @@ import { storeMine, storeUserMineInfo, storeMineDocuments } from "@/actions/user
 const baseExpectedValue = {
   userMineInfo: {},
   mine: {},
-  expectedDocumentStatusOptions: [],
   mineDocuments: [],
 };
 

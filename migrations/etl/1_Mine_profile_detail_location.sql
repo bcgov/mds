@@ -1,5 +1,5 @@
--- 1. ETL mine data from MMS
--- Create the ETL_MINE table
+-- Query performance optimization
+SET max_parallel_workers_per_gather TO 8;
 
 -- Transformation functions
 CREATE OR REPLACE FUNCTION transform_mine_region(code varchar) RETURNS varchar AS $$
@@ -35,7 +35,8 @@ $$ LANGUAGE plpgsql;
 
 
 
-
+-- 1. ETL mine data from MMS
+-- Create the ETL_MINE table
 DO $$
 DECLARE
     old_row    integer;
@@ -53,10 +54,13 @@ BEGIN
         mine_name         varchar(60)   ,
         mine_region       varchar(2)    ,
         mine_type         varchar(3)    ,
-        latitude          numeric(9,7)  ,
+        latitude          numeric(11,7)  ,
         longitude         numeric(11,7) ,
-        major_mine_ind    boolean
+        major_mine_ind    boolean,
+	deleted_ind       boolean
     );
+    CREATE INDEX ON ETL_MINE (mine_no);
+    CREATE INDEX ON ETL_MINE (mine_guid);
     SELECT count(*) FROM ETL_MINE into old_row;
 
     -- Migration step from previous ETL process
@@ -66,12 +70,13 @@ BEGIN
     -- Upsert data into ETL_MINE from MMS
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE ETL_MINE
-    SET mine_name      = mms.mmsmin.mine_nm,
-        latitude       = mms.mmsmin.lat_dec,
-        longitude      = mms.mmsmin.lon_dec,
-        major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk),
-        mine_region    = transform_mine_region(mms.mmsmin.reg_cd)    ,
-        mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ)
+    SET mine_name      = mms.mmsmin.mine_nm                           ,
+        latitude       = mms.mmsmin.lat_dec                           ,
+        longitude      = mms.mmsmin.lon_dec                           ,
+        major_mine_ind = transform_major_mine_ind(mms.mmsmin.min_lnk) ,
+        mine_region    = transform_mine_region(mms.mmsmin.reg_cd)     ,
+        mine_type      = transform_mine_type_code(mms.mmsmin.mine_typ),
+        deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
     FROM mms.mmsmin
     WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
     SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -99,16 +104,18 @@ BEGIN
         mine_type       ,
         latitude        ,
         longitude       ,
-        major_mine_ind  )
+        major_mine_ind  ,
+        deleted_ind     )
     SELECT
-        gen_random_uuid()  ,
-        mms_new.mine_no    ,
-        mms_new.mine_nm    ,
-        transform_mine_region(mms_new.reg_cd),
+        gen_random_uuid()                         ,
+        mms_new.mine_no                           ,
+        mms_new.mine_nm                           ,
+        transform_mine_region(mms_new.reg_cd)     ,
         transform_mine_type_code(mms_new.mine_typ),
-        mms_new.lat_dec    ,
-        mms_new.lon_dec    ,
-        transform_major_mine_ind(mms_new.min_lnk)
+        mms_new.lat_dec                           ,
+        mms_new.lon_dec                           ,
+        transform_major_mine_ind(mms_new.min_lnk) ,
+        CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
     FROM mms_new
     WHERE transform_major_mine_ind(mms_new.min_lnk) = FALSE;
     SELECT count(*) FROM ETL_MINE INTO new_row;
@@ -134,7 +141,8 @@ BEGIN
     SET mine_name        = ETL_MINE.mine_name     ,
         mine_region      = ETL_MINE.mine_region   ,
         major_mine_ind   = ETL_MINE.major_mine_ind,
-        update_user      = 'mms_migration'           ,
+        deleted_ind      = ETL_MINE.deleted_ind   ,
+        update_user      = 'mms_migration'        ,
         update_timestamp = now()
     FROM ETL_MINE
     WHERE ETL_MINE.mine_guid = mine.mine_guid;
@@ -157,6 +165,7 @@ BEGIN
         mine_name           ,
         mine_region         ,
         major_mine_ind      ,
+        deleted_ind         ,
         create_user         ,
         create_timestamp    ,
         update_user         ,
@@ -166,7 +175,8 @@ BEGIN
         new.mine_no         ,
         new.mine_name       ,
         new.mine_region     ,
-        major_mine_ind      ,
+        new.major_mine_ind  ,
+        new.deleted_ind     ,
         'mms_migration'     ,
         now()               ,
         'mms_migration'     ,
@@ -188,20 +198,22 @@ DECLARE
 BEGIN
     RAISE NOTICE '.. Step 3 of 5: Transform location data';
     -- This is the intermediary table that will be used to store transformed
-    -- regional mine location data
+    -- mine location data
     CREATE TABLE IF NOT EXISTS ETL_LOCATION (
         mine_guid       uuid                ,
         mine_no         varchar(7)          ,
         latitude        numeric(9,7)        ,
         longitude       numeric(11,7)
     );
+    CREATE INDEX ON ETL_LOCATION (mine_no);
+    CREATE INDEX ON ETL_LOCATION (mine_guid);
     SELECT count(*) FROM ETL_LOCATION into old_row;
 
     -- Upsert data into ETL_LOCATION from MMS
     RAISE NOTICE '.. Sync existing records with latest ETL_MINE data';
     -- Create temp table for upsert process
     CREATE TEMP TABLE IF NOT EXISTS pmt_now (
-        lat_dec   numeric(9,7) ,
+        lat_dec   numeric(11,7),
         lon_dec   numeric(11,7),
         permit_no varchar(12)  ,
         mine_no   varchar(10)  ,
@@ -436,6 +448,8 @@ BEGIN
     SELECT count(*) FROM ETL_LOCATION into new_row;
     RAISE NOTICE '....# of new mine_location records found in MMS: %', (new_row-old_row);
     RAISE NOTICE '....Total mine_location records in ETL_LOCATION: %.', new_row;
+
+    DROP TABLE pmt_now;
 END $$;
 
 
@@ -452,15 +466,21 @@ BEGIN
 
     -- Upsert data from ETL_LOCATION into mine_location
     RAISE NOTICE '.. Update existing records with latest MMS data';
-    UPDATE mine_location
-    SET latitude         = ETL_LOCATION.latitude ,
-        longitude        = ETL_LOCATION.longitude,
-        geom             = ST_SetSRID(ST_MakePoint(ETL_LOCATION.longitude, ETL_LOCATION.latitude), 3005),
-        update_user      = 'mms_migration'      ,
-        update_timestamp = now()
-    FROM ETL_LOCATION
-    WHERE ETL_LOCATION.mine_guid = mine_location.mine_guid;
-    SELECT count(*) FROM mine_location, ETL_LOCATION WHERE mine_location.mine_guid = ETL_LOCATION.mine_guid INTO update_row;
+    WITH updated_rows AS (
+        UPDATE mine_location
+        SET latitude         = ETL_LOCATION.latitude ,
+            longitude        = ETL_LOCATION.longitude,
+            geom             = ST_SetSRID(ST_MakePoint(ETL_LOCATION.longitude, ETL_LOCATION.latitude), 3005),
+            update_user      = 'mms_migration'      ,
+            update_timestamp = now()
+        FROM ETL_LOCATION
+        INNER JOIN ETL_MINE
+            ON ETL_LOCATION.mine_guid = ETL_MINE.mine_guid
+        WHERE
+            ETL_LOCATION.mine_guid = mine_location.mine_guid
+        RETURNING 1
+    )
+    SELECT count(*) FROM updated_rows INTO update_row;
     RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
     RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
 
@@ -520,7 +540,7 @@ BEGIN
     RAISE NOTICE '.. Update existing records with latest MMS data';
     UPDATE mine_type
     SET mine_tenure_type_code = ETL_MINE.mine_type,
-        update_user           = 'mms_migration'      ,
+        update_user           = 'mms_migration'   ,
         update_timestamp      = now()
     FROM ETL_MINE
     WHERE

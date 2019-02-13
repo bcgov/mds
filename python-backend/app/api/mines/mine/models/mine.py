@@ -2,8 +2,13 @@ import uuid
 
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
-from ....utils.models_mixins import AuditMixin, Base
+from sqlalchemy.schema import FetchedValue
 from app.extensions import db
+from ....utils.models_mixins import AuditMixin, Base
+# FIXME: Model import from outside of its namespace
+# This breaks micro-service architecture and is done
+# for search performance until search can be refactored
+from ....permits.permit.models.permit import Permit
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -18,7 +23,7 @@ class Mine(AuditMixin, Base):
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     # Relationships
 
@@ -139,17 +144,42 @@ class Mine(AuditMixin, Base):
     def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).first()
+            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
         except ValueError:
             return None
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.filter_by(mine_no=_id).first()
+        return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
+
+    @classmethod
+    def find_by_mine_name(cls, term = None):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
+            mines = mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
+
+    @classmethod
+    def find_by_name_no_permit(cls, term = None):
+        MINE_LIST_RESULT_LIMIT = 500
+        if term:
+            name_filter = Mine.mine_name.ilike('%{}%'.format(term))
+            number_filter = Mine.mine_no.ilike('%{}%'.format(term))
+            permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
+            mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
+            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            mines = mines_q.union(permit_q).limit(MINE_LIST_RESULT_LIMIT).all()
+        else:
+            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
+        return mines
 
     @classmethod
     def find_all_major_mines(cls):
-        return cls.query.filter_by(major_mine_ind=True).all()
+        return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):
@@ -182,12 +212,14 @@ class Mine(AuditMixin, Base):
 
     @validates('mine_note')
     def validate_mine_note(self, key, mine_note):
+        mine_note = mine_note if mine_note else ''
         if len(mine_note) > 300:
             raise AssertionError('Mine note must not exceed 300 characters.')
         return mine_note
 
     @validates('mine_no')
     def validate_mine_no(self, key, mine_no):
-        if len(mine_no) > 10:
+        mine_no = mine_no if mine_no else ''
+        if mine_no and len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no

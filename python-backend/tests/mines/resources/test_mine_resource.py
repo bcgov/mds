@@ -261,7 +261,8 @@ def test_put_mine_tenure_by_mine_no(test_client, auth_headers):
     test_tenure_data = {
         "tenure_number_id": "1234567",
         "latitude": "49.2828",
-        "longitude": "123.1208"
+        "longitude": "123.1208",
+        "note": ""
     }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
@@ -276,7 +277,8 @@ def test_put_mine_tenure_guid(test_client, auth_headers):
     test_tenure_data = {
         "tenure_number_id": "1234599",
         "latitude": "49.2829",
-        "longitude": "123.1209"
+        "longitude": "123.1209",
+        "note": ""
     }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
@@ -288,7 +290,10 @@ def test_put_mine_tenure_guid(test_client, auth_headers):
 
 
 def test_put_mine_name(test_client, auth_headers):
-    test_tenure_data = {"name": "name"}
+    test_tenure_data = {
+        "name": "name",
+        "note": ""
+    }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -297,7 +302,10 @@ def test_put_mine_name(test_client, auth_headers):
 
 
 def test_put_mine_major_true(test_client, auth_headers):
-    test_mine_data = {"major_mine_ind": "true"}
+    test_mine_data = {
+        "major_mine_ind": "true",
+        "note": ""
+    }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -306,7 +314,10 @@ def test_put_mine_major_true(test_client, auth_headers):
 
 
 def test_put_mine_major_false(test_client, auth_headers):
-    test_mine_data = {"major_mine_ind": "false"}
+    test_mine_data = {
+        "major_mine_ind": "false",
+        "note": ""
+    }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -324,14 +335,20 @@ def test_put_mine_note(test_client, auth_headers):
 
 
 def test_put_mine_mine_status(test_client, auth_headers):
-    test_mine_data = {"mine_status": "CLD, CM"}
+    test_mine_data = {
+        "mine_status": "CLD, CM",
+        "note": ""
+    }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200
 
 
 def test_put_mine_region(test_client, auth_headers):
-    test_mine_data = {"mine_region": TEST_REGION_CODE}
+    test_mine_data = {
+        "mine_region": TEST_REGION_CODE,
+        "note": ""
+    }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_mine_data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200

@@ -5,7 +5,7 @@ import json
 
 from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
-from sqlalchemy_filters import apply_sort, apply_pagination
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -15,7 +15,6 @@ from ..models.mine_type_detail import MineTypeDetail
 
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
-from ....permits.permit.models.permit import Permit
 from ...location.models.mine_location import MineLocation
 from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
@@ -23,6 +22,10 @@ from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+# FIXME: Model import from outside of its namespace
+# This breaks micro-service architecture and is done
+# for search performance until search can be refactored
+from ....permits.permit.models.permit import Permit
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
@@ -182,7 +185,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 .join(MineStatusXref) \
                 .filter(all_status_filter)
             mines_query = mines_query.intersect(status_query)
-
+        deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
+        mines_query = apply_filters(mines_query, deleted_filter)
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mines_query = apply_sort(mines_query, sort_criteria)
         return apply_pagination(mines_query, page, items_per_page)
@@ -301,8 +305,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine.update_user = self.get_update_user()
                 if mine_name:
                     mine.mine_name = mine_name
-                if mine_note:
-                    mine.mine_note = mine_note
+                mine.mine_note = mine_note
                 if major_mine_ind is not None:
                     mine.major_mine_ind = major_mine_ind
                 if region:
@@ -353,22 +356,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return mine.json()
 
 
-class MineListByName(Resource):
-    MINE_LIST_RESULT_LIMIT = 500
-
-    @api.doc(params={'?search': 'Search term in mine name, mine number, and permit.'})
+class MineListSearch(Resource):
+    @api.doc(params={
+        'name': 'Search term in mine name.',
+        'term': 'Search term in mine name, mine number, and permit.'
+        })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        search_term = request.args.get('search')
+        name_search = request.args.get('name')
+        search_term = request.args.get('term')
         if search_term:
-            name_filter = Mine.mine_name.ilike('%{}%'.format(search_term))
-            number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
-            permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
-            mines_q = Mine.query.filter(name_filter | number_filter)
-            permit_q = Mine.query.join(Permit).filter(permit_filter)
-            mines = mines_q.union(permit_q).limit(self.MINE_LIST_RESULT_LIMIT).all()
+            mines = Mine.find_by_name_no_permit(search_term)
         else:
-            mines = Mine.query.limit(self.MINE_LIST_RESULT_LIMIT).all()
-
+            mines = Mine.find_by_mine_name(name_search)
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result}
