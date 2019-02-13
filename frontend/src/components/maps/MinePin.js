@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { renderToString } from "react-dom/server";
 import MapPopup from "@/components/maps/MapPopup";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
-
 /**
  * @class MinePin.js must be the child of arcGIS <Map /> or <Screen />,
  * MinePin is connected to redux to access/display all mines information - reusable on any view will display the correct state.
@@ -62,12 +61,16 @@ export class MinePin extends Component {
           mineIds = this.props.mineIds;
         }
 
-        const defaultSym = {
-          url: `${window.location.origin}${process.env.BASE_PATH}/public/small-pin.svg`,
+        // The svg for the map pin is encoded directly into the default symbol
+        const defaultSym = new SimpleMarkerSymbol({
+          size: 25,
           width: this.state.isFullMap ? "40" : "80",
           height: this.state.isFullMap ? "40" : "80",
-          type: "picture-marker",
-        };
+          path:
+            "M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z",
+          outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
+          color: [247, 54, 251, 1],
+        });
 
         const renderer = new ClassBreaksRenderer({
           defaultSymbol: defaultSym,
