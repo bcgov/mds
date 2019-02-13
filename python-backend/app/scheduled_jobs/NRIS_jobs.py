@@ -1,28 +1,9 @@
 import requests
-from app.extensions import cache, sched
+from app.extensions import cache
 from app.api.nris_services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
-from elasticapm import Client
-from app.config import Config
-from elasticapm.handlers.logging import LoggingHandler
-from flask import current_app
-import logging
-
-
-def register_apm(func):
-    def wrapper(*args, **kwargs):
-        client = Client(sched.app.app_context().app.
-                        config['ELASTIC_APM'])  #this works in both sched and flask runtimes
-        client.begin_transaction('scheduled_jobs')
-        try:
-            func(*args, **kwargs)
-            client.end_transaction(f'{func.__name__} - finished with no errors')
-        except Exception as e:
-            client.end_transaction(f'{func.__name__} - finished with errors: {str(e)}')
-            #raise e
-
-    return wrapper
+from app.api.utils.apm import register_apm
 
 
 #the schedule of these jobs is set using server time (UTC)
@@ -35,18 +16,6 @@ def _schedule_NRIS_jobs(app):
         id='get_major_mine_NRIS_data',
         hour=18,
         minute=5)
-
-
-@register_apm
-def busy_apm_function(top=1000):
-    top = int(top)
-    for x in range(top):
-        isPrime = True
-        for n in range(2, x - 1):
-            if x % n == 0:
-                isPrime = False
-        if isPrime:
-            print(f'{x} is prime')
 
 
 # caches a list of mine numbers for all major mines and each major mine individually
