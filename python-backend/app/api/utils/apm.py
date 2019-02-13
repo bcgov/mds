@@ -16,10 +16,10 @@ def register_apm(func):
             client.begin_transaction('registered_funcs')
             try:
                 func(*args, **kwargs)
-                client.end_transaction(f'{func.__name__} - finished with no errors')
+                client.end_transaction(f'{func.__name__} - success')
             except Exception as e:
-                client.end_transaction(
-                    f'{func.__name__} - finished with error {e.__class__.__name__}')
+                client.capture_exception()
+                client.end_transaction(f'{func.__name__} - error')
                 raise e
         else:
             print(f'could not create ElasticAPM client... running <{func.__name__}> without APM')
