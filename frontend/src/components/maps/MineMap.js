@@ -169,6 +169,11 @@ class MineMap extends Component {
           center: [this.props.long, this.props.lat],
           zoom: 6,
           constraints: { minZoom: 5 },
+          popup: {
+            dockOptions: {
+              breakpoint: { width: 0, height: 0 },
+            },
+          },
         }}
         onLoad={this.handleLoadMap}
         onFail={this.handleFail}
