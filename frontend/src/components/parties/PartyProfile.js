@@ -27,7 +27,7 @@ import { uniq } from "lodash";
  * @class PartyProfile - profile view for personnel/companies
  */
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
@@ -104,9 +104,8 @@ export class PartyProfile extends Component {
 
     const transformRowData = (partyRelationships) =>
       partyRelationships.map((relationship) => ({
-        key: relationship.mine_guid,
+        key: relationship.mine_party_appt_guid,
         mineGuid: relationship.mine_guid,
-        emptyField: Strings.EMPTY_FIELD,
         mineName: this.getMineName(relationship.mine_guid),
         role: this.getPartyRelationshipTitle(relationship),
         endDate:
@@ -124,25 +123,24 @@ export class PartyProfile extends Component {
       return (
         <div className="profile">
           <div className="profile__header">
-            <div className="inline-flex between">
-              <h1 className="bold">{formatTitleString(parties.name)}</h1>
-            </div>
-            <div>
-              <div className="inline-flex">
-                <div className="padding-right">
-                  <Icon type="mail" />
-                </div>
+            <h1>{formatTitleString(parties.name)}</h1>
+            <div className="inline-flex">
+              <div className="padding-right">
+                <Icon type="mail" />
+              </div>
+              {parties.email !== "Unknown" ? (
                 <a href={`mailto:${parties.email}`}>{parties.email}</a>
+              ) : (
+                <p>{Strings.EMPTY_FIELD}</p>
+              )}
+            </div>
+            <div className="inline-flex">
+              <div className="padding-right">
+                <Icon type="phone" />
               </div>
-              <div className="inline-flex">
-                <div className="padding-right">
-                  <Icon type="phone" />
-                </div>
-                <p>
-                  {" "}
-                  {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
-                </p>
-              </div>
+              <p>
+                {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
+              </p>
             </div>
           </div>
           <div className="profile__content">
