@@ -12,7 +12,8 @@ import logging
 
 def register_apm(func):
     def wrapper():
-        client = Client(current_app.config['ELASTIC_APM'])
+        client = Client(sched.app.app_context().app.
+                        config['ELASTIC_APM'])  #this works in both sched and flask runtimes
         client.begin_transaction('scheduled_jobs')
         try:
             func()
@@ -27,12 +28,12 @@ def register_apm(func):
 #the schedule of these jobs is set using server time (UTC)
 def _schedule_NRIS_jobs(app):
     app.apscheduler.add_job(
-        func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=9, minute=0)
+        func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=18, minute=0)
     app.apscheduler.add_job(
         func=_cache_all_NRIS_major_mines_data,
         trigger='cron',
         id='get_major_mine_NRIS_data',
-        hour=9,
+        hour=18,
         minute=5)
 
 
