@@ -79,7 +79,7 @@ class ExpectedDocument(AuditMixin, Base):
         if due_date_type == 'FIS':
 
             fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
-            if fiscal_year_end < datetime.now():  #Jan - Mar
+            if datetime.now() < fiscal_year_end:  #Jan - Mar
                 due_date = fiscal_year_end
 
             else:
