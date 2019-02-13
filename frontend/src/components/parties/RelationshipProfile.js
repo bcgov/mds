@@ -49,7 +49,7 @@ export class RelationshipProfile extends Component {
     }
   }
 
-  getpartyRelationshipTitle(partyRelationship) {
+  getPartyRelationshipTitle(partyRelationship) {
     const partyRelationshipType = this.props.partyRelationshipTypes.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
     );
@@ -71,7 +71,7 @@ export class RelationshipProfile extends Component {
           <div className="profile__header">
             <div className="inline-flex between">
               <h1 className="bold">
-                {this.getpartyRelationshipTitle(this.props.partyRelationships[0])} History
+                {this.getPartyRelationshipTitle(this.props.partyRelationships[0])} History
               </h1>
             </div>
             <div className="inline-flex between">
@@ -111,7 +111,7 @@ export class RelationshipProfile extends Component {
                           {partyRelationship.party.name}
                         </Link>
                       </Col>
-                      <Col span={8}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
+                      <Col span={8}>{this.getPartyRelationshipTitle(partyRelationship)}</Col>
                       <Col span={8}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;

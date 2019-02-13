@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Row, Col, Divider, Icon } from "antd";
+import * as Strings from "@/constants/strings";
+import { Tabs, Icon, Table } from "antd";
 import {
   fetchPartyById,
   fetchPartyRelationshipTypes,
@@ -19,8 +20,7 @@ import { getMineBasicInfoList } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString } from "@/utils/helpers";
-import * as String from "@/constants/strings";
+import { formatTitleString, formatDate } from "@/utils/helpers";
 import { uniq } from "lodash";
 
 /**
@@ -58,21 +58,61 @@ export class PartyProfile extends Component {
     this.props.fetchPartyRelationshipTypes();
   }
 
-  getpartyRelationshipTitle(partyRelationship) {
+  getPartyRelationshipTitle(partyRelationship) {
     const partyRelationshipType = this.props.partyRelationshipTypes.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
     );
-    return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
+    return (partyRelationshipType && partyRelationshipType.label) || Strings.EMPTY;
   }
 
   getMineName(mineId) {
     const mine =
       this.props.mineBasicInfoList.length > 0 &&
       this.props.mineBasicInfoList.find(({ guid }) => guid === mineId);
-    return (mine && mine.mine_name) || String.LOADING;
+    return (mine && mine.mine_name) || Strings.LOADING;
   }
 
   render() {
+    const columns = [
+      {
+        title: "Mine Name",
+        width: 100,
+        dataIndex: "mineName",
+        render: (text, record) => (
+          <div title="Mine Name">
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid, "contacts")}>{text}</Link>
+          </div>
+        ),
+      },
+      {
+        title: "Role",
+        width: 100,
+        dataIndex: "role",
+        render: (text) => <div title="Role">{text}</div>,
+      },
+      {
+        title: "Dates",
+        width: 100,
+        dataIndex: "dates",
+        render: (text, record) => (
+          <div title="Dates">
+            {record.startDate} to {record.endDate}
+          </div>
+        ),
+      },
+    ];
+
+    const transformRowData = (partyRelationships) =>
+      partyRelationships.map((relationship) => ({
+        key: relationship.mine_guid,
+        mineGuid: relationship.mine_guid,
+        emptyField: Strings.EMPTY_FIELD,
+        mineName: this.getMineName(relationship.mine_guid),
+        role: this.getPartyRelationshipTitle(relationship),
+        endDate:
+          relationship.end_date === "9999-12-31" ? "Present" : formatDate(relationship.end_date),
+        startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
+      }));
     const { id } = this.props.match.params;
     const parties = this.props.parties[id];
 
@@ -87,16 +127,19 @@ export class PartyProfile extends Component {
             <div className="inline-flex between">
               <h1 className="bold">{formatTitleString(parties.name)}</h1>
             </div>
-            <div className="inline-flex between">
+            <div>
               <div className="inline-flex">
-                <p>
+                <div className="padding-right">
                   <Icon type="mail" />
-                  &nbsp;&nbsp;
-                  <a href={`mailto:${parties.email}`}>{parties.email}</a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <br />
+                </div>
+                <a href={`mailto:${parties.email}`}>{parties.email}</a>
+              </div>
+              <div className="inline-flex">
+                <div className="padding-right">
                   <Icon type="phone" />
-                  &nbsp;&nbsp;
+                </div>
+                <p>
+                  {" "}
                   {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
                 </p>
               </div>
@@ -104,44 +147,17 @@ export class PartyProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>
-              <TabPane tab="History" key="history">
-                <div>
-                  <Row type="flex" style={{ textAlign: "center" }}>
-                    <Col span={8}>
-                      <h2>Mine Name</h2>
-                    </Col>
-                    <Col span={8}>
-                      <h2>Role</h2>
-                    </Col>
-                    <Col span={8}>
-                      <h2>dates</h2>
-                    </Col>
-                  </Row>
-                  <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
+              <TabPane tab="Past History" key="history">
+                <div className="tab__content ">
+                  <Table
+                    align="center"
+                    className="mine-list"
+                    pagination={false}
+                    columns={columns}
+                    dataSource={transformRowData(this.props.partyRelationships)}
+                    locale={{ emptyText: "no results" }}
+                  />
                 </div>
-                {this.props.partyRelationships.map((partyRelationship) => (
-                  <div>
-                    <Row type="flex" style={{ textAlign: "center" }}>
-                      <Col span={8}>
-                        <Link
-                          to={router.MINE_SUMMARY.dynamicRoute(
-                            partyRelationship.mine_guid,
-                            "contact-information"
-                          )}
-                        >
-                          {this.getMineName(partyRelationship.mine_guid)}
-                        </Link>
-                      </Col>
-                      <Col span={8}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
-                      <Col span={8}>
-                        <Icon type="clock-circle" />
-                        &nbsp;&nbsp;
-                        {partyRelationship.start_date || "Unknown"} -{" "}
-                        {partyRelationship.end_date || "Present"}
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
               </TabPane>
             </Tabs>
           </div>
