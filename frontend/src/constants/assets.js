@@ -23,3 +23,4 @@ export { default as INFO_CIRCLE } from "../assets/images/InfoCircle.svg";
 export { default as WARNING } from "../assets/images/warning.svg";
 export { default as DOC } from "../assets/images/doc.svg";
 export { default as OVERDUEDOC } from "../assets/images/overdue-doc.svg";
+export { default as COMPUTER_404 } from "../assets/images/computer404.svg";
