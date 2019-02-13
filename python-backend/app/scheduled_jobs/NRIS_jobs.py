@@ -9,13 +9,13 @@ from app.api.utils.apm import register_apm
 #the schedule of these jobs is set using server time (UTC)
 def _schedule_NRIS_jobs(app):
     app.apscheduler.add_job(
-        func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=9, minute=0)
+        func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=22, minute=7)
     app.apscheduler.add_job(
         func=_cache_all_NRIS_major_mines_data,
         trigger='cron',
         id='get_major_mine_NRIS_data',
-        hour=9,
-        minute=5)
+        hour=22,
+        minute=10)
 
 
 # caches a list of mine numbers for all major mines and each major mine individually
