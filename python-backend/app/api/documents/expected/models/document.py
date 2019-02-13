@@ -23,8 +23,12 @@ class ExpectedDocument(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('mds_required_document.req_document_guid'), nullable=True)
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    
-    exp_document_status_code = db.Column(db.String(3), db.ForeignKey('mine_expected_document_status_code.exp_document_status_code'), nullable=False, server_default=FetchedValue())
+
+    exp_document_status_code = db.Column(
+        db.String(3),
+        db.ForeignKey('mine_expected_document_status_code.exp_document_status_code'),
+        nullable=False,
+        server_default=FetchedValue())
     # Data Columns
     exp_document_name = db.Column(db.String(100), nullable=False)
     exp_document_description = db.Column(db.String(300))
@@ -40,10 +44,7 @@ class ExpectedDocument(AuditMixin, Base):
         order_by='desc(RequiredDocument.req_document_name)',
         lazy='joined')
     expected_document_status = db.relationship(
-        'ExpectedDocumentStatus',
-        backref='exp_documents',
-        uselist=False,
-        lazy='joined')
+        'ExpectedDocumentStatus', backref='exp_documents', uselist=False, lazy='joined')
 
     def json(self):
         return {
@@ -78,8 +79,12 @@ class ExpectedDocument(AuditMixin, Base):
         if due_date_type == 'FIS':
 
             fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
-            due_date = fiscal_year_end + \
-                relativedelta(months=int(period_in_months))
+            if fiscal_year_end < datetime.now():  #Jan - Mar
+                due_date = fiscal_year_end
+
+            else:
+                due_date = fiscal_year_end + \
+                    relativedelta(months=int(period_in_months))
 
             return due_date
 
