@@ -29,8 +29,14 @@ const NullScreen = (props) => (
     )}
     {props.type === "404" && (
       <div className="no-nav-bar">
-        <h3>404 - Page not found</h3>
-        <Link to={routes.HOME.route}>Go Home</Link>
+        <h1>Uh Oh!</h1>
+        <p>
+          The page you're looking for can't be found. It may have moved, or it no longer exists.
+        </p>
+        <p>
+          {" "}
+          <Link to={routes.HOME.route}>Return to the home page</Link> to get back on track.
+        </p>
       </div>
     )}
     {props.type === "no-mines" && (
