@@ -1,17 +1,29 @@
 from app.extensions import sched
 from elasticapm import Client
+from flask import current_app
 
 
 def register_apm(func):
     def wrapper(*args, **kwargs):
-        client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
-        #sched.app works in both sched and flask runtimes
-        client.begin_transaction('registered_funcs')
-        try:
+        client = None
+        if current_app:
+            client = Client(current_app.config['ELASTIC_APM'])
+        elif sched.app:
+            client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
+
+        #ensure client was created properly
+        if client:
+            client.begin_transaction('registered_funcs')
+            try:
+                func(*args, **kwargs)
+                client.end_transaction(f'{func.__name__} - finished with no errors')
+            except Exception as e:
+                client.end_transaction(
+                    f'{func.__name__} - finished with error {e.__class__.__name__}')
+                raise e
+            return
+        else:
+            print(f'create ElasticAPM client... running <{func.__name__}> without APM')
             func(*args, **kwargs)
-            client.end_transaction(f'{func.__name__} - finished with no errors')
-        except Exception as e:
-            client.end_transaction(f'{func.__name__} - finished with error {e.__class__.__name__}')
-            raise e
 
     return wrapper
