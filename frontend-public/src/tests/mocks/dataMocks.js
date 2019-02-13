@@ -320,7 +320,7 @@ export const PARTY = {
   },
 };
 
-export const MINE_NAME_LIST = [
+export const USER_MINE_INFO = [
   {
     guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
     mine_name: "New Mine",
