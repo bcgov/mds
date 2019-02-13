@@ -21,7 +21,6 @@ def register_apm(func):
                 client.end_transaction(
                     f'{func.__name__} - finished with error {e.__class__.__name__}')
                 raise e
-            return
         else:
             print(f'create ElasticAPM client... running <{func.__name__}> without APM')
             func(*args, **kwargs)
