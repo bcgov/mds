@@ -23,9 +23,6 @@ from .api.mines.status.models.mine_operation_status_sub_reason_code import MineO
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
-from flask import current_app
-
-from .scheduled_jobs.NRIS_jobs import busy_apm_function
 
 
 def register_commands(app):
@@ -164,7 +161,3 @@ def register_commands(app):
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
             raise
-
-    @app.cli.command()
-    def test():
-        busy_apm_function()
