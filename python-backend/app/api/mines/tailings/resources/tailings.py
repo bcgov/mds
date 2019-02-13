@@ -11,6 +11,7 @@ from ....utils.access_decorators import requires_role_mine_view, requires_role_m
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_documents_svc_url
 from ....documents.namespace.documents import api as doc_api
+from app.scheduled_jobs.NRIS_jobs import register_apm
 
 
 class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
@@ -42,6 +43,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
     @requires_role_mine_create
+    @register_apm
     def post(self, mine_tailings_storage_facility_guid=None):
         if not mine_tailings_storage_facility_guid:
             data = self.parser.parse_args()
