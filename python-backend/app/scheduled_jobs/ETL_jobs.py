@@ -7,16 +7,16 @@ from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_
 
 #the schedule of these jobs is set using server time (UTC)
 def _schedule_ETL_jobs(app):
-    app.apscheduler.add_job(func=_run_ETL, trigger='cron', id='ETL', hour=10, minute=0)
+    app.apscheduler.add_job(func=_run_ETL, trigger='cron', id='ETL', hour=19, minute=15)
 
 
 def _run_ETL():
     with sched.app.app_context():
-        db.session.execute('select transfer_mine_information();')
-        db.session.execute('commit;')
-        db.session.execute('select transfer_mine_manager_information();')
-        db.session.execute('commit;')
-        db.session.execute('select transfer_premit_permitee_information();')
-        db.session.execute('commit;')
-        db.session.execute('select transfer_mine_status_information();')
-        db.session.execute('commit;')
+        db.engine.execute('select transfer_mine_information();')
+        db.engine.execute('commit;')
+        db.engine.execute('select transfer_mine_manager_information();')
+        db.engine.execute('commit;')
+        db.engine.execute('select transfer_premit_permitee_information();')
+        db.engine.execute('commit;')
+        db.engine.execute('select transfer_mine_status_information();')
+        db.engine.execute('commit;')
