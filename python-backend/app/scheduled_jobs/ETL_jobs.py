@@ -12,11 +12,11 @@ def _schedule_ETL_jobs(app):
 
 def _run_ETL():
     with sched.app.app_context():
-        db.engine.execute('select transfer_mine_information();')
-        db.engine.execute('commit;')
-        db.engine.execute('select transfer_mine_manager_information();')
-        db.engine.execute('commit;')
-        db.engine.execute('select transfer_premit_permitee_information();')
-        db.engine.execute('commit;')
-        db.engine.execute('select transfer_mine_status_information();')
-        db.engine.execute('commit;')
+        db.session.execute('select transfer_mine_information();')
+        db.session.execute('commit;')
+        db.session.execute('select transfer_mine_manager_information();')
+        db.session.execute('commit;')
+        db.session.execute('select transfer_premit_permitee_information();')
+        db.session.execute('commit;')
+        db.session.execute('select transfer_mine_status_information();')
+        db.session.execute('commit;')
