@@ -11,11 +11,11 @@ import logging
 
 
 def register_apm(func):
-    def wrapper(args):
+    def wrapper():
         client = Client(current_app.config['ELASTIC_APM'])
         client.begin_transaction('scheduled_jobs')
         try:
-            func(args)
+            func()
             client.end_transaction(f'{func.__name__} - finished with no errors')
         except Exception as e:
             client.end_transaction(f'{func.__name__} - finished with errors: {str(e)}')
