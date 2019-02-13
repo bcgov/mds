@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS, COMPUTER_404 } from "@/constants/assets";
+import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS } from "@/constants/assets";
 import * as String from "@/constants/strings";
-import * as route from "@/constants/routes";
 
 /**
  * @constant NullScreen is a reusable view for when there is no data to display, add more views when required.
@@ -22,7 +20,6 @@ const propTypes = {
     "view-mine-manager",
     "contacts",
     "unauthorized-page",
-    "404",
   ]),
 };
 
@@ -101,19 +98,6 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
-      </div>
-    )}
-    {props.type === "404" && (
-      <div className="no-nav-bar">
-        <img alt="mine_img" src={COMPUTER_404} />
-        <h1>Uh Oh!</h1>
-        <p>
-          The page you're looking for can't be found. It may have moved, or it no longer exists.
-        </p>
-        <p>
-          {" "}
-          <Link to={route.MINE_DASHBOARD.route}>Return to the home page</Link> to get back on track.
-        </p>
       </div>
     )}
   </div>

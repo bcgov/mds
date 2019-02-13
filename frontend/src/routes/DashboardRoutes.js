@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
+// import NullScreen from "@/components/common/NullScreen";
+import PageNotFound from "@/components/common/PageNotFound";
 
 const DashboardRoutes = () => (
   <Switch>
@@ -14,7 +15,7 @@ const DashboardRoutes = () => (
       component={routes.RELATIONSHIP_PROFILE.component}
     />
     <Route exact path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
-    <Route render={() => <NullScreen type="404" />} />
+    <Route component={PageNotFound} />
   </Switch>
 );
 
