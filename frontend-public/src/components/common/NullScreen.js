@@ -31,7 +31,7 @@ const NullScreen = (props) => (
       <div className="no-nav-bar">
         <h1>Uh Oh!</h1>
         <p>
-          We can't seem to find the page you're looking for. It may have moved, or no longer exists.
+          The page you're looking for can't be found. It may have moved, or it no longer exists.
         </p>
         <p>
           {" "}
