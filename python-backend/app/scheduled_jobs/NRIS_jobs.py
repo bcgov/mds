@@ -13,7 +13,7 @@ import logging
 def register_apm(func):
     def wrapper(args):
         client = Client(current_app.config['ELASTIC_APM'])
-        client.begin_transaction('processors')
+        client.begin_transaction('scheduled_jobs')
         try:
             func(args)
             client.end_transaction(f'{func.__name__} - finished with no errors')
@@ -37,7 +37,7 @@ def _schedule_NRIS_jobs(app):
 
 
 @register_apm
-def busy_apm_function(top):
+def busy_apm_function(top=1000):
     top = int(top)
     for x in range(top):
         isPrime = True
