@@ -20,7 +20,7 @@ import * as String from "@/constants/strings";
  * @class RelationshipProfile - profile view for party relationship types
  */
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -28,21 +28,21 @@ const propTypes = {
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
-  match: PropTypes.object,
+  match: PropTypes.objectOf(PropTypes.any),
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
   partyRelationshipTypes: [],
+  match: {},
 };
 
-const mapPermitGuidToNumber = (permits) => {
-  return permits.reduce((acc, { permit_guid, permit_no }) => {
+const mapPermitGuidToNumber = (permits) =>
+  permits.reduce((acc, { permit_guid, permit_no }) => {
     acc[permit_guid] = permit_no;
     return acc;
   }, {});
-};
 
 export class RelationshipProfile extends Component {
   state = {
