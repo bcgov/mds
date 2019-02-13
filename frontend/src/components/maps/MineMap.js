@@ -151,6 +151,7 @@ class MineMap extends Component {
         >
           {this.renderPin()}
           <MinePin />
+          {/* {this.renderPin()} */}
         </Map>
       );
     }
@@ -169,8 +170,8 @@ class MineMap extends Component {
         onLoad={this.handleLoadMap}
         onFail={this.handleFail}
       >
-        {this.renderPin()}
         <MinePin />
+        {/* {this.renderPin()} */}
       </WebMap>
     );
   }

@@ -20,6 +20,20 @@ const defaultProps = {
 export class LocationPin extends Component {
   state = { graphic: null };
 
+  componentWillMount() {
+    this.renderGraphic(this.props.center);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.center !== this.props.center) {
+      this.renderGraphic(nextProps.center);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.view.graphics.remove(this.state.graphic);
+  }
+
   renderGraphic = (props) => {
     loadModules([
       "esri/Graphic",
@@ -28,7 +42,7 @@ export class LocationPin extends Component {
       "dojo/_base/Color",
     ]).then(([Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color]) => {
       const symbol = new SimpleMarkerSymbol(
-        SimpleMarkerSymbol.STYLE_CIRCLE,
+        SimpleMarkerSymbol.STYLE_SQUARE,
         15,
         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([188, 41, 41]), 5),
         new Color([188, 41, 41])
@@ -50,20 +64,6 @@ export class LocationPin extends Component {
       this.setState({ graphic });
     });
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.center !== this.props.center) {
-      this.renderGraphic(nextProps.center);
-    }
-  }
-
-  componentWillMount() {
-    this.renderGraphic(this.props.center);
-  }
-
-  componentWillUnmount() {
-    this.props.view.graphics.remove(this.state.graphic);
-  }
 
   render() {
     return null;
