@@ -12,6 +12,13 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   mines: CustomPropTypes.options.isRequired,
+  handleChange: PropTypes.func,
+  handleSearch: PropTypes.func,
+};
+
+const defaultProps = {
+  handleChange: {},
+  handleSearch: {},
 };
 
 export const AddMinespaceUser = (props) => (
@@ -38,6 +45,8 @@ export const AddMinespaceUser = (props) => (
               placeholder="Please Select a Mine"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
+              onChange={props.handleChange}
+              input={{ onBlur: props.handleChange, onSearch: props.handleSearch }}
             />
           </Form.Item>
         </Col>
@@ -52,6 +61,7 @@ export const AddMinespaceUser = (props) => (
 );
 
 AddMinespaceUser.propTypes = propTypes;
+AddMinespaceUser.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_MINESPACE_USER,

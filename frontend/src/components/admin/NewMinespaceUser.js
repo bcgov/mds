@@ -35,6 +35,17 @@ export class NewMinespaceUser extends Component {
     });
   };
 
+  handleSearch = (name) => {
+    if (name.length > 2) {
+      // Only used by the map view, which searches by name
+      this.props.fetchMineNameList({ name });
+    }
+  };
+
+  handleChange = () => {
+    this.props.fetchMineNameList();
+  };
+
   render() {
     return (
       <div>
@@ -46,6 +57,8 @@ export class NewMinespaceUser extends Component {
               label: `${mine.mine_name}-${mine.mine_no}`,
             }))}
             onSubmit={this.createNewBCEIDUser}
+            handleChange={this.handleChange}
+            handleSearch={this.handleSearch}
           />
         )}
       </div>
