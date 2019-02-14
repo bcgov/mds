@@ -96,7 +96,7 @@ app {
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}/minespace",
+                            'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
                             'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
@@ -395,10 +395,11 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/${vars.git.changeId}/minespace"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
-                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "core-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                     ROUTE = "/${vars.git.changeId}"
                 }
@@ -495,7 +496,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/minespace"
+                    PATH = "/"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
@@ -595,7 +596,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/minespace"
+                    PATH = "/"
                 }
                 'mds-nginx' {
                     HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

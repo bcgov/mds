@@ -43,7 +43,11 @@
       "value": "/"
     },
     {
-      "name": "APPLICATION_DOMAIN",
+      "name": "CORE_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "MINESPACE_DOMAIN",
       "required": true
     },
     {
@@ -157,6 +161,14 @@
                   {
                     "name": "API_SERVICE_URL",
                     "value": "${API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "CORE_DOMAIN",
+                    "value": "${CORE_DOMAIN}"
+                  },
+                  {
+                    "name": "MINESPACE_DOMAIN",
+                    "value": "${MINESPACE_DOMAIN}"
                   }
                 ],
                 "resources": {
@@ -238,7 +250,34 @@
         }
       },
       "spec": {
-        "host": "${APPLICATION_DOMAIN}",
+        "host": "${CORE_DOMAIN}",
+        "path": "${ROUTE}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "tls": {
+          "termination": "edge"
+        },
+        "wildcardPolicy": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}"
+        }
+      },
+      "spec": {
+        "host": "${MINESPACE_DOMAIN}",
         "path": "${ROUTE}",
         "to": {
           "kind": "Service",
