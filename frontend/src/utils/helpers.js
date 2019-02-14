@@ -47,3 +47,7 @@ export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").forma
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+// Case insensitive filter for a SELECT field by label string
+export const caseInsensitiveLabelFilter = (input, option) =>
+  option.props.children.toLowerCase().includes(input.toLowerCase());
