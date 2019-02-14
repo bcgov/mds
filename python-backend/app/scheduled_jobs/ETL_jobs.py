@@ -4,7 +4,7 @@ from app.api.utils.apm import register_apm
 
 #the schedule of these jobs is set using server time (UTC)
 def _schedule_ETL_jobs(app):
-    app.apscheduler.add_job(func=_run_ETL, trigger='interval', minutes=60)
+    app.apscheduler.add_job(func=_run_ETL, trigger='interval', id='ETL', hours=2)
 
 
 @register_apm
