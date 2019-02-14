@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
+import { caseInsensitiveLabelFilter } from "@/utils/helpers";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -44,6 +45,7 @@ export const RenderMultiSelect = (props) => (
         placeholder={props.placeholder}
         id={props.id}
         {...props.input}
+        filterOption={props.filterOption || caseInsensitiveLabelFilter}
       >
         {props.data &&
           props.data.map(({ value, label }) => <Select.Option key={value}>{label}</Select.Option>)}
