@@ -52,7 +52,12 @@ export class RelationshipProfile extends Component {
   componentDidMount() {
     const { id, typeCode } = this.props.match.params;
     this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPartyRelationships({ mine_guid: id, types: typeCode });
+
+    // Only fetch relationships if not already in props (occurs if user did not
+    // come to this route from the Mine Dashboard)
+    if (this.props.partyRelationships.length === 0) {
+      this.props.fetchPartyRelationships({ mine_guid: id, types: typeCode });
+    }
 
     const mine = this.props.mines[id];
     if (!mine) {
@@ -78,12 +83,9 @@ export class RelationshipProfile extends Component {
   }
 
   render() {
-    const { id } = this.props.match.params;
+    const { id, typeCode } = this.props.match.params;
     const mine = this.props.mines[id];
-    const relationshipType = this.props.partyRelationships[0]
-      ? this.props.partyRelationships[0].mine_party_appt_type_code
-      : "";
-    const isPermittee = relationshipType === "PMT";
+    const isPermittee = typeCode === "PMT";
     const columnCount = 3 + (isPermittee ? 1 : 0);
     // 24 is the total span from Ant Design
     const width = 24 / columnCount;
@@ -92,6 +94,10 @@ export class RelationshipProfile extends Component {
       this.props.partyRelationshipTypes.length > 0 &&
       this.props.partyRelationships.length > 0 &&
       mine;
+
+    const filteredRelationships = this.props.partyRelationships.filter(
+      ({ mine_party_appt_type_code }) => mine_party_appt_type_code === typeCode
+    );
 
     if (isLoaded) {
       return (
@@ -134,7 +140,7 @@ export class RelationshipProfile extends Component {
                   </Row>
                   <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
                 </div>
-                {this.props.partyRelationships.map((partyRelationship) => (
+                {filteredRelationships.map((partyRelationship) => (
                   <div key={`${partyRelationship.related_guid}${partyRelationship.start_date}`}>
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={width}>
