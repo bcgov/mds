@@ -62,7 +62,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'postgresql.dc.json',
+                    'file':'../../postgresql.dc.json',
                     'params':[
                         'NAME':"${app.deployment.name}-postgresql",
                         'DATABASE_SERVICE_NAME':"${app.deployment.name}-postgresql",
@@ -74,7 +74,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'../sonarqube.dc.json',
+                    'file':'sonarqube.dc.json',
                     'params':[
                         'NAME':app.deployment.name,
                         'DATABASE_SERVICE_NAME':"${app.deployment.name}-postgresql",
