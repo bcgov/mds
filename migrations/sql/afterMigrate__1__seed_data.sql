@@ -336,3 +336,29 @@ VALUES
     ('ZN', 'Zinc', TRUE, 'system-mds', 'system-mds'),
     ('ZR', 'Zirconium', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_type_code
+    (
+    permit_amendment_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('W', 'Work', 10, 'system-mds', 'system-mds'),
+    ('N', 'Non-Work', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_status_code
+    (
+    permit_amendment_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('A', 'Active', 10, 'system-mds', 'system-mds'),
+    ('R', 'Remitted', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
