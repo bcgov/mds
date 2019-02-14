@@ -113,7 +113,7 @@ VALUES
     ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
     ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
     ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -324,4 +324,30 @@ VALUES
     ('ZE', 'Zeolite', TRUE, 'system-mds', 'system-mds'),
     ('ZN', 'Zinc', TRUE, 'system-mds', 'system-mds'),
     ('ZR', 'Zirconium', TRUE, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_type_code
+    (
+    permit_amendment_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('W', 'Work', 10, 'system-mds', 'system-mds'),
+    ('N', 'Non-Work', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_status_code
+    (
+    permit_amendment_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('A', 'Active', 10, 'system-mds', 'system-mds'),
+    ('R', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
