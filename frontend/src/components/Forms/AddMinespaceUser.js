@@ -17,8 +17,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleChange: {},
-  handleSearch: {},
+  handleChange: () => {},
+  handleSearch: () => {},
 };
 
 export const AddMinespaceUser = (props) => (
