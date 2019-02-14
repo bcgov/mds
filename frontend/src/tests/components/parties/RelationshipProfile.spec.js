@@ -16,7 +16,7 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.parties = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
-  reducerProps.partyRelationships = {};
+  reducerProps.partyRelationships = [];
   reducerProps.partyRelationshipTypes = [];
   reducerProps.mines = MOCK.MINES;
 };

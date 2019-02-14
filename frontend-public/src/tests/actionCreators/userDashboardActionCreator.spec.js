@@ -4,7 +4,7 @@ import {
   fetchMineRecordById,
   fetchUserMineInfo,
   removeMineDocumentFromExpectedDocument,
-  addMineDocumentToExpectedDocument,
+  addDocumentToExpectedDocument,
   updateExpectedDocument,
   fetchMineDocuments,
 } from "@/actionCreators/userDashboardActionCreator";
@@ -77,7 +77,7 @@ describe("`updateExpectedDocument` action creator", () => {
 });
 
 describe("`fetchUserMineInfo` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_NAME_LIST;
+  const url = ENVIRONMENT.apiUrl + API.USER_MINE_INFO;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
@@ -127,26 +127,26 @@ describe("`removeMineDocumentFromExpectedDocument` action creator", () => {
   });
 });
 
-describe("`addMineDocumentToExpectedDocument` action creator", () => {
+describe("`addDocumentToExpectedDocument` action creator", () => {
   const expDocGuid = "12345-6789";
   const url = ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expDocGuid);
 
-  it("Request with new file, dispatches `success` with correct response", () => {
-    const payload = { file: "a file" };
+  it("Request with new upload, dispatches `success` with correct response", () => {
+    const payload = { filename: "a file", document_manager_guid:"a GUID" };
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, payload).reply(200, mockResponse);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
-  it("Request with existing file, dispatches `success` with correct response", () => {
+  it("Request with existing mine document, dispatches `success` with correct response", () => {
     const payload = { mine_document_guid: "555-6789" };
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, payload).reply(200, mockResponse);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -155,8 +155,8 @@ describe("`addMineDocumentToExpectedDocument` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     const payload = {};
-    mockAxios.onPost(url, payload).reply(400, MOCK.ERROR);
-    return addMineDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
+    mockAxios.onPut(url, payload).reply(400, MOCK.ERROR);
+    return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
