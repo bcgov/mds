@@ -3,6 +3,7 @@ from app.extensions import cache, sched
 from app.api.nris_services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
+from app.api.utils.apm import register_apm
 
 
 #the schedule of these jobs is set using server time (UTC)
@@ -19,6 +20,7 @@ def _schedule_NRIS_jobs(app):
 
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
+@register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
         cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
@@ -32,6 +34,7 @@ def _cache_major_mines_list():
 
 
 # Using the cached list of major mines procees them if they are not already set to true.
+@register_apm
 def _cache_all_NRIS_major_mines_data():
     with sched.app.app_context():
         major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
