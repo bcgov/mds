@@ -22,7 +22,9 @@ from .api.mines.status.models.mine_operation_status_reason_code import MineOpera
 from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from .extensions import db
+from .extensions import db, sched
+from .scheduled_jobs import NRIS_jobs
+from app import auth
 
 
 def register_commands(app):
@@ -161,3 +163,15 @@ def register_commands(app):
             db.session.rollback()
             click.echo(f'Error, failed on commit.')
             raise
+
+    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+
+        @sched.app.cli.command()
+        def _run_nris_jobs():
+            with sched.app.app_context():
+                print('Started NRIS job to cache Major Mines list.')
+                NRIS_jobs._cache_major_mines_list()
+                print('Completed caching the Major Mines list.')
+                print('Caching all NRIS data for Major Mines')
+                NRIS_jobs._cache_all_NRIS_major_mines_data()
+                print('Done!')
