@@ -243,10 +243,11 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}",
+        "name": "${NAME}${SUFFIX}-core",
         "creationTimestamp": null,
         "labels": {
-          "component": "${NAME}"
+          "component": "${NAME}",
+          "route": "core"
         }
       },
       "spec": {
@@ -270,10 +271,11 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}",
+        "name": "${NAME}${SUFFIX}-minespace",
         "creationTimestamp": null,
         "labels": {
-          "component": "${NAME}"
+          "component": "${NAME}",
+          "route": "minespace"
         }
       },
       "spec": {
