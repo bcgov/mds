@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Row, Col, Divider, Icon } from "antd";
+import { isEmpty } from "lodash";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -44,42 +45,59 @@ const mapPermitGuidToNumber = (permits) =>
     return acc;
   }, {});
 
+const getPartyRelationshipTitle = (partyRelationshipTypes, typeCode) => {
+  const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
+  return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
+};
+
 export class RelationshipProfile extends Component {
   state = {
+    partyRelationshipTitle: "",
     permitsMapping: {},
   };
 
   componentDidMount() {
     const { id, typeCode } = this.props.match.params;
-    this.props.fetchPartyRelationshipTypes();
+    const mine = this.props.mines[id];
 
-    // Only fetch relationships if not already in props (occurs if user did not
-    // come to this route from the Mine Dashboard)
+    // Fetch any props not provided
+    if (this.props.partyRelationshipTypes.length === 0) {
+      this.props.fetchPartyRelationshipTypes();
+    }
     if (this.props.partyRelationships.length === 0) {
       this.props.fetchPartyRelationships({ mine_guid: id, types: typeCode });
     }
-
-    const mine = this.props.mines[id];
     if (!mine) {
       this.props.fetchMineRecordById(id);
     }
+
+    // Set state if props received before/during mount
+    this.updateState();
   }
 
   componentWillReceiveProps() {
-    const { id } = this.props.match.params;
+    this.updateState();
+  }
+
+  updateState() {
+    const { id, typeCode } = this.props.match.params;
     const mine = this.props.mines[id];
     // Update permit mapping when new permits are received
     // Otherwise, use existing mapping
     if (mine && Object.keys(this.state.permitsMapping).length < mine.mine_permit.length) {
       this.setState({ permitsMapping: mapPermitGuidToNumber(mine.mine_permit) });
     }
-  }
 
-  getpartyRelationshipTitle(partyRelationship) {
-    const partyRelationshipType = this.props.partyRelationshipTypes.find(
-      ({ value }) => value === partyRelationship.mine_party_appt_type_code
-    );
-    return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
+    // Update relationships mapping when relationships are received
+    // Otherwise, use existing mapping
+    if (!isEmpty(this.props.partyRelationshipTypes) && isEmpty(this.state.partyRelationshipTitle)) {
+      this.setState({
+        partyRelationshipTitle: getPartyRelationshipTitle(
+          this.props.partyRelationshipTypes,
+          typeCode
+        ),
+      });
+    }
   }
 
   render() {
@@ -104,9 +122,7 @@ export class RelationshipProfile extends Component {
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1 className="bold">
-                {this.getpartyRelationshipTitle(this.props.partyRelationships[0])} History
-              </h1>
+              <h1 className="bold">{this.state.partyRelationshipTitle} History</h1>
             </div>
             <div className="inline-flex between">
               <div className="inline-flex">
@@ -150,7 +166,7 @@ export class RelationshipProfile extends Component {
                           {partyRelationship.party.name}
                         </Link>
                       </Col>
-                      <Col span={width}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
+                      <Col span={width}>{this.state.partyRelationshipTitle}</Col>
                       {isPermittee && (
                         <Col span={width}>
                           {this.state.permitsMapping[partyRelationship.related_guid]}
