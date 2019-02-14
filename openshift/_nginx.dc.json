@@ -262,7 +262,8 @@
           "targetPort": "web"
         },
         "tls": {
-          "termination": "edge"
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
         },
         "wildcardPolicy": "None"
       }
@@ -290,7 +291,8 @@
           "targetPort": "web"
         },
         "tls": {
-          "termination": "edge"
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
         },
         "wildcardPolicy": "None"
       }
