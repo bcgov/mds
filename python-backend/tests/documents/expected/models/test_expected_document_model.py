@@ -36,7 +36,7 @@ def test_add_fiscal_due_date_with_five_year_period(test_client):
 
 def test_add_fiscal_due_date_with_five_year_period_this_year(test_client):
     current_date = datetime(datetime.now().year, 2, 1, 00, 00, 00)
-    expected_due_date = datetime(current_date.year, 3, 31, 00, 00, 00)
+    expected_due_date = datetime(current_date.year + 4, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
     period = '60'
 
@@ -44,6 +44,18 @@ def test_add_fiscal_due_date_with_five_year_period_this_year(test_client):
                                                                   period)
 
     assert due_date == expected_due_date
+
+
+def test_add_aniversary_due_date(test_client):
+    current_date = datetime.now()
+    expected_due_date = current_date
+    due_date_type = 'ANV'
+    period = '12'
+
+    due_date = ExpectedDocument.add_due_date_to_expected_document(None, current_date, due_date_type,
+                                                                  period)
+
+    assert expected_due_date == due_date
 
 
 def test_add_fiscal_due_date_when_current_date_is_fiscal(test_client):

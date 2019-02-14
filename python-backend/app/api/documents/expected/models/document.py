@@ -80,10 +80,11 @@ class ExpectedDocument(AuditMixin, Base):
 
             fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
             if current_date < fiscal_year_end:  #Jan - Mar
-                due_date = fiscal_year_end
-
+                tmp_date = fiscal_year_end - relativedelta(years=1)
             else:
-                due_date = fiscal_year_end + \
+                tmp_date = fiscal_year_end
+
+            due_date = tmp_date + \
                     relativedelta(months=int(period_in_months))
 
             return due_date
