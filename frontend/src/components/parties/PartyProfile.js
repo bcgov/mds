@@ -96,7 +96,7 @@ export class PartyProfile extends Component {
         dataIndex: "dates",
         render: (text, record) => (
           <div title="Dates">
-            {record.startDate} to {record.endDate}
+            {record.startDate} - {record.endDate}
           </div>
         ),
       },
