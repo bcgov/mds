@@ -506,7 +506,7 @@ BEGIN
             new.party_guid      ,
             'MMG'               ,
             new.effective_date  ,
-            '9999-12-31'::date  ,
+            null                ,
             'mms_migration'     ,
             now()               ,
             'mms_migration'     ,
