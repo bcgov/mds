@@ -80,8 +80,10 @@ export class RelationshipProfile extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const [{ mine_party_appt_type_code }] = this.props.partyRelationships;
-    const isPermittee = mine_party_appt_type_code === "PMT";
+    const relationshipType = this.props.partyRelationships[0]
+      ? this.props.partyRelationships[0].mine_party_appt_type_code
+      : "";
+    const isPermittee = relationshipType === "PMT";
     const columnCount = 3 + (isPermittee ? 1 : 0);
     // 24 is the total span from Ant Design
     const width = 24 / columnCount;
@@ -133,7 +135,7 @@ export class RelationshipProfile extends Component {
                   <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
                 </div>
                 {this.props.partyRelationships.map((partyRelationship) => (
-                  <div key={partyRelationship.related_guid}>
+                  <div key={`${partyRelationship.related_guid}${partyRelationship.start_date}`}>
                     <Row type="flex" style={{ textAlign: "center" }}>
                       <Col span={width}>
                         <Link
