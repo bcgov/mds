@@ -36,8 +36,7 @@ export class NewMinespaceUser extends Component {
   };
 
   handleSearch = (name) => {
-    if (name.length > 2) {
-      // Only used by the map view, which searches by name
+    if (name.length > 0) {
       this.props.fetchMineNameList({ name });
     }
   };
