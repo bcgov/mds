@@ -80,6 +80,11 @@ export class RelationshipProfile extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const [{ mine_party_appt_type_code }] = this.props.partyRelationships;
+    const isPermittee = mine_party_appt_type_code === "PMT";
+    const columnCount = 3 + (isPermittee ? 1 : 0);
+    // 24 is the total span from Ant Design
+    const width = 24 / columnCount;
 
     const isLoaded =
       this.props.partyRelationshipTypes.length > 0 &&
@@ -110,16 +115,18 @@ export class RelationshipProfile extends Component {
               <TabPane tab="History" key="history">
                 <div>
                   <Row type="flex" style={{ textAlign: "center" }}>
-                    <Col span={6}>
+                    <Col span={width}>
                       <h2>Contact</h2>
                     </Col>
-                    <Col span={6}>
+                    <Col span={width}>
                       <h2>Role</h2>
                     </Col>
-                    <Col span={6}>
-                      <h2>Permit No.</h2>
-                    </Col>
-                    <Col span={6}>
+                    {isPermittee && (
+                      <Col span={width}>
+                        <h2>Permit No.</h2>
+                      </Col>
+                    )}
+                    <Col span={width}>
                       <h2>Dates</h2>
                     </Col>
                   </Row>
@@ -128,18 +135,20 @@ export class RelationshipProfile extends Component {
                 {this.props.partyRelationships.map((partyRelationship) => (
                   <div key={partyRelationship.related_guid}>
                     <Row type="flex" style={{ textAlign: "center" }}>
-                      <Col span={6}>
+                      <Col span={width}>
                         <Link
                           to={router.PARTY_PROFILE.dynamicRoute(partyRelationship.party.party_guid)}
                         >
                           {partyRelationship.party.name}
                         </Link>
                       </Col>
-                      <Col span={6}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
-                      <Col span={6}>
-                        {this.state.permitsMapping[partyRelationship.related_guid]}
-                      </Col>
-                      <Col span={6}>
+                      <Col span={width}>{this.getpartyRelationshipTitle(partyRelationship)}</Col>
+                      {isPermittee && (
+                        <Col span={width}>
+                          {this.state.permitsMapping[partyRelationship.related_guid]}
+                        </Col>
+                      )}
+                      <Col span={width}>
                         <Icon type="clock-circle" />
                         &nbsp;&nbsp;
                         {partyRelationship.start_date || "Unknown"} -{" "}
