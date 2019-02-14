@@ -24,40 +24,66 @@ const columns = [
     title: "Permit No.",
     dataIndex: "permitNo",
     key: "permitNo",
+    render: (text) => <div title="Permit No.">{text}</div>,
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
+    render: (text) => <div title="Status">{text}</div>,
   },
   {
     title: "Permittee",
     dataIndex: "permittee",
     key: "permittee",
+    render: (text) => <div title="Permittee">{text}</div>,
   },
   {
     title: "Authorization End Date",
     dataIndex: "authorizationEndDate",
     key: "authorizationEndDate",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
   },
 
   {
     title: "First Issued",
     dataIndex: "firstIssued",
     key: "firstIssued",
+    render: (text) => <div title="First Issued">{text}</div>,
   },
   {
     title: "Last Amended",
     dataIndex: "lastAmended",
     key: "lastAmended",
+    render: (text) => <div title="Last Amended">{text}</div>,
   },
 ];
 
 const childColumns = [
-  { title: "Permit No.", dataIndex: "permitNo", key: "childPermitNo" },
-  { title: "Date", dataIndex: "Date", key: "Date" },
-  { title: "Permittee", dataIndex: "permittee", key: "childPermittee" },
-  { title: "Description", dataIndex: "description", key: "description" },
+  {
+    title: "Permit No.",
+    dataIndex: "permitNo",
+    key: "childPermitNo",
+    render: (text) => <div title="Permit No.">{text}</div>,
+  },
+  {
+    title: "Date",
+    dataIndex: "Date",
+    key: "Date",
+    render: (text) => <div title="Date">{text}</div>,
+  },
+  {
+    title: "Permittee",
+    dataIndex: "permittee",
+    key: "childPermittee",
+    render: (text) => <div title="Permittee">{text}</div>,
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+    render: (text) => <div title="Description">{text}</div>,
+  },
 ];
 
 const groupPermits = (permits) =>
@@ -95,7 +121,9 @@ const transformRowData = (permits, partyRelationships) => {
     permitNo: latest.permit_no || Strings.EMPTY_FIELD,
     firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
     permittee: permitteeName,
-    authorizationEndDate: latest.authorization_end_date ? formatDate(latest.authorization_end_date) : Strings.EMPTY_FIELD,
+    authorizationEndDate: latest.authorization_end_date
+      ? formatDate(latest.authorization_end_date)
+      : Strings.EMPTY_FIELD,
     permittees,
     status: Strings.EMPTY_FIELD,
   };
@@ -116,7 +144,7 @@ export const MinePermitInfo = (props) => {
       transformChildRowData(permittee, record)
     );
     return (
-      <Table align="center" pagination={false} columns={childColumns} dataSource={childRowData} />
+      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
   const rowData = groupedPermits.map((permits) =>
@@ -126,7 +154,7 @@ export const MinePermitInfo = (props) => {
   return (
     <Table
       className="nested-table"
-      align="center"
+      align="left"
       pagination={false}
       columns={columns}
       dataSource={rowData}

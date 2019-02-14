@@ -38,7 +38,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   mineBasicInfoList: PropTypes.arrayOf(CustomPropTypes.mine),
-  match: PropTypes.object,
+  match: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -49,6 +49,7 @@ const defaultProps = {
 
 export class PartyProfile extends Component {
   componentDidMount() {
+    console.log(this.props.match);
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
     this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
@@ -76,7 +77,6 @@ export class PartyProfile extends Component {
     const columns = [
       {
         title: "Mine Name",
-        width: 100,
         dataIndex: "mineName",
         render: (text, record) => (
           <div title="Mine Name">
@@ -86,13 +86,11 @@ export class PartyProfile extends Component {
       },
       {
         title: "Role",
-        width: 100,
         dataIndex: "role",
         render: (text) => <div title="Role">{text}</div>,
       },
       {
         title: "Dates",
-        width: 100,
         dataIndex: "dates",
         render: (text, record) => (
           <div title="Dates">
@@ -148,7 +146,7 @@ export class PartyProfile extends Component {
               <TabPane tab="Past History" key="history">
                 <div className="tab__content ">
                   <Table
-                    align="center"
+                    align="left"
                     className="mine-list"
                     pagination={false}
                     columns={columns}

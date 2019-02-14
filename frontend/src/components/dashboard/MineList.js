@@ -26,7 +26,9 @@ const columns = [
     width: 200,
     dataIndex: "mineName",
     render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">{text}</Link>
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">
+        {text}
+      </Link>
     ),
   },
   {
@@ -117,11 +119,7 @@ const columns = [
     title: "TSF",
     dataIndex: "tsf",
     width: 150,
-    render: (text) => (
-      <div title="TSF">
-        {text}
-      </div>
-    ),
+    render: (text) => <div title="TSF">{text}</div>,
   },
 ];
 
@@ -147,7 +145,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
 
 export const MineList = (props) => (
   <Table
-    align="center"
+    align="left"
     className="mine-list"
     pagination={false}
     columns={columns}
