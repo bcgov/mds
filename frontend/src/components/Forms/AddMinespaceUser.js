@@ -45,6 +45,7 @@ export const AddMinespaceUser = (props) => (
               placeholder="Please Select a Mine"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
+              onChange={props.handleChange}
               input={{ onBlur: props.handleChange, onSearch: props.handleSearch }}
             />
           </Form.Item>
