@@ -23,10 +23,15 @@ def setup_info(test_client):
 
 
 def test_get_minespace_users_all(test_client, auth_headers, setup_info):
-    get_resp = test_client.get('/users/minespace', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200, get_resp.response
-    assert get_data['users'][0]["email"] == setup_info["test_minespace_user_email"]
+
+    with mock.patch('requests.get') as mock_request:
+
+        mock_request.return_value = MockResponse([], 200)
+
+        get_resp = test_client.get('/users/minespace', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200, get_resp.response
+        assert get_data['users'][0]["email"] == setup_info["test_minespace_user_email"]
 
 
 def test_get_minespace_user_by_id(test_client, auth_headers, setup_info):
