@@ -56,11 +56,11 @@ export class PartyProfile extends Component {
     this.props.fetchPartyById(id);
     this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
       const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
-      this.props.fetchMineBasicInfoList([...mine_guids]).then(() => {
+      this.props.fetchMineBasicInfoList(mine_guids).then(() => {
+        this.props.fetchPartyRelationshipTypes();
         this.setState({ isLoaded: true });
       });
     });
-    this.props.fetchPartyRelationshipTypes();
   }
 
   render() {
@@ -99,7 +99,9 @@ export class PartyProfile extends Component {
         mineName: this.props.mineBasicInfoListHash[relationship.mine_guid],
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate:
-          relationship.end_date === "9999-12-31" ? "Present" : formatDate(relationship.end_date),
+          relationship.end_date === "9999-12-31" || null
+            ? "Present"
+            : formatDate(relationship.end_date),
         startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
       }));
 

@@ -150,7 +150,9 @@ export class RelationshipProfile extends Component {
         role: this.state.partyRelationshipTitle,
         permit: this.state.permitsMapping[relationship.related_guid],
         endDate:
-          relationship.end_date === "9999-12-31" ? "Present" : formatDate(relationship.end_date),
+          relationship.end_date === "9999-12-31" || null
+            ? "Present"
+            : formatDate(relationship.end_date),
         startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
       }));
 
@@ -183,7 +185,7 @@ export class RelationshipProfile extends Component {
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>
               <TabPane tab="History" key="history">
-                <div className="tab__content ">
+                <div className="tab__content">
                   <Table
                     align="left"
                     pagination={false}
