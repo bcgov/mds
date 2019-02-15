@@ -43,6 +43,14 @@
       "value": "/"
     },
     {
+      "name": "CORE_SSL_SECRET",
+      "value": "minesdigitalservices.gov.bc.ca-ssl"
+    },
+    {
+      "name": "MINESPACE_SSL_SECRET",
+      "value": "minespace.gov.bc.ca-ssl"
+    },
+    {
       "name": "CORE_DOMAIN",
       "required": true
     },
@@ -263,7 +271,25 @@
         },
         "tls": {
           "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect"
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "key": {
+            "secretKeyRef": {
+              "name": "${CORE_SSL_SECRET}",
+              "key": "private-key-pem"
+            }
+          },
+          "certificate": {
+            "secretKeyRef": {
+              "name": "${CORE_SSL_SECRET}",
+              "key": "certificate-pem"
+            }
+          },
+          "caCertificate": {
+            "secretKeyRef": {
+              "name": "${CORE_SSL_SECRET}",
+              "key": "ca-chain-cert"
+            }
+          }
         },
         "wildcardPolicy": "None"
       }
@@ -292,7 +318,25 @@
         },
         "tls": {
           "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect"
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "key": {
+            "secretKeyRef": {
+              "name": "${MINESPACE_SSL_SECRET}",
+              "key": "private-key-pem"
+            }
+          },
+          "certificate": {
+            "secretKeyRef": {
+              "name": "${MINESPACE_SSL_SECRET}",
+              "key": "certificate-pem"
+            }
+          },
+          "caCertificate": {
+            "secretKeyRef": {
+              "name": "${MINESPACE_SSL_SECRET}",
+              "key": "ca-chain-cert"
+            }
+          }
         },
         "wildcardPolicy": "None"
       }

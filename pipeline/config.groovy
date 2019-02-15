@@ -399,8 +399,8 @@ environments {
                     PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
-                    HOST_CORE = "core-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    HOST_MINESPACE = "minespace-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                     ROUTE = "/${vars.git.changeId}"
                 }
@@ -500,8 +500,8 @@ environments {
                     PATH = "/"
                 }
                 'mds-nginx' {
-                    HOST_CORE = "core-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    HOST_MINESPACE = "minespace-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
@@ -601,8 +601,8 @@ environments {
                     PATH = "/"
                 }
                 'mds-nginx' {
-                    HOST_CORE = "core-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                    HOST_MINESPACE = "minespace-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices.gov.bc.ca"
+                    HOST_MINESPACE = "minespace.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
