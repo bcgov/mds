@@ -96,7 +96,7 @@ app {
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}/minespace",
+                            'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
                             'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
@@ -221,7 +221,7 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
                 [
@@ -246,7 +246,7 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
 
                     ]
                 ],
@@ -262,11 +262,12 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.nginx.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.nginx.replica_min}",
                             'REPLICA_MAX':"${vars.resources.nginx.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nginx'.HOST}",
+                            'CORE_DOMAIN': "${vars.modules.'mds-nginx'.HOST_CORE}",
+                            'MINESPACE_DOMAIN': "${vars.modules.'mds-nginx'.HOST_MINESPACE}",
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
-                            'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
-                            'FRONTEND_PUBLIC_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
+                            'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
@@ -294,7 +295,7 @@ app {
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                     ]
                 ],
                 [
@@ -303,7 +304,7 @@ app {
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'BACKEND_HOST': "https://${vars.modules.'mds-nginx'.HOST}${vars.modules.'mds-nginx'.PATH}/api",
+                            'BACKEND_HOST': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
@@ -395,10 +396,11 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/${vars.git.changeId}/minespace"
+                    PATH = "/${vars.git.changeId}"
                 }
                 'mds-nginx' {
-                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
                     PATH = "/${vars.git.changeId}"
                     ROUTE = "/${vars.git.changeId}"
                 }
@@ -495,10 +497,11 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/minespace"
+                    PATH = "/"
                 }
                 'mds-nginx' {
-                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
@@ -595,10 +598,11 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/minespace"
+                    PATH = "/"
                 }
                 'mds-nginx' {
-                    HOST = "mds-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST_CORE = "minesdigitalservices.gov.bc.ca"
+                    HOST_MINESPACE = "minespace.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
