@@ -8,7 +8,6 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.minespace_user import MinespaceUser
 from ..models.minespace_user_mine import MinespaceUserMine
 from app.extensions import db
-from app.api.utils.url import get_mines_svc_url
 
 
 class MinespaceUserResource(Resource, UserMixin, ErrorMixin):

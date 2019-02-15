@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { flatMap } from "lodash";
+import { flatMap, uniq } from "lodash";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { bindActionCreators } from "redux";
@@ -47,8 +47,8 @@ export class MinespaceUserManagement extends Component {
 
   refreshUserData = () => {
     this.props.fetchMinespaceUsers().then(() => {
-      const mine_guids = [...new Set(flatMap(this.props.minespaceUsers, (user) => user.mines))];
-      this.props.fetchMinespaceUserMines(mine_guids);
+      const mine_guids = flatMap(this.props.minespaceUsers, (user) => user.mines);
+      this.props.fetchMinespaceUserMines(uniq(mine_guids));
     });
   };
 
