@@ -32,13 +32,12 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
             for user in ms_users:
                 for user_mine in user.mines:
                     all_mines.append(str(user_mine.mine_guid))
-            #raise Exception(str(all_mines))
 
             mine_basic_info_resp = requests.post(
                 get_mines_svc_url('/basicinfo'),
                 json={'mine_guids': all_mines},
                 headers={'Authorization': request.headers.get('Authorization')})
-
+            #serve flattened reference list to get names
             result = {'users': [x.json() for x in ms_users], 'mines': mine_basic_info_resp.json()}
         return result
 
