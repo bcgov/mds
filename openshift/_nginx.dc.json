@@ -271,25 +271,7 @@
         },
         "tls": {
           "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect",
-          "key": {
-            "secretKeyRef": {
-              "name": "${CORE_SSL_SECRET}",
-              "key": "private-key-pem"
-            }
-          },
-          "certificate": {
-            "secretKeyRef": {
-              "name": "${CORE_SSL_SECRET}",
-              "key": "certificate-pem"
-            }
-          },
-          "caCertificate": {
-            "secretKeyRef": {
-              "name": "${CORE_SSL_SECRET}",
-              "key": "ca-chain-cert"
-            }
-          }
+          "insecureEdgeTerminationPolicy": "Redirect"
         },
         "wildcardPolicy": "None"
       }
@@ -318,25 +300,7 @@
         },
         "tls": {
           "termination": "edge",
-          "insecureEdgeTerminationPolicy": "Redirect",
-          "key": {
-            "secretKeyRef": {
-              "name": "${MINESPACE_SSL_SECRET}",
-              "key": "private-key-pem"
-            }
-          },
-          "certificate": {
-            "secretKeyRef": {
-              "name": "${MINESPACE_SSL_SECRET}",
-              "key": "certificate-pem"
-            }
-          },
-          "caCertificate": {
-            "secretKeyRef": {
-              "name": "${MINESPACE_SSL_SECRET}",
-              "key": "ca-chain-cert"
-            }
-          }
+          "insecureEdgeTerminationPolicy": "Redirect"
         },
         "wildcardPolicy": "None"
       }
