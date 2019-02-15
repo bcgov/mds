@@ -320,7 +320,6 @@ def test_put_redundant_mine_name(test_client, auth_headers):
     # this relies on  test test_post_mine_name_and_coord
     test_tenure_data = {
         "name": "test_create_mine",
-        "note": ""
     }
     put_resp = test_client.put(
         '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
