@@ -3,6 +3,7 @@ import { storeMinespaceUserList } from "@/actions/minespaceActions";
 
 const baseExpectedValue = {
   minespaceUsers: [],
+  minespaceUserMines: [],
 };
 
 const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
@@ -31,6 +32,7 @@ describe("mineReducer", () => {
           user_id: "1",
           mines: [],
         },
+        mines: [],
       })
     );
     expect(result).toEqual(expectedValue);
