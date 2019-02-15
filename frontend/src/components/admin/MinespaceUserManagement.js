@@ -9,21 +9,22 @@ import { getMineNames } from "@/selectors/mineSelectors";
 import { getMinespaceUsers } from "@/selectors/minespaceSelector";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { fetchMinespaceUsers, deleteMinespaceUser } from "@/actionCreators/minespaceActionCreator";
+import { getMinespaceUserMines } from "../../reducers/minespaceReducer";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 const propTypes = {
-  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
+  minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
   deleteMinespaceUser: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  mines: [],
   minespaceUsers: [],
+  minespaceUserMines: [],
 };
 
 export class MinespaceUserManagement extends Component {
@@ -46,7 +47,7 @@ export class MinespaceUserManagement extends Component {
         <h3>Minespace Users</h3>
         <MinespaceUserList
           minespaceUsers={this.props.minespaceUsers}
-          mines={this.props.mines}
+          minespaceUserMines={this.props.minespaceUserMines}
           handleDelete={this.handleDelete}
         />
       </div>
@@ -57,6 +58,7 @@ export class MinespaceUserManagement extends Component {
 const mapStateToProps = (state) => ({
   mines: getMineNames(state).mines,
   minespaceUsers: getMinespaceUsers(state),
+  minespaceUserMines: getMinespaceUserMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
