@@ -2,13 +2,7 @@
 This file contains the style overrides for ArcGIS Map components
 */
 
-/* FIXME: Add pulsating animation to the LocationPin under the BaseMap Layer
-div.esri-view-root
-  > div.esri-view-surface.esri-view-surface--inset-outline
-  > div
-  > svg
-  > g
-  > circle {
+//This modifies the custom drawn path in the DOM.  It is created in the 'LocationPin.js' file
+path[path="M25,0 C60,0, 60,50, 25,50 C-10,50, -10,0, 25,0"] {
   @include pulsateAnimation;
 }
-*/
