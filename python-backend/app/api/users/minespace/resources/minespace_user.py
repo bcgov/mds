@@ -1,4 +1,4 @@
-import uuid
+import uuid, requests, json
 
 from flask_restplus import Resource, reqparse
 from flask import request
@@ -8,6 +8,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.minespace_user import MinespaceUser
 from ..models.minespace_user_mine import MinespaceUserMine
 from app.extensions import db
+from app.api.utils.url import get_mines_svc_url
 
 
 class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
@@ -26,7 +27,19 @@ class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
                     return self.create_error_payload(404, "user not found"), 404
             result = user.json()
         else:  #get all users (not deleted)
-            result = {'users': [x.json() for x in MinespaceUser.get_all()]}
+            ms_users = MinespaceUser.get_all()
+            all_mines = []
+            for user in ms_users:
+                for user_mine in user.mines:
+                    all_mines.append(str(user_mine.mine_guid))
+            #raise Exception(str(all_mines))
+
+            mine_basic_info_resp = requests.post(
+                get_mines_svc_url('/basicinfo'),
+                json={'mine_guids': all_mines},
+                headers={'Authorization': request.headers.get('Authorization')})
+
+            result = {'users': [x.json() for x in ms_users], 'mines': mine_basic_info_resp.json()}
         return result
 
     @api.doc(params={'user_id': 'Not expected.'})
