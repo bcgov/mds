@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { getMineDocuments } from "@/selectors/userMineInfoSelector";
 import {
   fetchMineDocuments,
-  addMineDocumentToExpectedDocument,
+  addDocumentToExpectedDocument,
   fetchMineRecordById,
 } from "@/actionCreators/userDashboardActionCreator";
 import { UPLOAD_MINE_EXPECTED_DOCUMENT_FILE } from "@/constants/API";
@@ -16,7 +16,7 @@ import FilePicker from "@/components/common/FilePicker";
 
 const propTypes = {
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
-  addMineDocumentToExpectedDocument: PropTypes.func.isRequired,
+  addDocumentToExpectedDocument: PropTypes.func.isRequired,
   fetchMineDocuments: PropTypes.func.isRequired,
   mineDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -27,13 +27,18 @@ class MineFilePicker extends Component {
     this.props.fetchMineDocuments(this.props.selectedDocument.mine_guid);
   }
 
-  handleFileSelect = (mineDocumentGuid) => {
-    const data = { mine_document_guid: mineDocumentGuid };
+  handleFileSelect = (mine_document_guid) => {
+    this.pushDocument({ mine_document_guid });
+  };
+
+  handleFileLoad = (filename, document_manager_guid) => {
+    this.pushDocument({ filename, document_manager_guid });
+  };
+
+  pushDocument = (formData) => {
     this.props
-      .addMineDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, data)
-      .then(() => {
-        this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid);
-      });
+      .addDocumentToExpectedDocument(this.props.selectedDocument.exp_document_guid, formData)
+      .then(() => this.props.fetchMineRecordById(this.props.selectedDocument.mine_guid));
   };
 
   render() {
@@ -51,6 +56,7 @@ class MineFilePicker extends Component {
         acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
         existingFilesDropdown={fileDropdown}
         onSelectExisting={this.handleFileSelect}
+        onFileLoad={this.handleFileLoad}
       />
     );
   }
@@ -64,7 +70,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineDocuments,
-      addMineDocumentToExpectedDocument,
+      addDocumentToExpectedDocument,
       fetchMineRecordById,
     },
     dispatch
