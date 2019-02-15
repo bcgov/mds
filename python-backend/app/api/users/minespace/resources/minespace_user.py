@@ -1,4 +1,4 @@
-import uuid, requests, json
+import uuid
 
 from flask_restplus import Resource, reqparse
 from flask import request
