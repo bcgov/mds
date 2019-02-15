@@ -8,16 +8,9 @@ import FileUpload from "@/components/common/FileUpload";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  maxFileSize: PropTypes.string,
-  acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   uploadUrl: PropTypes.string.isRequired,
   existingFilesDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   onSelectExisting: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  maxFileSize: undefined,
-  acceptedFileTypesMap: undefined,
 };
 
 class FilePicker extends Component {
@@ -43,10 +36,8 @@ class FilePicker extends Component {
             <Field
               id="fileUpload"
               name="fileUpload"
-              uploadUrl={this.props.uploadUrl}
-              maxFileSize={this.props.maxFileSize}
-              acceptedFileTypesMap={this.props.acceptedFileTypesMap}
               component={FileUpload}
+              {...this.props}
             />
           </Form.Item>
         ) : (
@@ -67,6 +58,5 @@ class FilePicker extends Component {
 }
 
 FilePicker.propTypes = propTypes;
-FilePicker.defaultProps = defaultProps;
 
 export default FilePicker;
