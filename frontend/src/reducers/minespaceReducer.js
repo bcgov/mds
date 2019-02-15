@@ -12,7 +12,11 @@ const minespaceReducer = (state = initialState, action) => {
       return {
         ...state,
         minespaceUsers: action.payload.users,
-        minespaceUserMines: action.payload.mines,
+      };
+    case actionTypes.STORE_MINESPACE_USER_MINES:
+      return {
+        ...state,
+        minespaceUserMines: action.payload,
       };
     default:
       return state;
