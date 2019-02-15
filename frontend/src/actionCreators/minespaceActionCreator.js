@@ -53,6 +53,26 @@ export const fetchMinespaceUsers = () => (dispatch) => {
     });
 };
 
+export const fetchMinespaceUserMines = (mine_guids) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINESPACE_USER_MINES));
+  return axios
+    .post(ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST, { mine_guids }, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINESPACE_USER_MINES));
+      dispatch(minespaceActions.storeMinespaceUserMineList(response.data));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINESPACE_USER_MINES));
+      dispatch(hideLoading());
+    });
+};
+
 export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.DELETE_MINESPACE_USER));
