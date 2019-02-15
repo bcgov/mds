@@ -17,7 +17,7 @@ import {
   getPartyRelationships,
   getPartyRelationshipTypeHash,
 } from "@/selectors/partiesSelectors";
-import { getMineBasicInfoList, getMineBasicInfoListHash } from "@/selectors/mineSelectors";
+import { getMineBasicInfoListHash } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -38,14 +38,14 @@ const propTypes = {
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
-  mineBasicInfoList: PropTypes.arrayOf(CustomPropTypes.mine),
+  mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
   partyRelationshipTypeHash: {},
-  mineBasicInfoList: [],
+  mineBasicInfoListHash: {},
 };
 
 export class PartyProfile extends Component {
@@ -56,21 +56,16 @@ export class PartyProfile extends Component {
     this.props.fetchPartyById(id);
     this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
       const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
-      this.props.fetchMineBasicInfoList([...mine_guids]);
-      this.setState({ isLoaded: true });
+      this.props.fetchMineBasicInfoList([...mine_guids]).then(() => {
+        this.setState({ isLoaded: true });
+      });
     });
     this.props.fetchPartyRelationshipTypes();
   }
 
-  // getMineName(mineId) {
-  //   console.log(this.props.mineBasicInfoList);
-  //   const mine =
-  //     this.props.mineBasicInfoList.length > 0 &&
-  //     this.props.mineBasicInfoList.find(({ guid }) => guid === mineId);
-  //   return mine.mine_name;
-  // }
-
   render() {
+    const { id } = this.props.match.params;
+    const parties = this.props.parties[id];
     const columns = [
       {
         title: "Mine Name",
@@ -107,8 +102,6 @@ export class PartyProfile extends Component {
           relationship.end_date === "9999-12-31" ? "Present" : formatDate(relationship.end_date),
         startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
       }));
-    const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
 
     if (this.state.isLoaded) {
       return (
@@ -136,7 +129,7 @@ export class PartyProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>
-              <TabPane tab="Past History" key="history">
+              <TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table
                     align="left"
@@ -161,7 +154,6 @@ const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
   partyRelationships: getPartyRelationships(state),
-  mineBasicInfoList: getMineBasicInfoList(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
 });
 

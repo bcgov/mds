@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Row, Col, Divider, Icon, Table } from "antd";
+import { Tabs, Table } from "antd";
 import { isEmpty } from "lodash";
 import {
   fetchPartyRelationshipTypes,
