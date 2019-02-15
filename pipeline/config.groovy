@@ -497,7 +497,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/"
+                    PATH = ""
                 }
                 'mds-nginx' {
                     HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
@@ -598,7 +598,7 @@ environments {
                 }
                 'mds-frontend-public' {
                     HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/"
+                    PATH = ""
                 }
                 'mds-nginx' {
                     HOST_CORE = "minesdigitalservices.gov.bc.ca"
