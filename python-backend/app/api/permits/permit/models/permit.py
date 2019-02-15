@@ -12,12 +12,13 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
-    permit_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    permit_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    permit_guid = db.Column(UUID(as_uuid=True))
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
-    received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    #received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    #issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    #authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
 
@@ -30,9 +31,9 @@ class Permit(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
-            'received_date': self.received_date.isoformat(),
-            'issue_date': self.issue_date.isoformat(),
-            'authorization_end_date': self.authorization_end_date.isoformat()
+            #'received_date': self.received_date.isoformat(),
+            #'issue_date': self.issue_date.isoformat(),
+            #'authorization_end_date': self.authorization_end_date.isoformat()
         }
 
     @classmethod
@@ -44,19 +45,12 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=_id)
 
     @classmethod
-    def create_mine_permit(cls,
-                           mine,
-                           permit_no,
-                           permit_status_code,
-                           issue_date,
-                           user_kwargs,
-                           save=True):
+    def create_mine_permit(cls, mine, permit_no, permit_status_code, user_kwargs, save=True):
         mine_permit = cls(
             permit_guid=uuid.uuid4(),
             mine_guid=mine.mine_guid,
             permit_no=permit_no,
             permit_status_code=permit_status_code,
-            issue_date=issue_date,
             **user_kwargs)
         if save:
             mine_permit.save(commit=False)
@@ -75,19 +69,3 @@ class Permit(AuditMixin, Base):
         if len(permit_no) > 16:
             raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no
-
-    @validates('received_date')
-    def validate_received_date(self, key, received_date):
-        if received_date.isoformat() == '9999-12-31':
-            return received_date
-        if received_date > datetime.today():
-            raise AssertionError('Permit received date cannot be set to the future.')
-        return received_date
-
-    @validates('issue_date')
-    def validate_issue_date(self, key, issue_date):
-        if issue_date.isoformat() == '9999-12-31':
-            return issue_date
-        if issue_date > datetime.today():
-            raise AssertionError('Permit issue date cannot be set to the future.')
-        return issue_date

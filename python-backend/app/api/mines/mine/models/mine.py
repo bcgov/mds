@@ -30,7 +30,7 @@ class Mine(AuditMixin, Base):
 
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='selectin')
+        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
