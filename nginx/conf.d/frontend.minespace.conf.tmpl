@@ -4,6 +4,7 @@
 
 # Proxy incoming requests on the base path to the frontend application
 
+# Server name for the minespace server directive
 server_name  ${MINESPACE_DOMAIN};
 
 location ${PATH_PREFIX}/ {
@@ -11,7 +12,7 @@ location ${PATH_PREFIX}/ {
                 return 503;
         }
 
-        proxy_pass ${FRONTEND_PUBLIC_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_pass ${MINESPACE_SERVICE_URL}${PATH_PREFIX}/;
         proxy_buffering    off;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }

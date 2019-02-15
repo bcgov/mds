@@ -266,8 +266,8 @@ app {
                             'MINESPACE_DOMAIN': "${vars.modules.'mds-nginx'.HOST_MINESPACE}",
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
-                            'FRONTEND_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
-                            'FRONTEND_PUBLIC_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
+                            'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
