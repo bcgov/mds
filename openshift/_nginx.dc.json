@@ -43,14 +43,6 @@
       "value": "/"
     },
     {
-      "name": "CORE_SSL_SECRET",
-      "value": "minesdigitalservices.gov.bc.ca-ssl"
-    },
-    {
-      "name": "MINESPACE_SSL_SECRET",
-      "value": "minespace.gov.bc.ca-ssl"
-    },
-    {
       "name": "CORE_DOMAIN",
       "required": true
     },
