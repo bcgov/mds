@@ -21,10 +21,13 @@ class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @jwt.requires_roles(["mds-mine-view"])
     def post(self, mine_no_or_guid=None):
+
         data = self.parser.parse_args()
         result = []
-        #return data.get('mine_guids')
-        for mine_guid in data.get('mine_guids', []):
+        if not data.get('mine_guids'):
+            return []
+
+        for mine_guid in data.get('mine_guids'):
             mine = Mine.find_by_mine_guid(mine_guid)
             result.append(mine.json_for_list())
         return result

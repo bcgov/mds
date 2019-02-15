@@ -3,6 +3,7 @@ import { MINESPACE } from "@/constants/reducerTypes";
 
 const initialState = {
   minespaceUsers: [],
+  minespaceUserMines: [],
 };
 
 const minespaceReducer = (state = initialState, action) => {
@@ -12,11 +13,17 @@ const minespaceReducer = (state = initialState, action) => {
         ...state,
         minespaceUsers: action.payload.users,
       };
+    case actionTypes.STORE_MINESPACE_USER_MINES:
+      return {
+        ...state,
+        minespaceUserMines: action.payload,
+      };
     default:
       return state;
   }
 };
 
 export const getMinespaceUsers = (state) => state[MINESPACE].minespaceUsers;
+export const getMinespaceUserMines = (state) => state[MINESPACE].minespaceUserMines;
 
 export default minespaceReducer;
