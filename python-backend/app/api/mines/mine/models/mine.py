@@ -154,7 +154,7 @@ class Mine(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_name(cls, term = None):
-        MINE_LIST_RESULT_LIMIT = 500
+        MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
@@ -165,7 +165,7 @@ class Mine(AuditMixin, Base):
 
     @classmethod
     def find_by_name_no_permit(cls, term = None):
-        MINE_LIST_RESULT_LIMIT = 500
+        MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
