@@ -47,7 +47,7 @@ export class MinespaceUserManagement extends Component {
 
   refreshUserData = () => {
     this.props.fetchMinespaceUsers().then(() => {
-      const mine_guids = flatMap(this.props.minespaceUsers, (user) => user.mines);
+      const mine_guids = [...new Set(flatMap(this.props.minespaceUsers, (user) => user.mines))];
       this.props.fetchMinespaceUserMines(mine_guids);
     });
   };
