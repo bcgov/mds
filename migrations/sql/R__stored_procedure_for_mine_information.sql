@@ -1,5 +1,9 @@
 CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
     BEGIN
+        -- Query performance optimization
+        SET max_parallel_workers_per_gather TO 8;
+        -- 1. ETL mine data from MMS
+        -- Create the ETL_MINE table
         DECLARE
             old_row    integer;
             new_row    integer;
@@ -21,12 +25,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 major_mine_ind    boolean,
             deleted_ind       boolean
             );
+            CREATE INDEX ON ETL_MINE (mine_no);
+            CREATE INDEX ON ETL_MINE (mine_guid);
             SELECT count(*) FROM ETL_MINE into old_row;
-
+            
             -- Migration step from previous ETL process
             -- Delete all major mines from the ETL_MINE table
             DELETE FROM ETL_MINE WHERE major_mine_ind = TRUE;
-
+            
             -- Upsert data into ETL_MINE from MMS
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_MINE
@@ -49,7 +55,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                                     WHEN mms.mmsmin.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
                                     ELSE NULL
                                 END,
-            deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
+                deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
             FROM mms.mmsmin
             WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
             SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -183,13 +189,15 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 latitude        numeric(9,7)        ,
                 longitude       numeric(11,7)
             );
+            CREATE INDEX ON ETL_LOCATION (mine_no);
+            CREATE INDEX ON ETL_LOCATION (mine_guid);
             SELECT count(*) FROM ETL_LOCATION into old_row;
 
             -- Upsert data into ETL_LOCATION from MMS
             RAISE NOTICE '.. Sync existing records with latest ETL_MINE data';
             -- Create temp table for upsert process
             CREATE TEMP TABLE IF NOT EXISTS pmt_now (
-                lat_dec   numeric(11,7) ,
+                lat_dec   numeric(11,7),
                 lon_dec   numeric(11,7),
                 permit_no varchar(12)  ,
                 mine_no   varchar(10)  ,
@@ -222,7 +230,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mms.mmsnow.cid = mms.mmspmt.cid
                 AND lat_dec IS NOT NULL
                 AND lon_dec IS NOT NULL;
-
+            
             -- Update existing ETL_LOCATION records
             WITH pmt_now_preferred AS (
                 SELECT
@@ -508,7 +516,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE mine_type
             SET mine_tenure_type_code = ETL_MINE.mine_type,
-                update_user           = 'mms_migration'      ,
+                update_user           = 'mms_migration'   ,
                 update_timestamp      = now()
             FROM ETL_MINE
             WHERE
@@ -553,6 +561,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '....# of new mine_type records inserted into MDS: %', (new_row-old_row);
             RAISE NOTICE '....Total mine_type records in MDS: %.', new_row;
             RAISE NOTICE 'Finish updating mine list in MDS';
-        END; 
+        END;
     END; 
 $$LANGUAGE plpgsql;

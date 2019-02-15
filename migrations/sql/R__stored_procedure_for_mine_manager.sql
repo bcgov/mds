@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $$
     BEGIN
-        DECLARE
+       DECLARE
             old_row    integer;
             insert_row integer;
             update_row integer;
@@ -499,7 +499,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                     new.party_guid      ,
                     'MMG'               ,
                     new.effective_date  ,
-                    '9999-12-31'::date  ,
+                    null                ,
                     'mms_migration'     ,
                     now()               ,
                     'mms_migration'     ,

@@ -1,6 +1,5 @@
 CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void AS $$
     BEGIN
-        
         DECLARE
             company_keyword_special varchar := '[-!0-9@#$&()`+/\"]
                 |Mining|Mineral|Resources|National|Regional|Energy|Products
