@@ -146,7 +146,6 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
 export const MineList = (props) => (
   <Table
     align="left"
-    className="mine-list"
     pagination={false}
     columns={columns}
     dataSource={transformRowData(

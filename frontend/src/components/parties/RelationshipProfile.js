@@ -186,7 +186,6 @@ export class RelationshipProfile extends Component {
                 <div className="tab__content ">
                   <Table
                     align="left"
-                    className="mine-list"
                     pagination={false}
                     columns={columns}
                     dataSource={transformRowData(filteredRelationships)}
