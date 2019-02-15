@@ -31,11 +31,11 @@
       "value": "/"
     },
     {
-      "name": "FRONTEND_SERVICE_URL",
+      "name": "CORE_SERVICE_URL",
       "value": "/"
     },
     {
-      "name": "FRONTEND_PUBLIC_SERVICE_URL",
+      "name": "MINESPACE_SERVICE_URL",
       "value": "/"
     },
     {
@@ -43,7 +43,11 @@
       "value": "/"
     },
     {
-      "name": "APPLICATION_DOMAIN",
+      "name": "CORE_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "MINESPACE_DOMAIN",
       "required": true
     },
     {
@@ -147,16 +151,24 @@
                     "value": "${PATH_PREFIX}"
                   },
                   {
-                    "name": "FRONTEND_SERVICE_URL",
-                    "value": "${FRONTEND_SERVICE_URL}"
+                    "name": "CORE_SERVICE_URL",
+                    "value": "${CORE_SERVICE_URL}"
                   },
                   {
-                    "name": "FRONTEND_PUBLIC_SERVICE_URL",
-                    "value": "${FRONTEND_PUBLIC_SERVICE_URL}"
+                    "name": "MINESPACE_SERVICE_URL",
+                    "value": "${MINESPACE_SERVICE_URL}"
                   },
                   {
                     "name": "API_SERVICE_URL",
                     "value": "${API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "CORE_DOMAIN",
+                    "value": "${CORE_DOMAIN}"
+                  },
+                  {
+                    "name": "MINESPACE_DOMAIN",
+                    "value": "${MINESPACE_DOMAIN}"
                   }
                 ],
                 "resources": {
@@ -231,14 +243,15 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}",
+        "name": "${NAME}${SUFFIX}-core",
         "creationTimestamp": null,
         "labels": {
-          "component": "${NAME}"
+          "component": "${NAME}",
+          "route": "core"
         }
       },
       "spec": {
-        "host": "${APPLICATION_DOMAIN}",
+        "host": "${CORE_DOMAIN}",
         "path": "${ROUTE}",
         "to": {
           "kind": "Service",
@@ -249,7 +262,37 @@
           "targetPort": "web"
         },
         "tls": {
-          "termination": "edge"
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
+        },
+        "wildcardPolicy": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}-minespace",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}",
+          "route": "minespace"
+        }
+      },
+      "spec": {
+        "host": "${MINESPACE_DOMAIN}",
+        "path": "${ROUTE}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "tls": {
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
         },
         "wildcardPolicy": "None"
       }
