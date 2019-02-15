@@ -24,7 +24,7 @@ def setup_info(test_client):
 
 def test_get_minespace_users_all(test_client, auth_headers, setup_info):
 
-    with mock.patch('requests.get') as mock_request:
+    with mock.patch('requests.post') as mock_request:
 
         mock_request.return_value = MockResponse([], 200)
 
