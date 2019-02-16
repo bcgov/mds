@@ -131,7 +131,6 @@ export class MineTailingsInfo extends Component {
   }
 
   render() {
-    console.log(this.props.mine.mine_expected_documents);
     return (
       <div>
         {this.props.mine.mine_tailings_storage_facility.map((facility) => (
