@@ -23,7 +23,7 @@ export const PermitCard = (props) => {
       <h4>{formatTitleString(props.permit.permit_no)}</h4>
       <br />
       <h6>Last Amended</h6>
-      <span>{formatDate(props.permit.issue_date)}</span>
+      <span>{props.permit.issue_date ? formatDate(props.permit.issue_date) : "Unknown"}</span>
       <br />
       <br />
       <h6>Permittee</h6>
