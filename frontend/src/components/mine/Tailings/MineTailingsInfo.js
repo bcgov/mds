@@ -131,6 +131,7 @@ export class MineTailingsInfo extends Component {
   }
 
   render() {
+    console.log(this.props.mine.mine_expected_documents);
     return (
       <div>
         {this.props.mine.mine_tailings_storage_facility.map((facility) => (
@@ -207,10 +208,10 @@ export class MineTailingsInfo extends Component {
                     <Col span={3}>
                       {!doc.related_documents
                         ? "-"
-                        : doc.related_documents.map((file, id) => (
+                        : doc.related_documents.map((file) => (
                             <div>
                               <a
-                                key={id}
+                                key={file.mine_document_guid}
                                 onClick={() =>
                                   downloadFileFromDocumentManager(
                                     file.document_manager_guid,
