@@ -1,12 +1,16 @@
 import React from "react";
-import { objectOf, arrayOf, string } from "prop-types";
+import { func, objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
-import { uniqBy } from "lodash";
+import { uniqBy, isEmpty } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+
+// TODO: refactor to use state
+let sort_field;
+let sort_dir = false;
 
 /**
  * @class MineList - paginated list of mines
@@ -18,6 +22,7 @@ const propTypes = {
   mineRegionHash: objectOf(string).isRequired,
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,
+  handleMineSearch: func.isRequired,
 };
 
 const columns = [
@@ -25,25 +30,34 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
+    fieldName: "mine_name",
     render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">{text}</Link>
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">
+        {text}
+      </Link>
     ),
+    sorter: true,
+    sortOrder: sort_field === "mine_name" ? sort_dir : false,
   },
   {
     title: "Mine No.",
     width: 100,
     dataIndex: "mineNo",
+    fieldName: "mine_no",
     render: (text, record) => (
       <div title="Mine Number">
         {text}
         {!text && <div>{record.emptyField}</div>}
       </div>
     ),
+    sorter: true,
+    sortOrder: sort_field === "mine_no" ? sort_dir : false,
   },
   {
     title: "Operational Status",
-    width: 150,
+    width: 160,
     dataIndex: "operationalStatus",
+    fieldName: "operational_status_code",
     render: (text, record) => (
       <div title="Operational Status">
         {text}
@@ -53,8 +67,9 @@ const columns = [
   },
   {
     title: "Permit No.",
-    dataIndex: "permit",
     width: 150,
+    dataIndex: "permit",
+    fieldName: "permit_no",
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
@@ -69,19 +84,22 @@ const columns = [
   },
   {
     title: "Region",
-    dataIndex: "region",
     width: 150,
+    dataIndex: "region",
+    fieldName: "mine_region",
     render: (text, record) => (
       <div title="Region">
         {text}
         {!text && <div>{record.emptyField}</div>}
       </div>
     ),
+    sorter: true,
+    sortOrder: sort_field === "mine_region" ? sort_dir : false,
   },
   {
     title: "Tenure",
-    dataIndex: "tenure",
     width: 150,
+    dataIndex: "tenure",
     render: (text, record) => (
       <div title="Tenure">
         {text &&
@@ -117,11 +135,8 @@ const columns = [
     title: "TSF",
     dataIndex: "tsf",
     width: 150,
-    render: (text) => (
-      <div title="TSF">
-        {text}
-      </div>
-    ),
+    render: (text) => <div title="TSF">{text}</div>,
+    sorter: true,
   },
 ];
 
@@ -145,6 +160,18 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       : Strings.EMPTY_FIELD,
   }));
 
+const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
+  if (!isEmpty(sorter)) {
+    const {
+      order,
+      column: { fieldName },
+    } = sorter;
+    sort_field = fieldName;
+    sort_dir = order;
+    updateMineList({ sort_field: fieldName, sort_dir: order === "descend" ? "desc" : "asc" });
+  }
+};
+
 export const MineList = (props) => (
   <Table
     align="center"
@@ -159,6 +186,7 @@ export const MineList = (props) => (
       props.mineCommodityOptionsHash
     )}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
+    onChange={handleTableChange(props.handleMineSearch)}
   />
 );
 
