@@ -35,8 +35,8 @@ export const PARTY_PROFILE = {
 };
 
 export const RELATIONSHIP_PROFILE = {
-  route: "/dashboard/:id/contact-information/:typeCode",
-  dynamicRoute: (id, typeCode) => `/dashboard/${id}/contact-information/${typeCode}`,
+  route: "/dashboard/:id/history/:typeCode",
+  dynamicRoute: (id, typeCode) => `/dashboard/${id}/history/${typeCode}`,
   component: RelationshipProfile,
 };
 

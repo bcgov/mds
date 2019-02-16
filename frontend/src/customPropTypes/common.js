@@ -12,3 +12,10 @@ export const formMeta = shape({
   error: PropTypes.string,
   warning: PropTypes.string,
 });
+
+export const match = shape({
+  isExact: PropTypes.bool,
+  params: PropTypes.objectOf(PropTypes.string),
+  path: PropTypes.string,
+  url: PropTypes.string,
+});
