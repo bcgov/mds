@@ -3,6 +3,8 @@
 $blue: #003366;
 $white: #f1f1f2;
 $violet: #5e46a1;
+$light-grey: #ded9d9;
+$lightest-grey: #f4f0f0;
 
 $alert-red: #d40d0d;
 $ok-green: #45a766;
@@ -12,6 +14,13 @@ $menu-item-color: $white;
 
 $error-color: $alert-red;
 $success-color: $ok-green;
+$item-hover-bg: $light-grey;
+
+// table colours
+$table-header-bg: $lightest-grey;
+$table-row-hover-bg: $light-grey;
+$table-row-hover-bg: $light-grey;
+$table-selected-row-bg: $light-grey;
 
 $font-family: "Open Sans", sans-serif;
 

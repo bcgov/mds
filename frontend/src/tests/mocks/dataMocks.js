@@ -768,7 +768,7 @@ export const PARTYRELATIONSHIPS = [
   },
 ];
 
-export const PARTYRELATIONSHIP = [
+export const PARTY_RELATIONSHIP = [
   {
     mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
     mine_guid: "db059bf5-14aa-4b98-af67-9c1e635a6120",
@@ -791,7 +791,9 @@ export const PARTYRELATIONSHIP = [
   },
 ];
 
-export const PARTYRELATIONSHIPTYPES = [
+export const MINE_INFO_HASH = { "db059bf5-14aa-4b98-af67-9c1e635a6120": "mockMineName" };
+
+export const PARTY_RELATIONSHIP_TYPES = [
   {
     mine_party_appt_type_code: "MMG",
     description: "Mine Manager",
@@ -901,3 +903,19 @@ export const PARTYRELATIONSHIPTYPES = [
     grouping_level: "1",
   },
 ];
+
+export const PARTY_RELATIONSHIP_TYPE_HASH = {
+  BLA: "Blaster",
+  EMM: "Exploration Mine Manager",
+  EOR: "Engineer Of Record",
+  EVS: "Environmental Specialist",
+  FRB: "Fire Boss",
+  MMG: "Mine Manager",
+  MOR: "Mine Operator",
+  MOW: "Mine Owner",
+  MRC: "Mine Rescue Contact",
+  PMT: "Permittee",
+  SHB: "Shift Boss",
+  SVR: "Supervisor",
+  TQP: "TSF Qualified Person",
+};
