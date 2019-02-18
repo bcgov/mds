@@ -241,11 +241,11 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     });
 };
 
-export const fetchMineNameList = (search = null) => (dispatch) => {
+export const fetchMineNameList = (params = {}) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(search), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(mineActions.storeMineNameList(response.data));

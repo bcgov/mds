@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
+import { caseInsensitiveLabelFilter } from "@/utils/helpers";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -14,6 +15,7 @@ const propTypes = {
   meta: CustomPropTypes.formMeta,
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
+  onSearch: PropTypes.func,
 };
 
 const defaultProps = {
@@ -22,6 +24,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
+  onSearch: () => {},
 };
 
 export const RenderMultiSelect = (props) => (
@@ -43,7 +46,9 @@ export const RenderMultiSelect = (props) => (
         getPopupContainer={() => document.getElementById(props.id)}
         placeholder={props.placeholder}
         id={props.id}
+        onSearch={props.onSearch}
         {...props.input}
+        filterOption={props.filterOption || caseInsensitiveLabelFilter}
       >
         {props.data &&
           props.data.map(({ value, label }) => <Select.Option key={value}>{label}</Select.Option>)}

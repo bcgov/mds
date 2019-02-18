@@ -20,19 +20,35 @@ const defaultProps = {
 export class LocationPin extends Component {
   state = { graphic: null };
 
+  componentWillMount() {
+    this.renderGraphic(this.props.center);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.center !== this.props.center) {
+      this.renderGraphic(nextProps.center);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.view.graphics.remove(this.state.graphic);
+  }
+
   renderGraphic = (props) => {
     loadModules([
       "esri/Graphic",
       "esri/symbols/SimpleMarkerSymbol",
       "esri/symbols/SimpleLineSymbol",
       "dojo/_base/Color",
-    ]).then(([Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color]) => {
-      const symbol = new SimpleMarkerSymbol(
-        SimpleMarkerSymbol.STYLE_CIRCLE,
-        15,
-        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([188, 41, 41]), 5),
-        new Color([188, 41, 41])
-      );
+    ]).then(([Graphic, Color]) => {
+      const symbol = {
+        type: "simple-marker",
+        // if a new symbol path is created, then the path in styles/components/Maps.css must be modified to match
+        path: "M25,0 C60,0, 60,50, 25,50 C-10,50, -10,0, 25,0",
+        size: 100,
+        color: new Color([188, 41, 41, 1]),
+        outline: { color: new Color([188, 41, 41, 1]) },
+      };
 
       const point = {
         type: "point",
@@ -50,20 +66,6 @@ export class LocationPin extends Component {
       this.setState({ graphic });
     });
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.center !== this.props.center) {
-      this.renderGraphic(nextProps.center);
-    }
-  }
-
-  componentWillMount() {
-    this.renderGraphic(this.props.center);
-  }
-
-  componentWillUnmount() {
-    this.props.view.graphics.remove(this.state.graphic);
-  }
 
   render() {
     return null;

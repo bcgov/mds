@@ -13,8 +13,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineNameList = jest.fn();
-  dispatchProps.fetchMinespaceUsers = jest.fn();
-
+  dispatchProps.fetchMinespaceUsers = jest.fn(() => Promise.resolve());
   dispatchProps.deleteMinespaceUser = jest.fn(() => Promise.resolve());
 };
 

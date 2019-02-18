@@ -25,32 +25,38 @@ const columns = [
     title: "Permit No.",
     dataIndex: "permitNo",
     key: "permitNo",
+    render: (text) => <div title="Permit No.">{text}</div>,
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
+    render: (text) => <div title="Status">{text}</div>,
   },
   {
     title: "Permittee",
     dataIndex: "permittee",
     key: "permittee",
+    render: (text) => <div title="Permittee">{text}</div>,
   },
   {
     title: "Authorization End Date",
     dataIndex: "authorizationEndDate",
     key: "authorizationEndDate",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
   },
 
   {
     title: "First Issued",
     dataIndex: "firstIssued",
     key: "firstIssued",
+    render: (text) => <div title="First Issued">{text}</div>,
   },
   {
     title: "Last Amended",
     dataIndex: "lastAmended",
     key: "lastAmended",
+    render: (text) => <div title="Last Amended">{text}</div>,
   },
 ];
 
@@ -115,7 +121,7 @@ export const MinePermitInfo = (props) => {
       transformChildRowData(amendment, record, record.amendments.length - index)
     );
     return (
-      <Table align="center" pagination={false} columns={childColumns} dataSource={childRowData} />
+      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
   const rowData = props.mine.mine_permit
@@ -130,7 +136,7 @@ export const MinePermitInfo = (props) => {
   return (
     <Table
       className="nested-table"
-      align="center"
+      align="left"
       pagination={false}
       columns={columns}
       dataSource={rowData}

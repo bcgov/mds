@@ -1,7 +1,3 @@
-import decimal
-import uuid
-
-from flask import request
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 
@@ -49,7 +45,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         doc_list = data['documents']
         mine_new_docs = []
         for new_doc in doc_list:
-            if new_doc['req_document_guid'] != None:
+            if new_doc['req_document_guid'] is not None:
                 req_doc = RequiredDocument.find_by_req_doc_guid(new_doc['req_document_guid'])
 
             mine_exp_doc = MineExpectedDocument(

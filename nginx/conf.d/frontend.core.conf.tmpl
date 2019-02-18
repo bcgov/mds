@@ -4,8 +4,15 @@
 
 # Proxy incoming requests on the base path to the frontend application
 
+# Server name for the core server directive
+server_name  ${CORE_DOMAIN};
+
 location ${PATH_PREFIX}/ {
-        proxy_pass ${FRONTEND_SERVICE_URL}${PATH_PREFIX}/;
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
+        proxy_pass ${CORE_SERVICE_URL}${PATH_PREFIX}/;
         proxy_buffering    off;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
