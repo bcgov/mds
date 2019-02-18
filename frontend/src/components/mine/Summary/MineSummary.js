@@ -52,13 +52,6 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
-const groupPermits = (permits) =>
-  permits.reduce((acc, permit) => {
-    acc[permit.permit_no] = acc[permit.permit_no] || [];
-    acc[permit.permit_no].push(permit);
-    return acc;
-  }, {});
-
 const renderSummaryPermit = (permit, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
     {" "}
@@ -87,8 +80,6 @@ export const MineSummary = (props) => {
     return <NullScreen type="generic" />;
   }
 
-  const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
-
   return (
     <div>
       {props.partyRelationships && props.partyRelationships.length > 0 && (
@@ -103,20 +94,7 @@ export const MineSummary = (props) => {
             <Row gutter={16} type="flex">
               {props.partyRelationships
                 .filter(isActive)
-                .filter((pr) => ["MMG"].includes(pr.mine_party_appt_type_code))
-                .map((partyRelationship) =>
-                  renderPartyRelationship(
-                    props.mine,
-                    partyRelationship,
-                    props.partyRelationshipTypes
-                  )
-                )}
-              {props.partyRelationships
-                .filter(isActive)
-                .filter((pr) => ["PMT"].includes(pr.mine_party_appt_type_code))
-                .filter(({ related_guid }) =>
-                  groupedPermits.map((permits) => permits[0].permit_guid).includes(related_guid)
-                )
+                .filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     props.mine,
@@ -149,9 +127,16 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
             <Row gutter={16} type="flex">
-              {groupedPermits.map((permits) =>
-                renderSummaryPermit(permits[0], props.partyRelationships.filter(isActive))
-              )}
+              {props.mine.mine_permit
+                .filter((permit) => permit.permit_no.toUpperCase().charAt(1) !== "X")
+                .map((permit) =>
+                  renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+                )}
+              {props.mine.mine_permit
+                .filter((permit) => permit.permit_no.toUpperCase().charAt(1) === "X")
+                .map((permit) =>
+                  renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+                )}
             </Row>
             <Row gutter={16}>
               <Col span={24}>

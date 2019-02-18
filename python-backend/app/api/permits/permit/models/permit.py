@@ -16,24 +16,26 @@ class Permit(AuditMixin, Base):
     permit_guid = db.Column(UUID(as_uuid=True))
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
-    #received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    #issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    #authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
+
+    permit_amendments = db.relationship(
+        'PermitAmendment',
+        backref='permit',
+        order_by='desc(PermitAmendment.issue_date)',
+        lazy='selectin')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
 
     def json(self):
         return {
+            'permit_id': str(self.permit_id),
             'permit_guid': str(self.permit_guid),
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
-            #'received_date': self.received_date.isoformat(),
-            #'issue_date': self.issue_date.isoformat(),
-            #'authorization_end_date': self.authorization_end_date.isoformat()
+            'amendments': [x.json() for x in self.permit_amendments]
         }
 
     @classmethod

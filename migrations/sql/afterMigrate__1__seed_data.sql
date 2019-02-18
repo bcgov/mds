@@ -113,7 +113,7 @@ VALUES
     ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
     ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
     ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -335,8 +335,8 @@ INSERT INTO permit_amendment_type_code
     update_user
     )
 VALUES
-    ('W', 'Work', 10, 'system-mds', 'system-mds'),
-    ('N', 'Non-Work', 20, 'system-mds', 'system-mds')
+    ('AM', 'Permit Amendment', 10, 'system-mds', 'system-mds'),
+    ('ML', 'Amalgamated Permit', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_amendment_status_code

@@ -7,6 +7,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
+from . import permit_amendment_status_code, permit_amendment_type_code
 from ....utils.models_mixins import AuditMixin, Base
 
 
@@ -14,7 +15,7 @@ class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
     permit_amendment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     permit_amendment_guid = db.Column(UUID(as_uuid=True))
-    permit_id = db.Column(db.Integer, nullable=False)
+    permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
@@ -76,3 +77,12 @@ class PermitAmendment(AuditMixin, Base):
         if issue_date > datetime.today():
             raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
+
+    @validates('authorization_end_date')
+    def validate_authorization_end_date(self, key, authorization_end_date):
+        if authorization_end_date.isoformat() == '9999-12-31':
+            return authorization_end_date
+        if authorization_end_date > datetime.today():
+            raise AssertionError(
+                'Permit amendment authorization end date cannot be set to the future.')
+        return authorization_end_date
