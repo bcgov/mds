@@ -228,6 +228,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         _mine_status.save()
         return _mine_status
 
+    def throw_error_if_mine_exists(self, mine_name):
+        # query the mine tables and check if that mine name exists
+        if mine_name:
+            name_filter = Mine.mine_name.ilike(mine_name.strip())
+            mines_name_query = Mine.query.filter(name_filter)
+            mines_with_name = mines_name_query.all()
+            if len(mines_with_name) > 0:
+                self.raise_error(400, 'A mine with that name already exists. The Mine No. is %s' % mines_with_name[0].mine_no)
+
     @api.expect(parser)
     @requires_role_mine_create
     def post(self, mine_no_or_guid=None):
@@ -245,6 +254,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine_region = data['mine_region']
         mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
+            # query the mine tables and check if that mine name exists
+            self.throw_error_if_mine_exists( data['name'])
             mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
@@ -286,7 +297,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        mine_name = data['name']
+        mine_name =  data['name'].strip() if data['name'] else None
         mine_note = data['note']
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
@@ -304,6 +315,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             try:
                 mine.update_user = self.get_update_user()
                 if mine_name:
+                    if mine.mine_name != mine_name:
+                        self.throw_error_if_mine_exists(mine_name)
                     mine.mine_name = mine_name
                 mine.mine_note = mine_note
                 if major_mine_ind is not None:
