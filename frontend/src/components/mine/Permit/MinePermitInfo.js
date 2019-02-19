@@ -111,7 +111,6 @@ const transformChildRowData = (amendment, record, amendmentNumber) => ({
   ReceivedDate: amendment.received_date,
   IssueDate: amendment.issue_date,
   AuthorizationEndDate: amendment.authorization_end_date,
-  permittee: null,
   description: Strings.EMPTY_FIELD,
 });
 
