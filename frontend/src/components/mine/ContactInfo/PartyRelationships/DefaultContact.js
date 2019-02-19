@@ -5,7 +5,7 @@ import { Button, Card } from "antd";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
-import { formatTitleString } from "@/utils/helpers";
+import { formatTitleString, formatDate } from "@/utils/helpers";
 import { Link } from "react-router-dom";
 
 const propTypes = {
@@ -73,7 +73,9 @@ export const DefaultContact = (props) => (
         <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
         <span>
-          {props.partyRelationship.start_date ? props.partyRelationship.start_date : "Unknown"}
+          {props.partyRelationship.start_date
+            ? formatDate(props.partyRelationship.start_date)
+            : "Unknown"}
         </span>,
       ]}
     </div>
