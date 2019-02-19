@@ -61,13 +61,29 @@ const columns = [
 ];
 
 const childColumns = [
-  { title: "", dataIndex: "key", key: "Key" },
-  { title: "Received Date", dataIndex: "ReceivedDate", key: "ReceivedDate" },
-  { title: "Issue Date", dataIndex: "IssueDate", key: "IssueDate" },
+  {
+    title: "",
+    dataIndex: "key",
+    key: "Key",
+    render: (text) => <div title="Amendment Number">{text}</div>,
+  },
+  {
+    title: "Received Date",
+    dataIndex: "ReceivedDate",
+    key: "ReceivedDate",
+    render: (text) => <div title="Received Date">{text}</div>,
+  },
+  {
+    title: "Issue Date",
+    dataIndex: "IssueDate",
+    key: "IssueDate",
+    render: (text) => <div title="Issue Date">{text}</div>,
+  },
   {
     title: "Authorization End Date",
     dataIndex: "AuthorizationEndDate",
     key: "AuthorizationEndDate",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
   },
 ];
 
