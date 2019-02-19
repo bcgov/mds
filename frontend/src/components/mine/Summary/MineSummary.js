@@ -128,9 +128,7 @@ export const MineSummary = (props) => {
             <Row gutter={16}>
               <Col span={24}>
                 <div className="right">
-                  <Link
-                    to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "contact-information")}
-                  >
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.guid, "contacts")}>
                     See All Contacts
                   </Link>
                 </div>
