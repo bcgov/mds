@@ -1,0 +1,23 @@
+# ----------------------------------------------------------------------
+# | Server parameters                                                   |
+# ----------------------------------------------------------------------
+
+# Common parameters for server blocks
+
+listen       8080;
+listen       [::]:8080;
+root         /opt/app-root/src;
+server_tokens off;
+ignore_invalid_headers off;
+add_header X-UA-Compatible "IE=Edge";
+add_header Pragma "no-cache";
+add_header X-XSS-Protection 1;
+
+# Import additional configuration files
+include       /opt/app-root/etc/nginx.conf.d/*.common.conf;
+
+#error pages
+error_page 503 /maintenance_on.html;
+location = /maintenance_on.html {
+    root /opt/app-root/src/html/;
+}

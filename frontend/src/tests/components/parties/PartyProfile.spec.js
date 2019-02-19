@@ -10,12 +10,15 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyById = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.match = {};
+  dispatchProps.fetchMineBasicInfoList = jest.fn();
 };
 
 const setupReducerProps = () => {
+  reducerProps.match = {};
   reducerProps.parties = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
-  reducerProps.partyRelationshipTypes = MOCK.PARTYRELATIONSHIPTYPES;
+  reducerProps.partyRelationships = MOCK.PARTY_RELATIONSHIPS;
+  reducerProps.partyRelationshipTypeHash = MOCK.PARTY_RELATIONSHIP_TYPE_HASH;
+  reducerProps.mineBasicInfoListHash = MOCK.MINE_INFO_HASH;
 };
 
 beforeEach(() => {

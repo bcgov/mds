@@ -13,6 +13,7 @@ import dataObjects.MineProfileData
 @Stepwise
 class  DashboardSpec extends GebReportingSpec {
     static NAME_GOOD = "Mine-Test ABC"
+    static NAME_GOOD_TWO = "Mine-Test DEF"
     static STATUS    = "Closed / Orphaned / Long Term Maintenance"
     static LAGTITUTE = "52.6565"
     static LONGTITUE = "124.2342"
@@ -41,7 +42,26 @@ class  DashboardSpec extends GebReportingSpec {
         where:
         scenario                            | input
         "Giving only mine name and status"  |new MineProfileData (NAME_GOOD,STATUS,NULL,NULL,NULL)
-        "Giving full mine information"      |new MineProfileData (NAME_GOOD,STATUS,LAGTITUTE,LONGTITUE,NOTES)
+    }
+
+    def "Scenario: User is able to create a mine record with fullmine info "(){
+        given: "I go to the Dashboard Page"
+        to Dashboard
+
+        when: "Loading is finished and I click the create a mine button"
+        createMineButton_Dashboard.click()
+
+        and: "I type in valid mine profile"
+        createMineForm.createMineRecord(input)
+        println "Scenario: "+scenario
+        waitFor {toastMessage!= null }
+
+        then: "I should see the successful message"
+        toastMessage == "Successfully created: " + NAME_GOOD_TWO
+
+        where:
+        scenario                            | input
+        "Giving full mine information"      |new MineProfileData (NAME_GOOD_TWO,STATUS,LAGTITUTE,LONGTITUE,NOTES)
     }
 
     def "Scenario: User can view a mine"(){

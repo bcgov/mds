@@ -7,13 +7,13 @@ import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
-  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
+  minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
   handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
   minespaceUsers: [],
-  mines: [],
+  minespaceUserMines: [],
   handleDelete: () => {},
 };
 
@@ -72,12 +72,16 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
 
 export const MinespaceUserList = (props) => (
   <div>
-    {props.mines && (
+    {props.minespaceUserMines && (
       <Table
         align="center"
         pagination={false}
         columns={columns}
-        dataSource={transformRowData(props.minespaceUsers, props.mines, props.handleDelete)}
+        dataSource={transformRowData(
+          props.minespaceUsers,
+          props.minespaceUserMines,
+          props.handleDelete
+        )}
         scroll={{ x: 1500 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />
