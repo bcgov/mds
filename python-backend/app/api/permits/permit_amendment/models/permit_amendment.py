@@ -16,13 +16,13 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     permit_amendment_guid = db.Column(UUID(as_uuid=True))
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
-    received_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    issue_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    authorization_end_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    received_date = db.Column(db.DateTime, nullable=False)
+    issue_date = db.Column(db.DateTime, nullable=False)
+    authorization_end_date = db.Column(db.DateTime, nullable=False)
     permit_amendment_status_code = db.Column(
-        db.String(2), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
+        db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
-        db.String(2), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
+        db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
 
     def json(self):
         return {
@@ -72,6 +72,8 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('received_date')
     def validate_received_date(self, key, received_date):
+        if not authorization_end_date:
+            return authorization_end_date
         if received_date.isoformat() == '9999-12-31':
             raise AssertionError(
                 'Permit amendment received date should be set to null if not known.')
@@ -81,6 +83,8 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('issue_date')
     def validate_issue_date(self, key, issue_date):
+        if not issue_date:
+            return issue_date
         if issue_date.isoformat() == '9999-12-31':
             raise AssertionError('Permit amendment issue date should be set to null if not known.')
         if issue_date > datetime.today():
@@ -89,6 +93,8 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('authorization_end_date')
     def validate_authorization_end_date(self, key, authorization_end_date):
+        if not authorization_end_date:
+            return authorization_end_date
         if authorization_end_date.isoformat() == '9999-12-31':
             raise AssertionError('Permit amendment end date should be set to null if not known.')
         return authorization_end_date
