@@ -91,7 +91,4 @@ class PermitAmendment(AuditMixin, Base):
     def validate_authorization_end_date(self, key, authorization_end_date):
         if authorization_end_date.isoformat() == '9999-12-31':
             raise AssertionError('Permit amendment end date should be set to null if not known.')
-        if authorization_end_date > datetime.today():
-            raise AssertionError(
-                'Permit amendment authorization end date cannot be set to the future.')
         return authorization_end_date

@@ -24,6 +24,7 @@ from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, 
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
 from .scheduled_jobs import NRIS_jobs
+from .scheduled_jobs import ETL_jobs
 from app import auth
 
 
@@ -175,3 +176,10 @@ def register_commands(app):
                 print('Caching all NRIS data for Major Mines')
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
+
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')

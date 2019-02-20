@@ -71,17 +71,3 @@ def test_permit_model_validate_issue_date(test_client, auth_headers):
             issue_date=datetime.today() + timedelta(days=1),
             authorization_end_date=datetime.today())
     assert 'Permit amendment issue date cannot be set to the future.' in str(e.value)
-
-
-def test_permit_model_validate_authorization_end_date(test_client, auth_headers):
-    with pytest.raises(AssertionError) as e:
-        PermitAmendment(
-            permit_amendment_id=1,
-            permit_amendment_guid=uuid.uuid4(),
-            permit_id=1,
-            permit_amendment_status_code='A',
-            permit_amendment_type_code='AM',
-            received_date=datetime.today(),
-            issue_date=datetime.today(),
-            authorization_end_date=datetime.today() + timedelta(days=1))
-    assert 'Permit amendment authorization end date cannot be set to the future.' in str(e.value)
