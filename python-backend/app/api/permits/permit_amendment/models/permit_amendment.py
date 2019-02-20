@@ -75,8 +75,6 @@ class PermitAmendment(AuditMixin, Base):
         if received_date.isoformat() == '9999-12-31':
             raise AssertionError(
                 'Permit amendment received date should be set to null if not known.')
-        if received_date > datetime.today():
-            raise AssertionError('Permit amendment received date cannot be set to the future.')
         return received_date
 
     @validates('issue_date')
