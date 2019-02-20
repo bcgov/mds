@@ -23,7 +23,6 @@ export class Home extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
-      console.log("did ya change??");
       this.handleActiveButton(nextProps.location.pathname);
     }
   }

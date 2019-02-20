@@ -57,7 +57,7 @@ export class NavBar extends Component {
             })}
           >
             <Button
-              id={this.props.activeButton === router.MINE_HOME_PAGE.route && "active-contact-btn"}
+              id={this.props.activeButton === router.MINE_HOME_PAGE.route && "active-mine-btn"}
               className="menu__btn--link"
             >
               <Icon type="compass" /> Mines
