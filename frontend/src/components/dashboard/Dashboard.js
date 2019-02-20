@@ -279,7 +279,12 @@ export class Dashboard extends Component {
                 searchValue={search}
               />
               <div className="tab__content ">
-                <MineList handleMineSearch={this.handleMineSearchDebounced} {...this.props} />
+                <MineList
+                  handleMineSearch={this.handleMineSearch}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
+                  {...this.props}
+                />
               </div>
               <div className="center">
                 <MediaQuery maxWidth={500}>

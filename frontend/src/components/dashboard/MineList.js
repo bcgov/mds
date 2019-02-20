@@ -8,10 +8,6 @@ import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 
-// TODO: refactor to use state
-let sort_field;
-let sort_dir = false;
-
 /**
  * @class MineList - paginated list of mines
  */
@@ -23,6 +19,13 @@ const propTypes = {
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,
   handleMineSearch: func.isRequired,
+  sortField: string,
+  sortDir: string,
+};
+
+const defaultProps = {
+  sortField: null,
+  sortDir: null,
 };
 
 const columns = [
@@ -30,20 +33,19 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    fieldName: "mine_name",
+    sortField: "mine_name",
     render: (text, record) => (
       <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">
         {text}
       </Link>
     ),
     sorter: true,
-    sortOrder: sort_field === "mine_name" ? sort_dir : false,
   },
   {
     title: "Mine No.",
-    width: 100,
+    width: 120,
     dataIndex: "mineNo",
-    fieldName: "mine_no",
+    sortField: "mine_no",
     render: (text, record) => (
       <div title="Mine Number">
         {text}
@@ -51,13 +53,12 @@ const columns = [
       </div>
     ),
     sorter: true,
-    sortOrder: sort_field === "mine_no" ? sort_dir : false,
   },
   {
     title: "Operational Status",
     width: 160,
     dataIndex: "operationalStatus",
-    fieldName: "operational_status_code",
+    sortField: "operational_status_code",
     render: (text, record) => (
       <div title="Operational Status">
         {text}
@@ -69,7 +70,7 @@ const columns = [
     title: "Permit No.",
     width: 150,
     dataIndex: "permit",
-    fieldName: "permit_no",
+    sortField: "permit_no",
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
@@ -86,7 +87,7 @@ const columns = [
     title: "Region",
     width: 150,
     dataIndex: "region",
-    fieldName: "mine_region",
+    sortField: "mine_region",
     render: (text, record) => (
       <div title="Region">
         {text}
@@ -94,7 +95,6 @@ const columns = [
       </div>
     ),
     sorter: true,
-    sortOrder: sort_field === "mine_region" ? sort_dir : false,
   },
   {
     title: "Tenure",
@@ -164,19 +164,23 @@ const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
   if (!isEmpty(sorter)) {
     const {
       order,
-      column: { fieldName },
+      column: { sortField },
     } = sorter;
-    sort_field = fieldName;
-    sort_dir = order;
-    updateMineList({ sort_field: fieldName, sort_dir: order === "descend" ? "desc" : "asc" });
+    updateMineList({ sort_field: sortField, sort_dir: order.replace("end", "") });
   }
 };
+
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
+  }));
 
 export const MineList = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={columns}
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
     dataSource={transformRowData(
       props.mines,
       props.mineIds,
@@ -190,5 +194,6 @@ export const MineList = (props) => (
 );
 
 MineList.propTypes = propTypes;
+MineList.defaultProps = defaultProps;
 
 export default MineList;
