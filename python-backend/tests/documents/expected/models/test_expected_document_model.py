@@ -1,12 +1,12 @@
 import uuid
 from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID1
-from app.api.documents.expected.models.document import ExpectedDocument
+from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
 def test_expected_documents_find_by_exp_document_guid(test_client, auth_headers):
-    expected_document = ExpectedDocument.find_by_exp_document_guid(TEST_EXPECTED_DOCUMENT_GUID1)
+    expected_document = MineExpectedDocument.find_by_exp_document_guid(TEST_EXPECTED_DOCUMENT_GUID1)
     assert str(expected_document.exp_document_guid) == TEST_EXPECTED_DOCUMENT_GUID1
 
 
