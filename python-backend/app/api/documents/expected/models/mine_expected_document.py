@@ -40,10 +40,16 @@ class MineExpectedDocument(AuditMixin, Base):
     required_document = db.relationship(
         'RequiredDocument',
         backref='exp_document_guid',
+        uselist=False,
         order_by='desc(RequiredDocument.req_document_name)',
-        lazy='joined')
+        lazy='joined',
+        load_on_pending=True)
     expected_document_status = db.relationship(
-        'ExpectedDocumentStatus', backref='exp_documents', uselist=False, lazy='joined')
+        'ExpectedDocumentStatus',
+        backref='exp_documents',
+        uselist=False,
+        lazy='joined',
+        load_on_pending=True)
 
     mine_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
 
@@ -78,11 +84,11 @@ class MineExpectedDocument(AuditMixin, Base):
             return None
 
     def set_due_date(self):
-        self._add_due_date_to_expected_document(
+        self.due_date = self._get_due_date_for_expected_document(
             datetime.now(), self.required_document.req_document_due_date_type,
             self.required_document.req_document_due_date_period_months)
 
-    def _add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
+    def _get_due_date_for_expected_document(self, current_date, due_date_type, period_in_months):
         current_year = current_date.year
         march = 3
         day = 31

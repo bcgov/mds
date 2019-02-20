@@ -5,7 +5,7 @@ from ...required.models.required_documents import RequiredDocument
 from ..models.mine_expected_document import MineExpectedDocument
 from ..models.document_status import ExpectedDocumentStatus
 
-from app.extensions import api
+from app.extensions import api, db
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -45,9 +45,6 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         doc_list = data['documents']
         mine_new_docs = []
         for new_doc in doc_list:
-            if new_doc['req_document_guid'] is not None:
-                req_doc = RequiredDocument.find_by_req_doc_guid(new_doc['req_document_guid'])
-
             mine_exp_doc = MineExpectedDocument(
                 req_document_guid=new_doc['req_document_guid'],
                 exp_document_name=new_doc['document_name'],
@@ -55,7 +52,13 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 mine_guid=mine_guid,
                 exp_document_status_code='MIA',
                 **self.get_create_update_dict())
-            mine_exp_doc.set_due_date()
-            mine_exp_doc.save()
-            mine_new_docs.append(mine_exp_doc)
+            db.session.add(mine_exp_doc)
+            try:
+                mine_exp_doc.set_due_date()
+                mine_new_docs.append(mine_exp_doc)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                return self.create_error_payload(
+                    500, f'Error creating expected document, was not created {e}'), 500
         return {'expected_mine_documents': list(map(lambda x: x.json(), mine_new_docs))}

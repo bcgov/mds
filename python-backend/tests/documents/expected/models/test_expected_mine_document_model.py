@@ -41,7 +41,7 @@ def test_add_fiscal_due_date_with_one_year_period(test_client):
     due_date_type = 'FIS'
     period = '12'
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, current_date, due_date_type, period)
 
     assert due_date == expected_due_date
@@ -53,7 +53,7 @@ def test_add_fiscal_due_date_with_five_year_period(test_client):
     due_date_type = 'FIS'
     period = '60'
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, current_date, due_date_type, period)
 
     assert due_date == expected_due_date
@@ -65,7 +65,7 @@ def test_add_fiscal_due_date_with_five_year_period_this_year(test_client):
     due_date_type = 'FIS'
     period = '60'
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, current_date, due_date_type, period)
 
     assert due_date == expected_due_date
@@ -77,7 +77,7 @@ def test_add_aniversary_due_date(test_client):
     due_date_type = 'ANV'
     period = '12'
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, current_date, due_date_type, period)
 
     assert expected_due_date == due_date
@@ -89,7 +89,7 @@ def test_add_fiscal_due_date_when_current_date_is_fiscal(test_client):
     period = '12'
     expected_due_date = fiscal + relativedelta(months=12)
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, fiscal, due_date_type, period)
 
     assert due_date == expected_due_date
@@ -101,7 +101,7 @@ def test_add_fiscal_due_date_on_year_end(test_client):
     period = '12'
     expected_due_date = datetime(datetime.now().year, 3, 31, 00, 00, 00)
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, end_of_year, due_date_type, period)
 
     assert due_date == expected_due_date
@@ -113,7 +113,7 @@ def test_add_fiscal_due_date_on_new_year(test_client):
     period = '12'
     expected_due_date = datetime(datetime.now().year, 3, 31, 00, 00, 00)
 
-    due_date = MineExpectedDocument._add_due_date_to_expected_document(
+    due_date = MineExpectedDocument._get_due_date_for_expected_document(
         None, new_year, due_date_type, period)
 
     assert due_date == expected_due_date
