@@ -73,7 +73,8 @@ class PermitAmendment(AuditMixin, Base):
     @validates('received_date')
     def validate_received_date(self, key, received_date):
         if received_date.isoformat() == '9999-12-31':
-            return received_date
+            raise AssertionError(
+                'Permit amendment received date should be set to null if not known.')
         if received_date > datetime.today():
             raise AssertionError('Permit amendment received date cannot be set to the future.')
         return received_date
@@ -81,7 +82,7 @@ class PermitAmendment(AuditMixin, Base):
     @validates('issue_date')
     def validate_issue_date(self, key, issue_date):
         if issue_date.isoformat() == '9999-12-31':
-            return issue_date
+            raise AssertionError('Permit amendment issue date should be set to null if not known.')
         if issue_date > datetime.today():
             raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
@@ -89,7 +90,7 @@ class PermitAmendment(AuditMixin, Base):
     @validates('authorization_end_date')
     def validate_authorization_end_date(self, key, authorization_end_date):
         if authorization_end_date.isoformat() == '9999-12-31':
-            return authorization_end_date
+            raise AssertionError('Permit amendment end date should be set to null if not known.')
         if authorization_end_date > datetime.today():
             raise AssertionError(
                 'Permit amendment authorization end date cannot be set to the future.')
