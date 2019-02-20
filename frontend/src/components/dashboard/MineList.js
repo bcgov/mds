@@ -65,6 +65,7 @@ const columns = [
         {!text && <div>{record.emptyField}</div>}
       </div>
     ),
+    sorter: true,
   },
   {
     title: "Permit No.",
@@ -136,7 +137,6 @@ const columns = [
     dataIndex: "tsf",
     width: 150,
     render: (text) => <div title="TSF">{text}</div>,
-    sorter: true,
   },
 ];
 
@@ -168,9 +168,10 @@ const handleTableChange = (updateMineList, currentSortField) => (pagination, fil
     } = sorter;
 
     // Support toggling sort off
+    // explicitly set to undefined to overwrite state.params in parent
     const params =
       sortField === currentSortField
-        ? {}
+        ? { sort_field: undefined, sort_dir: undefined }
         : { sort_field: sortField, sort_dir: order.replace("end", "") };
     updateMineList(params);
   }
