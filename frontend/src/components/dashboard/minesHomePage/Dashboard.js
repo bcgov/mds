@@ -31,8 +31,8 @@ import {
   getDropdownCommodityOptions,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
-import MineList from "@/components/dashboard/MineList";
-import MineSearch from "@/components/dashboard/MineSearch";
+import MineList from "@/components/dashboard/minesHomePage/MineList";
+import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -44,7 +44,7 @@ import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 
 /**
- * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * @class MineLandingPage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
 const { TabPane } = Tabs;
@@ -97,7 +97,7 @@ export class Dashboard extends Component {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
-        router.MINE_DASHBOARD.dynamicRoute({
+        router.MINE_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
@@ -160,7 +160,7 @@ export class Dashboard extends Component {
   onPageChange = (page, per_page) => {
     const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({
+      router.MINE_HOME_PAGE.dynamicRoute({
         page,
         per_page,
         major,
@@ -214,9 +214,9 @@ export class Dashboard extends Component {
     const { page, per_page, search } = this.state.params;
     this.setState({ mineList: false, showCoordinates: false, mineName: "" });
     if (key === "map") {
-      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
+      this.props.history.push(router.MINE_HOME_PAGE.mapRoute(page, per_page, search));
     } else {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute({ page, per_page, search }));
+      this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute({ page, per_page, search }));
     }
   };
 
@@ -226,7 +226,7 @@ export class Dashboard extends Component {
       : String.DEFAULT_PER_PAGE;
     // reset page when a search is initiated
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
+      router.MINE_HOME_PAGE.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
     );
   };
 

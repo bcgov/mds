@@ -14,5 +14,33 @@
 
   &__btn {
     color: $pure-white;
+
+    &--link {
+      color: $pure-white;
+      background-color: transparent;
+      height: 100%;
+      margin: 0;
+
+      &:hover {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: 1px solid $primary-btn-color-hover;
+        border-radius: 0;
+      }
+      &:active {
+        color: $pure-white;
+        background-color: $primary-btn-color;
+        border: 1px solid $primary-btn-color;
+        border-radius: 0;
+      }
+    }
   }
+}
+
+#active-mine-btn,
+#active-contact-btn {
+  color: $pure-white;
+  background-color: $primary-btn-color;
+  border: 1px solid $primary-btn-color;
+  border-radius: 0;
 }

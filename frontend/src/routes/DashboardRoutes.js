@@ -5,9 +5,14 @@ import PageNotFound from "@/components/common/PageNotFound";
 
 const DashboardRoutes = () => (
   <Switch>
-    <Route exact path={routes.MINE_DASHBOARD.route} component={routes.MINE_DASHBOARD.component} />
-    <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
+    <Route exact path={routes.MINE_HOME_PAGE.route} component={routes.MINE_HOME_PAGE.component} />
+    <Route
+      exact
+      path={routes.CONTACT_HOME_PAGE.route}
+      component={routes.CONTACT_HOME_PAGE.component}
+    />
     <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
+    <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
     <Route
       exact
       path={routes.RELATIONSHIP_PROFILE.route}
