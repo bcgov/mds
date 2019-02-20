@@ -17,6 +17,7 @@ from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
+from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
 
 
 def create_app(test_config=None):
@@ -49,11 +50,12 @@ def register_extensions(app):
     CORS(app)
     Compress(app)
 
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
-        sched.init_app(app)
-        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-            sched.start()
-            _schedule_NRIS_jobs(app)
+    # if app.config.get('ENVIRONMENT_NAME') == 'prod':
+    sched.init_app(app)
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+        sched.start()
+        _schedule_NRIS_jobs(app)
+        _schedule_ETL_jobs(app)
 
     return None
 
