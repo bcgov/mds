@@ -63,9 +63,9 @@ const columns = [
 const childColumns = [
   {
     title: "",
-    dataIndex: "key",
-    key: "Key",
-    render: (text) => <div title="Amendment Number">{text}</div>,
+    dataIndex: "amendmentNumber",
+    key: "amendmentNumber",
+    render: (text) => <div title="Number">{text}</div>,
   },
   {
     title: "Received Date",
@@ -109,9 +109,13 @@ const transformRowData = (permit, partyRelationships) => {
 
   return {
     key: permit.permit_guid,
-    lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
+    lastAmended:
+      (latestAmendment && latestAmendment.issue_date && formatDate(latestAmendment.issue_date)) ||
+      Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
+    firstIssued:
+      (firstAmendment && firstAmendment.issue_date && formatDate(firstAmendment.issue_date)) ||
+      Strings.EMPTY_FIELD,
     permittee: permitteeName,
     authorizationEndDate:
       latestAmendment && latestAmendment.authorization_end_date
@@ -123,10 +127,10 @@ const transformRowData = (permit, partyRelationships) => {
 };
 
 const transformChildRowData = (amendment, record, amendmentNumber) => ({
-  key: amendmentNumber,
-  ReceivedDate: amendment.received_date,
-  IssueDate: amendment.issue_date,
-  AuthorizationEndDate: amendment.authorization_end_date,
+  amendmentNumber,
+  ReceivedDate: amendment.received_date || Strings.EMPTY_FIELD,
+  IssueDate: amendment.issue_date || Strings.EMPTY_FIELD,
+  AuthorizationEndDate: amendment.authorization_end_date || Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
 });
 

@@ -26,14 +26,22 @@ class PermitAmendment(AuditMixin, Base):
 
     def json(self):
         return {
-            'permit_amendment_id': str(self.permit_amendment_id),
-            'permit_amendment_guid': str(self.permit_amendment_guid),
-            'permit_id': self.permit_id,
-            'permit_amendment_status_code': self.permit_amendment_status_code,
-            'permit_amendment_type_code': self.permit_amendment_type_code,
-            'received_date': self.received_date.isoformat(),
-            'issue_date': self.issue_date.isoformat(),
-            'authorization_end_date': self.authorization_end_date.isoformat()
+            'permit_amendment_id':
+            str(self.permit_amendment_id),
+            'permit_amendment_guid':
+            str(self.permit_amendment_guid),
+            'permit_id':
+            self.permit_id,
+            'permit_amendment_status_code':
+            self.permit_amendment_status_code,
+            'permit_amendment_type_code':
+            self.permit_amendment_type_code,
+            'received_date':
+            self.received_date.isoformat() if self.received_date else None,
+            'issue_date':
+            self.issue_date.isoformat() if self.issue_date else None,
+            'authorization_end_date':
+            self.authorization_end_date.isoformat() if self.authorization_end_date else None
         }
 
     @classmethod
