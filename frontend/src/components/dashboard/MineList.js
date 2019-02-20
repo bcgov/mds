@@ -160,13 +160,19 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       : Strings.EMPTY_FIELD,
   }));
 
-const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateMineList, currentSortField) => (pagination, filters, sorter) => {
   if (!isEmpty(sorter)) {
     const {
       order,
       column: { sortField },
     } = sorter;
-    updateMineList({ sort_field: sortField, sort_dir: order.replace("end", "") });
+
+    // Support toggling sort off
+    const params =
+      sortField === currentSortField
+        ? {}
+        : { sort_field: sortField, sort_dir: order.replace("end", "") };
+    updateMineList(params);
   }
 };
 
@@ -189,7 +195,7 @@ export const MineList = (props) => (
       props.mineCommodityOptionsHash
     )}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
-    onChange={handleTableChange(props.handleMineSearch)}
+    onChange={handleTableChange(props.handleMineSearch, props.sortField)}
   />
 );
 
