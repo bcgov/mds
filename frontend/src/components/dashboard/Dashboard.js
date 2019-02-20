@@ -67,6 +67,32 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
+const stringifyStateParams = ({
+  page,
+  per_page,
+  sort_field,
+  sort_dir,
+  major,
+  tsf,
+  search,
+  status,
+  region,
+  tenure,
+  commodity,
+}) => ({
+  page,
+  per_page,
+  sort_field,
+  sort_dir,
+  major,
+  tsf,
+  search,
+  status: status && status.join(","),
+  region: region && region.join(","),
+  tenure: tenure && tenure.join(","),
+  commodity: commodity && commodity.join(","),
+});
+
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -158,20 +184,8 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
-    this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({
-        page,
-        per_page,
-        major,
-        tsf,
-        search,
-        status: status && status.join(","),
-        region: region && region.join(","),
-        tenure: tenure && tenure.join(","),
-        commodity: commodity && commodity.join(","),
-      })
-    );
+    const params = stringifyStateParams({ ...this.state.params, page, per_page });
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params));
   };
 
   /*
@@ -221,13 +235,14 @@ export class Dashboard extends Component {
   };
 
   handleMineSearch = (searchParams) => {
-    const per_page = this.state.params.per_page
-      ? this.state.params.per_page
-      : String.DEFAULT_PER_PAGE;
-    // reset page when a search is initiated
-    this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
-    );
+    const params = stringifyStateParams({
+      ...this.state.params,
+      // reset page when a search is initiated
+      page: String.DEFAULT_PAGE,
+      per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+      ...searchParams,
+    });
+    this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(params));
   };
 
   handleSubmit = (value) => {
