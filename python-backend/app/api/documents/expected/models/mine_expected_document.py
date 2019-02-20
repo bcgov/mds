@@ -1,7 +1,8 @@
-from datetime import datetime
-
+import json
 import uuid
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -9,11 +10,10 @@ from app.extensions import db
 from sqlalchemy.inspection import inspect
 
 from ....utils.models_mixins import AuditMixin, Base
-from .document import ExpectedDocument
 
 
-class MineExpectedDocument(ExpectedDocument):
-     __tablename__ = 'mine_expected_document'
+class MineExpectedDocument(AuditMixin, Base):
+    __tablename__ = 'mine_expected_document'
 
     exp_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
@@ -45,11 +45,10 @@ class MineExpectedDocument(ExpectedDocument):
     expected_document_status = db.relationship(
         'ExpectedDocumentStatus', backref='exp_documents', uselist=False, lazy='joined')
 
-    mine_documents = db.relationship(
-        "MineDocument", secondary='mine_expected_document_xref')
+    mine_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
 
     def json(self):
-        return{
+        return {
             'exp_document_guid': str(self.exp_document_guid),
             'req_document_guid': str(self.req_document_guid),
             'mine_guid': str(self.mine_guid),
@@ -74,8 +73,7 @@ class MineExpectedDocument(ExpectedDocument):
     def find_by_mine_guid(cls, mine_guid):
         try:
             uuid.UUID(mine_guid, version=4)
-            return cls.query.filter_by(active_ind=True).filter_by(
-                mine_guid=mine_guid).all()
+            return cls.query.filter_by(active_ind=True).filter_by(mine_guid=mine_guid).all()
         except ValueError:
             return None
 
