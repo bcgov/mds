@@ -56,11 +56,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'sort_field':
             'enum[mine_name, mine_no, mine_region, tsf] Default: mine_name'
         })
-        # TODO:
-        # mine_name                  -- DONE!
-        # mine_no                    -- DONE!
-        # mine_region                -- DONE!
-        # tsf (count)                --
+
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
@@ -124,8 +120,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_name': 'Mine',
             'mine_no': 'Mine',
             'mine_region': 'Mine',
-            # FIXME: WIP
-            # 'mine_tailings_storage_facility_name': 'MineTailingsStorageFacility'
+            'mine_operation_status_code': 'MineStatusXref'
         }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
@@ -204,8 +199,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
-        sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
-        mines_query = apply_sort(mines_query, sort_criteria)
+        if sort_model == 'Mine':
+            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            mines_query = apply_sort(mines_query, sort_criteria)
+
+        if sort_model == 'MineStatusXref':
+            mines_query = Mine.query.outerjoin(MineStatus).outerjoin(MineStatusXref)
+            if sort_dir == 'desc':
+                mines_query = mines_query.order_by(MineStatusXref.mine_operation_status_code.desc())
+            if sort_dir == 'asc':
+                mines_query = mines_query.order_by(MineStatusXref.mine_operation_status_code.asc())
+
         return apply_pagination(mines_query, page, items_per_page)
 
     def mine_operation_code_processor(self, mine_status, index):

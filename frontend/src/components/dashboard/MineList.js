@@ -58,7 +58,7 @@ const columns = [
     title: "Operational Status",
     width: 160,
     dataIndex: "operationalStatus",
-    sortField: "operational_status_code",
+    sortField: "mine_operation_status_code",
     render: (text, record) => (
       <div title="Operational Status">
         {text}
