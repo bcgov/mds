@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Row, Col, Divider, Icon } from "antd";
+import { Tabs, Table } from "antd";
 import { isEmpty } from "lodash";
 import {
   fetchPartyRelationshipTypes,
@@ -14,8 +14,10 @@ import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selector
 import { getMines } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
+import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as String from "@/constants/strings";
+import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types
@@ -102,11 +104,57 @@ export class RelationshipProfile extends Component {
 
   render() {
     const { id, typeCode } = this.props.match.params;
-    const mine = this.props.mines[id];
     const isPermittee = typeCode === "PMT";
-    const columnCount = 3 + (isPermittee ? 1 : 0);
-    // 24 is the total span from Ant Design
-    const width = 24 / columnCount;
+    const mine = this.props.mines[id];
+    const permitColumn = isPermittee
+      ? [
+          {
+            title: "Permit",
+            dataIndex: "permit",
+            render: (text) => <div title="Permit">{text}</div>,
+          },
+        ]
+      : [];
+    const columns = [
+      {
+        title: "Contact",
+        dataIndex: "contact",
+        render: (text, record) => (
+          <div title="Contact">
+            <Link to={router.PARTY_PROFILE.dynamicRoute(record.partyGuid)}>{text}</Link>
+          </div>
+        ),
+      },
+      {
+        title: "Role",
+        dataIndex: "role",
+        render: (text) => <div title="Role">{text}</div>,
+      },
+      ...permitColumn,
+      {
+        title: "Dates",
+        dataIndex: "dates",
+        render: (text, record) => (
+          <div title="Dates">
+            {record.startDate} - {record.endDate}
+          </div>
+        ),
+      },
+    ];
+
+    const transformRowData = (historyRelationships) =>
+      historyRelationships.map((relationship) => ({
+        key: relationship.mine_party_appt_guid,
+        contact: relationship.party.name,
+        partyGuid: relationship.party.party_guid,
+        role: this.state.partyRelationshipTitle,
+        permit: this.state.permitsMapping[relationship.related_guid],
+        endDate:
+          relationship.end_date === "9999-12-31" || null
+            ? "Present"
+            : formatDate(relationship.end_date),
+        startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
+      }));
 
     const isLoaded =
       this.props.partyRelationshipTypes.length > 0 &&
@@ -127,7 +175,7 @@ export class RelationshipProfile extends Component {
             <div className="inline-flex between">
               <div className="inline-flex">
                 <p>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.guid, "contact-information")}>
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.guid, "contacts")}>
                     {mine && mine.mine_name}
                   </Link>
                 </p>
@@ -137,50 +185,15 @@ export class RelationshipProfile extends Component {
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>
               <TabPane tab="History" key="history">
-                <div>
-                  <Row type="flex" style={{ textAlign: "center" }}>
-                    <Col span={width}>
-                      <h2>Contact</h2>
-                    </Col>
-                    <Col span={width}>
-                      <h2>Role</h2>
-                    </Col>
-                    {isPermittee && (
-                      <Col span={width}>
-                        <h2>Permit No.</h2>
-                      </Col>
-                    )}
-                    <Col span={width}>
-                      <h2>Dates</h2>
-                    </Col>
-                  </Row>
-                  <Divider style={{ height: "2px", backgroundColor: "#013366", margin: "0" }} />
+                <div className="tab__content">
+                  <Table
+                    align="left"
+                    pagination={false}
+                    columns={columns}
+                    dataSource={transformRowData(filteredRelationships)}
+                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                  />
                 </div>
-                {filteredRelationships.map((partyRelationship) => (
-                  <div key={`${partyRelationship.related_guid}${partyRelationship.start_date}`}>
-                    <Row type="flex" style={{ textAlign: "center" }}>
-                      <Col span={width}>
-                        <Link
-                          to={router.PARTY_PROFILE.dynamicRoute(partyRelationship.party.party_guid)}
-                        >
-                          {partyRelationship.party.name}
-                        </Link>
-                      </Col>
-                      <Col span={width}>{this.state.partyRelationshipTitle}</Col>
-                      {isPermittee && (
-                        <Col span={width}>
-                          {this.state.permitsMapping[partyRelationship.related_guid]}
-                        </Col>
-                      )}
-                      <Col span={width}>
-                        <Icon type="clock-circle" />
-                        &nbsp;&nbsp;
-                        {partyRelationship.start_date || "Unknown"} -{" "}
-                        {partyRelationship.end_date || "Present"}
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
               </TabPane>
             </Tabs>
           </div>

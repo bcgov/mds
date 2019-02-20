@@ -57,3 +57,15 @@ export const getTransformedMineTypes = createSelector(
     }
   }
 );
+
+export const getMineBasicInfoListHash = createSelector(
+  [getMineBasicInfoList],
+  (info) =>
+    info.reduce(
+      (map, { guid, mine_name }) => ({
+        [guid]: mine_name,
+        ...map,
+      }),
+      {}
+    )
+);
