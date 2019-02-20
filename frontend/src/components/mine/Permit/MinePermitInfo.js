@@ -143,14 +143,9 @@ export const MinePermitInfo = (props) => {
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
-  const rowData = props.mine.mine_permit
-    .filter((permit) => permit.permit_no.toUpperCase().charAt(1) !== "X")
-    .map((permit) => transformRowData(permit, props.partyRelationships))
-    .concat(
-      props.mine.mine_permit
-        .filter((permit) => permit.permit_no.toUpperCase().charAt(1) === "X")
-        .map((permit) => transformRowData(permit, props.partyRelationships))
-    );
+  const rowData = props.mine.mine_permit.map((permit) =>
+    transformRowData(permit, props.partyRelationships)
+  );
 
   return (
     <Table

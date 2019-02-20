@@ -125,16 +125,9 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
             <Row gutter={16} type="flex">
-              {props.mine.mine_permit
-                .filter((permit) => permit.permit_no.toUpperCase().charAt(1) !== "X")
-                .map((permit) =>
-                  renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
-                )}
-              {props.mine.mine_permit
-                .filter((permit) => permit.permit_no.toUpperCase().charAt(1) === "X")
-                .map((permit) =>
-                  renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
-                )}
+              {props.mine.mine_permit.map((permit) =>
+                renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+              )}
             </Row>
             <Row gutter={16}>
               <Col span={24}>

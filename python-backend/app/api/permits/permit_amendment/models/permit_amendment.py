@@ -27,7 +27,7 @@ class PermitAmendment(AuditMixin, Base):
     def json(self):
         return {
             'permit_amendment_id':
-            str(self.permit_amendment_id),
+            self.permit_amendment_id,
             'permit_amendment_guid':
             str(self.permit_amendment_guid),
             'permit_id':

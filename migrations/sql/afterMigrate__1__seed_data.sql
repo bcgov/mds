@@ -335,8 +335,9 @@ INSERT INTO permit_amendment_type_code
     update_user
     )
 VALUES
-    ('AM', 'Permit Amendment', 10, 'system-mds', 'system-mds'),
-    ('ML', 'Amalgamated Permit', 20, 'system-mds', 'system-mds')
+    ('OGP', 'Original Permit', 10, 'system-mds', 'system-mds'),
+    ('AMD', 'Permit Amendment', 20, 'system-mds', 'system-mds'),
+    ('ALG', 'Amalgamated Permit', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_amendment_status_code
@@ -348,6 +349,6 @@ INSERT INTO permit_amendment_status_code
     update_user
     )
 VALUES
-    ('A', 'Active', 10, 'system-mds', 'system-mds'),
-    ('R', 'Remitted', 20, 'system-mds', 'system-mds')
+    ('ACT', 'Active', 10, 'system-mds', 'system-mds'),
+    ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

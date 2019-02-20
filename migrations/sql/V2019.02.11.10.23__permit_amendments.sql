@@ -5,7 +5,7 @@ alter table mine_party_appt drop constraint mine_party_appt_permit_party_fk;
 
 CREATE TABLE permit_amendment_type_code
 (
-    permit_amendment_type_code character varying(2) NOT NULL,
+    permit_amendment_type_code character varying(3) NOT NULL,
     description character varying(100) NOT NULL,
     display_order smallint,
     active_ind boolean DEFAULT true NOT null,
@@ -35,13 +35,14 @@ INSERT INTO permit_amendment_type_code
 	update_user
 	)
 VALUES
-	('AM', 'Permit Amendment', 10, 'system-mds', 'system-mds'),
-	('ML', 'Amalgamated Permit', 20, 'system-mds', 'system-mds')
+	('OGP', 'Original Permit', 10, 'system-mds', 'system-mds'),
+	('AMD', 'Permit Amendment', 20, 'system-mds', 'system-mds'),
+	('ALG', 'Amalgamated Permit', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE permit_amendment_status_code
 (
-	permit_amendment_status_code character varying(2) NOT NULL,
+	permit_amendment_status_code character varying(3) NOT NULL,
 	description character varying(100) NOT NULL,
 	display_order smallint,
 	active_ind boolean DEFAULT true NOT null,
@@ -65,8 +66,8 @@ INSERT INTO permit_amendment_status_code
 	update_user
 	)
 VALUES
-	('A', 'Active', 10, 'system-mds', 'system-mds'),
-	('R', 'Remitted', 20, 'system-mds', 'system-mds')
+	('ACT', 'Active', 10, 'system-mds', 'system-mds'),
+	('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE permit_amendment
@@ -77,8 +78,8 @@ CREATE TABLE permit_amendment
 	received_date date,
 	issue_date date,
 	authorization_end_date date,
-	permit_amendment_type_code character varying(2) DEFAULT 'W' not null ,
-	permit_amendment_status_code character varying(2) DEFAULT 'A' NOT NULL,
+	permit_amendment_type_code character varying(2) DEFAULT 'AMD' NOT NULL ,
+	permit_amendment_status_code character varying(2) DEFAULT 'ACT' NOT NULL,
 	deleted_ind boolean DEFAULT false NOT NULL,
 	create_user character varying(60) NOT NULL,
 	create_timestamp timestamp with time zone DEFAULT now() NOT NULL,

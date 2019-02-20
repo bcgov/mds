@@ -74,7 +74,8 @@ class Mine(AuditMixin, Base):
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_location':
             self.mine_location.json() if self.mine_location else None,
-            'mine_permit': [item.json() for item in self.mine_permit],
+            #Exploration permits must, always, and exclusively have an X as the second character, and we would like this to be returned last:
+            'mine_permit': [item.json() for item in self.mine_permit if item.permit_no.lower()[1] != 'x'] + [item.json() for item in self.mine_permit if item.permit_no.lower()[1] == 'x'],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
@@ -153,7 +154,7 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_name(cls, term = None):
+    def find_by_mine_name(cls, term=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
@@ -164,7 +165,7 @@ class Mine(AuditMixin, Base):
         return mines
 
     @classmethod
-    def find_by_name_no_permit(cls, term = None):
+    def find_by_name_no_permit(cls, term=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
