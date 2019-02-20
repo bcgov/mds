@@ -174,8 +174,7 @@ const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
 
 export const MineList = (props) => (
   <Table
-    align="center"
-    className="mine-list"
+    align="left"
     pagination={false}
     columns={columns}
     dataSource={transformRowData(

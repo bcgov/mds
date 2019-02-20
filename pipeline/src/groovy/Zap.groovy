@@ -39,7 +39,7 @@ def config = OpenShiftHelper.loadDeploymentConfig(opt)
 def toolsNamespace = 'empr-mds-tools'
 
 def appLabel="${config.app.deployment.id}"
-def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-nginx", "--namespace=${config.app.deployment.namespace}"])
+def routes = ocGet(['routes','-l', "app=${appLabel},component=mds-nginx,route=core", "--namespace=${config.app.deployment.namespace}"])
 
 println routes
 

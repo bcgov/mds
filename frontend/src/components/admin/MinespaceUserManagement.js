@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { flatMap, uniq } from "lodash";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { bindActionCreators } from "redux";
@@ -8,28 +9,34 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineNames } from "@/selectors/mineSelectors";
 import { getMinespaceUsers } from "@/selectors/minespaceSelector";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
-import { fetchMinespaceUsers, deleteMinespaceUser } from "@/actionCreators/minespaceActionCreator";
+import {
+  fetchMinespaceUsers,
+  deleteMinespaceUser,
+  fetchMinespaceUserMines,
+} from "@/actionCreators/minespaceActionCreator";
+import { getMinespaceUserMines } from "../../reducers/minespaceReducer";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 const propTypes = {
-  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
+  minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
+  fetchMinespaceUserMines: PropTypes.func.isRequired,
   deleteMinespaceUser: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  mines: [],
   minespaceUsers: [],
+  minespaceUserMines: [],
 };
 
 export class MinespaceUserManagement extends Component {
   componentDidMount() {
     this.props.fetchMineNameList();
-    this.props.fetchMinespaceUsers();
+    this.refreshUserData();
   }
 
   handleDelete = (userId) => {
@@ -38,15 +45,22 @@ export class MinespaceUserManagement extends Component {
     });
   };
 
+  refreshUserData = () => {
+    this.props.fetchMinespaceUsers().then(() => {
+      const mine_guids = flatMap(this.props.minespaceUsers, (user) => user.mines);
+      this.props.fetchMinespaceUserMines(uniq(mine_guids));
+    });
+  };
+
   render() {
     return (
       <div>
         <h2>Minespace User Management</h2>
-        <NewMinespaceUser />
+        <NewMinespaceUser refreshData={this.refreshUserData} />
         <h3>Minespace Users</h3>
         <MinespaceUserList
           minespaceUsers={this.props.minespaceUsers}
-          mines={this.props.mines}
+          minespaceUserMines={this.props.minespaceUserMines}
           handleDelete={this.handleDelete}
         />
       </div>
@@ -57,6 +71,7 @@ export class MinespaceUserManagement extends Component {
 const mapStateToProps = (state) => ({
   mines: getMineNames(state).mines,
   minespaceUsers: getMinespaceUsers(state),
+  minespaceUserMines: getMinespaceUserMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -64,6 +79,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineNameList,
       fetchMinespaceUsers,
+      fetchMinespaceUserMines,
       deleteMinespaceUser,
     },
     dispatch
