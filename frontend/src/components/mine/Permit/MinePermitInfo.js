@@ -69,20 +69,20 @@ const childColumns = [
   },
   {
     title: "Received Date",
-    dataIndex: "ReceivedDate",
-    key: "ReceivedDate",
+    dataIndex: "receivedDate",
+    key: "receivedDate",
     render: (text) => <div title="Received Date">{text}</div>,
   },
   {
     title: "Issue Date",
-    dataIndex: "IssueDate",
-    key: "IssueDate",
+    dataIndex: "issueDate",
+    key: "issueDate",
     render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
     title: "Authorization End Date",
-    dataIndex: "AuthorizationEndDate",
-    key: "AuthorizationEndDate",
+    dataIndex: "authorizationEndDate",
+    key: "authorizationEndDate",
     render: (text) => <div title="Authorization End Date">{text}</div>,
   },
 ];
@@ -128,9 +128,12 @@ const transformRowData = (permit, partyRelationships) => {
 
 const transformChildRowData = (amendment, record, amendmentNumber) => ({
   amendmentNumber,
-  receivedDate: amendment.received_date || Strings.EMPTY_FIELD,
-  issueDate: amendment.issue_date || Strings.EMPTY_FIELD,
-  authorizationEndDate: amendment.authorization_end_date || Strings.EMPTY_FIELD,
+  receivedDate:
+    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
+  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
+  authorizationEndDate:
+    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
+    Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
 });
 
