@@ -77,8 +77,12 @@ class MineExpectedDocument(AuditMixin, Base):
         except ValueError:
             return None
 
-    def add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
+    def set_due_date(self):
+        self._add_due_date_to_expected_document(
+            datetime.now(), self.required_document.req_document_due_date_type,
+            self.required_document.req_document_due_date_period_months)
 
+    def _add_due_date_to_expected_document(self, current_date, due_date_type, period_in_months):
         current_year = current_date.year
         march = 3
         day = 31

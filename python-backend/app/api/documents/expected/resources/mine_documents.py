@@ -54,10 +54,8 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid=mine_guid,
                 exp_document_status_code='MIA',
-                due_date=MineExpectedDocument.add_due_date_to_expected_document(
-                    self, datetime.now(), req_doc.req_document_due_date_type,
-                    req_doc.req_document_due_date_period_months),
                 **self.get_create_update_dict())
+            mine_exp_doc.set_due_date()
             mine_exp_doc.save()
             mine_new_docs.append(mine_exp_doc)
         return {'expected_mine_documents': list(map(lambda x: x.json(), mine_new_docs))}
