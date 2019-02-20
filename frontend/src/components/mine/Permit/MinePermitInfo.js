@@ -128,9 +128,9 @@ const transformRowData = (permit, partyRelationships) => {
 
 const transformChildRowData = (amendment, record, amendmentNumber) => ({
   amendmentNumber,
-  ReceivedDate: amendment.received_date || Strings.EMPTY_FIELD,
-  IssueDate: amendment.issue_date || Strings.EMPTY_FIELD,
-  AuthorizationEndDate: amendment.authorization_end_date || Strings.EMPTY_FIELD,
+  receivedDate: amendment.received_date || Strings.EMPTY_FIELD,
+  issueDate: amendment.issue_date || Strings.EMPTY_FIELD,
+  authorizationEndDate: amendment.authorization_end_date || Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
 });
 
