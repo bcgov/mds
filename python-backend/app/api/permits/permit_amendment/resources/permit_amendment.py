@@ -4,7 +4,7 @@ from ...permit.models.permit import Permit
 from ..models.permit_amendment import PermitAmendment
 from ..models.permit_ammendment_document_xref import PermitAmendmentDocumentXref
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -110,3 +110,23 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         except AssertionError as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return pa.json()
+
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
+    @requires_role_mine_admin
+    def delete(self, permit_guid=None, permit_amendment_guid=None):
+        if not permit_amendment_guid:
+            return self.create_error_payload(400, 'permit_amendment_id must be provided')
+        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        if not pa:
+            return self.create_error_payload(404, 'permit amendment not found')
+
+        pa.deleted_ind = True
+
+        try:
+            pa.save()
+        except AssertionError as e:
+            self.raise_error(500, 'Error: {}'.format(e))
+        return ('', 204)
