@@ -76,6 +76,10 @@ class PermitAmendment(AuditMixin, Base):
         return cls.query.filter_by(permit_amendment_id=_id).first()
 
     @classmethod
+    def find_by_permit_amendment_guid(cls, _guid):
+        return cls.query.filter_by(permit_amendment_guid=_guid).first()
+
+    @classmethod
     def find_by_permit_id(cls, _id):
         return cls.query.filter_by(permit_id=_id)
 

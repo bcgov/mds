@@ -7,5 +7,5 @@ api = Namespace('permits', description='Permit related operations')
 
 api.add_resource(PermitResource, '', '/<string:permit_guid>')
 api.add_resource(PermitAmendmentResource, '/<string:permit_guid>/amendments',
-                 '/amendment/<string:permit_amendment_id>',
-                 '/<string:permit_guid>/amendment/<string:permit_amendment_id>')
+                 '/amendment/<string:permit_amendment_guid>',
+                 '/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
