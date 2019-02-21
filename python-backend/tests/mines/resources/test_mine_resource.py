@@ -90,6 +90,7 @@ def test_post_mine_name_and_note(test_client, auth_headers):
 
 
 def test_post_mine_name_and_coord(test_client, auth_headers):
+    # the tests test_post_mine_redundant_name and test_put_redundant_mine_name rely on this mine
     test_mine_data = {
         "name": "test_create_mine",
         "latitude": "49.2827000",
@@ -107,7 +108,7 @@ def test_post_mine_name_and_coord(test_client, auth_headers):
 
 def test_post_mine_success_all(test_client, auth_headers):
     test_mine_data = {
-        "name": "test_create_mine",
+        "name": "test_create_mine_2",
         "latitude": "49.2827000",
         "longitude": "123.1207000",
         "note": "This is a note",
@@ -122,6 +123,20 @@ def test_post_mine_success_all(test_client, auth_headers):
     assert post_data['mine_note'] == test_mine_data['note']
     assert post_resp.status_code == 200
 
+
+def test_post_mine_redundant_name(test_client, auth_headers):
+    # This test relies on test_post_mine_name_and_coord
+    test_mine_data = {
+        "name": "test_create_mine",
+        "latitude": "44.2827000",
+        "longitude": "126.1207000",
+        "note": "This is a new note",
+        "mine_region": "SW"
+    }
+    post_resp = test_client.post(
+        '/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400
 
 def test_post_mine_major_invalid_input(test_client, auth_headers):
     test_mine_data = {
@@ -160,7 +175,7 @@ def test_post_mine_major_true(test_client, auth_headers):
 
 def test_post_mine_major_false(test_client, auth_headers):
     test_mine_data = {
-        "name": "test_create_mine_major",
+        "name": "test_create_mine_major_2",
         "latitude": "49.2827000",
         "longitude": "123.1207000",
         "note": "This is a note",
@@ -299,6 +314,16 @@ def test_put_mine_name(test_client, auth_headers):
     put_data = json.loads(put_resp.data.decode())
     assert test_tenure_data['name'] == put_data['mine_name']
     assert put_resp.status_code == 200
+
+
+def test_put_redundant_mine_name(test_client, auth_headers):
+    # this relies on  test test_post_mine_name_and_coord
+    test_tenure_data = {
+        "name": "test_create_mine",
+    }
+    put_resp = test_client.put(
+        '/mines/' + TEST_MINE_GUID, data=test_tenure_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 400
 
 
 def test_put_mine_major_true(test_client, auth_headers):
