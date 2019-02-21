@@ -54,7 +54,17 @@ class Party(AuditMixin, Base):
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat(),
             'party_name': self.party_name,
-            'name': self.name
+            'name': self.name,
+            'address': [
+                {
+                    'suite_no': self.suite_no,
+                    'address_line_1': self.address_line_1,
+                    'address_line_2': self.address_line_2,
+                    'city': self.city,
+                    'province_code': self.province_code,
+                    'postal_code': self.postal_code
+                }
+            ]
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
