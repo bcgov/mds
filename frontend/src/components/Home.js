@@ -6,7 +6,6 @@ import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
-import * as routes from "@/constants/routes";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
@@ -14,7 +13,7 @@ import * as routes from "@/constants/routes";
  */
 
 export class Home extends Component {
-  state = { isIE: false, isTest: false, activeNavButton: false };
+  state = { isIE: false, isTest: false, activeNavButton: "" };
 
   componentDidMount() {
     this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
@@ -28,11 +27,7 @@ export class Home extends Component {
   }
 
   handleActiveButton = (path) => {
-    if (path === routes.MINE_HOME_PAGE.route) {
-      this.setState({ activeNavButton: path });
-    } else if (path === routes.CONTACT_HOME_PAGE.route) {
-      this.setState({ activeNavButton: path });
-    }
+    this.setState({ activeNavButton: path });
   };
 
   handleIEClose = () => {
@@ -47,10 +42,10 @@ export class Home extends Component {
           <NavBar activeButton={this.state.activeNavButton} />
           <LoadingBar
             style={{
-              backgroundColor: "#6b6363",
+              backgroundColor: "#5e46a1",
               position: "fixed",
-              top: 55,
-              zIndex: 90,
+              top: 53,
+              zIndex: 1000,
               width: "100%",
               height: "8px",
             }}

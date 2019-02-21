@@ -25,11 +25,7 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">
-        {text}
-      </Link>
-    ),
+    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
   },
   {
     title: "Mine No.",

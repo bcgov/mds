@@ -3,11 +3,12 @@ import { Icon, Dropdown, Menu, Button } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { includes } from "lodash";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
-import { LOGO, ADMIN } from "@/constants/assets";
+import { LOGO, ADMIN, MINE } from "@/constants/assets";
 import Logout from "../authentication/Logout";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
@@ -17,6 +18,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  activeButton: PropTypes.string.isRequired,
 };
 
 export class NavBar extends Component {
@@ -25,16 +27,6 @@ export class NavBar extends Component {
       <Menu.Item key="0">
         <Logout />
       </Menu.Item>
-      <AuthorizationWrapper permission={Permission.ADMIN}>
-        <div className="custom-menu-item">
-          <Link to={router.ADMIN_DASHBOARD.route}>
-            <button type="button">
-              <img alt="Admin" className="menu__img" src={ADMIN} />
-              Admin
-            </button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
     </Menu>
   );
 
@@ -43,8 +35,8 @@ export class NavBar extends Component {
       <div className="menu">
         <Link
           to={router.MINE_HOME_PAGE.dynamicRoute({
-            page: String.DEFAULT_PAGE,
-            per_page: String.DEFAULT_PER_PAGE,
+            page: Strings.DEFAULT_PAGE,
+            per_page: Strings.DEFAULT_PER_PAGE,
           })}
         >
           <img alt="Home" className="menu__img" src={LOGO} />
@@ -52,33 +44,61 @@ export class NavBar extends Component {
         <div className="inline-flex">
           <Link
             to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: String.DEFAULT_PAGE,
-              per_page: String.DEFAULT_PER_PAGE,
+              page: Strings.DEFAULT_PAGE,
+              per_page: Strings.DEFAULT_PER_PAGE,
             })}
           >
             <Button
-              id={this.props.activeButton === router.MINE_HOME_PAGE.route && "active-mine-btn"}
-              className="menu__btn--link"
-            >
-              <Icon type="compass" /> Mines
-            </Button>
-          </Link>
-          <Link to={router.CONTACT_HOME_PAGE.route}>
-            <Button
               id={
-                this.props.activeButton === router.CONTACT_HOME_PAGE.route && "active-contact-btn"
+                includes(this.props.activeButton, router.MINE_HOME_PAGE.route) && "active-mine-btn"
               }
               className="menu__btn--link"
             >
-              <Icon type="team" /> Contacts
+              <img
+                alt="Mine"
+                className="padding-small--right"
+                style={{ verticalAlign: "-0.125em" }}
+                src={MINE}
+              />
+              Mines
             </Button>
           </Link>
+          <Link
+            to={router.CONTACT_HOME_PAGE.dynamicRoute({
+              page: Strings.DEFAULT_PAGE,
+              per_page: Strings.DEFAULT_PER_PAGE,
+            })}
+          >
+            <Button
+              id={
+                includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route) &&
+                "active-contact-btn"
+              }
+              className="menu__btn--link"
+            >
+              <Icon type="team" className="icon-sm" />
+              Contacts
+            </Button>
+          </Link>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Link to={router.ADMIN_DASHBOARD.route}>
+              <Button
+                id={
+                  includes(this.props.activeButton, router.ADMIN_DASHBOARD.route) &&
+                  "active-admin-btn"
+                }
+                className="menu__btn--link"
+              >
+                <img alt="Admin" lassName="padding-small--right icon-sm" src={ADMIN} />
+                Admin
+              </Button>
+            </Link>
+          </AuthorizationWrapper>
           <Dropdown overlay={this.menu} placement="bottomLeft">
             <button type="button" className="menu__btn">
-              <Icon className="padding-right" type="user" />
-              {/* <img alt="Profile" className="menu__img" src={PROFILE} /> */}
-              <span className="padding-right"> {this.props.userInfo.preferred_username}</span>
-              <Icon className="padding-right" type="down" />
+              <Icon className="padding-small--right icon-sm" type="user" />
+              <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
+              <Icon type="down" />
             </button>
           </Dropdown>
         </div>

@@ -21,25 +21,23 @@ const columns = [
     title: "Contact Name",
     dataIndex: "name",
     render: (text, record) => (
-      <Link to={router.PARTY_PROFILE.dynamicRoute(record.key)} className="mine-list__name">
-        {text}
-      </Link>
+      <Link to={router.PARTY_PROFILE.dynamicRoute(record.key)}>{text}</Link>
     ),
   },
   {
     title: "Role",
     dataIndex: "role",
-    render: (text, record) => <div title="role">{text}</div>,
+    render: (text) => <div title="role">{text}</div>,
   },
   {
     title: "Email",
     dataIndex: "email",
-    render: (text, record) => <div title="email">{text}</div>,
+    render: (text) => <div title="email">{text}</div>,
   },
   {
     title: "Phone",
     dataIndex: "phone",
-    render: (text, record) => <div title="phone">{text}</div>,
+    render: (text) => <div title="phone">{text}</div>,
   },
 ];
 
@@ -49,7 +47,10 @@ const transformRowData = (parties, partyIds) =>
     emptyField: Strings.EMPTY_FIELD,
     name: parties[id].name ? parties[id].name : Strings.EMPTY_FIELD,
     email: parties[id].email === "Unknown" ? Strings.EMPTY_FIELD : parties[id].email,
-    phone: parties[id].phone ? parties[id].phone : Strings.EMPTY_FIELD,
+    phone:
+      parties[id].phone_no && parties[id].phone_no !== "Unknown"
+        ? parties[id].phone_no
+        : Strings.EMPTY_FIELD,
     role: Strings.EMPTY_FIELD,
   }));
 

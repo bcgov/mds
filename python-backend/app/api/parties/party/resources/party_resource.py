@@ -1,5 +1,4 @@
 import uuid
-import logging
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
@@ -24,8 +23,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('page', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('per_page', type=str, help='The type of the party. Ex: PER')
+    parser.add_argument('page', type=int, help='The type of the party. Ex: PER')
+    parser.add_argument('per_page', type=int, help='The type of the party. Ex: PER')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -47,8 +46,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         else:
             search_term = request.args.get('search')
             search_type = request.args.get('type').upper() if request.args.get('type') else None
-            page = request.args.get('page') if request.args.get('page') else 1
-            items_per_page = request.args.get('per_page') if request.args.get('per_page') else 25
+            items_per_page = request.args.get('per_page', 25, type=int)
+            page = request.args.get('page', 1, type=int)
             parties = Party.query
             if search_term:
                 if search_type in ['PER', 'ORG']:

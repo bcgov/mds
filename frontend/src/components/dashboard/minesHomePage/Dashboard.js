@@ -5,11 +5,11 @@ import { Element, scroller } from "react-scroll";
 
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
-import { Pagination, Tabs, Col, Divider, notification, Button } from "antd";
+import { Tabs, Col, Divider, notification, Button } from "antd";
 import queryString from "query-string";
-import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
 import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -258,9 +258,6 @@ export class Dashboard extends Component {
 
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
-    const currentPage = Number(page);
-    const pageTotal = Number(this.props.pageData.total);
-    const itemsPerPage = Number(per_page);
     const isMap = map ? "map" : "list";
     if (this.state.mineList) {
       return (
@@ -282,32 +279,12 @@ export class Dashboard extends Component {
                 <MineList {...this.props} />
               </div>
               <div className="center">
-                <MediaQuery maxWidth={500}>
-                  <Pagination
-                    size="small"
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={currentPage}
-                    current={currentPage}
-                    total={pageTotal}
-                    pageSizeOptions={["25", "50", "75", "100"]}
-                    pageSize={itemsPerPage}
-                  />
-                </MediaQuery>
-                <MediaQuery minWidth={501}>
-                  <Pagination
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={currentPage}
-                    current={currentPage}
-                    total={pageTotal}
-                    pageSizeOptions={["25", "50", "75", "100"]}
-                    pageSize={itemsPerPage}
-                    showTotal={(total) => `${total} Results`}
-                  />
-                </MediaQuery>
+                <ResponsivePagination
+                  onPageChange={this.onPageChange}
+                  currentPage={Number(page)}
+                  pageTotal={Number(this.props.pageData.total)}
+                  itemsPerPage={Number(per_page)}
+                />
               </div>
             </TabPane>
             <TabPane tab="Map" key="map">
@@ -358,7 +335,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              <Element name="test2" />
+              {/* <Element name="test2" /> */}
               <div>
                 <MineMap {...this.state} />
               </div>

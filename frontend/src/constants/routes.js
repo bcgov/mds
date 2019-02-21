@@ -25,24 +25,26 @@ export const MINE_HOME_PAGE = {
 
 export const CONTACT_HOME_PAGE = {
   route: "/dashboard/contacts",
+  dynamicRoute: ({ page, per_page }) =>
+    `/dashboard/contacts/?${queryString.stringify({ page, per_page })}`,
   component: ContactHomePage,
 };
 
 export const MINE_SUMMARY = {
-  route: "/dashboard/mines/:id/:activeTab",
-  dynamicRoute: (id, activeTab = "summary") => `/dashboard/mines/${id}/${activeTab}`,
+  route: "/dashboard/:id/:activeTab",
+  dynamicRoute: (id, activeTab = "summary") => `/dashboard/${id}/${activeTab}`,
   component: MineDashboard,
 };
 
 export const PARTY_PROFILE = {
-  route: "/dashboard/contacts/:id/profile",
-  dynamicRoute: (id) => `/dashboard/contacts/${id}/profile`,
+  route: "/dashboard/:id/profile",
+  dynamicRoute: (id) => `/dashboard/${id}/profile`,
   component: PartyProfile,
 };
 
 export const RELATIONSHIP_PROFILE = {
-  route: "/dashboard/mines/:id/history/:typeCode",
-  dynamicRoute: (id, typeCode) => `/dashboard/mines/${id}/history/${typeCode}`,
+  route: "/dashboard/:id/history/:typeCode",
+  dynamicRoute: (id, typeCode) => `/dashboard/${id}/history/${typeCode}`,
   component: RelationshipProfile,
 };
 
