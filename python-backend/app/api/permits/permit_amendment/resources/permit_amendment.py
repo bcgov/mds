@@ -1,9 +1,10 @@
 from flask_restplus import Resource, reqparse
+from flask import current_app
 from ...permit.models.permit import Permit
 from ..models.permit_amendment import PermitAmendment
 from ..models.permit_ammendment_document_xref import PermitAmendmentDocumentXref
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -11,21 +12,29 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
-        'received_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'received_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
     parser.add_argument(
-        'issue_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'issue_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
     parser.add_argument(
-        'authorization_end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('permit_amendment_type_code', type=str)
-    parser.add_argument('permit_amendment_status_code', type=str)
-    parser.add_argument('mine_document_guid', type=str)
+        'authorization_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
+    parser.add_argument('permit_amendment_type_code', type=str, store_missing=False)
+    parser.add_argument('permit_amendment_status_code', type=str, store_missing=False)
+    parser.add_argument('mine_document_guid', type=str, store_missing=False)
 
-    @api.doc(params={'permit_amendment_id': 'Permit amendment id.', 'permit_guid': 'Permit GUID'})
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
     @requires_role_mine_view
-    def get(self, permit_guid=None, permit_amendment_id=None):
-
-        if permit_amendment_id:
-            permit_amendment = PermitAmendment.find_by_permit_amendment_id(permit_amendment_id)
+    def get(self, permit_guid=None, permit_amendment_guid=None):
+        if permit_amendment_guid:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
             if permit_amendment:
                 return permit_amendment.json()
 
@@ -39,11 +48,15 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
         return self.create_error_payload(404, 'Permit amendment(s) not found'), 404
 
-    @requires_role_mine_view
-    def post(self, permit_guid=None, permit_amendment_id=None):
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
+    @requires_role_mine_create
+    def post(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_guid:
             return self.create_error_payload(400, 'Permit_guid must be provided')
-        if permit_amendment_id:
+        if permit_amendment_guid:
             return self.create_error_payload(400, 'unexpected permit_amendement_id')
 
         permit = Permit.find_by_permit_guid(permit_guid)
@@ -65,3 +78,35 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             save=True)
 
         return permit.json()
+
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
+    @requires_role_mine_create
+    def put(self, permit_guid=None, permit_amendment_guid=None):
+        if not permit_amendment_guid:
+            return self.create_error_payload(400, 'permit_amendment_id must be provided')
+        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        if not pa:
+            return self.create_error_payload(404, 'permit amendment not found')
+
+        data = self.parser.parse_args()
+        current_app.logger.info(f'updating {pa} with >> {data.keys()}')
+
+        if 'received_date' in data.keys():
+            pa.received_date = data.get('received_date')
+        if 'issue_date' in data.keys():
+            pa.issue_date = data.get('issue_date')
+        if 'authorization_end_date' in data.keys():
+            pa.authorization_end_date = data.get('authorization_end_date')
+        if 'permit_amendment_status_code' in data.keys():
+            pa.permit_amendment_status_code = data.get('permit_amendment_status_code')
+        if 'permit_amendment_type_code' in data.keys():
+            pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
+
+        try:
+            pa.save()
+        except AssertionError as e:
+            self.raise_error(500, 'Error: {}'.format(e))
+        return pa.json()
