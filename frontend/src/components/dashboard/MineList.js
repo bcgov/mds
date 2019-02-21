@@ -71,7 +71,6 @@ const columns = [
     title: "Permit No.",
     width: 150,
     dataIndex: "permit",
-    sortField: "permit_no",
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">

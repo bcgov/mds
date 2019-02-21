@@ -54,7 +54,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'mine_no_or_guid':
             'Mine number or guid. If not provided a paginated list of mines will be returned.',
             'sort_field':
-            'enum[mine_name, mine_no, mine_region, tsf] Default: mine_name'
+            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+            'sort_dir':
+            'enum[asc, desc] Default: asc'
         })
 
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
