@@ -55,13 +55,13 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def post(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_guid:
-            return self.create_error_payload(400, 'Permit_guid must be provided')
+            return self.create_error_payload(400, 'Permit_guid must be provided'), 400
         if permit_amendment_guid:
-            return self.create_error_payload(400, 'unexpected permit_amendement_id')
+            return self.create_error_payload(400, 'unexpected permit_amendement_id'), 400
 
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
-            return self.create_error_payload(404, 'permit does not exist')
+            return self.create_error_payload(404, 'permit does not exist'), 404
 
         data = self.parser.parse_args()
 
@@ -86,10 +86,10 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def put(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_amendment_guid:
-            return self.create_error_payload(400, 'permit_amendment_id must be provided')
+            return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not pa:
-            return self.create_error_payload(404, 'permit amendment not found')
+            return self.create_error_payload(404, 'permit amendment not found'), 404
 
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {pa} with >> {data.keys()}')
@@ -118,10 +118,10 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_admin
     def delete(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_amendment_guid:
-            return self.create_error_payload(400, 'permit_amendment_id must be provided')
+            return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not pa:
-            return self.create_error_payload(404, 'permit amendment not found')
+            return self.create_error_payload(404, 'permit amendment not found'), 404
 
         pa.deleted_ind = True
 
