@@ -38,12 +38,12 @@ VALUES
     ('NL', 'Newfoundland and Labrador', 50, 'system-mds', 'system-mds'),
     ('NS', 'Nova Scotia', 60, 'system-mds', 'system-mds'),
     ('NT', 'Northwest Territories', 70, 'system-mds', 'system-mds'),
-    ('NU', 'Nunavut', 80, 'system-mds', 'system-mds')
+    ('NU', 'Nunavut', 80, 'system-mds', 'system-mds'),
     ('ON', 'Ontario', 90, 'system-mds', 'system-mds'),
     ('PE', 'Prince Edward Island', 100, 'system-mds', 'system-mds'),
     ('QC', 'Quebec', 110, 'system-mds', 'system-mds'),
     ('SK', 'Saskatchewan', 120, 'system-mds', 'system-mds'),
-    ('YT', 'Yukon', 130, 'system-mds', 'system-mds'),
+    ('YT', 'Yukon', 130, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
