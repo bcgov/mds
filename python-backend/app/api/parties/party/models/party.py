@@ -25,6 +25,14 @@ class Party(AuditMixin, Base):
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
 
+    suite_no = db.Column(db.String(5), nullable=True)
+    address_line_1 = db.Column(db.String(50), nullable=True)
+    address_line_2 = db.Column(db.String(50), nullable=True)
+    city = db.Column(db.String(50), nullable=True)
+    # TODO: Figure out why db.ForeignKey('province_code.province_code') breaks create_data
+    province_code = db.Column(db.String(2))
+    postal_code = db.Column(db.String(6), nullable=True)
+
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
@@ -81,15 +89,14 @@ class Party(AuditMixin, Base):
             return cls.query.filter(_filter_by_name).limit(query_limit)
 
     @classmethod
-    def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
+    def create_party(cls, first_name, party_name, email, phone_no, party_type_code, user_kwargs, save=True):
         party = cls(
             party_guid=uuid.uuid4(),
-            first_name=generated_first_name,
-            party_name=generated_last_name,
-            email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' +
-            generated_last_name.lower() + '.com',
-            phone_no='123-123-1234',
-            party_type_code=PARTY_STATUS_CODE['per'],
+            first_name=first_name,
+            party_name=party_name,
+            email=email,
+            phone_no=phone_no,
+            party_type_code=party_type_code,
             **user_kwargs)
         if save:
             party.save(commit=False)
