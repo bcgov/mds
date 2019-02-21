@@ -165,7 +165,7 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
+    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
 
         @sched.app.cli.command()
         def _run_nris_jobs():
@@ -177,9 +177,12 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        @sched.app.cli.command()
-        def _run_etl():
-            with sched.app.app_context():
-                print('starting the ETL.')
-                ETL_jobs._run_ETL()
-                print('Completed running the ETL.')
+        #This is her to prevent this from running in production until we are confident in the permit data.
+        if False:
+
+            @sched.app.cli.command()
+            def _run_etl():
+                with sched.app.app_context():
+                    print('starting the ETL.')
+                    ETL_jobs._run_ETL()
+                    print('Completed running the ETL.')
