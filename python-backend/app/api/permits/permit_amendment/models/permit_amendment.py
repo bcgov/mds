@@ -23,6 +23,7 @@ class PermitAmendment(AuditMixin, Base):
         db.String(2), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(2), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_documents = db.relationship('PermitAmendmentDocumentXref', lazy='joined')
 
@@ -73,15 +74,15 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
-        return cls.query.filter_by(permit_amendment_id=_id).first()
+        return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_amendment_guid(cls, _guid):
-        return cls.query.filter_by(permit_amendment_guid=_guid).first()
+        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.query.filter_by(permit_id=_id)
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
