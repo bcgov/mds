@@ -199,16 +199,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
-        if sort_model == 'Mine':
-            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
-            mines_query = apply_sort(mines_query, sort_criteria)
 
-        if sort_model == 'MineStatusXref':
-            mines_query = Mine.query.outerjoin(MineStatus).outerjoin(MineStatusXref)
-            if sort_dir == 'desc':
-                mines_query = mines_query.order_by(MineStatusXref.mine_operation_status_code.desc())
-            if sort_dir == 'asc':
-                mines_query = mines_query.order_by(MineStatusXref.mine_operation_status_code.asc())
+        # Apply sorting
+        mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
+        sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+        mines_query = apply_sort(mines_query, sort_criteria)
 
         return apply_pagination(mines_query, page, items_per_page)
 

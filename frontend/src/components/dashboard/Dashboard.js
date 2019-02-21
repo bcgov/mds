@@ -234,7 +234,7 @@ export class Dashboard extends Component {
     }
   };
 
-  handleMineSearch = (searchParams) => {
+  handleMineSearch = (searchParams = {}) => {
     const params = stringifyStateParams({
       ...this.state.params,
       // reset page when a search is initiated
