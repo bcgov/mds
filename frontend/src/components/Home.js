@@ -6,6 +6,7 @@ import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
+import * as Styles from "@/constants/styles";
 import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -47,7 +48,7 @@ export class Home extends Component {
           <NavBar activeButton={this.state.activeNavButton} />
           <LoadingBar
             style={{
-              backgroundColor: "#5e46a1",
+              backgroundColor: Styles.VIOLET,
               position: "fixed",
               top: 53,
               zIndex: 1000,
