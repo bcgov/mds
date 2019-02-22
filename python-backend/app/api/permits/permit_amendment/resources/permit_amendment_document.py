@@ -11,12 +11,8 @@ from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 
-from ..models.mine_expected_document import MineExpectedDocument
-from ....mines.mine.models.mine import Mine
 from ..models.permit_amendment import PermitAmendment
 from ..models.permit_amendment_document import PermitAmendmentDocument
-from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
-from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db
 from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
@@ -24,11 +20,12 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
 
-class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
+class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
+    #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
 
     @api.doc(
         params={
@@ -36,7 +33,7 @@ class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
             'Required: The guid of the permit amendment that this upload will be attached to.'
         })
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, permit_amendment_guid):
+    def post(self, permit_amendment_guid, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             return self.create_error_payload(404, 'Permit amendment not found'), 404
@@ -63,10 +60,10 @@ class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
         )
 
         response = Response(resp.content, resp.status_code, resp.raw.headers.items())
-        return response
+        return ('', 204)  #response
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def put(self, permit_amendment_guid):
+    def put(self, permit_amendment_guid, document_guid=None, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             return self.create_error_payload(404, 'Permit amendment not found'), 404
@@ -89,6 +86,7 @@ class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
                                                  'Must supply filename for new file upload'), 400
 
             new_pa_doc = PermitAmendmentDocument(
+                mine_guid=permit_amendment.permit.mine_guid,
                 document_manager_guid=data.get('document_manager_guid'),
                 document_name=filename,
                 **self.get_create_update_dict())
@@ -99,14 +97,10 @@ class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'Must specify either Document GIUD or Document Manager GUID'), 400
 
-        return expected_document.json()
+        return permit_amendment.json()
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, permit_amendment_guid=None, document_guid=None):
-        if permit_amendment_guid is None or document_guid is None:
-            return self.create_error_payload(
-                400, 'Must provide a permit amendment guid and a mine document guid'), 400
-
+    def delete(self, permit_amendment_guid, document_guid, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(document_guid)
 
@@ -115,6 +109,7 @@ class PermidAmendmentDocumentsResource(Resource, UserMixin, ErrorMixin):
                 404, 'Either the Expected Document or the Mine Document was not found'), 404
 
         permit_amendment.documents.remove(permit_amendment_doc)
+        db.session.delete(permit_amendment_doc)
         permit_amendment.save()
 
         return ('', 204)

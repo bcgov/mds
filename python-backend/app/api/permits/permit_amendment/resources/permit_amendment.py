@@ -2,7 +2,7 @@ from flask_restplus import Resource, reqparse
 from flask import current_app
 from ...permit.models.permit import Permit
 from ..models.permit_amendment import PermitAmendment
-from ..models.permit_ammendment_document_xref import PermitAmendmentDocumentXref
+from ..models.permit_amendment_document import PermitAmendmentDocument
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
