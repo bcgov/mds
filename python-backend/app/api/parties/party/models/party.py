@@ -99,15 +99,40 @@ class Party(AuditMixin, Base):
             return cls.query.filter(_filter_by_name).limit(query_limit)
 
     @classmethod
-    def create_party(cls, first_name, party_name, email, phone_no, party_type_code, user_kwargs, save=True):
+    def create(cls,
+               # Required fields
+               party_name,
+               email,
+               phone_no,
+               party_type_code,
+               user_kwargs,
+               # Optional fields
+               first_name=None,
+               phone_ext=None,
+               suite_no=None,
+               address_line_1=None,
+               address_line_2=None,
+               city=None,
+               province_code=None,
+               postal_code=None,
+               save=True):
         party = cls(
+            # Required fields
             party_guid=uuid.uuid4(),
-            first_name=first_name,
             party_name=party_name,
             email=email,
             phone_no=phone_no,
             party_type_code=party_type_code,
-            **user_kwargs)
+            **user_kwargs,
+            # Optional fields
+            first_name=first_name,
+            phone_ext=phone_ext,
+            suite_no=suite_no,
+            address_line_1=address_line_1,
+            address_line_2=address_line_2,
+            city=city,
+            province_code=province_code,
+            postal_code=postal_code)
         if save:
             party.save(commit=False)
         return party
