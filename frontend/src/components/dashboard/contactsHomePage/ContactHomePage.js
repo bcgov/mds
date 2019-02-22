@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -7,12 +7,13 @@ import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchParties } from "@/actionCreators/partiesActionCreator";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import Loading from "@/components/common/Loading";
-import * as Permission from "@/constants/permissions";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 
@@ -95,11 +96,6 @@ export class ContactHomePage extends Component {
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
             </div>
-            <div>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button type="primary">Create Contact Record</Button>
-              </AuthorizationWrapper>
-            </div>
           </div>
         </div>
         <div className="landing-page__content">
@@ -143,7 +139,10 @@ const mapDispatchToProps = (dispatch) =>
 
 ContactHomePage.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  AuthorizationGuard(Permission.ADMIN),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(ContactHomePage);
