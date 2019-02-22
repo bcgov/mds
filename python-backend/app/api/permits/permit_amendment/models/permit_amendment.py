@@ -72,8 +72,8 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('received_date')
     def validate_received_date(self, key, received_date):
-        if not authorization_end_date:
-            return authorization_end_date
+        if not received_date:
+            return received_date
         if received_date.isoformat() == '9999-12-31':
             raise AssertionError(
                 'Permit amendment received date should be set to null if not known.')
