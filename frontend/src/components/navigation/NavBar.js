@@ -42,45 +42,48 @@ export class NavBar extends Component {
           <img alt="Home" className="menu__img" src={LOGO} />
         </Link>
         <div className="inline-flex">
-          <Link
-            to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
-            <Button
-              id={
-                includes(this.props.activeButton, router.MINE_HOME_PAGE.route) && "active-mine-btn"
-              }
-              className="menu__btn--link"
-            >
-              <img
-                alt="Mine"
-                className="padding-small--right"
-                style={{ verticalAlign: "-0.125em" }}
-                src={MINE}
-              />
-              Mines
-            </Button>
-          </Link>
-          <Link
-            to={router.CONTACT_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
-            <Button
-              id={
-                includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route) &&
-                "active-contact-btn"
-              }
-              className="menu__btn--link"
-            >
-              <Icon type="team" className="icon-sm" />
-              Contacts
-            </Button>
-          </Link>
+          {/* wrapped all new nav links in Admin permission guard to prevent users from seeing this feature 
+        this will be updated/removed when feature-flagging is implemented */}
           <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Link
+              to={router.MINE_HOME_PAGE.dynamicRoute({
+                page: Strings.DEFAULT_PAGE,
+                per_page: Strings.DEFAULT_PER_PAGE,
+              })}
+            >
+              <Button
+                id={
+                  includes(this.props.activeButton, router.MINE_HOME_PAGE.route) &&
+                  "active-mine-btn"
+                }
+                className="menu__btn--link"
+              >
+                <img
+                  alt="Mine"
+                  className="padding-small--right"
+                  style={{ verticalAlign: "-0.125em" }}
+                  src={MINE}
+                />
+                Mines
+              </Button>
+            </Link>
+            <Link
+              to={router.CONTACT_HOME_PAGE.dynamicRoute({
+                page: Strings.DEFAULT_PAGE,
+                per_page: Strings.DEFAULT_PER_PAGE,
+              })}
+            >
+              <Button
+                id={
+                  includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route) &&
+                  "active-contact-btn"
+                }
+                className="menu__btn--link"
+              >
+                <Icon type="team" className="icon-sm" />
+                Contacts
+              </Button>
+            </Link>
             <Link to={router.ADMIN_DASHBOARD.route}>
               <Button
                 id={
@@ -89,7 +92,7 @@ export class NavBar extends Component {
                 }
                 className="menu__btn--link"
               >
-                <img alt="Admin" lassName="padding-small--right icon-sm" src={ADMIN} />
+                <img alt="Admin" className="padding-small--right icon-sm" src={ADMIN} />
                 Admin
               </Button>
             </Link>

@@ -188,7 +188,12 @@ export class Dashboard extends Component {
           mineName: newVal[2],
         });
         // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-        scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
+        scroller.scrollTo("mapElement", {
+          duration: 1000,
+          smooth: true,
+          isDynamic: true,
+          offset: -60,
+        });
         // window.scrollTo(0, this.mapRef.current.offsetTop);
       } else {
         this.setState({
@@ -206,7 +211,12 @@ export class Dashboard extends Component {
         mineName: null,
       });
       // window.scrollTo(0, this.mapRef.current.offsetTop);
-      scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
+      scroller.scrollTo("mapElement", {
+        duration: 1000,
+        smooth: true,
+        isDynamic: true,
+        offset: -60,
+      });
     }
   };
 
@@ -335,7 +345,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              {/* <Element name="test2" /> */}
+              <Element name="mapElement" />
               <div>
                 <MineMap {...this.state} />
               </div>

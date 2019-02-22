@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
+import PropTypes from "prop-types";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
@@ -11,6 +12,10 @@ import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
  * Home is wrapped in AuthenticationGuard which checks keycloak authorization.
  */
+
+const propTypes = {
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+};
 
 export class Home extends Component {
   state = { isIE: false, isTest: false, activeNavButton: "" };
@@ -66,5 +71,7 @@ export class Home extends Component {
     );
   }
 }
+
+Home.propTypes = propTypes;
 
 export default AuthenticationGuard(Home);

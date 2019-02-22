@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineSearch } from "@/components/dashboard/MineSearch";
+import { MineSearch } from "@/components/dashboard/minesHomePage/MineSearch";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};

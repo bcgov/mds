@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Dashboard } from "@/components/dashboard/Dashboard";
+import { Dashboard } from "@/components/dashboard/minesHomePage/Dashboard";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";

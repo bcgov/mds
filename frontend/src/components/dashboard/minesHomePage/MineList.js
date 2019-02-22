@@ -31,23 +31,13 @@ const columns = [
     title: "Mine No.",
     width: 100,
     dataIndex: "mineNo",
-    render: (text, record) => (
-      <div title="Mine Number">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Mine Number">{text}</div>,
   },
   {
     title: "Operational Status",
     width: 150,
     dataIndex: "operationalStatus",
-    render: (text, record) => (
-      <div title="Operational Status">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Operational Status">{text}</div>,
   },
   {
     title: "Permit No.",

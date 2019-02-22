@@ -6,13 +6,8 @@ import queryString from "query-string";
 import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchParties, fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
-import {
-  getParties,
-  getPartyIds,
-  getPartyRelationshipTypeHash,
-  getPartyPageData,
-} from "@/selectors/partiesSelectors";
+import { fetchParties } from "@/actionCreators/partiesActionCreator";
+import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -28,14 +23,14 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
 };
 
-export class Dashboard extends Component {
+export class ContactHomePage extends Component {
   state = {
     isContactList: false,
     params: {
@@ -59,7 +54,6 @@ export class Dashboard extends Component {
     this.props.fetchParties(params).then(() => {
       this.setState({ isContactList: true });
     });
-    this.props.fetchPartyRelationshipTypes();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,7 +128,6 @@ export class Dashboard extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyIds: getPartyIds(state),
-  partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
   pageData: getPartyPageData(state),
 });
 
@@ -142,16 +135,15 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
-      fetchPartyRelationshipTypes,
       openModal,
       closeModal,
     },
     dispatch
   );
 
-Dashboard.propTypes = propTypes;
+ContactHomePage.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Dashboard);
+)(ContactHomePage);
