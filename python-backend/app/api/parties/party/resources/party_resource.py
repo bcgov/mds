@@ -67,41 +67,14 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Unexpected party id in Url.')
         data = PartyResource.parser.parse_args()
 
-        # TODO: Move this logic to somewhere more appropriate
-        party_type_code = data['type']
-        first_name = data.get('first_name')
-        party_name = data['party_name']
-
-        if party_type_code == 'PER':
-            # TODO: validate PER method on model
-            if not first_name:
-                self.raise_error(400, 'Error: Party first name is not provided.')
-            party_exists = Party.find_by_name(first_name, party_name)
-            if party_exists:
-                self.raise_error(
-                    400, 'Error: Party with the name: {} {} already exists'.format(
-                        first_name, party_name))
-
-        elif party_type_code == 'ORG':
-            # TODO: validate ORG method on model
-            party_exists = Party.find_by_party_name(party_name)
-            if party_exists:
-                self.raise_error(
-                    400, 'Error: Party with the party name: {} already exists'.format(party_name))
-        else:
-            self.raise_error(400, 'Error: Party type is not provided.')
-
-
-
-        # This part is fine
         try:
-            party = Party.create(party_name,
+            party = Party.create(data['party_name'],
                                  data['email'],
                                  data['phone_no'],
-                                 party_type_code,
+                                 data['type'],
                                  self.get_create_update_dict(),
-                                 # Optional fields
-                                 first_name=first_name,
+                                 # Nullable fields
+                                 first_name=data.get('first_name'),
                                  phone_ext=data.get('phone_ext'),
                                  suite_no=data.get('suite_no'),
                                  address_line_1=data.get('address_line_1'),
@@ -129,7 +102,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         if party_type_code == 'PER':
             first_name = data.get('first_name', party_exists.first_name)
             party_name = data.get('party_name', party_exists.party_name)
-            party_name_exists = Party.find_by_name(first_name, party_name)
+            party_name_exists = Party.find_by_name(party_name, first_name)
             if party_name_exists:
                 self.raise_error(
                     400, 'Error: Party with the name: {} {} already exists'.format(
@@ -138,7 +111,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             party_exists.party_name = party_name
         elif party_type_code == 'ORG':
             party_name = data.get('party_name', party_exists.party_name)
-            party_name_exists = Party.find_by_party_name(party_name)
+            party_name_exists = Party.find_by_name(party_name)
             if party_name_exists:
                 self.raise_error(400,
                                  'Error: Party with the name: {} already exists'.format(party_name))

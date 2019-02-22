@@ -43,7 +43,7 @@ def test_post_person_no_first_name(test_client, auth_headers):
     assert post_data == {
         'error': {
             'status': 400,
-            'message': 'Error: Party first name is not provided.'
+            'message': 'Error: Person first name is not provided.'
         }
     }
     assert post_resp.status_code == 400

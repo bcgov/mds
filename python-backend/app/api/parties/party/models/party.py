@@ -29,8 +29,7 @@ class Party(AuditMixin, Base):
     address_line_1 = db.Column(db.String(50), nullable=True)
     address_line_2 = db.Column(db.String(50), nullable=True)
     city = db.Column(db.String(50), nullable=True)
-    # TODO: Figure out why db.ForeignKey('province_code.province_code') breaks create_data
-    province_code = db.Column(db.String(2))
+    province_code = db.Column(db.String(2), nullable=True)
     postal_code = db.Column(db.String(6), nullable=True)
 
     @hybrid_property
@@ -77,17 +76,15 @@ class Party(AuditMixin, Base):
         return cls.query.filter_by(party_guid=_id).first()
 
     @classmethod
-    def find_by_party_name(cls, party_name):
-        return cls.query.filter(
+    def find_by_name(cls, party_name, first_name=None):
+        party_type_code = 'PER' if first_name else 'ORG'
+        filters = [
             func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == PARTY_STATUS_CODE['org']).first()
-
-    @classmethod
-    def find_by_name(cls, first_name, party_name):
-        return cls.query.filter(
-            func.lower(cls.first_name) == func.lower(first_name),
-            func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == PARTY_STATUS_CODE['per']).first()
+            cls.party_type_code == party_type_code
+        ]
+        if first_name:
+            filters.append(func.lower(cls.first_name) == func.lower(first_name))
+        return cls.query.filter(*filters).first()
 
     @classmethod
     def search_by_name(cls, search_term, party_type=None, query_limit=50):
@@ -137,10 +134,33 @@ class Party(AuditMixin, Base):
             party.save(commit=False)
         return party
 
+
+    def validate_unique_name(self, party_name, first_name=None):
+        if Party.find_by_name(party_name, first_name):
+            if first_name:
+                name = first_name + ' ' + party_name
+            else:
+                name = party_name
+            raise AssertionError(
+                'Party with the name: {} already exists'.format(name))
+        return party_name
+
+    @validates('party_type_code')
+    def validate_email(self, key, party_type_code):
+        if not party_type_code:
+            raise AssertionError('Party type is not provided.')
+        if party_type_code not in ['PER', 'ORG']:
+            raise AssertionError('Invalid party type.')
+        return party_type_code
+
     @validates('first_name')
     def validate_first_name(self, key, first_name):
+        if self.party_type_code == 'PER' and not first_name:
+            raise AssertionError('Person first name is not provided.')
         if first_name and len(first_name) > 100:
             raise AssertionError('Person first name must not exceed 100 characters.')
+        if self.party_name:
+            self.validate_unique_name(self.party_name, first_name)
         return first_name
 
     @validates('party_name')
@@ -149,6 +169,8 @@ class Party(AuditMixin, Base):
             raise AssertionError('Party name is not provided.')
         if len(party_name) > 100:
             raise AssertionError('Party name must not exceed 100 characters.')
+        if self.first_name:
+            self.validate_unique_name(party_name, self.first_name)
         return party_name
 
     @validates('phone_no')
