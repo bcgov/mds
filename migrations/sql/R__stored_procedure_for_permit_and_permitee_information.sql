@@ -21,6 +21,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             CREATE TABLE IF NOT EXISTS ETL_PERMIT(
                 mine_party_appt_guid   uuid                  ,
                 --permit info
+                permit_amendment_guid  uuid                  ,
                 permit_guid            uuid                  ,
                 source                 numeric               ,
                 mine_guid              uuid                  ,
@@ -46,6 +47,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             CREATE TEMP TABLE IF NOT EXISTS all_permit_info (
                 mine_party_appt_guid uuid                    ,
                 --permit info
+                permit_amendment_guid  uuid                  ,
                 permit_guid            uuid                  ,
                 source                 numeric               ,
                 mine_guid              uuid                  ,
@@ -95,20 +97,16 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     permit_info.mine_no                                      ,
                     permit_info.permit_no                                    ,
                     permit_info.cid AS permit_cid                            ,
-                    COALESCE(permit_info.recv_dt,'9999-12-31'::date)  recv_dt,
-                    COALESCE(permit_info.iss_dt ,  '9999-12-31'::date) iss_dt,
-                    COALESCE(
-                        (
-                            SELECT end_dt
+                    permit_info.recv_dt as recv_dt                           ,
+                    permit_info.iss_dt as iss_dt                             ,
+                    (SELECT end_dt1
                             FROM mms.mmsnow
                             WHERE mms.mmsnow.cid = permit_info.cid
-                        ),
-                        '9999-12-31'::date
-                    ) permit_expiry_dt                   ,
+                    ) as permit_expiry_dt                                    ,
                     CASE permit_info.sta_cd
                         WHEN 'Z' THEN 'C' --closed
                         ELSE 'O' --open
-                    END AS sta_cd                                            ,
+                    END AS sta_cd                                           ,
                     permit_info.upd_no
                 FROM mms.mmspmt permit_info
                 INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
@@ -411,6 +409,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                 mine_party_appt_guid  ,
                 --permit info
                 permit_guid           ,
+                permit_amendment_guid ,
                 source                ,
                 mine_guid             ,
                 mine_no               ,
@@ -435,6 +434,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             SELECT
                 gen_random_uuid()            ,
                 --permit info
+                gen_random_uuid()            ,
                 gen_random_uuid()            ,
                 permittee_info.source        ,
                 permit_info.mine_guid        ,
@@ -515,6 +515,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     mine_party_appt_guid,
                     --permit info
                     permit_guid           ,
+                    permit_amendment_guid ,
                     source                ,
                     mine_guid             ,
                     mine_no               ,
@@ -538,6 +539,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     gen_random_uuid()          ,
                     --permit info
                     info.permit_guid           ,
+                    info.permit_amendment_guid ,
                     info.source                ,
                     info.mine_guid             ,
                     info.mine_no               ,
@@ -576,20 +578,22 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             update_row integer;
             insert_row integer;
             total_row  integer;
+            old_amendment_row  integer;
+            update_amendment_row integer;
+            insert_amendment_row integer;
+            total_amendment_row  integer;
         BEGIN
             RAISE NOTICE '.. Step 2 of 4: Update permit info';
             SELECT count(*) FROM permit INTO old_row;
+            SELECT count(*) FROM permit_amendment INTO old_amendment_row;
 
             -- Upsert permit data from ETL_PERMIT
-            RAISE NOTICE '.. Update existing records with latest MMS data';
+            RAISE NOTICE '.. Update existing permit records with latest MMS data';
             WITH updated_rows AS (
             UPDATE permit
             SET
-                received_date          = etl.received_date         ,
-                issue_date             = etl.issue_date            ,
                 update_user            = 'mms_migration'           ,
                 update_timestamp       = now()                     ,
-                authorization_end_date = etl.authorization_end_date,
                 permit_status_code     = etl.permit_status_code
             FROM ETL_PERMIT etl
             WHERE
@@ -601,6 +605,27 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             SELECT COUNT(*) FROM updated_rows INTO update_row;
             RAISE NOTICE '....# of records in permit: %', old_row;
             RAISE NOTICE '....# of records updated in permit: %', update_row;
+			
+            -- Upsert permit amendment data from ETL_PERMIT
+            RAISE NOTICE '.. Update existing permit amendment records with latest MMS data';
+            WITH updated_rows AS (
+            UPDATE permit_amendment
+            SET
+                received_date          = etl.received_date         ,
+                issue_date             = etl.issue_date            ,
+                update_user            = 'mms_migration'           ,
+                update_timestamp       = now()                     ,
+                authorization_end_date = etl.authorization_end_date
+            FROM ETL_PERMIT etl
+            WHERE
+                permit_amendment.mine_guid = etl.mine_guid
+                AND
+                permit_amendment.permit_amendment_guid = etl.permit_amendment_guid
+            RETURNING 1
+            )
+            SELECT COUNT(*) FROM updated_rows INTO update_amendment_row;
+            RAISE NOTICE '....# of records in permit: %', old_amendment_row;
+            RAISE NOTICE '....# of records updated in permit: %', update_amendment_row;
 
             RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit';
             WITH
@@ -610,43 +635,90 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 WHERE permit_guid NOT IN (
                     SELECT permit_guid
-                    FROM permit
+                    FROM permit_guid
                 )
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
                     mine_guid           ,
                     permit_no           ,
-                    received_date       ,
-                    issue_date          ,
                     permit_status_code  ,
                     create_user         ,
                     create_timestamp    ,
                     update_user         ,
-                    update_timestamp    ,
-                    authorization_end_date
+                    update_timestamp    
                 )
                 SELECT
                     new_permit.permit_guid         ,
                     new_permit.mine_guid           ,
                     new_permit.permit_no           ,
-                    new_permit.received_date       ,
-                    new_permit.issue_date          ,
                     new_permit.permit_status_code  ,
                     'mms_migration'                ,
                     now()                          ,
                     'mms_migration'                ,
-                    now()                          ,
-                    new_permit.authorization_end_date
+                    now()                          
                 FROM new_permit
                 INNER JOIN ETL_MINE ON
                     new_permit.mine_guid = ETL_MINE.mine_guid
                 RETURNING 1
             )
             SELECT COUNT(*) FROM inserted_rows INTO insert_row;
+			
+            RAISE NOTICE '.. Update ETL_PERMIT with newly inserted permit_guids for new amendments';
+			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE etl_permit.permit_no=permit.permit_no limit 1)
+			where permit_amendment_guid NOT IN (
+				SELECT permit_amendment_guid
+				FROM permit_amendment
+				);			
+			
+            RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit amendment';
+            WITH
+            --Select only new entry in ETL_PERMIT table
+            new_permit_amendment AS (
+                SELECT *
+                FROM ETL_PERMIT
+                WHERE permit_amendment_guid NOT IN (
+                    SELECT permit_amendment_guid
+                    FROM permit_amendment
+                )
+            ), inserted_rows AS (
+                INSERT INTO permit_amendment (
+                    permit_id              			,
+                    received_date          			,
+                    issue_date             			,
+                    authorization_end_date 			,
+                    permit_amendment_type_code      ,
+					permit_amendment_status_code    ,
+                    create_user            			,
+                    create_timestamp       			,
+                    update_user            			,
+                    update_timestamp       			
+                )
+                SELECT
+                    permit.permit_id				         	,
+                    new_permit_amendment.received_date       	,
+                    new_permit_amendment.issue_date          	,
+                    new_permit_amendment.authorization_end_date	,
+                    'AMD'									  	,
+					'ACT'										,
+                    'mms_migration'                				,
+                    now()                          				,
+                    'mms_migration'                				,
+                    now()                          
+                FROM new_permit_amendment
+                INNER JOIN permit ON
+                    new_permit_amendment.permit_guid = permit.permit_guid
+                RETURNING 1
+            )
+            SELECT COUNT(*) FROM inserted_rows INTO insert_amendment_row;
+			
+			
             SELECT COUNT(*) FROM permit INTO total_row;
+            SELECT COUNT(*) FROM permit_amendment INTO total_amendment_row;
             RAISE NOTICE '.... # of new permit records loaded into MDS: %', insert_row;
             RAISE NOTICE '.... # of total permit records in MDS: %', total_row;
+            RAISE NOTICE '.... # of new permit amendment records loaded into MDS: %', insert_amendment_row;
+            RAISE NOTICE '.... # of total permit amendment records in MDS: %', total_amendment_row;
         END;
 
         DECLARE

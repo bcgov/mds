@@ -20,10 +20,9 @@ class PermitAmendment(AuditMixin, Base):
     issue_date = db.Column(db.DateTime, nullable=False)
     authorization_end_date = db.Column(db.DateTime, nullable=False)
     permit_amendment_status_code = db.Column(
-        db.String(2), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
+        db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
-        db.String(2), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+        db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
 
     def json(self):
         return {
