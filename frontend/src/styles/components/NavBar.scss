@@ -5,7 +5,7 @@
   width: 100%;
   justify-content: space-between;
   background-color: $nav-color;
-  border-bottom: 1px solid $nav-border-color;
+  border-bottom: 8px solid $nav-border-color;
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
   &__img {
@@ -13,6 +13,31 @@
   }
 
   &__btn {
+    padding: $default-padding-sm;
     color: $pure-white;
+
+    &--link {
+      color: $pure-white;
+      background-color: transparent;
+      height: 100%;
+      margin: 0;
+      border: none;
+
+      &:hover {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: none;
+        border-radius: 0;
+      }
+    }
   }
+}
+
+#active-mine-btn,
+#active-contact-btn,
+#active-admin-btn {
+  color: $pure-white;
+  background-color: $primary-btn-color;
+  border: none;
+  border-radius: 0;
 }

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
+import PropTypes from "prop-types";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
+import * as Styles from "@/constants/styles";
 import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -12,12 +14,27 @@ import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
  * Home is wrapped in AuthenticationGuard which checks keycloak authorization.
  */
 
+const propTypes = {
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+};
+
 export class Home extends Component {
-  state = { isIE: false, isTest: false };
+  state = { isIE: false, isTest: false, activeNavButton: "" };
 
   componentDidMount() {
     this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
+    this.handleActiveButton(this.props.location.pathname);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location !== nextProps.location) {
+      this.handleActiveButton(nextProps.location.pathname);
+    }
+  }
+
+  handleActiveButton = (path) => {
+    this.setState({ activeNavButton: path });
+  };
 
   handleIEClose = () => {
     this.setState({ isIE: false });
@@ -28,13 +45,13 @@ export class Home extends Component {
     return (
       <Layout className="layout">
         <div className="header">
-          <NavBar />
+          <NavBar activeButton={this.state.activeNavButton} />
           <LoadingBar
             style={{
-              backgroundColor: "#6b6363",
+              backgroundColor: Styles.COLOR.violet,
               position: "fixed",
-              top: 55,
-              zIndex: 90,
+              top: 53,
+              zIndex: 1000,
               width: "100%",
               height: "8px",
             }}
@@ -55,5 +72,7 @@ export class Home extends Component {
     );
   }
 }
+
+Home.propTypes = propTypes;
 
 export default AuthenticationGuard(Home);
