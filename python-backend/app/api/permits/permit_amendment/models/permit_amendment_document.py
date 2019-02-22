@@ -25,3 +25,9 @@ class PermitAmendmentDocument(AuditMixin, Base):
             'document_name':self.document_name
             'document_manager_guid':str(self.document_manager_guid) if self.document_manager_guid else None
         }
+
+
+
+    @classmethod
+    def find_by_permit_amendment_guid(cls, _guid):
+        return cls.query.filter_by(permit_amendment_document_guid=_guid).first()
