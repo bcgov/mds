@@ -41,6 +41,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_role_admin: process.env.KEYCLOAK_ROLE_ADMIN,
     keycloak_role_create: process.env.KEYCLOAK_ROLE_CREATE,
     keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW,
+    keycloak_role_developer: process.env.KEYCLOAK_ROLE_DEVELOPER,
     environment: process.env.NODE_ENV,
   });
 });
