@@ -278,7 +278,7 @@ export class MineRecordForm extends Component {
           ))}
         </Collapse>
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
-          <Icon type="plus" style={{ color: Styles.VIOLET }} />
+          <Icon type="plus" style={{ color: Styles.COLOR.violet }} />
           {fields.length === 0 && !this.props.currentMineTypes
             ? "Add Mine Type"
             : "Add Another Mine Type"}

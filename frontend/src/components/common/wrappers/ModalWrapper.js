@@ -48,7 +48,7 @@ export class ModalWrapper extends Component {
             position: "absolute",
             top: "50px",
             left: 0,
-            backgroundColor: Styles.VIOLET,
+            backgroundColor: Styles.COLOR.violet,
             width: "100%",
             height: "8px",
             zIndex: 100,

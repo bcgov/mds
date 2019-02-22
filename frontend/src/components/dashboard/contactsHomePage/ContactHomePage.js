@@ -31,7 +31,7 @@ const propTypes = {
 
 export class ContactHomePage extends Component {
   state = {
-    isContactList: false,
+    isLoaded: false,
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
@@ -51,7 +51,7 @@ export class ContactHomePage extends Component {
       );
     }
     this.props.fetchParties(params).then(() => {
-      this.setState({ isContactList: true });
+      this.setState({ isLoaded: true });
     });
   }
 
@@ -97,7 +97,7 @@ export class ContactHomePage extends Component {
           </div>
         </div>
         <div className="landing-page__content">
-          {this.state.isContactList && (
+          {this.state.isLoaded && (
             <div>
               <div className="tab__content ">
                 <ContactList {...this.props} />
@@ -112,7 +112,7 @@ export class ContactHomePage extends Component {
               </div>
             </div>
           )}
-          {!this.state.isContactList && <Loading />}
+          {!this.state.isLoaded && <Loading />}
         </div>
       </div>
     );

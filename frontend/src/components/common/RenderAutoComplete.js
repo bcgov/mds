@@ -38,7 +38,7 @@ const RenderAutoComplete = (props) => (
     <Input
       autoComplete="off"
       id="search"
-      suffix={<Icon type="search" className="icon-sm" style={{ color: Styles.VIOLET }} />}
+      suffix={<Icon type="search" className="icon-sm" style={{ color: Styles.COLOR.violet }} />}
     />
   </AutoComplete>
 );

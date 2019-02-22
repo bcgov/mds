@@ -48,7 +48,7 @@ export class Home extends Component {
           <NavBar activeButton={this.state.activeNavButton} />
           <LoadingBar
             style={{
-              backgroundColor: Styles.VIOLET,
+              backgroundColor: Styles.COLOR.violet,
               position: "fixed",
               top: 53,
               zIndex: 1000,
