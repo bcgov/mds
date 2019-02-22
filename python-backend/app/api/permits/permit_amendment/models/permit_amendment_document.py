@@ -13,8 +13,8 @@ class PermitAmendmentDocument(AuditMixin, Base):
     __tablename__ = "permit_amendment_document"
     permit_amendment_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
-    permit_amendment_id = db.Column(db.Integer,
-                                    db.ForeignKey('permit_amendment.permit_amendment_id'))
+    permit_amendment_id = db.Column(
+        db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'), nullable=True)
     document_name = db.Column(db.String, nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
     document_manager_guid = db.Column(UUID(as_uuid=True))
@@ -24,6 +24,8 @@ class PermitAmendmentDocument(AuditMixin, Base):
 
     def json(self):
         return {
+            'mine_guid':
+            str(self.mine_guid),
             'document_guid':
             str(self.permit_amendment_document_guid),
             'document_name':
