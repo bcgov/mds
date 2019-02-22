@@ -10,7 +10,7 @@ const Routes = () => (
       <RedirectRoute
         exact
         path={routes.DASHBOARD.route}
-        redirectTo={routes.MINE_DASHBOARD.dynamicRoute({
+        redirectTo={routes.MINE_HOME_PAGE.dynamicRoute({
           page: Strings.DEFAULT_PAGE,
           per_page: Strings.DEFAULT_PER_PAGE,
         })}
