@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void AS $$
+CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void AS $$
     BEGIN
         DECLARE
             company_keyword_special varchar := '[-!0-9@#$&()`+/\"]
@@ -99,7 +99,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     permit_info.cid AS permit_cid                            ,
                     permit_info.recv_dt as recv_dt                           ,
                     permit_info.iss_dt as iss_dt                             ,
-                    (SELECT end_dt1
+                    (SELECT end_dt
                             FROM mms.mmsnow
                             WHERE mms.mmsnow.cid = permit_info.cid
                     ) as permit_expiry_dt                                    ,
