@@ -3,14 +3,12 @@ import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchParties } from "@/actionCreators/partiesActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import Loading from "@/components/common/Loading";
@@ -26,7 +24,7 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
 };
