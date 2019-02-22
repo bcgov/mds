@@ -109,7 +109,6 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
                 404, 'Either the Expected Document or the Mine Document was not found'), 404
 
         permit_amendment.documents.remove(permit_amendment_doc)
-        db.session.delete(permit_amendment_doc)
         permit_amendment.save()
 
         return ('', 204)
