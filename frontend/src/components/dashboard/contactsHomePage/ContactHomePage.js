@@ -17,7 +17,7 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 
 /**
- * @class MineLandingPage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * @class MineHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
 
