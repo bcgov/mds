@@ -44,7 +44,7 @@ import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 
 /**
- * @class MineLandingPage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
 const { TabPane } = Tabs;
