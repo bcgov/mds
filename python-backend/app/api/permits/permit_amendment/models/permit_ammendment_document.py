@@ -19,3 +19,9 @@ class PermitAmendmentDocument(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     permit_amendment = db.relationship('PermitAmendment', backref='documents', lazy='joined')
+
+    def json(self):
+        return {
+            'document_name':self.document_name
+            'document_manager_guid':str(self.document_manager_guid) if self.document_manager_guid else None
+        }

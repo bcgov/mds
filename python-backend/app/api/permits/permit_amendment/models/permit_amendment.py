@@ -25,8 +25,6 @@ class PermitAmendment(AuditMixin, Base):
         db.String(2), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    mine_documents = db.relationship('PermitAmendmentDocumentXref', lazy='joined')
-
     def json(self):
         return {
             'permit_amendment_id':
@@ -45,8 +43,7 @@ class PermitAmendment(AuditMixin, Base):
             self.issue_date.isoformat() if self.issue_date else None,
             'authorization_end_date':
             self.authorization_end_date.isoformat() if self.authorization_end_date else None,
-            'related_documents':
-            str(self.mine_documents.mine_document_guid) if self.mine_documents else []
+            'related_documents': [x.json() for x in self.documents]
         }
 
     @classmethod
