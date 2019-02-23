@@ -633,7 +633,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 WHERE permit_guid NOT IN (
                     SELECT permit_guid
-                    FROM permit_guid
+                    FROM permit
                 )
             ), inserted_rows AS (
                 INSERT INTO permit (
