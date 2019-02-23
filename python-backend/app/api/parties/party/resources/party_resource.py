@@ -103,7 +103,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             existing_party.party_name      = data.get('party_name') or existing_party.party_name
             existing_party.email           = data.get('email') or existing_party.email
             existing_party.phone_no        = data.get('phone_no') or existing_party.phone_no
-            existing_party.party_type_code = data.get('type') or existing_party.type
+            existing_party.party_type_code = data.get('type') or existing_party.party_type_code
             existing_party.first_name      = data.get('first_name') or existing_party.first_name
             existing_party.suite_no        = data.get('suite_no') or existing_party.suite_no
             existing_party.address_line_1  = data.get('address_line_1') or existing_party.address_line_1
