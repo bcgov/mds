@@ -1,5 +1,10 @@
 import json
-from tests.constants import TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1
+from tests.constants import (TEST_MINE_GUID,
+                             TEST_PARTY_PER_GUID_1,
+                             TEST_PARTY_PER_FIRST_NAME_1,
+                             TEST_PARTY_PER_PARTY_NAME_1,
+                             TEST_PARTY_PER_FIRST_NAME_2,
+                             TEST_PARTY_PER_PARTY_NAME_2)
 
 
 # GET
@@ -133,8 +138,17 @@ def test_put_person_not_found(test_client, auth_headers):
     assert put_resp.status_code == 404
 
 
+def test_put_person_success(test_client, auth_headers):
+    test_person_data = {"first_name": "Changedfirst", "party_name": "Changedlast", "type": "PER"}
+    put_resp = test_client.put('/parties/' + TEST_PARTY_PER_GUID_1, data=test_person_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['first_name'] == test_person_data['first_name']
+    assert put_data['party_name'] == test_person_data['party_name']
+    assert put_resp.status_code == 200
+
+
 def test_put_person_name_exists(test_client, auth_headers):
-    test_person_data = {"first_name": TEST_PARTY_PER_FIRST_NAME_1, "party_name": TEST_PARTY_PER_PARTY_NAME_1, "type": "PER"}
+    test_person_data = {"first_name": TEST_PARTY_PER_FIRST_NAME_2, "party_name": TEST_PARTY_PER_PARTY_NAME_2, "type": "PER"}
     put_resp = test_client.put('/parties/' + TEST_PARTY_PER_GUID_1, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_data == {
@@ -144,12 +158,3 @@ def test_put_person_name_exists(test_client, auth_headers):
         }
     }
     assert put_resp.status_code == 400
-
-
-def test_put_person_success(test_client, auth_headers):
-    test_person_data = {"first_name": "Changedfirst", "party_name": "Changedlast", "type": "PER"}
-    put_resp = test_client.put('/parties/' + TEST_PARTY_PER_GUID_1, data=test_person_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_data['first_name'] == test_person_data['first_name']
-    assert put_data['party_name'] == test_person_data['party_name']
-    assert put_resp.status_code == 200

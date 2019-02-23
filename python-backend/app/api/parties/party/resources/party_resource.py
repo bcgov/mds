@@ -94,29 +94,26 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @requires_role_mine_create
     def put(self, party_guid):
-        data = PartyResource.parser.parse_args()
-        party_exists = Party.find_by_party_guid(party_guid)
-        if not party_exists:
+        data = self.parser.parse_args()
+        existing_party = Party.find_by_party_guid(party_guid)
+        if not existing_party:
             return self.create_error_payload(404, 'Party not found'), 404
-        party_type_code = data.get('type')
-        if party_type_code == 'PER':
-            first_name = data.get('first_name', party_exists.first_name)
-            party_name = data.get('party_name', party_exists.party_name)
-            party_name_exists = Party.find_by_name(party_name, first_name)
-            if party_name_exists:
-                self.raise_error(
-                    400, 'Error: Party with the name: {} {} already exists'.format(
-                        first_name, party_name))
-            party_exists.first_name = first_name
-            party_exists.party_name = party_name
-        elif party_type_code == 'ORG':
-            party_name = data.get('party_name', party_exists.party_name)
-            party_name_exists = Party.find_by_name(party_name)
-            if party_name_exists:
-                self.raise_error(400,
-                                 'Error: Party with the name: {} already exists'.format(party_name))
-            party_exists.party_name = party_name
-        else:
-            self.raise_error(400, 'Error: Party type is not provided.')
-        party_exists.save()
-        return party_exists.json()
+
+        try:
+            existing_party.party_name      = data.get('party_name') or existing_party.party_name
+            existing_party.email           = data.get('email') or existing_party.email
+            existing_party.phone_no        = data.get('phone_no') or existing_party.phone_no
+            existing_party.party_type_code = data.get('type') or existing_party.type
+            existing_party.first_name      = data.get('first_name') or existing_party.first_name
+            existing_party.suite_no        = data.get('suite_no') or existing_party.suite_no
+            existing_party.address_line_1  = data.get('address_line_1') or existing_party.address_line_1
+            existing_party.address_line_2  = data.get('address_line_2') or existing_party.address_line_2
+            existing_party.city            = data.get('city') or existing_party.city
+            existing_party.province_code   = data.get('province_code') or existing_party.province_code
+            existing_party.postal_code     = data.get('postal_code') or existing_party.postal_code
+
+            existing_party.save()
+        except AssertionError as e:
+            self.raise_error(400, 'Error: {}'.format(e))
+
+        return existing_party.json()
