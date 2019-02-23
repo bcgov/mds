@@ -44,9 +44,9 @@ export class NavBar extends Component {
         <div className="inline-flex">
           {/* wrapped all new nav links in Admin permission guard to prevent users from seeing this feature 
         this will be updated/removed when feature-flagging is implemented */}
-          <AuthorizationWrapper permission={Permission.ADMIN}>
+          <AuthorizationWrapper permission={Permission.DEVELOPER}>
             {/* temporary style needed only because AuthWrapper only accepts one child element */}
-            <div style={{ height: "100%" }}>
+            <span style={{ height: "100%" }}>
               <Link
                 to={router.MINE_HOME_PAGE.dynamicRoute({
                   page: Strings.DEFAULT_PAGE,
@@ -88,20 +88,22 @@ export class NavBar extends Component {
                   Contacts
                 </Button>
               </Link>
-              <Link to={router.ADMIN_DASHBOARD.route}>
-                <Button
-                  id={
-                    includes(this.props.activeButton, router.ADMIN_DASHBOARD.route)
-                      ? "active-admin-btn"
-                      : ""
-                  }
-                  className="menu__btn--link"
-                >
-                  <img alt="Admin" className="padding-small--right icon-sm" src={ADMIN} />
-                  Admin
-                </Button>
-              </Link>
-            </div>
+            </span>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Link to={router.ADMIN_DASHBOARD.route}>
+              <Button
+                id={
+                  includes(this.props.activeButton, router.ADMIN_DASHBOARD.route)
+                    ? "active-admin-btn"
+                    : ""
+                }
+                className="menu__btn--link"
+              >
+                <img alt="Admin" className="padding-small--right icon-sm" src={ADMIN} />
+                Admin
+              </Button>
+            </Link>
           </AuthorizationWrapper>
           <Dropdown overlay={this.menu} placement="bottomLeft">
             <button type="button" className="menu__btn">

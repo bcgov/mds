@@ -138,7 +138,7 @@ const mapDispatchToProps = (dispatch) =>
 ContactHomePage.propTypes = propTypes;
 
 export default compose(
-  AuthorizationGuard(Permission.ADMIN),
+  AuthorizationGuard(Permission.DEVELOPER),
   connect(
     mapStateToProps,
     mapDispatchToProps

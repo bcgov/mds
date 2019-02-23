@@ -45,7 +45,7 @@ const defaultProps = {
 export const AuthorizationWrapper = ({ children: Children, ...props }) =>
   props.userRoles.includes(USER_ROLES[props.permission]) &&
   (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
-    <div>{Children}</div>
+    <span>{Children}</span>
   );
 
 AuthorizationWrapper.propTypes = propTypes;
