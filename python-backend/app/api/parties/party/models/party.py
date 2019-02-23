@@ -15,22 +15,22 @@ from ....constants import PARTY_STATUS_CODE
 class Party(AuditMixin, Base):
     __tablename__ = 'party'
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    first_name = db.Column(db.String(100), nullable=True)
-    middle_name = db.Column(db.String(100), nullable=True)
-    party_name = db.Column(db.String(100), nullable=False)
-    phone_no = db.Column(db.String(10), nullable=False)
-    phone_ext = db.Column(db.String(4), nullable=True)
-    email = db.Column(db.String(254), nullable=False)
+    first_name = db.Column(db.String, nullable=True)
+    middle_name = db.Column(db.String, nullable=True)
+    party_name = db.Column(db.String, nullable=False)
+    phone_no = db.Column(db.String, nullable=False)
+    phone_ext = db.Column(db.String, nullable=True)
+    email = db.Column(db.String, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
+    party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
 
-    suite_no = db.Column(db.String(5), nullable=True)
-    address_line_1 = db.Column(db.String(50), nullable=True)
-    address_line_2 = db.Column(db.String(50), nullable=True)
-    city = db.Column(db.String(50), nullable=True)
-    province_code = db.Column(db.String(2), nullable=True)
-    postal_code = db.Column(db.String(6), nullable=True)
+    suite_no = db.Column(db.String, nullable=True)
+    address_line_1 = db.Column(db.String, nullable=True)
+    address_line_2 = db.Column(db.String, nullable=True)
+    city = db.Column(db.String, nullable=True)
+    province_code = db.Column(db.String, nullable=True)
+    postal_code = db.Column(db.String, nullable=True)
 
     @hybrid_property
     def name(self):
@@ -103,7 +103,7 @@ class Party(AuditMixin, Base):
                phone_no,
                party_type_code,
                user_kwargs,
-               # Optional fields
+               # Nullable fields
                first_name=None,
                phone_ext=None,
                suite_no=None,
