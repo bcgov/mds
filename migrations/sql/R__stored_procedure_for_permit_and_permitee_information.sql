@@ -792,7 +792,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     phone_no              ,
                     email                 ,
                     effective_date        ,
-                    authorization_end_date,
+                    COALESCE(authorization_end_date,'9999-12-31'::date) as expiry_date,
                     'mms_migration'       ,
                     now()                 ,
                     'mms_migration'       ,
