@@ -618,8 +618,6 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 authorization_end_date = etl.authorization_end_date
             FROM ETL_PERMIT etl
             WHERE
-                permit_amendment.mine_guid = etl.mine_guid
-                AND
                 permit_amendment.permit_amendment_guid = etl.permit_amendment_guid
             RETURNING 1
             )
