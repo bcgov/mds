@@ -743,7 +743,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 phone_no         = etl.phone_no              ,
                 email            = etl.email                 ,
                 effective_date   = etl.effective_date        ,
-                expiry_date      = etl.authorization_end_date,
+                COALESCE(authorization_end_date,'9999-12-31'::date) as expiry_date,
                 update_user      = 'mms_migration'           ,
                 update_timestamp = now()                     ,
                 party_type_code  = etl.party_type
