@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal } from "antd";
-import LoadingBar from "react-redux-loading-bar";
+import * as Styles from "@/constants/styles";
 import { closeModal } from "@/actions/modalActions";
 import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/selectors/modalSelectors";
 
@@ -47,7 +48,7 @@ export class ModalWrapper extends Component {
             position: "absolute",
             top: "50px",
             left: 0,
-            backgroundColor: "#6b6363",
+            backgroundColor: Styles.COLOR.violet,
             width: "100%",
             height: "8px",
             zIndex: 100,
