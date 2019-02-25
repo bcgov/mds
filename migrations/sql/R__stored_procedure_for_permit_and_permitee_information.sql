@@ -600,6 +600,8 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit.mine_guid = etl.mine_guid
                 AND
                 permit.permit_guid = etl.permit_guid
+				AND
+				issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -630,11 +632,12 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             --Select only new entry in ETL_PERMIT table
             new_permit AS (
                 SELECT *
-                FROM ETL_PERMIT
+                FROM ETL_PERMIT etl
                 WHERE permit_guid NOT IN (
                     SELECT permit_guid
                     FROM permit
                 )
+				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
