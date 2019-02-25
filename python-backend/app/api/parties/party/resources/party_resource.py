@@ -1,7 +1,7 @@
 import uuid
-
 from flask import request
 from flask_restplus import Resource, reqparse
+from sqlalchemy_filters import apply_pagination
 
 from ..models.party import Party
 from ....constants import PARTY_STATUS_CODE
@@ -23,6 +23,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
+    parser.add_argument('page', type=int, help='The type of the party. Ex: PER')
+    parser.add_argument('per_page', type=int, help='The type of the party. Ex: PER')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -44,6 +46,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         else:
             search_term = request.args.get('search')
             search_type = request.args.get('type').upper() if request.args.get('type') else None
+            items_per_page = request.args.get('per_page', 25, type=int)
+            page = request.args.get('page', 1, type=int)
+            parties = Party.query
             if search_term:
                 if search_type in ['PER', 'ORG']:
                     parties = Party.search_by_name(search_term, search_type,
@@ -51,9 +56,21 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 else:
                     parties = Party.search_by_name(
                         search_term, query_limit=self.PARTY_LIST_RESULT_LIMIT)
-            else:
-                parties = Party.query.limit(self.PARTY_LIST_RESULT_LIMIT).all()
-            return {'parties': list(map(lambda x: x.json(), parties))}
+            
+            paginated_parties, pagination_details = apply_pagination(parties, page, items_per_page)
+            if not paginated_parties:
+                self.raise_error(
+                    404,
+                    'No parties found'
+                ), 404
+            parties = paginated_parties.all()
+            return {
+                'parties': list(map(lambda x: x.json(), parties)),
+                'current_page': pagination_details.page_number,
+                'total_pages': pagination_details.num_pages,
+                'items_per_page': pagination_details.page_size,
+                'total': pagination_details.total_results,
+            }
 
     def create_party_context(self, party_type_code, party_name, first_name):
         party_context = {'party_type_code': party_type_code, 'party_name': party_name}

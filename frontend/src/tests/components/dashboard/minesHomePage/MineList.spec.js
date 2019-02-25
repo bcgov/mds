@@ -1,7 +1,7 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import MineList from '@/components/dashboard/MineList';
-import * as MOCK from '@/tests/mocks/dataMocks';
+import React from "react";
+import { shallow } from "enzyme";
+import MineList from "@/components/dashboard/minesHomePage/MineList";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
 
@@ -15,8 +15,8 @@ beforeEach(() => {
   setupProps();
 });
 
-describe('MineList', () => {
-  it('renders properly', () => {
+describe("MineList", () => {
+  it("renders properly", () => {
     const component = shallow(<MineList {...props} />);
     expect(component).toMatchSnapshot();
   });
