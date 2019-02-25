@@ -666,18 +666,13 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             SELECT COUNT(*) FROM inserted_rows INTO insert_row;
 			
             RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with newly inserted permit_guids for new amendments';
-			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE etl_permit.permit_no=permit.permit_no limit 1)
+			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no limit 1)
 			where permit_amendment_guid NOT IN (
 				SELECT permit_amendment_guid
 				FROM permit_amendment
-				);			
-			
-			UPDATE all_permit_info SET permit_guid = (select permit_guid from permit WHERE etl_permit.permit_no=permit.permit_no limit 1)
-			where permit_amendment_guid NOT IN (
-				SELECT permit_amendment_guid
-				FROM permit_amendment
-				);			
-			
+				);	
+				
+				
             RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit amendment';
             WITH
             --Select only new entry in ETL_PERMIT table
