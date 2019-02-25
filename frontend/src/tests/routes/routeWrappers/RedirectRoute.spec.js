@@ -8,7 +8,7 @@ const props = {};
 
 const setupProps = () => {
   props.path = routes.DASHBOARD.route;
-  props.redirectTo = routes.MINE_DASHBOARD.dynamicRoute({
+  props.redirectTo = routes.MINE_HOME_PAGE.dynamicRoute({
     page: String.DEFAULT_PAGE,
     per_page: String.DEFAULT_PER_PAGE,
   });

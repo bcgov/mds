@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void AS $$
+CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void AS $$
     BEGIN
         DECLARE
             company_keyword_special varchar := '[-!0-9@#$&()`+/\"]
@@ -99,7 +99,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     permit_info.cid AS permit_cid                            ,
                     permit_info.recv_dt as recv_dt                           ,
                     permit_info.iss_dt as iss_dt                             ,
-                    (SELECT end_dt1
+                    (SELECT end_dt
                             FROM mms.mmsnow
                             WHERE mms.mmsnow.cid = permit_info.cid
                     ) as permit_expiry_dt                                    ,
@@ -600,6 +600,8 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                 permit.mine_guid = etl.mine_guid
                 AND
                 permit.permit_guid = etl.permit_guid
+				AND
+				issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -618,8 +620,6 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                 authorization_end_date = etl.authorization_end_date
             FROM ETL_PERMIT etl
             WHERE
-                permit_amendment.mine_guid = etl.mine_guid
-                AND
                 permit_amendment.permit_amendment_guid = etl.permit_amendment_guid
             RETURNING 1
             )
@@ -632,11 +632,12 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             --Select only new entry in ETL_PERMIT table
             new_permit AS (
                 SELECT *
-                FROM ETL_PERMIT
+                FROM ETL_PERMIT etl
                 WHERE permit_guid NOT IN (
                     SELECT permit_guid
-                    FROM permit_guid
+                    FROM permit
                 )
+				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
@@ -664,13 +665,14 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
             )
             SELECT COUNT(*) FROM inserted_rows INTO insert_row;
 			
-            RAISE NOTICE '.. Update ETL_PERMIT with newly inserted permit_guids for new amendments';
-			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE etl_permit.permit_no=permit.permit_no limit 1)
+            RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with newly inserted permit_guids for new amendments';
+			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = permit.mine_guid limit 1)
 			where permit_amendment_guid NOT IN (
 				SELECT permit_amendment_guid
 				FROM permit_amendment
-				);			
-			
+				);	
+				
+				
             RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit amendment';
             WITH
             --Select only new entry in ETL_PERMIT table
@@ -741,7 +743,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                 phone_no         = etl.phone_no              ,
                 email            = etl.email                 ,
                 effective_date   = etl.effective_date        ,
-                expiry_date      = etl.authorization_end_date,
+                expiry_date      = COALESCE(authorization_end_date,'9999-12-31'::date),
                 update_user      = 'mms_migration'           ,
                 update_timestamp = now()                     ,
                 party_type_code  = etl.party_type
@@ -794,7 +796,7 @@ CREATE OR REPLACE FUNCTION transfer_premit_permitee_information() RETURNS void A
                     phone_no              ,
                     email                 ,
                     effective_date        ,
-                    authorization_end_date,
+                    COALESCE(authorization_end_date,'9999-12-31'::date) as expiry_date,
                     'mms_migration'       ,
                     now()                 ,
                     'mms_migration'       ,

@@ -154,3 +154,9 @@ body {
   font-weight: $semi-bold;
   color: $h4-color;
 }
+
+// reusable icon classes
+// using important to override any existing styling from ant design.
+.icon-sm {
+  font-size: 20px !important;
+}
