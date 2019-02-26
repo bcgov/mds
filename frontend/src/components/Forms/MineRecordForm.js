@@ -7,6 +7,7 @@ import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag }
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
+import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -277,7 +278,7 @@ export class MineRecordForm extends Component {
           ))}
         </Collapse>
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
-          <Icon type="plus" style={{ color: "#5e46a1" }} />
+          <Icon type="plus" style={{ color: Styles.COLOR.violet }} />
           {fields.length === 0 && !this.props.currentMineTypes
             ? "Add Mine Type"
             : "Add Another Mine Type"}

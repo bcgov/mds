@@ -46,16 +46,18 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
     apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+    sched.init_app(app)
 
     CORS(app)
     Compress(app)
 
-    # if app.config.get('ENVIRONMENT_NAME') == 'prod':
-    sched.init_app(app)
-    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-        sched.start()
-        _schedule_NRIS_jobs(app)
-        _schedule_ETL_jobs(app)
+    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
+            _schedule_NRIS_jobs(app)
+            #This is her to prevent this from running in production until we are confident in the permit data.
+            if False:
+                _schedule_ETL_jobs(app)
 
     return None
 
