@@ -3,17 +3,21 @@ import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchParties } from "@/actionCreators/partiesActionCreator";
+import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import Loading from "@/components/common/Loading";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
+import { modalConfig } from "@/components/modalContent/config";
+import * as ModalContent from "@/constants/modalContent";
 
 /**
  * @class ContactHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -84,6 +88,28 @@ export class ContactHomePage extends Component {
     );
   };
 
+  handleSubmit = (value) =>
+    this.props
+      .createParty(value)
+      .then(() => {
+        this.props.closeModal();
+      })
+      .then(() => {
+        const params = this.props.location.search;
+        this.props.fetchParties(params);
+      });
+
+  openModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit,
+        title,
+      },
+      content: modalConfig.ADD_CONTACT,
+    });
+  }
+
   render() {
     const { page, per_page } = this.state.params;
     return (
@@ -94,6 +120,17 @@ export class ContactHomePage extends Component {
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
             </div>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Button
+                className="full-mobile"
+                type="primary"
+                onClick={(event) =>
+                  this.openModal(event, this.handleSubmit, ModalContent.ADD_CONTACT)
+                }
+              >
+                {ModalContent.ADD_CONTACT}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <div className="landing-page__content">
@@ -129,6 +166,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
+      createParty,
       openModal,
       closeModal,
     },
