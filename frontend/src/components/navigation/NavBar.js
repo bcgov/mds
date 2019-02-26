@@ -44,7 +44,7 @@ export class NavBar extends Component {
         <div className="inline-flex">
           {/* wrapped all new nav links in Admin permission guard to prevent users from seeing this feature 
         this will be updated/removed when feature-flagging is implemented */}
-          <AuthorizationWrapper permission={Permission.DEVELOPER}>
+          <AuthorizationWrapper inDevelopment>
             {/* temporary style needed only because AuthWrapper only accepts one child element */}
             <span style={{ height: "100%" }}>
               <Link

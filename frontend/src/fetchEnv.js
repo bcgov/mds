@@ -23,7 +23,6 @@ export default function fetchEnv() {
       USER_ROLES.role_admin = env.keycloak_role_admin;
       USER_ROLES.role_create = env.keycloak_role_create;
       USER_ROLES.role_view = env.keycloak_role_view;
-      USER_ROLES.role_developer = env.keycloak_role_developer;
       ENVIRONMENT.environment = env.environment;
     });
 }

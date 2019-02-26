@@ -10,7 +10,6 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_role_admin: "mds-mine-admin",
   keycloak_role_create: "mds-mine-create",
   keycloak_role_view: "mds-mine-view",
-  keycloak_role_developer: "mds-developer",
 };
 
 export const ENVIRONMENT = {
@@ -34,5 +33,4 @@ export const USER_ROLES = {
   role_admin: "mds-mine-admin",
   role_create: "mds-mine-create",
   role_view: "mds-mine-view",
-  role_developer: "mds-developer",
 };
