@@ -1,6 +1,7 @@
 import queryString from "query-string";
 import Home from "@/components/Home";
-import Dashboard from "@/components/dashboard/Dashboard";
+import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
+import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -11,15 +12,22 @@ export const DASHBOARD = {
   component: Home,
 };
 
-export const MINE_DASHBOARD = {
-  route: "/dashboard",
+export const MINE_HOME_PAGE = {
+  route: "/dashboard/mines",
   dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
+    `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   mapRoute: (page, perPage, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
-    return `/dashboard?page=${page}&per_page=${perPage}${searchParam}&map=true`;
+    return `/dashboard/mines?page=${page}&per_page=${perPage}${searchParam}&map=true`;
   },
   component: Dashboard,
+};
+
+export const CONTACT_HOME_PAGE = {
+  route: "/dashboard/contacts",
+  dynamicRoute: ({ page, per_page }) =>
+    `/dashboard/contacts/?${queryString.stringify({ page, per_page })}`,
+  component: ContactHomePage,
 };
 
 export const MINE_SUMMARY = {
@@ -29,8 +37,8 @@ export const MINE_SUMMARY = {
 };
 
 export const PARTY_PROFILE = {
-  route: "/profile/:id",
-  dynamicRoute: (id) => `/profile/${id}`,
+  route: "/dashboard/:id/profile",
+  dynamicRoute: (id) => `/dashboard/${id}/profile`,
   component: PartyProfile,
 };
 
