@@ -11,6 +11,7 @@ def setup_info(test_client):
 
     test_pa = PermitAmendment.create(permit, None, None, None, DUMMY_USER_KWARGS)
     test_pa.save()
+
     yield {'permit_amendment_1': test_pa}
 
     db.session.delete(test_pa)
@@ -91,5 +92,17 @@ def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup
 
 
 #PUT
+def test_put_permit_amendment(test_client, auth_headers, setup_info):
+    data = {'permit_amendment_type_code': 'OGP', 'permit_amendment_status_code': 'RMT'}
+    put_resp = test_client.put(
+        f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200, put_resp.response
+    assert put_data['permit_guid'] == TEST_PERMIT_GUID_1, str(put_data)
+    assert put_data['permit_amendment_type_code'] == data['permit_amendment_type_code']
+    assert put_data['permit_amendment_status_code'] == data['permit_amendment_status_code']
+
 
 #DELETE
