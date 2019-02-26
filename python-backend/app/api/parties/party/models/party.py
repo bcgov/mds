@@ -30,7 +30,7 @@ class Party(AuditMixin, Base):
     address_line_1 = db.Column(db.String, nullable=True)
     address_line_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
-    region_code = db.Column(db.String, nullable=True)
+    sub_division_code = db.Column(db.String, nullable=True)
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
@@ -62,7 +62,7 @@ class Party(AuditMixin, Base):
                     'address_line_1': self.address_line_1,
                     'address_line_2': self.address_line_2,
                     'city': self.city,
-                    'region_code': self.region_code,
+                    'sub_division_code': self.sub_division_code,
                     'post_code': self.post_code,
                     'address_type_code': self.address_type_code
                 }
@@ -115,7 +115,7 @@ class Party(AuditMixin, Base):
                address_line_1=None,
                address_line_2=None,
                city=None,
-               region_code=None,
+               sub_division_code=None,
                post_code=None,
                save=True):
         party = cls(
@@ -134,7 +134,7 @@ class Party(AuditMixin, Base):
             address_line_1=address_line_1,
             address_line_2=address_line_2,
             city=city,
-            region_code=region_code,
+            sub_division_code=sub_division_code,
             post_code=post_code)
         if save:
             party.save(commit=False)

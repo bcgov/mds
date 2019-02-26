@@ -26,7 +26,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('address_line_1', type=str, help='The first address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('address_line_2', type=str, help='The second address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('city', type=str, help='The city where the party is located. Ex: FooTown')
-    parser.add_argument('region_code', type=str, help='The region code where the party is located. Ex: BC')
+    parser.add_argument('sub_division_code', type=str, help='The region code where the party is located. Ex: BC')
     parser.add_argument('post_code', type=str, help='The postal code of the party address. Ex: A0B1C2')
 
     PARTY_LIST_RESULT_LIMIT = 25
@@ -95,7 +95,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                                  address_line_1=data.get('address_line_1'),
                                  address_line_2=data.get('address_line_2'),
                                  city=data.get('city'),
-                                 region_code=data.get('region_code'),
+                                 sub_division_code=data.get('sub_division_code'),
                                  post_code=data.get('post_code'))
         except AssertionError as e:
                     self.raise_error(400, 'Error: {}'.format(e))
@@ -115,17 +115,17 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Party not found'), 404
 
         try:
-            existing_party.party_name      = data.get('party_name') or existing_party.party_name
-            existing_party.email           = data.get('email') or existing_party.email
-            existing_party.phone_no        = data.get('phone_no') or existing_party.phone_no
-            existing_party.party_type_code = data.get('type') or existing_party.party_type_code
-            existing_party.first_name      = data.get('first_name') or existing_party.first_name
-            existing_party.suite_no        = data.get('suite_no') or existing_party.suite_no
-            existing_party.address_line_1  = data.get('address_line_1') or existing_party.address_line_1
-            existing_party.address_line_2  = data.get('address_line_2') or existing_party.address_line_2
-            existing_party.city            = data.get('city') or existing_party.city
-            existing_party.region_code     = data.get('region_code') or existing_party.region_code
-            existing_party.post_code       = data.get('post_code') or existing_party.post_code
+            existing_party.party_name        = data.get('party_name') or existing_party.party_name
+            existing_party.email             = data.get('email') or existing_party.email
+            existing_party.phone_no          = data.get('phone_no') or existing_party.phone_no
+            existing_party.party_type_code   = data.get('type') or existing_party.party_type_code
+            existing_party.first_name        = data.get('first_name') or existing_party.first_name
+            existing_party.suite_no          = data.get('suite_no') or existing_party.suite_no
+            existing_party.address_line_1    = data.get('address_line_1') or existing_party.address_line_1
+            existing_party.address_line_2    = data.get('address_line_2') or existing_party.address_line_2
+            existing_party.city              = data.get('city') or existing_party.city
+            existing_party.sub_division_code = data.get('sub_division_code') or existing_party.sub_division_code
+            existing_party.post_code         = data.get('post_code') or existing_party.post_code
 
             existing_party.save()
         except AssertionError as e:

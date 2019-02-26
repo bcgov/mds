@@ -1,7 +1,7 @@
 from flask_restplus import Namespace
 
 from ..party.resources.party_resource import PartyResource
-from ..party.resources.region_code_resource import RegionCodeResource
+from ..party.resources.sub_division_code_resource import SubDivisionCodeResource
 from ..party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from ..party_appt.resources.mine_party_appt_admin_resource import MinePartyApptAdminResource
 from ..party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
@@ -10,7 +10,7 @@ api = Namespace('parties', description='Party related operations')
 
 api.add_resource(PartyResource, '', '/<string:party_guid>')
 
-api.add_resource(RegionCodeResource, '/region_codes')
+api.add_resource(SubDivisionCodeResource, '/sub-division-codes')
 
 api.add_resource(MinePartyApptResource, '/mines',
                  '/mines/<string:mine_party_appt_guid>')

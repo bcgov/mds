@@ -118,7 +118,7 @@ def test_post_person_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "region_code": "BC",
+        "sub_division_code": "BC",
         "post_code": "000000",
         "address_type_code": "CAN"
     }
@@ -136,7 +136,7 @@ def test_post_person_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['region_code'] == test_person_data['region_code']
+    assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
 
@@ -151,7 +151,7 @@ def test_post_company_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "region_code": "BC",
+        "sub_division_code": "BC",
         "post_code": "000000",
         "address_type_code": "CAN"
     }
@@ -168,7 +168,7 @@ def test_post_company_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['region_code'] == test_person_data['region_code']
+    assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
 
@@ -198,7 +198,7 @@ def test_put_person_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "region_code": "BC",
+        "sub_division_code": "BC",
         "post_code": "000000",
         "address_type_code": "CAN"
     }
@@ -216,7 +216,7 @@ def test_put_person_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['region_code'] == test_person_data['region_code']
+    assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
 
