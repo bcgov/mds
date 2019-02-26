@@ -3,6 +3,7 @@ import re
 import uuid
 
 from sqlalchemy import func
+from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -29,8 +30,9 @@ class Party(AuditMixin, Base):
     address_line_1 = db.Column(db.String, nullable=True)
     address_line_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
-    province_code = db.Column(db.String, nullable=True)
-    postal_code = db.Column(db.String, nullable=True)
+    region_code = db.Column(db.String, nullable=True)
+    post_code = db.Column(db.String, nullable=True)
+    address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
     @hybrid_property
     def name(self):
@@ -60,8 +62,9 @@ class Party(AuditMixin, Base):
                     'address_line_1': self.address_line_1,
                     'address_line_2': self.address_line_2,
                     'city': self.city,
-                    'province_code': self.province_code,
-                    'postal_code': self.postal_code
+                    'region_code': self.region_code,
+                    'post_code': self.post_code,
+                    'address_type_code': self.address_type_code
                 }
             ]
         }
@@ -103,6 +106,8 @@ class Party(AuditMixin, Base):
                phone_no,
                party_type_code,
                user_kwargs,
+               # Optional fields
+               address_type_code=None,
                # Nullable fields
                first_name=None,
                phone_ext=None,
@@ -110,8 +115,8 @@ class Party(AuditMixin, Base):
                address_line_1=None,
                address_line_2=None,
                city=None,
-               province_code=None,
-               postal_code=None,
+               region_code=None,
+               post_code=None,
                save=True):
         party = cls(
             # Required fields
@@ -122,14 +127,15 @@ class Party(AuditMixin, Base):
             party_type_code=party_type_code,
             **user_kwargs,
             # Optional fields
+            address_type_code=address_type_code,
             first_name=first_name,
             phone_ext=phone_ext,
             suite_no=suite_no,
             address_line_1=address_line_1,
             address_line_2=address_line_2,
             city=city,
-            province_code=province_code,
-            postal_code=postal_code)
+            region_code=region_code,
+            post_code=post_code)
         if save:
             party.save(commit=False)
         return party

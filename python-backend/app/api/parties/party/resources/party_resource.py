@@ -26,8 +26,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('address_line_1', type=str, help='The first address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('address_line_2', type=str, help='The second address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('city', type=str, help='The city where the party is located. Ex: FooTown')
-    parser.add_argument('province_code', type=str, help='The province code where the party is located. Ex: BC')
-    parser.add_argument('postal_code', type=str, help='The postal code of the party address. Ex: A0B1C2')
+    parser.add_argument('region_code', type=str, help='The region code where the party is located. Ex: BC')
+    parser.add_argument('post_code', type=str, help='The postal code of the party address. Ex: A0B1C2')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -95,8 +95,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                                  address_line_1=data.get('address_line_1'),
                                  address_line_2=data.get('address_line_2'),
                                  city=data.get('city'),
-                                 province_code=data.get('province_code'),
-                                 postal_code=data.get('postal_code'))
+                                 region_code=data.get('region_code'),
+                                 post_code=data.get('post_code'))
         except AssertionError as e:
                     self.raise_error(400, 'Error: {}'.format(e))
 
@@ -124,8 +124,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             existing_party.address_line_1  = data.get('address_line_1') or existing_party.address_line_1
             existing_party.address_line_2  = data.get('address_line_2') or existing_party.address_line_2
             existing_party.city            = data.get('city') or existing_party.city
-            existing_party.province_code   = data.get('province_code') or existing_party.province_code
-            existing_party.postal_code     = data.get('postal_code') or existing_party.postal_code
+            existing_party.region_code     = data.get('region_code') or existing_party.region_code
+            existing_party.post_code       = data.get('post_code') or existing_party.post_code
 
             existing_party.save()
         except AssertionError as e:

@@ -118,8 +118,9 @@ def test_post_person_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "province_code": "BC",
-        "postal_code": "000000"
+        "region_code": "BC",
+        "post_code": "000000",
+        "address_type_code": "CAN"
     }
     post_resp = test_client.post('/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -135,8 +136,9 @@ def test_post_person_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['province_code'] == test_person_data['province_code']
-    assert address['postal_code'] == test_person_data['postal_code']
+    assert address['region_code'] == test_person_data['region_code']
+    assert address['post_code'] == test_person_data['post_code']
+    assert address['address_type_code'] == test_person_data['address_type_code']
 
 
 def test_post_company_success(test_client, auth_headers):
@@ -149,8 +151,9 @@ def test_post_company_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "province_code": "BC",
-        "postal_code": "000000"
+        "region_code": "BC",
+        "post_code": "000000",
+        "address_type_code": "CAN"
     }
     post_resp = test_client.post('/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -165,8 +168,9 @@ def test_post_company_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['province_code'] == test_person_data['province_code']
-    assert address['postal_code'] == test_person_data['postal_code']
+    assert address['region_code'] == test_person_data['region_code']
+    assert address['post_code'] == test_person_data['post_code']
+    assert address['address_type_code'] == test_person_data['address_type_code']
 
 
 # PUT
@@ -194,8 +198,9 @@ def test_put_person_success(test_client, auth_headers):
         "address_line_1": "1234 Foo Street",
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
-        "province_code": "BC",
-        "postal_code": "000000"
+        "region_code": "BC",
+        "post_code": "000000",
+        "address_type_code": "CAN"
     }
     put_resp = test_client.put('/parties/' + TEST_PARTY_PER_GUID_1, data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -211,8 +216,9 @@ def test_put_person_success(test_client, auth_headers):
     assert address['address_line_1'] == test_person_data['address_line_1']
     assert address['address_line_2'] == test_person_data['address_line_2']
     assert address['city'] == test_person_data['city']
-    assert address['province_code'] == test_person_data['province_code']
-    assert address['postal_code'] == test_person_data['postal_code']
+    assert address['region_code'] == test_person_data['region_code']
+    assert address['post_code'] == test_person_data['post_code']
+    assert address['address_type_code'] == test_person_data['address_type_code']
 
 
 def test_put_person_name_exists(test_client, auth_headers):
