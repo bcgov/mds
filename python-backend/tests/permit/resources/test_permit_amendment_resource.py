@@ -45,6 +45,50 @@ def test_get_permit_amendment_by_permit(test_client, auth_headers, setup_info):
 
 
 #POST
+def test_post_permit_amendment_no_params(test_client, auth_headers, setup_info):
+    post_resp = test_client.post(
+        f'/permits/{TEST_PERMIT_GUID_1}/amendments', headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 200, post_resp.response
+    assert post_data['permit_guid'] == TEST_PERMIT_GUID_1, str(post_data)
+    assert post_data['received_date'] is None
+    assert post_data['issue_date'] is None
+    assert post_data['authorization_end_date'] is None
+
+
+def test_post_permit_amendment_with_date_params(test_client, auth_headers, setup_info):
+    data = {
+        'received_date': '2010-02-01',
+        'issue_date': '2010-01-01',
+        'authorization_end_date': '2012-02-01'
+    }
+
+    post_resp = test_client.post(
+        f'/permits/{TEST_PERMIT_GUID_1}/amendments',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 200, post_resp.response
+    assert post_data['permit_guid'] == TEST_PERMIT_GUID_1, str(post_data)
+    assert post_data['received_date'] == data['received_date']
+    assert post_data['issue_date'] == data['issue_date']
+    assert post_data['authorization_end_date'] == data['authorization_end_date']
+
+
+def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup_info):
+    #new amendments are always created with Status = Active (ACT) and Type = Amendment (AMD)
+    data = {'permit_amendment_type_code': 'OGP', 'permit_amendment_status_code': 'RMT'}
+
+    post_resp = test_client.post(
+        f'/permits/{TEST_PERMIT_GUID_1}/amendments',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 200, post_resp.response
+    assert post_data['permit_guid'] == TEST_PERMIT_GUID_1, str(post_data)
+    assert post_data['permit_amendment_type_code'] == "AMD"
+    assert post_data['permit_amendment_status_code'] == "ACT"
+
 
 #PUT
 

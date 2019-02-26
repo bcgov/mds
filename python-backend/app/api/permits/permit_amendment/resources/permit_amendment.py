@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_restplus import Resource, reqparse
 from flask import current_app
 from ...permit.models.permit import Permit
@@ -76,7 +77,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             self.get_create_update_dict(),
             save=True)
 
-        return permit.json()
+        return new_pa.json()
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
