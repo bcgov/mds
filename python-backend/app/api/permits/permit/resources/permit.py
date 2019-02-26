@@ -46,12 +46,10 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                                            data.get('permit_status_code'),
                                            self.get_create_update_dict())
 
-        amendment = PermitAmendment.create_permit_amendment(permit.permit_id,
-                                                            data.get('received_date'),
-                                                            data.get('issue_date'),
-                                                            data.get('authorization_end_date'),
-                                                            'ACT', 'OGP',
-                                                            self.get_create_update_dict())
+        amendment = PermitAmendment.create(permit,
+                                           data.get('received_date'), data.get('issue_date'),
+                                           data.get('authorization_end_date'), 'ACT', 'OGP',
+                                           self.get_create_update_dict())
 
         permit.permit_amendment.append(amendment)
         permit.save()
