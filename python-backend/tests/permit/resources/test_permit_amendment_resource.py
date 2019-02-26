@@ -15,7 +15,11 @@ def setup_info(test_client):
     yield {'permit_amendment_1': test_pa}
 
     db.session.delete(test_pa)
-    db.session.commit()
+    try:
+        #it may have been deleted by the test that executed, don't freak out.
+        db.session.commit()
+    except:
+        pass
 
 
 # GET
@@ -103,6 +107,35 @@ def test_put_permit_amendment(test_client, auth_headers, setup_info):
     assert put_data['permit_guid'] == TEST_PERMIT_GUID_1, str(put_data)
     assert put_data['permit_amendment_type_code'] == data['permit_amendment_type_code']
     assert put_data['permit_amendment_status_code'] == data['permit_amendment_status_code']
+    assert put_data['received_date'] is setup_info["permit_amendment_1"].received_date
+    assert put_data['issue_date'] is setup_info["permit_amendment_1"].issue_date
+    assert put_data['authorization_end_date'] is setup_info[
+        "permit_amendment_1"].authorization_end_date
 
 
 #DELETE
+def test_delete_permit_amendment(test_client, auth_headers, setup_info):
+    del_resp = test_client.delete(
+        f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 204, del_resp
+
+
+def test_delete_twice_permit_amendment(test_client, auth_headers, setup_info):
+    del_resp = test_client.delete(
+        f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 204, del_resp
+    #try again
+    del_resp = test_client.delete(
+        f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 404, del_resp
+    #deleted permit_amendents are not found
+
+
+def test_delete_not_found_permit_amendment(test_client, auth_headers, setup_info):
+    del_resp = test_client.delete(
+        f'/permits/amendments/384173cf-a6e0-4fa1-bbb8-db39d90944e1',  #random guid
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 404, del_resp
