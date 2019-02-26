@@ -52,9 +52,21 @@ describe("`createParty` action creator", () => {
 });
 
 describe("`fetchParties` action creator", () => {
-  const value = " ";
-  const url = ENVIRONMENT.apiUrl + API.PARTIES(value);
-  it("Request successful, dispatches `success` with correct response", () => {
+  let value = " ";
+  let url = ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(value);
+  it("Request successful if passed an empty query, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
+    return fetchParties(value)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request successful if passed a search query, dispatches `success` with correct response", () => {
+    value = "?search=mockName";
+    url = ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(value);
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);
     return fetchParties(value)(dispatch).then(() => {

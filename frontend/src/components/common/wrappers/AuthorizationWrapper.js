@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import { USER_ROLES } from "@/constants/environment";
 import * as Permission from "@/constants/permissions";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -31,22 +32,36 @@ import * as Permission from "@/constants/permissions";
  *
  * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated,
  * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
+ * 
+ * 
+ * inDevelopment - If the feature is still being built and not ready to be shared with a larger audience, `inDevelopment` only displays the content in local and dev environment 
+ * inTesting - if the feature is ready to be shared with a larger audience, but not ready to be displayed in PROD, `inTesting` will display content in every environment except Prod.
  */
 
 const propTypes = {
   permission: PropTypes.string.isRequired,
   isMajorMine: PropTypes.bool,
+  inDevelopment: PropTypes.bool,
+  inTesting: PropTypes.bool,
   children: PropTypes.element.isRequired,
 };
 
 const defaultProps = {
   isMajorMine: true,
+  inDevelopment: false,
+  inTesting: false,
 };
-export const AuthorizationWrapper = ({ children: Children, ...props }) =>
-  props.userRoles.includes(USER_ROLES[props.permission]) &&
-  (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
-    <div>{Children}</div>
-  );
+
+export const AuthorizationWrapper = ({ children: Children, ...props }) => (
+  <span>
+    {props.inDevelopment && detectDevelopmentEnvironment() && <span>{Children}</span>}
+    {props.inTesting && !detectProdEnvironment() && <span>{Children}</span>}
+    {props.userRoles.includes(USER_ROLES[props.permission]) &&
+      (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
+        <span>{Children}</span>
+      )}
+  </span>
+);
 
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
