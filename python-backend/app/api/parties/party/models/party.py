@@ -146,7 +146,7 @@ class Party(AuditMixin, Base):
         return party_name
 
     @validates('party_type_code')
-    def validate_email(self, key, party_type_code):
+    def validate_party_type_code(self, key, party_type_code):
         if not party_type_code:
             raise AssertionError('Party type is not provided.')
         if party_type_code not in ['PER', 'ORG']:
