@@ -97,8 +97,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                                  city=data.get('city'),
                                  sub_division_code=data.get('sub_division_code'),
                                  post_code=data.get('post_code'))
+        except KeyError as e:
+            self.raise_error(400, 'Error: Missing value for required field(s)')
         except AssertionError as e:
-                    self.raise_error(400, 'Error: {}'.format(e))
+            self.raise_error(400, 'Error: {}'.format(e))
 
         if not party:
             self.raise_error(400, 'Error: Failed to create party')
