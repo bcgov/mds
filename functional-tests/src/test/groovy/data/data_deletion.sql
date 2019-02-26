@@ -11,6 +11,11 @@ BEGIN
     DELETE FROM mineral_tenure_xref WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_tailings_storage_facility WHERE create_user LIKE IDIR_USER;
+    DELETE FROM mine_document WHERE create_user LIKE IDIR_USER;
+    DELETE FROM mine_expected_document_xref
+    WHERE exp_document_guid = ANY(
+    SELECT exp_document_guid FROM mine_expected_document WHERE create_user LIKE IDIR_USER);
+
     DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine WHERE create_user LIKE IDIR_USER;
 

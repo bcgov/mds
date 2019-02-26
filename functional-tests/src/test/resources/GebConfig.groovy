@@ -10,10 +10,13 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
+import org.openqa.selenium.firefox.FirefoxProfile
+
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
 import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
+import utils.Const
 
 //1.driver
 //To run the tests with all browsers just run “./gradlew test”
@@ -25,6 +28,12 @@ environments {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments("start-maximized")
+
+			String downloadFilepath = Const.DOWNLOAD_PATH
+			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+			chromePrefs.put("profile.default_content_settings.popups", 0);
+			chromePrefs.put("download.default_directory", downloadFilepath);
+			o.setExperimentalOption("prefs", chromePrefs);
 			new ChromeDriver(o)
 			}
 	}
@@ -39,10 +48,17 @@ environments {
 			o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
+
+			String downloadFilepath = Const.DOWNLOAD_PATH
+			HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
+			chromePrefs.put("download.default_directory", downloadFilepath)
+			o.setExperimentalOption("prefs", chromePrefs)
+
 			new ChromeDriver(o)
 		}
 	}
 
+	//ToDo: Fix the upload download location for non chrome drivers
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
