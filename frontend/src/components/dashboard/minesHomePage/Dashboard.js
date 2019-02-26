@@ -5,11 +5,11 @@ import { Element, scroller } from "react-scroll";
 
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
-import { Pagination, Tabs, Col, Divider, notification, Button } from "antd";
+import { Tabs, Col, Divider, notification, Button } from "antd";
 import queryString from "query-string";
-import MediaQuery from "react-responsive";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
 import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -31,8 +31,8 @@ import {
   getDropdownCommodityOptions,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
-import MineList from "@/components/dashboard/MineList";
-import MineSearch from "@/components/dashboard/MineSearch";
+import MineList from "@/components/dashboard/minesHomePage/MineList";
+import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -44,7 +44,7 @@ import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 
 /**
- * @class Dasboard is the main landing page of the application, currently containts a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
 const { TabPane } = Tabs;
@@ -97,7 +97,7 @@ export class Dashboard extends Component {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
-        router.MINE_DASHBOARD.dynamicRoute({
+        router.MINE_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
@@ -160,7 +160,7 @@ export class Dashboard extends Component {
   onPageChange = (page, per_page) => {
     const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({
+      router.MINE_HOME_PAGE.dynamicRoute({
         page,
         per_page,
         major,
@@ -188,7 +188,12 @@ export class Dashboard extends Component {
           mineName: newVal[2],
         });
         // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-        scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
+        scroller.scrollTo("mapElement", {
+          duration: 1000,
+          smooth: true,
+          isDynamic: true,
+          offset: -60,
+        });
         // window.scrollTo(0, this.mapRef.current.offsetTop);
       } else {
         this.setState({
@@ -206,7 +211,12 @@ export class Dashboard extends Component {
         mineName: null,
       });
       // window.scrollTo(0, this.mapRef.current.offsetTop);
-      scroller.scrollTo("test2", { duration: 1000, smooth: true, isDynamic: true, offset: -60 });
+      scroller.scrollTo("mapElement", {
+        duration: 1000,
+        smooth: true,
+        isDynamic: true,
+        offset: -60,
+      });
     }
   };
 
@@ -214,9 +224,9 @@ export class Dashboard extends Component {
     const { page, per_page, search } = this.state.params;
     this.setState({ mineList: false, showCoordinates: false, mineName: "" });
     if (key === "map") {
-      this.props.history.push(router.MINE_DASHBOARD.mapRoute(page, per_page, search));
+      this.props.history.push(router.MINE_HOME_PAGE.mapRoute(page, per_page, search));
     } else {
-      this.props.history.push(router.MINE_DASHBOARD.dynamicRoute({ page, per_page, search }));
+      this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute({ page, per_page, search }));
     }
   };
 
@@ -226,7 +236,7 @@ export class Dashboard extends Component {
       : String.DEFAULT_PER_PAGE;
     // reset page when a search is initiated
     this.props.history.push(
-      router.MINE_DASHBOARD.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
+      router.MINE_HOME_PAGE.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
     );
   };
 
@@ -258,9 +268,6 @@ export class Dashboard extends Component {
 
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
-    const currentPage = Number(page);
-    const pageTotal = Number(this.props.pageData.total);
-    const itemsPerPage = Number(per_page);
     const isMap = map ? "map" : "list";
     if (this.state.mineList) {
       return (
@@ -282,32 +289,12 @@ export class Dashboard extends Component {
                 <MineList {...this.props} />
               </div>
               <div className="center">
-                <MediaQuery maxWidth={500}>
-                  <Pagination
-                    size="small"
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={currentPage}
-                    current={currentPage}
-                    total={pageTotal}
-                    pageSizeOptions={["25", "50", "75", "100"]}
-                    pageSize={itemsPerPage}
-                  />
-                </MediaQuery>
-                <MediaQuery minWidth={501}>
-                  <Pagination
-                    showSizeChanger
-                    onShowSizeChange={this.onPageChange}
-                    onChange={this.onPageChange}
-                    defaultCurrent={currentPage}
-                    current={currentPage}
-                    total={pageTotal}
-                    pageSizeOptions={["25", "50", "75", "100"]}
-                    pageSize={itemsPerPage}
-                    showTotal={(total) => `${total} Results`}
-                  />
-                </MediaQuery>
+                <ResponsivePagination
+                  onPageChange={this.onPageChange}
+                  currentPage={Number(page)}
+                  pageTotal={Number(this.props.pageData.total)}
+                  itemsPerPage={Number(per_page)}
+                />
               </div>
             </TabPane>
             <TabPane tab="Map" key="map">
@@ -358,7 +345,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              <Element name="test2" />
+              <Element name="mapElement" />
               <div>
                 <MineMap {...this.state} />
               </div>

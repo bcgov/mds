@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Dashboard } from "@/components/dashboard/Dashboard";
+import { Dashboard } from "@/components/dashboard/minesHomePage/Dashboard";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
@@ -67,13 +67,13 @@ describe("Dashboard", () => {
       const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
       component.update();
       reducerProps.history.push(
-        router.MINE_DASHBOARD.dynamicRoute({
+        router.MINE_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
       );
       expect(reducerProps.history.push).toHaveBeenCalledWith(
-        router.MINE_DASHBOARD.dynamicRoute({
+        router.MINE_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
