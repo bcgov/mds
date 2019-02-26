@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS address_type_code (
 );
 
 ALTER TABLE address_type_code OWNER TO mds;
-COMMENT ON TABLE address_type_code IS 'Lookup table for valid address types';
+COMMENT ON TABLE address_type_code IS 'Lookup table for valid address types, used to decipher a range of addressing styles used in different countries';
 
 
 INSERT INTO address_type_code
