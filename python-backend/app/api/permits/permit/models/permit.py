@@ -22,6 +22,8 @@ class Permit(AuditMixin, Base):
     permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
+        primaryjoin=
+        "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
         order_by='desc(PermitAmendment.issue_date)',
         lazy='selectin')
 
