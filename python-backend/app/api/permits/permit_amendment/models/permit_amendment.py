@@ -32,8 +32,8 @@ class PermitAmendment(AuditMixin, Base):
             str(self.permit_amendment_id),
             'permit_amendment_guid':
             str(self.permit_amendment_guid),
-            'permit_id':
-            str(self.permit_id),
+            'permit_guid':
+            str(self.permit.permit_guid),
             'permit_amendment_status_code':
             self.permit_amendment_status_code,
             'permit_amendment_type_code':

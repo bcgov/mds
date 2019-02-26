@@ -20,12 +20,12 @@ def setup_info(test_client):
 # GET
 def test_get_permit_amendment_by_guid(test_client, auth_headers, setup_info):
     get_resp = test_client.get(
-        '/permits/amendments/' + {setup_info['permit_amendment_1'].permit_amendment_guid},
+        f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
-    assert get_data['permit_amendment_guid'] == setup_info[
-        'permit_amendment_1'].permit_amendment_guid
+    assert get_data['permit_amendment_guid'] == str(
+        setup_info['permit_amendment_1'].permit_amendment_guid)
 
 
 def test_get_permit_amendment_not_found(test_client, auth_headers, setup_info):
@@ -41,7 +41,7 @@ def test_get_permit_amendment_by_permit(test_client, auth_headers, setup_info):
         f'/permits/{TEST_PERMIT_GUID_1}/amendments', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert all(pa['permit_id'] == TEST_PERMIT_GUID_1 for pa in get_data)
+    assert all(pa['permit_guid'] == TEST_PERMIT_GUID_1 for pa in get_data), str(get_data)
 
 
 #POST

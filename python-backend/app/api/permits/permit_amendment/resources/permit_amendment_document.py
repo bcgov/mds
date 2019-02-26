@@ -15,7 +15,7 @@ from ..models.permit_amendment import PermitAmendment
 from ..models.permit_amendment_document import PermitAmendmentDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
@@ -32,7 +32,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             'permit_amendment_guid':
             'Required: The guid of the permit amendment that this upload will be attached to.'
         })
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_role_mine_create
     def post(self, permit_amendment_guid, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
@@ -62,7 +62,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
         response = Response(resp.content, resp.status_code, resp.raw.headers.items())
         return ('', 204)  #response
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_role_mine_create
     def put(self, permit_amendment_guid, document_guid=None, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
@@ -99,7 +99,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
 
         return permit_amendment.json()
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_role_mine_create
     def delete(self, permit_amendment_guid, document_guid, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(document_guid)
