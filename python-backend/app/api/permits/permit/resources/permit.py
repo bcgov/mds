@@ -46,8 +46,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
         amendment = PermitAmendment.create_permit_amendment(
             permit.permit_id, data.get('received_date'), data.get('issue_date'),
-            data.get('authorization_end_date'), data.get('permit_amendment_status_code'),
-            data.get('permit_amendment_type_code'), **self.get_create_update_dict())
+            data.get('authorization_end_date'), data.get('permit_amendment_status_code'), 'OGP',
+            **self.get_create_update_dict())
 
         permit.permit_amendment.append(amendment)
         permit.save()
@@ -60,3 +60,17 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     def put(self, permit_guid=None):
         if not permit_guid:
             return self.create_error_payload(400, 'Error: Permit guid was not provided.'), 400
+
+        permit = Permit.find_by_permit_guid(permit_guid)
+
+        if not permit:
+            return self.create_error_payload(404, 'There was no permit found with that guid.'), 404
+
+        data = self.parser.parse_args()
+
+        if data.get('permit_no') != permit.permit_no:
+            self.create_error_payload(403, 'The permit numnber cannot be changed.'), 403
+
+        permit.permit_status_code = data.get('permit_status_code')
+
+        permit.save()
