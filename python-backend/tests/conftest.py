@@ -15,6 +15,7 @@ from app.api.mines.status.models.mine_operation_status_sub_reason_code import Mi
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_type_code import PartyTypeCode
+from app.api.parties.party.models.region_code import RegionCode
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
@@ -184,6 +185,12 @@ def setup_data(session):
         party_code = PartyTypeCode(party_type_code=v, description=v, **DUMMY_USER_KWARGS)
         party_code.save()
     session.commit()
+
+    # Test Party Region Codes
+    for code, description in zip(TEST_PARTY_REGION_CODES, TEST_PARTY_REGION_CODE_DESCRIPTIONS):
+        region_code = RegionCode(
+            region_code=code, description=description, **DUMMY_USER_KWARGS)
+        region_code.save()
 
     # Test Operation Codes
     for k, v in MINE_OPERATION_STATUS.items():
