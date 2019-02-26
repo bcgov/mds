@@ -16,10 +16,10 @@ export const AuthorizationGuard = (permission) => (WrappedComponent) => {
     if (props.userRoles.includes(USER_ROLES[permission])) {
       return <WrappedComponent {...props} />;
     }
-    if (permission === "inDevelopment" && detectDevelopmentEnvironment()) {
-      return <WrappedComponent {...props} />;
-    }
-    if (permission === "inTesting" && !detectProdEnvironment()) {
+    if (
+      (permission === "inDevelopment" && detectDevelopmentEnvironment()) ||
+      (permission === "inTesting" && !detectProdEnvironment())
+    ) {
       return <WrappedComponent {...props} />;
     }
     return <NullScreen type="unauthorized-page" />;
