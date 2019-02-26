@@ -1,4 +1,6 @@
 from flask_restplus import Resource, reqparse
+from datetime import datetime, timedelta
+
 from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
 from ....mines.mine.models.mine import Mine
@@ -11,11 +13,14 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
     parser = reqparse.RequestParser()
     parser.add_argument('permit_no', type=str, help='Number of the permit being added.')
+    parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('permit_status_code', type=str, help='Status of the permit being added.')
-    parser.add_argument('received_date', type=str, help='Number of the permit being added.')
-    parser.add_argument('issue_date', type=str, help='Status of the permit being added.')
     parser.add_argument(
-        'authorization_end_date', type=str, help='Number of the permit being added.')
+        'received_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument(
+        'issue_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument(
+        'authorization_end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument(
         'permit_amendment_status_code', type=str, help='Status of the permit being added.')
 
@@ -27,27 +32,26 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return permit.json()
         return self.create_error_payload(404, 'Permit not found'), 404
 
-    @api.doc(params={'mine_guid': 'Mine guid.'})
     @requires_role_mine_create
-    def post(self, mine_guid=None):
+    def post(self):
 
-        if not mine_guid:
-            return self.create_error_payload(400, 'Error: Mine guid was not provided.'), 400
+        data = self.parser.parse_args()
 
-        mine = Mine.find_by_mine_guid(mine_guid)
+        mine = Mine.find_by_mine_guid(data.get('mine_guid'))
 
         if not mine:
             return self.create_error_payload(404, 'There was no mine found with that guid.'), 404
 
-        data = self.parser.parse_args()
         permit = Permit.create_mine_permit(mine, data.get('permit_no'),
                                            data.get('permit_status_code'),
-                                           **self.get_create_update_dict())
+                                           self.get_create_update_dict())
 
-        amendment = PermitAmendment.create_permit_amendment(
-            permit.permit_id, data.get('received_date'), data.get('issue_date'),
-            data.get('authorization_end_date'), data.get('permit_amendment_status_code'), 'OGP',
-            **self.get_create_update_dict())
+        amendment = PermitAmendment.create_permit_amendment(permit.permit_id,
+                                                            data.get('received_date'),
+                                                            data.get('issue_date'),
+                                                            data.get('authorization_end_date'),
+                                                            'ACT', 'OGP',
+                                                            self.get_create_update_dict())
 
         permit.permit_amendment.append(amendment)
         permit.save()
