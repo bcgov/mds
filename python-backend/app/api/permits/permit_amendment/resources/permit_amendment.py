@@ -43,8 +43,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             if permit:
                 permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
                 if permit_amendments:
-                    result = {'amendments': [x.json() for x in permit_amendments]}
-                    return result
+                    return [x.json() for x in permit_amendments]
 
         return self.create_error_payload(404, 'Permit amendment(s) not found'), 404
 
