@@ -79,8 +79,8 @@ def _get_EMPR_data_from_NRIS(mine_no):
 
         try:
             empr_nris_resp.raise_for_status()
-        except requests.exceptions.HTTPError:
-            #TODO add logging for this error.
+        except requests.exceptions.HTTPError as err:
+            print(empr_nris_resp)
             raise
 
         return empr_nris_resp.json()

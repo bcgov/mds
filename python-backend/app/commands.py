@@ -25,7 +25,6 @@ from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
 from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
-from app import auth
 
 
 def register_commands(app):
