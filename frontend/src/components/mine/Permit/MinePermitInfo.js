@@ -15,6 +15,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
+
 const defaultProps = {
   partyRelationships: [],
 };
@@ -61,43 +62,34 @@ const columns = [
 
 const childColumns = [
   {
-    title: "Permit No.",
-    dataIndex: "permitNo",
-    key: "childPermitNo",
-    render: (text) => <div title="Permit No.">{text}</div>,
+    title: "Amendment",
+    dataIndex: "amendmentNumber",
+    key: "amendmentNumber",
+    render: (text) => <div title="Amendment">{text}</div>,
   },
   {
-    title: "Date",
-    dataIndex: "Date",
-    key: "Date",
-    render: (text) => <div title="Date">{text}</div>,
+    title: "Received Date",
+    dataIndex: "receivedDate",
+    key: "receivedDate",
+    render: (text) => <div title="Received Date">{text}</div>,
   },
   {
-    title: "Permittee",
-    dataIndex: "permittee",
-    key: "childPermittee",
-    render: (text) => <div title="Permittee">{text}</div>,
+    title: "Issue Date",
+    dataIndex: "issueDate",
+    key: "issueDate",
+    render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-    render: (text) => <div title="Description">{text}</div>,
+    title: "Authorization End Date",
+    dataIndex: "authorizationEndDate",
+    key: "authorizationEndDate",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
   },
 ];
 
-const groupPermits = (permits) =>
-  permits.reduce((acc, permit) => {
-    acc[permit.permit_no] = acc[permit.permit_no] || [];
-    acc[permit.permit_no].push(permit);
-    return acc;
-  }, {});
-
-const getPermittees = (partyRelationships, permits) =>
+const getPermittees = (partyRelationships, permit) =>
   partyRelationships
-    .filter(({ related_guid }) =>
-      permits.map((permit) => permit.permit_guid).includes(related_guid)
-    )
+    .filter(({ related_guid }) => permit.permit_guid === related_guid)
     .sort((order1, order2) => {
       const date1 = Date.parse(order1.due_date) || 0;
       const date2 = Date.parse(order2.due_date) || 0;
@@ -107,48 +99,55 @@ const getPermittees = (partyRelationships, permits) =>
 const getPermitteeName = (permittees) =>
   permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
-const transformRowData = (permits, partyRelationships) => {
-  const latest = permits[0];
-  const first = permits[permits.length - 1];
+const transformRowData = (permit, partyRelationships) => {
+  const latestAmendment = permit.amendments[0];
+  const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
-  const permittees = getPermittees(partyRelationships, permits);
+  const permittees = getPermittees(partyRelationships, permit);
   const permitteeName =
     partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
 
   return {
-    key: latest.permit_guid,
-    lastAmended: formatDate(latest.issue_date),
-    permitNo: latest.permit_no || Strings.EMPTY_FIELD,
-    firstIssued: formatDate(first.issue_date) || Strings.EMPTY_FIELD,
+    key: permit.permit_guid,
+    lastAmended:
+      (latestAmendment && latestAmendment.issue_date && formatDate(latestAmendment.issue_date)) ||
+      Strings.EMPTY_FIELD,
+    permitNo: permit.permit_no || Strings.EMPTY_FIELD,
+    firstIssued:
+      (firstAmendment && firstAmendment.issue_date && formatDate(firstAmendment.issue_date)) ||
+      Strings.EMPTY_FIELD,
     permittee: permitteeName,
-    authorizationEndDate: latest.authorization_end_date
-      ? formatDate(latest.authorization_end_date)
-      : Strings.EMPTY_FIELD,
-    permittees,
-    status: Strings.EMPTY_FIELD,
+    authorizationEndDate:
+      latestAmendment && latestAmendment.authorization_end_date
+        ? formatDate(latestAmendment.authorization_end_date)
+        : Strings.EMPTY_FIELD,
+    amendments: permit.amendments,
+    status: permit.permit_status_code,
   };
 };
 
-const transformChildRowData = (permittee, record) => ({
-  key: record.key,
-  permitNo: record.permitNo,
-  Date: permittee.start_date,
-  permittee: permittee.party.name,
+const transformChildRowData = (amendment, record, amendmentNumber) => ({
+  amendmentNumber,
+  receivedDate:
+    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
+  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
+  authorizationEndDate:
+    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
+    Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
 });
 
 export const MinePermitInfo = (props) => {
-  const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
   const amendmentHistory = (record) => {
-    const childRowData = record.permittees.map((permittee) =>
-      transformChildRowData(permittee, record)
+    const childRowData = record.amendments.map((amendment, index) =>
+      transformChildRowData(amendment, record, record.amendments.length - index)
     );
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
-  const rowData = groupedPermits.map((permits) =>
-    transformRowData(permits, props.partyRelationships)
+  const rowData = props.mine.mine_permit.map((permit) =>
+    transformRowData(permit, props.partyRelationships)
   );
 
   return (
