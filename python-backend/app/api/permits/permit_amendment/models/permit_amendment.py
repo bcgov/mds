@@ -58,7 +58,6 @@ class PermitAmendment(AuditMixin, Base):
                permit_amendment_status_code='ACT',
                save=False):
         new = cls(
-            permit_id=permit.permit_id,
             received_date=received_date,
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
@@ -67,7 +66,7 @@ class PermitAmendment(AuditMixin, Base):
             **user_kwargs)
         permit.permit_amendments.append(new)
         if save:
-            db.session.commit()
+            new.save(commit=False)
         return new
 
     @classmethod
@@ -93,12 +92,6 @@ class PermitAmendment(AuditMixin, Base):
         if not permit_amendment_type_code:
             raise AssertionError('Permit amendment type code is not provided.')
         return permit_amendment_type_code
-
-    @validates('permit_id')
-    def validate_permit_id(self, key, permit_id):
-        if not permit_id:
-            raise AssertionError('Permit id is not provided.')
-        return permit_id
 
     @validates('received_date')
     def validate_received_date(self, key, received_date):
