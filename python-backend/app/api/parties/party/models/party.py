@@ -150,7 +150,8 @@ class Party(AuditMixin, Base):
 
 
     def validate_unique_name(self, party_name, first_name=None):
-        if Party.find_by_name(party_name, first_name):
+        party = Party.find_by_name(party_name, first_name)
+        if party and party.party_guid != self.party_guid:
             if first_name:
                 name = first_name + ' ' + party_name
             else:
@@ -202,3 +203,9 @@ class Party(AuditMixin, Base):
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
+
+    @validates('post_code')
+    def validate_post_code(self, key, post_code):
+         if post_code and len(post_code) > 6:
+            raise AssertionError('post_code must not exceed 6 characters.')
+         return post_code

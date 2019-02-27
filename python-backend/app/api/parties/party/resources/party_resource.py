@@ -22,12 +22,30 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('suite_no', type=str, help='The suite number of the party address. Ex: 123')
-    parser.add_argument('address_line_1', type=str, help='The first address line of the party address. Ex: 1234 Foo Road')
-    parser.add_argument('address_line_2', type=str, help='The second address line of the party address. Ex: 1234 Foo Road')
-    parser.add_argument('city', type=str, help='The city where the party is located. Ex: FooTown')
-    parser.add_argument('sub_division_code', type=str, help='The region code where the party is located. Ex: BC')
-    parser.add_argument('post_code', type=str, help='The postal code of the party address. Ex: A0B1C2')
+    parser.add_argument('suite_no',
+                        type=str,
+                        store_missing=False,
+                        help='The suite number of the party address. Ex: 123')
+    parser.add_argument('address_line_1',
+                        type=str,
+                        store_missing=False,
+                        help='The first address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument('address_line_2',
+                        type=str,
+                        store_missing=False,
+                        help='The second address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument('city',
+                        type=str,
+                        store_missing=False,
+                        help='The city where the party is located. Ex: FooTown')
+    parser.add_argument('sub_division_code',
+                        type=str,
+                        store_missing=False,
+                        help='The region code where the party is located. Ex: BC')
+    parser.add_argument('post_code',
+                        type=str,
+                        store_missing=False,
+                        help='The postal code of the party address. Ex: A0B1C2')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -114,7 +132,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @requires_role_mine_create
     def put(self, party_guid):
-        data = self.parser.parse_args()
+        data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
         if not existing_party:
             return self.create_error_payload(404, 'Party not found'), 404
@@ -125,12 +143,13 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             existing_party.phone_no          = data.get('phone_no') or existing_party.phone_no
             existing_party.party_type_code   = data.get('type') or existing_party.party_type_code
             existing_party.first_name        = data.get('first_name') or existing_party.first_name
-            existing_party.suite_no          = data.get('suite_no') or existing_party.suite_no
-            existing_party.address_line_1    = data.get('address_line_1') or existing_party.address_line_1
-            existing_party.address_line_2    = data.get('address_line_2') or existing_party.address_line_2
-            existing_party.city              = data.get('city') or existing_party.city
-            existing_party.sub_division_code = data.get('sub_division_code') or existing_party.sub_division_code
-            existing_party.post_code         = data.get('post_code') or existing_party.post_code
+            # Nullable fields
+            existing_party.suite_no          = data.get('suite_no') if 'suite_no' in data else existing_party.suite_no
+            existing_party.address_line_1    = data.get('address_line_1') if 'address_line_1' in data else existing_party.address_line_1
+            existing_party.address_line_2    = data.get('address_line_2') if 'address_line_2' in data else existing_party.address_line_2
+            existing_party.city              = data.get('city') if 'city' in data else existing_party.city
+            existing_party.sub_division_code = data.get('sub_division_code') if 'sub_division_code' in data else existing_party.sub_division_code
+            existing_party.post_code         = data.get('post_code') if 'post_code' in data else existing_party.post_code
 
             existing_party.save()
         except AssertionError as e:
