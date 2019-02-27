@@ -49,8 +49,9 @@ def register_extensions(app):
     CORS(app)
     Compress(app)
 
-    if os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-        sched.start()
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod', 'dev']:
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
 
     return None
 
