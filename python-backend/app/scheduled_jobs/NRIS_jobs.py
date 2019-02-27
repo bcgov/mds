@@ -11,24 +11,26 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
-@sched.task('cron', id='get_major_mine_list', hour=6, minute=50)
+@sched.task('cron', id='get_major_mine_list', hour=7, minute=50)
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
         job_running = cache.get(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB)
         if job_running is None:
-            cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
+            cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB,
+                      'True', timeout=TIMEOUT_24_HOURS)
             major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
             major_mine_list = []
             for mine in major_mines:
                 major_mine_list.append(mine.mine_no)
-                cache.set(NRIS_JOB_PREFIX + mine.mine_no, 'False', timeout=TIMEOUT_60_MINUTES)
+                cache.set(NRIS_JOB_PREFIX + mine.mine_no,
+                          'False', timeout=TIMEOUT_60_MINUTES)
             cache.set(
                 NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST, major_mine_list, timeout=TIMEOUT_60_MINUTES)
 
 
 # Using the cached list of major mines process them if they are not already set to true.
-@sched.task('cron', id='get_major_mine_NRIS_data', hour=6, minute=55)
+@sched.task('cron', id='get_major_mine_NRIS_data', hour=7, minute=55)
 @register_apm
 def _cache_all_NRIS_major_mines_data():
     major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
@@ -40,8 +42,10 @@ def _cache_all_NRIS_major_mines_data():
     with ThreadPoolExecutor() as executor:
         for mine in major_mine_list:
             if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
-                cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
-                mines_cache_tasks[executor.submit(_process_NRIS_data_for_mine, mine)] = mine
+                cache.set(NRIS_JOB_PREFIX + mine, 'True',
+                          timeout=TIMEOUT_60_MINUTES)
+                mines_cache_tasks[executor.submit(
+                    _process_NRIS_data_for_mine, mine)] = mine
 
     for mine in as_completed(mines_cache_tasks):
         current_mine = mines_cache_tasks[mine]
