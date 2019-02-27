@@ -15,7 +15,7 @@ DO $$
 	            )
 	        THEN
 				ALTER TABLE IF EXISTS ETL_PERMIT RENAME COLUMN permit_guid TO permit_amendment_guid;
-				ALTER TABLE IF EXISTS ETL_PERMIT ADD COLUMN permit_amendment_guid uuid;
+				ALTER TABLE IF EXISTS ETL_PERMIT ADD COLUMN permit_guid uuid;
 	        END IF ;
 	       
 			update etl_permit set permit_guid = 
