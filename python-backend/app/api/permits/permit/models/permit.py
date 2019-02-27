@@ -49,10 +49,9 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=_id)
 
     @classmethod
-    def create_mine_permit(cls, mine, permit_no, permit_status_code, user_kwargs, save=True):
+    def create(cls, mine_guid, permit_no, permit_status_code, user_kwargs, save=True):
         mine_permit = cls(
-            permit_guid=uuid.uuid4(),
-            mine_guid=mine.mine_guid,
+            mine_guid=mine_guid,
             permit_no=permit_no,
             permit_status_code=permit_status_code,
             **user_kwargs)
