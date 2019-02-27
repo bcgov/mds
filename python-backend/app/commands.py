@@ -174,12 +174,8 @@ def register_commands(app):
             raise
 
     if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
-
-    #This is here to prevent this from running in production until we are confident in the permit data.
-    if False:
-
         @sched.app.cli.command()
-        def _run_etl():
+        def _run_nris_jobs():
             with sched.app.app_context():
                 print('Started NRIS job to cache Major Mines list.')
                 NRIS_jobs._cache_major_mines_list()
