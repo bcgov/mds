@@ -88,9 +88,10 @@ export class ContactHomePage extends Component {
     );
   };
 
-  handleSubmit = (value) =>
+  handleSubmit = (value, type) => {
+    const payload = { type, ...value };
     this.props
-      .createParty(value)
+      .createParty(payload)
       .then(() => {
         this.props.closeModal();
       })
@@ -98,6 +99,7 @@ export class ContactHomePage extends Component {
         const params = this.props.location.search;
         this.props.fetchParties(params);
       });
+  };
 
   openModal(event, onSubmit, title) {
     event.preventDefault();

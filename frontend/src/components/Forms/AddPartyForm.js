@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row } from "antd";
+import { Form, Button, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -14,8 +13,14 @@ const propTypes = {
 };
 
 export const AddPartyForm = (props) => (
-  <div className="form__parties">
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <div>
+    <div className="center">
+      <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
+        <Radio.Button value>Person</Radio.Button>
+        <Radio.Button value={false}>Company</Radio.Button>
+      </Radio.Group>
+    </div>
+    <Form layout="vertical" onReset={props.handleFormReset}>
       {props.isPerson && (
         <Row gutter={16}>
           <Col md={12} sm={12} xs={24}>
@@ -76,7 +81,7 @@ export const AddPartyForm = (props) => (
             <Field
               id="phone_no"
               name="phone_no"
-              label="Phone Number *"
+              label="Phone No. *"
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
               validate={[required, phoneNumber, maxLength(12)]}
@@ -95,15 +100,89 @@ export const AddPartyForm = (props) => (
           </Form.Item>
         </Col>
       </Row>
+      <Row gutter={16}>
+        <h5>Address</h5>
+      </Row>
+      <Row gutter={16}>
+        <Col span={6}>
+          <Form.Item>
+            <Field
+              id="suite_no"
+              name="suite_no"
+              label="Suite No."
+              component={renderConfig.FIELD}
+              validate={[maxLength(10)]}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={18}>
+          <Form.Item>
+            <Field
+              id="address_line_1"
+              name="address_line_1"
+              label="Street Address 1 *"
+              component={renderConfig.FIELD}
+              validate={[required]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={18}>
+          <Form.Item>
+            <Field
+              id="address_line_2"
+              name="address_line_2"
+              label="Street Address 2"
+              component={renderConfig.FIELD}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item>
+            <Field
+              id="region_code"
+              name="region_code"
+              label="Province"
+              component={renderConfig.FIELD}
+              validate={[number, maxLength(4)]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={12} xs={24}>
+          <Form.Item>
+            <Field
+              id="city"
+              name="city"
+              label="City *"
+              component={renderConfig.FIELD}
+              validate={[required, phoneNumber, maxLength(12)]}
+            />
+          </Form.Item>
+        </Col>
+        <Col md={12} sm={12} xs={24}>
+          <Form.Item>
+            <Field
+              id="post_code"
+              name="post_code"
+              label="Postal Code"
+              component={renderConfig.FIELD}
+              validate={[maxLength(7)]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
       <div className="right center-mobile">
-        <Button
+        {/* <Button
           className="full-mobile"
           type="primary"
           htmlType="submit"
           disabled={props.submitting}
         >
           {props.isPerson ? "Create Personnel" : "Create Company"}
-        </Button>
+        </Button> */}
       </div>
     </Form>
   </div>
@@ -114,5 +193,5 @@ AddPartyForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_PARTY,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PARTY),
+  destroyOnUnmount: false,
 })(AddPartyForm);
