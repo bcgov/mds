@@ -36,7 +36,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
             '?search':
             'Term searched in first name and party name, and 100 parties will be returned.',
-            '?type': 'Search will filter for the type indicated.'
+            '?type': 'Search will filter for the type indicated.',
+            '?relationships': 'Related record types to return as nested objects'
         })
     @requires_role_mine_view
     def get(self, party_guid=None):
@@ -67,8 +68,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                     'No parties found'
                 ), 404
             parties = paginated_parties.all()
+            relationships = request.args.get('relationships')
+            relationships = relationships.split(',') if relationships else []
             return {
-                'parties': list(map(lambda x: x.json(), parties)),
+                'parties': list(map(lambda x: x.json(relationships=relationships), parties)),
                 'current_page': pagination_details.page_number,
                 'total_pages': pagination_details.num_pages,
                 'items_per_page': pagination_details.page_size,

@@ -34,6 +34,8 @@ class Party(AuditMixin, Base):
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
+    mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
@@ -45,7 +47,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
-    def json(self, show_mgr=True):
+    def json(self, show_mgr=True, relationships=[]):
         context = {
             'party_guid': str(self.party_guid),
             'party_type_code': self.party_type_code,
@@ -72,6 +74,12 @@ class Party(AuditMixin, Base):
             context.update({
                 'first_name': self.first_name,
             })
+
+        if 'mine_party_appt' in relationships:
+            context.update({
+                'mine_party_appt': [item.json() for item in self.mine_party_appt],
+            })
+
         return context
 
     @classmethod
