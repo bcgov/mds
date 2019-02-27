@@ -32,14 +32,14 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
             if not mpa:
                 self.raise_error(404, 'Mine Party Appointment not found')
-            result = mpa.json(relationships)
+            result = mpa.json(relationships=relationships)
         else:
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
             types = request.args.getlist('types')  #list
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_codes=types)
-            result = list(map(lambda x: x.json(relationships), mpas))
+            result = list(map(lambda x: x.json(relationships=relationships), mpas))
         return result
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
