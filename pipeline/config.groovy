@@ -350,12 +350,12 @@ environments {
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "150m"
-                    cpu_limit = "300m"
+                    cpu_request = "50m"
+                    cpu_limit = "150m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
-                    replica_min = 2
-                    replica_max = 2
+                    replica_min = 1
+                    replica_max = 1
                 }
                 postgres {
                     cpu_request = "50m"

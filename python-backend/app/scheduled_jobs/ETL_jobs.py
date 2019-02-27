@@ -2,6 +2,7 @@ from app.extensions import db, sched
 from app.api.utils.apm import register_apm
 
 
+# @sched.task('cron', id='ETL', hour=11, minute=0)
 @register_apm
 def _run_ETL():
     with sched.app.app_context():

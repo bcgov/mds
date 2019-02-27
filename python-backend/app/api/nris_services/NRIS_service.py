@@ -80,6 +80,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
         try:
             empr_nris_resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
+            # TODO add logging for this error.
             raise
 
         return empr_nris_resp.json()
