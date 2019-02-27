@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
-@sched.task('cron', id='get_major_mine_list', hour=6, minute=35)
+@sched.task('cron', id='get_major_mine_list', hour=7, minute=10)
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
@@ -29,35 +29,37 @@ def _cache_major_mines_list():
 
 
 # Using the cached list of major mines process them if they are not already set to true.
-@sched.task('cron', id='get_major_mine_NRIS_data', hour=6, minute=40)
+@sched.task('cron', id='get_major_mine_NRIS_data', hour=7, minute=15)
 @register_apm
 def _cache_all_NRIS_major_mines_data():
-    with sched.app.app_context():
-        major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
-        if major_mine_list is None:
-            return
+    major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
+    if major_mine_list is None:
+        return
 
-        with ThreadPoolExecutor() as executor:
-            mines_cache_task_list = {executor.submit(_process_NRIS_data_for_mine, mine): mine for mine in major_mine_list}
+    mines_cache_tasks = {}
 
-        for mine in as_completed(mines_cache_task_list):
-            current_mine = mines_cache_task_list[mine]
-            print('Thread completed for mine: ', current_mine)
+    with ThreadPoolExecutor() as executor:
+        for mine in major_mine_list:
+            if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
+                cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
+                mines_cache_tasks[executor.submit(_process_NRIS_data_for_mine, mine)] = mine
+
+    for mine in as_completed(mines_cache_tasks):
+        current_mine = mines_cache_tasks[mine]
+        print('Thread completed for mine: ', current_mine)
 
 
 def _process_NRIS_data_for_mine(mine):
     with sched.app.app_context():
-        if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
-            cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
-            try:
-                data = NRIS_service._get_EMPR_data_from_NRIS(mine)
-            except requests.exceptions.Timeout:
-                pass
-            except requests.exceptions.HTTPError as errhttp:
-                # log error
-                pass
-            except TypeError as e:
-                # log error
-                pass
+        try:
+            data = NRIS_service._get_EMPR_data_from_NRIS(mine)
+        except requests.exceptions.Timeout:
+            pass
+        except requests.exceptions.HTTPError as errhttp:
+            # log error
+            pass
+        except TypeError as e:
+            # log error
+            pass
 
-            NRIS_service._process_NRIS_data(data, mine)
+        NRIS_service._process_NRIS_data(data, mine)
