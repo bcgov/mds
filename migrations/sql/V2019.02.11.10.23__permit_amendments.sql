@@ -158,14 +158,11 @@ DO $$
 			ALTER TABLE ONLY permit_amendment ADD CONSTRAINT permit_amendment_status_code_fkey FOREIGN KEY (permit_amendment_status_code) REFERENCES permit_amendment_status_code(permit_amendment_status_code);
 			ALTER TABLE ONLY mine_party_appt
 				ADD CONSTRAINT mine_party_appt_permit_party_fk FOREIGN KEY (permit_guid, mine_guid) REFERENCES permit(permit_guid, mine_guid);
-			
-			COMMIT;
-			BEGIN;
-			-- Drop amendment columns
-			alter table permit drop column received_date;
-			alter table permit drop column issue_date;
-			alter table permit drop column authorization_end_date;
-		
 		END IF;
     END
    $$ ;
+   
+-- Drop amendment columns
+alter table permit drop column IF EXISTS received_date;
+alter table permit drop column IF EXISTS issue_date;
+alter table permit drop column IF EXISTS authorization_end_date;
