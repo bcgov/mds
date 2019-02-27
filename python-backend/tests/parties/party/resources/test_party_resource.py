@@ -93,20 +93,6 @@ def test_post_person_no_email(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_post_person_name_exists(test_client, auth_headers):
-    test_person_data = {"first_name": TEST_PARTY_PER_FIRST_NAME_1, "party_name": TEST_PARTY_PER_PARTY_NAME_1, "email": "this@test.com", "phone_no": "123-456-7890", "type": "PER"}
-    post_resp = test_client.post('/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
-
-    assert post_data == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Party with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['party_name'])
-        }
-    }
-    assert post_resp.status_code == 400
-
-
 def test_post_person_success(test_client, auth_headers):
     test_person_data = {
         "party_name": "Last",
@@ -219,16 +205,3 @@ def test_put_person_success(test_client, auth_headers):
     assert address['sub_division_code'] == test_person_data['sub_division_code']
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
-
-
-def test_put_person_name_exists(test_client, auth_headers):
-    test_person_data = {"first_name": TEST_PARTY_PER_FIRST_NAME_2, "party_name": TEST_PARTY_PER_PARTY_NAME_2, "type": "PER"}
-    put_resp = test_client.put('/parties/' + TEST_PARTY_PER_GUID_1, data=test_person_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_data == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Party with the name: {} {} already exists'.format(test_person_data['first_name'], test_person_data['party_name'])
-        }
-    }
-    assert put_resp.status_code == 400
