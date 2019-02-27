@@ -1,18 +1,21 @@
-import { PropTypes, shape } from "prop-types";
+import { PropTypes, shape, arrayOf } from "prop-types";
 
-export const permit = shape({
-  authorization_end_date: PropTypes.string,
-  issue_date: PropTypes.string,
-  mine_guid: PropTypes.string,
-  permit_guid: PropTypes.string,
-  permit_no: PropTypes.string,
-  permit_status_code: PropTypes.string,
+export const permitAmendment = shape({
+  permit_amendment_id: PropTypes.number,
+  permit_amendment_guid: PropTypes.string,
+  permit_id: PropTypes.number,
+  permit_amendment_status_code: PropTypes.string,
+  permit_amendment_type_code: PropTypes.string,
   received_date: PropTypes.string,
+  issue_date: PropTypes.string,
+  authorization_end_date: PropTypes.string,
 });
 
-export const minePermit = shape({
-  permit_guid: PropTypes.string.isRequired,
-  issue_date: PropTypes.string.isRequired,
-  permit_no: PropTypes.string.isRequired,
-  authorization_end_date: PropTypes.string.isRequired,
+export const permit = shape({
+  permit_id: PropTypes.number,
+  permit_guid: PropTypes.string,
+  mine_guid: PropTypes.string,
+  permit_no: PropTypes.string,
+  permit_status_code: PropTypes.string,
+  amendments: arrayOf(permitAmendment),
 });
