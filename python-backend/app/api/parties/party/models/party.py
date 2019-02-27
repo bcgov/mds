@@ -3,6 +3,7 @@ import re
 import uuid
 
 from sqlalchemy import func
+from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -15,15 +16,23 @@ from ....constants import PARTY_STATUS_CODE
 class Party(AuditMixin, Base):
     __tablename__ = 'party'
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    first_name = db.Column(db.String(100), nullable=True)
-    middle_name = db.Column(db.String(100), nullable=True)
-    party_name = db.Column(db.String(100), nullable=False)
-    phone_no = db.Column(db.String(10), nullable=False)
-    phone_ext = db.Column(db.String(4), nullable=True)
-    email = db.Column(db.String(254), nullable=False)
+    first_name = db.Column(db.String, nullable=True)
+    middle_name = db.Column(db.String, nullable=True)
+    party_name = db.Column(db.String, nullable=False)
+    phone_no = db.Column(db.String, nullable=False)
+    phone_ext = db.Column(db.String, nullable=True)
+    email = db.Column(db.String, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    party_type_code = db.Column(db.String(3), db.ForeignKey('party_type_code.party_type_code'))
+    party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
+
+    suite_no = db.Column(db.String, nullable=True)
+    address_line_1 = db.Column(db.String, nullable=True)
+    address_line_2 = db.Column(db.String, nullable=True)
+    city = db.Column(db.String, nullable=True)
+    sub_division_code = db.Column(db.String, nullable=True)
+    post_code = db.Column(db.String, nullable=True)
+    address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
     @hybrid_property
     def name(self):
@@ -46,7 +55,18 @@ class Party(AuditMixin, Base):
             'effective_date': self.effective_date.isoformat(),
             'expiry_date': self.expiry_date.isoformat(),
             'party_name': self.party_name,
-            'name': self.name
+            'name': self.name,
+            'address': [
+                {
+                    'suite_no': self.suite_no,
+                    'address_line_1': self.address_line_1,
+                    'address_line_2': self.address_line_2,
+                    'city': self.city,
+                    'sub_division_code': self.sub_division_code,
+                    'post_code': self.post_code,
+                    'address_type_code': self.address_type_code
+                }
+            ]
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
@@ -59,17 +79,15 @@ class Party(AuditMixin, Base):
         return cls.query.filter_by(party_guid=_id).first()
 
     @classmethod
-    def find_by_party_name(cls, party_name):
-        return cls.query.filter(
+    def find_by_name(cls, party_name, first_name=None):
+        party_type_code = 'PER' if first_name else 'ORG'
+        filters = [
             func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == PARTY_STATUS_CODE['org']).first()
-
-    @classmethod
-    def find_by_name(cls, first_name, party_name):
-        return cls.query.filter(
-            func.lower(cls.first_name) == func.lower(first_name),
-            func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == PARTY_STATUS_CODE['per']).first()
+            cls.party_type_code == party_type_code
+        ]
+        if first_name:
+            filters.append(func.lower(cls.first_name) == func.lower(first_name))
+        return cls.query.filter(*filters).first()
 
     @classmethod
     def search_by_name(cls, search_term, party_type=None, query_limit=50):
@@ -81,24 +99,74 @@ class Party(AuditMixin, Base):
             return cls.query.filter(_filter_by_name).limit(query_limit)
 
     @classmethod
-    def create_party(cls, generated_first_name, generated_last_name, user_kwargs, save=True):
+    def create(cls,
+               # Required fields
+               party_name,
+               email,
+               phone_no,
+               party_type_code,
+               user_kwargs,
+               # Optional fields
+               address_type_code=None,
+               # Nullable fields
+               first_name=None,
+               phone_ext=None,
+               suite_no=None,
+               address_line_1=None,
+               address_line_2=None,
+               city=None,
+               sub_division_code=None,
+               post_code=None,
+               save=True):
         party = cls(
+            # Required fields
             party_guid=uuid.uuid4(),
-            first_name=generated_first_name,
-            party_name=generated_last_name,
-            email=generated_first_name.lower() + '.' + generated_last_name.lower() + '@' +
-            generated_last_name.lower() + '.com',
-            phone_no='123-123-1234',
-            party_type_code=PARTY_STATUS_CODE['per'],
-            **user_kwargs)
+            party_name=party_name,
+            email=email,
+            phone_no=phone_no,
+            party_type_code=party_type_code,
+            **user_kwargs,
+            # Optional fields
+            address_type_code=address_type_code,
+            first_name=first_name,
+            phone_ext=phone_ext,
+            suite_no=suite_no,
+            address_line_1=address_line_1,
+            address_line_2=address_line_2,
+            city=city,
+            sub_division_code=sub_division_code,
+            post_code=post_code)
         if save:
             party.save(commit=False)
         return party
 
+
+    def validate_unique_name(self, party_name, first_name=None):
+        if Party.find_by_name(party_name, first_name):
+            if first_name:
+                name = first_name + ' ' + party_name
+            else:
+                name = party_name
+            raise AssertionError(
+                'Party with the name: {} already exists'.format(name))
+        return party_name
+
+    @validates('party_type_code')
+    def validate_party_type_code(self, key, party_type_code):
+        if not party_type_code:
+            raise AssertionError('Party type is not provided.')
+        if party_type_code not in ['PER', 'ORG']:
+            raise AssertionError('Invalid party type.')
+        return party_type_code
+
     @validates('first_name')
     def validate_first_name(self, key, first_name):
+        if self.party_type_code == 'PER' and not first_name:
+            raise AssertionError('Person first name is not provided.')
         if first_name and len(first_name) > 100:
             raise AssertionError('Person first name must not exceed 100 characters.')
+        if self.party_name:
+            self.validate_unique_name(self.party_name, first_name)
         return first_name
 
     @validates('party_name')
@@ -107,6 +175,8 @@ class Party(AuditMixin, Base):
             raise AssertionError('Party name is not provided.')
         if len(party_name) > 100:
             raise AssertionError('Party name must not exceed 100 characters.')
+        if self.first_name:
+            self.validate_unique_name(party_name, self.first_name)
         return party_name
 
     @validates('phone_no')
