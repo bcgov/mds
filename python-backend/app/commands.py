@@ -108,8 +108,16 @@ def register_commands(app):
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
                                           DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
-                party = Party.create_party(names.get_first_name(), names.get_last_name(),
-                                           DUMMY_USER_KWARGS)
+
+                first_name = names.get_first_name()
+                last_name = names.get_last_name()
+                email = first_name.lower() + '.' + last_name.lower() + '@' + last_name.lower() + '.com'
+                party = Party.create(last_name,
+                                     email,
+                                     '123-123-1234',
+                                     'PER',
+                                     DUMMY_USER_KWARGS,
+                                     first_name=first_name)
 
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
