@@ -2,11 +2,6 @@ from app.extensions import db, sched
 from app.api.utils.apm import register_apm
 
 
-#the schedule of these jobs is set using server time (UTC)
-def _schedule_ETL_jobs(app):
-    app.apscheduler.add_job(func=_run_ETL, trigger='cron', id='ETL', hour=11, minute=0)
-
-
 @register_apm
 def _run_ETL():
     with sched.app.app_context():

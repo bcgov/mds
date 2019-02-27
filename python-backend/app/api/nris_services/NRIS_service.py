@@ -63,7 +63,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
     if url is None:
         raise TypeError('Could not load the NRIS URL.')
     else:
-        #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
+        # Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
         params = {
             'inspectionStartDate': '2018-01-01',
             'inspectionEndDate': f'{current_date.year}-{current_date.month}-{current_date.day}',
@@ -80,13 +80,16 @@ def _get_EMPR_data_from_NRIS(mine_no):
         try:
             empr_nris_resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            print(empr_nris_resp)
             raise
 
         return empr_nris_resp.json()
 
 
 def _process_NRIS_data(data, mine_no):
+
+    if not data or not mine_no:
+        return
+
     data = sorted(
         data,
         key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),

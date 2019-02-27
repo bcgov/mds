@@ -172,9 +172,9 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    @sched.app.cli.command()
+    @app.cli.command()
     def _run_nris_jobs():
-        with sched.app.app_context():
+        with app.app_context():
             print('Started NRIS job to cache Major Mines list.')
             NRIS_jobs._cache_major_mines_list()
             print('Completed caching the Major Mines list.')
@@ -182,12 +182,9 @@ def register_commands(app):
             NRIS_jobs._cache_all_NRIS_major_mines_data()
             print('Done!')
 
-    #This is here to prevent this from running in production until we are confident in the permit data.
-    if False:
-
-        @sched.app.cli.command()
-        def _run_etl():
-            with sched.app.app_context():
-                print('starting the ETL.')
-                ETL_jobs._run_ETL()
-                print('Completed running the ETL.')
+    @app.cli.command()
+    def _run_etl():
+        with app.app_context():
+            print('starting the ETL.')
+            ETL_jobs._run_ETL()
+            print('Completed running the ETL.')

@@ -1,12 +1,11 @@
 import requests
-from datetime import datetime
 from flask_restplus import Resource
 from flask import request
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import NRIS_CACHE_PREFIX, TIMEOUT_24_HOURS
+from ....constants import NRIS_CACHE_PREFIX
 from app.api.nris_services import NRIS_service
 from app.extensions import cache
 

@@ -27,7 +27,7 @@ def _cache_major_mines_list():
                 NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST, major_mine_list, timeout=TIMEOUT_60_MINUTES)
 
 
-# Using the cached list of major mines procees them if they are not already set to true.
+# Using the cached list of major mines process them if they are not already set to true.
 @register_apm
 @sched.task('cron', id='get_major_mine_NRIS_data', hour=9, minute=5)
 def _cache_all_NRIS_major_mines_data():
@@ -35,35 +35,28 @@ def _cache_all_NRIS_major_mines_data():
         major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
         if major_mine_list is None:
             return
-        task_list = []
-        print(len(major_mine_list))
-        for mine in major_mine_list:
-            if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
-                cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
 
-                with ThreadPoolExecutor() as executor:
-                    task_list.append(executor.submit(_process_NRIS_data_for_mine, mine))
+        with ThreadPoolExecutor() as executor:
+            mines_cache_task_list = {executor.submit(_process_NRIS_data_for_mine, mine): mine for mine in major_mine_list}
 
-        for task in as_completed(task_list):
-            try:
-                data = task.result()
-            except Exception as exc:
-                print(f'generated an exception: {exc}')
+        for mine in as_completed(mines_cache_task_list):
+            current_mine = mines_cache_task_list[mine]
+            print('Thread completed for mine: ', current_mine)
 
 
 def _process_NRIS_data_for_mine(mine):
     with sched.app.app_context():
-        try:
-            print("Caching : ", mine)
-            data = NRIS_service._get_EMPR_data_from_NRIS(mine)
-        except requests.exceptions.Timeout:
-            pass
-        except requests.exceptions.HTTPError as errhttp:
-            # log error
-            pass
-        except TypeError as e:
-            # log error
-            pass
+        if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
+            cache.set(NRIS_JOB_PREFIX + mine, 'True', timeout=TIMEOUT_60_MINUTES)
+            try:
+                data = NRIS_service._get_EMPR_data_from_NRIS(mine)
+            except requests.exceptions.Timeout:
+                pass
+            except requests.exceptions.HTTPError as errhttp:
+                # log error
+                pass
+            except TypeError as e:
+                # log error
+                pass
 
-        if data is not None and len(data) > 0:
             NRIS_service._process_NRIS_data(data, mine)
