@@ -5,6 +5,7 @@ import pytest
 from app.api.mines.mine.models.mine import Mine
 from app.api.permits.permit.models.permit import Permit
 from app.extensions import db
+from tests.constants import DUMMY_USER_KWARGS
 
 
 @pytest.fixture(scope="function")
@@ -17,9 +18,9 @@ def setup_info(test_client):
     permit = Permit.create_mine_permit(mine_2, 'mx-test-231', 'O', DUMMY_USER_KWARGS)
     permit.save()
 
-    MINE_1_GUID = mine_1.mine_guid
-    MINE_2_GUID = mine_2.mine_guid
-    MINE_2_PERMIT_GUID = permit.permit_guid
+    MINE_1_GUID = str(mine_1.mine_guid)
+    MINE_2_GUID = str(mine_2.mine_guid)
+    MINE_2_PERMIT_GUID = str(permit.permit_guid)
 
     yield dict(
         mine_1_guid=MINE_1_GUID, mine_2_guid=MINE_2_GUID, mine_2_permit_guid=MINE_2_PERMIT_GUID)
@@ -43,7 +44,8 @@ def test_get_permit_not_found(test_client, setup_info, auth_headers):
 
 def test_get_permit(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
-        '/permits/' + setup_info.get('mine_2_guid'), headers=auth_headers['full_auth_header'])
+        '/permits/' + setup_info.get('mine_2_permit_guid'),
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_data['permit_guid'] == setup_info.get('mine_2_permit_guid')
     assert get_resp.status_code == 200
@@ -62,6 +64,7 @@ def test_create_permit(test_client, setup_info, auth_headers):
     }
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
     post_data = json.loads(post_resp.data.decode())
+    raise Exception(post_data)
     assert post_resp.status_code == 200
     assert post_data.get('mine_guid') == setup_info.get('mine_1_guid')
     assert post_data.get('permit_no') == PERMIT_NO

@@ -50,7 +50,7 @@ class Permit(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no)
+        return cls.query.filter_by(permit_no=_permit_no).first()
 
     @classmethod
     def create_mine_permit(cls, mine, permit_no, permit_status_code, user_kwargs, save=True):
