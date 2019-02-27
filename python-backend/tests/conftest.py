@@ -293,11 +293,23 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     permit_amendment_status_code.save()
 
+    permit_amendment_status_code2 = PermitAmendmentStatusCode(
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_STATUS_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_status_code2.save()
+
     permit_amendment_type_code = PermitAmendmentTypeCode(
         permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
         description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
         **DUMMY_USER_KWARGS)
     permit_amendment_type_code.save()
+
+    permit_amendment_type_code2 = PermitAmendmentTypeCode(
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_type_code2.save()
 
     permit_amendment = PermitAmendment(
         permit_amendment_id=TEST_PERMIT_AMENDMENT_ID_1,

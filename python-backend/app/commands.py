@@ -38,9 +38,9 @@ def register_commands(app):
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
-            mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
-                                                    random.choice(PERMIT_STATUS_CODE['choices']),
-                                                    DUMMY_USER_KWARGS)
+            mine_permit = Permit.create(mine.mine_guid, random_key_gen(key_length=12),
+                                        random.choice(PERMIT_STATUS_CODE['choices']),
+                                        DUMMY_USER_KWARGS)
 
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid
@@ -173,15 +173,7 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    @sched.app.cli.command()
-    def _run_nris_jobs():
-        with sched.app.app_context():
-            print('Started NRIS job to cache Major Mines list.')
-            NRIS_jobs._cache_major_mines_list()
-            print('Completed caching the Major Mines list.')
-            print('Caching all NRIS data for Major Mines')
-            NRIS_jobs._cache_all_NRIS_major_mines_data()
-            print('Done!')
+    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
 
     #This is here to prevent this from running in production until we are confident in the permit data.
     if False:
@@ -189,6 +181,19 @@ def register_commands(app):
         @sched.app.cli.command()
         def _run_etl():
             with sched.app.app_context():
-                print('starting the ETL.')
-                ETL_jobs._run_ETL()
-                print('Completed running the ETL.')
+                print('Started NRIS job to cache Major Mines list.')
+                NRIS_jobs._cache_major_mines_list()
+                print('Completed caching the Major Mines list.')
+                print('Caching all NRIS data for Major Mines')
+                NRIS_jobs._cache_all_NRIS_major_mines_data()
+                print('Done!')
+
+        #This is her to prevent this from running in production until we are confident in the permit data.
+        if False:
+
+            @sched.app.cli.command()
+            def _run_etl():
+                with sched.app.app_context():
+                    print('starting the ETL.')
+                    ETL_jobs._run_ETL()
+                    print('Completed running the ETL.')
