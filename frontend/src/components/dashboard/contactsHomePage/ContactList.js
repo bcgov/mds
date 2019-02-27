@@ -1,11 +1,12 @@
 import React from "react";
 import { objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
-import { Table } from "antd";
+import { Table, Row, Col } from "antd";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import AdvancedContactSearchForm from "@/components/Forms/AdvancedContactSearchForm";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -55,13 +56,28 @@ const transformRowData = (parties, partyIds) =>
   }));
 
 export const ContactList = (props) => (
-  <Table
-    align="left"
-    pagination={false}
-    columns={columns}
-    dataSource={transformRowData(props.parties, props.partyIds)}
-    locale={{ emptyText: <NullScreen type="no-results" /> }}
-  />
+  <div>
+    <Row>
+      <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
+        <span className="advanced-search__container">
+          <AdvancedContactSearchForm
+          // {...this.props}
+          // onSubmit={this.handleSearch}
+          // toggleAdvancedSearch={this.toggleAdvancedSearch}
+          // isAdvanceSearch={this.state.isAdvanceSearch}
+          // handleSearch={this.handleSearch}
+          />
+        </span>
+      </Col>
+    </Row>
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      dataSource={transformRowData(props.parties, props.partyIds)}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
+    />
+  </div>
 );
 
 ContactList.propTypes = propTypes;

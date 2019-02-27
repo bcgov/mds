@@ -7,7 +7,7 @@ import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import AdvancedSearchForm from "@/components/Forms/AdvancedSearchForm";
+import AdvancedMineSearchForm from "@/components/Forms/AdvancedMineSearchForm";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -101,7 +101,7 @@ export class MineSearch extends Component {
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
-              <AdvancedSearchForm
+              <AdvancedMineSearchForm
                 {...this.props}
                 onSubmit={this.handleSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
