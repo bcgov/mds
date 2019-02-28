@@ -58,7 +58,7 @@ environments {
 		}
 	}
 
-	//ToDo: Fix the upload download location for non chrome drivers
+	//TODO: Fix the upload download location for non chrome drivers
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
