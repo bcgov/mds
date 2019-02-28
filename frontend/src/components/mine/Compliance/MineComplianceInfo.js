@@ -140,7 +140,9 @@ export class MineComplianceInfo extends Component {
                   <Col span={4}>
                     <div className="center">
                       <p className="info-display">
-                        {formatDate(this.props.mineComplianceInfo.last_inspection)}
+                        {this.props.mineComplianceInfo.last_inspection
+                          ? formatDate(this.props.mineComplianceInfo.last_inspection)
+                          : "-"}
                       </p>
                       <p className="info-display-label">LAST INSPECTION DATE</p>
                     </div>

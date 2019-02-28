@@ -99,9 +99,9 @@ export class PartyProfile extends Component {
         mineName: this.props.mineBasicInfoListHash[relationship.mine_guid],
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate:
-          relationship.end_date === "9999-12-31" || null
-            ? "Present"
-            : formatDate(relationship.end_date),
+          relationship.end_date && relationship.end_date !== "9999-12-31"
+            ? formatDate(relationship.end_date)
+            : "Present",
         startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
       }));
 

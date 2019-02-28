@@ -7,6 +7,7 @@ import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import { formatTitleString, formatDate } from "@/utils/helpers";
 import { Link } from "react-router-dom";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -60,9 +61,13 @@ export const DefaultContact = (props) => (
       </h4>
       <br />
       <h6>Email Address</h6>
-      <a href={`mailto:${props.partyRelationship.party.email}`}>
-        {props.partyRelationship.party.email}
-      </a>
+      {props.partyRelationship.party.email && props.partyRelationship.party.email !== "Unknown" ? (
+        <a href={`mailto:${props.partyRelationship.party.email}`}>
+          {props.partyRelationship.party.email}
+        </a>
+      ) : (
+        <span>{Strings.EMPTY_FIELD}</span>
+      )}
       <br />
       <br />
       <h6>Phone Number</h6>
