@@ -53,26 +53,18 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'There was a permit found with the provided permit number.'), 400
 
-        permit = Permit.create_mine_permit(
-            mine,
-            data.get('permit_no'),
-            data.get('permit_status_code'),
-            self.get_create_update_dict(),
-            save=True)
+        permit = Permit.create_mine_permit(mine, data.get('permit_no'),
+                                           data.get('permit_status_code'),
+                                           self.get_create_update_dict())
 
-        amendment = PermitAmendment.create(
-            permit,
-            data.get('received_date'),
-            data.get('issue_date'),
-            data.get('authorization_end_date'),
-            self.get_create_update_dict(),
-            'OGP',
-            'ACT',
-            save=True)
+        amendment = PermitAmendment.create(permit,
+                                           data.get('received_date'), data.get('issue_date'),
+                                           data.get('authorization_end_date'),
+                                           self.get_create_update_dict(), 'OGP', 'ACT')
 
         try:
-            permit.save()
             amendment.save()
+            permit.save()
         except AssertionError as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()

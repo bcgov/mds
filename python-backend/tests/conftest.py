@@ -312,7 +312,6 @@ def setup_data(session):
     permit_amendment_type_code2.save()
 
     permit_amendment = PermitAmendment(
-        permit_amendment_id=TEST_PERMIT_AMENDMENT_ID_1,
         permit_amendment_guid=uuid.uuid4(),
         permit_id=TEST_PERMIT_ID_1,
         permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
@@ -438,16 +437,6 @@ def setup_data(session):
         grouping_level=1,
         **DUMMY_USER_KWARGS)
     mpat5.save()
-
-    # Test Permittee Data
-    permittee = MinePartyAppointment(
-        mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
-        mine_party_appt_type_code='PMT',
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
-    permittee.save()
 
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),

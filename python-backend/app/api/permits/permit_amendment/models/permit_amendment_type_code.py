@@ -51,8 +51,8 @@ class PermitAmendmentTypeCode(AuditMixin, Base):
     def validate_permit_amendment_type_code(self, key, permit_amendment_type_code):
         if not permit_amendment_type_code:
             raise AssertionError('Permit amendment type code is not provided.')
-        if len(permit_amendment_type_code) > 2:
-            raise AssertionError('Permit amendment type code must not exceed 2 characters.')
+        if len(permit_amendment_type_code) > 3:
+            raise AssertionError('Permit amendment type code must not exceed 3 characters.')
         return permit_amendment_type_code
 
     @validates('description')

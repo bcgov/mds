@@ -4,6 +4,7 @@ import pytest
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.permits.permit.models.permit import Permit
+from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.extensions import db
 from tests.constants import DUMMY_USER_KWARGS
 
@@ -21,14 +22,19 @@ def setup_info(test_client):
     MINE_1_GUID = str(mine_1.mine_guid)
     MINE_2_GUID = str(mine_2.mine_guid)
     MINE_2_PERMIT_GUID = str(permit.permit_guid)
+    NON_EXISTENT_GUID = '8ef23184-02c4-4472-a912-380b5a0d9cae'
 
     yield dict(
-        mine_1_guid=MINE_1_GUID, mine_2_guid=MINE_2_GUID, mine_2_permit_guid=MINE_2_PERMIT_GUID)
+        mine_1_guid=MINE_1_GUID,
+        mine_2_guid=MINE_2_GUID,
+        mine_2_permit_guid=MINE_2_PERMIT_GUID,
+        bad_guid=NON_EXISTENT_GUID)
 
-    db.session.delete(permit)
+    db.session.query(PermitAmendment).delete()
+    db.session.commit()
+    db.session.query(Permit).delete()
     db.session.commit()
     db.session.delete(mine_1)
-    db.session.commit()
     db.session.delete(mine_2)
     db.session.commit()
 
@@ -36,7 +42,7 @@ def setup_info(test_client):
 # GET
 def test_get_permit_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
-        '/permits/' + setup_info.get('mine_1_guid'), headers=auth_headers['full_auth_header'])
+        '/permits/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_data == {'error': {'status': 404, 'message': 'Permit not found'}}
     assert get_resp.status_code == 404
@@ -64,9 +70,27 @@ def test_create_permit(test_client, setup_info, auth_headers):
     }
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
     post_data = json.loads(post_resp.data.decode())
-    raise Exception(post_data)
+
     assert post_resp.status_code == 200
     assert post_data.get('mine_guid') == setup_info.get('mine_1_guid')
     assert post_data.get('permit_no') == PERMIT_NO
     assert post_data.get('amendments')
     assert len(post_data.get('amendments')) == 1
+
+
+def test_create_permit_bad_mine_guid(test_client, setup_info, auth_headers):
+    data = {'mine_guid': setup_info.get('bad_guid')}
+    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
+
+    assert post_resp.status_code == 404
+
+
+def test_create_permit_with_duplicate_permit_no(test_client, setup_info, auth_headers):
+    permit = Permit.find_by_permit_guid(setup_info.get('mine_2_permit_guid'))
+    data = {'mine_guid': setup_info.get('mine_1_guid'), 'permit_no': permit.permit_no}
+    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
+
+    assert post_resp.status_code == 400
+
+def test_put_permit(test_client, setup_info, auth_headers):
+    
