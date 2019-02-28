@@ -15,6 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   parties: objectOf(CustomPropTypes.party).isRequired,
   partyIds: arrayOf(string).isRequired,
+  relationshipTypeHash: objectOf(string).isRequired,
 };
 
 const columns = [
@@ -42,16 +43,15 @@ const columns = [
   },
 ];
 
-// TODO: Use redux store lookup hash
-const partyMapping = {
-  PMT: "Permittee",
-  MMG: "Mine Manager",
-  MOW: "Mine Owner",
-  MOR: "Mine Operator",
-};
+const uniqueRolesString = (mine_party_appt, relationshipTypeHash) =>
+  uniqBy(
+    map(
+      mine_party_appt,
+      ({ mine_party_appt_type_code }) => relationshipTypeHash[mine_party_appt_type_code]
+    )
+  ).join(", ");
 
-// TODO: Is there a reason why we're using partyIds instead of parties directly?
-const transformRowData = (parties, partyIds) =>
+const transformRowData = (parties, partyIds, relationshipTypeHash) =>
   partyIds.map((id) => ({
     key: id,
     emptyField: Strings.EMPTY_FIELD,
@@ -63,12 +63,7 @@ const transformRowData = (parties, partyIds) =>
         : Strings.EMPTY_FIELD,
     role:
       parties[id].mine_party_appt.length > 0
-        ? uniqBy(
-            map(
-              parties[id].mine_party_appt,
-              ({ mine_party_appt_type_code }) => partyMapping[mine_party_appt_type_code]
-            )
-          ).join(", ")
+        ? uniqueRolesString(parties[id].mine_party_appt, relationshipTypeHash)
         : Strings.EMPTY_FIELD,
   }));
 
@@ -77,7 +72,7 @@ export const ContactList = (props) => (
     align="left"
     pagination={false}
     columns={columns}
-    dataSource={transformRowData(props.parties, props.partyIds)}
+    dataSource={transformRowData(props.parties, props.partyIds, props.relationshipTypeHash)}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
   />
 );

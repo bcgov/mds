@@ -37,7 +37,6 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   render() {
-    console.log("state", this.state);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
