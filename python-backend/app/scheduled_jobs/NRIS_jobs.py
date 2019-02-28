@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
-@sched.task('cron', id='get_major_mine_list', hour=7, minute=30)
+@sched.task('cron', id='get_major_mine_list', hour=17, minute=5)
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
@@ -30,7 +30,7 @@ def _cache_major_mines_list():
 
 
 # Using the cached list of major mines process them if they are not already set to true.
-@sched.task('cron', id='get_major_mine_NRIS_data', hour=7, minute=35)
+@sched.task('cron', id='get_major_mine_NRIS_data', hour=17, minute=10)
 @register_apm
 def _cache_all_NRIS_major_mines_data():
     major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
