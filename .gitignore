@@ -15,4 +15,4 @@ __pycache__
 *.sw*
 python-backend/document_uploads/
 *last-backup
-functional-tests/src/test/tempStorage/*
+
