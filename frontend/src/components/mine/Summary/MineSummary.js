@@ -70,6 +70,9 @@ const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
+const activePermitteesByPermit = (pr, permit) =>
+  isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
+
 export const MineSummary = (props) => {
   if (
     props.partyRelationships.length === 0 &&
@@ -93,8 +96,7 @@ export const MineSummary = (props) => {
             </Row>
             <Row gutter={16} type="flex">
               {props.partyRelationships
-                .filter(isActive)
-                .filter((pr) => pr.mine_party_appt_type_code === "MMG")
+                .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     props.mine,
@@ -105,10 +107,7 @@ export const MineSummary = (props) => {
               {props.mine.mine_permit.map((permit) =>
                 renderPartyRelationship(
                   props.mine,
-                  props.partyRelationships
-                    .filter(isActive)
-                    .filter((pr) => pr.mine_party_appt_type_code === "PMT")
-                    .filter((pr) => pr.related_guid === permit.permit_guid)[0],
+                  props.partyRelationships.filter((pr) => activePermitteesByPermit(pr, permit))[0],
                   props.partyRelationshipTypes
                 )
               )}
