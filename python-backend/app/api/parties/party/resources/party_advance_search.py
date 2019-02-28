@@ -5,6 +5,7 @@ from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters, \
 from sqlalchemy import or_
 
 from ..models.party import Party
+from ..models.party_type_code import PartyTypeCode
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -150,73 +151,40 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
 
 
         #TODO: TALK TO TATIANNA AND ADRIENNE ABOUT ACTUAL SEARCH IMPLEMENTATION
-        # # split the terms up and make an array of them
-        # search_term = args.get('search', None, type=str)
-        # # Filters to be applied
-        # commodity_filter_terms = args.get('commodity', None, type=str)
-        # status_filter_term = args.get('status', None, type=str)
-        # tenure_filter_term = args.get('tenure', None, type=str)
-        # region_code_filter_term = args.get('region', None, type=str)
-        # major_mine_filter_term = args.get('major', None, type=str)
-        # tsf_filter_term = args.get('tsf', None, type=str)
-        # # Base query:
-        # contact_query = Party.query
-        # # Filter by search_term if provided
-        # if search_term:
-        #     # first_name and party_name (last name)
-        #     name_search_terms = search_term.split()
-        #     # search_term = search_term.strip()
-        #     # FIX THIS
-        #     first_name_filter = Party.first_name.ilike('%{}%'.format(name_search_terms))
-        #     party_name_filter = Party.party_name.ilike('%{}%'.format(name_search_terms))
-        #     name_query = Party.query.filter(first_name_filter | party_name_filter)
-        #     contact_query = name_query.union(contact_query)
+
 
         first_name_filter_term = args.get('first_name', None, type=str)
         last_name_filter_term = args.get('last_name', None, type=str)
         party_name_filter_term = args.get('party_name', None, type=str)
-        # mineid_filter_term = args.get()
-        role_filter_term = args.get('role', None, type=str)
 
+        role_filter_term = args.get('role', None, type=str)
+        email_filter_term = args.get('email', None, type=str)
+        phone_filter_term = args.get('phone_no', None, type=str)
+
+        contact_query = Party.query
 
         conditions = []
-        # contact_query = Party.query
-
         if first_name_filter_term:
             conditions.append( Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
         if last_name_filter_term:
             conditions.append( Party.party_name.ilike('%{}%'.format(last_name_filter_term)))
         if party_name_filter_term:
             conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term)))
+        if email_filter_term:
+            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
+        # todo: make sure this works well with different number types
+        if phone_filter_term:
+            conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
 
-        # Filter by Mine ID, if provided
-        # Filter by phone, if provided
-        # Filter by email, if provided
-        # Filter by role, if provided
-        # Filter by  person vs orginization, if provided (bool search)
+        contact_query = Party.query.filter(or_(*conditions))
 
-        # - Role
-        # - Email
-        # - Phone
+        # todo: implement role filtering: check whether or not it's possible to do this with no join
+        if role_filter_term:
+            role_filter_term_array = role_filter_term.split(',')
+            role_filter=PartyTypeCode.party_type_code.in_(role_filter_term_array)
+            role_query = Party.query.join(PartyTypeCode).filter(role_filter)
 
-
-
-
-
-        # if major_mine_filter_term == "true" or major_mine_filter_term == "false":
-        #     major_mine_filter = Mine.major_mine_ind.is_(major_mine_filter_term == "true")
-        #     major_mine_query = Mine.query.filter(major_mine_filter)
-        #     mines_query = mines_query.intersect(major_mine_query)
-        #
-        # # Filter by region, if provided
-        # if region_code_filter_term:
-        #     region_filter_term_array = region_code_filter_term.split(',')
-        #     region_filter = Mine.mine_region.in_(region_filter_term_array)
-        #     region_query = Mine.query.filter(region_filter)
-        #     mines_query = mines_query.intersect(region_query)
-
-        # deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
-        # mines_query = apply_filters(mines_query, deleted_filter)
+            contact_query =  contact_query.intersect(role_query) if contact_query else role_query
 
         sort_criteria = [{'model': 'Party', 'field': 'party_name', 'direction': 'asc'}]
         contact_query = apply_sort(contact_query, sort_criteria)
