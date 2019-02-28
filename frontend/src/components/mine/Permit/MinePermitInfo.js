@@ -139,7 +139,7 @@ const transformChildRowData = (amendment, index, amendments) => ({
 
 export const MinePermitInfo = (props) => {
   const amendmentHistory = (record) => {
-    const childRowData = record.amendments.map(transformChildRowData(transformChildRowData));
+    const childRowData = record.amendments.map(transformChildRowData);
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
