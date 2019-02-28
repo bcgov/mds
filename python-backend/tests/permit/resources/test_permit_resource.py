@@ -92,5 +92,32 @@ def test_create_permit_with_duplicate_permit_no(test_client, setup_info, auth_he
 
     assert post_resp.status_code == 400
 
+
 def test_put_permit(test_client, setup_info, auth_headers):
-    
+    permit_guid = setup_info.get('mine_2_permit_guid')
+    permit = Permit.find_by_permit_guid(permit_guid)
+    old_permit_status = permit.permit_status_code
+    data = {'permit_status_code': 'C'}
+    put_resp = test_client.put(
+        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], data=data)
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert put_data.get('permit_status_code') == 'C'
+    assert put_data.get('permit_status_code') != old_permit_status
+
+
+def test_put_permit_no_permit_guid(test_client, setup_info, auth_headers):
+    permit_guid = None
+    permit = Permit.find_by_permit_guid(permit_guid)
+    old_permit_status = permit.permit_status_code
+    data = {'permit_status_code': 'C'}
+    put_resp = test_client.put(
+        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], data=data)
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert put_data.get('permit_status_code') == 'C'
+    assert put_data.get('permit_status_code') != old_permit_status
