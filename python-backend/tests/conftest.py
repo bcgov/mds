@@ -311,18 +311,6 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     permit_amendment_type_code2.save()
 
-    permit_amendment = PermitAmendment(
-        permit_amendment_id=TEST_PERMIT_AMENDMENT_ID_1,
-        permit_amendment_guid=uuid.uuid4(),
-        permit_id=TEST_PERMIT_ID_1,
-        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
-        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
-        received_date=datetime.today(),
-        issue_date=datetime.today(),
-        authorization_end_date=datetime.today(),
-        **DUMMY_USER_KWARGS)
-    permit_amendment.save()
-
     required_document_due_date_type1 = RequiredDocumentDueDateType(
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_description=TEST_REQUIRED_REPORT_DUE_DATE_DESCRIPTION[0],
