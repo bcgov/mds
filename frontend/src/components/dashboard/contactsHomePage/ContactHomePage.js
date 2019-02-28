@@ -51,7 +51,8 @@ export class ContactHomePage extends Component {
         })
       );
     }
-    this.props.fetchParties(params).then(() => {
+    // TODO: convert this to use queryString
+    this.props.fetchParties(`${params}&relationships=mine_party_appt`).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -73,7 +74,8 @@ export class ContactHomePage extends Component {
     this.setState({
       params: { page, per_page },
     });
-    this.props.fetchParties(params);
+    // TODO: convert this to use queryString
+    this.props.fetchParties(`${params}&relationships=mine_party_appt`);
   };
 
   onPageChange = (page, per_page) => {

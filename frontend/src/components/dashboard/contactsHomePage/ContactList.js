@@ -2,6 +2,7 @@ import React from "react";
 import { objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
+import { uniqBy, map } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -41,6 +42,15 @@ const columns = [
   },
 ];
 
+// TODO: Use redux store lookup hash
+const partyMapping = {
+  PMT: "Permittee",
+  MMG: "Mine Manager",
+  MOW: "Mine Owner",
+  MOR: "Mine Operator",
+};
+
+// TODO: Is there a reason why we're using partyIds instead of parties directly?
 const transformRowData = (parties, partyIds) =>
   partyIds.map((id) => ({
     key: id,
@@ -51,7 +61,15 @@ const transformRowData = (parties, partyIds) =>
       parties[id].phone_no && parties[id].phone_no !== "Unknown"
         ? parties[id].phone_no
         : Strings.EMPTY_FIELD,
-    role: Strings.EMPTY_FIELD,
+    role:
+      parties[id].mine_party_appt.length > 0
+        ? uniqBy(
+            map(
+              parties[id].mine_party_appt,
+              ({ mine_party_appt_type_code }) => partyMapping[mine_party_appt_type_code]
+            )
+          ).join(", ")
+        : Strings.EMPTY_FIELD,
   }));
 
 export const ContactList = (props) => (
