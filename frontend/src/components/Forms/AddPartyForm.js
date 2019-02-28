@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Radio } from "antd";
+import { Form, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -14,7 +14,7 @@ const propTypes = {
 
 export const AddPartyForm = (props) => (
   <div>
-    <div className="center">
+    <div className="center margin-large">
       <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
         <Radio.Button value>Person</Radio.Button>
         <Radio.Button value={false}>Company</Radio.Button>
@@ -120,9 +120,8 @@ export const AddPartyForm = (props) => (
             <Field
               id="address_line_1"
               name="address_line_1"
-              label="Street Address 1 *"
+              label="Street Address 1"
               component={renderConfig.FIELD}
-              validate={[required]}
             />
           </Form.Item>
         </Col>
@@ -141,11 +140,11 @@ export const AddPartyForm = (props) => (
         <Col span={6}>
           <Form.Item>
             <Field
-              id="region_code"
-              name="region_code"
+              id="sub_division_code"
+              name="sub_division_code"
               label="Province"
-              component={renderConfig.FIELD}
-              validate={[number, maxLength(4)]}
+              component={renderConfig.SELECT}
+              data={props.provinceOptions}
             />
           </Form.Item>
         </Col>
@@ -156,9 +155,9 @@ export const AddPartyForm = (props) => (
             <Field
               id="city"
               name="city"
-              label="City *"
+              label="City"
               component={renderConfig.FIELD}
-              validate={[required, phoneNumber, maxLength(12)]}
+              validate={[maxLength(30)]}
             />
           </Form.Item>
         </Col>
@@ -168,6 +167,7 @@ export const AddPartyForm = (props) => (
               id="post_code"
               name="post_code"
               label="Postal Code"
+              placeholder="e.g xxx-xxx"
               component={renderConfig.FIELD}
               validate={[maxLength(7)]}
             />

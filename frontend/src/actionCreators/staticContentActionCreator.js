@@ -152,3 +152,20 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
 export const setOptionsLoaded = () => (dispatch) => {
   dispatch(staticContentActions.loadedOptions(true));
 };
+
+export const fetchProvinceCodes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PROVINCE_CODES));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.PROVINCE_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PROVINCE_CODES));
+      dispatch(staticContentActions.storeProvinceCodes(response.data));
+    })
+    .catch((err) => {
+      notification.error({
+        message: "this is causing an error",
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_PROVINCE_CODES));
+    });
+};

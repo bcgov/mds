@@ -39,3 +39,8 @@ export const loadedOptions = (payload) => ({
   type: ActionTypes.OPTIONS_LOADED,
   payload,
 });
+
+export const storeProvinceCodes = (payload) => ({
+  type: ActionTypes.STORE_PROVINCE_OPTIONS,
+  payload,
+});

@@ -35,3 +35,4 @@ export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocument
 export const MINE_MANAGER_HISTORY = (mineNo) =>
   `/parties/mines/manager-history/csv?mine_no=${mineNo}`;
 export const MINESPACE_USER = "/users/minespace";
+export const PROVINCE_CODES = "/parties/sub-division-codes";

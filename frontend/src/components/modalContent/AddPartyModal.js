@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
-import { Steps, Button, message } from "antd";
+import { Steps, Button } from "antd";
 import * as FORM from "@/constants/forms";
 import AddPartyForm from "@/components/Forms/AddPartyForm";
 
@@ -27,9 +27,8 @@ export class AddTenureModal extends Component {
 
   handlePartySubmit = () => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    return this.props.onSubmit(this.props.addPartyFormValues, type).then(() => {
-      this.handleFormReset();
-    });
+    // this.handleFormReset();
+    return this.props.onSubmit(this.props.addPartyFormValues, type);
   };
 
   handleFormReset = () => {
@@ -38,7 +37,6 @@ export class AddTenureModal extends Component {
   };
 
   next() {
-    console.log(this.props.addPartyFormValues);
     const current = this.state.current + 1;
     this.setState({ current });
   }
@@ -51,6 +49,7 @@ export class AddTenureModal extends Component {
   renderStepOne() {
     return (
       <AddPartyForm
+        {...this.props}
         onSubmit={this.handlePartySubmit}
         isPerson={this.state.isPerson}
         togglePartyChange={this.togglePartyChange}
@@ -62,12 +61,13 @@ export class AddTenureModal extends Component {
   renderStepTwo() {
     return (
       <div className="inline-flex center">
-        <Button type="secondary" className="full-mobile" onClick={this.handlePartySubmit}>
+        <p>there wil;l be lodts gosfd cool things in here just not ight now k wait for it.</p>
+        {/* <Button type="secondary" className="full-mobile" onClick={this.handlePartySubmit}>
           Submit and Add Another Contact
         </Button>
         <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
           Submit
-        </Button>
+        </Button> */}
       </div>
     );
   }
@@ -79,36 +79,47 @@ export class AddTenureModal extends Component {
         content: this.renderStepOne(),
       },
       {
-        title: "Final Step",
+        title: "Roles",
         content: this.renderStepTwo(),
       },
+      // {
+      //   title: "Final Step",
+      //   content: this.renderStepTwo(),
+      // },
     ];
+
     return (
       <div>
         <div>
           <Steps current={this.state.current}>
-            {steps.map((item) => (
-              <Step key={item.title} title={item.title} />
+            {steps.map((step) => (
+              <Step key={step.title} title={step.title} />
             ))}
           </Steps>
           <div>{steps[this.state.current].content}</div>
-          <div className="right center-mobile">
+          <div>
+            {this.state.current > 0 && (
+              <Button type="secondary" className="full-mobile" onClick={() => this.prev()}>
+                Previous
+              </Button>
+            )}
             {this.state.current < steps.length - 1 && (
               <Button type="primary" className="full-mobile" onClick={() => this.next()}>
                 Next
               </Button>
             )}
-            {this.state.current > 0 && this.props.current !== steps.length - 1 && (
-              <Button className="full-mobile" onClick={() => this.prev()}>
-                Previous
-              </Button>
-            )}
-          </div>
-          <div className="center-mobile">
-            {this.props.current === steps.length - 1 && (
-              <Button type="primary" onClick={() => message.success("Processing complete!")}>
-                Done
-              </Button>
+            {this.state.current === steps.length - 1 && (
+              // <Button type="secondary" onClick={() => this.prev()}>
+              //   Previous
+              // </Button>
+              <div>
+                <Button type="secondary" className="full-mobile" onClick={this.handlePartySubmit}>
+                  Submit and Add Another
+                </Button>
+                <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
+                  Submit
+                </Button>
+              </div>
             )}
           </div>
         </div>

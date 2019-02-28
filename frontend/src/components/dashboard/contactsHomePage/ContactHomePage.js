@@ -10,6 +10,7 @@ import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
+import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -31,6 +32,7 @@ const propTypes = {
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export class ContactHomePage extends Component {
@@ -101,18 +103,20 @@ export class ContactHomePage extends Component {
       });
   };
 
-  openModal(event, onSubmit, title) {
+  openModal(event, onSubmit, title, provinceOptions) {
     event.preventDefault();
     this.props.openModal({
       props: {
         onSubmit,
         title,
+        provinceOptions,
       },
       content: modalConfig.ADD_CONTACT,
     });
   }
 
   render() {
+    console.log(this.props.provinceOptions);
     const { page, per_page } = this.state.params;
     return (
       <div className="landing-page">
@@ -127,7 +131,12 @@ export class ContactHomePage extends Component {
                 className="full-mobile"
                 type="primary"
                 onClick={(event) =>
-                  this.openModal(event, this.handleSubmit, ModalContent.ADD_CONTACT)
+                  this.openModal(
+                    event,
+                    this.handleSubmit,
+                    ModalContent.ADD_CONTACT,
+                    this.props.provinceOptions
+                  )
                 }
               >
                 {ModalContent.ADD_CONTACT}
@@ -162,6 +171,7 @@ const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyIds: getPartyIds(state),
   pageData: getPartyPageData(state),
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
