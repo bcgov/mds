@@ -12,7 +12,7 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
-    permit_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)

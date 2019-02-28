@@ -13,7 +13,7 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
-    permit_amendment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    permit_amendment_id = db.Column(db.Integer, primary_key=True)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
