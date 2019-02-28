@@ -9,3 +9,5 @@ out
 images
 target
 .env
+src/test/tempStorage/*
+!src/test/tempStorage/.gitkeep
