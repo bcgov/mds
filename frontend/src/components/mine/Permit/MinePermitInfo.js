@@ -109,33 +109,25 @@ const transformRowData = (permit, partyRelationships) => {
 
   return {
     key: permit.permit_guid,
-    lastAmended:
-      (latestAmendment && latestAmendment.issue_date && formatDate(latestAmendment.issue_date)) ||
-      Strings.EMPTY_FIELD,
+    lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    firstIssued:
-      (firstAmendment && firstAmendment.issue_date && formatDate(firstAmendment.issue_date)) ||
-      Strings.EMPTY_FIELD,
+    firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permittee: permitteeName,
     authorizationEndDate:
-      latestAmendment && latestAmendment.authorization_end_date
-        ? formatDate(latestAmendment.authorization_end_date)
-        : Strings.EMPTY_FIELD,
+      (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
+      Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
   };
 };
 
 const transformChildRowData = (amendment, record, amendmentNumber) => ({
-  amendmentNumber,
-  receivedDate:
-    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
-  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
-  authorizationEndDate:
-    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
-    Strings.EMPTY_FIELD,
-  description: Strings.EMPTY_FIELD,
-});
+    amendmentNumber,
+    receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
+    issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
+    authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
+    description: Strings.EMPTY_FIELD,
+  });
 
 export const MinePermitInfo = (props) => {
   const amendmentHistory = (record) => {

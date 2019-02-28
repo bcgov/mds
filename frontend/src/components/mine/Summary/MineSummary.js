@@ -158,7 +158,8 @@ export const MineSummary = (props) => {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {formatDate(props.mineComplianceInfo.last_inspection)}
+                          {formatDate(props.mineComplianceInfo.last_inspection) ||
+                            String.EMPTY_FIELD}
                         </span>
                       </div>
                     </Row>
