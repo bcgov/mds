@@ -6,6 +6,8 @@ from sqlalchemy import or_
 
 from ..models.party import Party
 from ..models.party_type_code import PartyTypeCode
+from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -168,7 +170,8 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
         # todo: implement role filtering: check whether or not it's possible to do this with no join
         if role_filter_term:
             role_filter_term_array = role_filter_term.split(',')
-            role_filter=PartyTypeCode.party_type_code.in_(role_filter_term_array)
+            
+            role_filter= MinePartyAppointment.mine_party_appt_type_code  PartyTypeCode.party_type_code.in_(role_filter_term_array)
             role_query = Party.query.join(PartyTypeCode).filter(role_filter)
 
             contact_query =  contact_query.intersect(role_query) if contact_query else role_query
