@@ -94,7 +94,7 @@ export const MineSummary = (props) => {
             <Row gutter={16} type="flex">
               {props.partyRelationships
                 .filter(isActive)
-                .filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
+                .filter((pr) => pr.mine_party_appt_type_code === "MMG")
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     props.mine,
@@ -102,6 +102,16 @@ export const MineSummary = (props) => {
                     props.partyRelationshipTypes
                   )
                 )}
+              {props.mine.mine_permit.map((permit) =>
+                renderPartyRelationship(
+                  props.mine,
+                  props.partyRelationships
+                    .filter(isActive)
+                    .filter((pr) => pr.mine_party_appt_type_code === "PMT")
+                    .filter((pr) => pr.related_guid === permit.permit_guid)[0],
+                  props.partyRelationshipTypes
+                )
+              )}
             </Row>
             <Row gutter={16}>
               <Col span={24}>
