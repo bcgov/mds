@@ -358,7 +358,6 @@ export class Dashboard extends Component {
   }
 
   render() {
-    console.log("state", this.state);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
