@@ -51,7 +51,7 @@ class Tailings extends GebReportingSpec {
         assert tailingsTab.document0Name != null
     }
 
-    //ToDo: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
+    //TODO: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to upload a TSF Report"(){
         when: "User navigates to the TSF tab and clicks the upload icon"
         tailingsTab.tabSelect.click()
@@ -66,7 +66,7 @@ class Tailings extends GebReportingSpec {
 
     }
 
-    //ToDo: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
+    //TODO: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
         when: "User navigates to the TSF tab and clicks the download icon"
         tailingsTab.tabSelect.click()
