@@ -1,6 +1,6 @@
 CREATE TABLE permit_amendment_document (
     permit_amendment_document_guid uuid DEFAULT gen_random_uuid() NOT NULL,
-    permit_amendment_id integer NOT NULL,
+    permit_amendment_id integer,
     mine_guid uuid NOT NULL,
     active_ind boolean DEFAULT true NOT NULL,
     create_user character varying(60) NOT NULL,

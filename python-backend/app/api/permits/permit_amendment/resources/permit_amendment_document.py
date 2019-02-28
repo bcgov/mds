@@ -90,7 +90,10 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
         return permit_amendment.json()
 
     @requires_role_mine_create
-    def delete(self, permit_amendment_guid, document_guid, permit_guid=None):
+    def delete(self, permit_amendment_guid, document_guid=None, permit_guid=None):
+        if not document_guid:
+            return self.create_error_payload(400, 'must provide document_guid to be unlinked'), 400
+
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(document_guid)
 
