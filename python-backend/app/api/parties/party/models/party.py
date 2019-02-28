@@ -34,6 +34,8 @@ class Party(AuditMixin, Base):
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
+    mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
@@ -45,7 +47,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
-    def json(self, show_mgr=True):
+    def json(self, show_mgr=True, relationships=[]):
         context = {
             'party_guid': str(self.party_guid),
             'party_type_code': self.party_type_code,
@@ -72,6 +74,12 @@ class Party(AuditMixin, Base):
             context.update({
                 'first_name': self.first_name,
             })
+
+        if 'mine_party_appt' in relationships:
+            context.update({
+                'mine_party_appt': [item.json() for item in self.mine_party_appt],
+            })
+
         return context
 
     @classmethod
@@ -142,7 +150,8 @@ class Party(AuditMixin, Base):
 
 
     def validate_unique_name(self, party_name, first_name=None):
-        if Party.find_by_name(party_name, first_name):
+        party = Party.find_by_name(party_name, first_name)
+        if party and party.party_guid != self.party_guid:
             if first_name:
                 name = first_name + ' ' + party_name
             else:
@@ -194,3 +203,9 @@ class Party(AuditMixin, Base):
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
+
+    @validates('post_code')
+    def validate_post_code(self, key, post_code):
+         if post_code and len(post_code) > 6:
+            raise AssertionError('post_code must not exceed 6 characters.')
+         return post_code

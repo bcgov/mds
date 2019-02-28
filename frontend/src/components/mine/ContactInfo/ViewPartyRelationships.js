@@ -77,7 +77,10 @@ export class ViewPartyRelationships extends Component {
     };
 
     return this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
     });
   };
@@ -153,7 +156,10 @@ export class ViewPartyRelationships extends Component {
     payload.related_guid = values.related_guid || payload.related_guid;
 
     return this.props.updatePartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
     });
   };
@@ -161,7 +167,10 @@ export class ViewPartyRelationships extends Component {
   removePartyRelationship = (event, mine_party_appt_guid) => {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
     });
   };
 
