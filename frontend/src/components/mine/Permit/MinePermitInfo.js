@@ -62,10 +62,10 @@ const columns = [
 
 const childColumns = [
   {
-    title: "",
+    title: "Amendment",
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
-    render: (text) => <div title="Number">{text}</div>,
+    render: (text) => <div title="Amendment">{text}</div>,
   },
   {
     title: "Received Date",
