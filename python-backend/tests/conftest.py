@@ -19,6 +19,9 @@ from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.permits.permit_amendment.models.permit_amendment_status_code import PermitAmendmentStatusCode
+from app.api.permits.permit_amendment.models.permit_amendment_type_code import PermitAmendmentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
@@ -38,6 +41,7 @@ from .constants import *
 from app import auth
 
 auth.apply_security = False
+
 
 @pytest.fixture(scope="session")
 def app(request):
@@ -275,14 +279,37 @@ def setup_data(session):
 
     # Test Permit Data
     permit = Permit(
+        permit_id=TEST_PERMIT_ID_1,
         permit_guid=TEST_PERMIT_GUID_1,
         mine_guid=TEST_MINE_GUID,
         permit_no=TEST_PERMIT_NO_1,
         permit_status_code=TEST_PERMIT_STATUS_CODE_1,
-        received_date=datetime.today(),
-        issue_date=datetime.today(),
         **DUMMY_USER_KWARGS)
     permit.save()
+
+    permit_amendment_status_code = PermitAmendmentStatusCode(
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
+        description=TEST_PERMIT_AMENDMENT_STATUS_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_status_code.save()
+
+    permit_amendment_type_code = PermitAmendmentTypeCode(
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
+        description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_type_code.save()
+
+    permit_amendment = PermitAmendment(
+        permit_amendment_id=TEST_PERMIT_AMENDMENT_ID_1,
+        permit_amendment_guid=uuid.uuid4(),
+        permit_id=TEST_PERMIT_ID_1,
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
+        received_date=datetime.today(),
+        issue_date=datetime.today(),
+        authorization_end_date=datetime.today(),
+        **DUMMY_USER_KWARGS)
+    permit_amendment.save()
 
     required_document_due_date_type1 = RequiredDocumentDueDateType(
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],

@@ -67,7 +67,11 @@ export class RelationshipProfile extends Component {
       this.props.fetchPartyRelationshipTypes();
     }
     if (this.props.partyRelationships.length === 0) {
-      this.props.fetchPartyRelationships({ mine_guid: id, types: typeCode });
+      this.props.fetchPartyRelationships({
+        mine_guid: id,
+        types: typeCode,
+        relationships: "party",
+      });
     }
     if (!mine) {
       this.props.fetchMineRecordById(id);
