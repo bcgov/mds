@@ -92,7 +92,7 @@ export class MineDashboard extends Component {
       this.props.fetchPartyRelationshipTypes();
       this.props.setOptionsLoaded();
     }
-    this.props.fetchPartyRelationships({ mine_guid: id });
+    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
