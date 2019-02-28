@@ -149,6 +149,17 @@ class Party(AuditMixin, Base):
         return party
 
 
+    def validate_unique_name(self, party_name, first_name=None):
+        party = Party.find_by_name(party_name, first_name)
+        if party and party.party_guid != self.party_guid:
+            if first_name:
+                name = first_name + ' ' + party_name
+            else:
+                name = party_name
+            raise AssertionError(
+                'Party with the name: {} already exists'.format(name))
+        return party_name
+
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):
         if not party_type_code:
@@ -163,6 +174,8 @@ class Party(AuditMixin, Base):
             raise AssertionError('Person first name is not provided.')
         if first_name and len(first_name) > 100:
             raise AssertionError('Person first name must not exceed 100 characters.')
+        if self.party_name:
+            self.validate_unique_name(self.party_name, first_name)
         return first_name
 
     @validates('party_name')
@@ -171,6 +184,8 @@ class Party(AuditMixin, Base):
             raise AssertionError('Party name is not provided.')
         if len(party_name) > 100:
             raise AssertionError('Party name must not exceed 100 characters.')
+        if self.first_name:
+            self.validate_unique_name(party_name, self.first_name)
         return party_name
 
     @validates('phone_no')
