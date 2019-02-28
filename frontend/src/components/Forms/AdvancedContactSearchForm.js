@@ -12,10 +12,7 @@ const propTypes = {
   handleSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  mineTenureTypes: CustomPropTypes.options.isRequired,
-  mineCommodityOptions: CustomPropTypes.options.isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
-  mineStatusOptions: CustomPropTypes.options.isRequired,
+  roleOptions: CustomPropTypes.options.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
 };
 
@@ -24,89 +21,99 @@ const defaultProps = {
 };
 
 export class AdvancedContactSearchForm extends Component {
+  state = {
+    params: {
+      type: this.props.contactType,
+    },
+  };
+
   handleReset = () => {
     this.props.reset();
     this.props.handleSearch();
   };
 
+  handleContactTypeChange = (chars, value) => {
+    this.setState({ params: { type: value } });
+  };
+
   render() {
+    console.log("state", this.state);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
-          <Col md={24} xs={24}>
+          <Col md={6} xs={6}>
             <Field
-              id="search"
-              name="search"
-              component={renderConfig.FIELD}
-              defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
-              placeholder="Search for a mine using name, ID, or permit number"
+              id="type"
+              name="type"
+              placeholder="Type of Contact"
+              component={renderConfig.SELECT}
+              // TODO: Pass data in as props
+              // TODO: Set initial value PER based on props.contactType
+              data={[{ value: "PER", label: "Person" }, { value: "ORG", label: "Organization" }]}
+              onChange={this.handleContactTypeChange}
             />
           </Col>
+          {this.state.params.type === "ORG" && (
+            <Col md={18} xs={18}>
+              <Field
+                id="party_name"
+                name="party_name"
+                component={renderConfig.FIELD}
+                defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
+                placeholder="Organization Name"
+              />
+            </Col>
+          )}
+          {this.state.params.type === "PER" && (
+            <Col md={9} xs={9}>
+              <Field
+                id="first_name"
+                name="first_name"
+                component={renderConfig.FIELD}
+                placeholder="First Name"
+              />
+            </Col>
+          )}
+          {this.state.params.type === "PER" && (
+            <Col md={9} xs={9}>
+              <Field
+                id="last_name"
+                name="last_name"
+                component={renderConfig.FIELD}
+                placeholder="Surname"
+              />
+            </Col>
+          )}
         </Row>
         {this.props.isAdvanceSearch && (
           <div>
             <Row gutter={6}>
-              <Col md={12} xs={24}>
+              <Col md={8} xs={24}>
                 <Field
-                  id="status"
-                  name="status"
-                  placeholder="Select Mine Status"
-                  component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineStatusOptions}
+                  id="email"
+                  name="email"
+                  placeholder="Contact Email"
+                  component={renderConfig.FIELD}
                 />
               </Col>
-              <Col md={12} xs={24}>
+              <Col md={8} xs={24}>
                 <Field
-                  id="region"
-                  name="region"
-                  placeholder="Select Mine Region"
-                  component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineRegionOptions}
+                  id="phone"
+                  name="phone"
+                  placeholder="Phone Number"
+                  component={renderConfig.FIELD}
                 />
               </Col>
-            </Row>
-            <Row gutter={6}>
-              <Col md={12} xs={24}>
+              <Col md={8} xs={24}>
                 <Field
-                  id="tenure"
-                  name="tenure"
-                  placeholder="Select Mine Tenure"
-                  component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineTenureTypes}
-                />
-              </Col>
-              <Col md={12} xs={24}>
-                <Field
-                  id="commodity"
-                  name="commodity"
-                  placeholder="Select Mine Commodity"
-                  component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineCommodityOptions}
-                />
-              </Col>
-            </Row>
-            <Row gutter={6}>
-              <Col md={12} xs={24}>
-                <Field
-                  id="major"
-                  name="major"
+                  id="role"
+                  name="role"
                   component={renderConfig.SELECT}
+                  // TODO: fetch roles and set here as props
                   data={[
-                    { value: "", label: "Major and Regional Mines" },
-                    { value: "true", label: "Major Mine" },
-                    { value: "false", label: "Regional Mine" },
-                  ]}
-                />
-              </Col>
-              <Col md={12} xs={24}>
-                <Field
-                  id="tsf"
-                  name="tsf"
-                  component={renderConfig.SELECT}
-                  data={[
-                    { value: "", label: "Mines With and Without TSFs" },
-                    { value: "false", label: "Mines Without TSFs" },
-                    { value: "true", label: "Mines With TSFs" },
+                    { value: "", label: "All Roles" },
+                    { value: "PMT", label: "Permittee" },
+                    { value: "MMG", label: "Mine Manager" },
                   ]}
                 />
               </Col>

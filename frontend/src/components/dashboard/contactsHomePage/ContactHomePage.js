@@ -9,6 +9,7 @@ import { fetchParties } from "@/actionCreators/partiesActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
+import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import Loading from "@/components/common/Loading";
@@ -97,6 +98,12 @@ export class ContactHomePage extends Component {
           </div>
         </div>
         <div className="landing-page__content">
+          <ContactSearch
+            initialValues={this.state.params}
+            {...this.props}
+            handleContactSearch={fetchParties}
+            contactType="PER"
+          />
           {this.state.isLoaded && (
             <div>
               <div className="tab__content ">
