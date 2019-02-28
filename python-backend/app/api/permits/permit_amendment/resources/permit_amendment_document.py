@@ -22,7 +22,6 @@ from ....utils.url import get_document_manager_svc_url
 
 class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
     #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
@@ -69,16 +68,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Permit amendment not found'), 404
 
         data = self.parser.parse_args()
-        if data.get('document_guid'):
-            # Associating existing mine document
-            permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(
-                data.get('document_guid'))
-            if not permit_amendment_doc:
-                return self.create_error_payload(404, 'Permit Amendment Document not found'), 404
-
-            permit_amendment.documents.append(permit_amendment_doc)
-            db.session.commit()
-        elif data.get('document_manager_guid'):
+        if data.get('document_manager_guid'):
             # Register and associate a new file upload
             filename = data.get('filename')
             if not filename:
@@ -95,7 +85,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             permit_amendment.save()
         else:
             return self.create_error_payload(
-                400, 'Must specify either Document GIUD or Document Manager GUID'), 400
+                400, 'Must provide the doc manager guid for the newly uploaded file'), 400
 
         return permit_amendment.json()
 
