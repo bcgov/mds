@@ -132,19 +132,6 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
         #ToDo: modify this to fit the contact search/filter criteria rather than the mine search/filter
         # Todo: STEP ONE JUST SEARCH THE NAMES.
 
-
-        # SEARCHES
-        # first_name
-        # party_name,
-        #
-        # FILTERS
-        # associated mine Id,
-        # phone,
-        # email,
-        # role,
-        # person vs orginization
-
-
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
