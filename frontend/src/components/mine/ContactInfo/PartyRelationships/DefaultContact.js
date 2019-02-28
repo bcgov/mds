@@ -77,11 +77,7 @@ export const DefaultContact = (props) => (
         <br />,
         <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
-        <span>
-          {props.partyRelationship.start_date
-            ? formatDate(props.partyRelationship.start_date)
-            : "Unknown"}
-        </span>,
+        <span>{formatDate(props.partyRelationship.start_date) || "Unknown"}</span>,
       ]}
     </div>
     {props.otherDetails}
