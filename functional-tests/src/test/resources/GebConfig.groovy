@@ -45,7 +45,7 @@ environments {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments('headless')
             o.addArguments('start-maximized')
-			//o.addArguments('disable-gpu')
+			o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
 
