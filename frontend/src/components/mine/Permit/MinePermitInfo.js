@@ -1,9 +1,11 @@
 import React from "react";
-import { Table } from "antd";
-import NullScreen from "@/components/common/NullScreen";
-import CustomPropTypes from "@/customPropTypes";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+
+import { Icon, Button, Row, Col } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -18,7 +20,26 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-export const MinePermitInfo = (props) => [<div>test</div>, <br />, <MinePermitTable {...props} />];
+export const MinePermitInfo = (props) => [
+  <div>
+    <div className="inline-flex between">
+      <div />
+      <div className="inline-flex between">
+        <AuthorizationWrapper
+          permission={Permission.CREATE}
+          isMajorMine={props.mine.major_mine_ind}
+        >
+          <Button type="primary"  style={{ paddingTop: "5px", paddingBottom: "5px" }>
+            <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+            &nbsp; Add New Permit
+          </Button>
+        </AuthorizationWrapper>
+      </div>
+    </div>
+  </div>,
+  <br />,
+  <MinePermitTable {...props} />,
+];
 
 const mapStateToProps = (state) => ({});
 
