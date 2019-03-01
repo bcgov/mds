@@ -76,6 +76,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             authorization_end_date,
             self.get_create_update_dict(),
             save=True)
+        new_pa.save()
 
         return new_pa.json()
 
@@ -92,17 +93,17 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'permit amendment not found'), 404
 
         data = self.parser.parse_args()
-        current_app.logger.info(f'updating {pa} with >> {data.keys()}')
+        current_app.logger.info(f'updating {pa} with >> {data}')
 
-        if 'received_date' in data.keys():
+        if 'received_date' in data:
             pa.received_date = data.get('received_date')
-        if 'issue_date' in data.keys():
+        if 'issue_date' in data:
             pa.issue_date = data.get('issue_date')
-        if 'authorization_end_date' in data.keys():
+        if 'authorization_end_date' in data:
             pa.authorization_end_date = data.get('authorization_end_date')
-        if 'permit_amendment_status_code' in data.keys():
+        if 'permit_amendment_status_code' in data:
             pa.permit_amendment_status_code = data.get('permit_amendment_status_code')
-        if 'permit_amendment_type_code' in data.keys():
+        if 'permit_amendment_type_code' in data:
             pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
 
         try:

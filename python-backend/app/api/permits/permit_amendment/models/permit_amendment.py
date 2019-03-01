@@ -56,8 +56,8 @@ class PermitAmendment(AuditMixin, Base):
                user_kwargs,
                permit_amendment_type_code='AMD',
                permit_amendment_status_code='ACT',
-               save=False):
-        new = cls(
+               save=True):
+        new_pa = cls(
             permit_id=permit.permit_id,
             received_date=received_date,
             issue_date=issue_date,
@@ -65,10 +65,10 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
             **user_kwargs)
-        permit.permit_amendments.append(new)
+        permit.permit_amendments.append(new_pa)
         if save:
-            db.session.commit()
-        return new
+            new_pa.save(commit=False)
+        return new_pa
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):

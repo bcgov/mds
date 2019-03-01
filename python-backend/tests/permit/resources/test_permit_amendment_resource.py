@@ -60,6 +60,9 @@ def test_post_permit_amendment_no_params(test_client, auth_headers, setup_info):
     assert post_data['issue_date'] is None
     assert post_data['authorization_end_date'] is None
 
+    #permit_amdendment is actually in db
+    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
+
 
 def test_post_permit_amendment_with_date_params(test_client, auth_headers, setup_info):
     data = {
@@ -79,6 +82,9 @@ def test_post_permit_amendment_with_date_params(test_client, auth_headers, setup
     assert post_data['issue_date'] == data['issue_date']
     assert post_data['authorization_end_date'] == data['authorization_end_date']
 
+    #permit_amdendment is actually in db
+    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
+
 
 def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup_info):
     #new amendments are always created with Status = Active (ACT) and Type = Amendment (AMD)
@@ -93,6 +99,9 @@ def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup
     assert post_data['permit_guid'] == TEST_PERMIT_GUID_1, str(post_data)
     assert post_data['permit_amendment_type_code'] == "AMD"
     assert post_data['permit_amendment_status_code'] == "ACT"
+
+    #permit_amdendment is actually in db
+    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
 
 
 #PUT
