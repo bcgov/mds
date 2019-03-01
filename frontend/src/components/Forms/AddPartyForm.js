@@ -65,7 +65,7 @@ export const AddPartyForm = (props) => (
                 name="email"
                 label="Email *"
                 component={renderConfig.FIELD}
-                validate={[required, email]}
+                validate={[email]}
               />
             </Form.Item>
           </Col>
