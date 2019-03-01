@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString, formatDate } from "@/utils/helpers";
+import { formatTitleString } from "@/utils/helpers";
 
 const propTypes = {
   permit: PropTypes.objectOf(CustomPropTypes.permit),
@@ -24,7 +24,11 @@ export const PermitCard = (props) => {
       <br />
       <h6>Last Amended</h6>
       <span>
-        {props.permit.amendments[0] ? props.permit.amendments[0].issue_date : <i>No Amendments</i>}
+        {props.permit.amendments[0] ? (
+          formatDate(props.permit.amendments[0].issue_date)
+        ) : (
+          <i>No Amendments</i>
+        )}
       </span>
       <br />
       <br />
