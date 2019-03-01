@@ -188,7 +188,7 @@ def register_commands(app):
                 print('Done!')
 
         #This is here to prevent this from running in production until we are confident in the permit data.
-        if False:
+        if app.config.get('ENVIRONMENT_NAME') == 'test':
 
             @sched.app.cli.command()
             def _run_etl():
