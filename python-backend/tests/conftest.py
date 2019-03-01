@@ -279,7 +279,6 @@ def setup_data(session):
 
     # Test Permit Data
     permit = Permit(
-        permit_id=TEST_PERMIT_ID_1,
         permit_guid=TEST_PERMIT_GUID_1,
         mine_guid=TEST_MINE_GUID,
         permit_no=TEST_PERMIT_NO_1,
@@ -293,23 +292,23 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     permit_amendment_status_code.save()
 
+    permit_amendment_status_code2 = PermitAmendmentStatusCode(
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_STATUS_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_status_code2.save()
+
     permit_amendment_type_code = PermitAmendmentTypeCode(
         permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
         description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
         **DUMMY_USER_KWARGS)
     permit_amendment_type_code.save()
 
-    permit_amendment = PermitAmendment(
-        permit_amendment_id=TEST_PERMIT_AMENDMENT_ID_1,
-        permit_amendment_guid=uuid.uuid4(),
-        permit_id=TEST_PERMIT_ID_1,
-        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
-        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
-        received_date=datetime.today(),
-        issue_date=datetime.today(),
-        authorization_end_date=datetime.today(),
+    permit_amendment_type_code2 = PermitAmendmentTypeCode(
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
         **DUMMY_USER_KWARGS)
-    permit_amendment.save()
+    permit_amendment_type_code2.save()
 
     required_document_due_date_type1 = RequiredDocumentDueDateType(
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
@@ -426,16 +425,6 @@ def setup_data(session):
         grouping_level=1,
         **DUMMY_USER_KWARGS)
     mpat5.save()
-
-    # Test Permittee Data
-    permittee = MinePartyAppointment(
-        mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
-        mine_party_appt_type_code='PMT',
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
-    permittee.save()
 
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),

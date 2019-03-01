@@ -15,14 +15,13 @@ from ..models.permit_amendment import PermitAmendment
 from ..models.permit_amendment_document import PermitAmendmentDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
 
 class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
     #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
@@ -32,7 +31,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             'permit_amendment_guid':
             'Required: The guid of the permit amendment that this upload will be attached to.'
         })
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_role_mine_create
     def post(self, permit_amendment_guid, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
@@ -60,25 +59,16 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
         )
 
         response = Response(resp.content, resp.status_code, resp.raw.headers.items())
-        return ('', 204)  #response
+        return response
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_role_mine_create
     def put(self, permit_amendment_guid, document_guid=None, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             return self.create_error_payload(404, 'Permit amendment not found'), 404
 
         data = self.parser.parse_args()
-        if data.get('document_guid'):
-            # Associating existing mine document
-            permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(
-                data.get('document_guid'))
-            if not permit_amendment_doc:
-                return self.create_error_payload(404, 'Permit Amendment Document not found'), 404
-
-            permit_amendment.documents.append(permit_amendment_doc)
-            db.session.commit()
-        elif data.get('document_manager_guid'):
+        if data.get('document_manager_guid'):
             # Register and associate a new file upload
             filename = data.get('filename')
             if not filename:
@@ -95,12 +85,15 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             permit_amendment.save()
         else:
             return self.create_error_payload(
-                400, 'Must specify either Document GIUD or Document Manager GUID'), 400
+                400, 'Must provide the doc manager guid for the newly uploaded file'), 400
 
         return permit_amendment.json()
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, permit_amendment_guid, document_guid, permit_guid=None):
+    @requires_role_mine_create
+    def delete(self, permit_amendment_guid, document_guid=None, permit_guid=None):
+        if not document_guid:
+            return self.create_error_payload(400, 'must provide document_guid to be unlinked'), 400
+
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(document_guid)
 

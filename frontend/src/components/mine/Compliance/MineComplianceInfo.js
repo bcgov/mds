@@ -107,7 +107,7 @@ export class MineComplianceInfo extends Component {
                   </Col>
                   <Col id={`due-date-${id}`} span={4}>
                     <h6 className={order.overdue ? "bold" : null}>
-                      {order.due_date === null ? "-" : formatDate(order.due_date)}
+                      {formatDate(order.due_date) || "-"}
                     </h6>
                   </Col>
                   <Col span={4} align="right" />
@@ -140,7 +140,7 @@ export class MineComplianceInfo extends Component {
                   <Col span={4}>
                     <div className="center">
                       <p className="info-display">
-                        {formatDate(this.props.mineComplianceInfo.last_inspection)}
+                        {formatDate(this.props.mineComplianceInfo.last_inspection) || "-"}
                       </p>
                       <p className="info-display-label">LAST INSPECTION DATE</p>
                     </div>

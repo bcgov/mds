@@ -46,8 +46,12 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Permit not found'), 404
         return result
 
+    @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
-    def post(self):
+    def post(self, permit_guid=None):
+
+        if permit_guid:
+            return self.create_error_payload(400, 'unexpected permit_guid'), 400
 
         data = self.parser.parse_args()
 
@@ -62,26 +66,17 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'There was a permit found with the provided permit number.'), 400
 
-        permit = Permit.create_mine_permit(
-            mine,
-            data.get('permit_no'),
-            data.get('permit_status_code'),
-            self.get_create_update_dict(),
-            save=True)
+        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
+                               data.get('permit_status_code'), self.get_create_update_dict())
 
-        amendment = PermitAmendment.create(
-            permit,
-            data.get('received_date'),
-            data.get('issue_date'),
-            data.get('authorization_end_date'),
-            self.get_create_update_dict(),
-            'OGP',
-            'ACT',
-            save=True)
+        amendment = PermitAmendment.create(permit,
+                                           data.get('received_date'), data.get('issue_date'),
+                                           data.get('authorization_end_date'),
+                                           self.get_create_update_dict(), 'OGP', 'ACT')
 
         try:
-            permit.save()
             amendment.save()
+            permit.save()
         except AssertionError as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()
@@ -98,7 +93,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'There was no permit found with that guid.'), 404
 
         data = self.parser.parse_args()
-        if 'permit_status_code' in data.keys():
+        if 'permit_status_code' in data:
             permit.permit_status_code = data.get('permit_status_code')
 
         try:

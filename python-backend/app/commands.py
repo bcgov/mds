@@ -38,9 +38,9 @@ def register_commands(app):
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
-            mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
-                                                    random.choice(PERMIT_STATUS_CODE['choices']),
-                                                    DUMMY_USER_KWARGS)
+            mine_permit = Permit.create(mine.mine_guid, random_key_gen(key_length=12),
+                                        random.choice(PERMIT_STATUS_CODE['choices']),
+                                        DUMMY_USER_KWARGS)
 
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid
@@ -175,10 +175,10 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
         @sched.app.cli.command()
-        def _run_etl():
+        def _run_nris_jobs():
             with sched.app.app_context():
                 print('Started NRIS job to cache Major Mines list.')
                 NRIS_jobs._cache_major_mines_list()
@@ -187,8 +187,8 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is her to prevent this from running in production until we are confident in the permit data.
-        if False:
+        #This is here to prevent this from running in production until we are confident in the permit data.
+        if app.config.get('ENVIRONMENT_NAME') == 'test':
 
             @sched.app.cli.command()
             def _run_etl():

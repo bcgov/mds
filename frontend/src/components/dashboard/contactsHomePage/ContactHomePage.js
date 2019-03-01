@@ -5,10 +5,16 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchParties } from "@/actionCreators/partiesActionCreator";
+import { fetchParties, fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
+import {
+  getParties,
+  getPartyIds,
+  getPartyPageData,
+  getPartyRelationshipTypeHash,
+} from "@/selectors/partiesSelectors";
+import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import Loading from "@/components/common/Loading";
@@ -38,8 +44,14 @@ export class ContactHomePage extends Component {
     },
   };
 
+  componentWillMount() {
+    // Fetch dependencies from API
+    this.props.fetchPartyRelationshipTypes();
+  }
+
   componentDidMount() {
     const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
     if (params) {
       this.renderDataFromURL(params);
     } else {
@@ -50,7 +62,7 @@ export class ContactHomePage extends Component {
         })
       );
     }
-    this.props.fetchParties(params).then(() => {
+    this.props.fetchParties({ ...parsedParams, relationships: "mine_party_appt" }).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -68,11 +80,12 @@ export class ContactHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { page, per_page } = queryString.parse(params);
+    const parsedParams = queryString.parse(params);
+    const { page, per_page } = parsedParams;
     this.setState({
       params: { page, per_page },
     });
-    this.props.fetchParties(params);
+    this.props.fetchParties({ ...parsedParams, relationships: "mine_party_appt" });
   };
 
   onPageChange = (page, per_page) => {
@@ -97,6 +110,12 @@ export class ContactHomePage extends Component {
           </div>
         </div>
         <div className="landing-page__content">
+          <ContactSearch
+            initialValues={this.state.params}
+            {...this.props}
+            handleContactSearch={fetchParties}
+            contactType="PER"
+          />
           {this.state.isLoaded && (
             <div>
               <div className="tab__content ">
@@ -123,12 +142,14 @@ const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyIds: getPartyIds(state),
   pageData: getPartyPageData(state),
+  relationshipTypeHash: getPartyRelationshipTypeHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
+      fetchPartyRelationshipTypes,
       openModal,
       closeModal,
     },

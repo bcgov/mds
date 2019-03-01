@@ -51,12 +51,12 @@ def register_extensions(app):
     CORS(app)
     Compress(app)
 
-    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_NRIS_jobs(app)
-            #This is her to prevent this from running in production until we are confident in the permit data.
-            if False:
+            #This is here to prevent this from running in production until we are confident in the permit data.
+            if app.config.get('ENVIRONMENT_NAME') == 'test':
                 _schedule_ETL_jobs(app)
 
     return None

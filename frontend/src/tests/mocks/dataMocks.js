@@ -327,6 +327,18 @@ export const PARTY = {
       name: "mock Two",
     },
   },
+  partiesWithAppointments: {
+    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      name: "mock name",
+      mine_party_appt: [],
+    },
+    "18145c75-49ad-0101-85f3-a43e45ae989a": {
+      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      name: "mock Two",
+      mine_party_appt: [],
+    },
+  },
 };
 
 export const MINE_NAME_LIST = [
