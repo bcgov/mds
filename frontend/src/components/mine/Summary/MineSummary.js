@@ -104,13 +104,15 @@ export const MineSummary = (props) => {
                     props.partyRelationshipTypes
                   )
                 )}
-              {props.mine.mine_permit.map((permit) =>
-                renderPartyRelationship(
-                  props.mine,
-                  props.partyRelationships.filter((pr) => activePermitteesByPermit(pr, permit))[0],
-                  props.partyRelationshipTypes
-                )
-              )}
+              {props.mine.mine_permit.map((permit) => {
+                const latestPermittee = props.partyRelationships.filter((pr) =>
+                  activePermitteesByPermit(pr, permit)
+                )[0];
+                return (
+                  latestPermittee &&
+                  renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
+                );
+              })}
             </Row>
             <Row gutter={16}>
               <Col span={24}>
