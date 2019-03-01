@@ -11,12 +11,13 @@ from tests.constants import DUMMY_USER_KWARGS
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
+    test_permit_no = 'mx-test-231'
     mine_1 = Mine.create_mine('1234567', 'TestMine', True, 'SW', DUMMY_USER_KWARGS)
     mine_2 = Mine.create_mine('7654321', 'TestingMine', True, 'NW', DUMMY_USER_KWARGS)
     mine_1.save()
     mine_2.save()
 
-    permit = Permit.create_mine_permit(mine_2, 'mx-test-231', 'O', DUMMY_USER_KWARGS)
+    permit = Permit.create_mine_permit(mine_2, test_permit_no, 'O', DUMMY_USER_KWARGS)
     permit.save()
 
     MINE_1_GUID = str(mine_1.mine_guid)
@@ -28,7 +29,8 @@ def setup_info(test_client):
         mine_1_guid=MINE_1_GUID,
         mine_2_guid=MINE_2_GUID,
         mine_2_permit_guid=MINE_2_PERMIT_GUID,
-        bad_guid=NON_EXISTENT_GUID)
+        bad_guid=NON_EXISTENT_GUID,
+        in_use_permit_no=test_permit_no)
 
     db.session.query(PermitAmendment).delete()
     db.session.commit()
@@ -55,6 +57,13 @@ def test_get_permit(test_client, setup_info, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_data['permit_guid'] == setup_info.get('mine_2_permit_guid')
     assert get_resp.status_code == 200
+
+
+def test_get_with_permit_no(test_client, setup_info, auth_headers):
+    get_resp = test_client.get(
+        '/permits?permit-no=' + setup_info.get('in_use_permit_no'),
+        headers=auth_headers['full_auth_header'])
+    assert get_resp.status_code == 400
 
 
 #Create
