@@ -45,10 +45,30 @@ environments {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments('headless')
             o.addArguments('start-maximized')
-			o.addArguments('disable-gpu')
+			//o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
 
+
+//			try this out
+			o.addArguments('--disable-popup-blocking')
+
+			//options = Options()
+			//options.add_argument('--headless')
+			//options.add_argument('--disable-gpu')
+//			prefs = {'download.default_directory' : out_path}
+//			options.add_experimental_option('prefs', prefs)
+//
+//			download_path = './output/'
+//
+//			driver = webdriver.Chrome('./chromedriver', chrome_options=options)
+//
+//			driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+//			params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+//			command_result = driver.execute("send_command", params)
+
+
+// end try this
 			String downloadFilepath = Const.DOWNLOAD_PATH
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
 			chromePrefs.put("profile.default_content_settings.popups", 0);
