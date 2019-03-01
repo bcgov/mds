@@ -41,9 +41,9 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                     400, 'There was a permit found with the provided permit number.'), 400
 
         permit = Permit.find_by_permit_guid(permit_guid)
-        if permit:
-            return permit.json()
-        return self.create_error_payload(404, 'Permit not found'), 404
+        if not permit:
+            return self.create_error_payload(404, 'Permit not found'), 404
+        return permit.json()
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
