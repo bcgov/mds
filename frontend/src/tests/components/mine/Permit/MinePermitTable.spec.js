@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MinePermitInfo } from "@/components/mine/Permit/MinePermitInfo";
+import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -18,9 +18,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("MinePermitInfo", () => {
+describe("MinePermitTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MinePermitInfo {...dispatchProps} {...props} />);
+    const component = shallow(<MinePermitTable {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
