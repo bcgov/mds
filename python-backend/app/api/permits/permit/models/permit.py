@@ -12,8 +12,8 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
-    permit_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    permit_guid = db.Column(UUID(as_uuid=True))
+    permit_id = db.Column(db.Integer, primary_key=True)
+    permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
@@ -22,6 +22,8 @@ class Permit(AuditMixin, Base):
     permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
+        primaryjoin=
+        "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
         order_by='desc(PermitAmendment.issue_date)',
         lazy='selectin')
 
@@ -47,10 +49,9 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(mine_guid=_id)
 
     @classmethod
-    def create_mine_permit(cls, mine, permit_no, permit_status_code, user_kwargs, save=True):
+    def create(cls, mine_guid, permit_no, permit_status_code, user_kwargs, save=True):
         mine_permit = cls(
-            permit_guid=uuid.uuid4(),
-            mine_guid=mine.mine_guid,
+            mine_guid=mine_guid,
             permit_no=permit_no,
             permit_status_code=permit_status_code,
             **user_kwargs)

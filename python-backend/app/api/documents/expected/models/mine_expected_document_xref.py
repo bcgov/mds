@@ -10,7 +10,7 @@ from app.extensions import db
 from sqlalchemy.inspection import inspect
 from ...required.models.required_documents import RequiredDocument
 
-from ....utils.models_mixins import AuditMixin, Base
+from ....utils.models_mixins import Base
 
 
 class MineExpectedDocumentXref(Base):
@@ -21,7 +21,5 @@ class MineExpectedDocumentXref(Base):
     mine_document_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_document.mine_document_guid'))
     exp_document_guid = db.Column(
-        UUID(as_uuid=True),
-        db.ForeignKey('mine_expected_document.exp_document_guid'))
-    active_ind = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+        UUID(as_uuid=True), db.ForeignKey('mine_expected_document.exp_document_guid'))
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
