@@ -67,7 +67,7 @@ def test_get_with_permit_no(test_client, setup_info, auth_headers):
 
 
 #Create
-def test_create_permit(test_client, setup_info, auth_headers):
+def test_post_permit(test_client, setup_info, auth_headers):
     PERMIT_NO = 'mx-test-999'
     data = {
         'mine_guid': setup_info.get('mine_1_guid'),
@@ -87,14 +87,14 @@ def test_create_permit(test_client, setup_info, auth_headers):
     assert len(post_data.get('amendments')) == 1
 
 
-def test_create_permit_bad_mine_guid(test_client, setup_info, auth_headers):
+def test_post_permit_bad_mine_guid(test_client, setup_info, auth_headers):
     data = {'mine_guid': setup_info.get('bad_guid')}
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
 
     assert post_resp.status_code == 404
 
 
-def test_create_permit_with_duplicate_permit_no(test_client, setup_info, auth_headers):
+def test_post_permit_with_duplicate_permit_no(test_client, setup_info, auth_headers):
     permit = Permit.find_by_permit_guid(setup_info.get('mine_2_permit_guid'))
     data = {'mine_guid': setup_info.get('mine_1_guid'), 'permit_no': permit.permit_no}
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
@@ -102,6 +102,24 @@ def test_create_permit_with_duplicate_permit_no(test_client, setup_info, auth_he
     assert post_resp.status_code == 400
 
 
+def test_post_with_permit_guid(test_client, setup_info, auth_headers):
+    PERMIT_NO = 'mx-test-999'
+    data = {
+        'mine_guid': setup_info.get('mine_1_guid'),
+        'permit_no': PERMIT_NO,
+        'permit_status_code': 'O',
+        'received_date': '1999-12-12',
+        'issue_date': '1999-12-21',
+        'authorization_end_date': '2012-12-02'
+    }
+    post_resp = test_client.post(
+        '/permits/' + setup_info.get('mine_2_permit_guid'),
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    assert post_resp.status_code == 400
+
+
+#Put
 def test_put_permit(test_client, setup_info, auth_headers):
     permit_guid = setup_info.get('mine_2_permit_guid')
     permit = Permit.find_by_permit_guid(permit_guid)
