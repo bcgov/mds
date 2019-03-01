@@ -32,18 +32,19 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     def get(self, permit_guid=None):
-        permit_no = request.args.get('permit-no', None, type=str)
-
-        if permit_no:
-            permit = Permit.find_by_permit_no(permit_no)
+        if permit_guid:
+            permit = Permit.find_by_permit_guid(permit_guid)
             if permit:
-                return self.create_error_payload(
-                    400, 'There was a permit found with the provided permit number.'), 400
+                result = permit.json()
 
-        permit = Permit.find_by_permit_guid(permit_guid)
-        if not permit:
+        elif request.args.get('mine_guid'):
+            permits = Permit.find_by_mine_guid(request.args.get('mine_guid'))
+            if permits:
+                result = [p.json() for p in permits]
+
+        if not result:
             return self.create_error_payload(404, 'Permit not found'), 404
-        return permit.json()
+        return result
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create

@@ -35,3 +35,10 @@ export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocument
 export const MINE_MANAGER_HISTORY = (mineNo) =>
   `/parties/mines/manager-history/csv?mine_no=${mineNo}`;
 export const MINESPACE_USER = "/users/minespace";
+
+// permits
+export const PERMIT = (params) =>
+  params ? `/permits?${queryString.stringify(params)}` : "/permits";
+export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT}/${permitGuid}/amendments`;
+export const PERMITAMENDMENTDOCUMENTS = (permitGuid, permitAmendmentGuid) =>
+  `${PERMIT}/${permitGuid}/amendments/${permitAmendmentGuid}`;
