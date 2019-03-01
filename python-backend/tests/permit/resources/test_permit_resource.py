@@ -17,7 +17,7 @@ def setup_info(test_client):
     mine_1.save()
     mine_2.save()
 
-    permit = Permit.create_mine_permit(mine_2, test_permit_no, 'O', DUMMY_USER_KWARGS)
+    permit = Permit.create(mine_2.mine_guid, test_permit_no, 'O', DUMMY_USER_KWARGS)
     permit.save()
 
     MINE_1_GUID = str(mine_1.mine_guid)

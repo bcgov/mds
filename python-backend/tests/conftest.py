@@ -279,7 +279,6 @@ def setup_data(session):
 
     # Test Permit Data
     permit = Permit(
-        permit_id=TEST_PERMIT_ID_1,
         permit_guid=TEST_PERMIT_GUID_1,
         mine_guid=TEST_MINE_GUID,
         permit_no=TEST_PERMIT_NO_1,

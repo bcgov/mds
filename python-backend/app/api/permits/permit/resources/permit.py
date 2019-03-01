@@ -65,9 +65,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'There was a permit found with the provided permit number.'), 400
 
-        permit = Permit.create_mine_permit(mine, data.get('permit_no'),
-                                           data.get('permit_status_code'),
-                                           self.get_create_update_dict())
+        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
+                               data.get('permit_status_code'), self.get_create_update_dict())
 
         amendment = PermitAmendment.create(permit,
                                            data.get('received_date'), data.get('issue_date'),
