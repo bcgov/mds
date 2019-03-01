@@ -38,9 +38,9 @@ def register_commands(app):
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
-            mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
-                                                    random.choice(PERMIT_STATUS_CODE['choices']),
-                                                    DUMMY_USER_KWARGS)
+            mine_permit = Permit.create(mine.mine_guid, random_key_gen(key_length=12),
+                                        random.choice(PERMIT_STATUS_CODE['choices']),
+                                        DUMMY_USER_KWARGS)
 
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid

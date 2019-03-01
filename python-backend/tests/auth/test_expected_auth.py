@@ -23,6 +23,8 @@ from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePa
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.permits.permit.resources.permit import PermitResource
+from app.api.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource
+from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 
@@ -61,8 +63,14 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (PartyResource, "post", [MINE_CREATE]), (PartyResource, "put", [MINE_CREATE]),
      (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
      (PermitResource, "put", [MINE_CREATE]), (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'post', [MINE_ADMIN]),
-     (MinespaceUserResource, 'delete', [MINE_ADMIN]),
+     (PermitAmendmentResource, "post", [MINE_CREATE]),
+     (PermitAmendmentResource, "put", [MINE_CREATE]),
+     (PermitAmendmentResource, "delete", [MINE_ADMIN]),
+     (PermitAmendmentDocumentResource, "post", [MINE_CREATE]),
+     (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
+     (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
+     (RequiredDocumentResource, "get", [MINE_VIEW]), (MinespaceUserResource, 'get', [MINE_ADMIN]),
+     (MinespaceUserResource, 'post', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
 def test_endpoint_auth(resource, method, expected_roles):

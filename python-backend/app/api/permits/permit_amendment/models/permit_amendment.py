@@ -13,7 +13,7 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
-    permit_amendment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    permit_amendment_id = db.Column(db.Integer, primary_key=True)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
@@ -28,12 +28,10 @@ class PermitAmendment(AuditMixin, Base):
 
     def json(self):
         return {
-            'permit_amendment_id':
-            str(self.permit_amendment_id),
             'permit_amendment_guid':
             str(self.permit_amendment_guid),
-            'permit_id':
-            str(self.permit_id),
+            'permit_guid':
+            str(self.permit.permit_guid),
             'permit_amendment_status_code':
             self.permit_amendment_status_code,
             'permit_amendment_type_code':
@@ -56,18 +54,19 @@ class PermitAmendment(AuditMixin, Base):
                user_kwargs,
                permit_amendment_type_code='AMD',
                permit_amendment_status_code='ACT',
-               save=False):
-        new = cls(
+               save=True):
+        new_pa = cls(
+            permit_id=permit.permit_id,
             received_date=received_date,
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
             **user_kwargs)
-        permit.permit_amendments.append(new)
+        permit.permit_amendments.append(new_pa)
         if save:
-            new.save(commit=False)
-        return new
+            new_pa.save(commit=False)
+        return new_pa
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
