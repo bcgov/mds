@@ -40,5 +40,7 @@ export const MINESPACE_USER = "/users/minespace";
 export const PERMIT = (params) =>
   params ? `/permits?${queryString.stringify(params)}` : "/permits";
 export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT}/${permitGuid}/amendments`;
+export const PERMITAMENDMENT = (permitAmendmentGuid) =>
+  `${PERMIT}/amendments/${permitAmendmentGuid}`;
 export const PERMITAMENDMENTDOCUMENTS = (permitGuid, permitAmendmentGuid) =>
   `${PERMIT}/${permitGuid}/amendments/${permitAmendmentGuid}`;

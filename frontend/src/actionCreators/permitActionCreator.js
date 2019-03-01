@@ -78,7 +78,11 @@ export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return axios
-    .post(ENVIRONMENT.apiUrl + API.PERMITAMENDMENT(permitGuid), payload, createRequestHeader())
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(permitGuid)}`,
+      payload,
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({ message: "Successfully created a new permit", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
@@ -95,12 +99,12 @@ export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
     });
 };
 
-export const updatePermitAmendment = (permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return axios
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(permitGuid)}/${permitAmdendmentGuid}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitAmdendmentGuid)}`,
       payload,
       createRequestHeader()
     )
