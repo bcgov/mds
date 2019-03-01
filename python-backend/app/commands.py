@@ -24,6 +24,7 @@ from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, 
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
 from .scheduled_jobs import NRIS_jobs
+from .scheduled_jobs import ETL_jobs
 from app import auth
 
 
@@ -37,9 +38,9 @@ def register_commands(app):
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
-            mine_permit = Permit.create_mine_permit(mine, random_key_gen(key_length=12),
-                                                    random.choice(PERMIT_STATUS_CODE['choices']),
-                                                    random_date(), DUMMY_USER_KWARGS)
+            mine_permit = Permit.create(mine.mine_guid, random_key_gen(key_length=12),
+                                        random.choice(PERMIT_STATUS_CODE['choices']),
+                                        DUMMY_USER_KWARGS)
 
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid
@@ -107,8 +108,16 @@ def register_commands(app):
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
                                           DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
-                party = Party.create_party(names.get_first_name(), names.get_last_name(),
-                                           DUMMY_USER_KWARGS)
+
+                first_name = names.get_first_name()
+                last_name = names.get_last_name()
+                email = first_name.lower() + '.' + last_name.lower() + '@' + last_name.lower() + '.com'
+                party = Party.create(last_name,
+                                     email,
+                                     '123-123-1234',
+                                     'PER',
+                                     DUMMY_USER_KWARGS,
+                                     first_name=first_name)
 
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
@@ -164,8 +173,7 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
-
+    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
         @sched.app.cli.command()
         def _run_nris_jobs():
             with sched.app.app_context():
@@ -175,3 +183,13 @@ def register_commands(app):
                 print('Caching all NRIS data for Major Mines')
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
+
+        #This is her to prevent this from running in production until we are confident in the permit data.
+        if False:
+
+            @sched.app.cli.command()
+            def _run_etl():
+                with sched.app.app_context():
+                    print('starting the ETL.')
+                    ETL_jobs._run_ETL()
+                    print('Completed running the ETL.')
