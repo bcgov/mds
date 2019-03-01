@@ -23,7 +23,7 @@ const defaultProps = {
   searchValue: "",
 };
 
-export class AdvancedSearchForm extends Component {
+export class AdvancedMineSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
     this.props.handleSearch();
@@ -132,10 +132,10 @@ export class AdvancedSearchForm extends Component {
   }
 }
 
-AdvancedSearchForm.propTypes = propTypes;
-AdvancedSearchForm.defaultProps = defaultProps;
+AdvancedMineSearchForm.propTypes = propTypes;
+AdvancedMineSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADVANCE_SEARCH,
   touchOnBlur: false,
-})(AdvancedSearchForm);
+})(AdvancedMineSearchForm);
