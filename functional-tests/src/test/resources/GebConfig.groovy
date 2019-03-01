@@ -51,6 +51,7 @@ environments {
 
 			String downloadFilepath = Const.DOWNLOAD_PATH
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
+			chromePrefs.put("profile.default_content_settings.popups", 0);
 			chromePrefs.put("download.default_directory", downloadFilepath)
 			o.setExperimentalOption("prefs", chromePrefs)
 

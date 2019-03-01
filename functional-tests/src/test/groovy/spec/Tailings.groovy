@@ -73,7 +73,8 @@ class Tailings extends GebReportingSpec {
 
         and: "User opens a file in the folder specified in GebConfig"
         tailingsTab.downloadLink[0].click()
-
+        print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
+        sleep(10000)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         //allow time for the file to be created in the DOWNLOAD_PATH
         //throw an error if it takes more than 20sec
@@ -86,7 +87,7 @@ class Tailings extends GebReportingSpec {
             counter++
         }
         String lineString = file.getText('UTF-8')
-
+        file.delete()
         then: "The doc upload complete message is shown"
         assert lineString == Const.TEST_FILE_CONTENT
     }
