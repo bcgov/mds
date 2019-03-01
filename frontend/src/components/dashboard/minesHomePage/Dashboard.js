@@ -109,7 +109,6 @@ export class Dashboard extends Component {
       this.props.fetchMineDisturbanceOptions();
       this.props.fetchMineCommodityOptions();
       this.props.fetchPartyRelationshipTypes();
-      this.props.fetchProvinceCodes();
       this.props.setOptionsLoaded();
     }
   }

@@ -70,6 +70,9 @@ const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
+const activePermitteesByPermit = (pr, permit) =>
+  isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
+
 export const MineSummary = (props) => {
   if (
     props.partyRelationships.length === 0 &&
@@ -93,8 +96,7 @@ export const MineSummary = (props) => {
             </Row>
             <Row gutter={16} type="flex">
               {props.partyRelationships
-                .filter(isActive)
-                .filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
+                .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     props.mine,
@@ -102,6 +104,15 @@ export const MineSummary = (props) => {
                     props.partyRelationshipTypes
                   )
                 )}
+              {props.mine.mine_permit.map((permit) => {
+                const latestPermittee = props.partyRelationships.filter((pr) =>
+                  activePermitteesByPermit(pr, permit)
+                )[0];
+                return (
+                  latestPermittee &&
+                  renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
+                );
+              })}
             </Row>
             <Row gutter={16}>
               <Col span={24}>
@@ -158,7 +169,8 @@ export const MineSummary = (props) => {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {formatDate(props.mineComplianceInfo.last_inspection)}
+                          {formatDate(props.mineComplianceInfo.last_inspection) ||
+                            String.EMPTY_FIELD}
                         </span>
                       </div>
                     </Row>

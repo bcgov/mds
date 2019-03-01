@@ -3,10 +3,11 @@ import { bindActionCreators } from "redux";
 import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Modal } from "antd";
+import { Modal, Icon } from "antd";
 import * as Styles from "@/constants/styles";
 import { closeModal } from "@/actions/modalActions";
 import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/selectors/modalSelectors";
+import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -33,6 +34,13 @@ export class ModalWrapper extends Component {
     this.props.closeModal();
   };
 
+  renderTitle = () => (
+    <div className="inline-flex between">
+      <h1>{this.props.props.title}</h1>
+      <Icon type="close" />
+    </div>
+  );
+
   render() {
     const ChildComponent = this.props.content;
     return (
@@ -42,6 +50,11 @@ export class ModalWrapper extends Component {
         closable={false}
         footer={null}
       >
+        <AuthorizationWrapper inDevelopment>
+          <div className="modal__close">
+            <Icon type="close" />
+          </div>
+        </AuthorizationWrapper>
         <LoadingBar
           scope="modal"
           style={{
