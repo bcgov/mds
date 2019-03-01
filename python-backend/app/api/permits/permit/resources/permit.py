@@ -93,7 +93,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'There was no permit found with that guid.'), 404
 
         data = self.parser.parse_args()
-        if 'permit_status_code' in data.keys():
+        if 'permit_status_code' in data:
             permit.permit_status_code = data.get('permit_status_code')
 
         try:
