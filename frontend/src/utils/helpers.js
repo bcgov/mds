@@ -43,7 +43,11 @@ export const createLabelHash = (obj) =>
   obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
 
 // Function to format an API date string to human readable
-export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+export const formatDate = (dateString) =>
+  dateString &&
+  dateString !== "9999-12-31" &&
+  dateString !== "None" &&
+  moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());

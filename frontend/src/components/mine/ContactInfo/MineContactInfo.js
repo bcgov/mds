@@ -33,8 +33,7 @@ export class MineContactInfo extends Component {
   }
 
   handleChange = (value) => {
-    const param = `?search=${value}`;
-    this.props.fetchParties(param);
+    this.props.fetchParties({ search: value });
   };
 
   render() {
