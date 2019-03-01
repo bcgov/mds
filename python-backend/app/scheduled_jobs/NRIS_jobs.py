@@ -13,7 +13,7 @@ import time
 
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
-@sched.task('cron', id='get_major_mine_list', hour=2, minute=15)
+@sched.task('cron', id='get_major_mine_list', hour=2, minute=25)
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
@@ -32,7 +32,7 @@ def _cache_major_mines_list():
 
 
 # Using the cached list of major mines process them if they are not already set to true.
-@sched.task('cron', id='get_major_mine_NRIS_data', hour=2, minute=20)
+@sched.task('cron', id='get_major_mine_NRIS_data', hour=2, minute=30)
 @register_apm
 def _cache_all_NRIS_major_mines_data():
     major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
