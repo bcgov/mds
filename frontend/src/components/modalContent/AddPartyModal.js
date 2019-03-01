@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { bindActionCreators } from "redux";
+import { getFormValues, submit, reset } from "redux-form";
 import { Steps, Button } from "antd";
 import * as FORM from "@/constants/forms";
 import AddPartyForm from "@/components/Forms/AddPartyForm";
@@ -27,24 +28,31 @@ export class AddTenureModal extends Component {
 
   handlePartySubmit = () => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    // this.handleFormReset();
+    this.props.reset(FORM.ADD_PARTY);
     return this.props.onSubmit(this.props.addPartyFormValues, type);
   };
 
-  handleFormReset = () => {
-    this.props.reset();
-    console.log("did you do the thing??");
-  };
-
   next() {
-    const current = this.state.current + 1;
-    this.setState({ current });
+    if (!this.props.addPartyForm.syncErrors) {
+      const current = this.state.current + 1;
+      this.setState({ current });
+    } else {
+      // submit form to trigger validation errors.... smelly, suggestions??
+      this.props.submit(FORM.ADD_PARTY);
+    }
   }
 
   prev() {
     const current = this.state.current - 1;
     this.setState({ current });
   }
+
+  handleCreateAnother = () => {
+    console.log(this.state.current);
+    const current = this.state.current - 1;
+    this.props.reset(FORM.ADD_PARTY);
+    this.setState({ current });
+  };
 
   renderStepOne() {
     return (
@@ -60,14 +68,11 @@ export class AddTenureModal extends Component {
 
   renderStepTwo() {
     return (
-      <div className="inline-flex center">
+      <div>
         <p>there wil;l be lodts gosfd cool things in here just not ight now k wait for it.</p>
-        {/* <Button type="secondary" className="full-mobile" onClick={this.handlePartySubmit}>
-          Submit and Add Another Contact
+        <Button type="primary" className="full-mobile center" onClick={this.handleCreateAnother}>
+          Submit and Add another contact
         </Button>
-        <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
-          Submit
-        </Button> */}
       </div>
     );
   }
@@ -79,25 +84,21 @@ export class AddTenureModal extends Component {
         content: this.renderStepOne(),
       },
       {
-        title: "Roles",
+        title: "Confirmation",
         content: this.renderStepTwo(),
       },
-      // {
-      //   title: "Final Step",
-      //   content: this.renderStepTwo(),
-      // },
     ];
 
     return (
       <div>
         <div>
-          <Steps current={this.state.current}>
+          <Steps current={this.state.current} labelPlacement="vertical">
             {steps.map((step) => (
               <Step key={step.title} title={step.title} />
             ))}
           </Steps>
           <div>{steps[this.state.current].content}</div>
-          <div>
+          <div className="right center-mobile">
             {this.state.current > 0 && (
               <Button type="secondary" className="full-mobile" onClick={() => this.prev()}>
                 Previous
@@ -109,18 +110,13 @@ export class AddTenureModal extends Component {
               </Button>
             )}
             {this.state.current === steps.length - 1 && (
-              // <Button type="secondary" onClick={() => this.prev()}>
-              //   Previous
-              // </Button>
-              <div>
-                <Button type="secondary" className="full-mobile" onClick={this.handlePartySubmit}>
-                  Submit and Add Another
-                </Button>
-                <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
-                  Submit
-                </Button>
-              </div>
+              <Button type="primary" onClick={this.handlePartySubmit}>
+                Submit
+              </Button>
             )}
+            <Button type="tertiary" onClick={this.handlePartySubmit}>
+              Cancel
+            </Button>
           </div>
         </div>
       </div>
@@ -130,12 +126,21 @@ export class AddTenureModal extends Component {
 
 const mapStateToProps = (state) => ({
   addPartyFormValues: getFormValues(FORM.ADD_PARTY)(state) || {},
+  addPartyForm: state.form[FORM.ADD_PARTY],
 });
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      submit,
+      reset,
+    },
+    dispatch
+  );
 
 AddTenureModal.propTypes = propTypes;
 AddTenureModal.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddTenureModal);

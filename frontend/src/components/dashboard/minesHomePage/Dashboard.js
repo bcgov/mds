@@ -16,7 +16,6 @@ import {
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
-  fetchProvinceCodes,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -409,7 +408,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchStatusOptions,
       fetchRegionOptions,
       createMineRecord,
-      fetchProvinceCodes,
       fetchMineTenureTypes,
       fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,

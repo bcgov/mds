@@ -20,7 +20,7 @@ export const AddPartyForm = (props) => (
         <Radio.Button value={false}>Company</Radio.Button>
       </Radio.Group>
     </div>
-    <Form layout="vertical" onReset={props.handleFormReset}>
+    <Form layout="vertical">
       {props.isPerson && (
         <Row gutter={16}>
           <Col md={12} sm={12} xs={24}>
@@ -192,6 +192,7 @@ AddPartyForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_PARTY,
-  touchOnBlur: false,
+  // touchOnChange: true,
+  // touchOnBlur: false,
   destroyOnUnmount: false,
 })(AddPartyForm);

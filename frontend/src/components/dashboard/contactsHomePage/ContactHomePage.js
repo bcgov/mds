@@ -7,6 +7,7 @@ import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
+import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
@@ -59,6 +60,7 @@ export class ContactHomePage extends Component {
     this.props.fetchParties(params).then(() => {
       this.setState({ isLoaded: true });
     });
+    this.props.fetchProvinceCodes();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,15 +94,11 @@ export class ContactHomePage extends Component {
 
   handleSubmit = (value, type) => {
     const payload = { type, ...value };
-    this.props
-      .createParty(payload)
-      .then(() => {
-        this.props.closeModal();
-      })
-      .then(() => {
-        const params = this.props.location.search;
-        this.props.fetchParties(params);
-      });
+    this.props.createParty(payload).then(() => {
+      this.props.closeModal();
+      const params = this.props.location.search;
+      this.props.fetchParties(params);
+    });
   };
 
   openModal(event, onSubmit, title, provinceOptions) {
@@ -178,6 +176,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
+      fetchProvinceCodes,
       createParty,
       openModal,
       closeModal,
