@@ -59,7 +59,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
         )
 
         response = Response(resp.content, resp.status_code, resp.raw.headers.items())
-        return ('', 204)  #response
+        return response
 
     @requires_role_mine_create
     def put(self, permit_amendment_guid, document_guid=None, permit_guid=None):
