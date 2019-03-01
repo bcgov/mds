@@ -50,11 +50,35 @@ export const fetchPermits = (params = {}) => (dispatch) => {
     });
 };
 
-export const createPermitAmendment = (permit_guid, payload) => (dispatch) => {
+export const updatePermit = (permit_guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT));
+  dispatch(showLoading());
+  return axios
+    .put(`${ENVIRONMENT.apiUrl}${API.PERMIT()}/${permit_guid}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated permit`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_PERMIT));
+      dispatch(hideLoading());
+    });
+};
+
+export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return axios
-    .post(ENVIRONMENT.apiUrl + API.PERMITAMENDMENT(permit_guid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.PERMITAMENDMENT(permitGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully created a new permit", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
@@ -68,5 +92,33 @@ export const createPermitAmendment = (permit_guid, payload) => (dispatch) => {
       });
       dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT));
       dispatch(hideLoading("modal"));
+    });
+};
+
+export const updatePermitAmendment = (permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
+  dispatch(showLoading());
+  return axios
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(permitGuid)}/${permitAmdendmentGuid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated permit amendment`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT));
+      dispatch(hideLoading());
     });
 };
