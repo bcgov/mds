@@ -1,6 +1,6 @@
 from flask_restplus import Resource, reqparse
 from datetime import datetime
-from flask import current_app
+from flask import current_app, request
 
 from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
@@ -32,10 +32,19 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     def get(self, permit_guid=None):
-        permit = Permit.find_by_permit_guid(permit_guid)
-        if permit:
-            return permit.json()
-        return self.create_error_payload(404, 'Permit not found'), 404
+        if permit_guid:
+            permit = Permit.find_by_permit_guid(permit_guid)
+            if permit:
+                result = permit.json()
+
+        elif request.args.get('mine_guid'):
+            permits = Permit.find_by_mine_guid(request.args.get('mine_guid'))
+            if permits:
+                result = [p.json() for p in permits]
+
+        if not result:
+            return self.create_error_payload(404, 'Permit not found'), 404
+        return result
 
     @requires_role_mine_create
     def post(self):
