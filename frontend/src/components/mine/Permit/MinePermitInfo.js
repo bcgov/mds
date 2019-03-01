@@ -121,19 +121,20 @@ const transformRowData = (permit, partyRelationships) => {
   };
 };
 
-const transformChildRowData = (amendment, record, amendmentNumber) => ({
-    amendmentNumber,
-    receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
-    issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
-    authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
-    description: Strings.EMPTY_FIELD,
-  });
+const transformChildRowData = (amendment, index, amendments) => ({
+  amendmentNumber: amendments.length - index,
+  receivedDate:
+    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
+  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
+  authorizationEndDate:
+    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
+    Strings.EMPTY_FIELD,
+  description: Strings.EMPTY_FIELD,
+});
 
 export const MinePermitInfo = (props) => {
   const amendmentHistory = (record) => {
-    const childRowData = record.amendments.map((amendment, index) =>
-      transformChildRowData(amendment, record, record.amendments.length - index)
-    );
+    const childRowData = record.amendments.map(transformChildRowData);
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
