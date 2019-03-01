@@ -29,7 +29,7 @@ export const MinePermitInfo = (props) => [
           permission={Permission.CREATE}
           isMajorMine={props.mine.major_mine_ind}
         >
-          <Button type="primary"  style={{ paddingTop: "5px", paddingBottom: "5px" }>
+          <Button type="primary">
             <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
             &nbsp; Add New Permit
           </Button>

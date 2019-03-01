@@ -44,8 +44,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             if permit:
                 permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
                 if permit_amendments:
-                    result = {'amendments': [x.json() for x in permit_amendments]}
-                    return result
+                    return [x.json() for x in permit_amendments]
 
         return self.create_error_payload(404, 'Permit amendment(s) not found'), 404
 
@@ -70,15 +69,18 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         issue_date = data.get('issue_date')
         authorization_end_date = data.get('authorization_end_date')
 
-        new_pa = PermitAmendment.create(
-            permit,
-            received_date,
-            issue_date,
-            authorization_end_date,
-            self.get_create_update_dict(),
-            save=True)
-
-        return permit.json()
+        try:
+            new_pa = PermitAmendment.create(
+                permit,
+                received_date,
+                issue_date,
+                authorization_end_date,
+                self.get_create_update_dict(),
+                save=True)
+            new_pa.save()
+        except Exception as e:
+            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
+        return new_pa.json()
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -93,23 +95,23 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'permit amendment not found'), 404
 
         data = self.parser.parse_args()
-        current_app.logger.info(f'updating {pa} with >> {data.keys()}')
-
-        if 'received_date' in data.keys():
-            pa.received_date = data.get('received_date')
-        if 'issue_date' in data.keys():
-            pa.issue_date = data.get('issue_date')
-        if 'authorization_end_date' in data.keys():
-            pa.authorization_end_date = data.get('authorization_end_date')
-        if 'permit_amendment_status_code' in data.keys():
-            pa.permit_amendment_status_code = data.get('permit_amendment_status_code')
-        if 'permit_amendment_type_code' in data.keys():
-            pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
+        current_app.logger.info(f'updating {pa} with >> {data}')
 
         try:
+            if 'received_date' in data:
+                pa.received_date = data.get('received_date')
+            if 'issue_date' in data:
+                pa.issue_date = data.get('issue_date')
+            if 'authorization_end_date' in data:
+                pa.authorization_end_date = data.get('authorization_end_date')
+            if 'permit_amendment_status_code' in data:
+                pa.permit_amendment_status_code = data.get('permit_amendment_status_code')
+            if 'permit_amendment_type_code' in data:
+                pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
             pa.save()
-        except AssertionError as e:
-            self.raise_error(500, 'Error: {}'.format(e))
+        except Exception as e:
+            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
+
         return pa.json()
 
     @api.doc(params={
@@ -128,6 +130,6 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
         try:
             pa.save()
-        except AssertionError as e:
-            self.raise_error(500, 'Error: {}'.format(e))
+        except Exception as e:
+            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
         return ('', 204)

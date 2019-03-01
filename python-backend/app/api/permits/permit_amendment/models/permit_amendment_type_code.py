@@ -12,8 +12,8 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class PermitAmendmentTypeCode(AuditMixin, Base):
     __tablename__ = 'permit_amendment_type_code'
-    permit_amendment_type_code = db.Column(db.String(2), nullable=False, primary_key=True)
-    description = db.Column(db.String(100), nullable=False)
+    permit_amendment_type_code = db.Column(db.String, nullable=False, primary_key=True)
+    description = db.Column(db.String, nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
@@ -51,8 +51,8 @@ class PermitAmendmentTypeCode(AuditMixin, Base):
     def validate_permit_amendment_type_code(self, key, permit_amendment_type_code):
         if not permit_amendment_type_code:
             raise AssertionError('Permit amendment type code is not provided.')
-        if len(permit_amendment_type_code) > 2:
-            raise AssertionError('Permit amendment type code must not exceed 2 characters.')
+        if len(permit_amendment_type_code) > 3:
+            raise AssertionError('Permit amendment type code must not exceed 3 characters.')
         return permit_amendment_type_code
 
     @validates('description')

@@ -153,11 +153,8 @@ export class RelationshipProfile extends Component {
         partyGuid: relationship.party.party_guid,
         role: this.state.partyRelationshipTitle,
         permit: this.state.permitsMapping[relationship.related_guid],
-        endDate:
-          relationship.end_date === "9999-12-31" || null
-            ? "Present"
-            : formatDate(relationship.end_date),
-        startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
+        endDate: formatDate(relationship.end_date) || "Present",
+        startDate: formatDate(relationship.start_date) || "Unknown",
       }));
 
     const isLoaded =
