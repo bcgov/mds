@@ -1,8 +1,10 @@
+import random
 import decimal
 import uuid
 import requests
 import json
 import functools
+import backoff
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -42,11 +44,20 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_CACHE_PREFIX + 'token',
+                      result, timeout=TIMEOUT_12_HOURS)
 
     return result
 
 
+def backoff_hdlr(details):
+    print("Backing off {wait:0.1f} seconds afters {tries} tries "
+          "calling function {target} with args {args} and kwargs "
+          "{kwargs}".format(**details))
+
+
+@backoff.on_exception(backoff.constant, requests.exceptions.HTTPError,
+                      on_backoff=backoff_hdlr, max_tries=5, jitter=(lambda _: random.randint(10, 20)))
 def _get_EMPR_data_from_NRIS(mine_no):
     current_date = datetime.now()
 
@@ -79,8 +90,9 @@ def _get_EMPR_data_from_NRIS(mine_no):
 
         try:
             empr_nris_resp.raise_for_status()
-        except requests.exceptions.HTTPError as err:
+        except requests.exceptions.HTTPError:
             # TODO add logging for this error.
+            print("Retrying", mine_no)
             raise
 
         return empr_nris_resp.json()
@@ -93,7 +105,8 @@ def _process_NRIS_data(data, mine_no):
 
     data = sorted(
         data,
-        key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
+        key=lambda k: datetime.strptime(
+            k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
         reverse=True)
 
     most_recent = data[0]
@@ -106,7 +119,8 @@ def _process_NRIS_data(data, mine_no):
     open_orders_list = []
 
     for report in data:
-        report_date = _get_datetime_from_NRIS_data(report.get('assessmentDate'))
+        report_date = _get_datetime_from_NRIS_data(
+            report.get('assessmentDate'))
         one_year_ago = datetime.now() - relativedelta(years=1)
 
         prefix, inspector = report.get('assessor').split('\\')

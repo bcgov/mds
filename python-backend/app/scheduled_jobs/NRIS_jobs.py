@@ -6,6 +6,8 @@ from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_
 from app.api.utils.apm import register_apm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import time
+
 
 # The schedule of these jobs is set using server time (UTC)
 
@@ -39,7 +41,7 @@ def _cache_all_NRIS_major_mines_data():
 
     mines_cache_tasks = {}
 
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=25) as executor:
         for mine in major_mine_list:
             if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
                 cache.set(NRIS_JOB_PREFIX + mine, 'True',
@@ -59,6 +61,8 @@ def _process_NRIS_data_for_mine(mine):
         except requests.exceptions.Timeout:
             pass
         except requests.exceptions.HTTPError as errhttp:
+            cache.set(NRIS_JOB_PREFIX + mine, 'False',
+                      timeout=TIMEOUT_60_MINUTES)
             # log error
             pass
         except TypeError as e:
