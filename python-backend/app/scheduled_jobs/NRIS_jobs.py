@@ -6,14 +6,9 @@ from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_
 from app.api.utils.apm import register_apm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-import time
-
-
-# The schedule of these jobs is set using server time (UTC)
-
 # caches a list of mine numbers for all major mines and each major mine individually
 # to indicate whether of not it has been processed.
-@sched.task('cron', id='get_major_mine_list', hour=2, minute=25)
+@sched.task('cron', id='get_major_mine_list', hour=3, minute=25)
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
@@ -32,7 +27,7 @@ def _cache_major_mines_list():
 
 
 # Using the cached list of major mines process them if they are not already set to true.
-@sched.task('cron', id='get_major_mine_NRIS_data', hour=2, minute=30)
+@sched.task('cron', id='get_major_mine_NRIS_data', hour=3, minute=30)
 @register_apm
 def _cache_all_NRIS_major_mines_data():
     major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
@@ -41,7 +36,7 @@ def _cache_all_NRIS_major_mines_data():
 
     mines_cache_tasks = {}
 
-    with ThreadPoolExecutor(max_workers=15) as executor:
+    with ThreadPoolExecutor(max_workers=25) as executor:
         for mine in major_mine_list:
             if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
                 cache.set(NRIS_JOB_PREFIX + mine, 'True',
@@ -49,9 +44,10 @@ def _cache_all_NRIS_major_mines_data():
                 mines_cache_tasks[executor.submit(
                     _process_NRIS_data_for_mine, mine)] = mine
 
+    counter = 0
     for mine in as_completed(mines_cache_tasks):
-        current_mine = mines_cache_tasks[mine]
-        print('Thread completed for mine: ', current_mine)
+        counter += 1
+    print('Total mines cached: ', counter)
 
 
 def _process_NRIS_data_for_mine(mine):
@@ -60,10 +56,11 @@ def _process_NRIS_data_for_mine(mine):
             data = NRIS_service._get_EMPR_data_from_NRIS(mine)
         except requests.exceptions.Timeout:
             pass
-        except requests.exceptions.HTTPError as errhttp:
+        except requests.exceptions.HTTPError:
+            # Mark mine in the cache as unprocessed if NRIS
+            # throws an error
             cache.set(NRIS_JOB_PREFIX + mine, 'False',
                       timeout=TIMEOUT_60_MINUTES)
-            # log error
             pass
         except TypeError as e:
             # log error

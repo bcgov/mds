@@ -50,14 +50,19 @@ def _get_NRIS_token():
     return result
 
 
-def backoff_hdlr(details):
+# Prints backoff details
+def backoff_handler(details):
     print("Backing off {wait:0.1f} seconds afters {tries} tries "
           "calling function {target} with args {args} and kwargs "
           "{kwargs}".format(**details))
 
 
-@backoff.on_exception(backoff.constant, requests.exceptions.HTTPError,
-                      on_backoff=backoff_hdlr, max_tries=5, jitter=(lambda _: random.randint(10, 20)))
+# The function retries after x seconds, where x is any number between 10 and 20
+# up to 5 times when a HTTP error is thrown. Usually NRIS throws HTTP errors when
+# the service is too busy to process incoming requests
+@backoff.on_exception(backoff.expo, requests.exceptions.HTTPError,
+                      on_backoff=backoff_handler, max_tries=5,
+                      jitter=(lambda _: random.randint(10, 20)))
 def _get_EMPR_data_from_NRIS(mine_no):
     current_date = datetime.now()
 
@@ -92,7 +97,6 @@ def _get_EMPR_data_from_NRIS(mine_no):
             empr_nris_resp.raise_for_status()
         except requests.exceptions.HTTPError:
             # TODO add logging for this error.
-            print("Retrying", mine_no)
             raise
 
         return empr_nris_resp.json()
