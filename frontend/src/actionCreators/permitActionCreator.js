@@ -49,3 +49,24 @@ export const fetchPermits = (params = {}) => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const createPermitAmendment = (permit_guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
+  dispatch(showLoading("modal"));
+  return axios
+    .post(ENVIRONMENT.apiUrl + API.PERMITAMENDMENT(permit_guid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({ message: "Successfully created a new permit", duration: 10 });
+      dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT));
+      dispatch(hideLoading("modal"));
+    });
+};
