@@ -113,7 +113,7 @@ export class ContactHomePage extends Component {
           <ContactSearch
             initialValues={this.state.params}
             {...this.props}
-            handleContactSearch={fetchParties}
+            fetchParties={this.props.fetchParties}
             contactType="PER"
           />
           {this.state.isLoaded && (

@@ -7,25 +7,15 @@ import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import AdvancedContactSearchForm from "@/components/Forms/AdvancedContactSearchForm";
-import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class ContactSearch supports searching for a filtered list of parties.
  */
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
-  handleContactSearch: PropTypes.func,
-  handleCoordinateSearch: PropTypes.func,
-  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
-  isMapView: PropTypes.bool,
 };
 
-const defaultProps = {
-  mineNameList: [],
-  handleContactSearch: () => {},
-  handleCoordinateSearch: () => {},
-  isMapView: false,
-};
+const defaultProps = {};
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
@@ -35,42 +25,8 @@ export class ContactSearch extends Component {
     isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
-  /**
-   *  re-center the map to the mines coordinates
-   * @param value = 'mine.long, mine.lat';
-   */
-  handleCoordinateSearch = (value) => {
-    this.props.handleCoordinateSearch(value);
-  };
-
-  /**
-   *  If the user has typed more than 3 characters filter the search
-   * If they clear the search, revert back to default search set
-   */
-  handleChange = (name) => {
-    if (name.length > 2) {
-      // Only used by the map view, which searches by name
-      this.props.fetchMineNameList({ name });
-    } else if (name.length === 0) {
-      this.props.fetchMineNameList();
-    }
-  };
-
-  /**
-   * filter mineList with new search input;
-   */
   handleSearch = (value = {}) => {
-    const { commodity, region, status, tenure, tsf, major, search } = value;
-
-    this.props.handleContactSearch({
-      search,
-      tsf,
-      major,
-      commodity: commodity && commodity.join(","),
-      region: region && region.join(","),
-      status: status && status.join(","),
-      tenure: tenure && tenure.join(","),
-    });
+    this.props.fetchParties({ ...value, relationships: "mine_party_appt" });
   };
 
   toggleAdvancedSearch = () => {
@@ -89,6 +45,18 @@ export class ContactSearch extends Component {
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
                 handleSearch={this.handleSearch}
+                initialValues={{ type: "PER" }}
+                partyTypeOptions={[
+                  /* TODO: Pass this in from Redux store */
+                  { value: "PER", label: "Person" },
+                  { value: "ORG", label: "Organization" },
+                ]}
+                relationshipTypes={[
+                  /* TODO: Pass this in from Redux store */
+                  { value: "", label: "All Roles" },
+                  { value: "PMT", label: "Permittee" },
+                  { value: "MMG", label: "Mine Manager" },
+                ]}
               />
             </span>
           </Col>

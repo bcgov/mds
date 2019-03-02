@@ -7,17 +7,18 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  searchValue: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  roleOptions: CustomPropTypes.options.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
+  partyTypeOptions: CustomPropTypes.options.isRequired,
+  contactType: PropTypes.string,
+  relationshipTypes: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
-  searchValue: "",
+  contactType: "PER",
 };
 
 export class AdvancedContactSearchForm extends Component {
@@ -46,9 +47,7 @@ export class AdvancedContactSearchForm extends Component {
               name="type"
               placeholder="Type of Contact"
               component={renderConfig.SELECT}
-              // TODO: Pass data in as props
-              // TODO: Set initial value PER based on props.contactType
-              data={[{ value: "PER", label: "Person" }, { value: "ORG", label: "Organization" }]}
+              data={this.props.partyTypeOptions}
               onChange={this.handleContactTypeChange}
             />
           </Col>
@@ -58,7 +57,6 @@ export class AdvancedContactSearchForm extends Component {
                 id="party_name"
                 name="party_name"
                 component={renderConfig.FIELD}
-                defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
                 placeholder="Organization Name"
               />
             </Col>
@@ -108,12 +106,7 @@ export class AdvancedContactSearchForm extends Component {
                   id="role"
                   name="role"
                   component={renderConfig.SELECT}
-                  // TODO: fetch roles and set here as props
-                  data={[
-                    { value: "", label: "All Roles" },
-                    { value: "PMT", label: "Permittee" },
-                    { value: "MMG", label: "Mine Manager" },
-                  ]}
+                  data={this.props.relationshipTypes}
                 />
               </Col>
             </Row>
