@@ -7,6 +7,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 import { Icon, Button, Row, Col } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -14,10 +16,24 @@ import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
+};
+
+const handleAddPermit = (value) => {
+  alert(JSON.stringify(value));
+};
+
+const openAddPermitModal = (event, openModal, onSubmit, title) => {
+  event.preventDefault();
+  openModal({
+    props: { onSubmit, title },
+    content: modalConfig.ADD_TAILINGS,
+  });
 };
 
 export const MinePermitInfo = (props) => [
@@ -29,9 +45,14 @@ export const MinePermitInfo = (props) => [
           permission={Permission.CREATE}
           isMajorMine={props.mine.major_mine_ind}
         >
-          <Button type="primary">
+          <Button
+            type="primary"
+            onClick={(event) =>
+              openAddPermitModal(event, props.openModal, handleAddPermit, ModalContent.ADD_TAILINGS)
+            }
+          >
             <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-            &nbsp; Add New Permit
+            &nbsp; {ModalContent.ADD_PERMIT}
           </Button>
         </AuthorizationWrapper>
       </div>

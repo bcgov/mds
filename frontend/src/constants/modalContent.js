@@ -18,3 +18,5 @@ export const PERSON_NOT_FOUND =
 export const COMPANY_NOT_FOUND =
   "If the company is not in the list above, please add a new company below";
 export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";
+
+export const ADD_PERMIT = "Add New Permit";
