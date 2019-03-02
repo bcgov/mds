@@ -33,7 +33,6 @@
 }
 .custom-large-divider {
   border: 2px solid $h-divider-color;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 // BUTTON
@@ -184,6 +183,6 @@
   transition: all 0.3s;
   line-height: 22px;
   &:hover {
-    background-color: #d9d3e0;
+    background-color: $light-grey;
   }
 }

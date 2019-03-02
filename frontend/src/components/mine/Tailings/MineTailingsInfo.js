@@ -22,7 +22,7 @@ import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
-import { createDropDownList } from "@/utils/helpers";
+import { createDropDownList, formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 
@@ -194,10 +194,10 @@ export class MineTailingsInfo extends Component {
                       <h6>{doc.exp_document_name}</h6>
                     </Col>
                     <Col id={`due-date-${id}`} span={2}>
-                      <h6>{doc.due_date === "None" ? "-" : doc.due_date}</h6>
+                      <h6>{formatDate(doc.due_date) || "-"}</h6>
                     </Col>
                     <Col span={2}>
-                      <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
+                      <h6>{formatDate(doc.received_date) || "-"}</h6>
                     </Col>
                     <Col id={`status-${id}`} span={4}>
                       <h6 className={isOverdue ? "bold" : null}>
@@ -207,12 +207,15 @@ export class MineTailingsInfo extends Component {
                     <Col span={3}>
                       {!doc.related_documents
                         ? "-"
-                        : doc.related_documents.map((file, id) => (
+                        : doc.related_documents.map((file) => (
                             <div>
                               <a
-                                key={id}
+                                key={file.mine_document_guid}
                                 onClick={() =>
-                                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                                  downloadFileFromDocumentManager(
+                                    file.document_manager_guid,
+                                    file.document_name
+                                  )
                                 }
                               >
                                 {file.document_name}

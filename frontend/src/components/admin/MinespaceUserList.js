@@ -7,13 +7,13 @@ import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
-  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
+  minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
   handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
   minespaceUsers: [],
-  mines: [],
+  minespaceUserMines: [],
   handleDelete: () => {},
 };
 
@@ -62,7 +62,7 @@ const lookupMineName = (mine_guids, mines) =>
 
 const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   minespaceUsers.map((user) => ({
-    key: user.id,
+    key: user.user_id,
     emptyField: Strings.EMPTY_FIELD,
     email: user.email,
     mineNames: lookupMineName(user.mines, mines),
@@ -72,12 +72,16 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
 
 export const MinespaceUserList = (props) => (
   <div>
-    {props.mines && (
+    {props.minespaceUserMines && (
       <Table
         align="center"
         pagination={false}
         columns={columns}
-        dataSource={transformRowData(props.minespaceUsers, props.mines, props.handleDelete)}
+        dataSource={transformRowData(
+          props.minespaceUsers,
+          props.minespaceUserMines,
+          props.handleDelete
+        )}
         scroll={{ x: 1500 }}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
       />

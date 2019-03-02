@@ -5,8 +5,9 @@ import { Button, Card } from "antd";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
-import { formatTitleString } from "@/utils/helpers";
+import { formatTitleString, formatDate } from "@/utils/helpers";
 import { Link } from "react-router-dom";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -60,9 +61,13 @@ export const DefaultContact = (props) => (
       </h4>
       <br />
       <h6>Email Address</h6>
-      <a href={`mailto:${props.partyRelationship.party.email}`}>
-        {props.partyRelationship.party.email}
-      </a>
+      {props.partyRelationship.party.email && props.partyRelationship.party.email !== "Unknown" ? (
+        <a href={`mailto:${props.partyRelationship.party.email}`}>
+          {props.partyRelationship.party.email}
+        </a>
+      ) : (
+        <span>{Strings.EMPTY_FIELD}</span>
+      )}
       <br />
       <br />
       <h6>Phone Number</h6>
@@ -72,9 +77,7 @@ export const DefaultContact = (props) => (
         <br />,
         <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
-        <span>
-          {props.partyRelationship.start_date ? props.partyRelationship.start_date : "Unknown"}
-        </span>,
+        <span>{formatDate(props.partyRelationship.start_date) || "Unknown"}</span>,
       ]}
     </div>
     {props.otherDetails}

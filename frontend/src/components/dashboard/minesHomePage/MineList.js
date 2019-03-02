@@ -25,31 +25,19 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} className="mine-list__name">{text}</Link>
-    ),
+    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
   },
   {
     title: "Mine No.",
     width: 100,
     dataIndex: "mineNo",
-    render: (text, record) => (
-      <div title="Mine Number">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Mine Number">{text}</div>,
   },
   {
     title: "Operational Status",
     width: 150,
     dataIndex: "operationalStatus",
-    render: (text, record) => (
-      <div title="Operational Status">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Operational Status">{text}</div>,
   },
   {
     title: "Permit No.",
@@ -117,11 +105,7 @@ const columns = [
     title: "TSF",
     dataIndex: "tsf",
     width: 150,
-    render: (text) => (
-      <div title="TSF">
-        {text}
-      </div>
-    ),
+    render: (text) => <div title="TSF">{text}</div>,
   },
 ];
 
@@ -147,8 +131,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
 
 export const MineList = (props) => (
   <Table
-    align="center"
-    className="mine-list"
+    align="left"
     pagination={false}
     columns={columns}
     dataSource={transformRowData(
