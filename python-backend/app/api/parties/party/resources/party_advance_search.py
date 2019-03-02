@@ -1,8 +1,8 @@
 import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters, \
-from sqlalchemy import or_
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+# from sqlalchemy import or_
 
 from ..models.party import Party
 from ..models.party_type_code import PartyTypeCode
@@ -137,11 +137,7 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
-
-
-        #TODO: TALK TO TATIANNA AND ADRIENNE ABOUT ACTUAL SEARCH IMPLEMENTATION
-
-
+        # parse the filter terms
         first_name_filter_term = args.get('first_name', None, type=str)
         last_name_filter_term = args.get('last_name', None, type=str)
         party_name_filter_term = args.get('party_name', None, type=str)
@@ -149,8 +145,6 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
         role_filter_term = args.get('role', None, type=str)
         email_filter_term = args.get('email', None, type=str)
         phone_filter_term = args.get('phone_no', None, type=str)
-
-        contact_query = Party.query
 
         conditions = []
         if first_name_filter_term:
@@ -164,15 +158,16 @@ class PartyAdvancedSearch(Resource, UserMixin, ErrorMixin):
         # todo: make sure this works well with different number types
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
-
-        contact_query = Party.query.filter(or_(*conditions))
+        # todo: get the or's working properly
+        # contact_query = Party.query.filter(or_(*conditions))
+        contact_query = Party.query.filter(conditions[0])
 
         # todo: implement role filtering: check whether or not it's possible to do this with no join
         if role_filter_term:
             role_filter_term_array = role_filter_term.split(',')
             
-            role_filter= MinePartyAppointment.mine_party_appt_type_code  PartyTypeCode.party_type_code.in_(role_filter_term_array)
-            role_query = Party.query.join(PartyTypeCode).filter(role_filter)
+            role_filter= MinePartyAppointment.mine_party_appt_type_code.in_(role_filter_term_array)
+            role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
 
             contact_query =  contact_query.intersect(role_query) if contact_query else role_query
 
