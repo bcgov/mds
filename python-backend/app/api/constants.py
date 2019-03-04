@@ -408,7 +408,9 @@ MINE_REGION_OPTIONS = [
 NRIS_MMLIST_JOB = "processed_list"
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_JOB_PREFIX = "nris_sched_job_"
-NRIS_CACHE_PREFIX = "nris_"
+NRIS_TOKEN = 'nris:token'
+def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:compliance-data'
+
 
 #Cache Timeouts
 TIMEOUT_60_MINUTES = 3600

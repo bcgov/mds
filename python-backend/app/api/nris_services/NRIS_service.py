@@ -12,7 +12,7 @@ from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 from app.extensions import cache
-from ..constants import NRIS_CACHE_PREFIX, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
+from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
 
 
 def _get_datetime_from_NRIS_data(date):
@@ -23,7 +23,7 @@ def _get_inspector_from_report(report):
     return inspector
 
 def _get_NRIS_token():
-    result = cache.get(NRIS_CACHE_PREFIX + 'token')
+    result = cache.get(NRIS_TOKEN)
 
     if result is None:
         params = {
@@ -45,7 +45,7 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
 
     return result
 
@@ -66,7 +66,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
     if url is None:
         raise TypeError('Could not load the NRIS URL.')
     else:
-        #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
+        # Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
         params = {
             'inspectionStartDate': '2018-01-01',
             'inspectionEndDate': f'{current_date.year}-{current_date.month}-{current_date.day}',
@@ -83,7 +83,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
         try:
             empr_nris_resp.raise_for_status()
         except requests.exceptions.HTTPError:
-            #TODO add logging for this error.
+            # TODO add logging for this error.
             raise
 
         return empr_nris_resp.json()
@@ -166,5 +166,6 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_CACHE_PREFIX + mine_no, overview, timeout=TIMEOUT_24_HOURS)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no),
+              overview, timeout=TIMEOUT_24_HOURS)
     return overview

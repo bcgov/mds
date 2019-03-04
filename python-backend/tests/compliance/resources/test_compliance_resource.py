@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from unittest import mock
 
 from app.extensions import cache
-from app.api.constants import NRIS_CACHE_PREFIX
+from app.api.constants import NRIS_TOKEN
 
 def get_date_one_month_ahead():
     date = datetime.now() + relativedelta(months=1)
@@ -175,7 +175,7 @@ def setup_info(test_client):
             }]
 
     yield dict(NRIS_Mock_data=NRIS_Mock_data, expected_data=expected_data)
-    cache.delete(NRIS_CACHE_PREFIX + 'token')
+    cache.delete(NRIS_TOKEN)
 
 def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
 
