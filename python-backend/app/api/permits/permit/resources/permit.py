@@ -36,9 +36,10 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
         if permit_no:
             permit = Permit.find_by_permit_no(permit_no)
+            in_use = False
             if permit:
-                return self.create_error_payload(
-                    400, 'There was a permit found with the provided permit number.'), 400
+                in_use = True
+            return {'in_use': in_use}
 
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
@@ -57,7 +58,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
 
         if not mine:
-            return self.create_error_payload(404, 'There was no mine found with that guid.'), 404
+            return self.create_error_payload(404, 'That permit number is already in use.'), 404
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
 
