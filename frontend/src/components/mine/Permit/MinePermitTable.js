@@ -228,15 +228,14 @@ const transformChildRowData = (
 });
 
 export const MinePermitTable = (props) => {
-  const handleEditPermitAmendment = (data, permit_amendment_guid) => {
-    const result = { permit_amendment_guid, ...data };
-
-    props.updatePermitAmendment(result).then(() => {
+  // Edit permit Amendment
+  const handleEditPermitAmendment = (data) => {
+    props.updatePermitAmendment(data.permit_amendment_guid, data).then(() => {
       props.closeModal();
     });
   };
 
-  const openEditPermitAmendmentModal = (event, permit_amendment_guid, permit_guid) => {
+  const openEditAmendmentModal = (event, permit_amendment_guid, permit_guid) => {
     const permit = props.permits.find((p) => p.permit_guid === permit_guid);
     const permit_amendment = permit.amendments.find(
       (pa) => pa.permit_amendment_guid === permit_amendment_guid
@@ -260,16 +259,18 @@ export const MinePermitTable = (props) => {
     });
   };
 
+  // Add Permit Amendment
   const handleAddPermitAmendment = (data) => {
-    props.createPermitAmendment(data).then(() => {
+    props.createPermitAmendment(data.permit_guid, data).then(() => {
       props.closeModal();
     });
   };
 
-  const openAddPermitAmendmentModal = (event) => {
+  const openAddAmendmentModal = (event, permit_guid) => {
     event.preventDefault();
     props.openModal({
       props: {
+        initialValues: { permit_guid },
         onSubmit: handleAddPermitAmendment,
         title: "Add Permit Amendment",
       },
@@ -284,7 +285,7 @@ export const MinePermitTable = (props) => {
         record,
         record.amendments.length - index,
         props.major_mine_ind,
-        openEditPermitAmendmentModal
+        openEditAmendmentModal
       )
     );
     return (
@@ -293,12 +294,7 @@ export const MinePermitTable = (props) => {
   };
 
   const rowData = props.permits.map((permit) =>
-    transformRowData(
-      permit,
-      props.partyRelationships,
-      props.major_mine_ind,
-      openAddPermitAmendmentModal
-    )
+    transformRowData(permit, props.partyRelationships, props.major_mine_ind, openAddAmendmentModal)
   );
 
   return (
