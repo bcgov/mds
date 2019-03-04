@@ -90,8 +90,8 @@ export const AddPermitForm = (props) => (
         </Form.Item>
         <Form.Item>
           <Field
-            id="permit status"
-            name="permit_status"
+            id="permit_status_code"
+            name="permit_status_code"
             label="Permit status*"
             placeholder="Select a permit status"
             component={RenderSelect}
