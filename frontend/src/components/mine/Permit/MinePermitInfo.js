@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { fetchPermits, fetchPermitStatusOptions } from "@/actionCreators/permitActionCreator";
 import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -16,12 +16,14 @@ import { getPermits } from "../../../reducers/permitReducer";
  */
 
 const propTypes = {
-  fetchPermits: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+
+  fetchPermits: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -32,6 +34,7 @@ const defaultProps = {
 export class MinePermitInfo extends Component {
   componentWillMount() {
     this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    this.props.fetchPermitStatusOptions();
   }
 
   openAddPermitModal = (event, onSubmit, title) => {
@@ -47,7 +50,7 @@ export class MinePermitInfo extends Component {
   };
 
   handleAddPermit = (value) => {
-    /*const payload = { type, ...values };
+    /* const payload = { type, ...values };
     return this.props.createParty(payload).then(() => {
       this.props.fetchParties();
     }); */
@@ -97,6 +100,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPermits,
+      fetchPermitStatusOptions,
     },
     dispatch
   );

@@ -13,11 +13,18 @@ const permitReducer = (state = initialState, action) => {
         ...state,
         permits: action.payload,
       };
+    case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
+      return {
+        ...state,
+        statusCodes: action.payload,
+      };
     default:
       return state;
   }
 };
 
 export const getPermits = (state) => state[PERMITS].permits;
+export const getPermitStatusOptions = (state) =>
+  createDropDownList(state[PERMITS].statusCodes, "description", "permit_status_code");
 
 export default permitReducer;

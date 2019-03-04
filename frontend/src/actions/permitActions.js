@@ -5,4 +5,7 @@ export const storePermits = (payload) => ({
   payload,
 });
 
-export default storePermits;
+export const storePermitStatusOptions = (payload) => ({
+  type: actionTypes.STORE_PERMIT_STATUS_OPTIONS,
+  payload,
+});

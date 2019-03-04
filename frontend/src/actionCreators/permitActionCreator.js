@@ -50,6 +50,26 @@ export const fetchPermits = (params = {}) => (dispatch) => {
     });
 };
 
+export const fetchPermitStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
+  dispatch(showLoading("modal"));
+  return axios
+    .get(`${ENVIRONMENT.apiUrl}${API.PERMIT()}/status-codes`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
+      dispatch(permitActions.storePermitStatusOptions(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
+      dispatch(hideLoading("modal"));
+    });
+};
+
 export const updatePermit = (permit_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT));
   dispatch(showLoading());
