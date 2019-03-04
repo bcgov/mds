@@ -17,7 +17,7 @@ describe("complianceReducer", () => {
     const expectedValue = baseExpectedValue;
     expectedValue.mineComplianceInfo = {
       last_inspection: "2018-12-12 00:00",
-      inspector: "test",
+      last_inspector: "test",
       open_orders: 5,
       overdue_orders: 5,
       advisories: 5,
@@ -29,7 +29,7 @@ describe("complianceReducer", () => {
       undefined,
       storeMineComplianceInfo({
         last_inspection: "2018-12-12 00:00",
-        inspector: "test",
+        last_inspector: "test",
         open_orders: 5,
         overdue_orders: 5,
         advisories: 5,

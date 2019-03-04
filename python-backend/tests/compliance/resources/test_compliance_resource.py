@@ -31,7 +31,7 @@ def setup_info(test_client):
 
     expected_data = {
         'last_inspection': '2018-12-10 18:36',
-        'inspector': 'TEST',
+        'last_inspector': 'TEST',
         'num_open_orders': 3,
         'num_overdue_orders': 1,
         'advisories': 3,
@@ -192,7 +192,7 @@ def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
 
         assert get_resp.status_code == 200
         assert get_data['last_inspection'] == expected['last_inspection']
-        assert get_data['inspector'] == expected['inspector']
+        assert get_data['last_inspector'] == expected['last_inspector']
         assert get_data['num_open_orders'] == expected['num_open_orders']
         assert get_data['num_overdue_orders'] == expected['num_overdue_orders']
         assert get_data['advisories'] == expected['advisories']
