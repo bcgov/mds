@@ -4,6 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { email, phoneNumber, maxLength } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
@@ -91,6 +92,7 @@ export class AdvancedContactSearchForm extends Component {
                   name="email"
                   placeholder="Contact Email"
                   component={renderConfig.FIELD}
+                  validate={[email]}
                 />
               </Col>
               <Col md={8} xs={24}>
@@ -99,6 +101,7 @@ export class AdvancedContactSearchForm extends Component {
                   name="phone_no"
                   placeholder="Phone Number"
                   component={renderConfig.FIELD}
+                  validate={[phoneNumber, maxLength(12)]}
                 />
               </Col>
               <Col md={8} xs={24}>
