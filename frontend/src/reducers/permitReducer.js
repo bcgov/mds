@@ -18,6 +18,6 @@ const permitReducer = (state = initialState, action) => {
   }
 };
 
-export const getPermits = (state) => state[PERMITS].parties;
+export const getPermits = (state) => state[PERMITS].permits;
 
 export default permitReducer;

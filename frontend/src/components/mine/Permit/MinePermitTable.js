@@ -15,7 +15,8 @@ import { BRAND_PENCIL, EDIT } from "@/constants/assets";
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  // mine: CustomPropTypes.mine.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
 
@@ -193,9 +194,7 @@ export const MinePermitTable = (props) => {
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
-  const rowData = props.mine.mine_permit.map((permit) =>
-    transformRowData(permit, props.partyRelationships)
-  );
+  const rowData = props.permits.map((permit) => transformRowData(permit, props.partyRelationships));
 
   return (
     <Table
