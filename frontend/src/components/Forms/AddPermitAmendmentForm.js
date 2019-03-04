@@ -21,27 +21,9 @@ export const AddPermitAmendmentForm = (props) => (
       <Col>
         <Form.Item>
           <Field
-            id="received_date"
-            name="received_date"
-            label="Received Date"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
             id="issue_date"
             name="issue_date"
             label="Issue Date"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="authorization_end_date"
-            name="authorization_end_date"
-            label="Authorization End Date"
             component={RenderDate}
             validate={[required]}
           />

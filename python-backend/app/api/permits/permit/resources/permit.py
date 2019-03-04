@@ -32,7 +32,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     def get(self, permit_guid=None):
-
+        result = []
         permit_no = request.args.get('permit_no', None, type=str)
 
         if permit_no:
@@ -51,7 +51,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             if permits:
                 result = [p.json() for p in permits]
 
-        return result or []
+        return result
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create

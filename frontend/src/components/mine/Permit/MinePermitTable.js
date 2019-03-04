@@ -242,9 +242,7 @@ export const MinePermitTable = (props) => {
     );
 
     const initialValues = {
-      received_date: permit_amendment.received_date,
       issue_date: permit_amendment.issue_date,
-      authorization_end_date: permit_amendment.authorization_end_date,
       permit_amendment_guid,
     };
 
