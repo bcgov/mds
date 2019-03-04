@@ -32,7 +32,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     def get(self, permit_guid=None):
-        permit_no = request.args.get('permit-no', None, type=str)
+        permit_no = request.args.get('permit_no', None, type=str)
 
         if permit_no:
             permit = Permit.find_by_permit_no(permit_no)
@@ -76,7 +76,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         try:
             amendment.save()
             permit.save()
-        except AssertionError as e:
+        except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()
 

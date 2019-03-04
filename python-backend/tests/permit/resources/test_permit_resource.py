@@ -84,7 +84,6 @@ def test_post_permit(test_client, setup_info, auth_headers):
     assert post_data.get('mine_guid') == setup_info.get('mine_1_guid')
     assert post_data.get('permit_no') == PERMIT_NO
     assert post_data.get('amendments')
-    assert len(post_data.get('amendments')) == 1
 
 
 def test_post_permit_bad_mine_guid(test_client, setup_info, auth_headers):
