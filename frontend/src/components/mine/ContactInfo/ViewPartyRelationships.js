@@ -298,21 +298,23 @@ export class ViewPartyRelationships extends Component {
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
       .concat(
-        this.props.mine.mine_permit.map(
-          (permit) =>
-            partyRelationships
-              .filter(
-                (x) =>
-                  (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
-                  (!x.start_date || Date.parse(x.start_date) <= new Date())
-              )
-              .filter(
-                (partyRelationship) =>
-                  partyRelationship.mine_party_appt_type_code === "PMT" &&
-                  permit.permit_guid === partyRelationship.related_guid
-              )
-              .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0]
-        )
+        this.props.mine.mine_permit
+          .map(
+            (permit) =>
+              partyRelationships
+                .filter(
+                  (x) =>
+                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.start_date || Date.parse(x.start_date) <= new Date())
+                )
+                .filter(
+                  (partyRelationship) =>
+                    partyRelationship.mine_party_appt_type_code === "PMT" &&
+                    permit.permit_guid === partyRelationship.related_guid
+                )
+                .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0]
+          )
+          .filter((x) => x)
       );
     const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
       (x) => x.grouping_level === group
