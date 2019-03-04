@@ -29,6 +29,7 @@ class MineMap extends Component {
   state = {
     view: {},
     center: null,
+    map: {},
     mapFailedToLoad: false,
   };
 
@@ -51,6 +52,8 @@ class MineMap extends Component {
   handleLoadMap = (map, view) => {
     if (!this.props.mine) {
       this.renderWidgets(view);
+      this.renderWMSLayer(map);
+      this.setState({ map });
     }
     this.setState({ view });
   };
@@ -72,6 +75,21 @@ class MineMap extends Component {
     }
     return <div />;
   }
+
+  renderWMSLayer = async (map) => {
+    await loadModules(["esri/layers/WMSLayer"]).then(([WMSLayer]) => {
+      const WebMappingServiceLayer = new WMSLayer({
+        url: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov/ows",
+        sublayers: [
+          {
+            name: "WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP",
+          },
+        ],
+      });
+      WebMappingServiceLayer.title = "First Nations Consultative Areas";
+      map.layers.add(WebMappingServiceLayer);
+    });
+  };
 
   /**
    * Adds widgets to a given MapView instance
@@ -105,6 +123,7 @@ class MineMap extends Component {
         view.ui.add(currentWidget, position);
       });
 
+      // this.props.map.layer.add(WebMappingServiceLayer);
       const scaleBar = new ScaleBar({
         view,
         container: document.createElement("scale_bar"),
@@ -134,6 +153,7 @@ class MineMap extends Component {
             zoom: this.props.mine.mine_location ? 8 : 5,
             constraints: { minZoom: 5 },
           }}
+          onChange={(event) => console.log(event.added)}
           onLoad={this.handleLoadMap}
         >
           <MinePin />
