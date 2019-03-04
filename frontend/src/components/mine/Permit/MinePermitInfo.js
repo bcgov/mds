@@ -49,43 +49,41 @@ export class MinePermitInfo extends Component {
   }
 
   render() {
-    return (
-      (
-        <div>
+    return [
+      <div>
+        <div className="inline-flex between">
+          <div />
           <div className="inline-flex between">
-            <div />
-            <div className="inline-flex between">
-              <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  openAddPermitModal(
+                    event,
+                    this.props.openModal,
+                    handleAddPermit,
+                    ModalContent.ADD_TAILINGS
+                  )
+                }
               >
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    openAddPermitModal(
-                      event,
-                      this.props.openModal,
-                      handleAddPermit,
-                      ModalContent.ADD_TAILINGS
-                    )
-                  }
-                >
-                  <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                  &nbsp; {ModalContent.ADD_PERMIT}
-                </Button>
-              </AuthorizationWrapper>
-            </div>
+                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                &nbsp; {ModalContent.ADD_PERMIT}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
-      ),
+      </div>,
       <br />,
       this.props.permits && this.props.permits.length > 0 && (
         <MinePermitTable
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}
         />
-      )
-    );
+      ),
+    ];
   }
 }
 
