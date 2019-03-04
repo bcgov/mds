@@ -21,6 +21,40 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
+const permitTypes = [
+  {
+    label: "Coal",
+    value: "C",
+  },
+  {
+    label: "Mineral",
+    value: "M",
+  },
+  {
+    label: "Placer",
+    value: "P",
+  },
+  {
+    label: "Sand & Gravel",
+    value: "G",
+  },
+  {
+    label: "Quarry",
+    value: "Q",
+  },
+];
+
+const permitActivityTypes = [
+  {
+    label: "Operation",
+    value: " ",
+  },
+  {
+    label: "Exploration",
+    value: "X",
+  },
+];
+
 export const AddPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
@@ -32,7 +66,7 @@ export const AddPermitForm = (props) => (
             label="Permit type*"
             placeholder="Select a permit type"
             component={RenderSelect}
-            data={[{ name: "test", value: "test" }]}
+            data={permitTypes}
           />
         </Form.Item>
         <Form.Item>
@@ -42,7 +76,7 @@ export const AddPermitForm = (props) => (
             label="Permit activity type*"
             placeholder="Select a permit activity type"
             component={RenderSelect}
-            data={[{ name: "test", value: "test" }]}
+            data={permitActivityTypes}
           />
         </Form.Item>
         <Form.Item>
