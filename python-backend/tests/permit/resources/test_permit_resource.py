@@ -61,9 +61,11 @@ def test_get_permit(test_client, setup_info, auth_headers):
 
 def test_get_with_permit_no(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
-        '/permits?permit-no=' + setup_info.get('in_use_permit_no'),
+        '/permits?permit_no=' + setup_info.get('in_use_permit_no'),
         headers=auth_headers['full_auth_header'])
-    assert get_resp.status_code == 400
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 200
+    assert get_data.get('permit_no') == setup_info.get('in_use_permit_no')
 
 
 #Create
@@ -83,7 +85,6 @@ def test_post_permit(test_client, setup_info, auth_headers):
     assert post_resp.status_code == 200
     assert post_data.get('mine_guid') == setup_info.get('mine_1_guid')
     assert post_data.get('permit_no') == PERMIT_NO
-    assert post_data.get('amendments')
     assert len(post_data.get('amendments')) == 1
 
 

@@ -32,6 +32,14 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     def get(self, permit_guid=None):
+
+        permit_no = request.args.get('permit_no', None, type=str)
+
+        if permit_no:
+            permit = Permit.find_by_permit_no(permit_no)
+            if permit:
+                return permit.json()
+
         if permit_guid:
             permit = Permit.find_by_permit_guid(permit_guid)
             if not permit:
@@ -56,26 +64,24 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
 
         if not mine:
-            return self.create_error_payload(404, 'There was no mine found with that guid.'), 404
+            return self.create_error_payload(
+                404, 'There was no mine found with the provided mine_guid.'), 404
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
 
         if permit:
-            return self.create_error_payload(
-                400, 'There was a permit found with the provided permit number.'), 400
-
-        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
-                               data.get('permit_status_code'), self.get_create_update_dict())
-
-        amendment = PermitAmendment.create(permit,
-                                           data.get('received_date'), data.get('issue_date'),
-                                           data.get('authorization_end_date'),
-                                           self.get_create_update_dict(), 'OGP', 'ACT')
-
+            return self.create_error_payload(400, 'That permit number is already in use.'), 400
         try:
+            permit = Permit.create(mine.mine_guid, data.get('permit_no'),
+                                   data.get('permit_status_code'), self.get_create_update_dict())
+
+            amendment = PermitAmendment.create(permit, data.get('received_date'),
+                                               data.get('issue_date'),
+                                               data.get('authorization_end_date'),
+                                               self.get_create_update_dict(), 'OGP', 'ACT')
             amendment.save()
             permit.save()
-        except AssertionError as e:
+        except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()
 
@@ -96,6 +102,6 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
         try:
             permit.save()
-        except AssertionError as e:
+        except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()

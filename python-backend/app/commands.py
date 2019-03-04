@@ -111,8 +111,7 @@ def register_commands(app):
 
                 first_name = names.get_first_name()
                 last_name = names.get_last_name()
-                email = first_name.lower() + '.' + last_name.lower() + '@' + last_name.lower(
-                ) + '.com'
+                email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
                 party = Party.create(
                     last_name,
                     email,
