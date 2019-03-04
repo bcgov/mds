@@ -196,6 +196,7 @@ export const MinePermitTable = (props) => {
   };
   const rowData = props.permits.map((permit) => transformRowData(permit, props.partyRelationships));
 
+  if (rowData.length < 1) return <NullScreen type="permit" />;
   return (
     <Table
       className="nested-table"
