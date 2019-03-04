@@ -21,37 +21,9 @@ export const AddPermitAmendmentForm = (props) => (
       <Col>
         <Form.Item>
           <Field
-            id="amendment_type"
-            name="amendment_type"
-            label="Amendment type*"
-            placeholder="Select an amendment type"
-            component={RenderSelect}
-            data={[{ name: "test", value: "test" }]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="received_date"
-            name="received_date"
-            label="Received Date"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
             id="issue_date"
             name="issue_date"
             label="Issue Date"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="authorization_end_date"
-            name="authorization_end_date"
-            label="Authorization End Date"
             component={RenderDate}
             validate={[required]}
           />
