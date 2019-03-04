@@ -54,13 +54,6 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
   );
 };
 
-const groupPermits = (permits) =>
-  permits.reduce((acc, permit) => {
-    acc[permit.permit_no] = acc[permit.permit_no] || [];
-    acc[permit.permit_no].push(permit);
-    return acc;
-  }, {});
-
 const renderSummaryPermit = (permit, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
     {" "}
@@ -79,6 +72,9 @@ const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
+const activePermitteesByPermit = (pr, permit) =>
+  isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
+
 const displayLastInspectionDate = (dateString) =>
   dateString === null ? String.NO_NRIS_INSPECTIONS : formatDate(dateString);
 
@@ -91,8 +87,6 @@ export const MineSummary = (props) => {
   ) {
     return <NullScreen type="generic" />;
   }
-
-  const groupedPermits = Object.values(groupPermits(props.mine.mine_permit));
 
   return (
     <div>
@@ -107,8 +101,7 @@ export const MineSummary = (props) => {
             </Row>
             <Row gutter={16} type="flex">
               {props.partyRelationships
-                .filter(isActive)
-                .filter((pr) => ["MMG"].includes(pr.mine_party_appt_type_code))
+                .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     props.mine,
@@ -116,19 +109,15 @@ export const MineSummary = (props) => {
                     props.partyRelationshipTypes
                   )
                 )}
-              {props.partyRelationships
-                .filter(isActive)
-                .filter((pr) => ["PMT"].includes(pr.mine_party_appt_type_code))
-                .filter(({ related_guid }) =>
-                  groupedPermits.map((permits) => permits[0].permit_guid).includes(related_guid)
-                )
-                .map((partyRelationship) =>
-                  renderPartyRelationship(
-                    props.mine,
-                    partyRelationship,
-                    props.partyRelationshipTypes
-                  )
-                )}
+              {props.mine.mine_permit.map((permit) => {
+                const latestPermittee = props.partyRelationships.filter((pr) =>
+                  activePermitteesByPermit(pr, permit)
+                )[0];
+                return (
+                  latestPermittee &&
+                  renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
+                );
+              })}
             </Row>
             <Row gutter={16}>
               <Col span={24}>
@@ -152,8 +141,8 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
             <Row gutter={16} type="flex">
-              {groupedPermits.map((permits) =>
-                renderSummaryPermit(permits[0], props.partyRelationships.filter(isActive))
+              {props.mine.mine_permit.map((permit) =>
+                renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
               )}
             </Row>
             <Row gutter={16}>

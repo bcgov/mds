@@ -31,11 +31,11 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
-export const fetchParties = (value = null) => (dispatch) => {
+export const fetchParties = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading("modal"));
   return axios
-    .get(ENVIRONMENT.apiUrl + API.PARTIES(value), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));
@@ -71,39 +71,6 @@ export const fetchPartyById = (id) => (dispatch) => {
     });
 };
 
-export const addPermittee = (permitteeId, permitId, partyId, mineName, date) => (dispatch) => {
-  dispatch(request(reducerTypes.ADD_PERMITTEE));
-  dispatch(showLoading());
-  return axios
-    .post(
-      ENVIRONMENT.apiUrl + API.PERMITTEE,
-      {
-        permittee_guid: permitteeId,
-        permit_guid: permitId,
-        party_guid: partyId,
-        effective_date: date,
-      },
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: `Successfully updated the permittee of ${mineName}`,
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.ADD_PERMITTEE));
-      dispatch(hideLoading());
-      return response;
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.ADD_PERMITTEE));
-      dispatch(hideLoading());
-    });
-};
-
 export const fetchPartyRelationshipTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
   dispatch(showLoading());
@@ -131,7 +98,7 @@ export const addPartyRelationship = (payload) => (dispatch) => {
     .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully created contact`,
+        message: `Successfully updated contact information`,
         duration: 10,
       });
       dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
@@ -159,7 +126,7 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     )
     .then((response) => {
       notification.success({
-        message: `Successfully updated contact`,
+        message: `Successfully updated contact information`,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));

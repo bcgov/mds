@@ -100,7 +100,7 @@ export class MineComplianceInfo extends Component {
                   </Col>
                   <Col id={`due-date-${id}`} span={4}>
                     <h6 className={order.overdue ? "bold" : null}>
-                      {order.due_date === null ? "-" : formatDate(order.due_date)}
+                      {formatDate(order.due_date) || "-"}
                     </h6>
                   </Col>
                   <Col span={4} align="right" />

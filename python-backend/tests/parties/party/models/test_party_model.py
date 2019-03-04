@@ -10,13 +10,13 @@ def test_party_model_find_by_person_guid(test_client, auth_headers):
     assert str(party.party_guid) == TEST_PARTY_PER_GUID_1
 
 def test_person_model_find_by_name(test_client, auth_headers):
-    party = Party.find_by_name(TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1)
+    party = Party.find_by_name(TEST_PARTY_PER_PARTY_NAME_1, TEST_PARTY_PER_FIRST_NAME_1)
     assert party.first_name == TEST_PARTY_PER_FIRST_NAME_1
     assert party.party_name == TEST_PARTY_PER_PARTY_NAME_1
 
 
-def test_person_model_find_by_party_name(test_client, auth_headers):
-    party_org = Party.find_by_party_name(TEST_PARTY_ORG_NAME)
+def test_party_model_find_by_party_name(test_client, auth_headers):
+    party_org = Party.find_by_name(TEST_PARTY_ORG_NAME)
     assert party_org.party_name == TEST_PARTY_ORG_NAME
 
 
