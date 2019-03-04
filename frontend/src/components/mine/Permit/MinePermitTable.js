@@ -71,7 +71,7 @@ const columns = [
     title: "",
     dataIndex: "addEditButton",
     key: "addEditButton",
-    render: (text) => {
+    render: (text, record) => {
       const menu = (
         <div>
           <Menu>
@@ -82,7 +82,11 @@ const columns = [
               </button>
             </Menu.Item>
             <Menu.Item key="1">
-              <button type="button" className="full">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => record.openAddPermitAmendmentModal(event)}
+              >
                 <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
                 Add permit amendment
               </button>
@@ -144,7 +148,7 @@ const childColumns = [
     render: (text, record) => (
       <div>
         {text.major_mine_ind && (
-          <Button type="primary" onClick={(event) => record.openModal(event)}>
+          <Button type="primary" onClick={(event) => record.openAmendmentModal(event)}>
             <div className="padding-small">
               <img className="padding-small--right" src={EDIT} alt="Edit" />
               Edit
@@ -168,7 +172,12 @@ const getPermittees = (partyRelationships, permit) =>
 const getPermitteeName = (permittees) =>
   permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
-const transformRowData = (permit, partyRelationships, major_mine_ind) => {
+const transformRowData = (
+  permit,
+  partyRelationships,
+  major_mine_ind,
+  openAddPermitAmendmentModal
+) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
@@ -193,10 +202,17 @@ const transformRowData = (permit, partyRelationships, major_mine_ind) => {
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: { guid: permit.permit_guid, major_mine_ind },
+    openAddPermitAmendmentModal,
   };
 };
 
-const transformChildRowData = (amendment, record, amendmentNumber, major_mine_ind, openModal) => ({
+const transformChildRowData = (
+  amendment,
+  record,
+  amendmentNumber,
+  major_mine_ind,
+  openEditAmendmentModal
+) => ({
   amendmentNumber,
   receivedDate:
     (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
@@ -206,7 +222,7 @@ const transformChildRowData = (amendment, record, amendmentNumber, major_mine_in
     Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
   amendmentGuid: { guid: amendment.permit_amendment_guid, major_mine_ind },
-  openModal,
+  openEditAmendmentModal,
 });
 
 export const MinePermitTable = (props) => {
@@ -222,6 +238,21 @@ export const MinePermitTable = (props) => {
         title: "Edit Permit Amendment",
       },
       content: modalConfig.EDIT_PERMIT_AMENDMENT,
+    });
+  };
+
+  const handleAddPermitAmendment = (data) => {
+    props.updatePermitAmendment(data).then(() => props.closeModal());
+  };
+
+  const openAddPermitAmendmentModal = (event) => {
+    event.preventDefault();
+    props.openModal({
+      props: {
+        onSubmit: handleAddPermitAmendment,
+        title: "Edit Permit Amendment",
+      },
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
   };
 
@@ -241,7 +272,12 @@ export const MinePermitTable = (props) => {
   };
 
   const rowData = props.permits.map((permit) =>
-    transformRowData(permit, props.partyRelationships, props.major_mine_ind)
+    transformRowData(
+      permit,
+      props.partyRelationships,
+      props.major_mine_ind,
+      openAddPermitAmendmentModal
+    )
   );
 
   return (
