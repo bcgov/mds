@@ -10,9 +10,9 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import {
   getParties,
-  getPartyIds,
   getPartyPageData,
   getPartyRelationshipTypeHash,
+  getPartyRelationshipTypesList,
 } from "@/selectors/partiesSelectors";
 import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
@@ -28,11 +28,13 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ContactHomePage extends Component {
@@ -41,6 +43,7 @@ export class ContactHomePage extends Component {
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
+      type: "PER",
     },
   };
 
@@ -112,14 +115,16 @@ export class ContactHomePage extends Component {
         <div className="landing-page__content">
           <ContactSearch
             initialValues={this.state.params}
-            {...this.props}
+            partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
-            contactType="PER"
           />
           {this.state.isLoaded && (
             <div>
               <div className="tab__content ">
-                <ContactList {...this.props} />
+                <ContactList
+                  parties={this.props.parties}
+                  relationshipTypeHash={this.props.relationshipTypeHash}
+                />
               </div>
               <div className="center">
                 <ResponsivePagination
@@ -140,9 +145,9 @@ export class ContactHomePage extends Component {
 
 const mapStateToProps = (state) => ({
   parties: getParties(state),
-  partyIds: getPartyIds(state),
   pageData: getPartyPageData(state),
   relationshipTypeHash: getPartyRelationshipTypeHash(state),
+  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

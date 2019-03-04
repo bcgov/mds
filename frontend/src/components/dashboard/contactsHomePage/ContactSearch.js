@@ -7,15 +7,20 @@ import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import AdvancedContactSearchForm from "@/components/Forms/AdvancedContactSearchForm";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class ContactSearch supports searching for a filtered list of parties.
  */
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
+  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string),
 };
 
-const defaultProps = {};
+const defaultProps = {
+  initialValues: {},
+};
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
@@ -40,23 +45,19 @@ export class ContactSearch extends Component {
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
               <AdvancedContactSearchForm
-                {...this.props}
-                onSubmit={this.handleSearch}
+                handleSubmit={this.handleSearch}
+                handleSearch={this.handleSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
-                handleSearch={this.handleSearch}
-                initialValues={{ type: "PER" }}
                 partyTypeOptions={[
-                  /* TODO: Pass this in from Redux store */
                   { value: "PER", label: "Person" },
                   { value: "ORG", label: "Organization" },
                 ]}
                 relationshipTypes={[
-                  /* TODO: Pass this in from Redux store */
                   { value: "", label: "All Roles" },
-                  { value: "PMT", label: "Permittee" },
-                  { value: "MMG", label: "Mine Manager" },
+                  ...this.props.partyRelationshipTypesList,
                 ]}
+                initialValues={this.props.initialValues}
               />
             </span>
           </Col>

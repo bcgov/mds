@@ -13,18 +13,16 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
   partyTypeOptions: CustomPropTypes.options.isRequired,
-  contactType: PropTypes.string,
   relationshipTypes: CustomPropTypes.options.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const defaultProps = {
-  contactType: "PER",
-};
+const defaultProps = {};
 
 export class AdvancedContactSearchForm extends Component {
   state = {
     params: {
-      type: this.props.contactType,
+      type: this.props.initialValues.type,
     },
   };
 
