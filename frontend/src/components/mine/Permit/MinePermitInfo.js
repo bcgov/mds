@@ -90,6 +90,8 @@ export class MinePermitInfo extends Component {
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}
           major_mine_ind={this.props.mine.major_mine_ind}
+          openModal={this.props.openModal}
+          closeModal={this.props.closeModal}
         />
       ),
     ];
