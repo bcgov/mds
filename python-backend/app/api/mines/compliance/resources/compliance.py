@@ -17,7 +17,7 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
     def get(self, mine_no=None):
 
         result = cache.get(NRIS_COMPLIANCE_DATA(mine_no))
-        if not request.args.get('cacheOnly') and result is None:
+        if result is None:
             try:
                 response_data = NRIS_service._get_EMPR_data_from_NRIS(mine_no)
             except requests.exceptions.Timeout:
