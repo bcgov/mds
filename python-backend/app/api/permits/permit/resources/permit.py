@@ -36,20 +36,19 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             permit = Permit.find_by_permit_guid(permit_guid)
             if permit:
                 result = permit.json()
+            else:
+                return self.create_error_payload(404, 'Permit not found'), 404
 
         elif request.args.get('mine_guid'):
             permits = Permit.find_by_mine_guid(request.args.get('mine_guid'))
             if permits:
                 result = [p.json() for p in permits]
 
-        if not result:
-            return self.create_error_payload(404, 'Permit not found'), 404
-        return result
+        return result or []
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
     def post(self, permit_guid=None):
-
         if permit_guid:
             return self.create_error_payload(400, 'unexpected permit_guid'), 400
 
