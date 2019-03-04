@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
@@ -8,10 +10,13 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import { getPermitStatusOptions } from "@/reducers/permitReducer";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
 };
@@ -38,6 +43,16 @@ export const AddPermitForm = (props) => (
             placeholder="Select a permit activity type"
             component={RenderSelect}
             data={[{ name: "test", value: "test" }]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="permit status"
+            name="permit_status"
+            label="Permit status"
+            placeholder="Select a permit status"
+            component={RenderSelect}
+            data={props.permitStatusOptions}
           />
         </Form.Item>
         <Form.Item>
@@ -99,8 +114,13 @@ export const AddPermitForm = (props) => (
 
 AddPermitForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_PERMIT,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
-})(AddPermitForm);
+export default compose(
+  connect((state) => ({
+    permitStatusOptions: getPermitStatusOptions(state),
+  })),
+  reduxForm({
+    form: FORM.ADD_PERMIT,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
+  })
+)(AddPermitForm);
