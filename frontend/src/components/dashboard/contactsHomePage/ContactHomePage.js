@@ -71,9 +71,9 @@ export class ContactHomePage extends Component {
     this.props
       .fetchParties({
         ...parsedParams,
-        relationships: "mine_party_appt",
         page,
         per_page,
+        relationships: "mine_party_appt",
       })
       .then(() => {
         this.setState({ isLoaded: true });
