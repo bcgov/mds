@@ -73,32 +73,30 @@ const columns = [
     key: "addEditButton",
     render: (text, record) => {
       const menu = (
-        <div>
-          <Menu>
-            <Menu.Item key="0">
-              <button type="button" className="full">
-                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                Add amalgamated permit
-              </button>
-            </Menu.Item>
-            <Menu.Item key="1">
-              <button
-                type="button"
-                className="full"
-                onClick={(event) => record.openAddPermitAmendmentModal(event)}
-              >
-                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                Add permit amendment
-              </button>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <button type="button" className="full">
-                <img alt="document" className="padding-small" src={BRAND_PENCIL} />
-                Edit permit
-              </button>
-            </Menu.Item>
-          </Menu>
-        </div>
+        <Menu>
+          <Menu.Item key="0">
+            <button type="button" className="full">
+              <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+              Add amalgamated permit
+            </button>
+          </Menu.Item>
+          <Menu.Item key="1">
+            <button
+              type="button"
+              className="full"
+              onClick={(event) => record.openAddPermitAmendmentModal(event)}
+            >
+              <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+              Add permit amendment
+            </button>
+          </Menu.Item>
+          <Menu.Item key="2">
+            <button type="button" className="full">
+              <img alt="document" className="padding-small" src={BRAND_PENCIL} />
+              Edit permit
+            </button>
+          </Menu.Item>
+        </Menu>
       );
       return (
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
