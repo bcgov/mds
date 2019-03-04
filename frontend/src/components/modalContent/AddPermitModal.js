@@ -19,4 +19,5 @@ export const AddPermitModal = (props) => (
 
 AddPermitModal.propTypes = propTypes;
 AddPermitModal.defaultProps = defaultProps;
+
 export default AddPermitModal;
