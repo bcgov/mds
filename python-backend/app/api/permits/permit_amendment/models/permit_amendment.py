@@ -28,8 +28,6 @@ class PermitAmendment(AuditMixin, Base):
 
     def json(self):
         return {
-            'permit_amendment_id':
-            str(self.permit_amendment_id),
             'permit_amendment_guid':
             str(self.permit_amendment_guid),
             'permit_guid':
@@ -93,12 +91,6 @@ class PermitAmendment(AuditMixin, Base):
         if not permit_amendment_type_code:
             raise AssertionError('Permit amendment type code is not provided.')
         return permit_amendment_type_code
-
-    @validates('permit_id')
-    def validate_permit_id(self, key, permit_id):
-        if not permit_id:
-            raise AssertionError('Permit id is not provided.')
-        return permit_id
 
     @validates('received_date')
     def validate_received_date(self, key, received_date):
