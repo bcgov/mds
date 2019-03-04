@@ -18,7 +18,6 @@ import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import Loading from "@/components/common/Loading";
-import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 
 /**
@@ -38,13 +37,11 @@ const propTypes = {
 };
 
 export class ContactHomePage extends Component {
+  params = queryString.parse(this.props.location.search);
+
   state = {
     isLoaded: false,
-    params: {
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      type: "PER",
-    },
+    params: { type: "PER", ...this.params },
   };
 
   componentWillMount() {
@@ -55,26 +52,38 @@ export class ContactHomePage extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      type = this.state.params.type,
+    } = parsedParams;
     if (params) {
-      this.renderDataFromURL(params);
+      this.renderDataFromURL();
     } else {
       this.props.history.push(
         router.CONTACT_HOME_PAGE.dynamicRoute({
-          page: Strings.DEFAULT_PAGE,
-          per_page: Strings.DEFAULT_PER_PAGE,
+          page,
+          per_page,
+          type,
         })
       );
     }
-    this.props.fetchParties({ ...parsedParams, relationships: "mine_party_appt" }).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    this.props
+      .fetchParties({
+        ...parsedParams,
+        relationships: "mine_party_appt",
+        page,
+        per_page,
+      })
+      .then(() => {
+        this.setState({ isLoaded: true });
+      });
   }
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      const params = nextProps.location.search;
-      this.renderDataFromURL(params);
+      this.renderDataFromURL(nextProps);
     }
   }
 
@@ -82,18 +91,35 @@ export class ContactHomePage extends Component {
     this.setState({ params: {} });
   }
 
-  renderDataFromURL = (params) => {
+  renderDataFromURL = (nextProps) => {
+    const params = nextProps ? nextProps.location.search : this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const { page, per_page } = parsedParams;
     this.setState({
-      params: { page, per_page },
+      params: parsedParams,
+      isLoaded: false,
     });
-    this.props.fetchParties({ ...parsedParams, relationships: "mine_party_appt" });
+    this.props
+      .fetchParties({
+        ...parsedParams,
+        relationships: "mine_party_appt",
+      })
+      .then(() => {
+        this.setState({ isLoaded: true });
+      });
+  };
+
+  handleSearch = (searchParams = {}) => {
+    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(searchParams));
+    this.setState({
+      params: searchParams,
+    });
+    this.renderDataFromURL();
   };
 
   onPageChange = (page, per_page) => {
     this.props.history.push(
       router.CONTACT_HOME_PAGE.dynamicRoute({
+        ...this.state.params,
         page,
         per_page,
       })
@@ -117,6 +143,8 @@ export class ContactHomePage extends Component {
             initialValues={this.state.params}
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
+            handleSearch={this.handleSearch}
+            handleSubmit={this.handleSubmit}
           />
           {this.state.isLoaded && (
             <div>

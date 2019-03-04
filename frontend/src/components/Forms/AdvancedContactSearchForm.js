@@ -5,19 +5,22 @@ import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  isAdvanceSearch: PropTypes.bool.isRequired,
   partyTypeOptions: CustomPropTypes.options.isRequired,
   relationshipTypes: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  isAdvanceSearch: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  isAdvanceSearch: false,
+};
 
 export class AdvancedContactSearchForm extends Component {
   state = {
@@ -28,7 +31,7 @@ export class AdvancedContactSearchForm extends Component {
 
   handleReset = () => {
     this.props.reset();
-    this.props.handleSearch();
+    this.props.handleSearch({ page: Strings.DEFAULT_PAGE, per_page: Strings.DEFAULT_PER_PAGE });
   };
 
   handleContactTypeChange = (chars, value) => {
@@ -43,7 +46,6 @@ export class AdvancedContactSearchForm extends Component {
             <Field
               id="type"
               name="type"
-              placeholder="Type of Contact"
               component={renderConfig.SELECT}
               data={this.props.partyTypeOptions}
               onChange={this.handleContactTypeChange}
