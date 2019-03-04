@@ -31,8 +31,7 @@ const defaultProps = {
 
 export class MinePermitInfo extends Component {
   componentWillMount() {
-    const id = this.props.mine.guid;
-    this.props.fetchPermits({ mine_guid: id }).then(() => console.log(this.props.permits));
+    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
   }
 
   openAddPermitModal = (event, onSubmit, title) => {
@@ -80,7 +79,7 @@ export class MinePermitInfo extends Component {
         </div>
       </div>,
       <br />,
-      this.props.permits && this.props.permits.length > 0 && (
+      this.props.permits && (
         <MinePermitTable
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}

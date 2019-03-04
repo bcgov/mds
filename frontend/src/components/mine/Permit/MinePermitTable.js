@@ -15,7 +15,6 @@ import { BRAND_PENCIL, EDIT } from "@/constants/assets";
  */
 
 const propTypes = {
-  // mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
