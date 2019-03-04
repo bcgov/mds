@@ -8,15 +8,17 @@
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.firefox.FirefoxOptions
-import org.openqa.selenium.firefox.FirefoxProfile
-
+//import org.openqa.selenium.firefox.FirefoxDriver
+//import org.openqa.selenium.firefox.FirefoxOptions
+//import org.openqa.selenium.firefox.FirefoxProfile
+import org.openqa.selenium.firefox.*
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
 import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 import utils.Const
+
+import org.openqa.selenium.remote.CommandExecutor
 
 //1.driver
 //To run the tests with all browsers just run “./gradlew test”
@@ -62,7 +64,7 @@ environments {
 //			download_path = './output/'
 //
 //			driver = webdriver.Chrome('./chromedriver', chrome_options=options)
-//
+//			CommandExecutor
 //			driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
 //			params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
 //			command_result = driver.execute("send_command", params)
@@ -83,14 +85,113 @@ environments {
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
-		driver = { new FirefoxDriver() }
+		driver = {
+//			FirefoxOptions o = new FirefoxOptions()
+//			o.addArguments("start-maximized")
+//
+//			String downloadFilepath = Const.DOWNLOAD_PATH
+//			HashMap<String, Object> firefoxPrefs = new HashMap<String, Object>();
+//			firefoxPrefs.put("profile.default_content_settings.popups", 0);
+//			firefoxPrefs.put("download.default_directory", downloadFilepath);
+//			o.setExperimentalOption("prefs", firefoxPrefs);
+
+//
+//			FirefoxOptions options = new FirefoxOptions()
+//			options.addPreference("browser.download.defaultFolder", Const.DOWNLOAD_PATH)
+//			options.addPreference("browser.download.folderList", 2)
+//			options.addPreference("browser.download.manager.useWindow", false)
+//			options.addPreference("browser.download.manager.useWindow", false)
+//
+//			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH)
+//			options.addPreference("browser.download.useDownloadDir", true)
+////			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain	")
+//			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text,application/pdf")
+//			options.addPreference("browser.helperApps.neverAsk.openFile", "application/vnd.oasis.opendocument.text,application/pdf")
+////////
+////			https://stackoverflow.com/questions/37154746/how-to-avoid-window-download-popup-in-firefox-use-java-selenium-i-need-download
+//			options.addPreference("browser.helperApps.alwaysAsk.force", false);
+//			options.addPreference("browser.download.manager.alertOnEXEOpen", false);
+//			options.addPreference("browser.download.manager.focusWhenStarting", false);
+//			options.addPreference("browser.download.manager.useWindow", false);
+//			options.addPreference("browser.download.manager.showAlertOnComplete", false);
+//			options.addPreference("browser.download.manager.closeWhenDone", false);
+///////
+//			options.addPreference("pdfjs.disabled", true)  // disable the built-in PDF viewer
+//
+//			new FirefoxDriver(options);
+
+
+//			FirefoxProfile profile = new FirefoxProfile();
+//			profile.setAssumeUntrustedCertificateIssuer(false);
+//			//profile.setEnableNativeEvents(false);
+//			profile.setPreference("network.proxy.type", 1);
+//			profile.setPreference("network.proxy.http", "localHost");
+//			profile.setPreference("newtwork.proxy.http_port",3128);
+//
+//			//Download setting
+//			profile.setPreference("browser.download.folderlist", 2);
+//			profile.setPreference("browser.helperapps.neverAsk.saveToDisk","odt");
+//			profile.setPreference("browser.download.dir",Const.DOWNLOAD_PATH);
+
+//			FirefoxProfile profile = new FirefoxProfile()
+//			profile.setPreference("intl.accept_languages", "en")
+			//new FirefoxDriver(o)
+
+			FirefoxProfile profile = new FirefoxProfile();
+			FirefoxOptions options = new FirefoxOptions();
+			profile.setPreference("browser.download.folderList", 2);
+			profile.setPreference("browser.download.manager.showWhenStarting", false);
+//			profile.setPreference("browser.helperApps.neverAsk.openFile", "application/vnd.oasis.opendocument.text")
+//			profile.setPreference("browser.helperApps.neverAsk.saveToDisk","application/vnd.oasis.opendocument.text")
+			profile.setPreference("browser.helperApps.neverAsk.openFile",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
+			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
+			profile.setPreference("browser.download.manager.focusWhenStarting", false);
+			profile.setPreference("browser.download.manager.useWindow", false);
+			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
+			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			options.setProfile(profile);
+			new FirefoxDriver(options);
+		}
 	}
 
 	firefoxHeadless {
 		driver = {
-			FirefoxOptions o = new FirefoxOptions()
-			o.addArguments("-headless")
-			new FirefoxDriver(o)
+//			FirefoxOptions o = new FirefoxOptions()
+//			o.addArguments("-headless")
+//			//trial
+//			o.addPreference("browser.download.folderList", 2);
+//			o.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
+//			o.addPreference("browser.download.useDownloadDir", true);
+//			o.addPreference("browser.helperApps.neverAsk.saveToDisk", "test.odt");
+//			o.addPreference("pdfjs.disabled", true);  // disable the built-in PDF viewer
+//
+//			new FirefoxDriver(o)
+
+
+			FirefoxProfile profile = new FirefoxProfile();
+			FirefoxOptions options = new FirefoxOptions();
+			options.addArguments("-headless")
+			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
+			options.addPreference("browser.download.useDownloadDir", true);
+			profile.setPreference("browser.download.folderList", 2);
+			profile.setPreference("browser.download.manager.showWhenStarting", false);
+			profile.setPreference("browser.helperApps.neverAsk.openFile",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
+			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
+			profile.setPreference("browser.download.manager.focusWhenStarting", false);
+			profile.setPreference("browser.download.manager.useWindow", false);
+			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
+			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			options.setProfile(profile);
+			new FirefoxDriver(options);
+
 		}
 	}
 

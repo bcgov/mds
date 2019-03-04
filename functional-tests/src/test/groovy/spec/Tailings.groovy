@@ -56,6 +56,7 @@ class Tailings extends GebReportingSpec {
         when: "User navigates to the TSF tab and clicks the upload icon"
         tailingsTab.tabSelect.click()
 
+
         and: "User opens modal and uploads a valid file type"
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
         tailingsTab.addTailingsDocButtons[0].click()
@@ -69,6 +70,12 @@ class Tailings extends GebReportingSpec {
     //TODO: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
         when: "User navigates to the TSF tab and clicks the download icon"
+//        driver = getDriver()
+//        driver.Remote()
+//        driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+//        params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+//        command_result = driver.execute("send_command", params)
+//        print(driver)
         tailingsTab.tabSelect.click()
 
         and: "User opens a file in the folder specified in GebConfig"
