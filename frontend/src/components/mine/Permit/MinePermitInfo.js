@@ -67,19 +67,21 @@ export class MinePermitInfo extends Component {
         <div className="inline-flex between">
           <div />
           <div className="inline-flex between">
-            <AuthorizationWrapper
-              permission={Permission.CREATE}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Button
-                type="primary"
-                onClick={(event) =>
-                  this.openAddPermitModal(event, this.handleAddPermit, ModalContent.ADD_PERMIT)
-                }
+            <AuthorizationWrapper inTesting>
+              <AuthorizationWrapper
+                permission={Permission.CREATE}
+                isMajorMine={this.props.mine.major_mine_ind}
               >
-                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                &nbsp; {ModalContent.ADD_PERMIT}
-              </Button>
+                <Button
+                  type="primary"
+                  onClick={(event) =>
+                    this.openAddPermitModal(event, this.handleAddPermit, ModalContent.ADD_PERMIT)
+                  }
+                >
+                  <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                  &nbsp; {ModalContent.ADD_PERMIT}
+                </Button>
+              </AuthorizationWrapper>
             </AuthorizationWrapper>
           </div>
         </div>

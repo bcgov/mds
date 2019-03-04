@@ -12,6 +12,7 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   meta: PropTypes.object,
+  test: PropTypes.string,
 };
 
 const RenderField = ({
@@ -21,13 +22,17 @@ const RenderField = ({
   placeholder,
   defaultValue,
   meta: { touched, error, warning },
+  test,
 }) => (
   <Form.Item
     label={label}
     validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
     help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
   >
-    <Input defaultValue={defaultValue} id={id} placeholder={placeholder} {...input} />
+    <div className="block">
+      {test && <label>{test}</label>}
+      <Input defaultValue={defaultValue} id={id} placeholder={placeholder} {...input} />
+    </div>
   </Form.Item>
 );
 
