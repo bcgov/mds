@@ -83,6 +83,7 @@ export class MinePermitInfo extends Component {
         <MinePermitTable
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}
+          major_mine_ind={this.props.mine.major_mine_ind}
         />
       ),
     ];

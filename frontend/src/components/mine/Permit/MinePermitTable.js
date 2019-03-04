@@ -17,6 +17,7 @@ import { BRAND_PENCIL, EDIT } from "@/constants/assets";
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  major_mine_ind: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -131,6 +132,23 @@ const childColumns = [
     key: "authorizationEndDate",
     render: (text) => <div title="Authorization End Date">{text}</div>,
   },
+  {
+    title: "",
+    dataIndex: "amendmentGuid",
+    key: "amendmentGuid",
+    render: (text) => (
+      <div>
+        {text.major_mine_ind && (
+          <Button type="primary">
+            <div className="padding-small">
+              <img className="padding-small--right" src={EDIT} alt="Edit" />
+              Edit
+            </div>
+          </Button>
+        )}
+      </div>
+    ),
+  },
 ];
 
 const getPermittees = (partyRelationships, permit) =>
@@ -173,7 +191,7 @@ const transformRowData = (permit, partyRelationships) => {
   };
 };
 
-const transformChildRowData = (amendment, record, amendmentNumber) => ({
+const transformChildRowData = (amendment, record, amendmentNumber, major_mine_ind) => ({
   amendmentNumber,
   receivedDate:
     (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
@@ -182,12 +200,18 @@ const transformChildRowData = (amendment, record, amendmentNumber) => ({
     (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
     Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
+  amendmentGuid: { guid: amendment.permit_amendment_guid, major_mine_ind },
 });
 
 export const MinePermitTable = (props) => {
   const amendmentHistory = (record) => {
     const childRowData = record.amendments.map((amendment, index) =>
-      transformChildRowData(amendment, record, record.amendments.length - index)
+      transformChildRowData(
+        amendment,
+        record,
+        record.amendments.length - index,
+        props.major_mine_ind
+      )
     );
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
