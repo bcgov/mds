@@ -56,7 +56,7 @@ def register_extensions(app):
             sched.start()
             _schedule_NRIS_jobs(app)
             #This is here to prevent this from running in production until we are confident in the permit data.
-            if False:
+            if app.config.get('ENVIRONMENT_NAME') == 'test':
                 _schedule_ETL_jobs(app)
 
     return None

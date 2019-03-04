@@ -111,13 +111,14 @@ def register_commands(app):
 
                 first_name = names.get_first_name()
                 last_name = names.get_last_name()
-                email = first_name.lower() + '.' + last_name.lower() + '@' + last_name.lower() + '.com'
-                party = Party.create(last_name,
-                                     email,
-                                     '123-123-1234',
-                                     'PER',
-                                     DUMMY_USER_KWARGS,
-                                     first_name=first_name)
+                email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
+                party = Party.create(
+                    last_name,
+                    email,
+                    '123-123-1234',
+                    'PER',
+                    DUMMY_USER_KWARGS,
+                    first_name=first_name)
 
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
@@ -173,7 +174,8 @@ def register_commands(app):
             click.echo(f'Error, failed on commit.')
             raise
 
-    if app.config.get('ENVIRONMENT_NAME') == 'test' or app.config.get('ENVIRONMENT_NAME') == 'prod':
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+
         @sched.app.cli.command()
         def _run_nris_jobs():
             with sched.app.app_context():
@@ -184,8 +186,8 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is her to prevent this from running in production until we are confident in the permit data.
-        if False:
+        #This is here to prevent this from running in production until we are confident in the permit data.
+        if app.config.get('ENVIRONMENT_NAME') == 'test':
 
             @sched.app.cli.command()
             def _run_etl():
