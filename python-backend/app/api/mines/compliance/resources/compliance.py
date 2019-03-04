@@ -29,9 +29,6 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                 ), errhttp.response.status_code
             except TypeError as e:
                 return self.create_error_payload(500, str(e)), 500
-
-            if len(response_data) == 0:
-                result = None
-            else:
-                result = NRIS_service._process_NRIS_data(response_data, mine_no)
+            
+            result = NRIS_service._process_NRIS_data(response_data, mine_no)
         return result
