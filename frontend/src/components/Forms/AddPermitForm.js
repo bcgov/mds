@@ -81,16 +81,6 @@ export const AddPermitForm = (props) => (
         </Form.Item>
         <Form.Item>
           <Field
-            id="permit status"
-            name="permit_status"
-            label="Permit status"
-            placeholder="Select a permit status"
-            component={RenderSelect}
-            data={props.permitStatusOptions}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
             id="permit_no"
             name="permit_no"
             label="Permit number*"
@@ -100,21 +90,25 @@ export const AddPermitForm = (props) => (
         </Form.Item>
         <Form.Item>
           <Field
-            id="received_date"
-            name="received_date"
-            label="Received Date"
-            component={RenderDate}
+            id="permit status"
+            name="permit_status"
+            label="Permit status*"
+            placeholder="Select a permit status"
+            component={RenderSelect}
+            data={props.permitStatusOptions}
             validate={[required]}
           />
         </Form.Item>
         <Form.Item>
           <Field
-            id="issue_date"
-            name="issue_date"
-            label="Issue Date"
+            id="received_date"
+            name="received_date"
+            label="Received Date"
             component={RenderDate}
-            validate={[required]}
           />
+        </Form.Item>
+        <Form.Item>
+          <Field id="issue_date" name="issue_date" label="Issue Date" component={RenderDate} />
         </Form.Item>
         <Form.Item>
           <Field
@@ -122,7 +116,6 @@ export const AddPermitForm = (props) => (
             name="authorization_end_date"
             label="Authorization End Date"
             component={RenderDate}
-            validate={[required]}
           />
         </Form.Item>
       </Col>
