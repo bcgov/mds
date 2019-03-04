@@ -15,7 +15,6 @@ import { BRAND_PENCIL, EDIT } from "@/constants/assets";
  */
 
 const propTypes = {
-  // mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
 };
@@ -196,7 +195,6 @@ export const MinePermitTable = (props) => {
   };
   const rowData = props.permits.map((permit) => transformRowData(permit, props.partyRelationships));
 
-  if (rowData.length < 1) return <NullScreen type="permit" />;
   return (
     <Table
       className="nested-table"
