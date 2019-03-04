@@ -70,18 +70,11 @@ class Tailings extends GebReportingSpec {
     //TODO: THIS TEST ONLY WORKS IN CHROME AND CHROME HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
         when: "User navigates to the TSF tab and clicks the download icon"
-//        driver = getDriver()
-//        driver.Remote()
-//        driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-//        params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
-//        command_result = driver.execute("send_command", params)
-//        print(driver)
         tailingsTab.tabSelect.click()
 
         and: "User opens a file in the folder specified in GebConfig"
         tailingsTab.downloadLink[0].click()
         print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
-        sleep(10000)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         //allow time for the file to be created in the DOWNLOAD_PATH
         //throw an error if it takes more than 20sec
