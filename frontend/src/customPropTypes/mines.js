@@ -39,8 +39,8 @@ export const mineName = shape({
 
 export const mineComplianceInfo = shape({
   advisories: PropTypes.number.isRequired,
-  last_inspector: PropTypes.string.isRequired,
-  last_inspection: PropTypes.string.isRequired,
+  last_inspector: PropTypes.string,
+  last_inspection: PropTypes.string,
   num_open_orders: PropTypes.number.isRequired,
   num_overdue_orders: PropTypes.number.isRequired,
   open_orders: PropTypes.array,
