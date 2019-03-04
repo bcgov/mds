@@ -5,12 +5,8 @@
 	See: http://www.gebish.org/manual/current/#configuration
 */
 
-import org.openqa.selenium.Dimension
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-//import org.openqa.selenium.firefox.FirefoxDriver
-//import org.openqa.selenium.firefox.FirefoxOptions
-//import org.openqa.selenium.firefox.FirefoxProfile
 import org.openqa.selenium.firefox.*
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
@@ -18,7 +14,8 @@ import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 import utils.Const
 
-import org.openqa.selenium.remote.CommandExecutor
+//NOTE: This the upload/download currently only work in Chrome and Firefox-Headless browsers.
+//Chrome-Headless does not work due to a known bug in the chrome headless driver.
 
 //1.driver
 //To run the tests with all browsers just run “./gradlew test”
@@ -42,7 +39,6 @@ environments {
 
 	// run via “./gradlew chromeHeadlessTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
-	//TODO: ChromeHeadless does not currently allow the download functionality needed for the TSF tests (known bug with driver)
 	chromeHeadless {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
@@ -63,7 +59,6 @@ environments {
 		}
 	}
 
-	//TODO: Fix the upload download location for non firefox driver
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
@@ -114,7 +109,6 @@ environments {
 
 	// run via “./gradlew ieTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
-	//TODO: Fix the upload download location for the rest of the browsers
 	ie {
 		def d = new DesiredCapabilities();
 		d.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
