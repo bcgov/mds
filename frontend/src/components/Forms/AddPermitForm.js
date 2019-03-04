@@ -17,17 +17,7 @@ const propTypes = {
 export const AddPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>
-        <Form.Item>
-          <Field
-            id="tsf_name"
-            name="tsf_name"
-            label="TSF Name*"
-            component={RenderField}
-            validate={[required]}
-          />
-        </Form.Item>
-      </Col>
+      <Col />
     </Row>
     <div className="right center-mobile">
       <Popconfirm

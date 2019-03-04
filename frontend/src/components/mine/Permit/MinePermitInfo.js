@@ -18,11 +18,10 @@ import { getPermits } from "../../../reducers/permitReducer";
 const propTypes = {
   fetchPermits: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
-  mineGuid: PropTypes.string.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -30,23 +29,32 @@ const defaultProps = {
   permits: [],
 };
 
-const handleAddPermit = (value) => {
-  alert(JSON.stringify(value));
-};
-
-const openAddPermitModal = (event, openModal, onSubmit, title) => {
-  event.preventDefault();
-  openModal({
-    props: { onSubmit, title },
-    content: modalConfig.ADD_TAILINGS,
-  });
-};
-
 export class MinePermitInfo extends Component {
   componentWillMount() {
-    const id = this.props.mineGuid;
+    const id = this.props.mine.guid;
     this.props.fetchPermits({ mine_guid: id }).then(() => console.log(this.props.permits));
   }
+
+  openAddPermitModal = (event, onSubmit, title) => {
+    event.preventDefault();
+
+    const handleDelete = () => {};
+    const initialValues = {};
+
+    this.props.openModal({
+      props: {
+        handleDelete,
+        onSubmit,
+        title,
+        initialValues,
+      },
+      content: modalConfig.ADD_PERMIT,
+    });
+  };
+
+  handleAddPermit = (value) => {
+    alert(JSON.stringify(value));
+  };
 
   render() {
     return [
@@ -61,12 +69,7 @@ export class MinePermitInfo extends Component {
               <Button
                 type="primary"
                 onClick={(event) =>
-                  openAddPermitModal(
-                    event,
-                    this.props.openModal,
-                    handleAddPermit,
-                    ModalContent.ADD_TAILINGS
-                  )
+                  this.openAddPermitModal(event, this.handleAddPermit, ModalContent.ADD_PERMIT)
                 }
               >
                 <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
