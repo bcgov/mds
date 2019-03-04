@@ -65,7 +65,7 @@ def test_get_with_permit_no(test_client, setup_info, auth_headers):
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert get_data.get('in_use') == True
+    assert get_data.get('permit_no') == setup_info.get('in_use_permit_no')
 
 
 #Create
