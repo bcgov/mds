@@ -29,7 +29,6 @@ class MineMap extends Component {
   state = {
     view: {},
     center: null,
-    map: {},
     mapFailedToLoad: false,
   };
 
@@ -53,7 +52,6 @@ class MineMap extends Component {
     if (!this.props.mine) {
       this.renderWidgets(view);
       this.renderWMSLayer(map);
-      this.setState({ map });
     }
     this.setState({ view });
   };
@@ -153,6 +151,7 @@ class MineMap extends Component {
             zoom: this.props.mine.mine_location ? 8 : 5,
             constraints: { minZoom: 5 },
           }}
+          // will be deleted
           onChange={(event) => console.log(event.added)}
           onLoad={this.handleLoadMap}
         >
