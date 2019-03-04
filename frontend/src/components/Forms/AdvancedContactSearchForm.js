@@ -95,8 +95,8 @@ export class AdvancedContactSearchForm extends Component {
               </Col>
               <Col md={8} xs={24}>
                 <Field
-                  id="phone"
-                  name="phone"
+                  id="phone_no"
+                  name="phone_no"
                   placeholder="Phone Number"
                   component={renderConfig.FIELD}
                 />
@@ -135,6 +135,6 @@ AdvancedContactSearchForm.propTypes = propTypes;
 AdvancedContactSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.ADVANCE_SEARCH,
+  form: FORM.CONTACT_ADVANCED_SEARCH,
   touchOnBlur: false,
 })(AdvancedContactSearchForm);
