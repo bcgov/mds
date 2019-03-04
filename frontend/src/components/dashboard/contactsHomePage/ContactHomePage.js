@@ -126,12 +126,12 @@ export class ContactHomePage extends Component {
         title,
         provinceOptions,
       },
+      isLarge: true,
       content: modalConfig.ADD_CONTACT,
     });
   }
 
   render() {
-    console.log(this.props.provinceOptions);
     const { page, per_page } = this.state.params;
     return (
       <div className="landing-page">

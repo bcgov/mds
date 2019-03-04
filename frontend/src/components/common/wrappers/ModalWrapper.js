@@ -15,12 +15,14 @@ const propTypes = {
   content: PropTypes.func.isRequired,
   props: PropTypes.objectOf(PropTypes.string),
   clearOnSubmit: PropTypes.bool.isRequired,
+  isLarge: PropTypes.bool,
 };
 
 const defaultProps = {
   props: {
     title: "",
   },
+  isLarge: false,
 };
 
 export class ModalWrapper extends Component {
@@ -42,9 +44,11 @@ export class ModalWrapper extends Component {
   );
 
   render() {
+    console.log(this.props);
     const ChildComponent = this.props.content;
     return (
       <Modal
+        style={{ width: this.props.isLarge ? "1200px" : "inherit" }}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}

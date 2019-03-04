@@ -92,7 +92,7 @@ export class AddTenureModal extends Component {
     return (
       <div>
         <div>
-          <Steps current={this.state.current} labelPlacement="vertical">
+          <Steps current={this.state.current}>
             {steps.map((step) => (
               <Step key={step.title} title={step.title} />
             ))}
@@ -110,11 +110,11 @@ export class AddTenureModal extends Component {
               </Button>
             )}
             {this.state.current === steps.length - 1 && (
-              <Button type="primary" onClick={this.handlePartySubmit}>
+              <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
                 Submit
               </Button>
             )}
-            <Button type="tertiary" onClick={this.handlePartySubmit}>
+            <Button type="tertiary" className="full-mobile" onClick={this.handlePartySubmit}>
               Cancel
             </Button>
           </div>
