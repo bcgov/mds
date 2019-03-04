@@ -5,7 +5,11 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchPermits, fetchPermitStatusOptions } from "@/actionCreators/permitActionCreator";
+import {
+  fetchPermits,
+  fetchPermitStatusOptions,
+  createPermit,
+} from "@/actionCreators/permitActionCreator";
 import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -21,7 +25,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-
+  createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   fetchPermitStatusOptions: PropTypes.func.isRequired,
 };
@@ -49,12 +53,12 @@ export class MinePermitInfo extends Component {
     });
   };
 
-  handleAddPermit = (value) => {
-    /* const payload = { type, ...values };
-    return this.props.createParty(payload).then(() => {
-      this.props.fetchParties();
-    }); */
+  handleAddPermit = (values) => {
+    const payload = { mine_guid: this.props.mine.guid, ...values };
     this.props.closeModal();
+    return this.props.createPermit(payload).then(() => {
+      this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    });
   };
 
   render() {
@@ -103,6 +107,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPermits,
       fetchPermitStatusOptions,
+      createPermit,
     },
     dispatch
   );
