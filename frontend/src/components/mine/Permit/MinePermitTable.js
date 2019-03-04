@@ -10,6 +10,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { BRAND_PENCIL, EDIT } from "@/constants/assets";
+import { modalConfig } from "@/components/modalContent/config";
+import { updatePermitAmendment } from "@/actionCreators/permitActionCreator";
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
@@ -18,6 +20,9 @@ const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   major_mine_ind: PropTypes.bool.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -136,10 +141,10 @@ const childColumns = [
     title: "",
     dataIndex: "amendmentGuid",
     key: "amendmentGuid",
-    render: (text) => (
+    render: (text, record) => (
       <div>
         {text.major_mine_ind && (
-          <Button type="primary">
+          <Button type="primary" onClick={(event) => record.openModal(event)}>
             <div className="padding-small">
               <img className="padding-small--right" src={EDIT} alt="Edit" />
               Edit
@@ -191,7 +196,7 @@ const transformRowData = (permit, partyRelationships, major_mine_ind) => {
   };
 };
 
-const transformChildRowData = (amendment, record, amendmentNumber, major_mine_ind) => ({
+const transformChildRowData = (amendment, record, amendmentNumber, major_mine_ind, openModal) => ({
   amendmentNumber,
   receivedDate:
     (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
@@ -201,22 +206,40 @@ const transformChildRowData = (amendment, record, amendmentNumber, major_mine_in
     Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
   amendmentGuid: { guid: amendment.permit_amendment_guid, major_mine_ind },
+  openModal,
 });
 
 export const MinePermitTable = (props) => {
+  const handleEditPermitAmendment = (data) => {
+    props.updatePermitAmendment(data).then(() => props.closeModal());
+  };
+
+  const openEditPermitAmendmentModal = (event) => {
+    event.preventDefault();
+    props.openModal({
+      props: {
+        onSubmit: handleEditPermitAmendment,
+        title: "Edit Permit Amendment",
+      },
+      content: modalConfig.EDIT_PERMIT_AMENDMENT,
+    });
+  };
+
   const amendmentHistory = (record) => {
     const childRowData = record.amendments.map((amendment, index) =>
       transformChildRowData(
         amendment,
         record,
         record.amendments.length - index,
-        props.major_mine_ind
+        props.major_mine_ind,
+        openEditPermitAmendmentModal
       )
     );
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
+
   const rowData = props.permits.map((permit) =>
     transformRowData(permit, props.partyRelationships, props.major_mine_ind)
   );
