@@ -66,7 +66,7 @@ const columns = [
     title: "",
     dataIndex: "addEditButton",
     key: "addEditButton",
-    render: (permit) => {
+    render: (text) => {
       const menu = (
         <div>
           <Menu>
@@ -92,7 +92,7 @@ const columns = [
         </div>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE}>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="primary">
               <div className="padding-small">
@@ -163,7 +163,7 @@ const getPermittees = (partyRelationships, permit) =>
 const getPermitteeName = (permittees) =>
   permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
-const transformRowData = (permit, partyRelationships) => {
+const transformRowData = (permit, partyRelationships, major_mine_ind) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
@@ -187,7 +187,7 @@ const transformRowData = (permit, partyRelationships) => {
         : Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
-    addEditButton: permit,
+    addEditButton: { guid: permit.permit_guid, major_mine_ind },
   };
 };
 
@@ -217,7 +217,9 @@ export const MinePermitTable = (props) => {
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
-  const rowData = props.permits.map((permit) => transformRowData(permit, props.partyRelationships));
+  const rowData = props.permits.map((permit) =>
+    transformRowData(permit, props.partyRelationships, props.major_mine_ind)
+  );
 
   return (
     <Table
