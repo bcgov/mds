@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
-import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import AdvancedMineSearchForm from "@/components/Forms/AdvancedMineSearchForm";
+import AdvancedContactSearchForm from "@/components/Forms/AdvancedContactSearchForm";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
- * @class MineSearch contains logic for both landing page List view and Map view, searches though mine_name and mine_no to either Redirect to Mine Summary page, or to locate coordinates of a mine on the landing page map.
+ * @class ContactSearch supports searching for a filtered list of parties.
  */
 const propTypes = {
-  fetchMineNameList: PropTypes.func.isRequired,
-  handleMineSearch: PropTypes.func,
+  fetchParties: PropTypes.func.isRequired,
+  handleContactSearch: PropTypes.func,
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
@@ -23,7 +22,7 @@ const propTypes = {
 
 const defaultProps = {
   mineNameList: [],
-  handleMineSearch: () => {},
+  handleContactSearch: () => {},
   handleCoordinateSearch: () => {},
   isMapView: false,
 };
@@ -31,7 +30,7 @@ const defaultProps = {
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
 
-export class MineSearch extends Component {
+export class ContactSearch extends Component {
   state = {
     isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
@@ -63,7 +62,7 @@ export class MineSearch extends Component {
   handleSearch = (value = {}) => {
     const { commodity, region, status, tenure, tsf, major, search } = value;
 
-    this.props.handleMineSearch({
+    this.props.handleContactSearch({
       search,
       tsf,
       major,
@@ -78,30 +77,13 @@ export class MineSearch extends Component {
     this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
-  transformData = (data) =>
-    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", guid }) => (
-      <AutoComplete.Option key={guid} value={`${longitude},${latitude},${mine_name},${guid}`}>
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
-    ));
-
   render() {
-    if (this.props.isMapView) {
-      return (
-        <RenderAutoComplete
-          placeholder="Search for a mine by name"
-          handleSelect={this.handleCoordinateSearch}
-          data={this.transformData(this.props.mineNameList)}
-          handleChange={this.handleChange}
-        />
-      );
-    }
     return (
       <div>
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
-              <AdvancedMineSearchForm
+              <AdvancedContactSearchForm
                 {...this.props}
                 onSubmit={this.handleSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
@@ -128,10 +110,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-MineSearch.propTypes = propTypes;
-MineSearch.defaultProps = defaultProps;
+ContactSearch.propTypes = propTypes;
+ContactSearch.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MineSearch);
+)(ContactSearch);

@@ -194,10 +194,10 @@ export class MineTailingsInfo extends Component {
                       <h6>{doc.exp_document_name}</h6>
                     </Col>
                     <Col id={`due-date-${id}`} span={2}>
-                      <h6>{doc.due_date === "None" ? "-" : formatDate(doc.due_date)}</h6>
+                      <h6>{formatDate(doc.due_date) || "-"}</h6>
                     </Col>
                     <Col span={2}>
-                      <h6>{doc.received_date === "None" ? "-" : formatDate(doc.received_date)}</h6>
+                      <h6>{formatDate(doc.received_date) || "-"}</h6>
                     </Col>
                     <Col id={`status-${id}`} span={4}>
                       <h6 className={isOverdue ? "bold" : null}>
