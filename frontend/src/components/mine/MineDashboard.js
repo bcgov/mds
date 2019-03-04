@@ -74,14 +74,15 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
-  state = { activeTab: "summary", isLoaded: false };
+  state = { activeTab: "summary", isLoaded: false, complianceInfoLoading: true };
 
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
-      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true);
-      // true = Only get compliance if it already cached
+      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
+        this.setState({ complianceInfoLoading: false });
+      });
     });
     if (!this.props.optionsLoaded) {
       this.props.fetchStatusOptions();
@@ -141,6 +142,7 @@ export class MineDashboard extends Component {
                       permittees={this.props.permittees}
                       permitteeIds={this.props.permitteeIds}
                       mineComplianceInfo={this.props.mineComplianceInfo}
+                      complianceInfoLoading={this.state.complianceInfoLoading}
                     />
                   </div>
                 </TabPane>
@@ -156,7 +158,10 @@ export class MineDashboard extends Component {
                 </TabPane>
                 <TabPane tab="Compliance" key="compliance">
                   <div className="tab__content">
-                    <MineComplianceInfo mine={mine} {...this.props} />
+                    <MineComplianceInfo
+                      mineComplianceInfo={this.props.mineComplianceInfo}
+                      isLoading={this.state.complianceInfoLoading}
+                    />
                   </div>
                 </TabPane>
                 {/* TODO: Unhide for July release */

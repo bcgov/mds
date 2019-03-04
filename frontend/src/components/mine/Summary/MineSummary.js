@@ -24,12 +24,14 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  complianceInfoLoading: PropTypes.bool,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   mineComplianceInfo: {},
+  complianceInfoLoading: true,
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -76,6 +78,9 @@ const renderSummaryTSF = (tsf, partyRelationships) => (
 const isActive = (pr) =>
   (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
+
+const displayLastInspectionDate = (dateString) =>
+  dateString === null ? String.NO_NRIS_INSPECTIONS : formatDate(dateString);
 
 export const MineSummary = (props) => {
   if (
@@ -163,7 +168,7 @@ export const MineSummary = (props) => {
           </Col>
         </Row>
       )}
-      {props.mineComplianceInfo && props.mineComplianceInfo.last_inspection && (
+      {props.mineComplianceInfo && (
         <Row gutter={16} type="flex" justify="center">
           <Col span={18}>
             <Row gutter={16}>
@@ -180,7 +185,9 @@ export const MineSummary = (props) => {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {formatDate(props.mineComplianceInfo.last_inspection)}
+                          {props.complianceInfoLoading
+                            ? String.LOADING
+                            : displayLastInspectionDate(props.mineComplianceInfo.last_inspection)}
                         </span>
                       </div>
                     </Row>
@@ -200,7 +207,9 @@ export const MineSummary = (props) => {
                       <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
                       &nbsp;
                       <span className="info-display">
-                        {props.mineComplianceInfo.num_open_orders}
+                        {props.complianceInfoLoading
+                          ? String.LOADING
+                          : props.mineComplianceInfo.num_open_orders}
                       </span>
                     </Row>
                   }
@@ -223,7 +232,9 @@ export const MineSummary = (props) => {
                       />
                       &nbsp;
                       <span className="info-display">
-                        {props.mineComplianceInfo.num_overdue_orders}
+                        {props.complianceInfoLoading
+                          ? String.LOADING
+                          : props.mineComplianceInfo.num_overdue_orders}
                       </span>
                     </Row>
                   }

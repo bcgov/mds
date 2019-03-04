@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Divider, Pagination } from "antd";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
+import * as String from "@/constants/strings";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 /**
@@ -16,23 +15,17 @@ import { formatDate } from "@/utils/helpers";
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  fetchMineComplianceInfo: PropTypes.func.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  isLoading: PropTypes.bool,
 };
 
 const defaultProps = {
   mineComplianceInfo: {},
+  isLoading: true,
 };
 
 export class MineComplianceInfo extends Component {
-  state = { isLoading: true, minOrderList: 0, maxOrderList: 10 };
-
-  componentDidMount() {
-    this.props
-      .fetchMineComplianceInfo(this.props.mine.mine_no)
-      .then(() => this.setState({ isLoading: !this.state.isLoading }));
-  }
+  state = { minOrderList: 0, maxOrderList: 10 };
 
   handlePageChange = (value) => {
     this.setState({
@@ -130,8 +123,8 @@ export class MineComplianceInfo extends Component {
   render() {
     return (
       <div>
-        {this.state.isLoading && <Loading />}
-        {!this.state.isLoading && (
+        {this.props.isLoading && <Loading />}
+        {!this.props.isLoading && (
           <div>
             {this.props.mineComplianceInfo && (
               <div>
@@ -140,7 +133,9 @@ export class MineComplianceInfo extends Component {
                   <Col span={4}>
                     <div className="center">
                       <p className="info-display">
-                        {formatDate(this.props.mineComplianceInfo.last_inspection)}
+                        {this.props.mineComplianceInfo.last_inspection === null
+                          ? String.NO_NRIS_INSPECTIONS
+                          : formatDate(this.props.mineComplianceInfo.last_inspection)}
                       </p>
                       <p className="info-display-label">LAST INSPECTION DATE</p>
                     </div>
@@ -213,15 +208,4 @@ const mapStateToProps = (state) => ({
   mineComplianceInfo: getMineComplianceInfo(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchMineComplianceInfo,
-    },
-    dispatch
-  );
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineComplianceInfo);
+export default connect(mapStateToProps)(MineComplianceInfo);
