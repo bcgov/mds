@@ -92,7 +92,10 @@ const columns = [
         </div>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={mine.major_mine_ind}>
+        <AuthorizationWrapper
+          permission={Permission.CREATE}
+          isMajorMine={this.props.mine.major_mine_ind}
+        >
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="primary">
               <div className="padding-small">
