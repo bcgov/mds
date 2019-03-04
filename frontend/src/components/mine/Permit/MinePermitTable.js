@@ -1,4 +1,5 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { Table, Menu, Dropdown, Button, Icon } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -11,7 +12,7 @@ import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { BRAND_PENCIL, EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
-import { updatePermitAmendment } from "@/actionCreators/permitActionCreator";
+import { updatePermitAmendment, createPermitAmendment } from "@/actionCreators/permitActionCreator";
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
@@ -23,6 +24,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
+  createPermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -85,7 +87,7 @@ const columns = [
               <button
                 type="button"
                 className="full"
-                onClick={(event) => record.openAddPermitAmendmentModal(event)}
+                onClick={(event) => record.openAddAmendmentModal(event, text.guid)}
               >
                 <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
                 Add permit amendment
@@ -148,7 +150,10 @@ const childColumns = [
     render: (text, record) => (
       <div>
         {text.major_mine_ind && (
-          <Button type="primary" onClick={(event) => record.openAmendmentModal(event)}>
+          <Button
+            type="primary"
+            onClick={(event) => record.openEditAmendmentModal(event, text.guid, text.permit_guid)}
+          >
             <div className="padding-small">
               <img className="padding-small--right" src={EDIT} alt="Edit" />
               Edit
@@ -172,12 +177,7 @@ const getPermittees = (partyRelationships, permit) =>
 const getPermitteeName = (permittees) =>
   permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
 
-const transformRowData = (
-  permit,
-  partyRelationships,
-  major_mine_ind,
-  openAddPermitAmendmentModal
-) => {
+const transformRowData = (permit, partyRelationships, major_mine_ind, openAddAmendmentModal) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
@@ -202,7 +202,7 @@ const transformRowData = (
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: { guid: permit.permit_guid, major_mine_ind },
-    openAddPermitAmendmentModal,
+    openAddAmendmentModal,
   };
 };
 
@@ -221,28 +221,51 @@ const transformChildRowData = (
     (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
     Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
-  amendmentGuid: { guid: amendment.permit_amendment_guid, major_mine_ind },
+  amendmentGuid: {
+    guid: amendment.permit_amendment_guid,
+    permit_guid: amendment.permit_guid,
+    major_mine_ind,
+  },
   openEditAmendmentModal,
 });
 
 export const MinePermitTable = (props) => {
-  const handleEditPermitAmendment = (data) => {
-    props.updatePermitAmendment(data).then(() => props.closeModal());
+  const handleEditPermitAmendment = (data, permit_amendment_guid) => {
+    const result = { permit_amendment_guid, ...data };
+
+    props.updatePermitAmendment(result).then(() => {
+      props.closeModal();
+    });
   };
 
-  const openEditPermitAmendmentModal = (event) => {
+  const openEditPermitAmendmentModal = (event, permit_amendment_guid, permit_guid) => {
+    const permit = props.permits.find((p) => p.permit_guid === permit_guid);
+    const permit_amendment = permit.amendments.find(
+      (pa) => pa.permit_amendment_guid === permit_amendment_guid
+    );
+
+    const initialValues = {
+      received_date: permit_amendment.received_date,
+      issue_date: permit_amendment.issue_date,
+      authorization_end_date: permit_amendment.authorization_end_date,
+      permit_amendment_guid,
+    };
+
     event.preventDefault();
     props.openModal({
       props: {
+        initialValues,
         onSubmit: handleEditPermitAmendment,
         title: "Edit Permit Amendment",
       },
-      content: modalConfig.EDIT_PERMIT_AMENDMENT,
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
   };
 
   const handleAddPermitAmendment = (data) => {
-    props.updatePermitAmendment(data).then(() => props.closeModal());
+    props.createPermitAmendment(data).then(() => {
+      props.closeModal();
+    });
   };
 
   const openAddPermitAmendmentModal = (event) => {
@@ -250,7 +273,7 @@ export const MinePermitTable = (props) => {
     props.openModal({
       props: {
         onSubmit: handleAddPermitAmendment,
-        title: "Edit Permit Amendment",
+        title: "Add Permit Amendment",
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
@@ -297,7 +320,19 @@ const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updatePermitAmendment,
+      createPermitAmendment,
+    },
+    dispatch
+  );
+
 MinePermitTable.propTypes = propTypes;
 MinePermitTable.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(MinePermitTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MinePermitTable);

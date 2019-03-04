@@ -21,16 +21,6 @@ export const AddPermitAmendmentForm = (props) => (
       <Col>
         <Form.Item>
           <Field
-            id="amendment_type"
-            name="amendment_type"
-            label="Amendment type*"
-            placeholder="Select an amendment type"
-            component={RenderSelect}
-            data={[{ name: "test", value: "test" }]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
             id="received_date"
             name="received_date"
             label="Received Date"

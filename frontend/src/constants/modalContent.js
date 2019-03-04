@@ -21,4 +21,3 @@ export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";
 
 export const ADD_PERMIT = "Add New Permit";
 export const ADD_PERMIT_AMENDMENT = "Add a New Permit Amendment";
-export const EDIT_PERMIT_AMENDMENT = "Edit Permit Amendment";
