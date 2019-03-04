@@ -6,7 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
-import { Icon, Button, Row, Col } from "antd";
+import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -37,22 +37,21 @@ export class MinePermitInfo extends Component {
   openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
 
-    const handleDelete = () => {};
-    const initialValues = {};
-
     this.props.openModal({
       props: {
-        handleDelete,
         onSubmit,
         title,
-        initialValues,
       },
       content: modalConfig.ADD_PERMIT,
     });
   };
 
   handleAddPermit = (value) => {
-    alert(JSON.stringify(value));
+    /*const payload = { type, ...values };
+    return this.props.createParty(payload).then(() => {
+      this.props.fetchParties();
+    }); */
+    this.props.closeModal();
   };
 
   render() {
