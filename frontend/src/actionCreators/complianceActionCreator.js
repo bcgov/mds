@@ -13,6 +13,7 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 // eslint-disable-next-line import/prefer-default-export
 export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) => {
   dispatch(showLoading());
+  dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
   dispatch(complianceActions.storeMineComplianceInfo({}));
 
   return axios
