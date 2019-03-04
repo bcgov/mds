@@ -1,12 +1,15 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Menu, Dropdown, Button, Icon } from "antd";
 import NullScreen from "@/components/common/NullScreen";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import { BRAND_PENCIL, EDIT } from "@/constants/assets";
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
@@ -58,6 +61,49 @@ const columns = [
     dataIndex: "lastAmended",
     key: "lastAmended",
     render: (text) => <div title="Last Amended">{text}</div>,
+  },
+  {
+    title: "",
+    dataIndex: "addEditButton",
+    key: "addEditButton",
+    render: (permit) => {
+      const menu = (
+        <div>
+          <Menu>
+            <Menu.Item key="0">
+              <button type="button" className="full">
+                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                Add amalgamated permit
+              </button>
+            </Menu.Item>
+            <Menu.Item key="1">
+              <button type="button" className="full">
+                <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                Add permit amendment
+              </button>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <button type="button" className="full">
+                <img alt="document" className="padding-small" src={BRAND_PENCIL} />
+                Edit permit
+              </button>
+            </Menu.Item>
+          </Menu>
+        </div>
+      );
+      return (
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={mine.major_mine_ind}>
+          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+            <Button type="primary">
+              <div className="padding-small">
+                <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                Add/Edit
+              </div>
+            </Button>
+          </Dropdown>
+        </AuthorizationWrapper>
+      );
+    },
   },
 ];
 
@@ -124,6 +170,7 @@ const transformRowData = (permit, partyRelationships) => {
         : Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
+    addEditButton: permit,
   };
 };
 
