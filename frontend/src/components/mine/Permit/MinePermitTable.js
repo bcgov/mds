@@ -88,7 +88,7 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, text.guid)}
             >
               <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-              Add amalgamated permit
+              {text.hasAmalgamated ? "Update ammalgamated permit" : "Add amalgamated permit"}
             </button>
           </Menu.Item>
           <Menu.Item key="1">
@@ -202,6 +202,7 @@ const transformRowData = (
   const permittees = getPermittees(partyRelationships, permit);
   const permitteeName =
     partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
+  const hasAmalgamated = permit.amendments.find((pa) => pa.permit_amendment_type_code === "ALG");
 
   return {
     key: permit.permit_guid,
@@ -219,7 +220,7 @@ const transformRowData = (
         : Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
-    addEditButton: { guid: permit.permit_guid, major_mine_ind },
+    addEditButton: { guid: permit.permit_guid, major_mine_ind, hasAmalgamated },
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
