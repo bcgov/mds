@@ -10,7 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
-import { BRAND_PENCIL, EDIT } from "@/constants/assets";
+import { BRAND_PENCIL, EDIT, EDITOUTLINE, CARAT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import {
   updatePermitAmendment,
@@ -47,7 +47,7 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text) => <div title="Status">{text}</div>,
+    render: (text) => <div title="Status">{text === "O" ? "Open" : "Closed"}</div>,
   },
   {
     title: "Permittee",
@@ -156,12 +156,6 @@ const childColumns = [
     render: (text) => <div title="Amendment">{text}</div>,
   },
   {
-    title: "Received Date",
-    dataIndex: "receivedDate",
-    key: "receivedDate",
-    render: (text) => <div title="Received Date">{text}</div>,
-  },
-  {
     title: "Issue Date",
     dataIndex: "issueDate",
     key: "issueDate",
@@ -187,7 +181,7 @@ const childColumns = [
           }
         >
           <div>
-            <img className="padding-small--right" src={BRAND_PENCIL} alt="Edit" />
+            <img className="padding-small--right" src={EDITOUTLINE} alt="Edit" />
           </div>
         </Button>
       ),
@@ -219,8 +213,7 @@ const transformRowData = (
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
   const permittees = getPermittees(partyRelationships, permit);
-  const permitteeName =
-    partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
+  const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.amendments.find((pa) => pa.permit_amendment_type_code === "ALG");
 
   return {
