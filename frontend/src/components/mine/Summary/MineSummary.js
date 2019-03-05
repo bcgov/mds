@@ -75,9 +75,6 @@ const isActive = (pr) =>
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
-const displayLastInspectionDate = (dateString) =>
-  dateString === null ? String.NO_NRIS_INSPECTIONS : formatDate(dateString);
-
 export const MineSummary = (props) => {
   if (
     props.partyRelationships.length === 0 &&
@@ -176,7 +173,8 @@ export const MineSummary = (props) => {
                         <span className="info-display">
                           {props.complianceInfoLoading
                             ? String.LOADING
-                            : displayLastInspectionDate(props.mineComplianceInfo.last_inspection)}
+                            : formatDate(props.mineComplianceInfo.last_inspection) ||
+                              String.NO_NRIS_INSPECTIONS}
                         </span>
                       </div>
                     </Row>

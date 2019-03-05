@@ -133,9 +133,8 @@ export class MineComplianceInfo extends Component {
                   <Col span={4}>
                     <div className="center">
                       <p className="info-display">
-                        {this.props.mineComplianceInfo.last_inspection === null
-                          ? String.NO_NRIS_INSPECTIONS
-                          : formatDate(this.props.mineComplianceInfo.last_inspection)}
+                        {formatDate(this.props.mineComplianceInfo.last_inspection) ||
+                          String.NO_NRIS_INSPECTIONS}
                       </p>
                       <p className="info-display-label">LAST INSPECTION DATE</p>
                     </div>
