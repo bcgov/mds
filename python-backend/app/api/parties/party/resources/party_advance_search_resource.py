@@ -73,7 +73,7 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         if email_filter_term:
             conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
         if type_filter_term:
-            conditions.append(Party.party_type_code.is_(type_filter_term))
+            conditions.append(Party.party_type_code.like(type_filter_term))
         # todo: make sure this works well with different number types
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
