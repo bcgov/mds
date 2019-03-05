@@ -12,7 +12,7 @@ import { AuthorizationWrapper } from "@/components/common/wrappers/Authorization
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
-  content: PropTypes.func.isRequired,
+  content: PropTypes.func,
   props: PropTypes.objectOf(PropTypes.string),
   clearOnSubmit: PropTypes.bool.isRequired,
   isLarge: PropTypes.bool,
@@ -23,6 +23,7 @@ const defaultProps = {
     title: "",
   },
   isLarge: true,
+  content: () => {},
 };
 
 export class ModalWrapper extends Component {
@@ -49,7 +50,7 @@ export class ModalWrapper extends Component {
     return (
       <Modal
         // id={this.props.isLarge ? "modal--large" : " "}
-        style={{ width: this.props.isLarge ? "1200px" : "inherit" }}
+        style={{ width: this.props.isLarge ? "1200px !important" : "inherit" }}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}

@@ -37,7 +37,7 @@ export class AddPartyRelationshipModal extends Component {
   };
 
   toggleFormVisibility = () => {
-    this.setState({ isFormVisible: !this.state.isFormVisible });
+    this.setState((prevState) => ({ isFormVisible: !prevState.isFormVisible}));
   };
 
   handlePartySubmit = (values) => {
@@ -66,7 +66,7 @@ export class AddPartyRelationshipModal extends Component {
     return (
       <div>
         <Row gutter={48}>
-          <Col md={12} sm={24} style={{ margin: "40px 0" }}>
+          <Col md={12} sm={24} className="">
             <AddPartyRelationshipForm
               onSubmit={this.props.onSubmit}
               handleChange={this.props.handleChange}
@@ -93,8 +93,7 @@ export class AddPartyRelationshipModal extends Component {
                     !this.props.partyRelationshipType.organization &&
                     ModalContent.PERSON_NOT_FOUND}
                 </p>
-                <Button className="btn--dropdown" onClick={this.toggleFormVisibility}>
-                  <Icon type="plus" style={{ color: Styles.COLOR.violet }} />
+                <Button type="secondary" onClick={this.toggleFormVisibility}>
                   Add new Contact
                 </Button>
               </div>
