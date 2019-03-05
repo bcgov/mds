@@ -28,6 +28,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         'authorization_end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument(
         'permit_amendment_status_code', type=str, help='Status of the permit being added.')
+    parser.add_argument('description', type=str, help='Permit description', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
@@ -75,10 +76,14 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             permit = Permit.create(mine.mine_guid, data.get('permit_no'),
                                    data.get('permit_status_code'), self.get_create_update_dict())
 
-            amendment = PermitAmendment.create(permit, data.get('received_date'),
-                                               data.get('issue_date'),
-                                               data.get('authorization_end_date'), 'OGP',
-                                               self.get_create_update_dict())
+            amendment = PermitAmendment.create(
+                permit,
+                data.get('received_date'),
+                data.get('issue_date'),
+                data.get('authorization_end_date'),
+                'OGP',
+                self.get_create_update_dict(),
+                description=data.get('description'))
             amendment.save()
             permit.save()
         except Exception as e:
@@ -99,6 +104,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         if 'permit_status_code' in data:
             permit.permit_status_code = data.get('permit_status_code')
+        if 'description' in data:
+            permit.description = data.get('description')
 
         try:
             permit.save()
