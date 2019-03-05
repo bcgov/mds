@@ -77,8 +77,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
             amendment = PermitAmendment.create(permit, data.get('received_date'),
                                                data.get('issue_date'),
-                                               data.get('authorization_end_date'),
-                                               self.get_create_update_dict(), 'OGP', 'ACT')
+                                               data.get('authorization_end_date'), 'OGP',
+                                               self.get_create_update_dict())
             amendment.save()
             permit.save()
         except Exception as e:

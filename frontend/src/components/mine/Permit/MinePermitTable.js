@@ -82,7 +82,11 @@ const columns = [
       const menu = (
         <Menu>
           <Menu.Item key="0">
-            <button type="button" className="full">
+            <button
+              type="button"
+              className="full"
+              onClick={(event) => record.openAddAmalgamatedPermitModal(event, text.guid)}
+            >
               <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
               Add amalgamated permit
             </button>
@@ -91,7 +95,7 @@ const columns = [
             <button
               type="button"
               className="full"
-              onClick={(event) => record.openAddAmendmentModal(event, text.guid)}
+              onClick={(event) => record.openAddPermitAmendmentModal(event, text.guid)}
             >
               <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
               Add permit amendment
@@ -188,8 +192,9 @@ const transformRowData = (
   permit,
   partyRelationships,
   major_mine_ind,
-  openAddAmendmentModal,
-  openEditPermitModal
+  openEditPermitModal,
+  openAddPermitAmendmentModal,
+  openAddAmalgamatedPermitModal
 ) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
@@ -215,8 +220,9 @@ const transformRowData = (
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: { guid: permit.permit_guid, major_mine_ind },
-    openAddAmendmentModal,
     openEditPermitModal,
+    openAddPermitAmendmentModal,
+    openAddAmalgamatedPermitModal,
   };
 };
 
@@ -279,20 +285,28 @@ export const MinePermitTable = (props) => {
       props.closeModal();
     });
   };
-
+  // Edit Permit
   const handleEditPermit = (data) => {
     props.updatePermit(data.permit_guid, data).then(() => {
       props.closeModal();
     });
   };
 
-  const openAddAmendmentModal = (event, permit_guid) => {
+  // Add amalgamated Permit Amendment
+  const handleAddAlgPermitAmendment = (data) => {
+    const alg_data = { ...data, permit_amendment_type_code: "ALG" };
+    props.createPermitAmendment(data.permit_guid, alg_data).then(() => {
+      props.closeModal();
+    });
+  };
+
+  const openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
     event.preventDefault();
     props.openModal({
       props: {
         initialValues: { permit_guid },
-        onSubmit: handleAddPermitAmendment,
-        title: "Add Permit Amendment",
+        onSubmit,
+        title,
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
@@ -316,6 +330,17 @@ export const MinePermitTable = (props) => {
     });
   };
 
+  const openAddAmalgamatedPermitModal = (event, permit_guid) =>
+    openAddAmendmentModal(
+      event,
+      handleAddAlgPermitAmendment,
+      "Add Amalgamated Permit",
+      permit_guid
+    );
+
+  const openAddPermitAmendmentModal = (event, permit_guid) =>
+    openAddAmendmentModal(event, handleAddPermitAmendment, "Add Permit Amendment", permit_guid);
+
   const amendmentHistory = (record) => {
     const childRowData = record.amendments.map((amendment, index) =>
       transformChildRowData(
@@ -336,8 +361,9 @@ export const MinePermitTable = (props) => {
       permit,
       props.partyRelationships,
       props.major_mine_ind,
-      openAddAmendmentModal,
-      openEditPermitModal
+      openEditPermitModal,
+      openAddPermitAmendmentModal,
+      openAddAmalgamatedPermitModal
     )
   );
 

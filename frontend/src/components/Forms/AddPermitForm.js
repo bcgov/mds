@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
@@ -19,6 +19,13 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  permitTypeCode: PropTypes.string,
+  permitActivityTypeCode: PropTypes.string,
+};
+
+const defaultProps = {
+  permitTypeCode: "",
+  permitActivityTypeCode: "",
 };
 
 const permitTypes = [
@@ -47,13 +54,15 @@ const permitTypes = [
 const permitActivityTypes = [
   {
     label: "Operation",
-    value: " ",
+    value: "",
   },
   {
     label: "Exploration",
     value: "X",
   },
 ];
+
+const selector = formValueSelector(FORM.ADD_PERMIT);
 
 export const AddPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -86,6 +95,7 @@ export const AddPermitForm = (props) => (
             label="Permit number*"
             component={RenderField}
             validate={[required]}
+            inlineLabel={`${props.permitTypeCode}${props.permitActivityTypeCode} -`}
           />
         </Form.Item>
         <Form.Item>
@@ -101,21 +111,11 @@ export const AddPermitForm = (props) => (
         </Form.Item>
         <Form.Item>
           <Field
-            id="received_date"
-            name="received_date"
-            label="Received Date"
+            id="issue_date"
+            name="issue_date"
+            label="Issue Date*"
             component={RenderDate}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field id="issue_date" name="issue_date" label="Issue Date" component={RenderDate} />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="authorization_end_date"
-            name="authorization_end_date"
-            label="Authorization End Date"
-            component={RenderDate}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
@@ -140,10 +140,13 @@ export const AddPermitForm = (props) => (
 );
 
 AddPermitForm.propTypes = propTypes;
+AddPermitForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
     permitStatusOptions: getPermitStatusOptions(state),
+    permitTypeCode: selector(state, "permit_type"),
+    permitActivityTypeCode: selector(state, "permit_activity_type"),
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,
