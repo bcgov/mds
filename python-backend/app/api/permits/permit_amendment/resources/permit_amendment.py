@@ -64,6 +64,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'permit does not exist'), 404
 
         data = self.parser.parse_args()
+        current_app.logger.info(f'creating permit_amendment with >> {data}')
 
         received_date = data.get('received_date')
         issue_date = data.get('issue_date')
