@@ -12,15 +12,18 @@ from werkzeug.datastructures import FileStorage
 from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 from app.extensions import cache
-from ..constants import NRIS_CACHE_PREFIX, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
+from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
 
 
 def _get_datetime_from_NRIS_data(date):
     return datetime.strptime(date, '%Y-%m-%d %H:%M')
 
+def _get_inspector_from_report(report):
+    prefix, inspector = report.get('assessor').split('\\')
+    return inspector
 
 def _get_NRIS_token():
-    result = cache.get(NRIS_CACHE_PREFIX + 'token')
+    result = cache.get(NRIS_TOKEN)
 
     if result is None:
         params = {
@@ -42,7 +45,7 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_CACHE_PREFIX + 'token', result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
 
     return result
 
@@ -63,7 +66,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
     if url is None:
         raise TypeError('Could not load the NRIS URL.')
     else:
-        #Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
+        # Inspection start date is set to 2018-01-01 as that is the begining of time for NRIS
         params = {
             'inspectionStartDate': '2018-01-01',
             'inspectionEndDate': f'{current_date.year}-{current_date.month}-{current_date.day}',
@@ -80,7 +83,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
         try:
             empr_nris_resp.raise_for_status()
         except requests.exceptions.HTTPError:
-            #TODO add logging for this error.
+            # TODO add logging for this error.
             raise
 
         return empr_nris_resp.json()
@@ -92,8 +95,6 @@ def _process_NRIS_data(data, mine_no):
         key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
         reverse=True)
 
-    most_recent = data[0]
-
     advisories = 0
     warnings = 0
     num_open_orders = 0
@@ -103,14 +104,12 @@ def _process_NRIS_data(data, mine_no):
 
     for report in data:
         report_date = _get_datetime_from_NRIS_data(report.get('assessmentDate'))
-        one_year_ago = datetime.now() - relativedelta(years=1)
-
-        prefix, inspector = report.get('assessor').split('\\')
-
+        inspector = _get_inspector_from_report(report)
         inspection = report.get('inspection')
         stops = inspection.get('stops')
         order_count = 1
 
+        one_year_ago = datetime.now() - relativedelta(years=1)
         for stop in stops:
 
             stop_orders = stop.get('stopOrders')
@@ -156,9 +155,10 @@ def _process_NRIS_data(data, mine_no):
                 advisories += len(stop_advisories)
                 warnings += len(stop_warnings)
 
+    latest_report = data[0] if data else None
     overview = {
-        'last_inspection': most_recent.get('assessmentDate'),
-        'inspector': inspector,
+        'last_inspection': latest_report.get('assessmentDate') if latest_report else None,
+        'last_inspector': _get_inspector_from_report(latest_report) if latest_report else None,
         'num_open_orders': num_open_orders,
         'num_overdue_orders': num_overdue_orders,
         'advisories': advisories,
@@ -166,5 +166,6 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_CACHE_PREFIX + mine_no, overview, timeout=TIMEOUT_24_HOURS)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no),
+              overview, timeout=TIMEOUT_24_HOURS)
     return overview
