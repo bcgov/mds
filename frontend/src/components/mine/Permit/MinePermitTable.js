@@ -172,21 +172,19 @@ const childColumns = [
     title: "",
     dataIndex: "amendmentGuid",
     key: "amendmentGuid",
-    render: (text, record) => (
-      <div>
-        {text.major_mine_ind && (
-          <Button
-            type="primary"
-            onClick={(event) => record.openEditAmendmentModal(event, text.guid, text.permit_guid)}
-          >
-            <div className="padding-small">
-              <img className="padding-small--right" src={EDIT} alt="Edit" />
-              Edit
-            </div>
-          </Button>
-        )}
-      </div>
-    ),
+    render: (text, record) => [
+      text.major_mine_ind && (
+        <Button
+          type="primary"
+          onClick={(event) => record.openEditAmendmentModal(event, text.guid, text.permit_guid)}
+        >
+          <div className="flex" style={{ alignItems: "center" }}>
+            <img className="padding-small--right" src={EDIT} alt="Edit" />
+            Edit
+          </div>
+        </Button>
+      ),
+    ],
   },
 ];
 
