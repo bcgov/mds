@@ -95,7 +95,7 @@ export const AddPermitForm = (props) => (
             label="Permit number*"
             component={RenderField}
             validate={[required]}
-            test={`${props.permitTypeCode}${props.permitActivityTypeCode} - `}
+            inlineLabel={`${props.permitTypeCode}${props.permitActivityTypeCode} -`}
           />
         </Form.Item>
         <Form.Item>
