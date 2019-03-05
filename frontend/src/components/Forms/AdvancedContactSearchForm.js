@@ -92,7 +92,6 @@ export class AdvancedContactSearchForm extends Component {
                   name="email"
                   placeholder="Contact Email"
                   component={renderConfig.FIELD}
-                  validate={[email]}
                 />
               </Col>
               <Col md={8} xs={24}>

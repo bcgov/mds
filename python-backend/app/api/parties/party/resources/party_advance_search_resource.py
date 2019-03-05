@@ -19,9 +19,10 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str,
         help='First name of the party, if the party is a person.')
+    parser.add_argument('last_name', type=str,
+                        help='Last name of the party, if the party is a person.')
     parser.add_argument('party_name', type=str,
         help='Last name of the party (Person), or the Organization name (Organization).')
-    #FILTERS
     parser.add_argument('phone_no', type=str,
         help='The phone number of the party. Ex: 123-123-1234')
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
@@ -33,11 +34,15 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
     PARTY_LIST_RESULT_LIMIT = 25
 
 
-    # @api.doc(
-    #     params={
-    #         'mine_no_or_guid':
-    #         'Mine number or guid. If not provided a paginated list of mines will be returned.'
-    #     })
+    @api.doc(
+        params={
+            'first_name': 'First name of party or contact',
+            'party_name': 'Last name or party name of person or organisation',
+            'phone_no': 'phone number',
+            'email': 'email of person or organisation',
+            'type': 'A person (PER) or organisation (ORG)',
+            'role': 'A comma separated list of roles to be filtered by'
+        })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
@@ -47,8 +52,6 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
                 'No parties found'
             ), 404
         parties = paginated_parties.all()
-        # relationships = request.args.get('relationships')
-        # relationships = relationships.split(',') if relationships else []
         return {
             'parties': list(map(lambda x: x.json(relationships=['mine_party_appt']), parties)),
             'current_page': pagination_details.page_number,
@@ -71,23 +74,19 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         phone_filter_term = args.get('phone_no', None, type=str)
 
         conditions = []
-        if first_name_filter_term:
-            conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
-        if last_name_filter_term:
-            conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term)))
-        if party_name_filter_term:
-            conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term)))
-        if email_filter_term:
-            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
+        if first_name_filter_term and len(first_name_filter_term.strip()) > 0:
+            conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term.strip())))
+        if last_name_filter_term and len(last_name_filter_term.strip()) > 0:
+            conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term.strip())))
+        if party_name_filter_term and len(party_name_filter_term.strip()) > 0:
+            conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term.strip())))
+        if email_filter_term and len(email_filter_term.strip()) > 0:
+            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term.strip())))
         if type_filter_term:
             conditions.append(Party.party_type_code.like(type_filter_term))
-        # todo: make sure this works well with different number types
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
         contact_query = Party.query.filter(and_(*conditions))
-        # contact_query = Party.query.filter(conditions[0])
-
-        # todo: implement role filtering: check whether or not it's possible to do this with no join
         if role_filter_term:
             role_filter_term_array = role_filter_term.split(',')
             role_filter = MinePartyAppointment.mine_party_appt_type_code.in_(role_filter_term_array)
