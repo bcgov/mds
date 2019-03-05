@@ -6,7 +6,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -63,6 +63,7 @@ const permitActivityTypes = [
 ];
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
+const { TabPane } = Tabs;
 
 const validate = (values) => {
   const errors = {};
@@ -77,64 +78,82 @@ const validate = (values) => {
 
 export const AddPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Row gutter={16}>
-      <Col>
-        <Form.Item>
-          <Field
-            id="permit_type"
-            name="permit_type"
-            label="Permit type*"
-            placeholder="Select a permit type"
-            component={RenderSelect}
-            data={permitTypes}
-          />
-        </Form.Item>
-        {(props.permitTypeCode === "C" ||
-          props.permitTypeCode === "M" ||
-          props.permitActivityTypeCode === "X") && (
-          <Form.Item>
-            <Field
-              id="permit activity type*"
-              name="permit_activity_type"
-              label="Permit activity type*"
-              placeholder="Select a permit activity type"
-              component={RenderSelect}
-              data={permitActivityTypes}
-            />
-          </Form.Item>
-        )}
-        <Form.Item>
-          <Field
-            id="permit_no"
-            name="permit_no"
-            label="Permit number*"
-            component={RenderField}
-            validate={[required]}
-            inlineLabel={`${props.permitTypeCode}${props.permitActivityTypeCode} -`}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="permit_status_code"
-            name="permit_status_code"
-            label="Permit status*"
-            placeholder="Select a permit status"
-            component={RenderSelect}
-            data={props.permitStatusOptions}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="issue_date"
-            name="issue_date"
-            label="Issue Date*"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-      </Col>
-    </Row>
+    <Tabs
+      defaultActiveKey="1"
+      onChange={(activeKey) => {
+        // validate
+      }}
+      style={{ marginTop: "-30px" }}
+    >
+      <TabPane tab="1. Add Permit" key="1">
+        <br />
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="permit_type"
+                name="permit_type"
+                label="Permit type*"
+                placeholder="Select a permit type"
+                component={RenderSelect}
+                data={permitTypes}
+              />
+            </Form.Item>
+            {(props.permitTypeCode === "C" ||
+              props.permitTypeCode === "M" ||
+              props.permitActivityTypeCode === "X") && (
+              <Form.Item>
+                <Field
+                  id="permit activity type*"
+                  name="permit_activity_type"
+                  label="Permit activity type*"
+                  placeholder="Select a permit activity type"
+                  component={RenderSelect}
+                  data={permitActivityTypes}
+                />
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Field
+                id="permit_no"
+                name="permit_no"
+                label="Permit number*"
+                component={RenderField}
+                validate={[required]}
+                inlineLabel={
+                  props.permitTypeCode && `${props.permitTypeCode}${props.permitActivityTypeCode} -`
+                }
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="permit_status_code"
+                name="permit_status_code"
+                label="Permit status*"
+                placeholder="Select a permit status"
+                component={RenderSelect}
+                data={props.permitStatusOptions}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="issue_date"
+                name="issue_date"
+                label="Issue Date*"
+                component={RenderDate}
+                validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </TabPane>
+      <TabPane tab="2. Upload Files" key="2">
+        <br />
+        <div />
+      </TabPane>
+    </Tabs>
+    <br />
     <div className="right center-mobile">
       <Popconfirm
         placement="topRight"
