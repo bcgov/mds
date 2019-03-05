@@ -68,6 +68,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         received_date = data.get('received_date')
         issue_date = data.get('issue_date')
         authorization_end_date = data.get('authorization_end_date')
+        permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
 
         try:
             new_pa = PermitAmendment.create(
@@ -75,6 +76,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 received_date,
                 issue_date,
                 authorization_end_date,
+                permit_amendment_type_code,
                 self.get_create_update_dict(),
                 save=True)
             new_pa.save()
