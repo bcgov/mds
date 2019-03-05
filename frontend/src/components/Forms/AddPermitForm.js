@@ -201,7 +201,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_PERMIT,
     validate,
-    touchOnBlur: false,
+    touchOnBlur: true,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })
 )(AddPermitForm);

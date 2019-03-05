@@ -87,6 +87,6 @@ AddPermitAmendmentForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_PERMIT_AMENDMENT,
-  touchOnBlur: false,
+  touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.ADD_PERMIT_AMENDMENT),
 })(AddPermitAmendmentForm);
