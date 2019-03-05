@@ -10,7 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
-import { BRAND_PENCIL, EDIT } from "@/constants/assets";
+import { BRAND_PENCIL, EDIT, EDITOUTLINE, CARAT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import {
   updatePermitAmendment,
@@ -134,9 +134,9 @@ const columns = [
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="secondary" className="permit-table-addedit">
               <div className="padding-small">
-                <img className="padding-small--right" src={BRAND_PENCIL} alt="Add/Edit" />
+                <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
                 Add/Edit&nbsp;&nbsp;
-                <Icon type="caret-down" theme="outlined" />
+                <img className="padding-small--right" src={CARAT} alt="Menu" />
               </div>
             </Button>
           </Dropdown>
@@ -152,12 +152,6 @@ const childColumns = [
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
     render: (text) => <div title="Amendment">{text}</div>,
-  },
-  {
-    title: "Received Date",
-    dataIndex: "receivedDate",
-    key: "receivedDate",
-    render: (text) => <div title="Received Date">{text}</div>,
   },
   {
     title: "Issue Date",
@@ -185,7 +179,7 @@ const childColumns = [
           }
         >
           <div>
-            <img className="padding-small--right" src={BRAND_PENCIL} alt="Edit" />
+            <img className="padding-small--right" src={EDITOUTLINE} alt="Edit" />
           </div>
         </Button>
       ),
@@ -217,8 +211,7 @@ const transformRowData = (
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
 
   const permittees = getPermittees(partyRelationships, permit);
-  const permitteeName =
-    partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
+  const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.amendments.find((pa) => pa.permit_amendment_type_code === "ALG");
 
   return {
