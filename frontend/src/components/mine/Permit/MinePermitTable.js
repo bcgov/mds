@@ -12,7 +12,11 @@ import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { BRAND_PENCIL, EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
-import { updatePermitAmendment, createPermitAmendment } from "@/actionCreators/permitActionCreator";
+import {
+  updatePermitAmendment,
+  createPermitAmendment,
+  updatePermit,
+} from "@/actionCreators/permitActionCreator";
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
@@ -25,6 +29,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
+  updatePermit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -97,7 +102,11 @@ const columns = [
             </button>
           </Menu.Item>
           <Menu.Item key="2">
-            <button type="button" className="full">
+            <button
+              type="button"
+              className="full"
+              onClick={(event) => record.openEditPermitModal(event, text.guid)}
+            >
               <img alt="document" className="padding-small" src={BRAND_PENCIL} />
               Edit permit
             </button>
@@ -183,6 +192,7 @@ const transformRowData = (
   permit,
   partyRelationships,
   major_mine_ind,
+  openEditPermitModal,
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal
 ) => {
@@ -210,6 +220,7 @@ const transformRowData = (
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: { guid: permit.permit_guid, major_mine_ind },
+    openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
   };
@@ -274,6 +285,12 @@ export const MinePermitTable = (props) => {
       props.closeModal();
     });
   };
+  // Edit Permit
+  const handleEditPermit = (data) => {
+    props.updatePermit(data.permit_guid, data).then(() => {
+      props.closeModal();
+    });
+  };
 
   // Add amalgamated Permit Amendment
   const handleAddAlgPermitAmendment = (data) => {
@@ -292,6 +309,24 @@ export const MinePermitTable = (props) => {
         title,
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
+    });
+  };
+
+  const openEditPermitModal = (event, permit_guid) => {
+    const permit = props.permits.find((p) => p.permit_guid === permit_guid);
+
+    const initialValues = {
+      permit_status_code: permit.permit_status_code,
+      permit_guid,
+    };
+    event.preventDefault();
+    props.openModal({
+      props: {
+        initialValues,
+        onSubmit: handleEditPermit,
+        title: "Edit Permit",
+      },
+      content: modalConfig.EDIT_PERMIT,
     });
   };
 
@@ -326,6 +361,7 @@ export const MinePermitTable = (props) => {
       permit,
       props.partyRelationships,
       props.major_mine_ind,
+      openEditPermitModal,
       openAddPermitAmendmentModal,
       openAddAmalgamatedPermitModal
     )
@@ -353,6 +389,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       updatePermitAmendment,
       createPermitAmendment,
+      updatePermit,
     },
     dispatch
   );
