@@ -5,15 +5,17 @@
 	See: http://www.gebish.org/manual/current/#configuration
 */
 
-import org.openqa.selenium.Dimension
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.firefox.FirefoxOptions
+import org.openqa.selenium.firefox.*
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
 import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
+import utils.Const
+
+//NOTE: This the upload/download currently only work in Chrome and Firefox-Headless browsers.
+//Chrome-Headless does not work due to a known bug in the chrome headless driver.
 
 //1.driver
 //To run the tests with all browsers just run “./gradlew test”
@@ -25,6 +27,12 @@ environments {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments("start-maximized")
+
+			String downloadFilepath = Const.DOWNLOAD_PATH
+			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+			chromePrefs.put("profile.default_content_settings.popups", 0);
+			chromePrefs.put("download.default_directory", downloadFilepath);
+			o.setExperimentalOption("prefs", chromePrefs);
 			new ChromeDriver(o)
 			}
 	}
@@ -39,6 +47,14 @@ environments {
 			o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
+			o.addArguments('--disable-popup-blocking')
+
+			String downloadFilepath = Const.DOWNLOAD_PATH
+			HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
+			chromePrefs.put("profile.default_content_settings.popups", 0);
+			chromePrefs.put("download.default_directory", downloadFilepath)
+			o.setExperimentalOption("prefs", chromePrefs)
+
 			new ChromeDriver(o)
 		}
 	}
@@ -46,14 +62,48 @@ environments {
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
-		driver = { new FirefoxDriver() }
+		driver = {
+			FirefoxProfile profile = new FirefoxProfile();
+			FirefoxOptions options = new FirefoxOptions();
+			profile.setPreference("browser.download.folderList", 2);
+			profile.setPreference("browser.download.manager.showWhenStarting", false);
+			profile.setPreference("browser.helperApps.neverAsk.openFile",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
+			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
+			profile.setPreference("browser.download.manager.focusWhenStarting", false);
+			profile.setPreference("browser.download.manager.useWindow", false);
+			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
+			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			options.setProfile(profile);
+			new FirefoxDriver(options);
+		}
 	}
 
 	firefoxHeadless {
 		driver = {
-			FirefoxOptions o = new FirefoxOptions()
-			o.addArguments("-headless")
-			new FirefoxDriver(o)
+			FirefoxProfile profile = new FirefoxProfile();
+			FirefoxOptions options = new FirefoxOptions();
+			options.addArguments("-headless")
+			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
+			options.addPreference("browser.download.useDownloadDir", true);
+			profile.setPreference("browser.download.folderList", 2);
+			profile.setPreference("browser.download.manager.showWhenStarting", false);
+			profile.setPreference("browser.helperApps.neverAsk.openFile",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
+					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
+			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
+			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
+			profile.setPreference("browser.download.manager.focusWhenStarting", false);
+			profile.setPreference("browser.download.manager.useWindow", false);
+			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
+			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			options.setProfile(profile);
+			new FirefoxDriver(options);
+
 		}
 	}
 
