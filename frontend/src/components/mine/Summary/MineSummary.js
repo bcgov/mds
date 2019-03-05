@@ -24,12 +24,14 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  complianceInfoLoading: PropTypes.bool,
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   mineComplianceInfo: {},
+  complianceInfoLoading: true,
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -105,9 +107,9 @@ export const MineSummary = (props) => {
                   )
                 )}
               {props.mine.mine_permit.map((permit) => {
-                const latestPermittee = props.partyRelationships.filter((pr) =>
-                  activePermitteesByPermit(pr, permit)
-                )[0];
+                const latestPermittee = props.partyRelationships
+                  .filter((pr) => activePermitteesByPermit(pr, permit))
+                  .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
                 return (
                   latestPermittee &&
                   renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
@@ -152,7 +154,7 @@ export const MineSummary = (props) => {
           </Col>
         </Row>
       )}
-      {props.mineComplianceInfo && props.mineComplianceInfo.last_inspection && (
+      {props.mineComplianceInfo && (
         <Row gutter={16} type="flex" justify="center">
           <Col span={18}>
             <Row gutter={16}>
@@ -169,8 +171,10 @@ export const MineSummary = (props) => {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {formatDate(props.mineComplianceInfo.last_inspection) ||
-                            String.EMPTY_FIELD}
+                          {props.complianceInfoLoading
+                            ? String.LOADING
+                            : formatDate(props.mineComplianceInfo.last_inspection) ||
+                              String.NO_NRIS_INSPECTIONS}
                         </span>
                       </div>
                     </Row>
@@ -190,7 +194,9 @@ export const MineSummary = (props) => {
                       <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
                       &nbsp;
                       <span className="info-display">
-                        {props.mineComplianceInfo.num_open_orders}
+                        {props.complianceInfoLoading
+                          ? String.LOADING
+                          : props.mineComplianceInfo.num_open_orders}
                       </span>
                     </Row>
                   }
@@ -213,7 +219,9 @@ export const MineSummary = (props) => {
                       />
                       &nbsp;
                       <span className="info-display">
-                        {props.mineComplianceInfo.num_overdue_orders}
+                        {props.complianceInfoLoading
+                          ? String.LOADING
+                          : props.mineComplianceInfo.num_overdue_orders}
                       </span>
                     </Row>
                   }
