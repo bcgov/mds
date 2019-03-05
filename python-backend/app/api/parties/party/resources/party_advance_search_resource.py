@@ -40,10 +40,17 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
     #     })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        paginated_contact_query, pagination_details = self.apply_filter_and_search(request.args)
-        contacts = paginated_contact_query.all()
+        paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
+        if not paginated_parties:
+            self.raise_error(
+                404,
+                'No parties found'
+            ), 404
+        parties = paginated_parties.all()
+        # relationships = request.args.get('relationships')
+        # relationships = relationships.split(',') if relationships else []
         return {
-            'contacts': list(map(lambda x: x.json(), contacts)),
+            'parties': list(map(lambda x: x.json(relationships=['mine_party_appt']), parties)),
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
             'items_per_page': pagination_details.page_size,
@@ -83,7 +90,7 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         # todo: implement role filtering: check whether or not it's possible to do this with no join
         if role_filter_term:
             role_filter_term_array = role_filter_term.split(',')
-            role_filter     = MinePartyAppointment.mine_party_appt_type_code.in_(role_filter_term_array)
+            role_filter = MinePartyAppointment.mine_party_appt_type_code.in_(role_filter_term_array)
             role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
             contact_query = contact_query.intersect(role_query) if contact_query else role_query
 
