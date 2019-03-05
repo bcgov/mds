@@ -12,6 +12,7 @@ import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { getPermitStatusOptions } from "@/reducers/permitReducer";
 import CustomPropTypes from "@/customPropTypes";
+import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -85,7 +86,7 @@ export const AddPermitForm = (props) => (
       }}
       style={{ marginTop: "-30px" }}
     >
-      <TabPane tab="1. Add Permit" key="1">
+      <TabPane tab="1. Permit Info" key="1">
         <br />
         <Row gutter={16}>
           <Col>
@@ -96,6 +97,7 @@ export const AddPermitForm = (props) => (
                 label="Permit type*"
                 placeholder="Select a permit type"
                 component={RenderSelect}
+                validate={[required]}
                 data={permitTypes}
               />
             </Form.Item>
@@ -140,7 +142,7 @@ export const AddPermitForm = (props) => (
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue Date*"
+                label="Issue date*"
                 component={RenderDate}
                 validate={[required]}
               />
@@ -150,7 +152,13 @@ export const AddPermitForm = (props) => (
       </TabPane>
       <TabPane tab="2. Upload Files" key="2">
         <br />
-        <div />
+        <Row>
+          <Col>
+            <Form.Item label="Upload permit files">
+              <Field id="fileUpload" name="fileUpload" component={FileUpload} />
+            </Form.Item>
+          </Col>
+        </Row>
       </TabPane>
     </Tabs>
     <br />
@@ -166,7 +174,15 @@ export const AddPermitForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
+      <Button
+        className="full-mobile"
+        type="primary"
+        htmlType="submit"
+        disabled={props.submitting}
+        onClick={() => {
+          // Change tabs
+        }}
+      >
         {props.title}
       </Button>
     </div>
@@ -185,7 +201,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_PERMIT,
     validate,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })
 )(AddPermitForm);

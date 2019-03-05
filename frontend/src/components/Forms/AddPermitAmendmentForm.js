@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -15,30 +16,54 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
+const { TabPane } = Tabs;
+
 export const AddPermitAmendmentForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Row gutter={16}>
-      <Col>
-        <Form.Item>
-          <Field
-            id="issue_date"
-            name="issue_date"
-            label="Issue Date"
-            component={RenderDate}
-            validate={[required]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="description"
-            name="description"
-            label="Description"
-            component={RenderAutoSizeField}
-            validate={[maxLength(300)]}
-          />
-        </Form.Item>
-      </Col>
-    </Row>
+    <Tabs
+      defaultActiveKey="1"
+      onChange={(activeKey) => {
+        // validate
+      }}
+      style={{ marginTop: "-30px" }}
+    >
+      <TabPane tab="1. Info" key="1">
+        <br />
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="issue_date"
+                name="issue_date"
+                label="Issue date"
+                component={RenderDate}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="description"
+                name="description"
+                label="Description"
+                component={RenderAutoSizeField}
+                validate={[maxLength(300)]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </TabPane>
+      <TabPane tab="2. Upload Files" key="2">
+        <br />
+        <Row>
+          <Col>
+            <Form.Item label="Upload files">
+              <Field id="fileUpload" name="fileUpload" component={FileUpload} />
+            </Form.Item>
+          </Col>
+        </Row>
+      </TabPane>
+    </Tabs>
+    <br />
     <div className="right center-mobile">
       <Popconfirm
         placement="topRight"

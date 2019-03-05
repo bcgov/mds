@@ -84,32 +84,34 @@ const columns = [
           <Menu.Item key="0">
             <button
               type="button"
-              className="full"
-              onClick={(event) => record.openAddAmalgamatedPermitModal(event, text.guid)}
+              className="full add-permit-dropdown-button"
+              onClick={(event) =>
+                record.openAddAmalgamatedPermitModal(event, text.guid, text.permit_no)
+              }
             >
-              <div className="flex" style={{ alignItems: "center", paddingRight: "10px" }}>
+              <div>
                 <Icon
                   type="plus"
-                  className="padding-small"
+                  className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
-                  style={{ fontSize: "18px", paddingLeft: "8px", paddingRight: "7px" }}
                 />
-                {text.hasAmalgamated ? "Update ammalgamated permit" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Update amalgamated permit" : "Add amalgamated permit"}
               </div>
             </button>
           </Menu.Item>
           <Menu.Item key="1">
             <button
               type="button"
-              className="full"
-              onClick={(event) => record.openAddPermitAmendmentModal(event, text.guid)}
+              className="full add-permit-dropdown-button"
+              onClick={(event) =>
+                record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
+              }
             >
-              <div className="flex" style={{ alignItems: "center", paddingRight: "10px" }}>
+              <div>
                 <Icon
                   type="plus"
-                  className="padding-small"
+                  className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
-                  style={{ fontSize: "18px", paddingLeft: "8px", paddingRight: "7px" }}
                 />
                 Add permit amendment
               </div>
@@ -119,10 +121,10 @@ const columns = [
             <button
               type="button"
               className="full"
-              onClick={(event) => record.openEditPermitModal(event, text.guid)}
+              onClick={(event) => record.openEditPermitModal(event, text.guid, text.permit_no)}
             >
               <img alt="document" className="padding-small" src={BRAND_PENCIL} />
-              Edit permit
+              &nbsp;&nbsp;&nbsp;Edit permit status
             </button>
           </Menu.Item>
         </Menu>
@@ -130,10 +132,11 @@ const columns = [
       return (
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="primary">
-              <div className="flex padding-small" style={{ alignItems: "center" }}>
-                <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                Add/Edit
+            <Button type="secondary" className="permit-table-addedit">
+              <div className="padding-small">
+                <img className="padding-small--right" src={BRAND_PENCIL} alt="Add/Edit" />
+                Add/Edit&nbsp;&nbsp;
+                <Icon type="caret-down" theme="outlined" />
               </div>
             </Button>
           </Dropdown>
@@ -175,12 +178,14 @@ const childColumns = [
     render: (text, record) => [
       text.major_mine_ind && (
         <Button
-          type="primary"
-          onClick={(event) => record.openEditAmendmentModal(event, text.guid, text.permit_guid)}
+          className="permit-table-edit"
+          type="ghost"
+          onClick={(event) =>
+            record.openEditAmendmentModal(event, text.guid, text.permit_guid, text.permit_no)
+          }
         >
-          <div className="flex" style={{ alignItems: "center" }}>
-            <img className="padding-small--right" src={EDIT} alt="Edit" />
-            Edit
+          <div>
+            <img className="padding-small--right" src={BRAND_PENCIL} alt="Edit" />
           </div>
         </Button>
       ),
@@ -232,7 +237,12 @@ const transformRowData = (
         : Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
-    addEditButton: { guid: permit.permit_guid, major_mine_ind, hasAmalgamated },
+    addEditButton: {
+      guid: permit.permit_guid,
+      major_mine_ind,
+      hasAmalgamated,
+      permit_no: permit.permit_no,
+    },
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
@@ -286,7 +296,7 @@ export const MinePermitTable = (props) => {
       props: {
         initialValues,
         onSubmit: handleEditPermitAmendment,
-        title: "Edit Permit Amendment",
+        title: `Edit permit amendment for ${permit.permit_no}`,
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
@@ -325,7 +335,7 @@ export const MinePermitTable = (props) => {
     });
   };
 
-  const openEditPermitModal = (event, permit_guid) => {
+  const openEditPermitModal = (event, permit_guid, permit_no) => {
     const permit = props.permits.find((p) => p.permit_guid === permit_guid);
 
     const initialValues = {
@@ -337,22 +347,27 @@ export const MinePermitTable = (props) => {
       props: {
         initialValues,
         onSubmit: handleEditPermit,
-        title: "Edit Permit",
+        title: `Edit permit status for ${permit_no}`,
       },
       content: modalConfig.EDIT_PERMIT,
     });
   };
 
-  const openAddAmalgamatedPermitModal = (event, permit_guid) =>
+  const openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
     openAddAmendmentModal(
       event,
       handleAddAlgPermitAmendment,
-      "Add Amalgamated Permit",
+      `Add amalgamated permit to ${permit_no}`,
       permit_guid
     );
 
-  const openAddPermitAmendmentModal = (event, permit_guid) =>
-    openAddAmendmentModal(event, handleAddPermitAmendment, "Add Permit Amendment", permit_guid);
+  const openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+    openAddAmendmentModal(
+      event,
+      handleAddPermitAmendment,
+      `Add permit amendment to ${permit_no}`,
+      permit_guid
+    );
 
   const amendmentHistory = (record) => {
     const childRowData = record.amendments.map((amendment, index) =>
@@ -365,7 +380,13 @@ export const MinePermitTable = (props) => {
       )
     );
     return (
-      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
+      <Table
+        rowClassName={() => "permit-table-row"}
+        align="left"
+        pagination={false}
+        columns={childColumns}
+        dataSource={childRowData}
+      />
     );
   };
 
@@ -383,6 +404,7 @@ export const MinePermitTable = (props) => {
   return (
     <Table
       className="nested-table"
+      rowClassName={() => "permit-table-row"}
       align="left"
       pagination={false}
       columns={columns}

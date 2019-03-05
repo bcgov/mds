@@ -19,6 +19,6 @@ export const COMPANY_NOT_FOUND =
   "If the company is not in the list above, please add a new company below";
 export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";
 
-export const ADD_PERMIT = "Add New Permit";
-export const ADD_PERMIT_AMENDMENT = "Add a New Permit Amendment";
+export const ADD_PERMIT = "Add a new permit";
+export const ADD_PERMIT_AMENDMENT = "Add new amendment";
 export const EDIT_PERMIT = "Edit Permit";

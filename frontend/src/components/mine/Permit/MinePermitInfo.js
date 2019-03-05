@@ -78,11 +78,15 @@ export class MinePermitInfo extends Component {
                 <Button
                   type="primary"
                   onClick={(event) =>
-                    this.openAddPermitModal(event, this.handleAddPermit, ModalContent.ADD_PERMIT)
+                    this.openAddPermitModal(
+                      event,
+                      this.handleAddPermit,
+                      `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
+                    )
                   }
                 >
                   <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                  {ModalContent.ADD_PERMIT}
+                  Add a New Permit
                 </Button>
               </AuthorizationWrapper>
             </AuthorizationWrapper>
