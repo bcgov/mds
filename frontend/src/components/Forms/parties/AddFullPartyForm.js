@@ -12,7 +12,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
-export const AddPartyForm = (props) => (
+export const AddFullPartyForm = (props) => (
   <div>
     <Form>
       <Row gutter={48}>
@@ -187,11 +187,9 @@ export const AddPartyForm = (props) => (
   </div>
 );
 
-AddPartyForm.propTypes = propTypes;
+AddFullPartyForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_PARTY,
-  // touchOnChange: true,
-  // touchOnBlur: false,
+  form: FORM.ADD_FULL_PARTY,
   destroyOnUnmount: false,
-})(AddPartyForm);
+})(AddFullPartyForm);

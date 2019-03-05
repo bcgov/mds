@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset } from "redux-form";
 import { Steps, Button } from "antd";
 import * as FORM from "@/constants/forms";
-import AddPartyForm from "@/components/Forms/AddPartyForm";
+import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 
 const { Step } = Steps;
 
@@ -28,17 +28,17 @@ export class AddTenureModal extends Component {
 
   handlePartySubmit = () => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    this.props.reset(FORM.ADD_PARTY);
-    return this.props.onSubmit(this.props.addPartyFormValues, type);
+    this.props.reset(FORM.ADD_FULL_PARTY);
+    return this.props.onSubmit(this.props.AddPartyFormValues, type);
   };
 
   next() {
-    if (!this.props.addPartyForm.syncErrors) {
+    if (!this.props.AddPartyForm.syncErrors) {
       const current = this.state.current + 1;
       this.setState({ current });
     } else {
       // submit form to trigger validation errors.... smelly, suggestions??
-      this.props.submit(FORM.ADD_PARTY);
+      this.props.submit(FORM.ADD_FULL_PARTY);
     }
   }
 
@@ -50,13 +50,13 @@ export class AddTenureModal extends Component {
   handleCreateAnother = () => {
     console.log(this.state.current);
     const current = this.state.current - 1;
-    this.props.reset(FORM.ADD_PARTY);
+    this.props.reset(FORM.ADD_FULL_PARTY);
     this.setState({ current });
   };
 
   renderStepOne() {
     return (
-      <AddPartyForm
+      <AddFullPartyForm
         {...this.props}
         onSubmit={this.handlePartySubmit}
         isPerson={this.state.isPerson}
@@ -125,8 +125,8 @@ export class AddTenureModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  addPartyFormValues: getFormValues(FORM.ADD_PARTY)(state) || {},
-  addPartyForm: state.form[FORM.ADD_PARTY],
+  AddPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
+  AddPartyForm: state.form[FORM.ADD_FULL_PARTY],
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
