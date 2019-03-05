@@ -81,8 +81,8 @@ export class MinePermitInfo extends Component {
                     this.openAddPermitModal(event, this.handleAddPermit, ModalContent.ADD_PERMIT)
                   }
                 >
-                  <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                  &nbsp; {ModalContent.ADD_PERMIT}
+                  <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+                  {ModalContent.ADD_PERMIT}
                 </Button>
               </AuthorizationWrapper>
             </AuthorizationWrapper>

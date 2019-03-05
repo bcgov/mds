@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
@@ -26,6 +26,15 @@ export const AddPermitAmendmentForm = (props) => (
             label="Issue Date"
             component={RenderDate}
             validate={[required]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="description"
+            name="description"
+            label="Description"
+            component={RenderAutoSizeField}
+            validate={[maxLength(300)]}
           />
         </Form.Item>
       </Col>

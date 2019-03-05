@@ -87,8 +87,15 @@ const columns = [
               className="full"
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, text.guid)}
             >
-              <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-              Add amalgamated permit
+              <div className="flex" style={{ alignItems: "center", paddingRight: "10px" }}>
+                <Icon
+                  type="plus"
+                  className="padding-small"
+                  theme="outlined"
+                  style={{ fontSize: "18px", paddingLeft: "8px", paddingRight: "7px" }}
+                />
+                Add amalgamated permit
+              </div>
             </button>
           </Menu.Item>
           <Menu.Item key="1">
@@ -97,8 +104,15 @@ const columns = [
               className="full"
               onClick={(event) => record.openAddPermitAmendmentModal(event, text.guid)}
             >
-              <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-              Add permit amendment
+              <div className="flex" style={{ alignItems: "center", paddingRight: "10px" }}>
+                <Icon
+                  type="plus"
+                  className="padding-small"
+                  theme="outlined"
+                  style={{ fontSize: "18px", paddingLeft: "8px", paddingRight: "7px" }}
+                />
+                Add permit amendment
+              </div>
             </button>
           </Menu.Item>
           <Menu.Item key="2">
@@ -117,7 +131,7 @@ const columns = [
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="primary">
-              <div className="padding-small">
+              <div className="flex padding-small" style={{ alignItems: "center" }}>
                 <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
                 Add/Edit
               </div>
