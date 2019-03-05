@@ -1,4 +1,5 @@
 import uuid
+import logging
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
@@ -105,11 +106,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         try:
             party = Party.create(data['party_name'],
-                                 data['email'],
                                  data['phone_no'],
                                  data['type'],
                                  self.get_create_update_dict(),
                                  # Nullable fields
+                                 email=data.get('email'),
                                  first_name=data.get('first_name'),
                                  phone_ext=data.get('phone_ext'),
                                  suite_no=data.get('suite_no'),
@@ -122,6 +123,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Missing value for required field(s)')
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
+        except Exception as e:
+            logging.warn(e)
 
         if not party:
             self.raise_error(400, 'Error: Failed to create party')
