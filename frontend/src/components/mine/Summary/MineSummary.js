@@ -105,9 +105,9 @@ export const MineSummary = (props) => {
                   )
                 )}
               {props.mine.mine_permit.map((permit) => {
-                const latestPermittee = props.partyRelationships.filter((pr) =>
-                  activePermitteesByPermit(pr, permit)
-                )[0];
+                const latestPermittee = props.partyRelationships
+                  .filter((pr) => activePermitteesByPermit(pr, permit))
+                  .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
                 return (
                   latestPermittee &&
                   renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
