@@ -130,16 +130,18 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="secondary" className="permit-table-addedit">
-              <div className="padding-small">
-                <img className="padding-small--right" src={BRAND_PENCIL} alt="Add/Edit" />
-                Add/Edit&nbsp;&nbsp;
-                <Icon type="caret-down" theme="outlined" />
-              </div>
-            </Button>
-          </Dropdown>
+        <AuthorizationWrapper inTesting>
+          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+              <Button type="secondary" className="permit-table-addedit">
+                <div className="padding-small">
+                  <img className="padding-small--right" src={BRAND_PENCIL} alt="Add/Edit" />
+                  Add/Edit&nbsp;&nbsp;
+                  <Icon type="caret-down" theme="outlined" />
+                </div>
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         </AuthorizationWrapper>
       );
     },
