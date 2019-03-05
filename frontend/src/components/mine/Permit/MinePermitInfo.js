@@ -55,7 +55,9 @@ export class MinePermitInfo extends Component {
 
   handleAddPermit = (values) => {
     const payload = { mine_guid: this.props.mine.guid, ...values };
-    payload.permit_no = `${values.permit_type}${values.permit_activity_type}-${values.permit_no}`;
+    payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
+      values.permit_no
+    }`;
     this.props.closeModal();
     return this.props.createPermit(payload).then(() => {
       this.props.fetchPermits({ mine_guid: this.props.mine.guid });

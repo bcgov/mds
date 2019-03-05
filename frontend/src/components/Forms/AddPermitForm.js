@@ -64,6 +64,17 @@ const permitActivityTypes = [
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
+const validate = (values) => {
+  const errors = {};
+  if (
+    values.permit_activity_type === "X" &&
+    !(values.permit_type === "C" || values.permit_type === "M")
+  ) {
+    errors.permit_activity_type = "Exploration activity is only valid for Coal and Placer permits";
+  }
+  return errors;
+};
+
 export const AddPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
@@ -78,16 +89,20 @@ export const AddPermitForm = (props) => (
             data={permitTypes}
           />
         </Form.Item>
-        <Form.Item>
-          <Field
-            id="permit activity type*"
-            name="permit_activity_type"
-            label="Permit activity type*"
-            placeholder="Select a permit activity type"
-            component={RenderSelect}
-            data={permitActivityTypes}
-          />
-        </Form.Item>
+        {(props.permitTypeCode === "C" ||
+          props.permitTypeCode === "M" ||
+          props.permitActivityTypeCode === "X") && (
+          <Form.Item>
+            <Field
+              id="permit activity type*"
+              name="permit_activity_type"
+              label="Permit activity type*"
+              placeholder="Select a permit activity type"
+              component={RenderSelect}
+              data={permitActivityTypes}
+            />
+          </Form.Item>
+        )}
         <Form.Item>
           <Field
             id="permit_no"
@@ -150,7 +165,8 @@ export default compose(
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,
-    touchOnBlur: false,
+    validate,
+    touchOnBlur: true,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })
 )(AddPermitForm);
