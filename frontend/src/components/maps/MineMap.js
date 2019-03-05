@@ -121,7 +121,6 @@ class MineMap extends Component {
         view.ui.add(currentWidget, position);
       });
 
-      // this.props.map.layer.add(WebMappingServiceLayer);
       const scaleBar = new ScaleBar({
         view,
         container: document.createElement("scale_bar"),
