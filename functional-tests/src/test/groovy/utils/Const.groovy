@@ -1,8 +1,15 @@
 package utils
 
+import groovy.transform.SourceURI
+import java.nio.file.Path
+import java.nio.file.Paths
+
 import io.github.cdimascio.dotenv.Dotenv
 
 class Const{
+    @SourceURI
+    static URI sourceUri
+    static Path scriptLocation = Paths.get(sourceUri)
     static Dotenv dotenv = Dotenv.configure().directory("./").ignoreIfMalformed().ignoreIfMissing().load()
     static systemEnv = System.getenv()
     static final String MINE_NAME   = "MINETEST",
@@ -17,5 +24,8 @@ class Const{
                         DB_HOST = dotenv['DB_HOST'] ? dotenv['DB_HOST'] : systemEnv['DB_HOST'],
                         DB_NAME = dotenv['DB_NAME'] ? dotenv['DB_NAME'] : systemEnv['DB_NAME'],
                         DB_USER = dotenv['DB_USER'] ? dotenv['DB_USER'] : systemEnv['DB_USER'],
-                        DB_PASS = dotenv['DB_PASS'] ? dotenv['DB_PASS'] : systemEnv['DB_PASS']
+                        DB_PASS = dotenv['DB_PASS'] ? dotenv['DB_PASS'] : systemEnv['DB_PASS'],
+                        TEST_FILE_CONTENT =  "The quality of mercy is not strained.",
+                        TEST_FILE_NAME = "test.odt",
+                        DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage"
 }
