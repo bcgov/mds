@@ -51,8 +51,8 @@ class PermitAmendment(AuditMixin, Base):
                received_date,
                issue_date,
                authorization_end_date,
+               permit_amendment_type_code,
                user_kwargs,
-               permit_amendment_type_code='AMD',
                permit_amendment_status_code='ACT',
                save=True):
         new_pa = cls(
