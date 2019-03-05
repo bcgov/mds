@@ -12,7 +12,7 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   meta: PropTypes.object,
-  test: PropTypes.string,
+  inlineLabel: PropTypes.string,
 };
 
 const RenderField = ({
@@ -22,15 +22,19 @@ const RenderField = ({
   placeholder,
   defaultValue,
   meta: { touched, error, warning },
-  test,
+  inlineLabel,
 }) => (
   <Form.Item
     label={label}
     validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
     help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
   >
-    <div className="block">
-      {test && <label>{test}</label>}
+    <div className="flex">
+      {inlineLabel && (
+        <label className="nowrap" style={{ paddingRight: "10px", fontSize: "20px" }}>
+          {inlineLabel}
+        </label>
+      )}
       <Input defaultValue={defaultValue} id={id} placeholder={placeholder} {...input} />
     </div>
   </Form.Item>
