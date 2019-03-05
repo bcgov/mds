@@ -47,7 +47,7 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text) => <div title="Status">{text}</div>,
+    render: (text) => <div title="Status">{text === "O" ? "Open" : "Closed"}</div>,
   },
   {
     title: "Permittee",
