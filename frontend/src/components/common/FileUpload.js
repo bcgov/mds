@@ -37,7 +37,6 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
-        alert(file.type)
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -60,6 +59,7 @@ class FileUpload extends React.Component {
           },
         });
         // Start the upload
+        alert(file.type)
         upload.start();
         return {
           abort: () => {
@@ -81,7 +81,7 @@ class FileUpload extends React.Component {
         allowRevert={false}
         allowMultiple
         maxFileSize={this.props.maxFileSize}
-        allowFileTypeValidation={acceptedFileTypes.length > 0}
+        allowFileTypeValidation={false}//acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
         fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
         onupdatefiles={(fileItems) => {
