@@ -522,7 +522,9 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             WHERE
                 ETL_MINE.mine_guid = mine_type.mine_guid
                 AND
-                mine_type IS NOT NULL;
+                ETL_MINE.mine_type NOT IN (select mine_tenure_type_code from mine_type where mine_guid = ETL_MINE.mine_guid AND active_ind = TRUE)
+                AND
+                ETL_MINE.mine_type IS NOT NULL;
             SELECT count(*) FROM mine_type, ETL_MINE WHERE mine_type.mine_guid = ETL_MINE.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine_type records in MDS: %', old_row;
             RAISE NOTICE '....# of mine_type records updated in MDS: %', update_row;
