@@ -55,7 +55,7 @@ class MinePartyAppointment(AuditMixin, Base):
         return
 
     # json
-    def json(self):
+    def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
             'mine_guid': str(self.mine_guid),
@@ -63,8 +63,11 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
             'end_date': str(self.end_date) if self.end_date else None,
-            'party': self.party.json(show_mgr=False) if self.party else str({})
         }
+        if 'party' in relationships:
+            result.update({
+                'party': self.party.json(show_mgr=False) if self.party else str({})
+            })
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)

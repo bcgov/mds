@@ -1,7 +1,8 @@
 import React from "react";
-import { objectOf, arrayOf, string } from "prop-types";
+import { objectOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
+import { uniqBy, map, toArray } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -13,7 +14,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   parties: objectOf(CustomPropTypes.party).isRequired,
-  partyIds: arrayOf(string).isRequired,
+  relationshipTypeHash: objectOf(string).isRequired,
 };
 
 const columns = [
@@ -41,17 +42,25 @@ const columns = [
   },
 ];
 
-const transformRowData = (parties, partyIds) =>
-  partyIds.map((id) => ({
-    key: id,
+const uniqueRolesString = (mine_party_appt, relationshipTypeHash) =>
+  uniqBy(
+    map(
+      mine_party_appt,
+      ({ mine_party_appt_type_code }) => relationshipTypeHash[mine_party_appt_type_code]
+    )
+  ).join(", ");
+
+const transformRowData = (parties, relationshipTypeHash) =>
+  toArray(parties).map((party) => ({
+    key: party.party_guid,
     emptyField: Strings.EMPTY_FIELD,
-    name: parties[id].name ? parties[id].name : Strings.EMPTY_FIELD,
-    email: parties[id].email === "Unknown" ? Strings.EMPTY_FIELD : parties[id].email,
-    phone:
-      parties[id].phone_no && parties[id].phone_no !== "Unknown"
-        ? parties[id].phone_no
+    name: party.name || Strings.EMPTY_FIELD,
+    email: party.email === "Unknown" ? Strings.EMPTY_FIELD : party.email,
+    phone: party.phone_no && party.phone_no !== "Unknown" ? party.phone_no : Strings.EMPTY_FIELD,
+    role:
+      party.mine_party_appt.length > 0
+        ? uniqueRolesString(party.mine_party_appt, relationshipTypeHash)
         : Strings.EMPTY_FIELD,
-    role: Strings.EMPTY_FIELD,
   }));
 
 export const ContactList = (props) => (
@@ -59,7 +68,7 @@ export const ContactList = (props) => (
     align="left"
     pagination={false}
     columns={columns}
-    dataSource={transformRowData(props.parties, props.partyIds)}
+    dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
   />
 );

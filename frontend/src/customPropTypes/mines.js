@@ -1,5 +1,5 @@
 import { PropTypes, shape, arrayOf } from "prop-types";
-import { minePermit } from "@/customPropTypes/permits";
+import { permit } from "@/customPropTypes/permits";
 import { mineExpectedDocument } from "@/customPropTypes/documents";
 import { tailingsStorageFacility } from "@/customPropTypes/tailings";
 
@@ -10,7 +10,7 @@ export const mine = shape({
   mine_note: PropTypes.string,
   region_code: PropTypes.string,
   major_mine_ind: PropTypes.bool,
-  mine_permit: arrayOf(minePermit),
+  mine_permit: arrayOf(permit),
   mine_expected_documents: arrayOf(mineExpectedDocument),
   mine_tailings_storage_facility: arrayOf(tailingsStorageFacility),
 });
@@ -39,8 +39,8 @@ export const mineName = shape({
 
 export const mineComplianceInfo = shape({
   advisories: PropTypes.number.isRequired,
-  inspector: PropTypes.string.isRequired,
-  last_inspection: PropTypes.string.isRequired,
+  last_inspector: PropTypes.string,
+  last_inspection: PropTypes.string,
   num_open_orders: PropTypes.number.isRequired,
   num_overdue_orders: PropTypes.number.isRequired,
   open_orders: PropTypes.array,

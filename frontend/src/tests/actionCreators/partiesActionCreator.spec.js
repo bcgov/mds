@@ -52,7 +52,7 @@ describe("`createParty` action creator", () => {
 });
 
 describe("`fetchParties` action creator", () => {
-  let value = " ";
+  let value = {};
   let url = ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(value);
   it("Request successful if passed an empty query, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
@@ -64,8 +64,8 @@ describe("`fetchParties` action creator", () => {
     });
   });
 
-  it("Request successful if passed a search query, dispatches `success` with correct response", () => {
-    value = "?search=mockName";
+  it("Request successful if passed a query param, dispatches `success` with correct response", () => {
+    value = { first_name: "mockName" };
     url = ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY(value);
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(200, mockResponse);

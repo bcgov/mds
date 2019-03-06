@@ -7,7 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.partyIds = MOCK.PARTY.partyIds;
-  props.parties = MOCK.PARTY.parties;
+  props.parties = MOCK.PARTY.partiesWithAppointments;
 };
 
 beforeEach(() => {

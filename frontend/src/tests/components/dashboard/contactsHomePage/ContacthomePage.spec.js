@@ -10,6 +10,7 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchParties = jest.fn(() => Promise.resolve({}));
+  dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve({}));
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
@@ -42,9 +43,8 @@ describe("ContactHomePage", () => {
       const instance = component.instance();
       const renderDataFromURLSpy = jest.spyOn(instance, "renderDataFromURL");
       reducerProps.location.search = "?page=1&per_page=25";
-      const params = reducerProps.location.search;
-      instance.renderDataFromURL(params);
-      expect(renderDataFromURLSpy).toHaveBeenCalledWith(params);
+      instance.renderDataFromURL();
+      expect(renderDataFromURLSpy).toHaveBeenCalledWith();
     });
 
     it("componentDidMount without `params` from the URL", () => {

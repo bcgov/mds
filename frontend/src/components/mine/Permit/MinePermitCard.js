@@ -16,14 +16,20 @@ const defaultProps = {
 export const PermitCard = (props) => {
   const pmt = props.PartyRelationships.filter((pr) => pr.mine_party_appt_type_code === "PMT")
     .filter((pmts) => pmts.related_guid.includes(props.permit.permit_guid))
-    .sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0];
+    .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
 
   return (
     <div>
       <h4>{formatTitleString(props.permit.permit_no)}</h4>
       <br />
       <h6>Last Amended</h6>
-      <span>{props.permit.issue_date ? formatDate(props.permit.issue_date) : "Unknown"}</span>
+      <span>
+        {props.permit.amendments[0] ? (
+          formatDate(props.permit.amendments[0].issue_date)
+        ) : (
+          <i>No Amendments</i>
+        )}
+      </span>
       <br />
       <br />
       <h6>Permittee</h6>

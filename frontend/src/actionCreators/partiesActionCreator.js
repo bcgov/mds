@@ -31,7 +31,7 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
-export const fetchParties = (params = null) => (dispatch) => {
+export const fetchParties = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading("modal"));
   return axios

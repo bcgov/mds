@@ -51,13 +51,6 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-const groupPermits = (permits) =>
-  permits.reduce((acc, permit) => {
-    acc[permit.permit_no] = acc[permit.permit_no] || [];
-    acc[permit.permit_no].push(permit);
-    return acc;
-  }, {});
-
 export class ViewPartyRelationships extends Component {
   constructor(props) {
     super(props);
@@ -77,7 +70,10 @@ export class ViewPartyRelationships extends Component {
     };
 
     return this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
     });
   };
@@ -153,7 +149,10 @@ export class ViewPartyRelationships extends Component {
     payload.related_guid = values.related_guid || payload.related_guid;
 
     return this.props.updatePartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
     });
   };
@@ -161,7 +160,10 @@ export class ViewPartyRelationships extends Component {
   removePartyRelationship = (event, mine_party_appt_guid) => {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
     });
   };
 
@@ -288,21 +290,38 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
-    const groupedPermits = Object.values(groupPermits(this.props.mine.mine_permit));
-    const filteredPartyRelationships = partyRelationships.filter(
-      (partyRelationship) =>
-        partyRelationship.mine_party_appt_type_code !== "PMT" ||
-        groupedPermits
-          .map((permits) => permits[0].permit_guid)
-          .includes(partyRelationship.related_guid)
-    );
-
+    const filteredPartyRelationships = partyRelationships
+      .filter(
+        (x) =>
+          (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+          (!x.start_date || Date.parse(x.start_date) <= new Date())
+      )
+      .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
+      .concat(
+        this.props.mine.mine_permit
+          .map(
+            (permit) =>
+              partyRelationships
+                .filter(
+                  (x) =>
+                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.start_date || Date.parse(x.start_date) <= new Date())
+                )
+                .filter(
+                  (partyRelationship) =>
+                    partyRelationship.mine_party_appt_type_code === "PMT" &&
+                    permit.permit_guid === partyRelationship.related_guid
+                )
+                .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0]
+          )
+          .filter((x) => x)
+      );
     const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
       (x) => x.grouping_level === group
     );
     const partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
       partyRelationshipTypesInGroup.some(
-        (y) => y.mine_party_appt_type_code == x.mine_party_appt_type_code
+        (y) => y.mine_party_appt_type_code === x.mine_party_appt_type_code
       )
     );
 
@@ -316,13 +335,9 @@ export class ViewPartyRelationships extends Component {
         </Row>,
 
         <Row gutter={16}>
-          {partyRelationshipsInGroup
-            .filter(
-              (x) =>
-                (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
-                (!x.start_date || Date.parse(x.start_date) <= new Date())
-            )
-            .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
+          {partyRelationshipsInGroup.map((partyRelationship) =>
+            this.renderPartyRelationship(partyRelationship)
+          )}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}
         </Row>,
         <div>

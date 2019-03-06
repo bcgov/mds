@@ -54,7 +54,7 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id }).then(() => {
+    this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
       const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
         this.props.fetchPartyRelationshipTypes();
@@ -98,11 +98,8 @@ export class PartyProfile extends Component {
         mineGuid: relationship.mine_guid,
         mineName: this.props.mineBasicInfoListHash[relationship.mine_guid],
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
-        endDate:
-          relationship.end_date === "9999-12-31" || null
-            ? "Present"
-            : formatDate(relationship.end_date),
-        startDate: relationship.start_date ? formatDate(relationship.start_date) : "Unknown",
+        endDate: formatDate(relationship.end_date) || "Present",
+        startDate: formatDate(relationship.start_date) || "Unknown",
       }));
 
     if (this.state.isLoaded) {

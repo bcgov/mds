@@ -113,7 +113,7 @@ VALUES
     ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
     ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
     ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -324,4 +324,31 @@ VALUES
     ('ZE', 'Zeolite', TRUE, 'system-mds', 'system-mds'),
     ('ZN', 'Zinc', TRUE, 'system-mds', 'system-mds'),
     ('ZR', 'Zirconium', TRUE, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_type_code
+    (
+    permit_amendment_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('OGP', 'Original Permit', 10, 'system-mds', 'system-mds'),
+    ('AMD', 'Permit Amendment', 20, 'system-mds', 'system-mds'),
+    ('ALG', 'Amalgamated Permit', 30, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_status_code
+    (
+    permit_amendment_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('ACT', 'Active', 10, 'system-mds', 'system-mds'),
+    ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
