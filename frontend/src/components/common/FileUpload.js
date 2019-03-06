@@ -37,6 +37,7 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
+        alert(file.type)
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -60,7 +61,6 @@ class FileUpload extends React.Component {
         });
         // Start the upload
         upload.start();
-        alert(file.type)
         return {
           abort: () => {
             upload.abort();
