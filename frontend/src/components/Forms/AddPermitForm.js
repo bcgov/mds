@@ -86,7 +86,7 @@ export const AddPermitForm = (props) => (
       }}
       style={{ marginTop: "-30px" }}
     >
-      <TabPane tab="1. Permit Info" key="1">
+      <TabPane tab="Permit Info" key="1">
         <br />
         <Row gutter={16}>
           <Col>

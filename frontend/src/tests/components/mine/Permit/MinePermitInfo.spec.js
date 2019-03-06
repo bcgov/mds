@@ -1,17 +1,18 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
+import { MinePermitInfo } from "@/components/mine/Permit/MinePermitInfo";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => {
+  dispatchProps.fetchPermits = jest.fn();
+  dispatchProps.fetchPermitStatusOptions = jest.fn();
+};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit;
-  props.partyRelationships = MOCK.PARTYRELATIONSHIPS;
 };
 
 beforeEach(() => {
@@ -19,9 +20,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("MinePermitTable", () => {
+describe("MinePermitInfo", () => {
   it("renders properly", () => {
-    const component = shallow(<MinePermitTable {...dispatchProps} {...props} />);
+    const component = shallow(<MinePermitInfo {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

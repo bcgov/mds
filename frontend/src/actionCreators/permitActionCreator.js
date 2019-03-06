@@ -40,9 +40,9 @@ export const fetchPermits = (params = {}) => (dispatch) => {
       dispatch(permitActions.storePermits(response.data));
       dispatch(hideLoading("modal"));
     })
-    .catch((err) => {
+    .catch(() => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_PERMITS));
