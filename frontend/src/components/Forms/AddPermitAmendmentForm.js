@@ -46,18 +46,8 @@ export const AddPermitAmendmentForm = (props) => (
                 name="description"
                 label="Description"
                 component={RenderAutoSizeField}
-                validate={[maxLength(300)]}
+                validate={[maxLength(280)]}
               />
-            </Form.Item>
-          </Col>
-        </Row>
-      </TabPane>
-      <TabPane tab="2. Upload Files" key="2">
-        <br />
-        <Row>
-          <Col>
-            <Form.Item label="Upload files">
-              <Field id="fileUpload" name="fileUpload" component={FileUpload} />
             </Form.Item>
           </Col>
         </Row>

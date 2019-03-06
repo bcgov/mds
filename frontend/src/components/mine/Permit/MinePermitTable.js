@@ -78,6 +78,7 @@ const columns = [
     title: "",
     dataIndex: "addEditButton",
     key: "addEditButton",
+    align: "right",
     render: (text, record) => {
       const menu = (
         <Menu>
@@ -164,15 +165,16 @@ const childColumns = [
     render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
-    title: "Authorization End Date",
-    dataIndex: "authorizationEndDate",
-    key: "authorizationEndDate",
-    render: (text) => <div title="Authorization End Date">{text}</div>,
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+    render: (text) => <div title="Description">{text}</div>,
   },
   {
     title: "",
     dataIndex: "amendmentEdit",
     key: "amendmentEdit",
+    align: "right",
     render: (text, record) => (
       <AuthorizationWrapper inTesting>
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
@@ -268,7 +270,7 @@ const transformChildRowData = (
   authorizationEndDate:
     (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
     Strings.EMPTY_FIELD,
-  description: Strings.EMPTY_FIELD,
+  description: amendment.description || Strings.EMPTY_FIELD,
   amendmentEdit: {
     guid: amendment.permit_amendment_guid,
     permit_guid: amendment.permit_guid,

@@ -150,16 +150,6 @@ export const AddPermitForm = (props) => (
           </Col>
         </Row>
       </TabPane>
-      <TabPane tab="2. Upload Files" key="2">
-        <br />
-        <Row>
-          <Col>
-            <Form.Item label="Upload permit files">
-              <Field id="fileUpload" name="fileUpload" component={FileUpload} />
-            </Form.Item>
-          </Col>
-        </Row>
-      </TabPane>
     </Tabs>
     <br />
     <div className="right center-mobile">
