@@ -121,7 +121,9 @@ const columns = [
             <button
               type="button"
               className="full"
-              onClick={(event) => record.openEditPermitModal(event, text.guid, text.permit_no)}
+              onClick={(event) =>
+                record.openEditPermitModal(event, text.guid, text.permit_no, record.description)
+              }
             >
               <img alt="document" className="padding-small" src={BRAND_PENCIL} />
               &nbsp;&nbsp;&nbsp;Edit permit status
@@ -130,16 +132,18 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="secondary" className="permit-table-button">
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                Add/Edit&nbsp;&nbsp;
-                <img className="padding-small--right icon-svg-filter" src={CARAT} alt="Menu" />
-              </div>
-            </Button>
-          </Dropdown>
+        <AuthorizationWrapper inTesting>
+          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+              <Button type="secondary" className="permit-table-button">
+                <div className="padding-small">
+                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                  Add/Edit&nbsp;&nbsp;
+                  <img className="padding-small--right icon-svg-filter" src={CARAT} alt="Menu" />
+                </div>
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         </AuthorizationWrapper>
       );
     },
@@ -167,23 +171,31 @@ const childColumns = [
   },
   {
     title: "",
-    dataIndex: "amendmentGuid",
-    key: "amendmentGuid",
-    render: (text, record) => [
-      text.major_mine_ind && (
-        <Button
-          className="permit-table-button"
-          type="ghost"
-          onClick={(event) =>
-            record.openEditAmendmentModal(event, text.guid, text.permit_guid, text.permit_no)
-          }
-        >
-          <div>
-            <img className="padding-small--right icon-svg-filter" src={EDITOUTLINE} alt="Edit" />
-          </div>
-        </Button>
-      ),
-    ],
+    dataIndex: "amendmentEdit",
+    key: "amendmentEdit",
+    render: (text, record) => (
+      <AuthorizationWrapper inTesting>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+          <Button
+            className="permit-table-button"
+            type="ghost"
+            onClick={(event) =>
+              record.openEditAmendmentModal(
+                event,
+                text.guid,
+                text.permit_guid,
+                text.permit_no,
+                text.description
+              )
+            }
+          >
+            <div>
+              <img className="padding-small--right icon-svg-filter" src={EDITOUTLINE} alt="Edit" />
+            </div>
+          </Button>
+        </AuthorizationWrapper>
+      </AuthorizationWrapper>
+    ),
   },
 ];
 
@@ -257,10 +269,11 @@ const transformChildRowData = (
     (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
     Strings.EMPTY_FIELD,
   description: Strings.EMPTY_FIELD,
-  amendmentGuid: {
+  amendmentEdit: {
     guid: amendment.permit_amendment_guid,
     permit_guid: amendment.permit_guid,
     major_mine_ind,
+    description: amendment.description,
   },
   openEditAmendmentModal,
 });
@@ -273,7 +286,13 @@ export const MinePermitTable = (props) => {
     });
   };
 
-  const openEditAmendmentModal = (event, permit_amendment_guid, permit_guid) => {
+  const openEditAmendmentModal = (
+    event,
+    permit_amendment_guid,
+    permit_guid,
+    permit_no,
+    description
+  ) => {
     const permit = props.permits.find((p) => p.permit_guid === permit_guid);
     const permit_amendment = permit.amendments.find(
       (pa) => pa.permit_amendment_guid === permit_amendment_guid
@@ -282,6 +301,7 @@ export const MinePermitTable = (props) => {
     const initialValues = {
       issue_date: permit_amendment.issue_date,
       permit_amendment_guid,
+      description,
     };
 
     event.preventDefault();
