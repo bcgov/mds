@@ -13,6 +13,7 @@ export const ADD_MINE_MANAGER = "Please add mine manager below";
 export const ADD_TENURE = "Please add tenure number below";
 export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
+export const NO_NRIS_INSPECTIONS = "No inspections in NRIS"
 export const MAP_UNAVAILABLE = [
   "The BC Geographic Warehouse (BCGW) map layers used in this application are unavailable at this time.",
   "Please notify ",
