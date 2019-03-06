@@ -39,3 +39,8 @@ export const loadedOptions = (payload) => ({
   type: ActionTypes.OPTIONS_LOADED,
   payload,
 });
+
+export const storePermitStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_PERMIT_STATUS_OPTIONS,
+  payload,
+});

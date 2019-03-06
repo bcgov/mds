@@ -16,6 +16,7 @@ import {
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
+  fetchPermitStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
@@ -91,6 +92,7 @@ export class MineDashboard extends Component {
       this.props.fetchMineDisturbanceOptions();
       this.props.fetchMineCommodityOptions();
       this.props.fetchPartyRelationshipTypes();
+      this.props.fetchPermitStatusOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
@@ -215,6 +217,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
+      fetchPermitStatusOptions,
       setOptionsLoaded,
       fetchMineComplianceInfo,
     },

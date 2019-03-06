@@ -10,7 +10,7 @@ import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { getPermitStatusOptions } from "@/reducers/permitReducer";
+import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 
@@ -184,7 +184,7 @@ AddPermitForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
-    permitStatusOptions: getPermitStatusOptions(state),
+    permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
     permitActivityTypeCode: selector(state, "permit_activity_type"),
   })),

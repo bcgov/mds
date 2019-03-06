@@ -10,6 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { BRAND_PENCIL, EDIT, EDITOUTLINE, CARAT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import {
@@ -24,6 +25,7 @@ import {
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -47,7 +49,11 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text) => <div title="Status">{text === "O" ? "Open" : "Closed"}</div>,
+    render: (text, record) => (
+      <div title="Status">
+        {record.permitStatusOptions.find((item) => item.value === text).label}
+      </div>
+    ),
   },
   {
     title: "Permittee",
@@ -219,7 +225,8 @@ const transformRowData = (
   major_mine_ind,
   openEditPermitModal,
   openAddPermitAmendmentModal,
-  openAddAmalgamatedPermitModal
+  openAddAmalgamatedPermitModal,
+  permitStatusOptions
 ) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
@@ -253,6 +260,7 @@ const transformRowData = (
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
+    permitStatusOptions,
   };
 };
 
@@ -412,7 +420,8 @@ export const MinePermitTable = (props) => {
       props.major_mine_ind,
       openEditPermitModal,
       openAddPermitAmendmentModal,
-      openAddAmalgamatedPermitModal
+      openAddAmalgamatedPermitModal,
+      props.permitStatusOptions
     )
   );
 
@@ -432,6 +441,7 @@ export const MinePermitTable = (props) => {
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
+  permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
