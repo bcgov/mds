@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Radio, Button, Icon, Row, Col, Divider } from "antd";
+import { Radio, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import * as ModalContent from "@/constants/modalContent";
 import { getRawParties } from "@/selectors/partiesSelectors";
-import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
@@ -37,7 +36,7 @@ export class AddPartyRelationshipModal extends Component {
   };
 
   toggleFormVisibility = () => {
-    this.setState((prevState) => ({ isFormVisible: !prevState.isFormVisible}));
+    this.setState((prevState) => ({ isFormVisible: !prevState.isFormVisible }));
   };
 
   handlePartySubmit = (values) => {

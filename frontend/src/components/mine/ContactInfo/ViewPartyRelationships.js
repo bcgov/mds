@@ -104,6 +104,7 @@ export class ViewPartyRelationships extends Component {
         partyRelationshipType: value,
         mine,
       },
+      widthSize: 1200,
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
     });

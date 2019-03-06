@@ -3,11 +3,16 @@ import { bindActionCreators } from "redux";
 import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Modal, Icon } from "antd";
+import { Modal, Icon, Button, Popconfirm } from "antd";
 import * as Styles from "@/constants/styles";
 import { closeModal } from "@/actions/modalActions";
-import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/selectors/modalSelectors";
-import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
+import {
+  getIsModalOpen,
+  getProps,
+  getContent,
+  getClearOnSubmit,
+  getWidthSize,
+} from "@/selectors/modalSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -15,14 +20,13 @@ const propTypes = {
   content: PropTypes.func,
   props: PropTypes.objectOf(PropTypes.string),
   clearOnSubmit: PropTypes.bool.isRequired,
-  isLarge: PropTypes.bool,
+  widthSize: PropTypes.number.isRequired,
 };
 
 const defaultProps = {
   props: {
     title: "",
   },
-  isLarge: true,
   content: () => {},
 };
 
@@ -44,23 +48,32 @@ export class ModalWrapper extends Component {
     </div>
   );
 
+  closeModal = (event) => {
+    event.preventDefault();
+    this.props.closeModal();
+  };
+
   render() {
-    console.log(this.props);
     const ChildComponent = this.props.content;
     return (
       <Modal
-        id={this.props.isLarge ? "modal--large" : " "}
-        // style={{ width: this.props.isLarge ? "1200px !important" : "inherit" }}
+        width={this.props.widthSize}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}
         footer={null}
       >
-        <AuthorizationWrapper inDevelopment>
-          <div className="modal__close">
+        <Popconfirm
+          placement="bottomRight"
+          title="Are you sure you want to cancel?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={(event) => this.closeModal(event)}
+        >
+          <Button ghost className="modal__close">
             <Icon type="close" />
-          </div>
-        </AuthorizationWrapper>
+          </Button>
+        </Popconfirm>
         <LoadingBar
           scope="modal"
           style={{
@@ -86,6 +99,7 @@ export class ModalWrapper extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  widthSize: getWidthSize(state),
   isModalOpen: getIsModalOpen(state),
   props: getProps(state),
   content: getContent(state),

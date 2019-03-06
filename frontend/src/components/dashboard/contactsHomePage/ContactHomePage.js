@@ -38,6 +38,9 @@ import * as ModalContent from "@/constants/modalContent";
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   fetchProvinceCodes: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -156,7 +159,7 @@ export class ContactHomePage extends Component {
         title,
         provinceOptions,
       },
-      isLarge: true,
+      widthSize: 1200,
       content: modalConfig.ADD_CONTACT,
     });
   }

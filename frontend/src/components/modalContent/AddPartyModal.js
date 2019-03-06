@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset } from "redux-form";
-import { Steps, Button } from "antd";
+import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 
@@ -66,10 +66,14 @@ export class AddTenureModal extends Component {
     );
   }
 
+  // WIP
   renderStepTwo() {
     return (
-      <div>
-        <p>there wil;l be lodts gosfd cool things in here just not ight now k wait for it.</p>
+      <div className="center">
+        <p>
+          If you would like to add another contact, click on the add another contact below. Your
+          current contact will be submitted once you add a new contact.
+        </p>
         <Button type="primary" className="full-mobile center" onClick={this.handleCreateAnother}>
           Submit and Add another contact
         </Button>
@@ -99,6 +103,17 @@ export class AddTenureModal extends Component {
           </Steps>
           <div>{steps[this.state.current].content}</div>
           <div className="right center-mobile">
+            <Popconfirm
+              placement="top"
+              title="Are you sure you want to cancel?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={this.props.closeModal}
+            >
+              <Button type="tertiary" className="full-mobile">
+                Cancel
+              </Button>
+            </Popconfirm>
             {this.state.current > 0 && (
               <Button type="secondary" className="full-mobile" onClick={() => this.prev()}>
                 Previous
@@ -114,9 +129,6 @@ export class AddTenureModal extends Component {
                 Submit
               </Button>
             )}
-            <Button type="tertiary" className="full-mobile" onClick={this.handlePartySubmit}>
-              Cancel
-            </Button>
           </div>
         </div>
       </div>
