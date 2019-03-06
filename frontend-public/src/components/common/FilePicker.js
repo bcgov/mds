@@ -27,7 +27,7 @@ class FilePicker extends Component {
           <Form.Item>
             <Radio.Group defaultValue size="large" onChange={this.toggleRadioState}>
               <Radio.Button value>Upload new file(s)</Radio.Button>
-              <Radio.Button value={false}>Attach existing file(s)</Radio.Button>
+              <Radio.Button value={false}>Re-use Uploaded File(s)</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
