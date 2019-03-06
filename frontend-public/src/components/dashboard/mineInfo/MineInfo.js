@@ -3,12 +3,13 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Row, Col, Divider, Icon, Button } from "antd";
+import { Table, Row, Col, Icon, Button } from "antd";
 
 import { getMine } from "@/selectors/userMineInfoSelector";
 import CustomPropTypes from "@/customPropTypes";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
+import NullScreen from "@/components/common/NullScreen";
 import {
   fetchMineRecordById,
   updateExpectedDocument,
@@ -19,6 +20,9 @@ import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
+import { COLOR } from "@/constants/styles";
+
+const { errorRed } = COLOR;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -32,6 +36,121 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
+
+const columns = [
+  {
+    title: "",
+    dataIndex: "overdue",
+    render: (text, record) =>
+      record.isOverdue ? (
+        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
+      ) : (
+        ""
+      ),
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    // TODO: Generalize this style in a better way
+    render: (text, record) => (
+      <h6 style={record.isOverdue ? { color: errorRed } : {}}>{record.doc.exp_document_name}</h6>
+    ),
+  },
+  {
+    title: "Due",
+    dataIndex: "due",
+    render: (text, record) => (
+      <h6 style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.doc.due_date === "None" ? "-" : record.doc.due_date}
+      </h6>
+    ),
+  },
+  {
+    title: "Received Date",
+    dataIndex: "receivedDate",
+    render: (text, record) => (
+      <h6>{record.doc.received_date === "None" ? "-" : record.doc.received_date}</h6>
+    ),
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    render: (test, record) => (
+      <h6 style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+      </h6>
+    ),
+  },
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    render: (text, record) =>
+      !record.doc.related_documents || record.doc.related_documents.length === 0
+        ? "-"
+        : record.doc.related_documents.map((file) => (
+            <div key={file.mine_document_guid}>
+              <a
+                role="link"
+                onClick={() =>
+                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                }
+                // Accessibility: Event listener
+                onKeyPress={() =>
+                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                }
+                // Accessibility: Focusable element
+                tabIndex="0"
+              >
+                {file.document_name}
+              </a>
+            </div>
+          )),
+  },
+  {
+    title: "",
+    dataIndex: "upload",
+    render: (text, record) => (
+      <Button
+        className="full-mobile"
+        type="primary"
+        ghost
+        onClick={(event) =>
+          record.openEditReportModal(
+            event,
+            record.handleEditReportSubmit,
+            ModalContent.EDIT_REPORT(
+              record.doc.exp_document_name,
+              moment()
+                .subtract(1, "year")
+                .year()
+            ),
+            record.doc
+          )
+        }
+      >
+        <Icon type="file-add" /> Upload/Edit
+      </Button>
+    ),
+  },
+];
+
+const byDate = (doc1, doc2) => {
+  // TODO: Refactor this
+  if (!(Date.parse(doc1.due_date) === Date.parse(doc2.due_date)))
+    return Date.parse(doc1.due_date) > Date.parse(doc2.due_date) ? 1 : -1;
+  return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
+};
+
+const transformRowData = (expectedDocuments, actions) =>
+  expectedDocuments.sort(byDate).map((doc, id) => ({
+    key: doc.exp_document_guid,
+    id, // TODO: Can I remove this??
+    doc,
+    isOverdue:
+      Date.parse(doc.due_date) < new Date() &&
+      doc.exp_document_status.exp_document_status_code === "MIA",
+    ...actions,
+  }));
 
 export class MineInfo extends Component {
   state = { isLoaded: false, selectedDocument: {} };
@@ -67,10 +186,14 @@ export class MineInfo extends Component {
   }
 
   render() {
+    // TODO: Fix these this-aware references
+    const openEditReportModal2 = this.openEditReportModal;
+    const handleEditReportSubmit2 = this.handleEditReportSubmit;
     if (!this.state.isLoaded) {
       return <Loading />;
     }
 
+    // FIXME: The rest of the page (around the table) should be refactored
     return (
       <div className="mine-info-padding">
         {this.props.mine && (
@@ -91,100 +214,16 @@ export class MineInfo extends Component {
               <Col xs={22} sm={22} md={20} lg={16}>
                 <h2>2018 Reports</h2>
                 <br />
-                <Row gutter={16} className="mine-info-header-row">
-                  <Col span={1} />
-                  <Col span={7}>
-                    <h4>Name</h4>
-                  </Col>
-                  <Col span={2}>
-                    <h4>Due</h4>
-                  </Col>
-                  <Col span={2}>
-                    <h4>Received Date</h4>
-                  </Col>
-                  <Col span={4}>
-                    <h4>Status</h4>
-                  </Col>
-                  <Col span={4}>
-                    <h4>Documents</h4>
-                  </Col>
-                  <Col span={4} />
-                </Row>
-                {this.props.mine.mine_expected_documents
-                  .sort((doc1, doc2) => {
-                    if (!(Date.parse(doc1.due_date) === Date.parse(doc2.due_date)))
-                      return Date.parse(doc1.due_date) > Date.parse(doc2.due_date) ? 1 : -1;
-                    return doc1.exp_document_name > doc2.exp_document_name ? 1 : -1;
-                  })
-                  .map((doc, id) => {
-                    const isOverdue =
-                      Date.parse(doc.due_date) < new Date() &&
-                      doc.exp_document_status.exp_document_status_code === "MIA";
-                    return (
-                      <div key={doc.exp_document_guid}>
-                        <Row gutter={16} justify="center" align="top">
-                          <Col span={1}>
-                            {isOverdue ? (
-                              <img
-                                className="padding-small"
-                                src={RED_CLOCK}
-                                alt="Edit TSF Report"
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </Col>
-                          <Col id={`name-${id}`} span={7}>
-                            <h6>{doc.exp_document_name}</h6>
-                          </Col>
-                          <Col id={`due-date-${id}`} span={2}>
-                            <h6>{doc.due_date === "None" ? "-" : doc.due_date}</h6>
-                          </Col>
-                          <Col span={2}>
-                            <h6>{doc.received_date === "None" ? "-" : doc.received_date}</h6>
-                          </Col>
-                          <Col id={`status-${id}`} span={4}>
-                            <h6 className={isOverdue ? "bold" : null}>
-                              {doc ? doc.exp_document_status.description : String.LOADING}
-                            </h6>
-                          </Col>
-                          <Col span={4}>
-                            {!doc.related_documents
-                              ? "-"
-                              : doc.related_documents.map((file) => (
-                                  <div key={file.mine_document_guid}>
-                                    <a
-                                      onClick={() =>
-                                        downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                                      }
-                                    >
-                                      {file.document_name}
-                                    </a>
-                                  </div>
-                                ))}
-                          </Col>
-                          <Col span={4} align="right">
-                            <Button
-                              className="full-mobile"
-                              type="primary"
-                              ghost
-                              onClick={(event) =>
-                                this.openEditReportModal(
-                                  event,
-                                  this.handleEditReportSubmit,
-                                  ModalContent.EDIT_REPORT(doc.exp_document_name, moment().subtract(1, 'year').year()),
-                                  doc
-                                )
-                              }
-                            >
-                              <Icon type="file-add" /> Upload/Edit
-                            </Button>
-                          </Col>
-                        </Row>
-                        <Divider type="horizontal" />
-                      </div>
-                    );
+                <Table
+                  align="left"
+                  pagination={false}
+                  columns={columns}
+                  dataSource={transformRowData(this.props.mine.mine_expected_documents, {
+                    openEditReportModal: openEditReportModal2.bind(this),
+                    handleEditReportSubmit: handleEditReportSubmit2.bind(this),
                   })}
+                  locale={{ emptyText: <NullScreen type="no-results" /> }}
+                />
               </Col>
               <Col xs={1} sm={1} md={2} lg={4} />
             </Row>
