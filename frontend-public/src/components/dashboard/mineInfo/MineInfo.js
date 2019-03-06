@@ -61,7 +61,7 @@ export class MineInfo extends Component {
       props: { onSubmit, title, selectedDocument: doc },
       content: modalConfig.EDIT_REPORT,
     });
-  }
+  };
 
   render() {
     if (!this.state.isLoaded) {
