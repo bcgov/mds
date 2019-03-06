@@ -172,7 +172,7 @@ export class MineInfo extends Component {
                                 this.openEditReportModal(
                                   event,
                                   this.handleEditReportSubmit,
-                                  ModalContent.EDIT_REPORT(doc.exp_document_name, moment().year()),
+                                  ModalContent.EDIT_REPORT(doc.exp_document_name, moment().subtract(1, 'year').year()),
                                   doc
                                 )
                               }
