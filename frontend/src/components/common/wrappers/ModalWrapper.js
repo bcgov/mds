@@ -49,8 +49,8 @@ export class ModalWrapper extends Component {
     const ChildComponent = this.props.content;
     return (
       <Modal
-        // id={this.props.isLarge ? "modal--large" : " "}
-        style={{ width: this.props.isLarge ? "1200px !important" : "inherit" }}
+        id={this.props.isLarge ? "modal--large" : " "}
+        // style={{ width: this.props.isLarge ? "1200px !important" : "inherit" }}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}
