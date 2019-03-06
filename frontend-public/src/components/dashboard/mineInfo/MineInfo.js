@@ -100,7 +100,7 @@ export class MineInfo extends Component {
                     <h4>Due</h4>
                   </Col>
                   <Col span={2}>
-                    <h4>Received</h4>
+                    <h4>Received Date</h4>
                   </Col>
                   <Col span={4}>
                     <h4>Status</h4>
