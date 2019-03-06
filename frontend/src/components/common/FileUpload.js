@@ -59,7 +59,6 @@ class FileUpload extends React.Component {
           },
         });
         // Start the upload
-        alert(file.type)
         upload.start();
         return {
           abort: () => {
@@ -81,7 +80,7 @@ class FileUpload extends React.Component {
         allowRevert={false}
         allowMultiple
         maxFileSize={this.props.maxFileSize}
-        allowFileTypeValidation={false}//acceptedFileTypes.length > 0}
+        allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
         fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
         onupdatefiles={(fileItems) => {
