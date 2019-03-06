@@ -5,7 +5,7 @@ import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, maxLength } from "@/utils/Validate";
+import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import FileUpload from "@/components/common/FileUpload";
 
@@ -37,7 +37,7 @@ export const AddPermitAmendmentForm = (props) => (
                 name="issue_date"
                 label="Issue date"
                 component={RenderDate}
-                validate={[required]}
+                validate={[required, dateNotInFuture]}
               />
             </Form.Item>
             <Form.Item>

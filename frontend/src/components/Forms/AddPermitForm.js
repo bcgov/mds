@@ -8,7 +8,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
 import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -144,7 +144,7 @@ export const AddPermitForm = (props) => (
                 name="issue_date"
                 label="Issue date*"
                 component={RenderDate}
-                validate={[required]}
+                validate={[required, dateNotInFuture]}
               />
             </Form.Item>
           </Col>

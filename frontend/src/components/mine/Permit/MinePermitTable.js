@@ -102,28 +102,30 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Update amalgamated permit" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Add amalgamated amendment" : "Add amalgamated permit"}
               </div>
             </button>
           </Menu.Item>
-          <Menu.Item key="1">
-            <button
-              type="button"
-              className="full add-permit-dropdown-button"
-              onClick={(event) =>
-                record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
-              }
-            >
-              <div>
-                <Icon
-                  type="plus"
-                  className="padding-small add-permit-dropdown-button-icon"
-                  theme="outlined"
-                />
-                Add permit amendment
-              </div>
-            </button>
-          </Menu.Item>
+          {text.hasAmalgamated && (
+            <Menu.Item key="1">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
+                }
+              >
+                <div>
+                  <Icon
+                    type="plus"
+                    className="padding-small add-permit-dropdown-button-icon"
+                    theme="outlined"
+                  />
+                  Add permit amendment
+                </div>
+              </button>
+            </Menu.Item>
+          )}
           <Menu.Item key="2">
             <button
               type="button"
