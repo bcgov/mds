@@ -123,7 +123,7 @@ class PermitAmendment(AuditMixin, Base):
         return authorization_end_date
 
     @validates('description')
-    def validate_status_code(self, key, description):
-        if len(description) > 280:
+    def validate_description(self, key, description):
+        if description and len(description) > 280:
             raise AssertionError('Permit amendment description must be 280 characters or fewer.')
         return description
