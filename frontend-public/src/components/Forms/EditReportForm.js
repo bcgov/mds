@@ -35,7 +35,7 @@ export const EditReportForm = (props) => (
             mineId={props.selectedDocument.mine_guid}
           />
         </Form.Item>
-        <Form.Item label="Upload/Attach Documents">
+        <Form.Item label="Upload/Link Documents">
           <Field
             id="tsfDocumentPicker"
             name="tsfDocumentPicker"
