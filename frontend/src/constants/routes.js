@@ -25,8 +25,8 @@ export const MINE_HOME_PAGE = {
 
 export const CONTACT_HOME_PAGE = {
   route: "/dashboard/contacts",
-  dynamicRoute: ({ page, per_page }) =>
-    `/dashboard/contacts/?${queryString.stringify({ page, per_page })}`,
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/contacts/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   component: ContactHomePage,
 };
 

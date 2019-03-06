@@ -136,6 +136,6 @@ AdvancedMineSearchForm.propTypes = propTypes;
 AdvancedMineSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.ADVANCE_SEARCH,
+  form: FORM.MINE_ADVANCED_SEARCH,
   touchOnBlur: false,
 })(AdvancedMineSearchForm);
