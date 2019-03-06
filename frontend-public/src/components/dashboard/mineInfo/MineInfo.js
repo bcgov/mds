@@ -177,7 +177,7 @@ export class MineInfo extends Component {
                                 )
                               }
                             >
-                              <Icon type="file-add" /> Upload
+                              <Icon type="file-add" /> Upload/Edit
                             </Button>
                           </Col>
                         </Row>
