@@ -23,7 +23,7 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
-
+    description = db.Column(db.String, nullable=True)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def json(self):
@@ -42,6 +42,8 @@ class PermitAmendment(AuditMixin, Base):
             self.issue_date.isoformat() if self.issue_date else None,
             'authorization_end_date':
             self.authorization_end_date.isoformat() if self.authorization_end_date else None,
+            'description':
+            self.description,
             'related_documents': [x.json() for x in self.documents]
         }
 
@@ -51,8 +53,9 @@ class PermitAmendment(AuditMixin, Base):
                received_date,
                issue_date,
                authorization_end_date,
+               permit_amendment_type_code,
                user_kwargs,
-               permit_amendment_type_code='AMD',
+               description=None,
                permit_amendment_status_code='ACT',
                save=True):
         new_pa = cls(
@@ -62,6 +65,7 @@ class PermitAmendment(AuditMixin, Base):
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
+            description=description,
             **user_kwargs)
         permit.permit_amendments.append(new_pa)
         if save:
@@ -117,3 +121,9 @@ class PermitAmendment(AuditMixin, Base):
         if authorization_end_date and authorization_end_date.isoformat() == '9999-12-31':
             raise AssertionError('Permit amendment end date should be set to null if not known.')
         return authorization_end_date
+
+    @validates('description')
+    def validate_status_code(self, key, description):
+        if len(description) > 280:
+            raise AssertionError('Permit amendment description must be 280 characters or fewer.')
+        return description

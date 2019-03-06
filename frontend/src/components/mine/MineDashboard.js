@@ -148,7 +148,7 @@ export class MineDashboard extends Component {
                 </TabPane>
                 <TabPane tab="Permit" key="permit">
                   <div className="tab__content">
-                    <MinePermitInfo mine={mine} />
+                    <MinePermitInfo mine={mine} {...this.props} />
                   </div>
                 </TabPane>
                 <TabPane tab="Contact Information" key="contacts">
