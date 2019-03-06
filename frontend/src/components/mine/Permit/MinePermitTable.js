@@ -132,11 +132,11 @@ const columns = [
       return (
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="secondary" className="permit-table-addedit">
+            <Button type="secondary" className="permit-table-button">
               <div className="padding-small">
-                <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add/Edit&nbsp;&nbsp;
-                <img className="padding-small--right" src={CARAT} alt="Menu" />
+                <img className="padding-small--right icon-svg-filter" src={CARAT} alt="Menu" />
               </div>
             </Button>
           </Dropdown>
@@ -154,7 +154,7 @@ const childColumns = [
     render: (text) => <div title="Amendment">{text}</div>,
   },
   {
-    title: "Issue Date",
+    title: "Date Issued",
     dataIndex: "issueDate",
     key: "issueDate",
     render: (text) => <div title="Issue Date">{text}</div>,
@@ -172,14 +172,14 @@ const childColumns = [
     render: (text, record) => [
       text.major_mine_ind && (
         <Button
-          className="permit-table-edit"
+          className="permit-table-button"
           type="ghost"
           onClick={(event) =>
             record.openEditAmendmentModal(event, text.guid, text.permit_guid, text.permit_no)
           }
         >
           <div>
-            <img className="padding-small--right" src={EDITOUTLINE} alt="Edit" />
+            <img className="padding-small--right icon-svg-filter" src={EDITOUTLINE} alt="Edit" />
           </div>
         </Button>
       ),
