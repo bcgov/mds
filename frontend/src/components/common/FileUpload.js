@@ -60,6 +60,7 @@ class FileUpload extends React.Component {
         });
         // Start the upload
         upload.start();
+        alert(file.type)
         return {
           abort: () => {
             upload.abort();
