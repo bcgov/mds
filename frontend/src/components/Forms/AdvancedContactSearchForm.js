@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { email, phoneNumber, maxLength } from "@/utils/Validate";
+import { phoneNumber, maxLength } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
@@ -23,11 +23,12 @@ const defaultProps = {
   isAdvanceSearch: false,
 };
 
+const isPerson = (type) => type === "PER";
+const isOrg = (type) => type === "ORG";
+
 export class AdvancedContactSearchForm extends Component {
   state = {
-    params: {
-      type: this.props.initialValues.type,
-    },
+    contactType: this.props.initialValues.type,
   };
 
   handleReset = () => {
@@ -36,7 +37,7 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleContactTypeChange = (chars, value) => {
-    this.setState({ params: { type: value } });
+    this.setState({ contactType: value });
   };
 
   render() {
@@ -52,7 +53,7 @@ export class AdvancedContactSearchForm extends Component {
               onChange={this.handleContactTypeChange}
             />
           </Col>
-          {this.state.params.type === "ORG" && (
+          {isOrg(this.state.contactType) && (
             <Col md={18} xs={18}>
               <Field
                 id="party_name"
@@ -62,7 +63,7 @@ export class AdvancedContactSearchForm extends Component {
               />
             </Col>
           )}
-          {this.state.params.type === "PER" && (
+          {isPerson(this.state.contactType) && (
             <Col md={9} xs={9}>
               <Field
                 id="first_name"
@@ -72,7 +73,7 @@ export class AdvancedContactSearchForm extends Component {
               />
             </Col>
           )}
-          {this.state.params.type === "PER" && (
+          {isPerson(this.state.contactType) && (
             <Col md={9} xs={9}>
               <Field
                 id="last_name"
