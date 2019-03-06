@@ -33,28 +33,6 @@ Contributors to this codebase are expected to follow the testing standards set o
 
 _If coverage is lower than before writing a new feature, the tests **need** to be updated, and the feature is considered **incomplete**_
 
-**Running Tests:**
-
-1. To run the test suite without updating snapshots run:
-
-```
-npm test
-```
-
-2. To run the test suite while updating ALL snapshots run:
-
-```
-npm run test:updateSnap
-```
-
-3. To run the test suite while updating snapshots case by case Interactively run:
-
-```
-npm run test:updateIT
-```
-
-Then choose option 'i' and go through the failing snapshots case by case
-
 ### Running
 
 - [react](https://reactjs.org/) : JS library to build single page apps
