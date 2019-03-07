@@ -98,8 +98,8 @@ setup.kibana:
 
 #================================ Outputs =====================================
 
-output.console:
-  pretty: true
+# output.console:
+#   pretty: true
 
 # Configure what output to use when sending the data collected by the beat.
 
@@ -117,9 +117,9 @@ output.console:
   #password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-# output.logstash:
+output.logstash:
   # The Logstash hosts
-  # hosts: ["mds-logstash:5044"]
+  hosts: ["mds-logstash:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
