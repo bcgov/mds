@@ -110,10 +110,13 @@ export class ContactHomePage extends Component {
 
   handleSearch = (searchParams = {}) => {
     this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(searchParams));
-    this.setState({
-      params: searchParams,
-    });
-    this.renderDataFromURL();
+    this.setState(
+      {
+        params: searchParams,
+      },
+      // Fetch parties once state has been updated
+      () => this.renderDataFromURL()
+    );
   };
 
   onPageChange = (page, per_page) => {
