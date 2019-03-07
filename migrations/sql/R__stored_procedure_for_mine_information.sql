@@ -189,8 +189,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 latitude        numeric(9,7)        ,
                 longitude       numeric(11,7)
             );
-            CREATE INDEX IF NOT EXISTS ON ETL_LOCATION (mine_no);
-            CREATE INDEX IF NOT EXISTS ON ETL_LOCATION (mine_guid);
+            CREATE INDEX ON ETL_LOCATION (mine_no);
+            CREATE INDEX ON ETL_LOCATION (mine_guid);
             SELECT count(*) FROM ETL_LOCATION into old_row;
 
             -- Upsert data into ETL_LOCATION from MMS
