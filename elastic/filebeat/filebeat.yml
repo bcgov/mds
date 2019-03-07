@@ -54,11 +54,10 @@ setup.template.settings:
 # the dashboards is disabled by default and can be enabled either by setting the
 # options here, or by using the `-setup` CLI flag or the `setup` command.
 #setup.dashboards.enabled: false
-setup.dashboards.index: mds-nginx-*
-setup.template.overwrite: true
-output.elasticsearch.index: "mds-nginx-%{+yyyy.MM.dd}"
-setup.template.name: "mds-nginx"
-setup.template.pattern: "mds-nginx-*"
+# setup.dashboards.index: mds-nginx-*
+# setup.template.overwrite: true
+# setup.template.name: "mds-nginx"
+# setup.template.pattern: "mds-nginx-*"
 
 
 # The URL from where to download the dashboards archive. By default this URL
@@ -91,16 +90,16 @@ setup.kibana:
 # The cloud.id setting overwrites the `output.elasticsearch.hosts` and
 # `setup.kibana.host` options.
 # You can find the `cloud.id` in the Elastic Cloud web UI.
-cloud.id: test:dXMtd2VzdC0xLmF3cy5mb3VuZC5pbyQ4OTAzZDkxMDFiOTc0YTFiYjE4MmY3YzBlYjIwNDhmMCQxNGNjM2VkNTAwYWQ0MzRkYjJjNDAxNGRlMDBmZmU4Mw==
+# cloud.id: test:dXMtd2VzdC0xLmF3cy5mb3VuZC5pbyQ4OTAzZDkxMDFiOTc0YTFiYjE4MmY3YzBlYjIwNDhmMCQxNGNjM2VkNTAwYWQ0MzRkYjJjNDAxNGRlMDBmZmU4Mw==
 
 # The cloud.auth setting overwrites the `output.elasticsearch.username` and
 # `output.elasticsearch.password` settings. The format is `<user>:<pass>`.
-cloud.auth: elastic:GLeC2zL55ENkYaV2cY0rtomt
+# cloud.auth: elastic:GLeC2zL55ENkYaV2cY0rtomt
 
 #================================ Outputs =====================================
 
-# output.console:
-#   pretty: true
+output.console:
+  pretty: true
 
 # Configure what output to use when sending the data collected by the beat.
 
@@ -118,9 +117,9 @@ cloud.auth: elastic:GLeC2zL55ENkYaV2cY0rtomt
   #password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-#output.logstash:
+# output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
+  # hosts: ["mds-logstash:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications

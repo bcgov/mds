@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  
+  mds-filebeat:
+    build:
+      context: filebeat/
+    container_name: mds-filebeat
+    networks:
+      - mds
+  mds-logstash:
+    build:
+      context: logstash/
+    container_name: mds-logstash
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    depends_on: 
+      - mds-filebeat
+    networks:
+      - mds
+networks:
+  mds:
+    driver: bridge
