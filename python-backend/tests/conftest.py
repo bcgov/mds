@@ -279,7 +279,6 @@ def setup_data(session):
 
     # Test Permit Data
     permit = Permit(
-        permit_id=TEST_PERMIT_ID_1,
         permit_guid=TEST_PERMIT_GUID_1,
         mine_guid=TEST_MINE_GUID,
         permit_no=TEST_PERMIT_NO_1,
@@ -426,16 +425,6 @@ def setup_data(session):
         grouping_level=1,
         **DUMMY_USER_KWARGS)
     mpat5.save()
-
-    # Test Permittee Data
-    permittee = MinePartyAppointment(
-        mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
-        mine_party_appt_type_code='PMT',
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
-    permittee.save()
 
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),

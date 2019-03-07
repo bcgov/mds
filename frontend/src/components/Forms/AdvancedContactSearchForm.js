@@ -4,36 +4,40 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { phoneNumber, maxLength } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
-  searchValue: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  roleOptions: CustomPropTypes.options.isRequired,
-  isAdvanceSearch: PropTypes.bool.isRequired,
+  partyTypeOptions: CustomPropTypes.options.isRequired,
+  relationshipTypes: CustomPropTypes.options.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  isAdvanceSearch: PropTypes.bool,
 };
 
 const defaultProps = {
-  searchValue: "",
+  isAdvanceSearch: false,
 };
+
+const isPerson = (type) => type === "PER";
+const isOrg = (type) => type === "ORG";
 
 export class AdvancedContactSearchForm extends Component {
   state = {
-    params: {
-      type: this.props.contactType,
-    },
+    contactType: this.props.initialValues.type,
   };
 
   handleReset = () => {
     this.props.reset();
-    this.props.handleSearch();
+    this.props.handleSearch({ page: Strings.DEFAULT_PAGE, per_page: Strings.DEFAULT_PER_PAGE });
   };
 
   handleContactTypeChange = (chars, value) => {
-    this.setState({ params: { type: value } });
+    this.setState({ contactType: value });
   };
 
   render() {
@@ -44,26 +48,22 @@ export class AdvancedContactSearchForm extends Component {
             <Field
               id="type"
               name="type"
-              placeholder="Type of Contact"
               component={renderConfig.SELECT}
-              // TODO: Pass data in as props
-              // TODO: Set initial value PER based on props.contactType
-              data={[{ value: "PER", label: "Person" }, { value: "ORG", label: "Organization" }]}
+              data={this.props.partyTypeOptions}
               onChange={this.handleContactTypeChange}
             />
           </Col>
-          {this.state.params.type === "ORG" && (
+          {isOrg(this.state.contactType) && (
             <Col md={18} xs={18}>
               <Field
                 id="party_name"
                 name="party_name"
                 component={renderConfig.FIELD}
-                defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
                 placeholder="Organization Name"
               />
             </Col>
           )}
-          {this.state.params.type === "PER" && (
+          {isPerson(this.state.contactType) && (
             <Col md={9} xs={9}>
               <Field
                 id="first_name"
@@ -73,7 +73,7 @@ export class AdvancedContactSearchForm extends Component {
               />
             </Col>
           )}
-          {this.state.params.type === "PER" && (
+          {isPerson(this.state.contactType) && (
             <Col md={9} xs={9}>
               <Field
                 id="last_name"
@@ -97,10 +97,11 @@ export class AdvancedContactSearchForm extends Component {
               </Col>
               <Col md={8} xs={24}>
                 <Field
-                  id="phone"
-                  name="phone"
+                  id="phone_no"
+                  name="phone_no"
                   placeholder="Phone Number"
                   component={renderConfig.FIELD}
+                  validate={[phoneNumber, maxLength(12)]}
                 />
               </Col>
               <Col md={8} xs={24}>
@@ -108,12 +109,7 @@ export class AdvancedContactSearchForm extends Component {
                   id="role"
                   name="role"
                   component={renderConfig.SELECT}
-                  // TODO: fetch roles and set here as props
-                  data={[
-                    { value: "", label: "All Roles" },
-                    { value: "PMT", label: "Permittee" },
-                    { value: "MMG", label: "Mine Manager" },
-                  ]}
+                  data={this.props.relationshipTypes}
                 />
               </Col>
             </Row>
@@ -142,6 +138,6 @@ AdvancedContactSearchForm.propTypes = propTypes;
 AdvancedContactSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.ADVANCE_SEARCH,
+  form: FORM.CONTACT_ADVANCED_SEARCH,
   touchOnBlur: false,
 })(AdvancedContactSearchForm);
