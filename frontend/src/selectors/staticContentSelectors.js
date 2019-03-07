@@ -11,6 +11,7 @@ export const {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
   getOptionsLoaded,
+  getPermitStatusOptions,
 } = staticContentReducer;
 
 export const getMineTenureTypesHash = createSelector(
@@ -75,4 +76,9 @@ export const getCommodityOptionHash = createSelector(
 export const getDropdownCommodityOptions = createSelector(
   [getMineCommodityOptions],
   (options) => createDropDownList(options, "description", "mine_commodity_code")
+);
+
+export const getDropdownPermitStatusOptions = createSelector(
+  [getPermitStatusOptions],
+  (options) => createDropDownList(options, "description", "permit_status_code")
 );

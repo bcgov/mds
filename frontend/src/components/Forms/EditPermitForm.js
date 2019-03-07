@@ -8,7 +8,7 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { getPermitStatusOptions } from "@/reducers/permitReducer";
+import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -59,7 +59,7 @@ EditPermitForm.propTypes = propTypes;
 
 export default compose(
   connect((state) => ({
-    permitStatusOptions: getPermitStatusOptions(state),
+    permitStatusOptions: getDropdownPermitStatusOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_PERMIT,

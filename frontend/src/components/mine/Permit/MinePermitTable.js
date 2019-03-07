@@ -10,6 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { BRAND_PENCIL, EDIT, EDITOUTLINE, CARAT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import {
@@ -24,6 +25,7 @@ import {
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -47,7 +49,11 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text) => <div title="Status">{text === "O" ? "Open" : "Closed"}</div>,
+    render: (text, record) => (
+      <div title="Status">
+        {record.permitStatusOptions.find((item) => item.value === text).label}
+      </div>
+    ),
   },
   {
     title: "Permittee",
@@ -96,28 +102,30 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Update amalgamated permit" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Add permit amendment" : "Add amalgamated permit"}
               </div>
             </button>
           </Menu.Item>
-          <Menu.Item key="1">
-            <button
-              type="button"
-              className="full add-permit-dropdown-button"
-              onClick={(event) =>
-                record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
-              }
-            >
-              <div>
-                <Icon
-                  type="plus"
-                  className="padding-small add-permit-dropdown-button-icon"
-                  theme="outlined"
-                />
-                Add permit amendment
-              </div>
-            </button>
-          </Menu.Item>
+          {!text.hasAmalgamated && (
+            <Menu.Item key="1">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
+                }
+              >
+                <div>
+                  <Icon
+                    type="plus"
+                    className="padding-small add-permit-dropdown-button-icon"
+                    theme="outlined"
+                  />
+                  Add permit amendment
+                </div>
+              </button>
+            </Menu.Item>
+          )}
           <Menu.Item key="2">
             <button
               type="button"
@@ -186,7 +194,7 @@ const childColumns = [
                 event,
                 text.guid,
                 text.permit_guid,
-                text.permit_no,
+                record.amendmentType,
                 text.description
               )
             }
@@ -219,7 +227,8 @@ const transformRowData = (
   major_mine_ind,
   openEditPermitModal,
   openAddPermitAmendmentModal,
-  openAddAmalgamatedPermitModal
+  openAddAmalgamatedPermitModal,
+  permitStatusOptions
 ) => {
   const latestAmendment = permit.amendments[0];
   const firstAmendment = permit.amendments[permit.amendments.length - 1];
@@ -253,6 +262,7 @@ const transformRowData = (
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
+    permitStatusOptions,
   };
 };
 
@@ -264,6 +274,7 @@ const transformChildRowData = (
   openEditAmendmentModal
 ) => ({
   amendmentNumber,
+  amendmentType: amendment.permit_amendment_type_code,
   receivedDate:
     (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
   issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
@@ -292,7 +303,7 @@ export const MinePermitTable = (props) => {
     event,
     permit_amendment_guid,
     permit_guid,
-    permit_no,
+    permit_amendment_type_code,
     description
   ) => {
     const permit = props.permits.find((p) => p.permit_guid === permit_guid);
@@ -303,6 +314,7 @@ export const MinePermitTable = (props) => {
     const initialValues = {
       issue_date: permit_amendment.issue_date,
       permit_amendment_guid,
+      permit_amendment_type_code,
       description,
     };
 
@@ -412,7 +424,8 @@ export const MinePermitTable = (props) => {
       props.major_mine_ind,
       openEditPermitModal,
       openAddPermitAmendmentModal,
-      openAddAmalgamatedPermitModal
+      openAddAmalgamatedPermitModal,
+      props.permitStatusOptions
     )
   );
 
@@ -432,6 +445,7 @@ export const MinePermitTable = (props) => {
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
+  permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

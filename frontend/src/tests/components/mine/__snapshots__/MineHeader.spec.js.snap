@@ -1,0 +1,3510 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineHeader renders dispatchProperly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MineHeader
+    closeModal={[MockFunction]}
+    fetchMineRecordById={[MockFunction]}
+    mine={
+      Object {
+        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mine_expected_documents": Array [
+          Object {
+            "date_created": "2018-11-19",
+            "due_date": "",
+            "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+            "exp_document_name": "OMS Manual",
+            "exp_document_status": Object {
+              "description": "Not Received",
+              "exp_document_status_code": "MIA",
+            },
+            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+            "related_documents": Array [],
+            "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          },
+        ],
+        "mine_location": Object {
+          "latitude": null,
+          "longitude": null,
+        },
+        "mine_name": "mine3",
+        "mine_no": "BLAH9091",
+        "mine_permit": Array [],
+        "mine_status": Object {
+          "effective_date": "2018-10-16",
+          "expiry_date": "9999-12-31",
+          "status_labels": Array [
+            "Closed",
+            "Care & Maintenance",
+          ],
+          "statusvalue": Array [
+            "CLD",
+            "CM",
+          ],
+        },
+        "mine_tailings_storage_facility": Array [
+          Object {
+            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+            "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+            "mine_tailings_storage_facility_name": "MockTSF",
+          },
+        ],
+        "mine_type": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "mineral_tenure_xref": Array [
+          Object {
+            "tenure_number_id": "1234567",
+          },
+        ],
+        "region_code": "NE",
+      }
+    }
+    mineRegionHash={
+      Object {
+        "NE": "North East",
+        "NW": "North West",
+        "SC": "South Central",
+        "SE": "South East",
+        "SW": "South West",
+      }
+    }
+    mineRegionOptions={
+      Array [
+        Object {
+          "label": "South West",
+          "value": "SW",
+        },
+        Object {
+          "label": "South Central",
+          "value": "SC",
+        },
+        Object {
+          "label": "North West",
+          "value": "NW",
+        },
+        Object {
+          "label": "North East",
+          "value": "NE",
+        },
+        Object {
+          "label": "South East",
+          "value": "SE",
+        },
+      ]
+    }
+    mineStatusOptions={
+      Array [
+        Object {
+          "label": "Abandoned",
+          "value": "ABN",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "label": "Care & Maintenance",
+              "value": "CM",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Long Term Maintenance",
+                  "value": "LTM",
+                },
+                Object {
+                  "label": "Long Term Maintenance Water Treatment",
+                  "value": "LWT",
+                },
+                Object {
+                  "label": "Permit Release Pending",
+                  "value": "PRP",
+                },
+              ],
+              "label": "Reclamation",
+              "value": "REC",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Long Term Maintenance",
+                  "value": "LTM",
+                },
+                Object {
+                  "label": "Long Term Maintenance Water Treatment",
+                  "value": "LWT",
+                },
+                Object {
+                  "label": "Reclamation Not Starte",
+                  "value": "RNS",
+                },
+                Object {
+                  "label": "Site Visit Required",
+                  "value": "SVR",
+                },
+              ],
+              "label": "Orphaned",
+              "value": "ORP",
+            },
+            Object {
+              "label": "Unknown",
+              "value": "UN",
+            },
+          ],
+          "label": "Closed",
+          "value": "CLD",
+        },
+        Object {
+          "label": "Not Started",
+          "value": "NS",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "label": "Year round",
+              "value": "YR",
+            },
+            Object {
+              "label": "Seasonal",
+              "value": "SEA",
+            },
+          ],
+          "label": "Operating",
+          "value": "OP",
+        },
+      ]
+    }
+    mineTenureHash={
+      Object {
+        "BCL": "BC Land",
+        "COL": "Coal",
+        "MIN": "Mineral",
+        "PLR": "Placer",
+      }
+    }
+    mineTenureTypes={
+      Array [
+        Object {
+          "label": "Coal",
+          "value": "COL",
+        },
+        Object {
+          "label": "Mineral",
+          "value": "MIN",
+        },
+        Object {
+          "label": "Placer",
+          "value": "PLR",
+        },
+        Object {
+          "label": "BC Land",
+          "value": "BCL",
+        },
+      ]
+    }
+    openModal={[MockFunction]}
+    transformedMineTypes={
+      Object {
+        "mine_commodity_code": Array [],
+        "mine_disturbance_code": Array [],
+        "mine_tenure_type_code": Array [],
+      }
+    }
+    updateMineRecord={[MockFunction]}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="dashboard__header--card__content"
+        >
+          <div
+            className="inline-flex between center-mobile"
+          >
+            <h1>
+              mine3
+               
+            </h1>
+            <Connect(AuthorizationWrapper)
+              isMajorMine={undefined}
+              permission="role_create"
+            >
+              <Dropdown
+                className="full-height full-mobile"
+                mouseEnterDelay={0.15}
+                mouseLeaveDelay={0.1}
+                overlay={
+                  <Menu
+                    className=""
+                    focusable={false}
+                    prefixCls="ant-menu"
+                    theme="light"
+                  >
+                    <MenuItem>
+                      <button
+                        className="full"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <img
+                          alt="pencil"
+                          className="padding-small"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Update Mine Record
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="full"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <img
+                          alt="document"
+                          className="padding-small"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        + Add TSF
+                      </button>
+                    </MenuItem>
+                  </Menu>
+                }
+                placement="bottomLeft"
+                prefixCls="ant-dropdown"
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  <div
+                    className="padding-small"
+                  >
+                    <img
+                      alt="Add/Edit"
+                      className="padding-small--right"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
+            </Connect(AuthorizationWrapper)>
+          </div>
+          <Divider
+            className="custom-large-divider"
+          />
+          <div
+            className="inline-flex between block-mobile"
+          >
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Mine No. 
+              </p>
+              <p>
+                 
+                BLAH9091
+                 
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Mine Class 
+              </p>
+              <p>
+                Regional mine
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                TSF
+              </p>
+              <p>
+                1
+              </p>
+            </div>
+          </div>
+          <div
+            className="inline-flex padding-small"
+          >
+            <p
+              className="field-title"
+            >
+              Operating Status
+            </p>
+            <p>
+              N/A
+            </p>
+          </div>
+          <div
+            className="inline-flex padding-small"
+          >
+            <p
+              className="field-title"
+            >
+              Tenure
+            </p>
+            <p>
+              <p>
+                N/A
+              </p>
+            </p>
+          </div>
+          <div
+            className="inline-flex padding-small wrap"
+          >
+            <p
+              className="field-title"
+            >
+              Commodity
+            </p>
+            <p>
+              N/A
+            </p>
+          </div>
+          <div
+            className="inline-flex padding-small wrap"
+          >
+            <p
+              className="field-title"
+            >
+              Disturbance
+            </p>
+            <p>
+              N/A
+            </p>
+          </div>
+          <div
+            className="inline-flex padding-small wrap"
+          >
+            <p
+              className="field-title"
+            >
+              Notes
+            </p>
+            <div>
+              <p>
+                N/A
+              </p>
+            </div>
+          </div>
+        </div>,
+        <div
+          className="dashboard__header--card__map"
+        >
+          <MineMap
+            lat={null}
+            long={null}
+            mine={
+              Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_expected_documents": Array [
+                  Object {
+                    "date_created": "2018-11-19",
+                    "due_date": "",
+                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                    "exp_document_name": "OMS Manual",
+                    "exp_document_status": Object {
+                      "description": "Not Received",
+                      "exp_document_status_code": "MIA",
+                    },
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "related_documents": Array [],
+                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                  },
+                ],
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facility": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+                "mineral_tenure_xref": Array [
+                  Object {
+                    "tenure_number_id": "1234567",
+                  },
+                ],
+                "region_code": "NE",
+              }
+            }
+          />
+          <div
+            className="dashboard__header--card__map--footer"
+          >
+            <div
+              className="inline-flex between"
+            >
+              <p
+                className="p-white"
+              >
+                Lat:
+                 
+              </p>
+              <p
+                className="p-white"
+              >
+                Long:
+                 
+              </p>
+            </div>
+            <p
+              className="p-white"
+            >
+              Region:
+               
+              North East
+            </p>
+          </div>
+        </div>,
+      ],
+      "className": "dashboard__header--card",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div
+              className="inline-flex between center-mobile"
+            >
+              <h1>
+                mine3
+                 
+              </h1>
+              <Connect(AuthorizationWrapper)
+                isMajorMine={undefined}
+                permission="role_create"
+              >
+                <Dropdown
+                  className="full-height full-mobile"
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="pencil"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Update Mine Record
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          + Add TSF
+                        </button>
+                      </MenuItem>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
+                >
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    type="primary"
+                  >
+                    <div
+                      className="padding-small"
+                    >
+                      <img
+                        alt="Add/Edit"
+                        className="padding-small--right"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </Connect(AuthorizationWrapper)>
+            </div>,
+            <Divider
+              className="custom-large-divider"
+            />,
+            <div
+              className="inline-flex between block-mobile"
+            >
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Mine No. 
+                </p>
+                <p>
+                   
+                  BLAH9091
+                   
+                </p>
+              </div>
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Mine Class 
+                </p>
+                <p>
+                  Regional mine
+                </p>
+              </div>
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  TSF
+                </p>
+                <p>
+                  1
+                </p>
+              </div>
+            </div>,
+            undefined,
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Operating Status
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>,
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Tenure
+              </p>
+              <p>
+                <p>
+                  N/A
+                </p>
+              </p>
+            </div>,
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Commodity
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>,
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Disturbance
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>,
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Notes
+              </p>
+              <div>
+                <p>
+                  N/A
+                </p>
+              </div>
+            </div>,
+          ],
+          "className": "dashboard__header--card__content",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <h1>
+                  mine3
+                   
+                </h1>,
+                <Connect(AuthorizationWrapper)
+                  isMajorMine={undefined}
+                  permission="role_create"
+                >
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
+                </Connect(AuthorizationWrapper)>,
+              ],
+              "className": "inline-flex between center-mobile",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "mine3",
+                    " ",
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  "mine3",
+                  " ",
+                ],
+                "type": "h1",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>,
+                  "isMajorMine": undefined,
+                  "permission": "role_create",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>,
+                    "className": "full-height full-mobile",
+                    "mouseEnterDelay": 0.15,
+                    "mouseLeaveDelay": 0.1,
+                    "overlay": <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="pencil"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Update Mine Record
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          + Add TSF
+                        </button>
+                      </MenuItem>
+                    </Menu>,
+                    "placement": "bottomLeft",
+                    "prefixCls": "ant-dropdown",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": false,
+                      "children": <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>,
+                      "ghost": false,
+                      "loading": false,
+                      "prefixCls": "ant-btn",
+                      "type": "primary",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />,
+                          "Add/Edit",
+                        ],
+                        "className": "padding-small",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "Add/Edit",
+                            "className": "padding-small--right",
+                            "src": Object {
+                              "process": [Function],
+                            },
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Add/Edit",
+                      ],
+                      "type": "div",
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "className": "custom-large-divider",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    Mine No. 
+                  </p>
+                  <p>
+                     
+                    BLAH9091
+                     
+                  </p>
+                </div>,
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    Mine Class 
+                  </p>
+                  <p>
+                    Regional mine
+                  </p>
+                </div>,
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    TSF
+                  </p>
+                  <p>
+                    1
+                  </p>
+                </div>,
+              ],
+              "className": "inline-flex between block-mobile",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <p
+                      className="field-title"
+                    >
+                      Mine No. 
+                    </p>,
+                    <p>
+                       
+                      BLAH9091
+                       
+                    </p>,
+                  ],
+                  "className": "inline-flex padding-small",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Mine No. ",
+                      "className": "field-title",
+                    },
+                    "ref": null,
+                    "rendered": "Mine No. ",
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        " ",
+                        "BLAH9091",
+                        " ",
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      " ",
+                      "BLAH9091",
+                      " ",
+                    ],
+                    "type": "p",
+                  },
+                ],
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <p
+                      className="field-title"
+                    >
+                      Mine Class 
+                    </p>,
+                    <p>
+                      Regional mine
+                    </p>,
+                  ],
+                  "className": "inline-flex padding-small",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Mine Class ",
+                      "className": "field-title",
+                    },
+                    "ref": null,
+                    "rendered": "Mine Class ",
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Regional mine",
+                    },
+                    "ref": null,
+                    "rendered": "Regional mine",
+                    "type": "p",
+                  },
+                ],
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <p
+                      className="field-title"
+                    >
+                      TSF
+                    </p>,
+                    <p>
+                      1
+                    </p>,
+                  ],
+                  "className": "inline-flex padding-small",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "TSF",
+                      "className": "field-title",
+                    },
+                    "ref": null,
+                    "rendered": "TSF",
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": 1,
+                    },
+                    "ref": null,
+                    "rendered": 1,
+                    "type": "p",
+                  },
+                ],
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+          undefined,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <p
+                  className="field-title"
+                >
+                  Operating Status
+                </p>,
+                <p>
+                  N/A
+                </p>,
+              ],
+              "className": "inline-flex padding-small",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Operating Status",
+                  "className": "field-title",
+                },
+                "ref": null,
+                "rendered": "Operating Status",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "N/A",
+                },
+                "ref": null,
+                "rendered": "N/A",
+                "type": "p",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <p
+                  className="field-title"
+                >
+                  Tenure
+                </p>,
+                <p>
+                  <p>
+                    N/A
+                  </p>
+                </p>,
+              ],
+              "className": "inline-flex padding-small",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Tenure",
+                  "className": "field-title",
+                },
+                "ref": null,
+                "rendered": "Tenure",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <p>
+                    N/A
+                  </p>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "N/A",
+                  },
+                  "ref": null,
+                  "rendered": "N/A",
+                  "type": "p",
+                },
+                "type": "p",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <p
+                  className="field-title"
+                >
+                  Commodity
+                </p>,
+                <p>
+                  N/A
+                </p>,
+              ],
+              "className": "inline-flex padding-small wrap",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Commodity",
+                  "className": "field-title",
+                },
+                "ref": null,
+                "rendered": "Commodity",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "N/A",
+                },
+                "ref": null,
+                "rendered": "N/A",
+                "type": "p",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <p
+                  className="field-title"
+                >
+                  Disturbance
+                </p>,
+                <p>
+                  N/A
+                </p>,
+              ],
+              "className": "inline-flex padding-small wrap",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Disturbance",
+                  "className": "field-title",
+                },
+                "ref": null,
+                "rendered": "Disturbance",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "N/A",
+                },
+                "ref": null,
+                "rendered": "N/A",
+                "type": "p",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <p
+                  className="field-title"
+                >
+                  Notes
+                </p>,
+                <div>
+                  <p>
+                    N/A
+                  </p>
+                </div>,
+              ],
+              "className": "inline-flex padding-small wrap",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Notes",
+                  "className": "field-title",
+                },
+                "ref": null,
+                "rendered": "Notes",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <p>
+                    N/A
+                  </p>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "N/A",
+                  },
+                  "ref": null,
+                  "rendered": "N/A",
+                  "type": "p",
+                },
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <MineMap
+              lat={null}
+              long={null}
+              mine={
+                Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_expected_documents": Array [
+                    Object {
+                      "date_created": "2018-11-19",
+                      "due_date": "",
+                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                      "exp_document_name": "OMS Manual",
+                      "exp_document_status": Object {
+                        "description": "Not Received",
+                        "exp_document_status_code": "MIA",
+                      },
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "related_documents": Array [],
+                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                    },
+                  ],
+                  "mine_location": Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                  "mine_permit": Array [],
+                  "mine_status": Object {
+                    "effective_date": "2018-10-16",
+                    "expiry_date": "9999-12-31",
+                    "status_labels": Array [
+                      "Closed",
+                      "Care & Maintenance",
+                    ],
+                    "statusvalue": Array [
+                      "CLD",
+                      "CM",
+                    ],
+                  },
+                  "mine_tailings_storage_facility": Array [
+                    Object {
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                      "mine_tailings_storage_facility_name": "MockTSF",
+                    },
+                  ],
+                  "mine_type": Array [
+                    Object {
+                      "mine_tenure_type_code": "PLR",
+                    },
+                    Object {
+                      "mine_tenure_type_code": "MIN",
+                    },
+                  ],
+                  "mineral_tenure_xref": Array [
+                    Object {
+                      "tenure_number_id": "1234567",
+                    },
+                  ],
+                  "region_code": "NE",
+                }
+              }
+            />,
+            <div
+              className="dashboard__header--card__map--footer"
+            >
+              <div
+                className="inline-flex between"
+              >
+                <p
+                  className="p-white"
+                >
+                  Lat:
+                   
+                </p>
+                <p
+                  className="p-white"
+                >
+                  Long:
+                   
+                </p>
+              </div>
+              <p
+                className="p-white"
+              >
+                Region:
+                 
+                North East
+              </p>
+            </div>,
+          ],
+          "className": "dashboard__header--card__map",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "lat": null,
+              "long": null,
+              "mine": Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_expected_documents": Array [
+                  Object {
+                    "date_created": "2018-11-19",
+                    "due_date": "",
+                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                    "exp_document_name": "OMS Manual",
+                    "exp_document_status": Object {
+                      "description": "Not Received",
+                      "exp_document_status_code": "MIA",
+                    },
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "related_documents": Array [],
+                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                  },
+                ],
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facility": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+                "mineral_tenure_xref": Array [
+                  Object {
+                    "tenure_number_id": "1234567",
+                  },
+                ],
+                "region_code": "NE",
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="inline-flex between"
+                >
+                  <p
+                    className="p-white"
+                  >
+                    Lat:
+                     
+                  </p>
+                  <p
+                    className="p-white"
+                  >
+                    Long:
+                     
+                  </p>
+                </div>,
+                <p
+                  className="p-white"
+                >
+                  Region:
+                   
+                  North East
+                </p>,
+              ],
+              "className": "dashboard__header--card__map--footer",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <p
+                      className="p-white"
+                    >
+                      Lat:
+                       
+                    </p>,
+                    <p
+                      className="p-white"
+                    >
+                      Long:
+                       
+                    </p>,
+                  ],
+                  "className": "inline-flex between",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Lat:",
+                        " ",
+                        null,
+                      ],
+                      "className": "p-white",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Lat:",
+                      " ",
+                      null,
+                    ],
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Long:",
+                        " ",
+                        null,
+                      ],
+                      "className": "p-white",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Long:",
+                      " ",
+                      null,
+                    ],
+                    "type": "p",
+                  },
+                ],
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "Region:",
+                    " ",
+                    "North East",
+                  ],
+                  "className": "p-white",
+                },
+                "ref": null,
+                "rendered": Array [
+                  "Region:",
+                  " ",
+                  "North East",
+                ],
+                "type": "p",
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="dashboard__header--card__content"
+          >
+            <div
+              className="inline-flex between center-mobile"
+            >
+              <h1>
+                mine3
+                 
+              </h1>
+              <Connect(AuthorizationWrapper)
+                isMajorMine={undefined}
+                permission="role_create"
+              >
+                <Dropdown
+                  className="full-height full-mobile"
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="pencil"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Update Mine Record
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          + Add TSF
+                        </button>
+                      </MenuItem>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
+                >
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    type="primary"
+                  >
+                    <div
+                      className="padding-small"
+                    >
+                      <img
+                        alt="Add/Edit"
+                        className="padding-small--right"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </Connect(AuthorizationWrapper)>
+            </div>
+            <Divider
+              className="custom-large-divider"
+            />
+            <div
+              className="inline-flex between block-mobile"
+            >
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Mine No. 
+                </p>
+                <p>
+                   
+                  BLAH9091
+                   
+                </p>
+              </div>
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Mine Class 
+                </p>
+                <p>
+                  Regional mine
+                </p>
+              </div>
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  TSF
+                </p>
+                <p>
+                  1
+                </p>
+              </div>
+            </div>
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Operating Status
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small"
+            >
+              <p
+                className="field-title"
+              >
+                Tenure
+              </p>
+              <p>
+                <p>
+                  N/A
+                </p>
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Commodity
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Disturbance
+              </p>
+              <p>
+                N/A
+              </p>
+            </div>
+            <div
+              className="inline-flex padding-small wrap"
+            >
+              <p
+                className="field-title"
+              >
+                Notes
+              </p>
+              <div>
+                <p>
+                  N/A
+                </p>
+              </div>
+            </div>
+          </div>,
+          <div
+            className="dashboard__header--card__map"
+          >
+            <MineMap
+              lat={null}
+              long={null}
+              mine={
+                Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_expected_documents": Array [
+                    Object {
+                      "date_created": "2018-11-19",
+                      "due_date": "",
+                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                      "exp_document_name": "OMS Manual",
+                      "exp_document_status": Object {
+                        "description": "Not Received",
+                        "exp_document_status_code": "MIA",
+                      },
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "related_documents": Array [],
+                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                    },
+                  ],
+                  "mine_location": Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                  "mine_permit": Array [],
+                  "mine_status": Object {
+                    "effective_date": "2018-10-16",
+                    "expiry_date": "9999-12-31",
+                    "status_labels": Array [
+                      "Closed",
+                      "Care & Maintenance",
+                    ],
+                    "statusvalue": Array [
+                      "CLD",
+                      "CM",
+                    ],
+                  },
+                  "mine_tailings_storage_facility": Array [
+                    Object {
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                      "mine_tailings_storage_facility_name": "MockTSF",
+                    },
+                  ],
+                  "mine_type": Array [
+                    Object {
+                      "mine_tenure_type_code": "PLR",
+                    },
+                    Object {
+                      "mine_tenure_type_code": "MIN",
+                    },
+                  ],
+                  "mineral_tenure_xref": Array [
+                    Object {
+                      "tenure_number_id": "1234567",
+                    },
+                  ],
+                  "region_code": "NE",
+                }
+              }
+            />
+            <div
+              className="dashboard__header--card__map--footer"
+            >
+              <div
+                className="inline-flex between"
+              >
+                <p
+                  className="p-white"
+                >
+                  Lat:
+                   
+                </p>
+                <p
+                  className="p-white"
+                >
+                  Long:
+                   
+                </p>
+              </div>
+              <p
+                className="p-white"
+              >
+                Region:
+                 
+                North East
+              </p>
+            </div>
+          </div>,
+        ],
+        "className": "dashboard__header--card",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div
+                className="inline-flex between center-mobile"
+              >
+                <h1>
+                  mine3
+                   
+                </h1>
+                <Connect(AuthorizationWrapper)
+                  isMajorMine={undefined}
+                  permission="role_create"
+                >
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
+                </Connect(AuthorizationWrapper)>
+              </div>,
+              <Divider
+                className="custom-large-divider"
+              />,
+              <div
+                className="inline-flex between block-mobile"
+              >
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    Mine No. 
+                  </p>
+                  <p>
+                     
+                    BLAH9091
+                     
+                  </p>
+                </div>
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    Mine Class 
+                  </p>
+                  <p>
+                    Regional mine
+                  </p>
+                </div>
+                <div
+                  className="inline-flex padding-small"
+                >
+                  <p
+                    className="field-title"
+                  >
+                    TSF
+                  </p>
+                  <p>
+                    1
+                  </p>
+                </div>
+              </div>,
+              undefined,
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Operating Status
+                </p>
+                <p>
+                  N/A
+                </p>
+              </div>,
+              <div
+                className="inline-flex padding-small"
+              >
+                <p
+                  className="field-title"
+                >
+                  Tenure
+                </p>
+                <p>
+                  <p>
+                    N/A
+                  </p>
+                </p>
+              </div>,
+              <div
+                className="inline-flex padding-small wrap"
+              >
+                <p
+                  className="field-title"
+                >
+                  Commodity
+                </p>
+                <p>
+                  N/A
+                </p>
+              </div>,
+              <div
+                className="inline-flex padding-small wrap"
+              >
+                <p
+                  className="field-title"
+                >
+                  Disturbance
+                </p>
+                <p>
+                  N/A
+                </p>
+              </div>,
+              <div
+                className="inline-flex padding-small wrap"
+              >
+                <p
+                  className="field-title"
+                >
+                  Notes
+                </p>
+                <div>
+                  <p>
+                    N/A
+                  </p>
+                </div>
+              </div>,
+            ],
+            "className": "dashboard__header--card__content",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <h1>
+                    mine3
+                     
+                  </h1>,
+                  <Connect(AuthorizationWrapper)
+                    isMajorMine={undefined}
+                    permission="role_create"
+                  >
+                    <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              + Add TSF
+                            </button>
+                          </MenuItem>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      prefixCls="ant-dropdown"
+                    >
+                      <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        type="primary"
+                      >
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>
+                    </Dropdown>
+                  </Connect(AuthorizationWrapper)>,
+                ],
+                "className": "inline-flex between center-mobile",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "mine3",
+                      " ",
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "mine3",
+                    " ",
+                  ],
+                  "type": "h1",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              + Add TSF
+                            </button>
+                          </MenuItem>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      prefixCls="ant-dropdown"
+                    >
+                      <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        type="primary"
+                      >
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>
+                    </Dropdown>,
+                    "isMajorMine": undefined,
+                    "permission": "role_create",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        type="primary"
+                      >
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>,
+                      "className": "full-height full-mobile",
+                      "mouseEnterDelay": 0.15,
+                      "mouseLeaveDelay": 0.1,
+                      "overlay": <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                      </Menu>,
+                      "placement": "bottomLeft",
+                      "prefixCls": "ant-dropdown",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "block": false,
+                        "children": <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>,
+                        "ghost": false,
+                        "loading": false,
+                        "prefixCls": "ant-btn",
+                        "type": "primary",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />,
+                            "Add/Edit",
+                          ],
+                          "className": "padding-small",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "Add/Edit",
+                              "className": "padding-small--right",
+                              "src": Object {
+                                "process": [Function],
+                              },
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Add/Edit",
+                        ],
+                        "type": "div",
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "className": "custom-large-divider",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="inline-flex padding-small"
+                  >
+                    <p
+                      className="field-title"
+                    >
+                      Mine No. 
+                    </p>
+                    <p>
+                       
+                      BLAH9091
+                       
+                    </p>
+                  </div>,
+                  <div
+                    className="inline-flex padding-small"
+                  >
+                    <p
+                      className="field-title"
+                    >
+                      Mine Class 
+                    </p>
+                    <p>
+                      Regional mine
+                    </p>
+                  </div>,
+                  <div
+                    className="inline-flex padding-small"
+                  >
+                    <p
+                      className="field-title"
+                    >
+                      TSF
+                    </p>
+                    <p>
+                      1
+                    </p>
+                  </div>,
+                ],
+                "className": "inline-flex between block-mobile",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <p
+                        className="field-title"
+                      >
+                        Mine No. 
+                      </p>,
+                      <p>
+                         
+                        BLAH9091
+                         
+                      </p>,
+                    ],
+                    "className": "inline-flex padding-small",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Mine No. ",
+                        "className": "field-title",
+                      },
+                      "ref": null,
+                      "rendered": "Mine No. ",
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          " ",
+                          "BLAH9091",
+                          " ",
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        " ",
+                        "BLAH9091",
+                        " ",
+                      ],
+                      "type": "p",
+                    },
+                  ],
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <p
+                        className="field-title"
+                      >
+                        Mine Class 
+                      </p>,
+                      <p>
+                        Regional mine
+                      </p>,
+                    ],
+                    "className": "inline-flex padding-small",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Mine Class ",
+                        "className": "field-title",
+                      },
+                      "ref": null,
+                      "rendered": "Mine Class ",
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Regional mine",
+                      },
+                      "ref": null,
+                      "rendered": "Regional mine",
+                      "type": "p",
+                    },
+                  ],
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <p
+                        className="field-title"
+                      >
+                        TSF
+                      </p>,
+                      <p>
+                        1
+                      </p>,
+                    ],
+                    "className": "inline-flex padding-small",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "TSF",
+                        "className": "field-title",
+                      },
+                      "ref": null,
+                      "rendered": "TSF",
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": 1,
+                      },
+                      "ref": null,
+                      "rendered": 1,
+                      "type": "p",
+                    },
+                  ],
+                  "type": "div",
+                },
+              ],
+              "type": "div",
+            },
+            undefined,
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <p
+                    className="field-title"
+                  >
+                    Operating Status
+                  </p>,
+                  <p>
+                    N/A
+                  </p>,
+                ],
+                "className": "inline-flex padding-small",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Operating Status",
+                    "className": "field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Operating Status",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "N/A",
+                  },
+                  "ref": null,
+                  "rendered": "N/A",
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <p
+                    className="field-title"
+                  >
+                    Tenure
+                  </p>,
+                  <p>
+                    <p>
+                      N/A
+                    </p>
+                  </p>,
+                ],
+                "className": "inline-flex padding-small",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Tenure",
+                    "className": "field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Tenure",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <p>
+                      N/A
+                    </p>,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "N/A",
+                    },
+                    "ref": null,
+                    "rendered": "N/A",
+                    "type": "p",
+                  },
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <p
+                    className="field-title"
+                  >
+                    Commodity
+                  </p>,
+                  <p>
+                    N/A
+                  </p>,
+                ],
+                "className": "inline-flex padding-small wrap",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Commodity",
+                    "className": "field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Commodity",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "N/A",
+                  },
+                  "ref": null,
+                  "rendered": "N/A",
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <p
+                    className="field-title"
+                  >
+                    Disturbance
+                  </p>,
+                  <p>
+                    N/A
+                  </p>,
+                ],
+                "className": "inline-flex padding-small wrap",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Disturbance",
+                    "className": "field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Disturbance",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "N/A",
+                  },
+                  "ref": null,
+                  "rendered": "N/A",
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <p
+                    className="field-title"
+                  >
+                    Notes
+                  </p>,
+                  <div>
+                    <p>
+                      N/A
+                    </p>
+                  </div>,
+                ],
+                "className": "inline-flex padding-small wrap",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Notes",
+                    "className": "field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Notes",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <p>
+                      N/A
+                    </p>,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "N/A",
+                    },
+                    "ref": null,
+                    "rendered": "N/A",
+                    "type": "p",
+                  },
+                  "type": "div",
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <MineMap
+                lat={null}
+                long={null}
+                mine={
+                  Object {
+                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_expected_documents": Array [
+                      Object {
+                        "date_created": "2018-11-19",
+                        "due_date": "",
+                        "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                        "exp_document_name": "OMS Manual",
+                        "exp_document_status": Object {
+                          "description": "Not Received",
+                          "exp_document_status_code": "MIA",
+                        },
+                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "related_documents": Array [],
+                        "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                      },
+                    ],
+                    "mine_location": Object {
+                      "latitude": null,
+                      "longitude": null,
+                    },
+                    "mine_name": "mine3",
+                    "mine_no": "BLAH9091",
+                    "mine_permit": Array [],
+                    "mine_status": Object {
+                      "effective_date": "2018-10-16",
+                      "expiry_date": "9999-12-31",
+                      "status_labels": Array [
+                        "Closed",
+                        "Care & Maintenance",
+                      ],
+                      "statusvalue": Array [
+                        "CLD",
+                        "CM",
+                      ],
+                    },
+                    "mine_tailings_storage_facility": Array [
+                      Object {
+                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                        "mine_tailings_storage_facility_name": "MockTSF",
+                      },
+                    ],
+                    "mine_type": Array [
+                      Object {
+                        "mine_tenure_type_code": "PLR",
+                      },
+                      Object {
+                        "mine_tenure_type_code": "MIN",
+                      },
+                    ],
+                    "mineral_tenure_xref": Array [
+                      Object {
+                        "tenure_number_id": "1234567",
+                      },
+                    ],
+                    "region_code": "NE",
+                  }
+                }
+              />,
+              <div
+                className="dashboard__header--card__map--footer"
+              >
+                <div
+                  className="inline-flex between"
+                >
+                  <p
+                    className="p-white"
+                  >
+                    Lat:
+                     
+                  </p>
+                  <p
+                    className="p-white"
+                  >
+                    Long:
+                     
+                  </p>
+                </div>
+                <p
+                  className="p-white"
+                >
+                  Region:
+                   
+                  North East
+                </p>
+              </div>,
+            ],
+            "className": "dashboard__header--card__map",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "lat": null,
+                "long": null,
+                "mine": Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_expected_documents": Array [
+                    Object {
+                      "date_created": "2018-11-19",
+                      "due_date": "",
+                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                      "exp_document_name": "OMS Manual",
+                      "exp_document_status": Object {
+                        "description": "Not Received",
+                        "exp_document_status_code": "MIA",
+                      },
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "related_documents": Array [],
+                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+                    },
+                  ],
+                  "mine_location": Object {
+                    "latitude": null,
+                    "longitude": null,
+                  },
+                  "mine_name": "mine3",
+                  "mine_no": "BLAH9091",
+                  "mine_permit": Array [],
+                  "mine_status": Object {
+                    "effective_date": "2018-10-16",
+                    "expiry_date": "9999-12-31",
+                    "status_labels": Array [
+                      "Closed",
+                      "Care & Maintenance",
+                    ],
+                    "statusvalue": Array [
+                      "CLD",
+                      "CM",
+                    ],
+                  },
+                  "mine_tailings_storage_facility": Array [
+                    Object {
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                      "mine_tailings_storage_facility_name": "MockTSF",
+                    },
+                  ],
+                  "mine_type": Array [
+                    Object {
+                      "mine_tenure_type_code": "PLR",
+                    },
+                    Object {
+                      "mine_tenure_type_code": "MIN",
+                    },
+                  ],
+                  "mineral_tenure_xref": Array [
+                    Object {
+                      "tenure_number_id": "1234567",
+                    },
+                  ],
+                  "region_code": "NE",
+                },
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="inline-flex between"
+                  >
+                    <p
+                      className="p-white"
+                    >
+                      Lat:
+                       
+                    </p>
+                    <p
+                      className="p-white"
+                    >
+                      Long:
+                       
+                    </p>
+                  </div>,
+                  <p
+                    className="p-white"
+                  >
+                    Region:
+                     
+                    North East
+                  </p>,
+                ],
+                "className": "dashboard__header--card__map--footer",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <p
+                        className="p-white"
+                      >
+                        Lat:
+                         
+                      </p>,
+                      <p
+                        className="p-white"
+                      >
+                        Long:
+                         
+                      </p>,
+                    ],
+                    "className": "inline-flex between",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Lat:",
+                          " ",
+                          null,
+                        ],
+                        "className": "p-white",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Lat:",
+                        " ",
+                        null,
+                      ],
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Long:",
+                          " ",
+                          null,
+                        ],
+                        "className": "p-white",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Long:",
+                        " ",
+                        null,
+                      ],
+                      "type": "p",
+                    },
+                  ],
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "Region:",
+                      " ",
+                      "North East",
+                    ],
+                    "className": "p-white",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "Region:",
+                    " ",
+                    "North East",
+                  ],
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
