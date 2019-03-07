@@ -18,18 +18,18 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str,
-        help='First name of the party, if the party is a person.')
+        help='First name of the party, if the party is a person.', trim=True)
     parser.add_argument('last_name', type=str,
-                        help='Last name of the party, if the party is a person.')
+                        help='Last name of the party, if the party is a person.', trim=True)
     parser.add_argument('party_name', type=str,
-        help='Last name of the party (Person), or the Organization name (Organization).')
+        help='Last name of the party (Person), or the Organization name (Organization).', trim=True)
     parser.add_argument('phone_no', type=str,
-        help='The phone number of the party. Ex: 123-123-1234')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
-    parser.add_argument('email', type=str, help='The email of the party.')
+        help='The phone number of the party. Ex: 123-123-1234', trim=True)
+    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234', trim=True)
+    parser.add_argument('email', type=str, help='The email of the party.', trim=True)
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('page', type=int, help='The page of the results.')
-    parser.add_argument('per_page', type=int, help='The number of parties per page.')
+    parser.add_argument('page', 1, type=int, help='The page of the results.')
+    parser.add_argument('per_page', 25, type=int, help='The number of parties per page.')
     parser.add_argument('role', type=str, help='The role of a user. Ex: MMG for Mine Manager')
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -45,7 +45,7 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
+        paginated_parties, pagination_details = self.apply_filter_and_search(self.parser.parse_args())
         if not paginated_parties:
             self.raise_error(
                 404,
@@ -62,26 +62,26 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
 
     def apply_filter_and_search(self, args):
         # Handle ListView request
-        items_per_page = args.get('per_page', 25, type=int)
-        page = args.get('page', 1, type=int)
+        items_per_page = args['per_page']
+        page = args['page']
         # parse the filter terms
-        first_name_filter_term = args.get('first_name', None, type=str)
-        last_name_filter_term = args.get('last_name', None, type=str)
-        party_name_filter_term = args.get('party_name', None, type=str)
-        type_filter_term = args.get('type', None, type=str)
-        role_filter_term = args.get('role', None, type=str)
-        email_filter_term = args.get('email', None, type=str)
-        phone_filter_term = args.get('phone_no', None, type=str)
+        first_name_filter_term = args['first_name']
+        last_name_filter_term = args['last_name']
+        party_name_filter_term = args['party_name']
+        type_filter_term = args['type']
+        role_filter_term = args['role']
+        email_filter_term = args['email']
+        phone_filter_term = args['phone_no']
 
         conditions = []
-        if first_name_filter_term and len(first_name_filter_term.strip()) > 0:
-            conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term.strip())))
-        if last_name_filter_term and len(last_name_filter_term.strip()) > 0:
-            conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term.strip())))
-        if party_name_filter_term and len(party_name_filter_term.strip()) > 0:
-            conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term.strip())))
-        if email_filter_term and len(email_filter_term.strip()) > 0:
-            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term.strip())))
+        if first_name_filter_term:
+            conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
+        if last_name_filter_term:
+            conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term)))
+        if party_name_filter_term:
+            conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term)))
+        if email_filter_term:
+            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
         if type_filter_term:
             conditions.append(Party.party_type_code.like(type_filter_term))
         if phone_filter_term:
