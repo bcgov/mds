@@ -14,29 +14,29 @@ filebeat.inputs:
 # * stdin: Reads the standard in
 
 #------------------------------ Log input --------------------------------
-- type: log
+# - type: log
 
-  # Change to true to enable this input configuration.
-  enabled: true
+#   # Change to true to enable this input configuration.
+#   enabled: true
 
-  # Paths that should be crawled and fetched. Glob based paths.
-  # To fetch all ".log" files from a specific level of subdirectories
-  # /var/log/*/*.log can be used.
-  # For each file found under this path, a harvester is started.
-  # Make sure not file is defined twice as this can lead to unexpected behaviour.
-  paths:
-    - /usr/share/filebeat/nginx/access.log
+#   # Paths that should be crawled and fetched. Glob based paths.
+#   # To fetch all ".log" files from a specific level of subdirectories
+#   # /var/log/*/*.log can be used.
+#   # For each file found under this path, a harvester is started.
+#   # Make sure not file is defined twice as this can lead to unexpected behaviour.
+#   paths:
+#     - /usr/share/filebeat/nginx/access.log
 
 
 
 #============================= Filebeat modules ===============================
 
-# filebeat.config.modules:
+filebeat.config.modules:
 #   # Glob pattern for configuration loading
-#   path: ${path.config}/modules.d/*.yml
+  path: ${path.config}/modules.d/*.yml
 
 #   # Set to true to enable config reloading
-#   reload.enabled: false
+  #reload.enabled: false
 
   # Period on which files under path should be checked for changes
   #reload.period: 10s
