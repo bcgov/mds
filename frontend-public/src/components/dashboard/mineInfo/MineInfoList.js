@@ -70,29 +70,30 @@ const columns = [
   {
     title: "Documents",
     dataIndex: "documents",
-    render: (text, record) =>
-      !record.doc.related_documents || record.doc.related_documents.length === 0 ? (
-        <div title="Documents">-</div>
-      ) : (
-        record.doc.related_documents.map((file) => (
-          <div title="Documents" key={file.mine_document_guid}>
-            <a
-              role="link"
-              onClick={() =>
-                downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-              }
-              // Accessibility: Event listener
-              onKeyPress={() =>
-                downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-              }
-              // Accessibility: Focusable element
-              tabIndex="0"
-            >
-              {file.document_name}
-            </a>
-          </div>
-        ))
-      ),
+    render: (text, record) => (
+      <div title="Documents">
+        {!record.doc.related_documents || record.doc.related_documents.length === 0
+          ? "-"
+          : record.doc.related_documents.map((file) => (
+              <span key={file.mine_document_guid}>
+                <a
+                  role="link"
+                  onClick={() =>
+                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                  }
+                  // Accessibility: Event listener
+                  onKeyPress={() =>
+                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                  }
+                  // Accessibility: Focusable element
+                  tabIndex="0"
+                >
+                  {file.document_name}
+                </a>{" "}
+              </span>
+            ))}
+      </div>
+    ),
   },
   {
     title: "",
