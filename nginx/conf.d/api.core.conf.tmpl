@@ -19,7 +19,7 @@ location ${PATH_PREFIX}/api/documents/ {
         }
 
         access_log /var/log/nginx/access.log clf;
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/documents/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
@@ -29,6 +29,6 @@ location ${PATH_PREFIX}/api/document-manager/ {
         }
 
         access_log /var/log/nginx/access.log clf;
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/document-manager/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
