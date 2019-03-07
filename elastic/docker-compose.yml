@@ -8,6 +8,8 @@ services:
     container_name: mds-filebeat
     networks:
       - mds
+    depends_on: 
+      - mds-logstash
   mds-logstash:
     build:
       context: logstash/
@@ -17,8 +19,6 @@ services:
     ports:
       - "5044:5044"
       - "9600:9600"
-    depends_on: 
-      - mds-filebeat
     networks:
       - mds
 networks:
