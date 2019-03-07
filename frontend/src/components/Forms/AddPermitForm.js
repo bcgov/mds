@@ -64,7 +64,7 @@ const permitActivityTypes = [
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
-const validate = (values) => {
+const validateBusinessRules = (values) => {
   const errors = {};
   if (
     values.permit_activity_type === "X" &&
@@ -176,7 +176,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,
-    validate,
+    validateBusinessRules,
     touchOnBlur: true,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })

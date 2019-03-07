@@ -5,7 +5,13 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchPermits, createPermit } from "@/actionCreators/permitActionCreator";
+import {
+  fetchPermits,
+  createPermit,
+  updatePermit,
+  updatePermitAmendment,
+  createPermitAmendment,
+} from "@/actionCreators/permitActionCreator";
 import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -23,6 +29,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
+  updatePermit: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
+  createPermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -34,6 +43,13 @@ export class MinePermitInfo extends Component {
   componentWillMount() {
     this.props.fetchPermits({ mine_guid: this.props.mine.guid });
   }
+
+  closePermitModal = () => {
+    this.props.closeModal();
+    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+  };
+
+  // Permit Modals
 
   openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
@@ -47,16 +63,113 @@ export class MinePermitInfo extends Component {
     });
   };
 
+  openEditPermitModal = (event, permit_guid, permit_no) => {
+    event.preventDefault();
+
+    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
+
+    const initialValues = {
+      permit_status_code: permit.permit_status_code,
+      permit_guid,
+    };
+
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit: this.handleEditPermit,
+        title: `Edit permit status for ${permit_no}`,
+      },
+      content: modalConfig.EDIT_PERMIT,
+    });
+  };
+
+  // Permit Handlers
+
   handleAddPermit = (values) => {
     const payload = { mine_guid: this.props.mine.guid, ...values };
+
     payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
       values.permit_no
     }`;
-    this.props.closeModal();
-    return this.props.createPermit(payload).then(() => {
-      this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+
+    return this.props.createPermit(payload).then(this.closePermitModal);
+  };
+
+  handleEditPermit = (data) =>
+    this.props.updatePermit(data.permit_guid, data).then(this.closePermitModal);
+
+  // Amendment Modals
+
+  openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: { permit_guid },
+        onSubmit,
+        title,
+      },
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
   };
+
+  openEditAmendmentModal = (
+    event,
+    permit_amendment_guid,
+    permit_guid,
+    permit_amendment_type_code,
+    description
+  ) => {
+    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
+    const permit_amendment = permit.amendments.find(
+      (pa) => pa.permit_amendment_guid === permit_amendment_guid
+    );
+
+    const initialValues = {
+      issue_date: permit_amendment.issue_date,
+      permit_amendment_guid,
+      permit_amendment_type_code,
+      description,
+    };
+
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit: this.handleEditPermitAmendment,
+        title: `Edit permit amendment for ${permit.permit_no}`,
+      },
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
+    });
+  };
+
+  openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
+    this.openAddAmendmentModal(
+      event,
+      this.handleAddAmalgamatedPermit,
+      `Add amalgamated permit to ${permit_no}`,
+      permit_guid
+    );
+
+  openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+    this.openAddAmendmentModal(
+      event,
+      this.handleAddPermitAmendment,
+      `Add permit amendment to ${permit_no}`,
+      permit_guid
+    );
+
+  // Amendment Handlers
+
+  handleEditPermitAmendment = (data) =>
+    this.props.updatePermitAmendment(data.permit_amendment_guid, data).then(this.closePermitModal);
+
+  handleAddPermitAmendment = (data) =>
+    this.props.createPermitAmendment(data.permit_guid, data).then(this.closePermitModal);
+
+  handleAddAmalgamatedPermit = (data) =>
+    this.props
+      .createPermitAmendment(data.permit_guid, { ...data, permit_amendment_type_code: "ALG" })
+      .then(this.closePermitModal);
 
   render() {
     return [
@@ -93,11 +206,10 @@ export class MinePermitInfo extends Component {
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}
           major_mine_ind={this.props.mine.major_mine_ind}
-          openModal={this.props.openModal}
-          closeModal={() => {
-            this.props.fetchPermits({ mine_guid: this.props.mine.guid });
-            this.props.closeModal();
-          }}
+          openEditPermitModal={this.openEditPermitModal}
+          openEditAmendmentModal={this.openEditAmendmentModal}
+          openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
+          openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
         />
       ),
     ];
@@ -113,6 +225,9 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchPermits,
       createPermit,
+      updatePermit,
+      updatePermitAmendment,
+      createPermitAmendment,
     },
     dispatch
   );

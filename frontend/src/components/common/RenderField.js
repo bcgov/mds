@@ -29,7 +29,7 @@ const RenderField = ({
     validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
     help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
   >
-    <div className="flex">
+    <div className="inline-flex">
       {inlineLabel && (
         <label className="nowrap" style={{ paddingRight: "10px", fontSize: "20px" }}>
           {inlineLabel}

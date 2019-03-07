@@ -84,7 +84,7 @@ export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({ message: "Successfully created a new permit", duration: 10 });
+      notification.success({ message: "Successfully created a new amendment", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
       dispatch(hideLoading("modal"));
       return response;

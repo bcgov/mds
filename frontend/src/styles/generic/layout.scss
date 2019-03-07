@@ -50,10 +50,6 @@ body {
   white-space: nowrap;
 }
 
-.flex {
-  display: flex;
-}
-
 .inline-flex {
   @include flex;
 
