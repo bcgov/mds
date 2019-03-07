@@ -112,7 +112,7 @@
     "format:write-all": "prettier --config .prettierrc.json src/*.js --write && prettier --config .prettierrc.json src/**/*.js --write && prettier --config .prettierrc.json src/**/**/*.js --write",
     "test": "jest --env=jsdom --runInBand",
     "test:coverage": "npm test src -- --testResultsProcessor=jest-junit",
-    "test:updateSnap": "npm test -- -u",
+    "test:updateAll": "npm test -- -u",
     "test:updateIT": "npm test -- --watch"
   },
   "jest": {

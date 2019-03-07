@@ -44,7 +44,7 @@ npm test
 2. To run the test suite while updating ALL snapshots run:
 
 ```
-npm run test:updateSnap
+npm run test:updateAll
 ```
 
 3. To run the test suite while updating snapshots case by case Interactively run:
