@@ -12,7 +12,6 @@ import { required, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

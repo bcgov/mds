@@ -83,7 +83,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 data.get('authorization_end_date'),
                 'OGP',
                 self.get_create_update_dict(),
-                description=data.get('description'))
+                description='Initial permit issued.')
             amendment.save()
             permit.save()
         except Exception as e:

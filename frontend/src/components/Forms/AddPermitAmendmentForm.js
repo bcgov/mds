@@ -7,7 +7,6 @@ import { Form, Button, Col, Row, Popconfirm, Tabs } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -20,13 +19,7 @@ const { TabPane } = Tabs;
 
 export const AddPermitAmendmentForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Tabs
-      defaultActiveKey="1"
-      onChange={(activeKey) => {
-        // validate
-      }}
-      style={{ marginTop: "-30px" }}
-    >
+    <Tabs defaultActiveKey="1" style={{ marginTop: "-30px" }}>
       <TabPane tab="Info" key="1">
         <br />
         <Row gutter={16}>
@@ -40,15 +33,17 @@ export const AddPermitAmendmentForm = (props) => (
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Description"
-                component={RenderAutoSizeField}
-                validate={[maxLength(280)]}
-              />
-            </Form.Item>
+            {props.initialValues.permit_amendment_type_code !== "OGP" && (
+              <Form.Item>
+                <Field
+                  id="description"
+                  name="description"
+                  label="Description"
+                  component={RenderAutoSizeField}
+                  validate={[maxLength(280)]}
+                />
+              </Form.Item>
+            )}
           </Col>
         </Row>
       </TabPane>

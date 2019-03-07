@@ -106,7 +106,7 @@ const columns = [
               </div>
             </button>
           </Menu.Item>
-          {text.hasAmalgamated && (
+          {!text.hasAmalgamated && (
             <Menu.Item key="1">
               <button
                 type="button"
@@ -194,7 +194,7 @@ const childColumns = [
                 event,
                 text.guid,
                 text.permit_guid,
-                text.permit_no,
+                record.amendmentType,
                 text.description
               )
             }
@@ -274,6 +274,7 @@ const transformChildRowData = (
   openEditAmendmentModal
 ) => ({
   amendmentNumber,
+  amendmentType: amendment.permit_amendment_type_code,
   receivedDate:
     (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
   issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
@@ -302,7 +303,7 @@ export const MinePermitTable = (props) => {
     event,
     permit_amendment_guid,
     permit_guid,
-    permit_no,
+    permit_amendment_type_code,
     description
   ) => {
     const permit = props.permits.find((p) => p.permit_guid === permit_guid);
@@ -313,6 +314,7 @@ export const MinePermitTable = (props) => {
     const initialValues = {
       issue_date: permit_amendment.issue_date,
       permit_amendment_guid,
+      permit_amendment_type_code,
       description,
     };
 
