@@ -6,6 +6,7 @@ import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddP
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import * as ModalContent from "@/constants/modalContent";
 import { getRawParties } from "@/selectors/partiesSelectors";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
@@ -18,6 +19,7 @@ const propTypes = {
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party),
   mine: CustomPropTypes.mine.isRequired,
+  successAfterCreation: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -81,20 +83,34 @@ export class AddPartyRelationshipModal extends Component {
           <Col md={12} sm={24}>
             {!this.state.isFormVisible && (
               <div className="center" style={{ position: "relative", top: "100px" }}>
-                <p>
-                  {this.props.partyRelationshipType.person &&
-                    this.props.partyRelationshipType.organization &&
-                    ModalContent.PARTY_NOT_FOUND}
-                  {!this.props.partyRelationshipType.person &&
-                    this.props.partyRelationshipType.organization &&
-                    ModalContent.COMPANY_NOT_FOUND}
-                  {this.props.partyRelationshipType.person &&
-                    !this.props.partyRelationshipType.organization &&
-                    ModalContent.PERSON_NOT_FOUND}
-                </p>
-                <Button type="secondary" onClick={this.toggleFormVisibility}>
-                  Add new Contact
-                </Button>
+                {!this.props.successAfterCreation && (
+                  <div>
+                    <p>
+                      {this.props.partyRelationshipType.person &&
+                        this.props.partyRelationshipType.organization &&
+                        ModalContent.PARTY_NOT_FOUND}
+                      {!this.props.partyRelationshipType.person &&
+                        this.props.partyRelationshipType.organization &&
+                        ModalContent.COMPANY_NOT_FOUND}
+                      {this.props.partyRelationshipType.person &&
+                        !this.props.partyRelationshipType.organization &&
+                        ModalContent.PERSON_NOT_FOUND}
+                    </p>
+                    <Button type="secondary" onClick={this.toggleFormVisibility}>
+                      Add new Contact
+                    </Button>
+                  </div>
+                )}
+                {this.props.successAfterCreation && (
+                  <div>
+                    <img src={SUCCESS_CHECKMARK} alt="success" />
+                    <h4>Success, your contact was created! </h4>
+                    <p>
+                      Please go back to the name section and input your new contact into the desired
+                      role.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
             {this.state.isFormVisible && (

@@ -57,7 +57,11 @@ export class ViewPartyRelationships extends Component {
     this.TSFConfirmation = React.createRef();
   }
 
-  state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
+  state = {
+    selectedPartyRelationshipType: {},
+    selectedPartyRelationship: {},
+    successAfterPartyCreation: false,
+  };
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
@@ -82,10 +86,19 @@ export class ViewPartyRelationships extends Component {
     const payload = { type, ...values };
     return this.props.createParty(payload).then(() => {
       this.props.fetchParties();
+      this.setState({ successAfterPartyCreation: true });
     });
   };
 
-  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
+  openAddPartyRelationshipModal = (
+    value,
+    onSubmit,
+    handleChange,
+    onPartySubmit,
+    title,
+    mine,
+    successAfterCreation
+  ) => {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (value.mine_party_appt_type_code === "EOR") {
@@ -103,6 +116,7 @@ export class ViewPartyRelationships extends Component {
         title: `${title}: ${value.description}`,
         partyRelationshipType: value,
         mine,
+        successAfterCreation,
       },
       widthSize: 1200,
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
@@ -242,7 +256,8 @@ export class ViewPartyRelationships extends Component {
                     this.props.handleChange,
                     this.onPartySubmit,
                     ModalContent.ADD_CONTACT,
-                    this.props.mine
+                    this.props.mine,
+                    this.state.successAfterPartyCreation
                   );
                 }}
               >
