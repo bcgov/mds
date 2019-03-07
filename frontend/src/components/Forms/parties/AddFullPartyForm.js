@@ -9,8 +9,8 @@ import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  togglePartyChange: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
 };
 
 export const AddFullPartyForm = (props) => (
