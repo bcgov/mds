@@ -102,7 +102,7 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Add amalgamated amendment" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Add permit amendment" : "Add amalgamated permit"}
               </div>
             </button>
           </Menu.Item>
