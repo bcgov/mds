@@ -142,20 +142,18 @@ export class ContactHomePage extends Component {
     );
   };
 
-  handleSubmit = (value, type) => {
-    const payload = { type, ...value };
-    this.props.createParty(payload).then(() => {
-      this.props.closeModal();
-      const params = this.props.location.search;
-      this.props.fetchParties(params);
-    });
+  handleAfterSubmit = () => {
+    const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    this.props.closeModal();
+    this.props.fetchParties(parsedParams);
   };
 
-  openModal(event, onSubmit, title, provinceOptions) {
+  openModal(event, handleAfterSubmit, title, provinceOptions) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit,
+        handleAfterSubmit,
         title,
         provinceOptions,
       },
@@ -169,7 +167,7 @@ export class ContactHomePage extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <div className="inline-flex between center-mobile center-mobile">
+          <div className="inline-flex between center-mobile">
             <div>
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
@@ -181,7 +179,7 @@ export class ContactHomePage extends Component {
                 onClick={(event) =>
                   this.openModal(
                     event,
-                    this.handleSubmit,
+                    this.handleAfterSubmit,
                     ModalContent.ADD_CONTACT,
                     this.props.provinceOptions
                   )
@@ -198,7 +196,7 @@ export class ContactHomePage extends Component {
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
             handleSearch={this.handleSearch}
-            handleSubmit={this.handleSubmit}
+            // handleSubmit={this.handleSubmit}
           />
           {this.state.isLoaded && (
             <div>

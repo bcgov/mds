@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset } from "redux-form";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
+import { createParty } from "@/actionCreators/partiesActionCreator";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 
 const { Step } = Steps;
@@ -26,10 +27,23 @@ export class AddTenureModal extends Component {
     this.setState({ isPerson: value.target.value });
   };
 
-  handlePartySubmit = () => {
+  handlePartySubmit = (event, addAnother) => {
+    event.preventDefault();
     const type = this.state.isPerson ? "PER" : "ORG";
-    this.props.reset(FORM.ADD_FULL_PARTY);
-    return this.props.onSubmit(this.props.AddPartyFormValues, type);
+    const payload = { type, ...this.props.AddPartyFormValues };
+    return this.props
+      .createParty(payload)
+      .then(() => {
+        if (addAnother) {
+          this.prev();
+        } else {
+          this.props.handleAfterSubmit();
+          // this.props.reset(FORM.ADD_FULL_PARTY);
+        }
+      })
+      .catch(() => {
+        this.prev();
+      });
   };
 
   next() {
@@ -46,13 +60,6 @@ export class AddTenureModal extends Component {
     const current = this.state.current - 1;
     this.setState({ current });
   }
-
-  handleCreateAnother = () => {
-    console.log(this.state.current);
-    const current = this.state.current - 1;
-    this.props.reset(FORM.ADD_FULL_PARTY);
-    this.setState({ current });
-  };
 
   renderStepOne() {
     return (
@@ -74,7 +81,11 @@ export class AddTenureModal extends Component {
           If you would like to add another contact, click on the add another contact below. Your
           current contact will be submitted once you add a new contact.
         </p>
-        <Button type="primary" className="full-mobile center" onClick={this.handleCreateAnother}>
+        <Button
+          type="primary"
+          className="full-mobile center"
+          onClick={(event) => this.handlePartySubmit(event, true)}
+        >
           Submit and Add another contact
         </Button>
       </div>
@@ -110,12 +121,12 @@ export class AddTenureModal extends Component {
               cancelText="No"
               onConfirm={this.props.closeModal}
             >
-              <Button type="tertiary" className="full-mobile">
+              <Button type="secondary" className="full-mobile">
                 Cancel
               </Button>
             </Popconfirm>
             {this.state.current > 0 && (
-              <Button type="secondary" className="full-mobile" onClick={() => this.prev()}>
+              <Button type="tertiary" className="full-mobile" onClick={() => this.prev()}>
                 Previous
               </Button>
             )}
@@ -125,7 +136,11 @@ export class AddTenureModal extends Component {
               </Button>
             )}
             {this.state.current === steps.length - 1 && (
-              <Button type="primary" className="full-mobile" onClick={this.handlePartySubmit}>
+              <Button
+                type="primary"
+                className="full-mobile"
+                onClick={(event) => this.handlePartySubmit(event, false)}
+              >
                 Submit
               </Button>
             )}
@@ -145,6 +160,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       submit,
       reset,
+      createParty,
     },
     dispatch
   );

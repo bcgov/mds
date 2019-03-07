@@ -164,3 +164,15 @@ body {
 .icon-sm {
   font-size: 20px !important;
 }
+
+// used on larger modals as a divider.
+.border {
+  &--right {
+    &--violet {
+      border-right: 1px solid $violet;
+      @include tablet {
+        border-right: 0;
+      }
+    }
+  }
+}

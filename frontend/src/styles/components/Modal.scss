@@ -5,11 +5,3 @@
   font-size: 24px;
   right: 0;
 }
-
-#modal--large {
-  width: 1200px !important;
-
-  @include tablet {
-    width: inherit !important;
-  }
-}

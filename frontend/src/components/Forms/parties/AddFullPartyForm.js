@@ -4,6 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { normalizePhone, upperCase } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -16,7 +17,7 @@ export const AddFullPartyForm = (props) => (
   <div>
     <Form>
       <Row gutter={48}>
-        <Col md={12} sm={24}>
+        <Col md={12} sm={24} className="border--right--violet">
           <div className="center margin-large">
             <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
               <Radio.Button value>Person</Radio.Button>
@@ -73,7 +74,7 @@ export const AddFullPartyForm = (props) => (
                 <Field
                   id="email"
                   name="email"
-                  label="Email *"
+                  label="Email"
                   component={renderConfig.FIELD}
                   validate={[email]}
                 />
@@ -90,6 +91,7 @@ export const AddFullPartyForm = (props) => (
                   placeholder="e.g. xxx-xxx-xxxx"
                   component={renderConfig.FIELD}
                   validate={[required, phoneNumber, maxLength(12)]}
+                  normalize={normalizePhone}
                 />
               </Form.Item>
             </Col>
@@ -106,7 +108,7 @@ export const AddFullPartyForm = (props) => (
             </Col>
           </Row>
         </Col>
-        <Col md={12} sm={24} style={{ top: "80px" }}>
+        <Col md={12} sm={24} style={{ marginTop: "80px" }}>
           <Row gutter={16}>
             <h5>Address</h5>
           </Row>
@@ -174,9 +176,10 @@ export const AddFullPartyForm = (props) => (
                   id="post_code"
                   name="post_code"
                   label="Postal Code"
-                  placeholder="e.g xxx-xxx"
+                  placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(7)]}
+                  validate={[maxLength(6)]}
+                  normalize={upperCase}
                 />
               </Form.Item>
             </Col>
