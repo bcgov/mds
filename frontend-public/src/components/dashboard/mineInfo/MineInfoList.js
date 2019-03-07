@@ -24,7 +24,9 @@ const columns = [
     dataIndex: "overdue",
     render: (text, record) =>
       record.isOverdue ? (
-        <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
+        <div title="">
+          <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
+        </div>
       ) : (
         ""
       ),
@@ -33,83 +35,91 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     render: (text, record) => (
-      <h6 style={record.isOverdue ? { color: errorRed } : {}}>{record.doc.exp_document_name}</h6>
+      <div title="Name" style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.doc.exp_document_name}
+      </div>
     ),
   },
   {
     title: "Due",
     dataIndex: "due",
     render: (text, record) => (
-      <h6 style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
         {record.doc.due_date === "None" ? "-" : record.doc.due_date}
-      </h6>
+      </div>
     ),
   },
   {
     title: "Received Date",
     dataIndex: "receivedDate",
     render: (text, record) => (
-      <h6>{record.doc.received_date === "None" ? "-" : record.doc.received_date}</h6>
+      <div title="Received Date">
+        {record.doc.received_date === "None" ? "-" : record.doc.received_date}
+      </div>
     ),
   },
   {
     title: "Status",
     dataIndex: "status",
     render: (test, record) => (
-      <h6 style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Status" style={record.isOverdue ? { color: errorRed } : {}}>
         {record.doc ? record.doc.exp_document_status.description : String.LOADING}
-      </h6>
+      </div>
     ),
   },
   {
     title: "Documents",
     dataIndex: "documents",
     render: (text, record) =>
-      !record.doc.related_documents || record.doc.related_documents.length === 0
-        ? "-"
-        : record.doc.related_documents.map((file) => (
-            <div key={file.mine_document_guid}>
-              <a
-                role="link"
-                onClick={() =>
-                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                }
-                // Accessibility: Event listener
-                onKeyPress={() =>
-                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                }
-                // Accessibility: Focusable element
-                tabIndex="0"
-              >
-                {file.document_name}
-              </a>
-            </div>
-          )),
+      !record.doc.related_documents || record.doc.related_documents.length === 0 ? (
+        <div title="Documents">-</div>
+      ) : (
+        record.doc.related_documents.map((file) => (
+          <div title="Documents" key={file.mine_document_guid}>
+            <a
+              role="link"
+              onClick={() =>
+                downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+              }
+              // Accessibility: Event listener
+              onKeyPress={() =>
+                downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+              }
+              // Accessibility: Focusable element
+              tabIndex="0"
+            >
+              {file.document_name}
+            </a>
+          </div>
+        ))
+      ),
   },
   {
     title: "",
     dataIndex: "upload",
     render: (text, record) => (
-      <Button
-        className="full-mobile"
-        type="primary"
-        ghost
-        onClick={(event) =>
-          record.openEditReportModal(
-            event,
-            record.handleEditReportSubmit,
-            ModalContent.EDIT_REPORT(
-              record.doc.exp_document_name,
-              moment()
-                .subtract(1, "year")
-                .year()
-            ),
-            record.doc
-          )
-        }
-      >
-        <Icon type="file-add" /> Upload/Edit
-      </Button>
+      <div title="">
+        <Button
+          className="full-mobile"
+          type="primary"
+          ghost
+          onClick={(event) =>
+            record.openEditReportModal(
+              event,
+              record.handleEditReportSubmit,
+              ModalContent.EDIT_REPORT(
+                record.doc.exp_document_name,
+                moment()
+                  .subtract(1, "year")
+                  .year()
+              ),
+              record.doc
+            )
+          }
+        >
+          <Icon type="file-add" /> Upload/Edit
+        </Button>
+      </div>
     ),
   },
 ];
