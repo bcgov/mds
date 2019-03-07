@@ -50,7 +50,7 @@ npm run test:updateAll
 3. To run the test suite while updating snapshots case by case Interactively run:
 
 ```
-npm run test:updateIT
+npm run test:watch
 ```
 
 Then choose option 'i' and go through the failing snapshots case by case
