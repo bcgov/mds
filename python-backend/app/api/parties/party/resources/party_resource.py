@@ -105,11 +105,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         try:
             party = Party.create(data['party_name'],
-                                 data['email'],
                                  data['phone_no'],
                                  data['type'],
                                  self.get_create_update_dict(),
                                  # Nullable fields
+                                 email=data.get('email'),
                                  first_name=data.get('first_name'),
                                  phone_ext=data.get('phone_ext'),
                                  suite_no=data.get('suite_no'),
