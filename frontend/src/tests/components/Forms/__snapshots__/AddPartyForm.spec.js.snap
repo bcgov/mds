@@ -192,11 +192,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-<<<<<<< HEAD
-                  label="Email *"
-=======
                   label="Email"
->>>>>>> feature/MDS-1400
                   name="email"
                   validate={
                     Array [
@@ -396,11 +392,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-<<<<<<< HEAD
-                  label="Email *"
-=======
                   label="Email"
->>>>>>> feature/MDS-1400
                   name="email"
                   validate={
                     Array [
@@ -426,11 +418,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-<<<<<<< HEAD
-                  label="Email *"
-=======
                   label="Email"
->>>>>>> feature/MDS-1400
                   name="email"
                   validate={
                     Array [
@@ -450,11 +438,7 @@ ShallowWrapper {
                 "children": <Field
                   component={[Function]}
                   id="email"
-<<<<<<< HEAD
-                  label="Email *"
-=======
                   label="Email"
->>>>>>> feature/MDS-1400
                   name="email"
                   validate={
                     Array [
@@ -474,11 +458,7 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "id": "email",
-<<<<<<< HEAD
-                  "label": "Email *",
-=======
                   "label": "Email",
->>>>>>> feature/MDS-1400
                   "name": "email",
                   "validate": Array [
                     [Function],
@@ -797,11 +777,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-<<<<<<< HEAD
-                  label="Email *"
-=======
                   label="Email"
->>>>>>> feature/MDS-1400
                   name="email"
                   validate={
                     Array [
@@ -928,11 +904,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-<<<<<<< HEAD
-                    label="Email *"
-=======
                     label="Email"
->>>>>>> feature/MDS-1400
                     name="email"
                     validate={
                       Array [
@@ -1132,11 +1104,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-<<<<<<< HEAD
-                    label="Email *"
-=======
                     label="Email"
->>>>>>> feature/MDS-1400
                     name="email"
                     validate={
                       Array [
@@ -1162,11 +1130,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-<<<<<<< HEAD
-                    label="Email *"
-=======
                     label="Email"
->>>>>>> feature/MDS-1400
                     name="email"
                     validate={
                       Array [
@@ -1186,11 +1150,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="email"
-<<<<<<< HEAD
-                    label="Email *"
-=======
                     label="Email"
->>>>>>> feature/MDS-1400
                     name="email"
                     validate={
                       Array [
@@ -1210,11 +1170,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "email",
-<<<<<<< HEAD
-                    "label": "Email *",
-=======
                     "label": "Email",
->>>>>>> feature/MDS-1400
                     "name": "email",
                     "validate": Array [
                       [Function],
