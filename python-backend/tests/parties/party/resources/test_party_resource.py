@@ -80,19 +80,6 @@ def test_post_person_no_phone_no(test_client, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_post_person_no_email(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "party_name": "Last", "type": "PER", "phone_no": "123-456-7890"}
-    post_resp = test_client.post('/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
-    assert post_data == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Party email is not provided.'
-        }
-    }
-    assert post_resp.status_code == 400
-
-
 def test_post_person_name_exists(test_client, auth_headers):
     test_person_data = {"first_name": TEST_PARTY_PER_FIRST_NAME_1, "party_name": TEST_PARTY_PER_PARTY_NAME_1, "email": "this@test.com", "phone_no": "123-456-7890", "type": "PER"}
     post_resp = test_client.post('/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
