@@ -76,6 +76,20 @@
         "clientRole": false,
         "containerId": "mds",
         "attributes": {}
+      },
+      {
+        "id": "8db4a426-b621-c495-c5c5-7ca65537eaee",
+        "name": "mds-mine-admin",
+        "composite": true,
+        "composites": {
+          "realm": [
+            "mds-mine-view",
+            "mds-mine-create"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "mds",
+        "attributes": {}
       }
     ],
     "client": {
