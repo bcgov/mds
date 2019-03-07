@@ -60,7 +60,6 @@ export class ViewPartyRelationships extends Component {
   state = {
     selectedPartyRelationshipType: {},
     selectedPartyRelationship: {},
-    successAfterPartyCreation: false,
   };
 
   onSubmitAddPartyRelationship = (values) => {
@@ -82,23 +81,14 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  onPartySubmit = (values, type) => {
-    const payload = { type, ...values };
-    return this.props.createParty(payload).then(() => {
-      this.props.fetchParties();
-      this.setState({ successAfterPartyCreation: true });
-    });
-  };
+  // onPartySubmit = (values, type) => {
+  //   const payload = { type, ...values };
+  //   return this.props.createParty(payload).then(() => {
+  //     this.props.fetchParties();
+  //   });
+  // };
 
-  openAddPartyRelationshipModal = (
-    value,
-    onSubmit,
-    handleChange,
-    onPartySubmit,
-    title,
-    mine,
-    successAfterCreation
-  ) => {
+  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (value.mine_party_appt_type_code === "EOR") {
@@ -116,7 +106,6 @@ export class ViewPartyRelationships extends Component {
         title: `${title}: ${value.description}`,
         partyRelationshipType: value,
         mine,
-        successAfterCreation,
       },
       widthSize: 1200,
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
@@ -256,8 +245,7 @@ export class ViewPartyRelationships extends Component {
                     this.props.handleChange,
                     this.onPartySubmit,
                     ModalContent.ADD_CONTACT,
-                    this.props.mine,
-                    this.state.successAfterPartyCreation
+                    this.props.mine
                   );
                 }}
               >

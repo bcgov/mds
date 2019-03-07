@@ -11,9 +11,12 @@ import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 const { Step } = Steps;
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  addPartyFormValues: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {
@@ -34,11 +37,12 @@ export class AddTenureModal extends Component {
     return this.props
       .createParty(payload)
       .then(() => {
+        this.props.reset(FORM.ADD_FULL_PARTY);
         if (addAnother) {
           this.prev();
         } else {
-          this.props.handleAfterSubmit();
-          // this.props.reset(FORM.ADD_FULL_PARTY);
+          this.props.fetchData();
+          this.props.closeModal();
         }
       })
       .catch(() => {

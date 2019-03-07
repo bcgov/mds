@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Radio, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import * as ModalContent from "@/constants/modalContent";
+import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
 import { getRawParties } from "@/selectors/partiesSelectors";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
@@ -19,7 +21,6 @@ const propTypes = {
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party),
   mine: CustomPropTypes.mine.isRequired,
-  successAfterCreation: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -27,7 +28,7 @@ const defaultProps = {
 };
 
 export class AddPartyRelationshipModal extends Component {
-  state = { isPerson: true, isFormVisible: false };
+  state = { isPerson: true, isFormVisible: false, successfulPartyCreation: false };
 
   componentDidMount() {
     this.setState({ isPerson: this.props.partyRelationshipType.person });
@@ -43,8 +44,15 @@ export class AddPartyRelationshipModal extends Component {
 
   handlePartySubmit = (values) => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    this.toggleFormVisibility();
-    return this.props.onPartySubmit(values, type);
+    const payload = { type, ...values };
+    this.props
+      .createParty(payload)
+      .then(() => {
+        this.toggleFormVisibility();
+        this.props.fetchParties();
+        this.setState({ successfulPartyCreation: true });
+      })
+      .catch();
   };
 
   renderRadioButtonGroup = (person, organization) =>
@@ -67,12 +75,12 @@ export class AddPartyRelationshipModal extends Component {
     return (
       <div>
         <Row gutter={48}>
-          <Col md={12} sm={24} className="">
+          <Col md={12} sm={24}>
             <AddPartyRelationshipForm
               onSubmit={this.props.onSubmit}
               handleChange={this.props.handleChange}
               closeModal={this.props.closeModal}
-              onPartySubmit={this.props.onPartySubmit}
+              // onPartySubmit={this.props.onPartySubmit}
               title={this.props.title}
               partyRelationshipType={this.props.partyRelationshipType}
               parties={createItemMap(filteredParties, "party_guid")}
@@ -82,9 +90,9 @@ export class AddPartyRelationshipModal extends Component {
           </Col>
           <Col md={12} sm={24}>
             {!this.state.isFormVisible && (
-              <div className="center" style={{ position: "relative", top: "100px" }}>
-                {!this.props.successAfterCreation && (
-                  <div>
+              <div className="center">
+                {!this.state.successfulPartyCreation && (
+                  <div style={{ position: "relative", top: "80px" }}>
                     <p>
                       {this.props.partyRelationshipType.person &&
                         this.props.partyRelationshipType.organization &&
@@ -101,7 +109,7 @@ export class AddPartyRelationshipModal extends Component {
                     </Button>
                   </div>
                 )}
-                {this.props.successAfterCreation && (
+                {this.state.successfulPartyCreation && (
                   <div>
                     <img src={SUCCESS_CHECKMARK} alt="success" />
                     <h4>Success, your contact was created! </h4>
@@ -136,10 +144,19 @@ const mapStateToProps = (state) => ({
   parties: getRawParties(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchParties,
+      createParty,
+    },
+    dispatch
+  );
+
 AddPartyRelationshipModal.propTypes = propTypes;
 AddPartyRelationshipModal.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddPartyRelationshipModal);

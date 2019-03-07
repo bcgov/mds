@@ -142,18 +142,11 @@ export class ContactHomePage extends Component {
     );
   };
 
-  handleAfterSubmit = () => {
-    const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    this.props.closeModal();
-    this.props.fetchParties(parsedParams);
-  };
-
-  openModal(event, handleAfterSubmit, title, provinceOptions) {
+  openModal(event, fetchData, title, provinceOptions) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        handleAfterSubmit,
+        fetchData,
         title,
         provinceOptions,
       },
@@ -179,7 +172,7 @@ export class ContactHomePage extends Component {
                 onClick={(event) =>
                   this.openModal(
                     event,
-                    this.handleAfterSubmit,
+                    this.renderDataFromURL,
                     ModalContent.ADD_CONTACT,
                     this.props.provinceOptions
                   )
@@ -196,7 +189,6 @@ export class ContactHomePage extends Component {
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
             handleSearch={this.handleSearch}
-            // handleSubmit={this.handleSubmit}
           />
           {this.state.isLoaded && (
             <div>

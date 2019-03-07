@@ -28,6 +28,7 @@ export const createParty = (payload) => (dispatch) => {
       });
       dispatch(error(reducerTypes.CREATE_PARTY));
       dispatch(hideLoading("modal"));
+      throw new Error(err);
     });
 };
 
