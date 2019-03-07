@@ -39,8 +39,6 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   fetchProvinceCodes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -145,7 +143,7 @@ export class ContactHomePage extends Component {
     );
   };
 
-  openModal(event, fetchData, title, provinceOptions) {
+  openAddContactModal(event, fetchData, title, provinceOptions) {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -173,7 +171,7 @@ export class ContactHomePage extends Component {
                 className="full-mobile"
                 type="primary"
                 onClick={(event) =>
-                  this.openModal(
+                  this.openAddContactModal(
                     event,
                     this.renderDataFromURL,
                     ModalContent.ADD_CONTACT,

@@ -7,6 +7,7 @@ import {
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
+  storeProvinceCodes,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -18,6 +19,7 @@ const baseExpectedValue = {
   mineTSFRequiredReports: [],
   mineTenureTypes: [],
   mineCommodityOptions: [],
+  provinceOptions: [],
   optionsLoaded: false,
 };
 
@@ -87,6 +89,13 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineCommodityOptions = MOCK.COMMODITY_OPTIONS.options;
     const result = staticContentReducer(undefined, storeCommodityOptions(MOCK.COMMODITY_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_PROVINCE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.provinceOptions = MOCK.PROVINCE_OPTIONS.options;
+    const result = staticContentReducer(undefined, storeProvinceCodes(MOCK.PROVINCE_OPTIONS));
     expect(result).toEqual(expectedValue);
   });
 });

@@ -63,7 +63,7 @@ export const AddQuickPartyForm = (props) => (
             <Field
               id="email"
               name="email"
-              label="Email *"
+              label="Email"
               component={renderConfig.FIELD}
               validate={[email]}
             />
