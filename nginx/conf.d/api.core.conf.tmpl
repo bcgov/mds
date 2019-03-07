@@ -5,26 +5,24 @@
 # Proxy incoming requests for /api to the backend container
 
 location ${PATH_PREFIX}/api/ {
-        try_files @maintenance @api;
+        try_files /opt/app-root/src/html/maintenance_on.html @api;
 }
 
 location ${PATH_PREFIX}/api/documents {
-        try_files @maintenance @api;
+        try_files /opt/app-root/src/html/maintenance_on.html @api;
         access_log /var/log/nginx/access.log clf;
 }
 
 location ${PATH_PREFIX}/api/document-manager {
-        try_files @maintenance @api;
+        try_files /opt/app-root/src/html/maintenance_on.html @api;
         access_log /var/log/nginx/access.log clf;
 }
 
-location @maintenance {
-    if (-f /opt/app-root/src/html/maintenance_on.html){
-        return 503;
-    }
-}
-
 location @api {
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
         proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
