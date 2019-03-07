@@ -189,8 +189,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 latitude        numeric(9,7)        ,
                 longitude       numeric(11,7)
             );
-            CREATE INDEX ON ETL_LOCATION (mine_no);
-            CREATE INDEX ON ETL_LOCATION (mine_guid);
+            CREATE INDEX IF NOT EXISTS ON ETL_LOCATION (mine_no);
+            CREATE INDEX IF NOT EXISTS ON ETL_LOCATION (mine_guid);
             SELECT count(*) FROM ETL_LOCATION into old_row;
 
             -- Upsert data into ETL_LOCATION from MMS
@@ -515,15 +515,13 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             -- Upsert data from new_record into mine_type
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE mine_type
-            SET mine_tenure_type_code = ETL_MINE.mine_type,
-                update_user           = 'mms_migration'   ,
-                update_timestamp      = now()
+            SET active_ind = FALSE
             FROM ETL_MINE
             WHERE
                 ETL_MINE.mine_guid = mine_type.mine_guid
                 AND
-                mine_type IS NOT NULL;
-            SELECT count(*) FROM mine_type, ETL_MINE WHERE mine_type.mine_guid = ETL_MINE.mine_guid INTO update_row;
+                ETL_MINE.mine_type != mine_tenure_type_code;
+            SELECT count(*) FROM mine_type, ETL_MINE WHERE mine_type.mine_guid = ETL_MINE.mine_guid AND ETL_MINE.mine_type != mine_tenure_type_code INTO update_row;
             RAISE NOTICE '....# of mine_type records in MDS: %', old_row;
             RAISE NOTICE '....# of mine_type records updated in MDS: %', update_row;
 
@@ -537,6 +535,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     SELECT  1
                     FROM    mine_type
                     WHERE   mine_guid = ETL_MINE.mine_guid
+                    AND     active_ind = TRUE
                 )
             )
             INSERT INTO mine_type(
