@@ -1,11 +1,42 @@
+#=========================== Filebeat inputs =============================
+
+# List of inputs to fetch data.
+filebeat.inputs:
+# Each - is an input. Most options can be set at the input level, so
+# you can use different inputs for various configurations.
+# Below are the input specific configurations.
+
+# Type of the files. Based on this the way the file is read is decided.
+# The different types cannot be mixed in one input
+#
+# Possible options are:
+# * log: Reads every line of the log file (default)
+# * stdin: Reads the standard in
+
+#------------------------------ Log input --------------------------------
+- type: log
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /usr/share/filebeat/nginx/access.log
+
+
+
 #============================= Filebeat modules ===============================
 
-filebeat.config.modules:
-  # Glob pattern for configuration loading
-  path: ${path.config}/modules.d/*.yml
+# filebeat.config.modules:
+#   # Glob pattern for configuration loading
+#   path: ${path.config}/modules.d/*.yml
 
-  # Set to true to enable config reloading
-  reload.enabled: false
+#   # Set to true to enable config reloading
+#   reload.enabled: false
 
   # Period on which files under path should be checked for changes
   #reload.period: 10s
@@ -23,6 +54,12 @@ setup.template.settings:
 # the dashboards is disabled by default and can be enabled either by setting the
 # options here, or by using the `-setup` CLI flag or the `setup` command.
 #setup.dashboards.enabled: false
+setup.dashboards.index: mds-nginx-*
+setup.template.overwrite: true
+output.elasticsearch.index: "mds-nginx-%{+yyyy.MM.dd}"
+setup.template.name: "mds-nginx"
+setup.template.pattern: "mds-nginx-*"
+
 
 # The URL from where to download the dashboards archive. By default this URL
 # has a value which is computed based on the Beat name and version. For released
@@ -54,11 +91,11 @@ setup.kibana:
 # The cloud.id setting overwrites the `output.elasticsearch.hosts` and
 # `setup.kibana.host` options.
 # You can find the `cloud.id` in the Elastic Cloud web UI.
-# cloud.id: test:dXMtd2VzdC0xLmF3cy5mb3VuZC5pbyQ4OTAzZDkxMDFiOTc0YTFiYjE4MmY3YzBlYjIwNDhmMCQxNGNjM2VkNTAwYWQ0MzRkYjJjNDAxNGRlMDBmZmU4Mw==
+cloud.id: test:dXMtd2VzdC0xLmF3cy5mb3VuZC5pbyQ4OTAzZDkxMDFiOTc0YTFiYjE4MmY3YzBlYjIwNDhmMCQxNGNjM2VkNTAwYWQ0MzRkYjJjNDAxNGRlMDBmZmU4Mw==
 
 # The cloud.auth setting overwrites the `output.elasticsearch.username` and
 # `output.elasticsearch.password` settings. The format is `<user>:<pass>`.
-# cloud.auth: elastic:GLeC2zL55ENkYaV2cY0rtomt
+cloud.auth: elastic:GLeC2zL55ENkYaV2cY0rtomt
 
 #================================ Outputs =====================================
 
@@ -81,9 +118,9 @@ setup.kibana:
   #password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-output.logstash:
+#output.logstash:
   # The Logstash hosts
-  hosts: ["testlog:5044"]
+  #hosts: ["localhost:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
