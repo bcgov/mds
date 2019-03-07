@@ -21,7 +21,7 @@ class Party(AuditMixin, Base):
     party_name = db.Column(db.String, nullable=False)
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
-    email = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
@@ -110,13 +110,13 @@ class Party(AuditMixin, Base):
     def create(cls,
                # Required fields
                party_name,
-               email,
                phone_no,
                party_type_code,
                user_kwargs,
                # Optional fields
                address_type_code=None,
                # Nullable fields
+               email=None,
                first_name=None,
                phone_ext=None,
                suite_no=None,
@@ -130,11 +130,11 @@ class Party(AuditMixin, Base):
             # Required fields
             party_guid=uuid.uuid4(),
             party_name=party_name,
-            email=email,
             phone_no=phone_no,
             party_type_code=party_type_code,
             **user_kwargs,
             # Optional fields
+            email=email,
             address_type_code=address_type_code,
             first_name=first_name,
             phone_ext=phone_ext,
@@ -198,9 +198,7 @@ class Party(AuditMixin, Base):
 
     @validates('email')
     def validate_email(self, key, email):
-        if not email:
-            raise AssertionError('Party email is not provided.')
-        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        if email and not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
 
