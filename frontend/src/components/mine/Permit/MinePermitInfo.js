@@ -95,8 +95,8 @@ export class MinePermitInfo extends Component {
     return this.props.createPermit(payload).then(this.closePermitModal);
   };
 
-  handleEditPermit = (data) =>
-    this.props.updatePermit(data.permit_guid, data).then(this.closePermitModal);
+  handleEditPermit = (values) =>
+    this.props.updatePermit(values.permit_guid, values).then(this.closePermitModal);
 
   // Amendment Modals
 
@@ -160,15 +160,17 @@ export class MinePermitInfo extends Component {
 
   // Amendment Handlers
 
-  handleEditPermitAmendment = (data) =>
-    this.props.updatePermitAmendment(data.permit_amendment_guid, data).then(this.closePermitModal);
-
-  handleAddPermitAmendment = (data) =>
-    this.props.createPermitAmendment(data.permit_guid, data).then(this.closePermitModal);
-
-  handleAddAmalgamatedPermit = (data) =>
+  handleEditPermitAmendment = (values) =>
     this.props
-      .createPermitAmendment(data.permit_guid, { ...data, permit_amendment_type_code: "ALG" })
+      .updatePermitAmendment(values.permit_amendment_guid, values)
+      .then(this.closePermitModal);
+
+  handleAddPermitAmendment = (values) =>
+    this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
+
+  handleAddAmalgamatedPermit = (values) =>
+    this.props
+      .createPermitAmendment(values.permit_guid, { ...values, permit_amendment_type_code: "ALG" })
       .then(this.closePermitModal);
 
   render() {
