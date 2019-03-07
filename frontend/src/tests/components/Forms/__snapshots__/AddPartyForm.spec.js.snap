@@ -65,7 +65,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="email"
-                label="Email *"
+                label="Email"
                 name="email"
                 validate={
                   Array [
@@ -192,7 +192,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-                  label="Email *"
+                  label="Email"
                   name="email"
                   validate={
                     Array [
@@ -392,7 +392,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-                  label="Email *"
+                  label="Email"
                   name="email"
                   validate={
                     Array [
@@ -418,7 +418,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-                  label="Email *"
+                  label="Email"
                   name="email"
                   validate={
                     Array [
@@ -438,7 +438,7 @@ ShallowWrapper {
                 "children": <Field
                   component={[Function]}
                   id="email"
-                  label="Email *"
+                  label="Email"
                   name="email"
                   validate={
                     Array [
@@ -458,7 +458,7 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "id": "email",
-                  "label": "Email *",
+                  "label": "Email",
                   "name": "email",
                   "validate": Array [
                     [Function],
@@ -777,7 +777,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="email"
-                  label="Email *"
+                  label="Email"
                   name="email"
                   validate={
                     Array [
@@ -904,7 +904,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-                    label="Email *"
+                    label="Email"
                     name="email"
                     validate={
                       Array [
@@ -1104,7 +1104,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-                    label="Email *"
+                    label="Email"
                     name="email"
                     validate={
                       Array [
@@ -1130,7 +1130,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="email"
-                    label="Email *"
+                    label="Email"
                     name="email"
                     validate={
                       Array [
@@ -1150,7 +1150,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="email"
-                    label="Email *"
+                    label="Email"
                     name="email"
                     validate={
                       Array [
@@ -1170,7 +1170,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "email",
-                    "label": "Email *",
+                    "label": "Email",
                     "name": "email",
                     "validate": Array [
                       [Function],
