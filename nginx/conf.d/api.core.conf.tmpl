@@ -5,16 +5,16 @@
 # Proxy incoming requests for /api to the backend container
 
 location ${PATH_PREFIX}/api/ {
-        try_files $uri @api;
+        try_files @api;
 }
 
 location ${PATH_PREFIX}/api/documents {
-        try_files $uri @api;
+        try_files @api;
         access_log /var/log/nginx/access.log clf;
 }
 
 location ${PATH_PREFIX}/api/document-manager {
-        try_files $uri @api;
+        try_files @api;
         access_log /var/log/nginx/access.log clf;
 }
 
