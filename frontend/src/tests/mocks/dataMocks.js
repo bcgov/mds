@@ -686,6 +686,24 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   },
 ];
 
+export const DROPDOWN_PROVINCE_OPTIONS = [
+  {
+    value: "BC",
+    label: "BC",
+  },
+  {
+    value: "AB",
+    label: "AB",
+  },
+];
+
+export const PROVINCE_OPTIONS = {
+  options: [
+    { description: "British Columbia", display_order: 10, sub_division_code: "BC" },
+    { description: "Alberta", display_order: 10, sub_division_code: "AB" },
+  ],
+};
+
 export const CONDITIONAL_COMMODITY_OPTIONS = {
   BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
   COL: [

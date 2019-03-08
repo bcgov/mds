@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Button } from "antd";

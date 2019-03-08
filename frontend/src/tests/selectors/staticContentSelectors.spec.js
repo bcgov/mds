@@ -8,6 +8,8 @@ import {
   getMineDisturbanceOptions,
   getMineCommodityOptions,
   getDropdownCommodityOptions,
+  getProvinceOptions,
+  getDropdownProvinceOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -17,6 +19,7 @@ import {
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
+  storeProvinceCodes,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -29,11 +32,12 @@ const mockState = {
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.options,
+  provinceOptions: Mock.PROVINCE_OPTIONS.options,
 };
 
 describe("mineSelectors", () => {
   const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
-  const { mineTSFRequiredReports } = mockState;
+  const { mineTSFRequiredReports, provinceOptions } = mockState;
   let { mineRegionOptions, mineTenureTypes } = mockState;
 
   it("`getMineStatusOptions` calls `staticContentReducer.getMineStatusOptions`", () => {
@@ -110,5 +114,24 @@ describe("mineSelectors", () => {
     };
     const mockDropdownCommodityOptions = Mock.DROPDOWN_COMMODITY_OPTIONS;
     expect(getDropdownCommodityOptions(localMockState)).toEqual(mockDropdownCommodityOptions);
+  });
+
+  it("`getProvinceOptions` calls `staticContentReducer.getProvinceOptions`", () => {
+    const storeAction = storeProvinceCodes(Mock.PROVINCE_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getProvinceOptions(localMockState)).toEqual(provinceOptions);
+  });
+
+  it("`getDropdownProvinceOptions` calls `staticContentReducer.getProvinceOptions`", () => {
+    const storeAction = storeProvinceCodes(Mock.PROVINCE_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockProvinceCodes = Mock.DROPDOWN_PROVINCE_OPTIONS;
+    expect(getDropdownProvinceOptions(localMockState)).toEqual(mockProvinceCodes);
   });
 });

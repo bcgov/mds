@@ -1,10 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddPartyFrom renders properly 1`] = `
+exports[`AddQuickPartyForm renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <AddPartyForm
+  Symbol(enzyme.__unrendered__): <AddQuickPartyForm
     handleSubmit={[MockFunction]}
+    isPerson={true}
     submitting={false}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -30,7 +31,32 @@ ShallowWrapper {
           gutter={16}
         >
           <Col
-            span={24}
+            md={12}
+            sm={12}
+            xs={24}
+          >
+            <FormItem
+              colon={true}
+              hasFeedback={false}
+              prefixCls="ant-form"
+            >
+              <Field
+                component={[Function]}
+                id="first_name"
+                label="First Name *"
+                name="first_name"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            md={12}
+            sm={12}
+            xs={24}
           >
             <FormItem
               colon={true}
@@ -40,7 +66,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="party_name"
-                label="Company Name *"
+                label="Surname *"
                 name="party_name"
                 validate={
                   Array [
@@ -92,6 +118,7 @@ ShallowWrapper {
                 id="phone_no"
                 label="Phone Number *"
                 name="phone_no"
+                normalize={[Function]}
                 placeholder="e.g. xxx-xxx-xxxx"
                 validate={
                   Array [
@@ -139,11 +166,10 @@ ShallowWrapper {
             prefixCls="ant-btn"
             type="primary"
           >
-            Create Company
+            Create Personnel
           </Button>
         </div>
       </Form>,
-      "className": "form__parties",
     },
     "ref": null,
     "rendered": Object {
@@ -152,12 +178,36 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          undefined,
           <Row
             gutter={16}
           >
             <Col
-              span={24}
+              md={12}
+              sm={12}
+              xs={24}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="first_name"
+                  label="First Name *"
+                  name="first_name"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              md={12}
+              sm={12}
+              xs={24}
             >
               <FormItem
                 colon={true}
@@ -167,7 +217,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="party_name"
-                  label="Company Name *"
+                  label="Surname *"
                   name="party_name"
                   validate={
                     Array [
@@ -178,6 +228,7 @@ ShallowWrapper {
               </FormItem>
             </Col>
           </Row>,
+          false,
           <Row
             gutter={16}
           >
@@ -219,6 +270,7 @@ ShallowWrapper {
                   id="phone_no"
                   label="Phone Number *"
                   name="phone_no"
+                  normalize={[Function]}
                   placeholder="e.g. xxx-xxx-xxxx"
                   validate={
                     Array [
@@ -266,7 +318,7 @@ ShallowWrapper {
               prefixCls="ant-btn"
               type="primary"
             >
-              Create Company
+              Create Personnel
             </Button>
           </div>,
         ],
@@ -277,80 +329,88 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
-        undefined,
         Object {
           "instance": null,
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <Col
-              span={24}
-            >
-              <FormItem
-                colon={true}
-                hasFeedback={false}
-                prefixCls="ant-form"
+            "children": Array [
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
               >
-                <Field
-                  component={[Function]}
-                  id="party_name"
-                  label="Company Name *"
-                  name="party_name"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>,
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="first_name"
+                    label="First Name *"
+                    name="first_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>,
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="party_name"
+                    label="Surname *"
+                    name="party_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>,
+            ],
             "gutter": 16,
           },
           "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <FormItem
-                colon={true}
-                hasFeedback={false}
-                prefixCls="ant-form"
-              >
-                <Field
-                  component={[Function]}
-                  id="party_name"
-                  label="Company Name *"
-                  name="party_name"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>,
-              "span": 24,
-            },
-            "ref": null,
-            "rendered": Object {
+          "rendered": Array [
+            Object {
               "instance": null,
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <Field
-                  component={[Function]}
-                  id="party_name"
-                  label="Company Name *"
-                  name="party_name"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />,
-                "colon": true,
-                "hasFeedback": false,
-                "prefixCls": "ant-form",
+                "children": <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="first_name"
+                    label="First Name *"
+                    name="first_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                "md": 12,
+                "sm": 12,
+                "xs": 24,
               },
               "ref": null,
               "rendered": Object {
@@ -358,24 +418,116 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "component": [Function],
-                  "id": "party_name",
-                  "label": "Company Name *",
-                  "name": "party_name",
-                  "validate": Array [
-                    [Function],
-                  ],
+                  "children": <Field
+                    component={[Function]}
+                    id="first_name"
+                    label="First Name *"
+                    name="first_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "colon": true,
+                  "hasFeedback": false,
+                  "prefixCls": "ant-form",
                 },
                 "ref": null,
-                "rendered": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "id": "first_name",
+                    "label": "First Name *",
+                    "name": "first_name",
+                    "validate": Array [
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
                 "type": [Function],
               },
               "type": [Function],
             },
-            "type": [Function],
-          },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="party_name"
+                    label="Surname *"
+                    name="party_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                "md": 12,
+                "sm": 12,
+                "xs": 24,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Field
+                    component={[Function]}
+                    id="party_name"
+                    label="Surname *"
+                    name="party_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "colon": true,
+                  "hasFeedback": false,
+                  "prefixCls": "ant-form",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "id": "party_name",
+                    "label": "Surname *",
+                    "name": "party_name",
+                    "validate": Array [
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
           "type": [Function],
         },
+        false,
         Object {
           "instance": null,
           "key": undefined,
@@ -493,6 +645,7 @@ ShallowWrapper {
                     id="phone_no"
                     label="Phone Number *"
                     name="phone_no"
+                    normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
                     validate={
                       Array [
@@ -546,6 +699,7 @@ ShallowWrapper {
                     id="phone_no"
                     label="Phone Number *"
                     name="phone_no"
+                    normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
                     validate={
                       Array [
@@ -569,6 +723,7 @@ ShallowWrapper {
                     id="phone_no"
                     label="Phone Number *"
                     name="phone_no"
+                    normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
                     validate={
                       Array [
@@ -592,6 +747,7 @@ ShallowWrapper {
                     "id": "phone_no",
                     "label": "Phone Number *",
                     "name": "phone_no",
+                    "normalize": [Function],
                     "placeholder": "e.g. xxx-xxx-xxxx",
                     "validate": Array [
                       [Function],
@@ -695,7 +851,7 @@ ShallowWrapper {
               prefixCls="ant-btn"
               type="primary"
             >
-              Create Company
+              Create Personnel
             </Button>,
             "className": "right center-mobile",
           },
@@ -706,7 +862,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "block": false,
-              "children": "Create Company",
+              "children": "Create Personnel",
               "className": "full-mobile",
               "disabled": false,
               "ghost": false,
@@ -716,7 +872,7 @@ ShallowWrapper {
               "type": "primary",
             },
             "ref": null,
-            "rendered": "Create Company",
+            "rendered": "Create Personnel",
             "type": [Function],
           },
           "type": "div",
@@ -742,7 +898,32 @@ ShallowWrapper {
             gutter={16}
           >
             <Col
-              span={24}
+              md={12}
+              sm={12}
+              xs={24}
+            >
+              <FormItem
+                colon={true}
+                hasFeedback={false}
+                prefixCls="ant-form"
+              >
+                <Field
+                  component={[Function]}
+                  id="first_name"
+                  label="First Name *"
+                  name="first_name"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+            <Col
+              md={12}
+              sm={12}
+              xs={24}
             >
               <FormItem
                 colon={true}
@@ -752,7 +933,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="party_name"
-                  label="Company Name *"
+                  label="Surname *"
                   name="party_name"
                   validate={
                     Array [
@@ -804,6 +985,7 @@ ShallowWrapper {
                   id="phone_no"
                   label="Phone Number *"
                   name="phone_no"
+                  normalize={[Function]}
                   placeholder="e.g. xxx-xxx-xxxx"
                   validate={
                     Array [
@@ -851,11 +1033,10 @@ ShallowWrapper {
               prefixCls="ant-btn"
               type="primary"
             >
-              Create Company
+              Create Personnel
             </Button>
           </div>
         </Form>,
-        "className": "form__parties",
       },
       "ref": null,
       "rendered": Object {
@@ -864,12 +1045,36 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            undefined,
             <Row
               gutter={16}
             >
               <Col
-                span={24}
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="first_name"
+                    label="First Name *"
+                    name="first_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
               >
                 <FormItem
                   colon={true}
@@ -879,7 +1084,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="party_name"
-                    label="Company Name *"
+                    label="Surname *"
                     name="party_name"
                     validate={
                       Array [
@@ -890,6 +1095,7 @@ ShallowWrapper {
                 </FormItem>
               </Col>
             </Row>,
+            false,
             <Row
               gutter={16}
             >
@@ -931,6 +1137,7 @@ ShallowWrapper {
                     id="phone_no"
                     label="Phone Number *"
                     name="phone_no"
+                    normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
                     validate={
                       Array [
@@ -978,7 +1185,7 @@ ShallowWrapper {
                 prefixCls="ant-btn"
                 type="primary"
               >
-                Create Company
+                Create Personnel
               </Button>
             </div>,
           ],
@@ -989,80 +1196,88 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
           Object {
             "instance": null,
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <Col
-                span={24}
-              >
-                <FormItem
-                  colon={true}
-                  hasFeedback={false}
-                  prefixCls="ant-form"
+              "children": Array [
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
                 >
-                  <Field
-                    component={[Function]}
-                    id="party_name"
-                    label="Company Name *"
-                    name="party_name"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-              </Col>,
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="first_name"
+                      label="First Name *"
+                      name="first_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>,
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Surname *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>,
+              ],
               "gutter": 16,
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <FormItem
-                  colon={true}
-                  hasFeedback={false}
-                  prefixCls="ant-form"
-                >
-                  <Field
-                    component={[Function]}
-                    id="party_name"
-                    label="Company Name *"
-                    name="party_name"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                "span": 24,
-              },
-              "ref": null,
-              "rendered": Object {
+            "rendered": Array [
+              Object {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="party_name"
-                    label="Company Name *"
-                    name="party_name"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "colon": true,
-                  "hasFeedback": false,
-                  "prefixCls": "ant-form",
+                  "children": <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="first_name"
+                      label="First Name *"
+                      name="first_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>,
+                  "md": 12,
+                  "sm": 12,
+                  "xs": 24,
                 },
                 "ref": null,
                 "rendered": Object {
@@ -1070,24 +1285,116 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "component": [Function],
-                    "id": "party_name",
-                    "label": "Company Name *",
-                    "name": "party_name",
-                    "validate": Array [
-                      [Function],
-                    ],
+                    "children": <Field
+                      component={[Function]}
+                      id="first_name"
+                      label="First Name *"
+                      name="first_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />,
+                    "colon": true,
+                    "hasFeedback": false,
+                    "prefixCls": "ant-form",
                   },
                   "ref": null,
-                  "rendered": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "component": [Function],
+                      "id": "first_name",
+                      "label": "First Name *",
+                      "name": "first_name",
+                      "validate": Array [
+                        [Function],
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
                   "type": [Function],
                 },
                 "type": [Function],
               },
-              "type": [Function],
-            },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Surname *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>,
+                  "md": 12,
+                  "sm": 12,
+                  "xs": 24,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Surname *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />,
+                    "colon": true,
+                    "hasFeedback": false,
+                    "prefixCls": "ant-form",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "component": [Function],
+                      "id": "party_name",
+                      "label": "Surname *",
+                      "name": "party_name",
+                      "validate": Array [
+                        [Function],
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+            ],
             "type": [Function],
           },
+          false,
           Object {
             "instance": null,
             "key": undefined,
@@ -1205,6 +1512,7 @@ ShallowWrapper {
                       id="phone_no"
                       label="Phone Number *"
                       name="phone_no"
+                      normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
                       validate={
                         Array [
@@ -1258,6 +1566,7 @@ ShallowWrapper {
                       id="phone_no"
                       label="Phone Number *"
                       name="phone_no"
+                      normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
                       validate={
                         Array [
@@ -1281,6 +1590,7 @@ ShallowWrapper {
                       id="phone_no"
                       label="Phone Number *"
                       name="phone_no"
+                      normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
                       validate={
                         Array [
@@ -1304,6 +1614,7 @@ ShallowWrapper {
                       "id": "phone_no",
                       "label": "Phone Number *",
                       "name": "phone_no",
+                      "normalize": [Function],
                       "placeholder": "e.g. xxx-xxx-xxxx",
                       "validate": Array [
                         [Function],
@@ -1407,7 +1718,7 @@ ShallowWrapper {
                 prefixCls="ant-btn"
                 type="primary"
               >
-                Create Company
+                Create Personnel
               </Button>,
               "className": "right center-mobile",
             },
@@ -1418,7 +1729,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "block": false,
-                "children": "Create Company",
+                "children": "Create Personnel",
                 "className": "full-mobile",
                 "disabled": false,
                 "ghost": false,
@@ -1428,7 +1739,7 @@ ShallowWrapper {
                 "type": "primary",
               },
               "ref": null,
-              "rendered": "Create Company",
+              "rendered": "Create Personnel",
               "type": [Function],
             },
             "type": "div",
