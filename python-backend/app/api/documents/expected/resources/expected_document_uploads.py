@@ -108,6 +108,13 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         else:
             return self.create_error_payload(400, 'Must specify either Mine Document GIUD or Docuemnt Manager GUID'), 400
 
+        try:
+            expected_document.exp_document_status_code = 'PRE'
+            expected_document.received_date = datetime.now()
+            expected_document.save()
+        except AssertionError as e:
+            return self.create_error_payload(500, 'Unable to update document status'), 500
+
         return expected_document.json()
 
 
@@ -129,6 +136,9 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             ), 404
 
         expected_document.mine_documents.remove(mine_document)
+        if len(expected_document.mine_documents) == 0:
+            expected_document.exp_document_status_code = 'MIA'
+            expected_document.received_date = None
         expected_document.save()
 
         return {'status': 200, 'message': 'The document was removed succesfully'}
