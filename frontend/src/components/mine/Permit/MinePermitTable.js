@@ -92,9 +92,7 @@ const columns = [
             <button
               type="button"
               className="full add-permit-dropdown-button"
-              onClick={(event) =>
-                record.openAddAmalgamatedPermitModal(event, text.guid, text.permit_no)
-              }
+              onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
                 <Icon
@@ -111,9 +109,7 @@ const columns = [
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
-                }
+                onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
                   <Icon
@@ -189,15 +185,7 @@ const childColumns = [
           <Button
             className="permit-table-button"
             type="ghost"
-            onClick={(event) =>
-              record.openEditAmendmentModal(
-                event,
-                text.guid,
-                text.permit_guid,
-                record.amendmentType,
-                text.description
-              )
-            }
+            onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
           >
             <div>
               <img className="padding-small--right icon-svg-filter" src={EDITOUTLINE} alt="Edit" />
@@ -239,30 +227,22 @@ const transformRowData = (
 
   return {
     key: permit.permit_guid,
-    lastAmended:
-      (latestAmendment && latestAmendment.issue_date && formatDate(latestAmendment.issue_date)) ||
-      Strings.EMPTY_FIELD,
+    lastAmended: formatDate(latestAmendment.issue_date),
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    firstIssued:
-      (firstAmendment && firstAmendment.issue_date && formatDate(firstAmendment.issue_date)) ||
-      Strings.EMPTY_FIELD,
+    firstIssued: formatDate(firstAmendment.issue_date),
     permittee: permitteeName,
-    authorizationEndDate:
-      latestAmendment && latestAmendment.authorization_end_date
-        ? formatDate(latestAmendment.authorization_end_date)
-        : Strings.EMPTY_FIELD,
+    authorizationEndDate: formatDate(latestAmendment.authorization_end_date),
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: {
-      guid: permit.permit_guid,
       major_mine_ind,
       hasAmalgamated,
-      permit_no: permit.permit_no,
     },
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
     permitStatusOptions,
+    permit,
   };
 };
 
@@ -283,12 +263,11 @@ const transformChildRowData = (
     Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   amendmentEdit: {
-    guid: amendment.permit_amendment_guid,
-    permit_guid: amendment.permit_guid,
     major_mine_ind,
-    description: amendment.description,
+    amendment,
   },
   openEditAmendmentModal,
+  permit: record.permit,
 });
 
 export const MinePermitTable = (props) => {
@@ -299,33 +278,20 @@ export const MinePermitTable = (props) => {
     });
   };
 
-  const openEditAmendmentModal = (
-    event,
-    permit_amendment_guid,
-    permit_guid,
-    permit_amendment_type_code,
-    description
-  ) => {
-    const permit = props.permits.find((p) => p.permit_guid === permit_guid);
-    const permit_amendment = permit.amendments.find(
-      (pa) => pa.permit_amendment_guid === permit_amendment_guid
-    );
-
+  const openEditAmendmentModal = (event, permit_amendment, permit) => {
     const initialValues = {
-      issue_date: permit_amendment.issue_date,
-      permit_amendment_guid,
-      permit_amendment_type_code,
-      description,
+      ...permit_amendment,
     };
-
+    console.log(permit);
     event.preventDefault();
     props.openModal({
       props: {
         initialValues,
         onSubmit: handleEditPermitAmendment,
         title: `Edit permit amendment for ${permit.permit_no}`,
+        mine_guid: permit.mine_guid,
       },
-      content: modalConfig.ADD_PERMIT_AMENDMENT,
+      content: modalConfig.PERMIT_AMENDMENT,
     });
   };
 
@@ -350,13 +316,14 @@ export const MinePermitTable = (props) => {
     });
   };
 
-  const openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
+  const openAddAmendmentModal = (event, onSubmit, title, permit) => {
     event.preventDefault();
     props.openModal({
       props: {
-        initialValues: { permit_guid },
+        permit,
         onSubmit,
         title,
+        mine_guid: permit.mine_guid,
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
@@ -380,28 +347,28 @@ export const MinePermitTable = (props) => {
     });
   };
 
-  const openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
+  const openAddAmalgamatedPermitModal = (event, permit) =>
     openAddAmendmentModal(
       event,
       handleAddAlgPermitAmendment,
-      `Add amalgamated permit to ${permit_no}`,
-      permit_guid
+      `Add amalgamated permit to ${permit.permit_no}`,
+      permit
     );
 
-  const openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+  const openAddPermitAmendmentModal = (event, permit) =>
     openAddAmendmentModal(
       event,
       handleAddPermitAmendment,
-      `Add permit amendment to ${permit_no}`,
-      permit_guid
+      `Add permit amendment to ${permit.permit_no}`,
+      permit
     );
 
-  const amendmentHistory = (record) => {
-    const childRowData = record.amendments.map((amendment, index) =>
+  const amendmentHistory = (permit) => {
+    const childRowData = permit.amendments.map((amendment, index) =>
       transformChildRowData(
         amendment,
-        record,
-        record.amendments.length - index,
+        permit,
+        permit.amendments.length - index,
         props.major_mine_ind,
         openEditAmendmentModal
       )

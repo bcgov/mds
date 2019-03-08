@@ -45,5 +45,5 @@ export const PERMIT = (params) =>
 export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT()}/${permitGuid}/amendments`;
 export const PERMITAMENDMENT = (permitAmendmentGuid) =>
   `${PERMIT()}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENTS = (permitGuid, permitAmendmentGuid) =>
-  `${PERMIT()}/${permitGuid}/amendments/${permitAmendmentGuid}`;
+export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
+  `${PERMIT()}/amendments/${permitAmendmentGuid}/documents`;

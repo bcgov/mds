@@ -24,7 +24,7 @@ const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
   onFileLoad: () => {},
-  chunkSize: 1048576, //1MB
+  chunkSize: 1048576, // 1MB
 };
 
 class FileUpload extends React.Component {
@@ -53,7 +53,7 @@ class FileUpload extends React.Component {
             progress(true, bytesUploaded, bytesTotal);
           },
           onSuccess: () => {
-            const documentGuid = upload.url.split("/").pop()
+            const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
           },
