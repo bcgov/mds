@@ -16,6 +16,7 @@ import {
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
+  fetchPermitStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -109,6 +110,7 @@ export class Dashboard extends Component {
       this.props.fetchMineDisturbanceOptions();
       this.props.fetchMineCommodityOptions();
       this.props.fetchPartyRelationshipTypes();
+      this.props.fetchPermitStatusOptions();
       this.props.setOptionsLoaded();
     }
   }
@@ -410,6 +412,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTenureTypes,
       fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
+      fetchPermitStatusOptions,
       openModal,
       closeModal,
       setOptionsLoaded,

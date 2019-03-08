@@ -44,3 +44,8 @@ export const storeProvinceCodes = (payload) => ({
   type: ActionTypes.STORE_PROVINCE_OPTIONS,
   payload,
 });
+
+export const storePermitStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_PERMIT_STATUS_OPTIONS,
+  payload,
+});

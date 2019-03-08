@@ -20,6 +20,7 @@ const baseExpectedValue = {
   mineTenureTypes: [],
   mineCommodityOptions: [],
   provinceOptions: [],
+  permitStatusCodes: [],
   optionsLoaded: false,
 };
 

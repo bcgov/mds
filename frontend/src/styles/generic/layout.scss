@@ -46,6 +46,10 @@ body {
   height: inherit !important;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .inline-flex {
   @include flex;
 
