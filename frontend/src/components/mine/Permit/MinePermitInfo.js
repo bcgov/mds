@@ -21,6 +21,8 @@ import { getPermits } from "../../../reducers/permitReducer";
  * @class  MinePermitInfo - contains all permit information
  */
 
+const amalgamtedPermit = "ALG";
+
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
@@ -170,7 +172,10 @@ export class MinePermitInfo extends Component {
 
   handleAddAmalgamatedPermit = (values) =>
     this.props
-      .createPermitAmendment(values.permit_guid, { ...values, permit_amendment_type_code: "ALG" })
+      .createPermitAmendment(values.permit_guid, {
+        ...values,
+        permit_amendment_type_code: amalgamtedPermit,
+      })
       .then(this.closePermitModal);
 
   render() {

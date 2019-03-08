@@ -16,6 +16,8 @@ import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
 
+const amalgamtedPermit = "ALG";
+
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -226,7 +228,9 @@ const transformRowData = (
 
   const permittees = getPermittees(partyRelationships, permit);
   const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
-  const hasAmalgamated = permit.amendments.find((pa) => pa.permit_amendment_type_code === "ALG");
+  const hasAmalgamated = permit.amendments.find(
+    (pa) => pa.permit_amendment_type_code === amalgamtedPermit
+  );
 
   return {
     key: permit.permit_guid,
@@ -234,7 +238,9 @@ const transformRowData = (
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
     firstIssued: formatDate(firstAmendment.issue_date),
     permittee: permitteeName,
-    authorizationEndDate: formatDate(latestAmendment.authorization_end_date),
+    authorizationEndDate:
+      (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
+      Strings.EMPTY_FIELD,
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: {
@@ -258,12 +264,9 @@ const transformChildRowData = (
 ) => ({
   amendmentNumber,
   amendmentType: amendment.permit_amendment_type_code,
-  receivedDate:
-    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
-  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
-  authorizationEndDate:
-    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
-    Strings.EMPTY_FIELD,
+  receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
+  issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
+  authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   amendmentEdit: {
     major_mine_ind,
