@@ -234,9 +234,9 @@ const transformRowData = (
 
   return {
     key: permit.permit_guid,
-    lastAmended: formatDate(latestAmendment.issue_date),
+    lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    firstIssued: formatDate(firstAmendment.issue_date),
+    firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permittee: permitteeName,
     authorizationEndDate:
       (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
