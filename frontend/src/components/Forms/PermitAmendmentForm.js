@@ -21,7 +21,7 @@ const { TabPane } = Tabs;
 
 class PermitAmendmentForm extends Component {
   onFileLoad = (fileName, document_manager_guid) => {
-    this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.initialValues.related_documents.push({ fileName, document_manager_guid });
     console.log(this.props);
   };
 
