@@ -18,6 +18,7 @@ const baseExpectedValue = {
   mineTSFRequiredReports: [],
   mineTenureTypes: [],
   mineCommodityOptions: [],
+  permitStatusCodes: [],
   optionsLoaded: false,
 };
 
