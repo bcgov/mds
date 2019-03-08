@@ -83,3 +83,6 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
     ? "New manager's start date cannot be on or before the previous manager's start date."
     : undefined
 );
+
+export const dateNotInFuture = (value) =>
+  value && new Date(value) >= new Date() ? "Date can not be in the future" : undefined;
