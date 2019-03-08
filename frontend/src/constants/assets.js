@@ -26,4 +26,5 @@ export { default as DOC } from "../assets/images/doc.svg";
 export { default as OVERDUEDOC } from "../assets/images/overdue-doc.svg";
 export { default as COMPUTER_404 } from "../assets/images/computer404.svg";
 export { default as MINE } from "../assets/images/mine.svg";
+export { default as SUCCESS_CHECKMARK } from "../assets/images/Checkmark.svg";
 export { default as CARAT } from "../assets/images/ThinCarat.svg";

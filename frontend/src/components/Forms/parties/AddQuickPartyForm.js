@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
+import { resetForm, normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -13,8 +13,8 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
-export const AddPartyForm = (props) => (
-  <div className="form__parties">
+export const AddQuickPartyForm = (props) => (
+  <div>
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {props.isPerson && (
         <Row gutter={16}>
@@ -80,6 +80,7 @@ export const AddPartyForm = (props) => (
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
               validate={[required, phoneNumber, maxLength(12)]}
+              normalize={normalizePhone}
             />
           </Form.Item>
         </Col>
@@ -109,10 +110,10 @@ export const AddPartyForm = (props) => (
   </div>
 );
 
-AddPartyForm.propTypes = propTypes;
+AddQuickPartyForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_PARTY,
+  form: FORM.ADD_QUICK_PARTY,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_PARTY),
-})(AddPartyForm);
+  onSubmitSuccess: resetForm(FORM.ADD_QUICK_PARTY),
+})(AddQuickPartyForm);
