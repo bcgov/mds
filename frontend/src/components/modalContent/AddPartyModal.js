@@ -86,8 +86,8 @@ export class AddPartyModal extends Component {
     return (
       <div className="center">
         <p>
-          If you would like to add another contact, click on the add another contact below. Your
-          current contact will be submitted once you add a new contact.
+          If you would like to add another contact, click on the button below. Your current contact
+          will be submitted once you opt to add a new contact.
         </p>
         <Button
           type="primary"

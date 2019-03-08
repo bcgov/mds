@@ -141,7 +141,7 @@ export const fetchProvinceCodes = () => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: "this is causing an error",
+        message: err.response ? err.response.data.error.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_PROVINCE_CODES));
