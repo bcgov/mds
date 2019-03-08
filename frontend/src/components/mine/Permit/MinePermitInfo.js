@@ -55,7 +55,6 @@ export class MinePermitInfo extends Component {
 
   openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
-
     this.props.openModal({
       props: {
         onSubmit,
@@ -65,21 +64,15 @@ export class MinePermitInfo extends Component {
     });
   };
 
-  openEditPermitModal = (event, permit_guid, permit_no) => {
+  openEditPermitModal = (event, permit) => {
     event.preventDefault();
-
-    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
-
-    const initialValues = {
-      permit_status_code: permit.permit_status_code,
-      permit_guid,
-    };
+    const initialValues = { ...permit };
 
     this.props.openModal({
       props: {
         initialValues,
         onSubmit: this.handleEditPermit,
-        title: `Edit permit status for ${permit_no}`,
+        title: `Edit permit status for ${permit.permit_no}`,
       },
       content: modalConfig.EDIT_PERMIT,
     });
@@ -106,12 +99,14 @@ export class MinePermitInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        permit,
+        initialValues: {
+          mine_guid: permit.mine_guid,
+          permit_guid: permit.permit_guid,
+        },
         onSubmit,
         title,
-        mine_guid: permit.mine_guid,
       },
-      content: modalConfig.ADD_PERMIT_AMENDMENT,
+      content: modalConfig.PERMIT_AMENDMENT,
     });
   };
 
@@ -154,8 +149,10 @@ export class MinePermitInfo extends Component {
       .updatePermitAmendment(values.permit_amendment_guid, values)
       .then(this.closePermitModal);
 
-  handleAddPermitAmendment = (values) =>
+  handleAddPermitAmendment = (values) => {
+    console.log(values);
     this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
+  };
 
   handleAddAmalgamatedPermit = (values) =>
     this.props

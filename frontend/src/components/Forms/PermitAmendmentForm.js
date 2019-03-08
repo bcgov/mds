@@ -29,8 +29,8 @@ class PermitAmendmentForm extends Component {
   }
 
   onFileLoad = (fileName, document_manager_guid) => {
-    console.log(this.state);
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    console.log(this.state);
   };
 
   render() {

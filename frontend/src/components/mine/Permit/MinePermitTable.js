@@ -122,7 +122,7 @@ const columns = [
               type="button"
               className="full"
               onClick={(event) =>
-                record.openEditPermitModal(event, text.guid, text.permit_no, record.description)
+                record.openEditPermitModal(event, record.permit, record.description)
               }
             >
               <img
