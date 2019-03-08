@@ -100,7 +100,7 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          related_documents: [],
+          uploadedFiles: [],
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
         },
@@ -117,6 +117,7 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
+          uploadedFiles: [],
           ...permit_amendment,
         },
         onSubmit: this.handleEditPermitAmendment,
