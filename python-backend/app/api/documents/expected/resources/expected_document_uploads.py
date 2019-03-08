@@ -59,14 +59,6 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        if resp.status_code == 201:
-            try:
-                expected_document.exp_document_status_code = 'PRE'
-                expected_document.received_date = datetime.now()
-                expected_document.save()
-            except AssertionError as e:
-                return self.create_error_payload(500, 'Unable to update document status'), 500
-
         response = Response(resp.content, resp.status_code,
                             resp.raw.headers.items())
 
@@ -110,7 +102,9 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         try:
             expected_document.exp_document_status_code = 'PRE'
-            expected_document.received_date = datetime.now()
+            # set received_date to first upload date
+            if len(expected_document.mine_documents) == 1:
+                expected_document.received_date = datetime.now()
             expected_document.save()
         except AssertionError as e:
             return self.create_error_payload(500, 'Unable to update document status'), 500
