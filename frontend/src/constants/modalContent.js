@@ -7,7 +7,7 @@ export const UPDATE_MINE_RECORD = "Update Mine Record";
 export const ADD_TAILINGS = "+ Add TSF";
 export const EDIT_TAILINGS_REPORT = "Update TSF Report";
 export const ADD_TAILINGS_REPORT = "Add TSF Report";
-export const ADD_CONTACT = "Add Contact";
+export const ADD_CONTACT = "Add New Contact";
 
 export const PERSON = "PER";
 export const ORGANIZATION = "ORG";
