@@ -28,14 +28,18 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "class",
     "props": Object {
-      "children": <Input
-        defaultValue={undefined}
-        disabled={false}
-        id={1}
-        placeholder={undefined}
-        prefixCls="ant-input"
-        type="text"
-      />,
+      "children": <div
+        className="inline-flex"
+      >
+        <Input
+          defaultValue={undefined}
+          disabled={false}
+          id={1}
+          placeholder={undefined}
+          prefixCls="ant-input"
+          type="text"
+        />
+      </div>,
       "colon": true,
       "hasFeedback": false,
       "help": false,
@@ -47,18 +51,42 @@ ShallowWrapper {
     "rendered": Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "class",
+      "nodeType": "host",
       "props": Object {
-        "defaultValue": undefined,
-        "disabled": false,
-        "id": 1,
-        "placeholder": undefined,
-        "prefixCls": "ant-input",
-        "type": "text",
+        "children": Array [
+          undefined,
+          <Input
+            defaultValue={undefined}
+            disabled={false}
+            id={1}
+            placeholder={undefined}
+            prefixCls="ant-input"
+            type="text"
+          />,
+        ],
+        "className": "inline-flex",
       },
       "ref": null,
-      "rendered": null,
-      "type": [Function],
+      "rendered": Array [
+        undefined,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "defaultValue": undefined,
+            "disabled": false,
+            "id": 1,
+            "placeholder": undefined,
+            "prefixCls": "ant-input",
+            "type": "text",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": "div",
     },
     "type": [Function],
   },
@@ -68,14 +96,18 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "children": <Input
-          defaultValue={undefined}
-          disabled={false}
-          id={1}
-          placeholder={undefined}
-          prefixCls="ant-input"
-          type="text"
-        />,
+        "children": <div
+          className="inline-flex"
+        >
+          <Input
+            defaultValue={undefined}
+            disabled={false}
+            id={1}
+            placeholder={undefined}
+            prefixCls="ant-input"
+            type="text"
+          />
+        </div>,
         "colon": true,
         "hasFeedback": false,
         "help": false,
@@ -87,18 +119,42 @@ ShallowWrapper {
       "rendered": Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "class",
+        "nodeType": "host",
         "props": Object {
-          "defaultValue": undefined,
-          "disabled": false,
-          "id": 1,
-          "placeholder": undefined,
-          "prefixCls": "ant-input",
-          "type": "text",
+          "children": Array [
+            undefined,
+            <Input
+              defaultValue={undefined}
+              disabled={false}
+              id={1}
+              placeholder={undefined}
+              prefixCls="ant-input"
+              type="text"
+            />,
+          ],
+          "className": "inline-flex",
         },
         "ref": null,
-        "rendered": null,
-        "type": [Function],
+        "rendered": Array [
+          undefined,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "defaultValue": undefined,
+              "disabled": false,
+              "id": 1,
+              "placeholder": undefined,
+              "prefixCls": "ant-input",
+              "type": "text",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": "div",
       },
       "type": [Function],
     },
