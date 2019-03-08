@@ -100,6 +100,7 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
+          uploadedFiles: [],
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
         },
@@ -112,13 +113,13 @@ export class MinePermitInfo extends Component {
   };
 
   openEditAmendmentModal = (event, permit_amendment, permit) => {
-    const initialValues = {
-      ...permit_amendment,
-    };
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues,
+        initialValues: {
+          uploadedFiles: [],
+          ...permit_amendment,
+        },
         onSubmit: this.handleEditPermitAmendment,
         title: `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
