@@ -151,7 +151,7 @@ export class ContactHomePage extends Component {
         title,
         provinceOptions,
       },
-      widthSize: 1200,
+      widthSize: "75vw",
       content: modalConfig.ADD_CONTACT,
     });
   }

@@ -16,7 +16,8 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  onPartySubmit: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party),
@@ -80,7 +81,6 @@ export class AddPartyRelationshipModal extends Component {
               onSubmit={this.props.onSubmit}
               handleChange={this.props.handleChange}
               closeModal={this.props.closeModal}
-              // onPartySubmit={this.props.onPartySubmit}
               title={this.props.title}
               partyRelationshipType={this.props.partyRelationshipType}
               parties={createItemMap(filteredParties, "party_guid")}
@@ -92,7 +92,7 @@ export class AddPartyRelationshipModal extends Component {
             {!this.state.isFormVisible && (
               <div className="center">
                 {!this.state.successfulPartyCreation && (
-                  <div style={{ position: "relative", top: "80px" }}>
+                  <div style={{ marginTop: "80px" }}>
                     <p>
                       {this.props.partyRelationshipType.person &&
                         this.props.partyRelationshipType.organization &&

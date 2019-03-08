@@ -81,13 +81,6 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  // onPartySubmit = (values, type) => {
-  //   const payload = { type, ...values };
-  //   return this.props.createParty(payload).then(() => {
-  //     this.props.fetchParties();
-  //   });
-  // };
-
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
 
@@ -107,7 +100,7 @@ export class ViewPartyRelationships extends Component {
         partyRelationshipType: value,
         mine,
       },
-      widthSize: 1200,
+      widthSize: "75vw",
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
     });

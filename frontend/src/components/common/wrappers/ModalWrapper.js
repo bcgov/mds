@@ -20,7 +20,7 @@ const propTypes = {
   content: PropTypes.func,
   props: PropTypes.objectOf(PropTypes.string),
   clearOnSubmit: PropTypes.bool.isRequired,
-  widthSize: PropTypes.number.isRequired,
+  widthSize: PropTypes.oneOfType(PropTypes.number, PropTypes.string).isRequired,
 };
 
 const defaultProps = {
