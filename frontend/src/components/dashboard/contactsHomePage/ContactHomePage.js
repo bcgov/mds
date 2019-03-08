@@ -3,11 +3,18 @@ import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchParties, fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
+import {
+  fetchParties,
+  createParty,
+  fetchPartyRelationshipTypes,
+} from "@/actionCreators/partiesActionCreator";
+import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import {
   getParties,
   getPartyPageData,
@@ -17,8 +24,11 @@ import {
 import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
+import { modalConfig } from "@/components/modalContent/config";
+import * as ModalContent from "@/constants/modalContent";
 
 /**
  * @class ContactHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -27,10 +37,13 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
+  fetchProvinceCodes: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -47,6 +60,7 @@ export class ContactHomePage extends Component {
   componentWillMount() {
     // Fetch dependencies from API
     this.props.fetchPartyRelationshipTypes();
+    this.props.fetchProvinceCodes();
   }
 
   componentDidMount() {
@@ -129,16 +143,45 @@ export class ContactHomePage extends Component {
     );
   };
 
+  openAddContactModal(event, fetchData, title, provinceOptions) {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        fetchData,
+        title,
+        provinceOptions,
+      },
+      widthSize: "75vw",
+      content: modalConfig.ADD_CONTACT,
+    });
+  }
+
   render() {
     const { page, per_page } = this.state.params;
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <div className="inline-flex between center-mobile center-mobile">
+          <div className="inline-flex between center-mobile">
             <div>
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
             </div>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Button
+                className="full-mobile"
+                type="primary"
+                onClick={(event) =>
+                  this.openAddContactModal(
+                    event,
+                    this.renderDataFromURL,
+                    ModalContent.ADD_CONTACT,
+                    this.props.provinceOptions
+                  )
+                }
+              >
+                {ModalContent.ADD_CONTACT}
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <div className="landing-page__content">
@@ -147,7 +190,6 @@ export class ContactHomePage extends Component {
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
             handleSearch={this.handleSearch}
-            handleSubmit={this.handleSubmit}
           />
           {this.state.isLoaded && (
             <div>
@@ -177,6 +219,7 @@ export class ContactHomePage extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   pageData: getPartyPageData(state),
+  provinceOptions: getDropdownProvinceOptions(state),
   relationshipTypeHash: getPartyRelationshipTypeHash(state),
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
 });
@@ -185,6 +228,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
+      fetchProvinceCodes,
+      createParty,
       fetchPartyRelationshipTypes,
       openModal,
       closeModal,

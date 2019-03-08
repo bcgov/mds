@@ -1,4 +1,4 @@
-import { PropTypes, shape, arrayOf } from "prop-types";
+import { PropTypes, shape, arrayOf, objectOf, oneOfType } from "prop-types";
 
 export const dropdownListItem = shape({
   value: PropTypes.string.isRequired,
@@ -15,7 +15,15 @@ export const formMeta = shape({
 
 export const match = shape({
   isExact: PropTypes.bool,
-  params: PropTypes.objectOf(PropTypes.string),
+  params: objectOf(PropTypes.string),
   path: PropTypes.string,
   url: PropTypes.string,
+});
+
+export const genericFormState = shape({
+  anyTouched: PropTypes.bool,
+  registeredFields: objectOf(objectOf(oneOfType([PropTypes.string, PropTypes.number]))),
+  fields: objectOf(objectOf(PropTypes.bool)),
+  syncErrors: PropTypes.string,
+  values: objectOf(PropTypes.string),
 });
