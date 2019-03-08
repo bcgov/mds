@@ -43,6 +43,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchPermitStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchRegionOptions={
       [MockFunction] {
         "calls": Array [
