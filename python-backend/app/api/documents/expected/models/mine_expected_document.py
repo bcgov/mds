@@ -44,6 +44,7 @@ class MineExpectedDocument(AuditMixin, Base):
         order_by='desc(RequiredDocument.req_document_name)',
         lazy='joined',
         load_on_pending=True)
+
     expected_document_status = db.relationship(
         'ExpectedDocumentStatus',
         backref='exp_documents',

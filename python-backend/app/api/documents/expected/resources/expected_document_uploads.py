@@ -59,15 +59,24 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
+        if resp.status_code == 201:
+            try:
+                expected_document.exp_document_status_code = 'PRE'
+                expected_document.received_date = datetime.now()
+                expected_document.save()
+            except AssertionError as e:
+                return self.create_error_payload(500, 'Unable to update document status'), 500
+
         response = Response(resp.content, resp.status_code,
                             resp.raw.headers.items())
+
         return response
-     
+
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, expected_document_guid):
         if not expected_document_guid:
-            return self.create_error_payload(400, 'Expected Document GUID is required'), 400       
+            return self.create_error_payload(400, 'Expected Document GUID is required'), 400
         expected_document = MineExpectedDocument.find_by_exp_document_guid(expected_document_guid)
         if not expected_document:
             return self.create_error_payload(404, 'Expected Document not found'), 404
@@ -87,7 +96,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             filename = data.get('filename')
             if not filename:
                 return self.create_error_payload(400, 'Must supply filename for new file upload'), 400
-            
+
             mine_doc = MineDocument(
                     mine_guid=expected_document.mine_guid,
                     document_manager_guid=data.get('document_manager_guid'),
@@ -98,8 +107,8 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             db.session.commit()
         else:
             return self.create_error_payload(400, 'Must specify either Mine Document GIUD or Docuemnt Manager GUID'), 400
- 
-        return expected_document.json()           
+
+        return expected_document.json()
 
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])

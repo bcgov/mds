@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import moment from "moment";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
@@ -25,13 +24,12 @@ const propTypes = {
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateExpectedDocument: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
 export class MineInfo extends Component {
-  state = { isLoaded: false, selectedDocument: {} };
+  state = { isLoaded: false };
 
   componentDidMount() {
     const { mineId } = this.props.match.params;
@@ -41,20 +39,11 @@ export class MineInfo extends Component {
   }
 
   handleEditReportSubmit = () => {
-    const updatedDocument = this.state.selectedDocument;
-    updatedDocument.received_date = moment();
-    this.props
-      .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+    this.props.closeModal();
+    this.props.fetchMineRecordById(this.props.mine.guid);
   };
 
   openEditReportModal = (event, onSubmit, title, doc) => {
-    this.setState({
-      selectedDocument: doc,
-    });
     event.preventDefault();
 
     this.props.openModal({
