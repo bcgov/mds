@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset } from "redux-form";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import { createParty } from "@/actionCreators/partiesActionCreator";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 
@@ -16,14 +17,17 @@ const propTypes = {
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   title: PropTypes.string,
-  addPartyFormValues: PropTypes.objectOf(PropTypes.strings).isRequired,
+  addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
+  addPartyForm: PropTypes.objectOf(CustomPropTypes.genericFormState),
 };
 
 const defaultProps = {
+  addPartyFormValues: {},
+  addPartyForm: {},
   title: "",
 };
 
-export class AddTenureModal extends Component {
+export class AddPartyModal extends Component {
   state = { isPerson: true, current: 0 };
 
   togglePartyChange = (value) => {
@@ -33,7 +37,7 @@ export class AddTenureModal extends Component {
   handlePartySubmit = (event, addAnother) => {
     event.preventDefault();
     const type = this.state.isPerson ? "PER" : "ORG";
-    const payload = { type, ...this.props.AddPartyFormValues };
+    const payload = { type, ...this.props.addPartyFormValues };
     return this.props
       .createParty(payload)
       .then(() => {
@@ -51,11 +55,11 @@ export class AddTenureModal extends Component {
   };
 
   next() {
-    if (!this.props.AddPartyForm.syncErrors) {
+    if (!this.props.addPartyForm.syncErrors) {
       const current = this.state.current + 1;
       this.setState({ current });
     } else {
-      // submit form to trigger validation errors.... smelly, suggestions??
+      // submit form to trigger validation errors.... alternate suggestions??
       this.props.submit(FORM.ADD_FULL_PARTY);
     }
   }
@@ -156,8 +160,8 @@ export class AddTenureModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  AddPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
-  AddPartyForm: state.form[FORM.ADD_FULL_PARTY],
+  addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
+  addPartyForm: state.form[FORM.ADD_FULL_PARTY],
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -169,10 +173,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-AddTenureModal.propTypes = propTypes;
-AddTenureModal.defaultProps = defaultProps;
+AddPartyModal.propTypes = propTypes;
+AddPartyModal.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddTenureModal);
+)(AddPartyModal);

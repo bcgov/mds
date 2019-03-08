@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
 import { normalizePhone, upperCase } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   togglePartyChange: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export const AddFullPartyForm = (props) => (
