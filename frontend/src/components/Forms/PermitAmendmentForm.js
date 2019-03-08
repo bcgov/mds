@@ -18,17 +18,9 @@ const propTypes = {
 };
 
 class PermitAmendmentForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      uploadedFiles: [],
-    };
-  }
-
   onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    console.log(this.state);
+    this.props.initialValues.related_documents.push({ fileName, document_manager_guid });
+    console.log(this.props);
   };
 
   render() {
@@ -96,7 +88,7 @@ class PermitAmendmentForm extends Component {
 PermitAmendmentForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_PERMIT_AMENDMENT,
+  form: FORM.PERMIT_AMENDMENT,
   touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.ADD_PERMIT_AMENDMENT),
+  onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
 })(PermitAmendmentForm);

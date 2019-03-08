@@ -101,11 +101,13 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
+          related_documents: [],
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
         },
         onSubmit,
         title,
+        mine_guid: permit.mine_guid,
       },
       widthSize: "75vw",
       content: modalConfig.PERMIT_AMENDMENT,
@@ -113,13 +115,12 @@ export class MinePermitInfo extends Component {
   };
 
   openEditAmendmentModal = (event, permit_amendment, permit) => {
-    const initialValues = {
-      ...permit_amendment,
-    };
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues,
+        initialValues: {
+          ...permit_amendment,
+        },
         onSubmit: this.handleEditPermitAmendment,
         title: `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
@@ -153,7 +154,6 @@ export class MinePermitInfo extends Component {
       .then(this.closePermitModal);
 
   handleAddPermitAmendment = (values) => {
-    console.log(values);
     this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
   };
 
