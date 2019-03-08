@@ -150,15 +150,7 @@ export const AddPermitForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button
-        className="full-mobile"
-        type="primary"
-        htmlType="submit"
-        disabled={props.submitting}
-        onClick={() => {
-          // Change tabs
-        }}
-      >
+      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
         {props.title}
       </Button>
     </div>

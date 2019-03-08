@@ -8,6 +8,8 @@ import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 
+const originalPermit = "OGP";
+
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -28,7 +30,7 @@ export const AddPermitAmendmentForm = (props) => (
             validate={[required, dateNotInFuture]}
           />
         </Form.Item>
-        {props.initialValues.permit_amendment_type_code !== "OGP" && (
+        {props.initialValues.permit_amendment_type_code !== originalPermit && (
           <Form.Item>
             <Field
               id="description"
