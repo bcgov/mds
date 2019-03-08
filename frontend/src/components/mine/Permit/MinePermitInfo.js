@@ -102,62 +102,49 @@ export class MinePermitInfo extends Component {
 
   // Amendment Modals
 
-  openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
+  openAddAmendmentModal = (event, onSubmit, title, permit) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: { permit_guid },
+        permit,
         onSubmit,
         title,
+        mine_guid: permit.mine_guid,
       },
       content: modalConfig.ADD_PERMIT_AMENDMENT,
     });
   };
 
-  openEditAmendmentModal = (
-    event,
-    permit_amendment_guid,
-    permit_guid,
-    permit_amendment_type_code,
-    description
-  ) => {
-    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
-    const permit_amendment = permit.amendments.find(
-      (pa) => pa.permit_amendment_guid === permit_amendment_guid
-    );
-
+  openEditAmendmentModal = (event, permit_amendment, permit) => {
     const initialValues = {
-      issue_date: permit_amendment.issue_date,
-      permit_amendment_guid,
-      permit_amendment_type_code,
-      description,
+      ...permit_amendment,
     };
-
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues,
         onSubmit: this.handleEditPermitAmendment,
         title: `Edit permit amendment for ${permit.permit_no}`,
+        mine_guid: permit.mine_guid,
       },
-      content: modalConfig.ADD_PERMIT_AMENDMENT,
+      content: modalConfig.PERMIT_AMENDMENT,
     });
   };
 
-  openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
+  openAddAmalgamatedPermitModal = (event, permit) =>
     this.openAddAmendmentModal(
       event,
-      this.handleAddAmalgamatedPermit,
-      `Add amalgamated permit to ${permit_no}`,
-      permit_guid
+      this.handleAddAlgPermitAmendment,
+      `Add amalgamated permit to ${permit.permit_no}`,
+      permit
     );
 
-  openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+  openAddPermitAmendmentModal = (event, permit) =>
     this.openAddAmendmentModal(
       event,
       this.handleAddPermitAmendment,
-      `Add permit amendment to ${permit_no}`,
-      permit_guid
+      `Add permit amendment to ${permit.permit_no}`,
+      permit
     );
 
   // Amendment Handlers
