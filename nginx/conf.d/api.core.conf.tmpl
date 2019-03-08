@@ -13,22 +13,22 @@ location ${PATH_PREFIX}/api/ {
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
-location ${PATH_PREFIX}/api/documents/ {
+location ${PATH_PREFIX}/api/documents {
         if (-f /opt/app-root/src/html/maintenance_on.html){
                 return 503;
         }
 
         access_log /var/log/nginx/access.log clf;
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/documents/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/documents;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
-location ${PATH_PREFIX}/api/document-manager/ {
+location ${PATH_PREFIX}/api/document-manager {
         if (-f /opt/app-root/src/html/maintenance_on.html){
                 return 503;
         }
 
         access_log /var/log/nginx/access.log clf;
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/document-manager/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/document-manager;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
