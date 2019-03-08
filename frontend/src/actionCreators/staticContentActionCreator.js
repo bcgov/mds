@@ -129,13 +129,11 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
 
 export const fetchPermitStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
-  dispatch(showLoading("modal"));
   return axios
     .get(`${ENVIRONMENT.apiUrl}${API.PERMIT()}/status-codes`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
       dispatch(staticContentActions.storePermitStatusOptions(response.data));
-      dispatch(hideLoading("modal"));
     })
     .catch((err) => {
       notification.error({
@@ -143,7 +141,6 @@ export const fetchPermitStatusOptions = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
-      dispatch(hideLoading("modal"));
     });
 };
 
