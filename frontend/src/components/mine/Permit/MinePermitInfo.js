@@ -105,6 +105,7 @@ export class MinePermitInfo extends Component {
         },
         onSubmit,
         title,
+        mine_guid: permit.mine_guid,
       },
       content: modalConfig.PERMIT_AMENDMENT,
     });
@@ -150,7 +151,6 @@ export class MinePermitInfo extends Component {
       .then(this.closePermitModal);
 
   handleAddPermitAmendment = (values) => {
-    console.log(values);
     this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
   };
 
