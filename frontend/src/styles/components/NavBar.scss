@@ -33,6 +33,15 @@
   }
 }
 
+.menu--hamburger {
+  position: fixed;
+  display: block;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: $nav-color;
+}
+
 #active-mine-btn,
 #active-contact-btn,
 #active-admin-btn {

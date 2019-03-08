@@ -25,3 +25,4 @@ export { default as DOC } from "../assets/images/doc.svg";
 export { default as OVERDUEDOC } from "../assets/images/overdue-doc.svg";
 export { default as COMPUTER_404 } from "../assets/images/computer404.svg";
 export { default as MINE } from "../assets/images/mine.svg";
+export { default as HAMBURGER } from "../assets/images/Hamburger.svg";
