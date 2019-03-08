@@ -1,166 +1,248 @@
-import React from "react";
-import { Table } from "antd";
-import NullScreen from "@/components/common/NullScreen";
-import * as Strings from "@/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import {
+  fetchPermits,
+  createPermit,
+  updatePermit,
+  updatePermitAmendment,
+  createPermitAmendment,
+} from "@/actionCreators/permitActionCreator";
+import { Icon, Button } from "antd";
+import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import { getPermits } from "../../../reducers/permitReducer";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
+const amalgamtedPermit = "ALG";
+
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  createPermit: PropTypes.func.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  updatePermit: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
+  createPermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
+  permits: [],
 };
 
-const columns = [
-  {
-    title: "Permit No.",
-    dataIndex: "permitNo",
-    key: "permitNo",
-    render: (text) => <div title="Permit No.">{text}</div>,
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (text) => <div title="Status">{text}</div>,
-  },
-  {
-    title: "Permittee",
-    dataIndex: "permittee",
-    key: "permittee",
-    render: (text) => <div title="Permittee">{text}</div>,
-  },
-  {
-    title: "Authorization End Date",
-    dataIndex: "authorizationEndDate",
-    key: "authorizationEndDate",
-    render: (text) => <div title="Authorization End Date">{text}</div>,
-  },
+export class MinePermitInfo extends Component {
+  componentWillMount() {
+    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+  }
 
-  {
-    title: "First Issued",
-    dataIndex: "firstIssued",
-    key: "firstIssued",
-    render: (text) => <div title="First Issued">{text}</div>,
-  },
-  {
-    title: "Last Amended",
-    dataIndex: "lastAmended",
-    key: "lastAmended",
-    render: (text) => <div title="Last Amended">{text}</div>,
-  },
-];
+  closePermitModal = () => {
+    this.props.closeModal();
+    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+  };
 
-const childColumns = [
-  {
-    title: "Amendment",
-    dataIndex: "amendmentNumber",
-    key: "amendmentNumber",
-    render: (text) => <div title="Amendment">{text}</div>,
-  },
-  {
-    title: "Received Date",
-    dataIndex: "receivedDate",
-    key: "receivedDate",
-    render: (text) => <div title="Received Date">{text}</div>,
-  },
-  {
-    title: "Issue Date",
-    dataIndex: "issueDate",
-    key: "issueDate",
-    render: (text) => <div title="Issue Date">{text}</div>,
-  },
-  {
-    title: "Authorization End Date",
-    dataIndex: "authorizationEndDate",
-    key: "authorizationEndDate",
-    render: (text) => <div title="Authorization End Date">{text}</div>,
-  },
-];
+  // Permit Modals
 
-const getPermittees = (partyRelationships, permit) =>
-  partyRelationships
-    .filter(({ related_guid }) => permit.permit_guid === related_guid)
-    .sort((order1, order2) => {
-      const date1 = Date.parse(order1.due_date) || 0;
-      const date2 = Date.parse(order2.due_date) || 0;
-      return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
+  openAddPermitModal = (event, onSubmit, title) => {
+    event.preventDefault();
+
+    this.props.openModal({
+      props: {
+        onSubmit,
+        title,
+      },
+      content: modalConfig.ADD_PERMIT,
     });
-
-const getPermitteeName = (permittees) =>
-  permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
-
-const transformRowData = (permit, partyRelationships) => {
-  const latestAmendment = permit.amendments[0];
-  const firstAmendment = permit.amendments[permit.amendments.length - 1];
-
-  const permittees = getPermittees(partyRelationships, permit);
-  const permitteeName =
-    partyRelationships.length === 0 ? Strings.LOADING : getPermitteeName(permittees);
-
-  return {
-    key: permit.permit_guid,
-    lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    permitNo: permit.permit_no || Strings.EMPTY_FIELD,
-    firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    permittee: permitteeName,
-    authorizationEndDate:
-      (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
-      Strings.EMPTY_FIELD,
-    amendments: permit.amendments,
-    status: permit.permit_status_code,
   };
-};
 
-const transformChildRowData = (amendment, index, amendments) => ({
-  amendmentNumber: amendments.length - index,
-  receivedDate:
-    (amendment.received_date && formatDate(amendment.received_date)) || Strings.EMPTY_FIELD,
-  issueDate: (amendment.issue_date && formatDate(amendment.issue_date)) || Strings.EMPTY_FIELD,
-  authorizationEndDate:
-    (amendment.authorization_end_date && formatDate(amendment.authorization_end_date)) ||
-    Strings.EMPTY_FIELD,
-  description: Strings.EMPTY_FIELD,
-});
+  openEditPermitModal = (event, permit_guid, permit_no) => {
+    event.preventDefault();
 
-export const MinePermitInfo = (props) => {
-  const amendmentHistory = (record) => {
-    const childRowData = record.amendments.map(transformChildRowData);
-    return (
-      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
+    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
+
+    const initialValues = {
+      permit_status_code: permit.permit_status_code,
+      permit_guid,
+    };
+
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit: this.handleEditPermit,
+        title: `Edit permit status for ${permit_no}`,
+      },
+      content: modalConfig.EDIT_PERMIT,
+    });
+  };
+
+  // Permit Handlers
+
+  handleAddPermit = (values) => {
+    const payload = { mine_guid: this.props.mine.guid, ...values };
+
+    payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
+      values.permit_no
+    }`;
+
+    return this.props.createPermit(payload).then(this.closePermitModal);
+  };
+
+  handleEditPermit = (values) =>
+    this.props.updatePermit(values.permit_guid, values).then(this.closePermitModal);
+
+  // Amendment Modals
+
+  openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: { permit_guid },
+        onSubmit,
+        title,
+      },
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
+    });
+  };
+
+  openEditAmendmentModal = (
+    event,
+    permit_amendment_guid,
+    permit_guid,
+    permit_amendment_type_code,
+    description
+  ) => {
+    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
+    const permit_amendment = permit.amendments.find(
+      (pa) => pa.permit_amendment_guid === permit_amendment_guid
     );
-  };
-  const rowData = props.mine.mine_permit.map((permit) =>
-    transformRowData(permit, props.partyRelationships)
-  );
 
-  return (
-    <Table
-      className="nested-table"
-      align="left"
-      pagination={false}
-      columns={columns}
-      dataSource={rowData}
-      expandedRowRender={amendmentHistory}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
-    />
-  );
-};
+    const initialValues = {
+      issue_date: permit_amendment.issue_date,
+      permit_amendment_guid,
+      permit_amendment_type_code,
+      description,
+    };
+
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit: this.handleEditPermitAmendment,
+        title: `Edit permit amendment for ${permit.permit_no}`,
+      },
+      content: modalConfig.ADD_PERMIT_AMENDMENT,
+    });
+  };
+
+  openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
+    this.openAddAmendmentModal(
+      event,
+      this.handleAddAmalgamatedPermit,
+      `Add amalgamated permit to ${permit_no}`,
+      permit_guid
+    );
+
+  openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+    this.openAddAmendmentModal(
+      event,
+      this.handleAddPermitAmendment,
+      `Add permit amendment to ${permit_no}`,
+      permit_guid
+    );
+
+  // Amendment Handlers
+
+  handleEditPermitAmendment = (values) =>
+    this.props
+      .updatePermitAmendment(values.permit_amendment_guid, values)
+      .then(this.closePermitModal);
+
+  handleAddPermitAmendment = (values) =>
+    this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
+
+  handleAddAmalgamatedPermit = (values) =>
+    this.props
+      .createPermitAmendment(values.permit_guid, {
+        ...values,
+        permit_amendment_type_code: amalgamtedPermit,
+      })
+      .then(this.closePermitModal);
+
+  render() {
+    return [
+      <div>
+        <div className="inline-flex between">
+          <div />
+          <div className="inline-flex between">
+            <AuthorizationWrapper inTesting>
+              <AuthorizationWrapper
+                permission={Permission.CREATE}
+                isMajorMine={this.props.mine.major_mine_ind}
+              >
+                <Button
+                  type="primary"
+                  onClick={(event) =>
+                    this.openAddPermitModal(
+                      event,
+                      this.handleAddPermit,
+                      `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
+                    )
+                  }
+                >
+                  <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+                  Add a New Permit
+                </Button>
+              </AuthorizationWrapper>
+            </AuthorizationWrapper>
+          </div>
+        </div>
+      </div>,
+      <br />,
+      this.props.permits && (
+        <MinePermitTable
+          permits={this.props.permits}
+          partyRelationships={this.props.partyRelationships}
+          major_mine_ind={this.props.mine.major_mine_ind}
+          openEditPermitModal={this.openEditPermitModal}
+          openEditAmendmentModal={this.openEditAmendmentModal}
+          openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
+          openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+        />
+      ),
+    ];
+  }
+}
 
 const mapStateToProps = (state) => ({
-  partyRelationships: getPartyRelationships(state),
+  permits: getPermits(state),
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchPermits,
+      createPermit,
+      updatePermit,
+      updatePermitAmendment,
+      createPermitAmendment,
+    },
+    dispatch
+  );
 
 MinePermitInfo.propTypes = propTypes;
 MinePermitInfo.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(MinePermitInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MinePermitInfo);
