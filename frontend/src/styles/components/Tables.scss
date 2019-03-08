@@ -57,3 +57,10 @@
     background: #fff;
   }
 }
+
+.table-row-align-middle {
+  vertical-align: middle;
+  td {
+    vertical-align: middle;
+  }
+}

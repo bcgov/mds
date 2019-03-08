@@ -17,7 +17,7 @@ export { default as BRAND_PENCIL } from "../assets/images/BrandPencil.svg";
 export { default as BRAND_DOCUMENT } from "../assets/images/BrandDocument.svg";
 export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";
 export { default as EDIT } from "../assets/images/Edit.svg";
-export { default as EDITOUTLINE } from "../assets/images/EditOutline.svg";
+export { default as EDIT_OUTLINE } from "../assets/images/EditOutline.svg";
 export { default as LOGOUT } from "../assets/images/Logout.svg";
 export { default as ADMIN } from "../assets/images/Admin.svg";
 export { default as INFO_CIRCLE } from "../assets/images/InfoCircle.svg";

@@ -1,5 +1,4 @@
 import React from "react";
-import { bindActionCreators } from "redux";
 import { Table, Menu, Dropdown, Button, Icon } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -11,13 +10,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
-import { BRAND_PENCIL, EDIT, EDITOUTLINE, CARAT } from "@/constants/assets";
-import { modalConfig } from "@/components/modalContent/config";
-import {
-  updatePermitAmendment,
-  createPermitAmendment,
-  updatePermit,
-} from "@/actionCreators/permitActionCreator";
+import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
+
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
@@ -27,11 +21,10 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  updatePermitAmendment: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
-  updatePermit: PropTypes.func.isRequired,
+  openEditPermitModal: PropTypes.func.isRequired,
+  openEditAmendmentModal: PropTypes.func.isRequired,
+  openAddPermitAmendmentModal: PropTypes.func.isRequired,
+  openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -130,8 +123,13 @@ const columns = [
                 record.openEditPermitModal(event, text.guid, text.permit_no, record.description)
               }
             >
-              <img alt="document" className="padding-small" src={BRAND_PENCIL} />
-              &nbsp;&nbsp;&nbsp;Edit permit status
+              <img
+                alt="document"
+                className="padding-small"
+                src={BRAND_PENCIL}
+                style={{ paddingRight: "15px" }}
+              />
+              Edit permit status
             </button>
           </Menu.Item>
         </Menu>
@@ -143,8 +141,13 @@ const columns = [
               <Button type="secondary" className="permit-table-button">
                 <div className="padding-small">
                   <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add/Edit&nbsp;&nbsp;
-                  <img className="padding-small--right icon-svg-filter" src={CARAT} alt="Menu" />
+                  Add/Edit
+                  <img
+                    className="padding-small--right icon-svg-filter"
+                    src={CARAT}
+                    alt="Menu"
+                    style={{ paddingLeft: "5px" }}
+                  />
                 </div>
               </Button>
             </Dropdown>
@@ -188,7 +191,7 @@ const childColumns = [
             onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
           >
             <div>
-              <img className="padding-small--right icon-svg-filter" src={EDITOUTLINE} alt="Edit" />
+              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
             </div>
           </Button>
         </AuthorizationWrapper>
@@ -370,12 +373,12 @@ export const MinePermitTable = (props) => {
         permit,
         permit.amendments.length - index,
         props.major_mine_ind,
-        openEditAmendmentModal
+        props.openEditAmendmentModal
       )
     );
     return (
       <Table
-        rowClassName={() => "permit-table-row"}
+        rowClassName={() => "table-row-align-middle"}
         align="left"
         pagination={false}
         columns={childColumns}
@@ -389,9 +392,9 @@ export const MinePermitTable = (props) => {
       permit,
       props.partyRelationships,
       props.major_mine_ind,
-      openEditPermitModal,
-      openAddPermitAmendmentModal,
-      openAddAmalgamatedPermitModal,
+      props.openEditPermitModal,
+      props.openAddPermitAmendmentModal,
+      props.openAddAmalgamatedPermitModal,
       props.permitStatusOptions
     )
   );
@@ -399,7 +402,7 @@ export const MinePermitTable = (props) => {
   return (
     <Table
       className="nested-table"
-      rowClassName={() => "permit-table-row"}
+      rowClassName={() => "table-row-align-middle"}
       align="left"
       pagination={false}
       columns={columns}
@@ -415,20 +418,7 @@ const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      updatePermitAmendment,
-      createPermitAmendment,
-      updatePermit,
-    },
-    dispatch
-  );
-
 MinePermitTable.propTypes = propTypes;
 MinePermitTable.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MinePermitTable);
+export default connect(mapStateToProps)(MinePermitTable);
