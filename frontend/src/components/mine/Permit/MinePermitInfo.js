@@ -60,6 +60,7 @@ export class MinePermitInfo extends Component {
         onSubmit,
         title,
       },
+      widthSize: "75vw",
       content: modalConfig.ADD_PERMIT,
     });
   };
@@ -106,6 +107,7 @@ export class MinePermitInfo extends Component {
         onSubmit,
         title,
       },
+      widthSize: "75vw",
       content: modalConfig.PERMIT_AMENDMENT,
     });
   };
@@ -122,6 +124,7 @@ export class MinePermitInfo extends Component {
         title: `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
       },
+      widthSize: "75vw",
       content: modalConfig.PERMIT_AMENDMENT,
     });
   };
