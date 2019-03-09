@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Divider } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -26,13 +26,13 @@ class PermitAmendmentForm extends Component {
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
+        <Row gutter={48}>
+          <Col md={12} sm={24} className="border--right--line">
             <Form.Item>
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue date"
+                label="Issue date*"
                 component={RenderDate}
                 validate={[required, dateNotInFuture]}
               />
@@ -59,7 +59,7 @@ class PermitAmendmentForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <div className="right center-mobile">
+        <div className="right center-mobile" style={{ paddingTop: "14px" }}>
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"

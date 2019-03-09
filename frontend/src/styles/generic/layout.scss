@@ -178,5 +178,11 @@ body {
         border-right: 0;
       }
     }
+    &--line {
+      border-right: 1px solid $layout-grey;
+      @include tablet {
+        border-right: 0;
+      }
+    }
   }
 }
