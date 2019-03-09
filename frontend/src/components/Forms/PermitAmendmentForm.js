@@ -9,6 +9,8 @@ import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 
+const originalPermit = "OGP";
+
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -37,15 +39,17 @@ class PermitAmendmentForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Description"
-                component={RenderAutoSizeField}
-                validate={[maxLength(280)]}
-              />
-            </Form.Item>
+            {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
+              <Form.Item>
+                <Field
+                  id="description"
+                  name="description"
+                  label="Description"
+                  component={RenderAutoSizeField}
+                  validate={[maxLength(280)]}
+                />
+              </Form.Item>
+            )}
           </Col>
           <Col md={12} sm={24}>
             <Form.Item label="Upload/Attach Documents">
