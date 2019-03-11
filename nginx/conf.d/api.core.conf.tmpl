@@ -9,21 +9,15 @@ location ${PATH_PREFIX}/api/ {
                 return 503;
         }
 
+
+        location /documents {
+                access_log /var/log/nginx/access.log clf;
+        }
+
+        location /document-manager {
+                access_log /var/log/nginx/access.log clf;
+        }
+
         proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
-}
-
-location ${PATH_PREFIX}/api/documents {
-        if (-f /opt/app-root/src/html/maintenance_on.html){
-                return 503;
-        }
-        access_log /var/log/nginx/access.log clf;
-}
-
-location ${PATH_PREFIX}/api/document-manager {
-        if (-f /opt/app-root/src/html/maintenance_on.html){
-                return 503;
-        }
-
-        access_log /var/log/nginx/access.log clf;
 }
