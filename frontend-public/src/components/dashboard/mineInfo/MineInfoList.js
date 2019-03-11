@@ -53,9 +53,7 @@ const columns = [
     title: "Received Date",
     dataIndex: "receivedDate",
     render: (text, record) => (
-      <div title="Received Date">
-        {record.doc.received_date === "None" ? "-" : record.doc.received_date}
-      </div>
+      <div title="Received Date">{record.doc.received_date ? record.doc.received_date : "-"}</div>
     ),
   },
   {

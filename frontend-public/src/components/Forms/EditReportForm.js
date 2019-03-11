@@ -11,7 +11,6 @@ import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   selectedDocument: CustomPropTypes.mineExpectedDocument.isRequired,
 };
 
@@ -49,7 +48,10 @@ export const EditReportForm = (props) => (
       <Popconfirm
         placement="topRight"
         title="Are you sure?"
-        onConfirm={props.closeModal}
+        /* Cancelling here is too late because all serverside actions have been
+         * taken. Calling handleSubmit will update the props with latest data,
+         * handle document status/received_date, and close the modal */
+        onConfirm={props.handleSubmit}
         okText="Yes"
         cancelText="No"
       >
