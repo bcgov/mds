@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -180,6 +181,24 @@ const childColumns = [
     render: (text) => <div title="Description">{text}</div>,
   },
   {
+    title: "Documents",
+    dataIndex: "documents",
+    key: "documents",
+    render: (text) =>
+      text.map((file) => (
+        <div>
+          <a
+            key={file.mine_document_guid}
+            onClick={() =>
+              downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+            }
+          >
+            - {file.document_name}
+          </a>
+        </div>
+      )),
+  },
+  {
     title: "",
     dataIndex: "amendmentEdit",
     key: "amendmentEdit",
@@ -274,6 +293,7 @@ const transformChildRowData = (
   },
   openEditAmendmentModal,
   permit: record.permit,
+  documents: amendment.related_documents,
 });
 
 export const MinePermitTable = (props) => {
