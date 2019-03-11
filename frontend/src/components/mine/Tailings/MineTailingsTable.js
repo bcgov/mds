@@ -21,6 +21,7 @@ const columns = [
   {
     title: "",
     dataIndex: "overdue",
+    width: 10,
     render: (text, record) => (
       <div title="">
         {record.isOverdue ? (
@@ -34,47 +35,40 @@ const columns = [
   {
     title: "Name",
     dataIndex: "name",
-    render: (text, record) => (
-      <div title="Name">
-        <h6>{record.doc.exp_document_name}</h6>
-      </div>
-    ),
+    width: 200,
+    render: (text, record) => <div title="Name">{record.doc.exp_document_name}</div>,
   },
   {
     title: "Due",
     dataIndex: "due",
-    render: (text, record) => (
-      <div title="Due">
-        <h6>{formatDate(record.doc.due_date) || "-"}</h6>
-      </div>
-    ),
+    width: 90,
+    render: (text, record) => <div title="Due">{formatDate(record.doc.due_date) || "-"}</div>,
   },
   {
     title: "Received",
     dataIndex: "received",
+    width: 180,
     render: (text, record) => (
-      <div title="Received">
-        <h6>{formatDate(record.doc.received_date) || "-"}</h6>
-      </div>
+      <div title="Received"> {formatDate(record.doc.received_date) || "-"}</div>
     ),
   },
   {
     title: "Status",
     dataIndex: "status",
+    width: 120,
     render: (text, record) => (
-      <div title="Status">
-        <h6 className={record.isOverdue ? "bold" : null}>
-          {record.doc ? record.doc.exp_document_status.description : String.LOADING}
-        </h6>
+      <div title="Status" className={record.isOverdue ? "bold" : null}>
+        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
       </div>
     ),
   },
   {
     title: "Documents",
     dataIndex: "documents",
+    width: 200,
     render: (text, record) => (
       <div title="Documents">
-        {!record.doc.related_documents
+        {record.doc.related_documents.length === 0
           ? "-"
           : record.doc.related_documents.map((file) => (
               <div>
@@ -101,6 +95,7 @@ const columns = [
   {
     title: "",
     dataIndex: "updateEdit",
+    width: 10,
     render: (text, record) => (
       <div title="" align="right">
         <AuthorizationWrapper
