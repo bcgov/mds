@@ -173,8 +173,10 @@ body {
   height: 30px;
 }
 
-.icon-lg {
-  font-size: 30px !important;
+.vertical-align {
+  &-sm {
+    vertical-align: -0.125em;
+  }
 }
 
 // used on larger modals as a divider.

@@ -74,12 +74,7 @@ export class NavBar extends Component {
               }
               className="menu__btn--link"
             >
-              <img
-                alt="Mine"
-                className="padding-small--right"
-                style={{ verticalAlign: "-0.125em" }}
-                src={MINE}
-              />
+              <img alt="Mine" className="padding-small--right vertical-align-sm" src={MINE} />
               Mines
             </Button>
           </Link>
@@ -99,9 +94,8 @@ export class NavBar extends Component {
             >
               <img
                 alt="team"
-                className="padding-small--right icon-sm"
+                className="padding-small--right icon-sm vertical-align-sm"
                 src={TEAM}
-                style={{ verticalAlign: "-0.125em" }}
               />
               Contacts
             </Button>
@@ -120,9 +114,8 @@ export class NavBar extends Component {
           >
             <img
               alt="Admin"
-              className="padding-small--right icon-sm"
+              className="padding-small--right icon-sm vertical-align-sm"
               src={ADMIN}
-              style={{ verticalAlign: "-0.125em" }}
             />
             Admin
           </Button>
