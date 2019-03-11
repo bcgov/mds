@@ -1,0 +1,395 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RelationshipProfile renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <RelationshipProfile
+    fetchMineRecordById={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            1,
+          ],
+        ],
+      }
+    }
+    fetchPartyRelationshipTypes={[MockFunction]}
+    fetchPartyRelationships={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {
+              "mine_guid": 1,
+              "relationships": "party",
+              "types": undefined,
+            },
+          ],
+        ],
+      }
+    }
+    match={
+      Object {
+        "isExact": true,
+        "params": Object {
+          "id": 1,
+        },
+        "path": "",
+        "url": "",
+      }
+    }
+    mines={
+      Object {
+        "mineIds": Array [
+          "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "18145c75-49ad-0101-85f3-a43e45ae989a",
+        ],
+        "mines": Object {
+          "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+            "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+            "mine_expected_documents": Array [
+              Object {
+                "date_created": "2018-11-19",
+                "due_date": "",
+                "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                "exp_document_name": "OMS Manual",
+                "exp_document_status": Object {
+                  "description": "Not Received",
+                  "exp_document_status_code": "MIA",
+                },
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "related_documents": Array [],
+                "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+              },
+            ],
+            "mine_location": Object {
+              "latitude": null,
+              "longitude": null,
+            },
+            "mine_name": "mine3",
+            "mine_no": "BLAH9091",
+            "mine_permit": Array [],
+            "mine_status": Object {
+              "effective_date": "2018-10-16",
+              "expiry_date": "9999-12-31",
+              "status_labels": Array [
+                "Closed",
+                "Care & Maintenance",
+              ],
+              "statusvalue": Array [
+                "CLD",
+                "CM",
+              ],
+            },
+            "mine_tailings_storage_facility": Array [
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                "mine_tailings_storage_facility_name": "MockTSF",
+              },
+            ],
+            "mine_type": Array [
+              Object {
+                "mine_tenure_type_code": "PLR",
+              },
+              Object {
+                "mine_tenure_type_code": "MIN",
+              },
+            ],
+            "mineral_tenure_xref": Array [
+              Object {
+                "tenure_number_id": "1234567",
+              },
+            ],
+            "region_code": "NE",
+          },
+          "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+            "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_expected_documents": Array [
+              Object {
+                "date_created": "2018-11-19",
+                "due_date": "",
+                "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+                "exp_document_name": "OMS Manual",
+                "exp_document_status": Object {
+                  "description": "Not Received",
+                  "exp_document_status_code": "MIA",
+                },
+                "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "related_documents": Array [],
+                "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+              },
+            ],
+            "mine_location": Object {
+              "latitude": null,
+              "longitude": null,
+            },
+            "mine_name": "mine2",
+            "mine_no": "BLAH9091",
+            "mine_permit": Array [
+              Object {
+                "authorization_end_date": "9999-12-31",
+                "issue_date": "9999-12-31",
+                "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+                "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                "permit_no": "KNaaWwVdiJ40",
+                "permit_status_code": "Z",
+                "permittee": Array [
+                  Object {
+                    "effective_date": "2018-10-02",
+                    "expiry_date": "9999-12-31",
+                    "party": Object {
+                      "effective_date": "2018-10-03",
+                      "email": "JgHxeyjv@aezZIwee.com",
+                      "expiry_date": "9999-12-31",
+                      "first_name": "Tiyudoveh",
+                      "name": "Tiyudoveh Higesewawa",
+                      "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                      "party_name": "Higesewawa",
+                      "party_type_code": "PER",
+                      "phone_ext": null,
+                      "phone_no": "123-123-1234",
+                    },
+                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                    "party_name": "Yivihoke",
+                    "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                    "permittee_guid": "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
+                  },
+                ],
+              },
+              Object {
+                "authorization_end_date": "9999-12-31",
+                "issue_date": "9999-12-31",
+                "mine_guid": "1628847c-060b-45f2-990f-815877174801",
+                "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                "permit_no": "xfM0c0ZKEw7B",
+                "permit_status_code": "Z",
+                "permittee": Array [
+                  Object {
+                    "effective_date": "2018-10-02",
+                    "expiry_date": "9999-12-31",
+                    "party": Object {
+                      "effective_date": "2018-10-03",
+                      "email": "JgHxeyjv@aezZIwee.com",
+                      "expiry_date": "9999-12-31",
+                      "first_name": "Tiyudoveh",
+                      "name": "Tiyudoveh Higesewawa",
+                      "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                      "party_name": "Higesewawa",
+                      "party_type_code": "PER",
+                      "phone_ext": null,
+                      "phone_no": "123-123-1234",
+                    },
+                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+                    "party_name": "Yivihoke",
+                    "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                    "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+                  },
+                ],
+              },
+            ],
+            "mine_status": Object {
+              "effective_date": "2018-10-16",
+              "expiry_date": "9999-12-31",
+              "status_labels": Array [
+                "Closed",
+                "Care & Maintenance",
+              ],
+              "statusvalue": Array [
+                "CLD",
+                "CM",
+              ],
+            },
+            "mine_tailings_storage_facility": Array [
+              Object {
+                "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+                "mine_tailings_storage_facility_name": "MockTSF1",
+              },
+            ],
+            "mine_type": Array [
+              Object {
+                "mine_tenure_type_code": "PLR",
+              },
+              Object {
+                "mine_tenure_type_code": "MIN",
+              },
+            ],
+            "mineral_tenure_xref": Array [
+              Object {
+                "tenure_number_id": "1234567",
+              },
+            ],
+            "region_code": "NE",
+          },
+        },
+      }
+    }
+    parties={
+      Object {
+        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "name": "mock name",
+      }
+    }
+    partyRelationshipTypes={
+      Array [
+        Object {
+          "active_ind": "True",
+          "description": "Mine Manager",
+          "display_order": "1",
+          "grouping_level": "3",
+          "mine_party_appt_type_code": "MMG",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Permitee",
+          "display_order": "2",
+          "grouping_level": "3",
+          "mine_party_appt_type_code": "PMT",
+          "organization": "True",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Mine Operator",
+          "display_order": "3",
+          "grouping_level": "3",
+          "mine_party_appt_type_code": "MOR",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Mine Owner",
+          "display_order": "4",
+          "grouping_level": "3",
+          "mine_party_appt_type_code": "MOW",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Engineer Of Record",
+          "display_order": "5",
+          "grouping_level": "2",
+          "mine_party_appt_type_code": "EOR",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Environmental Specialist",
+          "display_order": "6",
+          "grouping_level": "2",
+          "mine_party_appt_type_code": "EVS",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Exploration Mine Manager",
+          "display_order": "7",
+          "grouping_level": "2",
+          "mine_party_appt_type_code": "EMM",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Supervisor",
+          "display_order": "8",
+          "grouping_level": "1",
+          "mine_party_appt_type_code": "SVR",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Shift Boss",
+          "display_order": "9",
+          "grouping_level": "1",
+          "mine_party_appt_type_code": "SHB",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Fire Boss",
+          "display_order": "10",
+          "grouping_level": "1",
+          "mine_party_appt_type_code": "FRB",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Blaster",
+          "display_order": "11",
+          "grouping_level": "1",
+          "mine_party_appt_type_code": "BLA",
+          "organization": "False",
+          "person": "True",
+        },
+        Object {
+          "active_ind": "True",
+          "description": "Mine Rescue Contact",
+          "display_order": "12",
+          "grouping_level": "1",
+          "mine_party_appt_type_code": "MRC",
+          "organization": "False",
+          "person": "True",
+        },
+      ]
+    }
+    partyRelationships={Array []}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {},
+    "ref": null,
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {},
+      "ref": null,
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

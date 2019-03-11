@@ -15,8 +15,8 @@ INSERT INTO permit_status_code
     update_user
     )
 VALUES
-    ('O', 'Open permit', 10, 'system-mds', 'system-mds'),
-    ('C', 'Closed Permit', 20, 'system-mds', 'system-mds')
+    ('O', 'Open', 10, 'system-mds', 'system-mds'),
+    ('C', 'Closed', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO application_status_code

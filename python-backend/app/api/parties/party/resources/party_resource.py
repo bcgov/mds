@@ -2,6 +2,7 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
+from sqlalchemy.exc import DBAPIError
 
 from ..models.party import Party
 from app.extensions import api
@@ -60,7 +61,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     def get(self, party_guid=None):
         if party_guid:
-            party = Party.find_by_party_guid(party_guid)
+            try:
+                party = Party.find_by_party_guid(party_guid)
+            except DBAPIError:
+                return self.create_error_payload(422, 'Invalid Party guid'), 422
+
             if party:
                 return party.json()
             else:

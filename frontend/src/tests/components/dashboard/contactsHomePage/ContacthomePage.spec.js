@@ -10,6 +10,7 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchParties = jest.fn(() => Promise.resolve({}));
+  dispatchProps.fetchProvinceCodes = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve({}));
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
@@ -21,9 +22,11 @@ const setupReducerProps = () => {
     push: jest.fn(),
     location: {},
   };
-  reducerProps.mines = MOCK.PARTY.parties;
-  reducerProps.mineIds = MOCK.PARTY.partyIds;
+  reducerProps.parties = MOCK.PARTY.parties;
+  reducerProps.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
   reducerProps.pageData = MOCK.PAGE_DATA;
+  reducerProps.partyRelationshipTypesList = MOCK.PARTY_RELATIONSHIP_TYPES;
+  reducerProps.relationshipTypeHash = MOCK.PARTY_RELATIONSHIP_TYPE_HASH;
 };
 
 beforeEach(() => {
