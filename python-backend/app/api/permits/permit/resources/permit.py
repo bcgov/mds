@@ -6,8 +6,8 @@ from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
 from ....mines.mine.models.mine import Mine
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PermitResource(Resource, UserMixin, ErrorMixin):
