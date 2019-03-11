@@ -8,7 +8,7 @@ filebeat.config.modules:
 
 #----------------------------- Logstash output --------------------------------
 output.logstash:
-#   # The Logstash hosts
+# #   # The Logstash hosts
   hosts: ["${ES_LOGSTASH_HOST}:${ES_LOGSTASH_PORT}"]
 
   # Optional SSL. By default is off.
@@ -20,6 +20,10 @@ output.logstash:
 
   # Client Certificate Key
   #ssl.key: "/etc/pki/client/cert.key"
+
+
+# output.console:
+#   pretty: true
 
 #================================ Processors =====================================
 
