@@ -29,7 +29,8 @@ export class Home extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
       this.handleActiveButton(nextProps.location.pathname);
-      this.toggleHamburgerMenu();
+      // close Menu when link is clicked
+      this.setState({ isMenuOpen: false });
     }
   }
 
