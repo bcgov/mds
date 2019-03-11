@@ -4,6 +4,7 @@ from flask import current_app, request
 
 from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
+from ...permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from ....mines.mine.models.mine import Mine
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -13,22 +14,35 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 class PermitResource(Resource, UserMixin, ErrorMixin):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('permit_no', type=str, help='Number of the permit being added.')
-    parser.add_argument('mine_guid', type=str, help='guid of the mine.')
+    parser.add_argument(
+        'permit_no', type=str, help='Number of the permit being added.', location='json')
+    parser.add_argument('mine_guid', type=str, help='guid of the mine.', location='json')
     parser.add_argument(
         'permit_status_code',
         type=str,
+        location='json',
         help='Status of the permit being added.',
         store_missing=False)
     parser.add_argument(
-        'received_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'received_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
     parser.add_argument(
-        'issue_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'issue_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
     parser.add_argument(
-        'authorization_end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'authorization_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
     parser.add_argument(
-        'permit_amendment_status_code', type=str, help='Status of the permit being added.')
-    parser.add_argument('description', type=str, help='Permit description', store_missing=False)
+        'permit_amendment_status_code',
+        type=str,
+        location='json',
+        help='Status of the permit being added.')
+    parser.add_argument(
+        'description', type=str, location='json', help='Permit description', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
@@ -63,15 +77,15 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
 
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
-
         if not mine:
             return self.create_error_payload(
                 404, 'There was no mine found with the provided mine_guid.'), 404
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
-
         if permit:
             return self.create_error_payload(400, 'That permit number is already in use.'), 400
+
+        uploadedFiles = data.get('uploadedFiles', [])
         try:
             permit = Permit.create(mine.mine_guid, data.get('permit_no'),
                                    data.get('permit_status_code'), self.get_create_update_dict())
@@ -84,6 +98,17 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 'OGP',
                 self.get_create_update_dict(),
                 description='Initial permit issued.')
+            amendment.save()
+            permit.save()
+
+            for newFile in uploadedFiles:
+                new_pa_doc = PermitAmendmentDocument(
+                    document_name=newFile['fileName'],
+                    document_manager_guid=newFile['document_manager_guid'],
+                    mine_guid=permit.mine_guid,
+                    **self.get_create_update_dict(),
+                )
+                amendment.documents.append(new_pa_doc)
             amendment.save()
             permit.save()
         except Exception as e:

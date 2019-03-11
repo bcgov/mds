@@ -57,10 +57,16 @@ export class MinePermitInfo extends Component {
 
   openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
+
     this.props.openModal({
       props: {
+        initialValues: {
+          uploadedFiles: [],
+          mine_guid: this.props.mine.guid,
+        },
         onSubmit,
         title,
+        mine_guid: this.props.mine.guid,
       },
       widthSize: "50vw",
       content: modalConfig.ADD_PERMIT,
