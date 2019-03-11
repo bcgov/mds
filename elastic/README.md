@@ -1,4 +1,11 @@
-# Quick notes
+# Elastic Components
+
+
+## Configuration
+
+## Filebeat Container
+
+Filebeat container monitors `access.log` in \monitor\access directory and `error.log` in \monitor\error directory
 
 
 Load the dashboards
