@@ -187,13 +187,14 @@ const childColumns = [
     render: (text) =>
       text.map((file) => (
         <div>
+          -&nbsp;
           <a
             key={file.mine_document_guid}
             onClick={() =>
               downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
             }
           >
-            - {file.document_name}
+            {file.document_name}
           </a>
         </div>
       )),
