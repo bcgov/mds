@@ -56,7 +56,7 @@ export class MineInfo extends Component {
     // Only set received_date when going from 0 to 1 uploaded documents
     if (
       updatedDocument.related_documents.length === 0 &&
-      updatedMineDocument.related_documents.length === 1
+      updatedMineDocument.related_documents.length > 0
     ) {
       updatedDocument.received_date = moment();
     }

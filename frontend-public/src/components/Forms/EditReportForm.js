@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Col, Row } from "antd";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineFilePicker from "@/components/dashboard/mineInfo/MineFilePicker";
 import * as FORM from "@/constants/forms";
@@ -45,20 +45,6 @@ export const EditReportForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure?"
-        /* Cancelling here is too late because all serverside actions have been
-         * taken. Calling handleSubmit will update the props with latest data,
-         * handle document status/received_date, and close the modal */
-        onConfirm={props.handleSubmit}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button type="secondary" className="modal-cancel-btn">
-          Cancel
-        </Button>
-      </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit">
         Submit
       </Button>
