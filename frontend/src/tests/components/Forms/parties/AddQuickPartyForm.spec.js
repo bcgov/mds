@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AddPartyForm } from "@/components/Forms/AddPartyForm";
+import { AddQuickPartyForm } from "@/components/Forms/parties/AddQuickPartyForm";
 
 const dispatchProps = {};
 const props = {};
@@ -10,6 +10,7 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
+  props.isPerson = true;
   props.submitting = false;
 };
 
@@ -18,9 +19,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AddPartyFrom", () => {
+describe("AddQuickPartyForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddPartyForm {...dispatchProps} {...props} />);
+    const component = shallow(<AddQuickPartyForm {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { Radio } from "antd";
+import { Radio, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
-import AddPartyForm from "@/components/Forms/AddPartyForm";
+import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import * as ModalContent from "@/constants/modalContent";
+import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
 import { getRawParties } from "@/selectors/partiesSelectors";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
@@ -13,7 +16,8 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  onPartySubmit: PropTypes.func.isRequired,
+  fetchParties: PropTypes.func.isRequired,
+  createParty: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party),
@@ -25,7 +29,7 @@ const defaultProps = {
 };
 
 export class AddPartyRelationshipModal extends Component {
-  state = { isPerson: true };
+  state = { isPerson: true, isFormVisible: false, successfulPartyCreation: false };
 
   componentDidMount() {
     this.setState({ isPerson: this.props.partyRelationshipType.person });
@@ -35,9 +39,21 @@ export class AddPartyRelationshipModal extends Component {
     this.setState({ isPerson: value.target.value });
   };
 
+  toggleFormVisibility = () => {
+    this.setState((prevState) => ({ isFormVisible: !prevState.isFormVisible }));
+  };
+
   handlePartySubmit = (values) => {
     const type = this.state.isPerson ? "PER" : "ORG";
-    return this.props.onPartySubmit(values, type);
+    const payload = { type, ...values };
+    this.props
+      .createParty(payload)
+      .then(() => {
+        this.toggleFormVisibility();
+        this.props.fetchParties();
+        this.setState({ successfulPartyCreation: true });
+      })
+      .catch();
   };
 
   renderRadioButtonGroup = (person, organization) =>
@@ -59,36 +75,66 @@ export class AddPartyRelationshipModal extends Component {
 
     return (
       <div>
-        <AddPartyRelationshipForm
-          onSubmit={this.props.onSubmit}
-          handleChange={this.props.handleChange}
-          closeModal={this.props.closeModal}
-          onPartySubmit={this.props.onPartySubmit}
-          title={this.props.title}
-          partyRelationshipType={this.props.partyRelationshipType}
-          parties={createItemMap(filteredParties, "party_guid")}
-          partyIds={createItemIdsArray(filteredParties, "party_guid")}
-          mine={this.props.mine}
-        />
-        <br />
-        <p className="center">
-          {this.props.partyRelationshipType.person &&
-            this.props.partyRelationshipType.organization &&
-            ModalContent.PARTY_NOT_FOUND}
-          {!this.props.partyRelationshipType.person &&
-            this.props.partyRelationshipType.organization &&
-            ModalContent.COMPANY_NOT_FOUND}
-          {this.props.partyRelationshipType.person &&
-            !this.props.partyRelationshipType.organization &&
-            ModalContent.PERSON_NOT_FOUND}
-        </p>
-        <div className="center">
-          {this.renderRadioButtonGroup(
-            this.props.partyRelationshipType.person,
-            this.props.partyRelationshipType.organization
-          )}
-          <AddPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
-        </div>
+        <Row gutter={48}>
+          <Col md={12} sm={24}>
+            <AddPartyRelationshipForm
+              onSubmit={this.props.onSubmit}
+              handleChange={this.props.handleChange}
+              closeModal={this.props.closeModal}
+              title={this.props.title}
+              partyRelationshipType={this.props.partyRelationshipType}
+              parties={createItemMap(filteredParties, "party_guid")}
+              partyIds={createItemIdsArray(filteredParties, "party_guid")}
+              mine={this.props.mine}
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            {!this.state.isFormVisible && (
+              <div className="center">
+                {!this.state.successfulPartyCreation && (
+                  <div style={{ marginTop: "80px" }}>
+                    <p>
+                      {this.props.partyRelationshipType.person &&
+                        this.props.partyRelationshipType.organization &&
+                        ModalContent.PARTY_NOT_FOUND}
+                      {!this.props.partyRelationshipType.person &&
+                        this.props.partyRelationshipType.organization &&
+                        ModalContent.COMPANY_NOT_FOUND}
+                      {this.props.partyRelationshipType.person &&
+                        !this.props.partyRelationshipType.organization &&
+                        ModalContent.PERSON_NOT_FOUND}
+                    </p>
+                    <Button type="secondary" onClick={this.toggleFormVisibility}>
+                      Add new Contact
+                    </Button>
+                  </div>
+                )}
+                {this.state.successfulPartyCreation && (
+                  <div>
+                    <img src={SUCCESS_CHECKMARK} alt="success" />
+                    <h4>Success, your contact was created! </h4>
+                    <p>
+                      Please go back to the name section and input your new contact into the desired
+                      role.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+            {this.state.isFormVisible && (
+              <div className="center">
+                {this.renderRadioButtonGroup(
+                  this.props.partyRelationshipType.person,
+                  this.props.partyRelationshipType.organization
+                )}
+                <AddQuickPartyForm
+                  onSubmit={this.handlePartySubmit}
+                  isPerson={this.state.isPerson}
+                />
+              </div>
+            )}
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -98,10 +144,19 @@ const mapStateToProps = (state) => ({
   parties: getRawParties(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchParties,
+      createParty,
+    },
+    dispatch
+  );
+
 AddPartyRelationshipModal.propTypes = propTypes;
 AddPartyRelationshipModal.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddPartyRelationshipModal);

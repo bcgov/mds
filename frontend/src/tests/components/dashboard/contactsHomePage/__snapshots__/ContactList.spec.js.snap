@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactList renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ContactList
+    parties={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_party_appt": Array [],
+          "name": "mock name",
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mine_party_appt": Array [],
+          "name": "mock Two",
+        },
+      }
+    }
+    partyIds={
+      Array [
+        "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "18145c75-49ad-0101-85f3-a43e45ae989a",
+      ]
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "align": "left",
+      "bordered": false,
+      "className": "",
+      "columns": Array [
+        Object {
+          "dataIndex": "name",
+          "render": [Function],
+          "title": "Contact Name",
+        },
+        Object {
+          "dataIndex": "role",
+          "render": [Function],
+          "title": "Role",
+        },
+        Object {
+          "dataIndex": "email",
+          "render": [Function],
+          "title": "Email",
+        },
+        Object {
+          "dataIndex": "phone",
+          "render": [Function],
+          "title": "Phone",
+        },
+      ],
+      "dataSource": Array [
+        Object {
+          "email": undefined,
+          "emptyField": "N/A",
+          "key": undefined,
+          "name": "mock name",
+          "phone": "N/A",
+          "role": "N/A",
+        },
+        Object {
+          "email": undefined,
+          "emptyField": "N/A",
+          "key": undefined,
+          "name": "mock Two",
+          "phone": "N/A",
+          "role": "N/A",
+        },
+      ],
+      "indentSize": 20,
+      "loading": false,
+      "locale": Object {
+        "emptyText": <NullScreen
+          type="no-results"
+        />,
+      },
+      "pagination": false,
+      "prefixCls": "ant-table",
+      "rowKey": "key",
+      "showHeader": true,
+      "size": "default",
+      "useFixedHeader": false,
+    },
+    "ref": null,
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "align": "left",
+        "bordered": false,
+        "className": "",
+        "columns": Array [
+          Object {
+            "dataIndex": "name",
+            "render": [Function],
+            "title": "Contact Name",
+          },
+          Object {
+            "dataIndex": "role",
+            "render": [Function],
+            "title": "Role",
+          },
+          Object {
+            "dataIndex": "email",
+            "render": [Function],
+            "title": "Email",
+          },
+          Object {
+            "dataIndex": "phone",
+            "render": [Function],
+            "title": "Phone",
+          },
+        ],
+        "dataSource": Array [
+          Object {
+            "email": undefined,
+            "emptyField": "N/A",
+            "key": undefined,
+            "name": "mock name",
+            "phone": "N/A",
+            "role": "N/A",
+          },
+          Object {
+            "email": undefined,
+            "emptyField": "N/A",
+            "key": undefined,
+            "name": "mock Two",
+            "phone": "N/A",
+            "role": "N/A",
+          },
+        ],
+        "indentSize": 20,
+        "loading": false,
+        "locale": Object {
+          "emptyText": <NullScreen
+            type="no-results"
+          />,
+        },
+        "pagination": false,
+        "prefixCls": "ant-table",
+        "rowKey": "key",
+        "showHeader": true,
+        "size": "default",
+        "useFixedHeader": false,
+      },
+      "ref": null,
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

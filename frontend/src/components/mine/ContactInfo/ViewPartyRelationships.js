@@ -57,7 +57,10 @@ export class ViewPartyRelationships extends Component {
     this.TSFConfirmation = React.createRef();
   }
 
-  state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
+  state = {
+    selectedPartyRelationshipType: {},
+    selectedPartyRelationship: {},
+  };
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
@@ -75,13 +78,6 @@ export class ViewPartyRelationships extends Component {
         relationships: "party",
       });
       this.props.closeModal();
-    });
-  };
-
-  onPartySubmit = (values, type) => {
-    const payload = { type, ...values };
-    return this.props.createParty(payload).then(() => {
-      this.props.fetchParties();
     });
   };
 
@@ -104,6 +100,7 @@ export class ViewPartyRelationships extends Component {
         partyRelationshipType: value,
         mine,
       },
+      widthSize: "75vw",
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
     });

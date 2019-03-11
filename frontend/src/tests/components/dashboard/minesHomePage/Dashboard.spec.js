@@ -19,6 +19,7 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
+  dispatchProps.fetchPermitStatusOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
 };
 
