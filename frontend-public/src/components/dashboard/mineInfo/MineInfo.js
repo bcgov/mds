@@ -53,7 +53,7 @@ export class MineInfo extends Component {
     // Set status to received/pending review
     updatedDocument.exp_document_status.exp_document_status_code = "PRE";
 
-    // Only set received_date when going from 0 to 1 uploaded documents
+    // Only set received_date when going from 0 to some uploaded documents
     if (
       updatedDocument.related_documents.length === 0 &&
       updatedMineDocument.related_documents.length > 0
