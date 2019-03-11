@@ -115,7 +115,7 @@ export class MineTailingsInfo extends Component {
       const initialValues = {
         tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
         tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
-        tsf_report_received_date: doc.received_date === "None" ? null : doc.received_date,
+        tsf_report_received_date: doc.received_date,
         tsf_report_status: doc.exp_document_status.exp_document_status_code,
       };
       const statusOptions = createDropDownList(

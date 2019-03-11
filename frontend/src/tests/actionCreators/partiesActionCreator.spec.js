@@ -43,7 +43,7 @@ describe("`createParty` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createParty(mockPayload)(dispatch).then(() => {
+    return createParty(mockPayload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

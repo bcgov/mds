@@ -55,3 +55,30 @@ export const formatTitleString = (input) =>
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
   option.props.children.toLowerCase().includes(input.toLowerCase());
+
+// function taken directly from redux-forms (https://redux-form.com/6.0.0-rc.1/examples/normalizing)
+// automatically adds dashes to phone number
+export const normalizePhone = (value, previousValue) => {
+  if (!value) {
+    return value;
+  }
+  const onlyNums = value.replace(/[^\d]/g, "");
+  if (!previousValue || value.length > previousValue.length) {
+    // typing forward
+    if (onlyNums.length === 3) {
+      return `${onlyNums}-`;
+    }
+    if (onlyNums.length === 6) {
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}-`;
+    }
+  }
+  if (onlyNums.length <= 3) {
+    return onlyNums;
+  }
+  if (onlyNums.length <= 6) {
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+  }
+  return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
+};
+
+export const upperCase = (value) => value && value.toUpperCase();

@@ -26,7 +26,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         store_missing=False)
     parser.add_argument('permit_amendment_type_code', type=str, store_missing=False)
     parser.add_argument('permit_amendment_status_code', type=str, store_missing=False)
-    parser.add_argument('mine_document_guid', type=str, store_missing=False)
+    parser.add_argument('description', type=str, store_missing=False)
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -64,10 +64,13 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'permit does not exist'), 404
 
         data = self.parser.parse_args()
+        current_app.logger.info(f'creating permit_amendment with >> {data}')
 
         received_date = data.get('received_date')
         issue_date = data.get('issue_date')
         authorization_end_date = data.get('authorization_end_date')
+        permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
+        description = data.get('description')
 
         try:
             new_pa = PermitAmendment.create(
@@ -75,7 +78,9 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 received_date,
                 issue_date,
                 authorization_end_date,
+                permit_amendment_type_code,
                 self.get_create_update_dict(),
+                description=description,
                 save=True)
             new_pa.save()
         except Exception as e:
@@ -108,6 +113,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 pa.permit_amendment_status_code = data.get('permit_amendment_status_code')
             if 'permit_amendment_type_code' in data:
                 pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
+            if 'description' in data:
+                pa.description = data.get('description')
             pa.save()
         except Exception as e:
             return self.create_error_payload(500, 'Error: {}'.format(e)), 500

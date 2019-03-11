@@ -11,6 +11,7 @@ import authenticationReducer from "@/reducers/authenticationReducer";
 import { createReducer } from "@/utils/helpers";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
+import permitReducer from "@/reducers/permitReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -18,6 +19,7 @@ export const reducerObject = {
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
+  [reducerTypes.PERMITS]: permitReducer,
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
@@ -49,6 +51,7 @@ export const reducerObject = {
     reducerTypes.GET_MINE_COMPLIANCE_INFO
   ),
   [reducerTypes.REMOVE_MINE_TYPE]: createReducer(networkReducer, reducerTypes.REMOVE_MINE_TYPE),
+  [reducerTypes.GET_PROVINCE_CODES]: createReducer(networkReducer, reducerTypes.GET_PROVINCE_CODES),
 };
 
 export const rootReducer = combineReducers(reducerObject);
