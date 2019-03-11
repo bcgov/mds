@@ -9,7 +9,7 @@ from app.extensions import db
 def setup_info(test_client):
     permit = Permit.find_by_permit_guid(TEST_PERMIT_GUID_1)
 
-    test_pa = PermitAmendment.create(permit, None, None, None, DUMMY_USER_KWARGS)
+    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD', DUMMY_USER_KWARGS)
     test_pa.save()
 
     yield {'permit_amendment_1': test_pa}
@@ -87,8 +87,7 @@ def test_post_permit_amendment_with_date_params(test_client, auth_headers, setup
 
 
 def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup_info):
-    #new amendments are always created with Status = Active (ACT) and Type = Amendment (AMD)
-    data = {'permit_amendment_type_code': 'OGP', 'permit_amendment_status_code': 'RMT'}
+    data = {'permit_amendment_type_code': 'OGP'}
 
     post_resp = test_client.post(
         f'/permits/{TEST_PERMIT_GUID_1}/amendments',
@@ -97,7 +96,7 @@ def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, post_resp.response
     assert post_data['permit_guid'] == TEST_PERMIT_GUID_1, str(post_data)
-    assert post_data['permit_amendment_type_code'] == "AMD"
+    assert post_data['permit_amendment_type_code'] == "OGP"
     assert post_data['permit_amendment_status_code'] == "ACT"
 
     #permit_amdendment is actually in db
