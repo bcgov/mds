@@ -10,11 +10,11 @@ location ${PATH_PREFIX}/api/ {
         }
 
 
-        location /documents {
+        location ${PATH_PREFIX}/api/documents/ {
                 access_log /var/log/nginx/access.log clf;
         }
 
-        location /document-manager {
+        location ${PATH_PREFIX}/api/document-manager/ {
                 access_log /var/log/nginx/access.log clf;
         }
 
