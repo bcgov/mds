@@ -11,6 +11,7 @@ import {
   updatePermit,
   updatePermitAmendment,
   createPermitAmendment,
+  removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
 import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
@@ -34,6 +35,7 @@ const propTypes = {
   updatePermit: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
+  removePermitAmendmentDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -125,6 +127,7 @@ export class MinePermitInfo extends Component {
         onSubmit: this.handleEditPermitAmendment,
         title: `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
+        handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },
       widthSize: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
@@ -165,6 +168,12 @@ export class MinePermitInfo extends Component {
         permit_amendment_type_code: amalgamtedPermit,
       })
       .then(this.closePermitModal);
+
+  handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => {
+    this.props
+      .removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)
+      .then(this.props.fetchPermits({ mine_guid: this.props.mine.guid }));
+  };
 
   render() {
     return [
@@ -223,6 +232,7 @@ const mapDispatchToProps = (dispatch) =>
       updatePermit,
       updatePermitAmendment,
       createPermitAmendment,
+      removePermitAmendmentDocument,
     },
     dispatch
   );

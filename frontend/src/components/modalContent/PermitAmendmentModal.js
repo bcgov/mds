@@ -4,6 +4,7 @@ import PermitAmendmentForm from "@/components/Forms/PermitAmendmentForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string,
 };
 

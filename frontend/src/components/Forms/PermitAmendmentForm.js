@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import { Form, Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 
 const originalPermit = "OGP";
@@ -14,6 +15,7 @@ const originalPermit = "OGP";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
@@ -52,6 +54,16 @@ class PermitAmendmentForm extends Component {
             )}
           </Col>
           <Col md={12} sm={24}>
+            <Form.Item label="Attached Files">
+              <Field
+                id="related_documents"
+                name="related_documents"
+                component={PermitAmendmentUploadedFilesList}
+                permitAmendmentGuid={this.props.initialValues.permit_amendment_guid}
+                relatedDocuments={this.props.initialValues.related_documents}
+                handleRemovePermitAmendmentDocument={this.props.handleRemovePermitAmendmentDocument}
+              />
+            </Form.Item>
             <Form.Item label="Upload/Attach Documents">
               <Field
                 id="PermitDocumentFileUpload"
