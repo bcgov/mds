@@ -5,6 +5,9 @@ services:
   mds-filebeat:
     build:
       context: filebeat/
+      args:
+        - ES_LOGSTASH_HOST=mds_logstash
+        - ES_LOGSTASH_PORT=5044
     container_name: mds-filebeat
     networks:
       - mds
