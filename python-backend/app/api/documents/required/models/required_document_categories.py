@@ -9,14 +9,14 @@ from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
 
-#comment to force commit
+
 class RequiredDocumentCategory(Base):
-    __tablename__ = 'mds_required_document_category'
-    req_document_category_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue()) 
-    req_document_category = db.Column(db.String(60))
-    
+    __tablename__ = 'mine_required_document_category'
+    req_document_category = db.Column(db.String(3), primary_key=True)
+    description = db.Column(db.String)
+
     def json(self):
         return {
-            'req_document_category_guid': str(self.req_document_category_guid),
-            'req_document_category': str(self.req_document_category),
+            'req_document_category': self.req_document_category,
+            'description': self.description,
         }
