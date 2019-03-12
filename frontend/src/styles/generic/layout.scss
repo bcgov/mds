@@ -169,6 +169,16 @@ body {
   font-size: 20px !important;
 }
 
+.img-lg {
+  height: 30px;
+}
+
+.vertical-align {
+  &-sm {
+    vertical-align: -0.125em;
+  }
+}
+
 // used on larger modals as a divider.
 .border {
   &--right {
