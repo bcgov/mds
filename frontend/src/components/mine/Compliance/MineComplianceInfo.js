@@ -10,6 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { formatDate } from "@/utils/helpers";
 import OpenOrdersTable from "@/components/mine/Compliance/OpenOrdersTable";
+
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
  */
@@ -23,98 +24,6 @@ const defaultProps = {
   mineComplianceInfo: {},
   isLoading: true,
 };
-
-// TODO: Remove after done developing feature
-/* const mockOpenOrders = [
-  {
-    overdue: true,
-    due_date: "2019-01-31",
-    order_no: "12345",
-    violation: "You dun messed up",
-    report_no: "report1234",
-    inspector: "Aaron 'The Law' Unger",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "1",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "44",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "33",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "22",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "11",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "6",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "5",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "4",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "3",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-  {
-    overdue: false,
-    due_date: "2019-02-28",
-    order_no: "2",
-    violation: "Do better",
-    report_no: "report1234",
-    inspector: "DJ MD",
-  },
-]; */
 
 export class MineComplianceInfo extends Component {
   state = { minOrderList: 0, maxOrderList: 10 };
