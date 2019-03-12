@@ -539,7 +539,7 @@ environments {
                     cpu_request = "100m"
                     cpu_limit = "150m"
                     memory_request = "512Mi"
-                    memory_limit = "768Gi"
+                    memory_limit = "768Mi"
                     replica_min = 1
                     replica_max = 1
                 }
