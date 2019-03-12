@@ -518,6 +518,107 @@ environments {
             }
         }
     }
+    'test-demo' {
+        vars {
+            DB_PVC_SIZE = '10Gi'
+            DOCUMENT_PVC_SIZE = '5Gi'
+            BACKUP_PVC_SIZE = '1Gi'
+            git {
+                changeId = "${opt.'pr'}"
+            }
+            keycloak {
+                clientId = "mines-application-test"
+                resource = "mines-application-test"
+                idpHint = "idir"
+                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
+                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                siteminder_url = "https://logontest.gov.bc.ca"
+            }
+            resources {
+                node {
+                    cpu_request = "100m"
+                    cpu_limit = "150m"
+                    memory_request = "512Mi"
+                    memory_limit = "768Gi"
+                    replica_min = 1
+                    replica_max = 1
+                }
+                nginx {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "256Mi"
+                    memory_limit = "384Mi"
+                    replica_min = 1
+                    replica_max = 1
+                }
+                python {
+                    cpu_request = "200m"
+                    cpu_limit = "400m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                    replica_min = 1
+                    replica_max = 1
+                }
+                postgres {
+                    cpu_request = "200m"
+                    cpu_limit = "500m"
+                    memory_request = "2Gi"
+                    memory_limit = "4Gi"
+                }
+                redis {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
+                backup {
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
+                }
+            }
+            deployment {
+                env {
+                    name = "test-demo"
+                }
+                key = 'test-demo'
+                namespace = 'empr-mds-test'
+                suffix = "-test-demo"
+                application_suffix = "-pr-${vars.git.changeId}"
+                node_env = "test"
+                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                elastic_enabled = 1
+                elastic_service_name = "MDS Test-Demo"
+            }
+            modules {
+                'mds-frontend' {
+                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
+                    PATH = ""
+                }
+                'mds-frontend-public' {
+                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
+                    PATH = ""
+                }
+                'mds-nginx' {
+                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
+                    PATH = ""
+                    ROUTE = "/"
+                }
+                'mds-python-backend' {
+                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
+                    PATH = ""
+                }
+                'mds-redis' {
+                    HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
+                'schemaspy' {
+                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+            }
+        }
+    }
     'prod' {
         vars {
             DB_PVC_SIZE = '50Gi'
