@@ -1,8 +1,7 @@
 --wanted to rename, just going to create new, this table will be in the mine microservice, so using mine prefix.
 CREATE TABLE mine_required_document_category (
     req_document_category character varying(3) PRIMARY KEY,
-    description character varying(300),
-    active_ind boolean DEFAULT true NOT NULL
+    description character varying(300)
 );
 
 INSERT INTO mine_required_document_category
