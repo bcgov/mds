@@ -9,6 +9,9 @@ import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
+import { COLOR } from "@/constants/styles";
+
+const { errorRed } = COLOR;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -16,6 +19,8 @@ const propTypes = {
   removeReport: PropTypes.func.isRequired,
   handleEditReportSubmit: PropTypes.func.isRequired,
 };
+
+const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const columns = [
   {
@@ -36,20 +41,31 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     width: 200,
-    render: (text, record) => <div title="Name">{record.doc.exp_document_name}</div>,
+    render: (text, record) => (
+      <div title="Name" style={errorStyle(record.isOverdue)}>
+        {record.doc.exp_document_name}
+      </div>
+    ),
   },
   {
     title: "Due",
     dataIndex: "due",
     width: 90,
-    render: (text, record) => <div title="Due">{formatDate(record.doc.due_date) || "-"}</div>,
+    render: (text, record) => (
+      <div title="Due" style={errorStyle(record.isOverdue)}>
+        {formatDate(record.doc.due_date) || "-"}
+      </div>
+    ),
   },
   {
     title: "Received",
     dataIndex: "received",
-    width: 180,
+    width: 90,
     render: (text, record) => (
-      <div title="Received"> {formatDate(record.doc.received_date) || "-"}</div>
+      <div title="Received" style={errorStyle(record.isOverdue)}>
+        {" "}
+        {formatDate(record.doc.received_date) || "-"}
+      </div>
     ),
   },
   {
@@ -57,7 +73,7 @@ const columns = [
     dataIndex: "status",
     width: 120,
     render: (text, record) => (
-      <div title="Status" className={record.isOverdue ? "bold" : null}>
+      <div title="Status" style={errorStyle(record.isOverdue)}>
         {record.doc ? record.doc.exp_document_status.description : String.LOADING}
       </div>
     ),
@@ -68,27 +84,29 @@ const columns = [
     width: 200,
     render: (text, record) => (
       <div title="Documents">
-        {record.doc.related_documents.length === 0
-          ? "-"
-          : record.doc.related_documents.map((file) => (
-              <div>
-                <a
-                  role="link"
-                  key={file.mine_document_guid}
-                  onClick={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Event listener
-                  onKeyPress={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Focusable element
-                  tabIndex="0"
-                >
-                  {file.document_name}
-                </a>
-              </div>
-            ))}
+        {record.doc.related_documents.length === 0 ? (
+          <span style={errorStyle(record.isOverdue)}>-</span>
+        ) : (
+          record.doc.related_documents.map((file) => (
+            <div key={file.mine_document_guid}>
+              <a
+                role="link"
+                key={file.mine_document_guid}
+                onClick={() =>
+                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                }
+                // Accessibility: Event listener
+                onKeyPress={() =>
+                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                }
+                // Accessibility: Focusable element
+                tabIndex="0"
+              >
+                {file.document_name}
+              </a>
+            </div>
+          ))
+        )}
       </div>
     ),
   },
@@ -104,8 +122,8 @@ const columns = [
         >
           <div className="inline-flex">
             <Button
-              className="full-mobile"
               type="primary"
+              size="small"
               ghost
               onClick={(event) =>
                 record.openEditReportModal(
@@ -125,7 +143,7 @@ const columns = [
               okText="Delete"
               cancelText="Cancel"
             >
-              <Button className="full-mobile" ghost type="primary">
+              <Button ghost type="primary" size="small">
                 <Icon type="minus-circle" theme="outlined" />
               </Button>
             </Popconfirm>
