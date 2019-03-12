@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Divider, Pagination } from "antd";
+import { Row, Col } from "antd";
 import { connect } from "react-redux";
 
 import * as String from "@/constants/strings";
@@ -8,8 +8,8 @@ import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
+import OpenOrdersTable from "@/components/mine/Compliance/OpenOrdersTable";
 /**
  * @class  MineTenureInfo - all tenure information related to the mine.
  */
@@ -24,6 +24,98 @@ const defaultProps = {
   isLoading: true,
 };
 
+// TODO: Remove after done developing feature
+const mockOpenOrders = [
+  {
+    overdue: true,
+    due_date: "2019-12-31",
+    order_no: "12345",
+    violation: "You dun messed up",
+    report_no: "report1234",
+    inspector: "Aaron 'The Law' Unger",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "1",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "44",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "33",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "22",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "11",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "6",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "5",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "4",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "3",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "2",
+    violation: "Do better",
+    report_no: "report1234",
+    inspector: "DJ MD",
+  },
+];
+
 export class MineComplianceInfo extends Component {
   state = { minOrderList: 0, maxOrderList: 10 };
 
@@ -33,92 +125,6 @@ export class MineComplianceInfo extends Component {
       maxOrderList: value <= 1 ? 10 : value * 10,
     });
   };
-
-  renderOpenOrderList() {
-    return (
-      this.props.mineComplianceInfo &&
-      this.props.mineComplianceInfo.open_orders && (
-        <div>
-          <h2>Open Orders</h2>
-          <br />
-          <Row gutter={16} justify="center" align="top">
-            <Col span={2} />
-            <Col span={4}>
-              <h5>Order #</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Violation</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Report #</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Inspector Name</h5>
-            </Col>
-            <Col span={4}>
-              <h5>Due Date</h5>
-            </Col>
-            <Col span={2} />
-          </Row>
-          <Divider type="horizontal" className="thick-divider" />
-          {this.props.mineComplianceInfo.open_orders
-            .sort((order1, order2) => {
-              const date1 = Date.parse(order1.due_date) || 0;
-              const date2 = Date.parse(order2.due_date) || 0;
-              return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
-            })
-            .slice(this.state.minOrderList, this.state.maxOrderList)
-            .map((order, id) => (
-              <div key={order.order_no}>
-                <Row gutter={16} justify="center" align="top">
-                  <Col span={2}>
-                    {order.overdue && order.due_date !== null ? (
-                      <img className="padding-small" src={RED_CLOCK} alt="Edit TSF Report" />
-                    ) : (
-                      ""
-                    )}
-                  </Col>
-                  <Col id={`order-no-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
-                      {order.order_no === null ? "-" : order.order_no}
-                    </h6>
-                  </Col>
-                  <Col id={`violation-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
-                      {order.violation === null ? "-" : order.violation}
-                    </h6>
-                  </Col>
-                  <Col id={`Report-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
-                      {order.report_no === null ? "-" : order.report_no}
-                    </h6>
-                  </Col>
-                  <Col id={`inspector-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
-                      {order.inspector === null ? "-" : order.inspector}
-                    </h6>
-                  </Col>
-                  <Col id={`due-date-${id}`} span={4}>
-                    <h6 className={order.overdue ? "bold" : null}>
-                      {formatDate(order.due_date) || "-"}
-                    </h6>
-                  </Col>
-                  <Col span={4} align="right" />
-                </Row>
-                <Divider type="horizontal" />
-              </div>
-            ))}
-          <Pagination
-            defaultCurrent={1}
-            defaultPageSize={10}
-            onChange={this.handlePageChange}
-            total={this.props.mineComplianceInfo.open_orders.length}
-            className="center"
-          />
-        </div>
-      )
-    );
-  }
 
   render() {
     return (
@@ -191,7 +197,12 @@ export class MineComplianceInfo extends Component {
             )}
             <br />
             <br />
-            {this.renderOpenOrderList()}
+            <OpenOrdersTable
+              openOrders={/* this.props.mineComplianceInfo.open_orders */ mockOpenOrders}
+              handlePageChange={this.handlePageChange}
+              minOrderList={this.state.minOrderList}
+              maxOrderList={this.state.maxOrderList}
+            />
             {!this.props.mineComplianceInfo && <NullScreen type="generic" />}
           </div>
         )}
