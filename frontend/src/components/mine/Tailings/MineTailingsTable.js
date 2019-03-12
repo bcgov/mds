@@ -60,7 +60,7 @@ const columns = [
   {
     title: "Received",
     dataIndex: "received",
-    width: 90,
+    width: 140,
     render: (text, record) => (
       <div title="Received" style={errorStyle(record.isOverdue)}>
         {" "}
