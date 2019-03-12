@@ -17,11 +17,11 @@ class ApplicationStatusCode(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<ApplicationStatusCode %r>' % self.exp_document_status_code
+        return '<ApplicationStatusCode %r>' % self.application_status_code
 
     def json(self):
         return {
-            'application_status_code': self.exp_document_status_code,
+            'application_status_code': self.application_status_code,
             'description': self.description,
         }
 
