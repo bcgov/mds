@@ -614,7 +614,7 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'schemaspy' {
-                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-schemaspy-${vars.deployment.key}.pathfinder.gov.bc.ca"
                 }
             }
         }
