@@ -25,10 +25,10 @@ const defaultProps = {
 };
 
 // TODO: Remove after done developing feature
-const mockOpenOrders = [
+/* const mockOpenOrders = [
   {
     overdue: true,
-    due_date: "2019-12-31",
+    due_date: "2019-01-31",
     order_no: "12345",
     violation: "You dun messed up",
     report_no: "report1234",
@@ -114,7 +114,7 @@ const mockOpenOrders = [
     report_no: "report1234",
     inspector: "DJ MD",
   },
-];
+]; */
 
 export class MineComplianceInfo extends Component {
   state = { minOrderList: 0, maxOrderList: 10 };
@@ -193,16 +193,23 @@ export class MineComplianceInfo extends Component {
                   </Col>
                   <Col span={2} />
                 </Row>
+
+                <br />
+                <br />
+                {this.props.mineComplianceInfo.open_orders.length > 0 && (
+                  <div>
+                    <h2>Open Orders</h2>
+                    <br />
+                    <OpenOrdersTable
+                      openOrders={this.props.mineComplianceInfo.open_orders}
+                      handlePageChange={this.handlePageChange}
+                      minOrderList={this.state.minOrderList}
+                      maxOrderList={this.state.maxOrderList}
+                    />
+                  </div>
+                )}
               </div>
             )}
-            <br />
-            <br />
-            <OpenOrdersTable
-              openOrders={/* this.props.mineComplianceInfo.open_orders */ mockOpenOrders}
-              handlePageChange={this.handlePageChange}
-              minOrderList={this.state.minOrderList}
-              maxOrderList={this.state.maxOrderList}
-            />
             {!this.props.mineComplianceInfo && <NullScreen type="generic" />}
           </div>
         )}
