@@ -165,9 +165,8 @@ export class MinePermitInfo extends Component {
       .updatePermitAmendment(values.permit_amendment_guid, values)
       .then(this.closePermitModal);
 
-  handleAddPermitAmendment = (values) => {
+  handleAddPermitAmendment = (values) =>
     this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
-  };
 
   handleAddAmalgamatedPermit = (values) =>
     this.props
@@ -177,11 +176,10 @@ export class MinePermitInfo extends Component {
       })
       .then(this.closePermitModal);
 
-  handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => {
+  handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) =>
     this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
       this.props.fetchPermits({ mine_guid: this.props.mine.guid });
     });
-  };
 
   render() {
     return [
