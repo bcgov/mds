@@ -5,6 +5,15 @@ Runs at the end of each migration.
 NOTE: If you add a new entry here, don't forget to update the flask delete_data command
 ***/
 
+INSERT INTO mine_required_document_category
+    (
+    req_document_category,
+    description
+    )
+VALUES
+    ('TSF', 'Code required documents for mines with Tailings Storage Factilies'),
+    ('OTH', 'Other...')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_status_code
     (
