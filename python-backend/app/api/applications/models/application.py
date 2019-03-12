@@ -9,12 +9,13 @@ from ...utils.models_mixins import AuditMixin, Base
 
 
 class Application(AuditMixin, Base):
-    __tablename__ = 'applictaion'
+    __tablename__ = 'application'
     application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    application_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
     application_no = db.Column(db.String(150), nullable=False)
     application_status_code = db.Column(db.DateTime, nullable=False)
+    description = db.Column(db.String, nullable=False)
     recieved_date = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
@@ -27,7 +28,8 @@ class Application(AuditMixin, Base):
             'application_guid': str(self.application_guid),
             'application_no': self.application_no,
             'application_status_code': self.application_status_code,
-            'recieved_date': str(self.recieved_date),
+            'description': self.description,
+            'received_date': str(self.recieved_date),
         }
 
     @classmethod

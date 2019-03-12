@@ -14,10 +14,10 @@ COMMENT ON TABLE application_status_code IS 'A list of stat and the mines they a
 CREATE TABLE application
 (
     application_id serial PRIMARY KEY,
-    application_guid uuid DEFAULT gen_random_uuid(),
+    application_guid uuid DEFAULT gen_random_uuid() NOT NULL,
     mine_guid uuid NOT NULL,
     application_no character varying(16) NOT NULL,
-    desription character varying(280) NOT NULL,
+    description character varying(280) NOT NULL,
     application_status_code character varying(3),
     recieved_date date DEFAULT '9999-12-31'::date NOT NULL,
     create_user character varying(60) NOT NULL,

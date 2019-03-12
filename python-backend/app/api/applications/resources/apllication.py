@@ -20,6 +20,8 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         store_missing=False)
     parser.add_argument(
         'received_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument(
+        'description', type=str, help='Application description', store_missing=False)
 
     @api.doc(params={'application_guid': 'Application guid.'})
     @requires_role_mine_view
@@ -28,12 +30,17 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         mine_guid = request.args.get('mine_guid', None, type=str)
         if mine_guid:
             applications = Application.find_by_mine_guid(mine_guid)
-            return applications.json()
-
-        application = Application.find_by_application_guid(application_guid)
-        if not application:
-            return self.create_error_payload(404, 'Application not found'), 404
-        return application.json()
+            result = [app.json() for app in applications]
+        elif application_guid:
+            application = Application.find_by_application_guid(application_guid)
+            if not application:
+                result = self.create_error_payload(404, 'Application not found'), 404
+            else:
+                result = application.json()
+        else:
+            result = self.create_error_payload(
+                400, 'An application guid or a mine guid mus be provided.'), 400
+        return result
 
     @requires_role_mine_create
     def post(self, application_guid=None):
@@ -52,7 +59,7 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         try:
             application = Application.create(mine.mine_guid, data.get('application_no'),
                                              data.get('application_status_code'),
-                                             data.get('recieved_date'), data.get('description'),
+                                             data.get('received_date'), data.get('description'),
                                              self.get_create_update_dict())
             application.save()
         except Exception as e:
@@ -74,6 +81,8 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         if 'application_status_code' in data:
             application.application_status_code = data.get('application_status_code')
+        if 'description' in data:
+            application.description = data.get('description')
 
         try:
             application.save()
