@@ -17,6 +17,7 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
+  fetchApplicationStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
@@ -31,6 +32,7 @@ import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
+import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 
 import CustomPropTypes from "@/customPropTypes";
@@ -42,6 +44,7 @@ import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
 import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
+import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
 
 /**
@@ -65,6 +68,7 @@ const propTypes = {
   optionsLoaded: PropTypes.bool.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
+  fetchApplications: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -80,6 +84,7 @@ export class MineDashboard extends Component {
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
+      this.props.fetchApplications({ mine_guid: this.props.mines[id].guid });
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
         this.setState({ complianceInfoLoading: false });
@@ -93,6 +98,7 @@ export class MineDashboard extends Component {
       this.props.fetchMineCommodityOptions();
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
+      this.props.fetchApplicationStatusOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
@@ -174,6 +180,10 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
+                <TabPane tab="Applications" key="applications">
+                  <div className="tab__content" />
+                  <MineApplicationInfo mine={mine} {...this.props} />
+                </TabPane>
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">
@@ -218,8 +228,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
       fetchPermitStatusOptions,
+      fetchApplicationStatusOptions,
       setOptionsLoaded,
       fetchMineComplianceInfo,
+      fetchApplications,
     },
     dispatch
   );
