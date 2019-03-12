@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
+import { find } from "lodash";
 
 import { getMine } from "@/selectors/userMineInfoSelector";
 import CustomPropTypes from "@/customPropTypes";
@@ -41,8 +42,30 @@ export class MineInfo extends Component {
   }
 
   handleEditReportSubmit = () => {
+    // Get state of document before latest upload/edits
     const updatedDocument = this.state.selectedDocument;
-    updatedDocument.received_date = moment();
+    // Get document latest version
+    const updatedMineDocument = find(
+      this.props.mine.mine_expected_documents,
+      ({ exp_document_guid }) => exp_document_guid === updatedDocument.exp_document_guid
+    );
+
+    // Set status to received/pending review
+    updatedDocument.exp_document_status.exp_document_status_code = "PRE";
+
+    // Only set received_date when going from 0 to some uploaded documents
+    if (
+      updatedDocument.related_documents.length === 0 &&
+      updatedMineDocument.related_documents.length > 0
+    ) {
+      updatedDocument.received_date = moment();
+    }
+
+    // Reset received state when all documents deleted
+    if (updatedMineDocument.related_documents.length === 0) {
+      updatedDocument.exp_document_status.exp_document_status_code = "MIA";
+      updatedDocument.received_date = null;
+    }
     this.props
       .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
       .then(() => {

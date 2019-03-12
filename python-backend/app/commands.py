@@ -119,7 +119,6 @@ def register_commands(app):
                     DUMMY_USER_KWARGS,
                     first_name=first_name,
                     email=email)
-
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
