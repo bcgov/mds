@@ -176,9 +176,9 @@ export class MinePermitInfo extends Component {
       .then(this.closePermitModal);
 
   handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => {
-    this.props
-      .removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)
-      .then(this.props.fetchPermits({ mine_guid: this.props.mine.guid }));
+    this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
+      this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    });
   };
 
   render() {

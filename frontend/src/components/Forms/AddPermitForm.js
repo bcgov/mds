@@ -86,7 +86,7 @@ class AddPermitForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
               <Field
                 id="permit_type"

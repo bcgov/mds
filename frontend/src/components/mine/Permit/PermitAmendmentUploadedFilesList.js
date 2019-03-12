@@ -20,20 +20,17 @@ export class PermitAmendmentUploadedFilesList extends React.Component {
   state = { relatedDocuments: this.props.relatedDocuments };
 
   removePermitAmendmentDocument(relatedDocuments, documentGuid) {
-    this.props
-      .handleRemovePermitAmendmentDocument(this.props.permitAmendmentGuid, documentGuid)
-      .then(() => {
-        const newRelatedDocuments = relatedDocuments.filter(
-          (doc) => doc.document_guid !== documentGuid
-        );
-        this.setState({ relatedDocuments: newRelatedDocuments });
-      });
+    this.props.handleRemovePermitAmendmentDocument(this.props.permitAmendmentGuid, documentGuid);
+    const newRelatedDocuments = relatedDocuments.filter(
+      (doc) => doc.document_guid !== documentGuid
+    );
+    this.setState({ relatedDocuments: newRelatedDocuments });
   }
 
   render() {
     return (
       <div>
-        {this.props.relatedDocuments.map((file) => (
+        {this.state.relatedDocuments.map((file) => (
           <div
             className="padding-small margin-small lightest-grey-bg"
             key={file.mine_document_guid}

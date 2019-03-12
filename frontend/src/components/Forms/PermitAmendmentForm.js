@@ -22,16 +22,14 @@ const propTypes = {
 };
 
 class PermitAmendmentForm extends Component {
-  onFileLoad = (fileName, document_manager_guid) => {
+  onFileLoad = (fileName, document_manager_guid) =>
     this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
-    console.log(this.props);
-  };
 
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
-          <Col md={12} sm={24} className="border--right--line">
+          <Col md={12} sm={24}>
             <Form.Item>
               <Field
                 id="issue_date"
@@ -53,8 +51,8 @@ class PermitAmendmentForm extends Component {
               </Form.Item>
             )}
           </Col>
-          <Col md={12} sm={24}>
-            <Form.Item label="Attached Files">
+          <Col md={12} sm={24} className="border--left--layout">
+            <Form.Item label="Attached files">
               <Field
                 id="related_documents"
                 name="related_documents"
@@ -64,7 +62,7 @@ class PermitAmendmentForm extends Component {
                 handleRemovePermitAmendmentDocument={this.props.handleRemovePermitAmendmentDocument}
               />
             </Form.Item>
-            <Form.Item label="Upload/Attach Documents">
+            <Form.Item label="Upload files" style={{ paddingTop: "10px" }}>
               <Field
                 id="PermitDocumentFileUpload"
                 name="PermitDocumentFileUpload"

@@ -181,23 +181,27 @@ const childColumns = [
     render: (text) => <div title="Description">{text}</div>,
   },
   {
-    title: "Documents",
+    title: "Files",
     dataIndex: "documents",
     key: "documents",
-    render: (text) =>
-      text.map((file) => (
-        <div>
-          -&nbsp;
-          <a
-            key={file.mine_document_guid}
-            onClick={() =>
-              downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-            }
-          >
-            {file.document_name}
-          </a>
-        </div>
-      )),
+    render: (text) => (
+      <div>
+        <ul>
+          {text.map((file) => (
+            <li>
+              <a
+                key={file.mine_document_guid}
+                onClick={() =>
+                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+                }
+              >
+                {file.document_name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
   },
   {
     title: "",
@@ -309,13 +313,7 @@ export const MinePermitTable = (props) => {
       )
     );
     return (
-      <Table
-        rowClassName={() => "table-row-align-middle"}
-        align="left"
-        pagination={false}
-        columns={childColumns}
-        dataSource={childRowData}
-      />
+      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
 
