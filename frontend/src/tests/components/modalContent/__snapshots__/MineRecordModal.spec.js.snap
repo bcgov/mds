@@ -1,0 +1,607 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineRecordModal renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MineRecordModal
+    initialValues={Object {}}
+    mineRegionOptions={
+      Array [
+        Object {
+          "label": "South West",
+          "value": "SW",
+        },
+        Object {
+          "label": "South Central",
+          "value": "SC",
+        },
+        Object {
+          "label": "North West",
+          "value": "NW",
+        },
+        Object {
+          "label": "North East",
+          "value": "NE",
+        },
+        Object {
+          "label": "South East",
+          "value": "SE",
+        },
+      ]
+    }
+    mineStatusOptions={
+      Array [
+        Object {
+          "label": "Abandoned",
+          "value": "ABN",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "label": "Care & Maintenance",
+              "value": "CM",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Long Term Maintenance",
+                  "value": "LTM",
+                },
+                Object {
+                  "label": "Long Term Maintenance Water Treatment",
+                  "value": "LWT",
+                },
+                Object {
+                  "label": "Permit Release Pending",
+                  "value": "PRP",
+                },
+              ],
+              "label": "Reclamation",
+              "value": "REC",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Long Term Maintenance",
+                  "value": "LTM",
+                },
+                Object {
+                  "label": "Long Term Maintenance Water Treatment",
+                  "value": "LWT",
+                },
+                Object {
+                  "label": "Reclamation Not Starte",
+                  "value": "RNS",
+                },
+                Object {
+                  "label": "Site Visit Required",
+                  "value": "SVR",
+                },
+              ],
+              "label": "Orphaned",
+              "value": "ORP",
+            },
+            Object {
+              "label": "Unknown",
+              "value": "UN",
+            },
+          ],
+          "label": "Closed",
+          "value": "CLD",
+        },
+        Object {
+          "label": "Not Started",
+          "value": "NS",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "label": "Year round",
+              "value": "YR",
+            },
+            Object {
+              "label": "Seasonal",
+              "value": "SEA",
+            },
+          ],
+          "label": "Operating",
+          "value": "OP",
+        },
+      ]
+    }
+    onSubmit={[MockFunction]}
+    title="mockTitle"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <Connect(ReduxForm)
+        initialValues={Object {}}
+        mineRegionOptions={
+          Array [
+            Object {
+              "label": "South West",
+              "value": "SW",
+            },
+            Object {
+              "label": "South Central",
+              "value": "SC",
+            },
+            Object {
+              "label": "North West",
+              "value": "NW",
+            },
+            Object {
+              "label": "North East",
+              "value": "NE",
+            },
+            Object {
+              "label": "South East",
+              "value": "SE",
+            },
+          ]
+        }
+        mineStatusOptions={
+          Array [
+            Object {
+              "label": "Abandoned",
+              "value": "ABN",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Care & Maintenance",
+                  "value": "CM",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "Long Term Maintenance",
+                      "value": "LTM",
+                    },
+                    Object {
+                      "label": "Long Term Maintenance Water Treatment",
+                      "value": "LWT",
+                    },
+                    Object {
+                      "label": "Permit Release Pending",
+                      "value": "PRP",
+                    },
+                  ],
+                  "label": "Reclamation",
+                  "value": "REC",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "Long Term Maintenance",
+                      "value": "LTM",
+                    },
+                    Object {
+                      "label": "Long Term Maintenance Water Treatment",
+                      "value": "LWT",
+                    },
+                    Object {
+                      "label": "Reclamation Not Starte",
+                      "value": "RNS",
+                    },
+                    Object {
+                      "label": "Site Visit Required",
+                      "value": "SVR",
+                    },
+                  ],
+                  "label": "Orphaned",
+                  "value": "ORP",
+                },
+                Object {
+                  "label": "Unknown",
+                  "value": "UN",
+                },
+              ],
+              "label": "Closed",
+              "value": "CLD",
+            },
+            Object {
+              "label": "Not Started",
+              "value": "NS",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Year round",
+                  "value": "YR",
+                },
+                Object {
+                  "label": "Seasonal",
+                  "value": "SEA",
+                },
+              ],
+              "label": "Operating",
+              "value": "OP",
+            },
+          ]
+        }
+        onSubmit={[MockFunction]}
+        title="mockTitle"
+      />,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "initialValues": Object {},
+        "mineRegionOptions": Array [
+          Object {
+            "label": "South West",
+            "value": "SW",
+          },
+          Object {
+            "label": "South Central",
+            "value": "SC",
+          },
+          Object {
+            "label": "North West",
+            "value": "NW",
+          },
+          Object {
+            "label": "North East",
+            "value": "NE",
+          },
+          Object {
+            "label": "South East",
+            "value": "SE",
+          },
+        ],
+        "mineStatusOptions": Array [
+          Object {
+            "label": "Abandoned",
+            "value": "ABN",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "label": "Care & Maintenance",
+                "value": "CM",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "label": "Long Term Maintenance",
+                    "value": "LTM",
+                  },
+                  Object {
+                    "label": "Long Term Maintenance Water Treatment",
+                    "value": "LWT",
+                  },
+                  Object {
+                    "label": "Permit Release Pending",
+                    "value": "PRP",
+                  },
+                ],
+                "label": "Reclamation",
+                "value": "REC",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "label": "Long Term Maintenance",
+                    "value": "LTM",
+                  },
+                  Object {
+                    "label": "Long Term Maintenance Water Treatment",
+                    "value": "LWT",
+                  },
+                  Object {
+                    "label": "Reclamation Not Starte",
+                    "value": "RNS",
+                  },
+                  Object {
+                    "label": "Site Visit Required",
+                    "value": "SVR",
+                  },
+                ],
+                "label": "Orphaned",
+                "value": "ORP",
+              },
+              Object {
+                "label": "Unknown",
+                "value": "UN",
+              },
+            ],
+            "label": "Closed",
+            "value": "CLD",
+          },
+          Object {
+            "label": "Not Started",
+            "value": "NS",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "label": "Year round",
+                "value": "YR",
+              },
+              Object {
+                "label": "Seasonal",
+                "value": "SEA",
+              },
+            ],
+            "label": "Operating",
+            "value": "OP",
+          },
+        ],
+        "onSubmit": [MockFunction],
+        "title": "mockTitle",
+      },
+      "ref": null,
+      "rendered": null,
+      "type": [Function],
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <Connect(ReduxForm)
+          initialValues={Object {}}
+          mineRegionOptions={
+            Array [
+              Object {
+                "label": "South West",
+                "value": "SW",
+              },
+              Object {
+                "label": "South Central",
+                "value": "SC",
+              },
+              Object {
+                "label": "North West",
+                "value": "NW",
+              },
+              Object {
+                "label": "North East",
+                "value": "NE",
+              },
+              Object {
+                "label": "South East",
+                "value": "SE",
+              },
+            ]
+          }
+          mineStatusOptions={
+            Array [
+              Object {
+                "label": "Abandoned",
+                "value": "ABN",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "label": "Care & Maintenance",
+                    "value": "CM",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "label": "Long Term Maintenance",
+                        "value": "LTM",
+                      },
+                      Object {
+                        "label": "Long Term Maintenance Water Treatment",
+                        "value": "LWT",
+                      },
+                      Object {
+                        "label": "Permit Release Pending",
+                        "value": "PRP",
+                      },
+                    ],
+                    "label": "Reclamation",
+                    "value": "REC",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "label": "Long Term Maintenance",
+                        "value": "LTM",
+                      },
+                      Object {
+                        "label": "Long Term Maintenance Water Treatment",
+                        "value": "LWT",
+                      },
+                      Object {
+                        "label": "Reclamation Not Starte",
+                        "value": "RNS",
+                      },
+                      Object {
+                        "label": "Site Visit Required",
+                        "value": "SVR",
+                      },
+                    ],
+                    "label": "Orphaned",
+                    "value": "ORP",
+                  },
+                  Object {
+                    "label": "Unknown",
+                    "value": "UN",
+                  },
+                ],
+                "label": "Closed",
+                "value": "CLD",
+              },
+              Object {
+                "label": "Not Started",
+                "value": "NS",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "label": "Year round",
+                    "value": "YR",
+                  },
+                  Object {
+                    "label": "Seasonal",
+                    "value": "SEA",
+                  },
+                ],
+                "label": "Operating",
+                "value": "OP",
+              },
+            ]
+          }
+          onSubmit={[MockFunction]}
+          title="mockTitle"
+        />,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "initialValues": Object {},
+          "mineRegionOptions": Array [
+            Object {
+              "label": "South West",
+              "value": "SW",
+            },
+            Object {
+              "label": "South Central",
+              "value": "SC",
+            },
+            Object {
+              "label": "North West",
+              "value": "NW",
+            },
+            Object {
+              "label": "North East",
+              "value": "NE",
+            },
+            Object {
+              "label": "South East",
+              "value": "SE",
+            },
+          ],
+          "mineStatusOptions": Array [
+            Object {
+              "label": "Abandoned",
+              "value": "ABN",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Care & Maintenance",
+                  "value": "CM",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "Long Term Maintenance",
+                      "value": "LTM",
+                    },
+                    Object {
+                      "label": "Long Term Maintenance Water Treatment",
+                      "value": "LWT",
+                    },
+                    Object {
+                      "label": "Permit Release Pending",
+                      "value": "PRP",
+                    },
+                  ],
+                  "label": "Reclamation",
+                  "value": "REC",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "Long Term Maintenance",
+                      "value": "LTM",
+                    },
+                    Object {
+                      "label": "Long Term Maintenance Water Treatment",
+                      "value": "LWT",
+                    },
+                    Object {
+                      "label": "Reclamation Not Starte",
+                      "value": "RNS",
+                    },
+                    Object {
+                      "label": "Site Visit Required",
+                      "value": "SVR",
+                    },
+                  ],
+                  "label": "Orphaned",
+                  "value": "ORP",
+                },
+                Object {
+                  "label": "Unknown",
+                  "value": "UN",
+                },
+              ],
+              "label": "Closed",
+              "value": "CLD",
+            },
+            Object {
+              "label": "Not Started",
+              "value": "NS",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "Year round",
+                  "value": "YR",
+                },
+                Object {
+                  "label": "Seasonal",
+                  "value": "SEA",
+                },
+              ],
+              "label": "Operating",
+              "value": "OP",
+            },
+          ],
+          "onSubmit": [MockFunction],
+          "title": "mockTitle",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

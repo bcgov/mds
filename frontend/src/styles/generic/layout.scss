@@ -46,6 +46,10 @@ body {
   height: inherit !important;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .inline-flex {
   @include flex;
 
@@ -145,6 +149,10 @@ body {
   margin: $default-margin-sm;
 }
 
+.margin-large {
+  margin: $default-margin-lg;
+}
+
 .lightest-grey-bg {
   background: $secondary-background-colour;
 }
@@ -159,4 +167,26 @@ body {
 // using important to override any existing styling from ant design.
 .icon-sm {
   font-size: 20px !important;
+}
+
+.img-lg {
+  height: 30px;
+}
+
+.vertical-align {
+  &-sm {
+    vertical-align: -0.125em;
+  }
+}
+
+// used on larger modals as a divider.
+.border {
+  &--right {
+    &--violet {
+      border-right: 1px solid $violet;
+      @include tablet {
+        border-right: 0;
+      }
+    }
+  }
 }

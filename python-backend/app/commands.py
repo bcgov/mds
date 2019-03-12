@@ -114,12 +114,11 @@ def register_commands(app):
                 email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
                 party = Party.create(
                     last_name,
-                    email,
                     '123-123-1234',
                     'PER',
                     DUMMY_USER_KWARGS,
-                    first_name=first_name)
-
+                    first_name=first_name,
+                    email=email)
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(

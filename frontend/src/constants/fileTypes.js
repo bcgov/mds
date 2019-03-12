@@ -9,6 +9,7 @@ export const DOC = {
   "application/msword": ".doc",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
   "application/rtf": ".rtf",
+  "text/rtf": null,
 };
 
 export const OPEN_DOC = {
