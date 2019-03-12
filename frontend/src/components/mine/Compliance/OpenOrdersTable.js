@@ -6,10 +6,6 @@ import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 
-/**
- * @class  MineTenureInfo - all tenure information related to the mine.
- */
-
 const propTypes = {
   handlePageChange: PropTypes.func.isRequired,
   minOrderList: PropTypes.number.isRequired,
