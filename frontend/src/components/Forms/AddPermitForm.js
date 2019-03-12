@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { remove } from "lodash";
 import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import RenderField from "@/components/common/RenderField";
@@ -8,7 +9,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, dateNotInFuture } from "@/utils/Validate";
+import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -82,10 +83,15 @@ class AddPermitForm extends Component {
     this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
   };
 
+  onRemoveFile = (fileItem) =>
+    remove(this.props.initialValues.uploadedFiles, {
+      document_manager_guid: fileItem.serverId,
+    });
+
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Row gutter={16}>
+        <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
               <Field
@@ -118,7 +124,7 @@ class AddPermitForm extends Component {
                 name="permit_no"
                 label="Permit number*"
                 component={RenderField}
-                validate={[required]}
+                validate={[required, maxLength(9)]}
                 inlineLabel={
                   this.props.permitTypeCode &&
                   `${this.props.permitTypeCode}${this.props.permitActivityTypeCode} -`
@@ -147,11 +153,12 @@ class AddPermitForm extends Component {
             </Form.Item>
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item label="Upload/Attach Documents">
+            <Form.Item label="Upload files">
               <Field
                 id="PermitDocumentFileUpload"
                 name="PermitDocumentFileUpload"
                 onFileLoad={this.onFileLoad}
+                onRemoveFile={this.onRemoveFile}
                 mineGuid={this.props.mine_guid}
                 component={PermitAmendmentFileUpload}
               />

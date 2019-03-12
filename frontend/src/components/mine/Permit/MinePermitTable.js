@@ -96,7 +96,7 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Add permit amendment" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Add permit amendment" : "Amalgamate permit"}
               </div>
             </button>
           </Menu.Item>
@@ -138,23 +138,21 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper inTesting>
-          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-              <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add/Edit
-                  <img
-                    className="padding-small--right icon-svg-filter"
-                    src={CARAT}
-                    alt="Menu"
-                    style={{ paddingLeft: "5px" }}
-                  />
-                </div>
-              </Button>
-            </Dropdown>
-          </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+            <Button type="secondary" className="permit-table-button">
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Add/Edit
+                <img
+                  className="padding-small--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </div>
+            </Button>
+          </Dropdown>
         </AuthorizationWrapper>
       );
     },
@@ -178,7 +176,11 @@ const childColumns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-    render: (text) => <div title="Description">{text}</div>,
+    render: (text) => (
+      <div title="Description" style={{ maxWidth: "800px" }}>
+        {text}
+      </div>
+    ),
   },
   {
     title: "Files",

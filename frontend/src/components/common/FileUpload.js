@@ -12,19 +12,27 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
+const doNothing = () => {};
+
 const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  onRemoveFile: PropTypes.func,
   chunkSize: PropTypes.number,
+  allowRevert: PropTypes.bool,
+  allowMultiple: PropTypes.bool,
 };
 
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
-  onFileLoad: () => {},
+  onFileLoad: doNothing,
+  onRemoveFile: doNothing,
   chunkSize: 1048576, // 1MB
+  allowRevert: false,
+  allowMultiple: true,
 };
 
 class FileUpload extends React.Component {
@@ -77,8 +85,9 @@ class FileUpload extends React.Component {
       <FilePond
         server={this.server}
         name="file"
-        allowRevert={false}
-        allowMultiple
+        allowRevert={this.props.allowRevert}
+        onremovefile={this.props.onRemoveFile}
+        allowMultiple={this.props.allowMultiple}
         maxFileSize={this.props.maxFileSize}
         allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}

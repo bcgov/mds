@@ -104,7 +104,7 @@ export class MinePermitInfo extends Component {
 
   // Amendment Modals
 
-  openAddAmendmentModal = (event, onSubmit, title, permit) => {
+  openAddAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -112,6 +112,7 @@ export class MinePermitInfo extends Component {
           uploadedFiles: [],
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
+          permit_amendment_type_code: type,
         },
         onSubmit,
         title,
@@ -143,9 +144,10 @@ export class MinePermitInfo extends Component {
   openAddAmalgamatedPermitModal = (event, permit) =>
     this.openAddAmendmentModal(
       event,
-      this.handleAddAlgPermitAmendment,
+      this.handleAddAmalgamatedPermit,
       `Add amalgamated permit to ${permit.permit_no}`,
-      permit
+      permit,
+      amalgamtedPermit
     );
 
   openAddPermitAmendmentModal = (event, permit) =>
@@ -187,25 +189,23 @@ export class MinePermitInfo extends Component {
         <div className="inline-flex between">
           <div />
           <div className="inline-flex between">
-            <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  this.openAddPermitModal(
+                    event,
+                    this.handleAddPermit,
+                    `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
+                  )
+                }
               >
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    this.openAddPermitModal(
-                      event,
-                      this.handleAddPermit,
-                      `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
-                    )
-                  }
-                >
-                  <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                  Add a New Permit
-                </Button>
-              </AuthorizationWrapper>
+                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+                Add a New Permit
+              </Button>
             </AuthorizationWrapper>
           </div>
         </div>
