@@ -56,7 +56,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             db.session.add(mine_tsf)
             if is_mine_first_tsf:
                 try:
-                    req_documents_url = get_documents_svc_url('/required?category=MINE_TAILINGS')
+                    req_documents_url = get_documents_svc_url('/required?category=TSF')
+                    current_app.logger.debug(req_documents_url)
                     get_tsf_docs_resp = requests.get(
                         req_documents_url,
                         headers={'Authorization': request.headers.get('Authorization')})
@@ -66,7 +67,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             500,
                             'get_tsf_req_docs returned error' + str(get_tsf_docs_resp.status_code))
 
-                    tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
+                    tsf_required_documents = get_tsf_docs_resp.json()
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
@@ -76,8 +77,6 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             tsf_req_doc['req_document_name'],
                             'document_description':
                             tsf_req_doc['req_document_description'],
-                            'document_category':
-                            tsf_req_doc['req_document_category'],
                             'document_due_date_type':
                             tsf_req_doc['req_document_due_date_type'],
                             'document_due_date_period_months':
