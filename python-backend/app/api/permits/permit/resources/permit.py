@@ -6,7 +6,7 @@ from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
 from ...permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from ....mines.mine.models.mine import Mine
-from app.extensions import api
+from app.extensions import api, db
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -98,8 +98,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 'OGP',
                 self.get_create_update_dict(),
                 description='Initial permit issued.')
-            amendment.save()
-            permit.save()
+            db.session.add(permit)
+            db.session.add(amendment)
 
             for newFile in uploadedFiles:
                 new_pa_doc = PermitAmendmentDocument(
@@ -109,8 +109,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                     **self.get_create_update_dict(),
                 )
                 amendment.documents.append(new_pa_doc)
-            amendment.save()
-            permit.save()
+            db.session.commit()
         except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
         return permit.json()

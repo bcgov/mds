@@ -24,7 +24,7 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
-    deleted_ind = db.Column(db.Boolean, nullable=False, default=False)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def json(self):
         return {
