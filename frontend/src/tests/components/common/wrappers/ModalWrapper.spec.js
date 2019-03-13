@@ -8,6 +8,7 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
   dispatchProps.content = jest.fn();
+  dispatchProps.clearOnSubmit = false;
 };
 
 const setupProps = () => {
@@ -15,6 +16,7 @@ const setupProps = () => {
     title: "mockTitle",
   };
   props.isModalOpen = false;
+  props.widthSize = 520;
 };
 
 beforeEach(() => {

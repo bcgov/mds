@@ -1,0 +1,4810 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddFullPartyForm renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AddFullPartyForm
+    isPerson={false}
+    provinceOptions={
+      Array [
+        Object {
+          "label": "BC",
+          "value": "BC",
+        },
+        Object {
+          "label": "AB",
+          "value": "AB",
+        },
+      ]
+    }
+    togglePartyChange={[MockFunction]}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <Form
+        hideRequiredMark={false}
+        layout="horizontal"
+        onSubmit={[Function]}
+        prefixCls="ant-form"
+      >
+        <Row
+          gutter={48}
+        >
+          <Col
+            className="border--right--violet"
+            md={12}
+            sm={24}
+          >
+            <div
+              className="center margin-large"
+            >
+              <RadioGroup
+                buttonStyle="outline"
+                defaultValue={true}
+                disabled={false}
+                onChange={[MockFunction]}
+                prefixCls="ant-radio"
+                size="large"
+              >
+                <RadioButton
+                  prefixCls="ant-radio-button"
+                  value={true}
+                >
+                  Person
+                </RadioButton>
+                <RadioButton
+                  prefixCls="ant-radio-button"
+                  value={false}
+                >
+                  Company
+                </RadioButton>
+              </RadioGroup>
+            </div>
+            <Row
+              gutter={16}
+            >
+              <h5>
+                Basic Details
+              </h5>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="party_name"
+                    label="Company Name *"
+                    name="party_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone No. *"
+                    name="phone_no"
+                    normalize={[Function]}
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+            style={
+              Object {
+                "marginTop": "80px",
+              }
+            }
+          >
+            <Row
+              gutter={16}
+            >
+              <h5>
+                Address
+              </h5>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="suite_no"
+                    label="Suite No."
+                    name="suite_no"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="address_line_1"
+                    label="Street Address 1"
+                    name="address_line_1"
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="address_line_2"
+                    label="Street Address 2"
+                    name="address_line_2"
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    data={
+                      Array [
+                        Object {
+                          "label": "BC",
+                          "value": "BC",
+                        },
+                        Object {
+                          "label": "AB",
+                          "value": "AB",
+                        },
+                      ]
+                    }
+                    id="sub_division_code"
+                    label="Province"
+                    name="sub_division_code"
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="city"
+                    label="City"
+                    name="city"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="post_code"
+                    label="Postal Code"
+                    name="post_code"
+                    normalize={[Function]}
+                    placeholder="e.g xxxxxx"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Form>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <Row
+          gutter={48}
+        >
+          <Col
+            className="border--right--violet"
+            md={12}
+            sm={24}
+          >
+            <div
+              className="center margin-large"
+            >
+              <RadioGroup
+                buttonStyle="outline"
+                defaultValue={true}
+                disabled={false}
+                onChange={[MockFunction]}
+                prefixCls="ant-radio"
+                size="large"
+              >
+                <RadioButton
+                  prefixCls="ant-radio-button"
+                  value={true}
+                >
+                  Person
+                </RadioButton>
+                <RadioButton
+                  prefixCls="ant-radio-button"
+                  value={false}
+                >
+                  Company
+                </RadioButton>
+              </RadioGroup>
+            </div>
+            <Row
+              gutter={16}
+            >
+              <h5>
+                Basic Details
+              </h5>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="party_name"
+                    label="Company Name *"
+                    name="party_name"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="email"
+                    label="Email"
+                    name="email"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_no"
+                    label="Phone No. *"
+                    name="phone_no"
+                    normalize={[Function]}
+                    placeholder="e.g. xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="phone_ext"
+                    label="Ext"
+                    name="phone_ext"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+            style={
+              Object {
+                "marginTop": "80px",
+              }
+            }
+          >
+            <Row
+              gutter={16}
+            >
+              <h5>
+                Address
+              </h5>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="suite_no"
+                    label="Suite No."
+                    name="suite_no"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="address_line_1"
+                    label="Street Address 1"
+                    name="address_line_1"
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={18}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="address_line_2"
+                    label="Street Address 2"
+                    name="address_line_2"
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                span={6}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    data={
+                      Array [
+                        Object {
+                          "label": "BC",
+                          "value": "BC",
+                        },
+                        Object {
+                          "label": "AB",
+                          "value": "AB",
+                        },
+                      ]
+                    }
+                    id="sub_division_code"
+                    label="Province"
+                    name="sub_division_code"
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="city"
+                    label="City"
+                    name="city"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                sm={12}
+                xs={24}
+              >
+                <FormItem
+                  colon={true}
+                  hasFeedback={false}
+                  prefixCls="ant-form"
+                >
+                  <Field
+                    component={[Function]}
+                    id="post_code"
+                    label="Postal Code"
+                    name="post_code"
+                    normalize={[Function]}
+                    placeholder="e.g xxxxxx"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+          </Col>
+        </Row>,
+        "hideRequiredMark": false,
+        "layout": "horizontal",
+        "onSubmit": [Function],
+        "prefixCls": "ant-form",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Col
+              className="border--right--violet"
+              md={12}
+              sm={24}
+            >
+              <div
+                className="center margin-large"
+              >
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={true}
+                  disabled={false}
+                  onChange={[MockFunction]}
+                  prefixCls="ant-radio"
+                  size="large"
+                >
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={true}
+                  >
+                    Person
+                  </RadioButton>
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={false}
+                  >
+                    Company
+                  </RadioButton>
+                </RadioGroup>
+              </div>
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Basic Details
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Company Name *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="email"
+                      label="Email"
+                      name="email"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone No. *"
+                      name="phone_no"
+                      normalize={[Function]}
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>,
+            <Col
+              md={12}
+              sm={24}
+              style={
+                Object {
+                  "marginTop": "80px",
+                }
+              }
+            >
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Address
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="suite_no"
+                      label="Suite No."
+                      name="suite_no"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_1"
+                      label="Street Address 1"
+                      name="address_line_1"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_2"
+                      label="Street Address 2"
+                      name="address_line_2"
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      data={
+                        Array [
+                          Object {
+                            "label": "BC",
+                            "value": "BC",
+                          },
+                          Object {
+                            "label": "AB",
+                            "value": "AB",
+                          },
+                        ]
+                      }
+                      id="sub_division_code"
+                      label="Province"
+                      name="sub_division_code"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="city"
+                      label="City"
+                      name="city"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="post_code"
+                      label="Postal Code"
+                      name="post_code"
+                      normalize={[Function]}
+                      placeholder="e.g xxxxxx"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>,
+          ],
+          "gutter": 48,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="center margin-large"
+                >
+                  <RadioGroup
+                    buttonStyle="outline"
+                    defaultValue={true}
+                    disabled={false}
+                    onChange={[MockFunction]}
+                    prefixCls="ant-radio"
+                    size="large"
+                  >
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={true}
+                    >
+                      Person
+                    </RadioButton>
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={false}
+                    >
+                      Company
+                    </RadioButton>
+                  </RadioGroup>
+                </div>,
+                <Row
+                  gutter={16}
+                >
+                  <h5>
+                    Basic Details
+                  </h5>
+                </Row>,
+                false,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="party_name"
+                        label="Company Name *"
+                        name="party_name"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="phone_no"
+                        label="Phone No. *"
+                        name="phone_no"
+                        normalize={[Function]}
+                        placeholder="e.g. xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="phone_ext"
+                        label="Ext"
+                        name="phone_ext"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+              ],
+              "className": "border--right--violet",
+              "md": 12,
+              "sm": 24,
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <RadioGroup
+                    buttonStyle="outline"
+                    defaultValue={true}
+                    disabled={false}
+                    onChange={[MockFunction]}
+                    prefixCls="ant-radio"
+                    size="large"
+                  >
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={true}
+                    >
+                      Person
+                    </RadioButton>
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={false}
+                    >
+                      Company
+                    </RadioButton>
+                  </RadioGroup>,
+                  "className": "center margin-large",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "buttonStyle": "outline",
+                    "children": Array [
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={true}
+                      >
+                        Person
+                      </RadioButton>,
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={false}
+                      >
+                        Company
+                      </RadioButton>,
+                    ],
+                    "defaultValue": true,
+                    "disabled": false,
+                    "onChange": [MockFunction],
+                    "prefixCls": "ant-radio",
+                    "size": "large",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "Person",
+                        "prefixCls": "ant-radio-button",
+                        "value": true,
+                      },
+                      "ref": null,
+                      "rendered": "Person",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "Company",
+                        "prefixCls": "ant-radio-button",
+                        "value": false,
+                      },
+                      "ref": null,
+                      "rendered": "Company",
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <h5>
+                    Basic Details
+                  </h5>,
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Basic Details",
+                  },
+                  "ref": null,
+                  "rendered": "Basic Details",
+                  "type": "h5",
+                },
+                "type": [Function],
+              },
+              false,
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="party_name"
+                        label="Company Name *"
+                        name="party_name"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>,
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="party_name"
+                        label="Company Name *"
+                        name="party_name"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>,
+                    "span": 24,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Field
+                        component={[Function]}
+                        id="party_name"
+                        label="Company Name *"
+                        name="party_name"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />,
+                      "colon": true,
+                      "hasFeedback": false,
+                      "prefixCls": "ant-form",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "component": [Function],
+                        "id": "party_name",
+                        "label": "Company Name *",
+                        "name": "party_name",
+                        "validate": Array [
+                          [Function],
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>,
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>,
+                    "span": 24,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Field
+                        component={[Function]}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />,
+                      "colon": true,
+                      "hasFeedback": false,
+                      "prefixCls": "ant-form",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "component": [Function],
+                        "id": "email",
+                        "label": "Email",
+                        "name": "email",
+                        "validate": Array [
+                          [Function],
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_no"
+                          label="Phone No. *"
+                          name="phone_no"
+                          normalize={[Function]}
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_ext"
+                          label="Ext"
+                          name="phone_ext"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                  ],
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_no"
+                          label="Phone No. *"
+                          name="phone_no"
+                          normalize={[Function]}
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "span": 18,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="phone_no"
+                          label="Phone No. *"
+                          name="phone_no"
+                          normalize={[Function]}
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "phone_no",
+                          "label": "Phone No. *",
+                          "name": "phone_no",
+                          "normalize": [Function],
+                          "placeholder": "e.g. xxx-xxx-xxxx",
+                          "validate": Array [
+                            [Function],
+                            [Function],
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_ext"
+                          label="Ext"
+                          name="phone_ext"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "span": 6,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="phone_ext"
+                          label="Ext"
+                          name="phone_ext"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "phone_ext",
+                          "label": "Ext",
+                          "name": "phone_ext",
+                          "validate": Array [
+                            [Function],
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <Row
+                  gutter={16}
+                >
+                  <h5>
+                    Address
+                  </h5>
+                </Row>,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="suite_no"
+                        label="Suite No."
+                        name="suite_no"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="address_line_1"
+                        label="Street Address 1"
+                        name="address_line_1"
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="address_line_2"
+                        label="Street Address 2"
+                        name="address_line_2"
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        data={
+                          Array [
+                            Object {
+                              "label": "BC",
+                              "value": "BC",
+                            },
+                            Object {
+                              "label": "AB",
+                              "value": "AB",
+                            },
+                          ]
+                        }
+                        id="sub_division_code"
+                        label="Province"
+                        name="sub_division_code"
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    md={12}
+                    sm={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="city"
+                        label="City"
+                        name="city"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    md={12}
+                    sm={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="post_code"
+                        label="Postal Code"
+                        name="post_code"
+                        normalize={[Function]}
+                        placeholder="e.g xxxxxx"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
+              ],
+              "md": 12,
+              "sm": 24,
+              "style": Object {
+                "marginTop": "80px",
+              },
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <h5>
+                    Address
+                  </h5>,
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Address",
+                  },
+                  "ref": null,
+                  "rendered": "Address",
+                  "type": "h5",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="suite_no"
+                          label="Suite No."
+                          name="suite_no"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_1"
+                          label="Street Address 1"
+                          name="address_line_1"
+                        />
+                      </FormItem>
+                    </Col>,
+                  ],
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="suite_no"
+                          label="Suite No."
+                          name="suite_no"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "span": 6,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="suite_no"
+                          label="Suite No."
+                          name="suite_no"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "suite_no",
+                          "label": "Suite No.",
+                          "name": "suite_no",
+                          "validate": Array [
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_1"
+                          label="Street Address 1"
+                          name="address_line_1"
+                        />
+                      </FormItem>,
+                      "span": 18,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="address_line_1"
+                          label="Street Address 1"
+                          name="address_line_1"
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "address_line_1",
+                          "label": "Street Address 1",
+                          "name": "address_line_1",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_2"
+                          label="Street Address 2"
+                          name="address_line_2"
+                        />
+                      </FormItem>
+                    </Col>,
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          data={
+                            Array [
+                              Object {
+                                "label": "BC",
+                                "value": "BC",
+                              },
+                              Object {
+                                "label": "AB",
+                                "value": "AB",
+                              },
+                            ]
+                          }
+                          id="sub_division_code"
+                          label="Province"
+                          name="sub_division_code"
+                        />
+                      </FormItem>
+                    </Col>,
+                  ],
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_2"
+                          label="Street Address 2"
+                          name="address_line_2"
+                        />
+                      </FormItem>,
+                      "span": 18,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="address_line_2"
+                          label="Street Address 2"
+                          name="address_line_2"
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "address_line_2",
+                          "label": "Street Address 2",
+                          "name": "address_line_2",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          data={
+                            Array [
+                              Object {
+                                "label": "BC",
+                                "value": "BC",
+                              },
+                              Object {
+                                "label": "AB",
+                                "value": "AB",
+                              },
+                            ]
+                          }
+                          id="sub_division_code"
+                          label="Province"
+                          name="sub_division_code"
+                        />
+                      </FormItem>,
+                      "span": 6,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          data={
+                            Array [
+                              Object {
+                                "label": "BC",
+                                "value": "BC",
+                              },
+                              Object {
+                                "label": "AB",
+                                "value": "AB",
+                              },
+                            ]
+                          }
+                          id="sub_division_code"
+                          label="Province"
+                          name="sub_division_code"
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "data": Array [
+                            Object {
+                              "label": "BC",
+                              "value": "BC",
+                            },
+                            Object {
+                              "label": "AB",
+                              "value": "AB",
+                            },
+                          ],
+                          "id": "sub_division_code",
+                          "label": "Province",
+                          "name": "sub_division_code",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Col
+                      md={12}
+                      sm={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="city"
+                          label="City"
+                          name="city"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    <Col
+                      md={12}
+                      sm={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="post_code"
+                          label="Postal Code"
+                          name="post_code"
+                          normalize={[Function]}
+                          placeholder="e.g xxxxxx"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                  ],
+                  "gutter": 16,
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="city"
+                          label="City"
+                          name="city"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "md": 12,
+                      "sm": 12,
+                      "xs": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="city"
+                          label="City"
+                          name="city"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "city",
+                          "label": "City",
+                          "name": "city",
+                          "validate": Array [
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="post_code"
+                          label="Postal Code"
+                          name="post_code"
+                          normalize={[Function]}
+                          placeholder="e.g xxxxxx"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "md": 12,
+                      "sm": 12,
+                      "xs": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="post_code"
+                          label="Postal Code"
+                          name="post_code"
+                          normalize={[Function]}
+                          placeholder="e.g xxxxxx"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "post_code",
+                          "label": "Postal Code",
+                          "name": "post_code",
+                          "normalize": [Function],
+                          "placeholder": "e.g xxxxxx",
+                          "validate": Array [
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <Form
+          hideRequiredMark={false}
+          layout="horizontal"
+          onSubmit={[Function]}
+          prefixCls="ant-form"
+        >
+          <Row
+            gutter={48}
+          >
+            <Col
+              className="border--right--violet"
+              md={12}
+              sm={24}
+            >
+              <div
+                className="center margin-large"
+              >
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={true}
+                  disabled={false}
+                  onChange={[MockFunction]}
+                  prefixCls="ant-radio"
+                  size="large"
+                >
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={true}
+                  >
+                    Person
+                  </RadioButton>
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={false}
+                  >
+                    Company
+                  </RadioButton>
+                </RadioGroup>
+              </div>
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Basic Details
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Company Name *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="email"
+                      label="Email"
+                      name="email"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone No. *"
+                      name="phone_no"
+                      normalize={[Function]}
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+              style={
+                Object {
+                  "marginTop": "80px",
+                }
+              }
+            >
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Address
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="suite_no"
+                      label="Suite No."
+                      name="suite_no"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_1"
+                      label="Street Address 1"
+                      name="address_line_1"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_2"
+                      label="Street Address 2"
+                      name="address_line_2"
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      data={
+                        Array [
+                          Object {
+                            "label": "BC",
+                            "value": "BC",
+                          },
+                          Object {
+                            "label": "AB",
+                            "value": "AB",
+                          },
+                        ]
+                      }
+                      id="sub_division_code"
+                      label="Province"
+                      name="sub_division_code"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="city"
+                      label="City"
+                      name="city"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="post_code"
+                      label="Postal Code"
+                      name="post_code"
+                      normalize={[Function]}
+                      placeholder="e.g xxxxxx"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Form>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Row
+            gutter={48}
+          >
+            <Col
+              className="border--right--violet"
+              md={12}
+              sm={24}
+            >
+              <div
+                className="center margin-large"
+              >
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={true}
+                  disabled={false}
+                  onChange={[MockFunction]}
+                  prefixCls="ant-radio"
+                  size="large"
+                >
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={true}
+                  >
+                    Person
+                  </RadioButton>
+                  <RadioButton
+                    prefixCls="ant-radio-button"
+                    value={false}
+                  >
+                    Company
+                  </RadioButton>
+                </RadioGroup>
+              </div>
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Basic Details
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="party_name"
+                      label="Company Name *"
+                      name="party_name"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="email"
+                      label="Email"
+                      name="email"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_no"
+                      label="Phone No. *"
+                      name="phone_no"
+                      normalize={[Function]}
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="phone_ext"
+                      label="Ext"
+                      name="phone_ext"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+              style={
+                Object {
+                  "marginTop": "80px",
+                }
+              }
+            >
+              <Row
+                gutter={16}
+              >
+                <h5>
+                  Address
+                </h5>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="suite_no"
+                      label="Suite No."
+                      name="suite_no"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_1"
+                      label="Street Address 1"
+                      name="address_line_1"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  span={18}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="address_line_2"
+                      label="Street Address 2"
+                      name="address_line_2"
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  span={6}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      data={
+                        Array [
+                          Object {
+                            "label": "BC",
+                            "value": "BC",
+                          },
+                          Object {
+                            "label": "AB",
+                            "value": "AB",
+                          },
+                        ]
+                      }
+                      id="sub_division_code"
+                      label="Province"
+                      name="sub_division_code"
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row
+                gutter={16}
+              >
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="city"
+                      label="City"
+                      name="city"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  sm={12}
+                  xs={24}
+                >
+                  <FormItem
+                    colon={true}
+                    hasFeedback={false}
+                    prefixCls="ant-form"
+                  >
+                    <Field
+                      component={[Function]}
+                      id="post_code"
+                      label="Postal Code"
+                      name="post_code"
+                      normalize={[Function]}
+                      placeholder="e.g xxxxxx"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>
+          </Row>,
+          "hideRequiredMark": false,
+          "layout": "horizontal",
+          "onSubmit": [Function],
+          "prefixCls": "ant-form",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Col
+                className="border--right--violet"
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="center margin-large"
+                >
+                  <RadioGroup
+                    buttonStyle="outline"
+                    defaultValue={true}
+                    disabled={false}
+                    onChange={[MockFunction]}
+                    prefixCls="ant-radio"
+                    size="large"
+                  >
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={true}
+                    >
+                      Person
+                    </RadioButton>
+                    <RadioButton
+                      prefixCls="ant-radio-button"
+                      value={false}
+                    >
+                      Company
+                    </RadioButton>
+                  </RadioGroup>
+                </div>
+                <Row
+                  gutter={16}
+                >
+                  <h5>
+                    Basic Details
+                  </h5>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="party_name"
+                        label="Company Name *"
+                        name="party_name"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="phone_no"
+                        label="Phone No. *"
+                        name="phone_no"
+                        normalize={[Function]}
+                        placeholder="e.g. xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="phone_ext"
+                        label="Ext"
+                        name="phone_ext"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+              </Col>,
+              <Col
+                md={12}
+                sm={24}
+                style={
+                  Object {
+                    "marginTop": "80px",
+                  }
+                }
+              >
+                <Row
+                  gutter={16}
+                >
+                  <h5>
+                    Address
+                  </h5>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="suite_no"
+                        label="Suite No."
+                        name="suite_no"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="address_line_1"
+                        label="Street Address 1"
+                        name="address_line_1"
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    span={18}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="address_line_2"
+                        label="Street Address 2"
+                        name="address_line_2"
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    span={6}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        data={
+                          Array [
+                            Object {
+                              "label": "BC",
+                              "value": "BC",
+                            },
+                            Object {
+                              "label": "AB",
+                              "value": "AB",
+                            },
+                          ]
+                        }
+                        id="sub_division_code"
+                        label="Province"
+                        name="sub_division_code"
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={16}
+                >
+                  <Col
+                    md={12}
+                    sm={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="city"
+                        label="City"
+                        name="city"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    md={12}
+                    sm={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      colon={true}
+                      hasFeedback={false}
+                      prefixCls="ant-form"
+                    >
+                      <Field
+                        component={[Function]}
+                        id="post_code"
+                        label="Postal Code"
+                        name="post_code"
+                        normalize={[Function]}
+                        placeholder="e.g xxxxxx"
+                        validate={
+                          Array [
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>
+              </Col>,
+            ],
+            "gutter": 48,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="center margin-large"
+                  >
+                    <RadioGroup
+                      buttonStyle="outline"
+                      defaultValue={true}
+                      disabled={false}
+                      onChange={[MockFunction]}
+                      prefixCls="ant-radio"
+                      size="large"
+                    >
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={true}
+                      >
+                        Person
+                      </RadioButton>
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={false}
+                      >
+                        Company
+                      </RadioButton>
+                    </RadioGroup>
+                  </div>,
+                  <Row
+                    gutter={16}
+                  >
+                    <h5>
+                      Basic Details
+                    </h5>
+                  </Row>,
+                  false,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      span={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="party_name"
+                          label="Company Name *"
+                          name="party_name"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      span={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="email"
+                          label="Email"
+                          name="email"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_no"
+                          label="Phone No. *"
+                          name="phone_no"
+                          normalize={[Function]}
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="phone_ext"
+                          label="Ext"
+                          name="phone_ext"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                ],
+                "className": "border--right--violet",
+                "md": 12,
+                "sm": 24,
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <RadioGroup
+                      buttonStyle="outline"
+                      defaultValue={true}
+                      disabled={false}
+                      onChange={[MockFunction]}
+                      prefixCls="ant-radio"
+                      size="large"
+                    >
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={true}
+                      >
+                        Person
+                      </RadioButton>
+                      <RadioButton
+                        prefixCls="ant-radio-button"
+                        value={false}
+                      >
+                        Company
+                      </RadioButton>
+                    </RadioGroup>,
+                    "className": "center margin-large",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "buttonStyle": "outline",
+                      "children": Array [
+                        <RadioButton
+                          prefixCls="ant-radio-button"
+                          value={true}
+                        >
+                          Person
+                        </RadioButton>,
+                        <RadioButton
+                          prefixCls="ant-radio-button"
+                          value={false}
+                        >
+                          Company
+                        </RadioButton>,
+                      ],
+                      "defaultValue": true,
+                      "disabled": false,
+                      "onChange": [MockFunction],
+                      "prefixCls": "ant-radio",
+                      "size": "large",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "Person",
+                          "prefixCls": "ant-radio-button",
+                          "value": true,
+                        },
+                        "ref": null,
+                        "rendered": "Person",
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "Company",
+                          "prefixCls": "ant-radio-button",
+                          "value": false,
+                        },
+                        "ref": null,
+                        "rendered": "Company",
+                        "type": [Function],
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <h5>
+                      Basic Details
+                    </h5>,
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Basic Details",
+                    },
+                    "ref": null,
+                    "rendered": "Basic Details",
+                    "type": "h5",
+                  },
+                  "type": [Function],
+                },
+                false,
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Col
+                      span={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="party_name"
+                          label="Company Name *"
+                          name="party_name"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="party_name"
+                          label="Company Name *"
+                          name="party_name"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "span": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="party_name"
+                          label="Company Name *"
+                          name="party_name"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "party_name",
+                          "label": "Company Name *",
+                          "name": "party_name",
+                          "validate": Array [
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Col
+                      span={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="email"
+                          label="Email"
+                          name="email"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="email"
+                          label="Email"
+                          name="email"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "span": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="email"
+                          label="Email"
+                          name="email"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "colon": true,
+                        "hasFeedback": false,
+                        "prefixCls": "ant-form",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "email",
+                          "label": "Email",
+                          "name": "email",
+                          "validate": Array [
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <Col
+                        span={18}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="phone_no"
+                            label="Phone No. *"
+                            name="phone_no"
+                            normalize={[Function]}
+                            placeholder="e.g. xxx-xxx-xxxx"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>
+                      </Col>,
+                      <Col
+                        span={6}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="phone_ext"
+                            label="Ext"
+                            name="phone_ext"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>
+                      </Col>,
+                    ],
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="phone_no"
+                            label="Phone No. *"
+                            name="phone_no"
+                            normalize={[Function]}
+                            placeholder="e.g. xxx-xxx-xxxx"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>,
+                        "span": 18,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="phone_no"
+                            label="Phone No. *"
+                            name="phone_no"
+                            normalize={[Function]}
+                            placeholder="e.g. xxx-xxx-xxxx"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "phone_no",
+                            "label": "Phone No. *",
+                            "name": "phone_no",
+                            "normalize": [Function],
+                            "placeholder": "e.g. xxx-xxx-xxxx",
+                            "validate": Array [
+                              [Function],
+                              [Function],
+                              [Function],
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="phone_ext"
+                            label="Ext"
+                            name="phone_ext"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>,
+                        "span": 6,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="phone_ext"
+                            label="Ext"
+                            name="phone_ext"
+                            validate={
+                              Array [
+                                [Function],
+                                [Function],
+                              ]
+                            }
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "phone_ext",
+                            "label": "Ext",
+                            "name": "phone_ext",
+                            "validate": Array [
+                              [Function],
+                              [Function],
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Row
+                    gutter={16}
+                  >
+                    <h5>
+                      Address
+                    </h5>
+                  </Row>,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="suite_no"
+                          label="Suite No."
+                          name="suite_no"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_1"
+                          label="Street Address 1"
+                          name="address_line_1"
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      span={18}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="address_line_2"
+                          label="Street Address 2"
+                          name="address_line_2"
+                        />
+                      </FormItem>
+                    </Col>
+                    <Col
+                      span={6}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          data={
+                            Array [
+                              Object {
+                                "label": "BC",
+                                "value": "BC",
+                              },
+                              Object {
+                                "label": "AB",
+                                "value": "AB",
+                              },
+                            ]
+                          }
+                          id="sub_division_code"
+                          label="Province"
+                          name="sub_division_code"
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                  <Row
+                    gutter={16}
+                  >
+                    <Col
+                      md={12}
+                      sm={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="city"
+                          label="City"
+                          name="city"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                    <Col
+                      md={12}
+                      sm={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        colon={true}
+                        hasFeedback={false}
+                        prefixCls="ant-form"
+                      >
+                        <Field
+                          component={[Function]}
+                          id="post_code"
+                          label="Postal Code"
+                          name="post_code"
+                          normalize={[Function]}
+                          placeholder="e.g xxxxxx"
+                          validate={
+                            Array [
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>,
+                ],
+                "md": 12,
+                "sm": 24,
+                "style": Object {
+                  "marginTop": "80px",
+                },
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <h5>
+                      Address
+                    </h5>,
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Address",
+                    },
+                    "ref": null,
+                    "rendered": "Address",
+                    "type": "h5",
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <Col
+                        span={6}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="suite_no"
+                            label="Suite No."
+                            name="suite_no"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>
+                      </Col>,
+                      <Col
+                        span={18}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="address_line_1"
+                            label="Street Address 1"
+                            name="address_line_1"
+                          />
+                        </FormItem>
+                      </Col>,
+                    ],
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="suite_no"
+                            label="Suite No."
+                            name="suite_no"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>,
+                        "span": 6,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="suite_no"
+                            label="Suite No."
+                            name="suite_no"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "suite_no",
+                            "label": "Suite No.",
+                            "name": "suite_no",
+                            "validate": Array [
+                              [Function],
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="address_line_1"
+                            label="Street Address 1"
+                            name="address_line_1"
+                          />
+                        </FormItem>,
+                        "span": 18,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="address_line_1"
+                            label="Street Address 1"
+                            name="address_line_1"
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "address_line_1",
+                            "label": "Street Address 1",
+                            "name": "address_line_1",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <Col
+                        span={18}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="address_line_2"
+                            label="Street Address 2"
+                            name="address_line_2"
+                          />
+                        </FormItem>
+                      </Col>,
+                      <Col
+                        span={6}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            data={
+                              Array [
+                                Object {
+                                  "label": "BC",
+                                  "value": "BC",
+                                },
+                                Object {
+                                  "label": "AB",
+                                  "value": "AB",
+                                },
+                              ]
+                            }
+                            id="sub_division_code"
+                            label="Province"
+                            name="sub_division_code"
+                          />
+                        </FormItem>
+                      </Col>,
+                    ],
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="address_line_2"
+                            label="Street Address 2"
+                            name="address_line_2"
+                          />
+                        </FormItem>,
+                        "span": 18,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="address_line_2"
+                            label="Street Address 2"
+                            name="address_line_2"
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "address_line_2",
+                            "label": "Street Address 2",
+                            "name": "address_line_2",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            data={
+                              Array [
+                                Object {
+                                  "label": "BC",
+                                  "value": "BC",
+                                },
+                                Object {
+                                  "label": "AB",
+                                  "value": "AB",
+                                },
+                              ]
+                            }
+                            id="sub_division_code"
+                            label="Province"
+                            name="sub_division_code"
+                          />
+                        </FormItem>,
+                        "span": 6,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            data={
+                              Array [
+                                Object {
+                                  "label": "BC",
+                                  "value": "BC",
+                                },
+                                Object {
+                                  "label": "AB",
+                                  "value": "AB",
+                                },
+                              ]
+                            }
+                            id="sub_division_code"
+                            label="Province"
+                            name="sub_division_code"
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "data": Array [
+                              Object {
+                                "label": "BC",
+                                "value": "BC",
+                              },
+                              Object {
+                                "label": "AB",
+                                "value": "AB",
+                              },
+                            ],
+                            "id": "sub_division_code",
+                            "label": "Province",
+                            "name": "sub_division_code",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <Col
+                        md={12}
+                        sm={12}
+                        xs={24}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="city"
+                            label="City"
+                            name="city"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>
+                      </Col>,
+                      <Col
+                        md={12}
+                        sm={12}
+                        xs={24}
+                      >
+                        <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="post_code"
+                            label="Postal Code"
+                            name="post_code"
+                            normalize={[Function]}
+                            placeholder="e.g xxxxxx"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>
+                      </Col>,
+                    ],
+                    "gutter": 16,
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="city"
+                            label="City"
+                            name="city"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 24,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="city"
+                            label="City"
+                            name="city"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "city",
+                            "label": "City",
+                            "name": "city",
+                            "validate": Array [
+                              [Function],
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <FormItem
+                          colon={true}
+                          hasFeedback={false}
+                          prefixCls="ant-form"
+                        >
+                          <Field
+                            component={[Function]}
+                            id="post_code"
+                            label="Postal Code"
+                            name="post_code"
+                            normalize={[Function]}
+                            placeholder="e.g xxxxxx"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />
+                        </FormItem>,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 24,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Field
+                            component={[Function]}
+                            id="post_code"
+                            label="Postal Code"
+                            name="post_code"
+                            normalize={[Function]}
+                            placeholder="e.g xxxxxx"
+                            validate={
+                              Array [
+                                [Function],
+                              ]
+                            }
+                          />,
+                          "colon": true,
+                          "hasFeedback": false,
+                          "prefixCls": "ant-form",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "component": [Function],
+                            "id": "post_code",
+                            "label": "Postal Code",
+                            "name": "post_code",
+                            "normalize": [Function],
+                            "placeholder": "e.g xxxxxx",
+                            "validate": Array [
+                              [Function],
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
