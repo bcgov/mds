@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { remove } from "lodash";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, change } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
@@ -23,16 +23,19 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
   relatedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  change: PropTypes.func,
 };
 
 const defaultProps = {
   relatedDocuments: [],
+  change,
 };
 
 export class PermitAmendmentForm extends Component {
   state = {
     showUploadFiles: false,
     relatedDocuments: this.props.initialValues.related_documents || [],
+    uploadedFiles: [],
   };
 
   componentDidMount() {
@@ -62,14 +65,14 @@ export class PermitAmendmentForm extends Component {
   };
 
   // File upload handlers
-
-  onFileLoad = (fileName, document_manager_guid) =>
-    this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
+  onFileLoad = (fileName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
 
   onRemoveFile = (fileItem) => {
-    remove(this.props.initialValues.uploadedFiles, {
-      document_manager_guid: fileItem.serverId,
-    });
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {

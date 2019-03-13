@@ -108,7 +108,6 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          uploadedFiles: [],
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
@@ -127,7 +126,6 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          uploadedFiles: [],
           ...permit_amendment,
         },
         onSubmit: this.handleEditPermitAmendment,
