@@ -14,7 +14,9 @@ const initialState = {
   mineCommodityOptions: [],
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
+  provinceOptions: [],
   optionsLoaded: false,
+  permitStatusCodes: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -54,10 +56,20 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineTSFRequiredReports: action.payload.required_documents,
       };
+    case actionTypes.STORE_PROVINCE_OPTIONS:
+      return {
+        ...state,
+        provinceOptions: action.payload.options,
+      };
     case actionTypes.OPTIONS_LOADED:
       return {
         ...state,
         optionsLoaded: action.payload,
+      };
+    case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
+      return {
+        ...state,
+        permitStatusCodes: action.payload,
       };
     default:
       return state;
@@ -72,6 +84,8 @@ export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineComm
 export const getExpectedDocumentStatusOptions = (state) =>
   state[STATIC_CONTENT].expectedDocumentStatusOptions;
 export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;
+export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getOptionsLoaded = (state) => state[STATIC_CONTENT].optionsLoaded;
+export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 
 export default staticContentReducer;

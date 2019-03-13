@@ -14,7 +14,7 @@ TEST_DOCUMENT_MANAGER_GUID_2 = uuid.uuid4()
 def setup_info(test_client):
     permit = Permit.find_by_permit_guid(TEST_PERMIT_GUID_1)
 
-    test_pa = PermitAmendment.create(permit, None, None, None, DUMMY_USER_KWARGS)
+    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD', DUMMY_USER_KWARGS)
     test_pa.save()
 
     test_pa_doc = PermitAmendmentDocument(

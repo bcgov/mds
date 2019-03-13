@@ -19,7 +19,7 @@ const propTypes = {
 };
 
 export class Home extends Component {
-  state = { isIE: false, isTest: false, activeNavButton: "" };
+  state = { isIE: false, isTest: false, activeNavButton: "", isMenuOpen: false };
 
   componentDidMount() {
     this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
@@ -29,6 +29,8 @@ export class Home extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
       this.handleActiveButton(nextProps.location.pathname);
+      // close Menu when link is clicked
+      this.setState({ isMenuOpen: false });
     }
   }
 
@@ -40,12 +42,20 @@ export class Home extends Component {
     this.setState({ isIE: false });
   };
 
+  toggleHamburgerMenu = () => {
+    this.setState((prevState) => ({ isMenuOpen: !prevState.isMenuOpen }));
+  };
+
   render() {
     const { Content } = Layout;
     return (
       <Layout className="layout">
         <div className="header">
-          <NavBar activeButton={this.state.activeNavButton} />
+          <NavBar
+            activeButton={this.state.activeNavButton}
+            isMenuOpen={this.state.isMenuOpen}
+            toggleHamburgerMenu={this.toggleHamburgerMenu}
+          />
           <LoadingBar
             style={{
               backgroundColor: Styles.COLOR.violet,
