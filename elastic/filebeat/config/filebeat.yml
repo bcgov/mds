@@ -8,7 +8,7 @@ filebeat.config.modules:
 
 #----------------------------- Logstash output --------------------------------
 output.logstash:
-# #   # The Logstash hosts
+  # The Logstash hosts
   hosts: ["${ES_LOGSTASH_HOST}:${ES_LOGSTASH_PORT}"]
 
   # Optional SSL. By default is off.
@@ -20,7 +20,6 @@ output.logstash:
 
   # Client Certificate Key
   #ssl.key: "/etc/pki/client/cert.key"
-
 
 # output.console:
 #   pretty: true
@@ -37,4 +36,4 @@ processors:
 
 # Sets log level. The default log level is info.
 # Available log levels are: error, warning, info, debug
-logging.level: info
+logging.level: debug

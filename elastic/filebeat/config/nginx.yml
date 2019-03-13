@@ -8,7 +8,7 @@
 - module: nginx
   access:
     enabled: true
-    var.paths: ["/var/monitor/access/*.log"]
-  error:
-    enabled: true
-    var.paths: ["/var/monitor/error/*.log"]
+    var.paths: ["/usr/share/filebeat/monitor/access/*.log"]
+  # error:
+  #   enabled: true
+  #   var.paths: ["/var/monitor/error/*.log"]

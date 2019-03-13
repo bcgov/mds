@@ -8,21 +8,29 @@ services:
       args:
         - ES_LOGSTASH_HOST=mds-logstash
         - ES_LOGSTASH_PORT=5044
+        - ES_VERSION=${ES_VERSION}
     container_name: mds-filebeat
     networks:
       - mds
     depends_on: 
       - mds-logstash
+    restart: always
   mds-logstash:
     build:
       context: logstash/
+      args:
+        - ES_VERSION=${ES_VERSION}
     container_name: mds-logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_HOST: ${ES_HOST}
+      ES_USER: ${ES_USER}
+      ES_PASSWORD: ${ES_PASSWORD}
     ports:
       - "5044:5044"
     networks:
       - mds
+    restart: always
 networks:
   mds:
     driver: bridge

@@ -1,5 +1,7 @@
-# get official filebeat image
-FROM docker.elastic.co/beats/filebeat:6.6.1
+ARG ES_VERSION
+
+# # get official filebeat image
+FROM docker.elastic.co/beats/filebeat:${ES_VERSION}
 
 # Logstash host and port configuration (required)
 ARG ES_LOGSTASH_HOST
@@ -9,34 +11,36 @@ ARG ES_LOGSTASH_PORT
 ENV ES_LOGSTASH_HOST=${ES_LOGSTASH_HOST}
 ENV ES_LOGSTASH_PORT=${ES_LOGSTASH_PORT}
 
-# copy filebeat configuration
+# # copy filebeat configuration
+# COPY config/filebeat.yml /usr/share/filebeat/filebeat.yml
+
+# # copy nginx module configuration
+# COPY config/nginx.yml /usr/share/filebeat/modules.d/nginx.yml
+
+# USER root
+
+# RUN chgrp -R 0 /usr/share/filebeat && \
+#     chmod -R go-w /usr/share/filebeat
+
+# # create directory to monitor access logs
+
+
+# # USER filebeat
+
+# CMD ["filebeat", "run", "--c", "/usr/share/filebeat/filebeat.yml"]
+
+
+
 COPY config/filebeat.yml /usr/share/filebeat/filebeat.yml
-
-# copy nginx module configuration
 COPY config/nginx.yml /usr/share/filebeat/modules.d/nginx.yml
-
 USER root
 
-COPY kibana /usr/share/filebeat/kibana/6/dahsboard
+RUN mkdir -p /usr/share/filebeat/monitor/access/
+COPY test/access.log /usr/share/filebeat/monitor/access/access.log
 
-# copy dahsboard load
-RUN mkdir /usr/share/filebeat/load
-COPY config/load-dash.yml /usr/share/filebeat/load/load-dash.yml
-
-# create directory to monitor access logs
-RUN mkdir -p /var/monitor/access
-RUN mkdir -p /var/monitor/error
-COPY test/access.log /var/monitor/access/access.log
-
-
-
-RUN chown root:filebeat /usr/share/filebeat/filebeat.yml && chmod go-w /usr/share/filebeat/filebeat.yml
-RUN chown root:filebeat /usr/share/filebeat/modules.d/nginx.yml && chmod go-w /usr/share/filebeat/modules.d/nginx.yml
-RUN chown root:filebeat /usr/share/filebeat/load/load-dash.yml && chmod go-w /usr/share/filebeat/load/load-dash.yml
-
-# enable nginx module
-USER filebeat modules enable nginx
-
-# ENTRYPOINT [ "filebeat", "setup", "dashboards", "-c /usr/share/filebeata/load/load-dash.yml" ]
+RUN chgrp -R 0 /usr/share/filebeat/filebeat.yml \
+    && chmod -R go-w /usr/share/filebeat/filebeat.yml \
+    && chgrp -R 0 /usr/share/filebeat/modules.d/nginx.yml \
+    && chmod -R go-w /usr/share/filebeat/modules.d/nginx.yml
 
 USER filebeat
