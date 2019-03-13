@@ -18,7 +18,7 @@ class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
             result = req_doc.json()
 
         else:
-            search_category = request.args.get('category', None, type=str)
+            search_category = request.args.get('category')
             if search_category:
                 req_docs = RequiredDocument.find_by_req_doc_category(search_category.upper())
             else:
