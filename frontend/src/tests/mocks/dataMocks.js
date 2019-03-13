@@ -949,3 +949,30 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
   SVR: "Supervisor",
   TQP: "TSF Qualified Person",
 };
+
+export const OPEN_ORDERS = [
+  {
+    overdue: true,
+    due_date: "2019-01-31",
+    order_no: "2",
+    violation: "Mine isn't good enough",
+    report_no: "report3",
+    inspector: "George",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "1",
+    violation: "Wearing purple hats",
+    report_no: "report2",
+    inspector: "Paul",
+  },
+  {
+    overdue: true,
+    due_date: "2019-02-02",
+    order_no: "7",
+    violation: "Looks dangerous",
+    report_no: "report1",
+    inspector: "Paul",
+  },
+];
