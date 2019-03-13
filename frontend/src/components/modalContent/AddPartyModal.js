@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset } from "redux-form";
-import { Steps, Button, Popconfirm } from "antd";
+import { Row, Col, Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { createParty } from "@/actionCreators/partiesActionCreator";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
+import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
 
 const { Step } = Steps;
 
@@ -82,18 +83,38 @@ export class AddPartyModal extends Component {
   // WIP
   renderStepTwo() {
     return (
-      <div className="center">
-        <p>
-          If you would like to add another contact, click on the button below. Your current contact
-          will be submitted once you opt to add a new contact.
-        </p>
-        <Button
-          type="primary"
-          className="full-mobile center"
-          onClick={(event) => this.handlePartySubmit(event, true)}
-        >
-          Submit and Add another contact
-        </Button>
+      <div>
+        <Row>
+          <Col md={12} sm={24} xs={24}>
+            <AddRolesForm
+              {...this.props}
+              onSubmit={this.handlePartySubmit}
+              isPerson={this.state.isPerson}
+              togglePartyChange={this.togglePartyChange}
+              handleFormReset={this.handleFormReset}
+            />
+          </Col>
+
+          <Col md={12} sm={24} xs={24}>
+            <p>
+              You cannot add a role of Permittee or Engineer of Record through this section. Please
+              go to the designated mine, under the contact information tab, to add the role of a
+              Permittee or Engineer of Record.
+            </p>
+            <p className="bold">
+              If you would like to add another contact, click on the button below. Your current
+              contact will be submitted once you opt to add a new contact.
+            </p>
+            <Button
+              type="primary"
+              className="full-mobile"
+              style={{ marginLeft: 0 }}
+              onClick={(event) => this.handlePartySubmit(event, true)}
+            >
+              Submit and Add another contact
+            </Button>
+          </Col>
+        </Row>
       </div>
     );
   }
