@@ -23,6 +23,7 @@ import { getPermits } from "../../../reducers/permitReducer";
  */
 
 const amalgamtedPermit = "ALG";
+const originalPermit = "OGP";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -129,7 +130,10 @@ export class MinePermitInfo extends Component {
           ...permit_amendment,
         },
         onSubmit: this.handleEditPermitAmendment,
-        title: `Edit permit amendment for ${permit.permit_no}`,
+        title:
+          permit_amendment.permit_amendment_type_code === originalPermit
+            ? `Edit initial permit for ${permit.permit_no}`
+            : `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
         handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },
