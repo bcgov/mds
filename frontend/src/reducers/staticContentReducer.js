@@ -17,7 +17,7 @@ const initialState = {
   provinceOptions: [],
   optionsLoaded: false,
   permitStatusCodes: [],
-  applicationsStatusCodes: [],
+  applicationStatusCodes: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {

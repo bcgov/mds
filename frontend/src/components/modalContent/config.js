@@ -9,7 +9,11 @@ import AddPartyModal from "./AddPartyModal";
 import AddPermitModal from "./AddPermitModal";
 import AddPermitAmendmentModal from "./AddPermitAmendmentModal";
 import EditPermitModal from "./EditPermitModal";
+import AddApplicationModal from "./AddApplicationModal";
+import EditApplicationModal from "./EditApplicationModal";
 
+// This file is anticipated to have multiple exports
+// eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
   ADD_TENURE: AddTenureModal,
@@ -22,4 +26,6 @@ export const modalConfig = {
   ADD_PERMIT: AddPermitModal,
   ADD_PERMIT_AMENDMENT: AddPermitAmendmentModal,
   EDIT_PERMIT: EditPermitModal,
+  ADD_APPLICATION: AddApplicationModal,
+  EDIT_APPLICATION: EditApplicationModal,
 };

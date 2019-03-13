@@ -112,7 +112,7 @@ export class Dashboard extends Component {
       this.props.fetchMineCommodityOptions();
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
-      this.props.fetchPermitStatusOptions();
+      this.props.fetchApplicationStatusOptions();
       this.props.setOptionsLoaded();
     }
   }

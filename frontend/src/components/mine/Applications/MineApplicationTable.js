@@ -8,7 +8,7 @@ import { getDropdownApplicationStatusOptions } from "@/selectors/staticContentSe
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { EDIT, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -18,6 +18,7 @@ const propTypes = {
   applications: PropTypes.arrayOf(PropTypes.object),
   applicationStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
+  openEditApplicationModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -62,16 +63,13 @@ const columns = [
     render: (text, record) => (
       <AuthorizationWrapper inTesting>
         <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Button type="secondary" className="permit-table-button">
-            <div className="padding-small">
-              <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-              Add/Edit
-              <img
-                className="padding-small--right icon-svg-filter"
-                src={CARAT}
-                alt="Menu"
-                style={{ paddingLeft: "5px" }}
-              />
+          <Button
+            className="permit-table-button"
+            type="ghost"
+            onClick={(event) => record.openEditApplicationModal(event, text.application)}
+          >
+            <div>
+              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
             </div>
           </Button>
         </AuthorizationWrapper>
@@ -79,8 +77,12 @@ const columns = [
     ),
   },
 ];
-
-const transformRowData = (application, major_mine_ind, applicationStatusOptions) => {
+const transformRowData = (
+  application,
+  major_mine_ind,
+  applicationStatusOptions,
+  openEditApplicationModal
+) => {
   return {
     key: application.permit_guid,
     applicationNo: application.application_no || Strings.EMPTY_FIELD,
@@ -88,16 +90,22 @@ const transformRowData = (application, major_mine_ind, applicationStatusOptions)
     receivedDate: application.received_date || Strings.EMPTY_FIELD,
     description: application.description || Strings.EMPTY_FIELD,
     applicationEdit: {
-      guid: application.application_guid,
+      application,
       major_mine_ind,
     },
     applicationStatusOptions,
+    openEditApplicationModal,
   };
 };
 
 export const MineApplicationTable = (props) => {
   const rowData = props.applications.map((application) =>
-    transformRowData(application, props.major_mine_ind, props.applicationStatusOptions)
+    transformRowData(
+      application,
+      props.major_mine_ind,
+      props.applicationStatusOptions,
+      props.openEditApplicationModal
+    )
   );
 
   return (

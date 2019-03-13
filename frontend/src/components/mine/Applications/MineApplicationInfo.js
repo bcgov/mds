@@ -7,8 +7,10 @@ import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { Icon, Button } from "antd";
 import MineApplicationTable from "@/components/mine/Applications/MineApplicationTable";
-import * as ModalContent from "@/constants/modalContent";
 import { getApplications } from "@/selectors/applicationSelectors";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import { fetchApplications, updateApplication } from "@/actionCreators/applicationActionCreator";
 
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -17,12 +19,39 @@ import { getApplications } from "@/selectors/applicationSelectors";
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   applications: PropTypes.arrayOf(PropTypes.object),
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  fetchApplications: PropTypes.func.isRequired,
+  updateApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 export class MineApplicationInfo extends Component {
   componentWillMount() {}
+
+  closeApplicationModal = () => {
+    this.props.closeModal();
+    this.props.fetchApplications({ mine_guid: this.props.mine.guid });
+  };
+
+  openEditApplicationModal = (event, application) => {
+    event.preventDefault();
+
+    const initialValues = { ...application };
+
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit: this.handleEditApplication,
+        title: `Edit application for ${application.application_no}`,
+      },
+      content: modalConfig.EDIT_APPLICATION,
+    });
+  };
+
+  handleEditApplication = (values) =>
+    this.props.updateApplication(values.application_guid, values).then(this.closeApplicationModal);
 
   render() {
     return [
@@ -38,10 +67,10 @@ export class MineApplicationInfo extends Component {
                 <Button
                   type="primary"
                   onClick={(event) =>
-                    this.openAddPermitModal(
+                    this.openEditApplicationModal(
                       event,
-                      this.handleAddPermit,
-                      `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
+                      this.handleEditApplication,
+                      `${ModalContent.EDIT_APPLICATION} to ${this.props.mine.mine_name}`
                     )
                   }
                 >
@@ -57,6 +86,7 @@ export class MineApplicationInfo extends Component {
       <MineApplicationTable
         applications={this.props.applications}
         major_mine_ind={this.props.mine.major_mine_ind}
+        openEditApplicationModal={this.openEditApplicationModal}
       />,
     ];
   }
@@ -66,7 +96,14 @@ const mapStateToProps = (state) => ({
   applications: getApplications(state),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchApplications,
+      updateApplication,
+    },
+    dispatch
+  );
 
 MineApplicationInfo.propTypes = propTypes;
 MineApplicationInfo.defaultProps = defaultProps;

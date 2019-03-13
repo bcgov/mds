@@ -34,3 +34,31 @@ export const fetchApplications = (params) => (dispatch) => {
       dispatch(hideLoading("modal"));
     });
 };
+
+export const updateApplication = (application_guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_APPLICATION));
+  dispatch(showLoading());
+  return axios
+    .put(
+      `${ENVIRONMENT.apiUrl + API.APPLICATIONS}/${application_guid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated application`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_APPLICATION));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_APPLICATION));
+      dispatch(hideLoading());
+    });
+};

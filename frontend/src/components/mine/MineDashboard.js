@@ -181,8 +181,9 @@ export class MineDashboard extends Component {
                   </TabPane>
                 )}
                 <TabPane tab="Applications" key="applications">
-                  <div className="tab__content" />
-                  <MineApplicationInfo mine={mine} {...this.props} />
+                  <div className="tab__content">
+                    <MineApplicationInfo mine={mine} {...this.props} />
+                  </div>
                 </TabPane>
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
