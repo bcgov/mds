@@ -77,12 +77,8 @@ class MineMap extends Component {
   renderWMSLayer = async (map) => {
     await loadModules(["esri/layers/WMSLayer"]).then(([WMSLayer]) => {
       const WebMappingServiceLayer = new WMSLayer({
-        url: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov/ows",
-        sublayers: [
-          {
-            name: "WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP",
-          },
-        ],
+        url:
+          "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov/WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP/ows",
       });
       WebMappingServiceLayer.title = "First Nations Consultative Areas";
       map.layers.add(WebMappingServiceLayer);
