@@ -68,14 +68,14 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         pretty_folder = data.get('pretty_folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
-        #try:
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-        with open(file_path, "wb") as f:
-            f.seek(file_size - 1)
-            f.write(b"\0")
-        #except IOError as e:
-        #    return self.create_error_payload(500, 'Unable to create file'), 500
+        try:
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+            with open(file_path, "wb") as f:
+                f.seek(file_size - 1)
+                f.write(b"\0")
+        except IOError as e:
+            return self.create_error_payload(500, 'Unable to create file'), 500
 
         cache.set(self.redis_key_file_size(document_guid), file_size, TIMEOUT_24_HOURS)
         cache.set(self.redis_key_offset(document_guid), 0, TIMEOUT_24_HOURS)
