@@ -323,19 +323,16 @@ def setup_data(session):
     required_document_due_date_type2.save()
 
     required_document_category1 = RequiredDocumentCategory(
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS)
     required_document_category1.save()
 
-    required_document_category2 = RequiredDocumentCategory(
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
-        req_document_category=TEST_REQUIRED_REPORT_CATEGORY_OTHER)
+    required_document_category2 = RequiredDocumentCategory(req_document_category='OTH')
     required_document_category2.save()
 
     required_document1 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
         req_document_name=TEST_REQUIRED_REPORT_NAME1,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category=required_document_category1.req_document_category,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
@@ -344,7 +341,7 @@ def setup_data(session):
     required_document2 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
         req_document_name=TEST_REQUIRED_REPORT_NAME2,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category=required_document_category1.req_document_category,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
@@ -353,7 +350,7 @@ def setup_data(session):
     required_document3 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
         req_document_name=TEST_REQUIRED_REPORT_NAME3,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_category=required_document_category2.req_document_category,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
