@@ -35,6 +35,14 @@ body {
   display: inline-block;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
+.flex {
+  display: flex;
+}
+
 .inline-flex {
   @include flex;
 }

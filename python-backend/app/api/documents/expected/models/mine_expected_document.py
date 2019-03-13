@@ -33,7 +33,7 @@ class MineExpectedDocument(AuditMixin, Base):
     exp_document_description = db.Column(db.String(300))
 
     due_date = db.Column(db.DateTime)
-    received_date = db.Column(db.DateTime)
+    received_date = db.Column(db.DateTime, nullable=True, server_default=FetchedValue())
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     #relationships
@@ -61,7 +61,7 @@ class MineExpectedDocument(AuditMixin, Base):
             'exp_document_name': str(self.exp_document_name),
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
-            'received_date': str(self.received_date),
+            'received_date': str(self.received_date) if self.received_date else None,
             'exp_document_status': self.expected_document_status.json(),
             'related_documents': [x.json() for x in self.mine_documents]
         }
