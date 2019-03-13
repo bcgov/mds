@@ -10,7 +10,11 @@ import MineApplicationTable from "@/components/mine/Applications/MineApplication
 import { getApplications } from "@/selectors/applicationSelectors";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { fetchApplications, updateApplication } from "@/actionCreators/applicationActionCreator";
+import {
+  fetchApplications,
+  updateApplication,
+  createApplication,
+} from "@/actionCreators/applicationActionCreator";
 
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -23,6 +27,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
   updateApplication: PropTypes.func.isRequired,
+  createApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -33,6 +38,18 @@ export class MineApplicationInfo extends Component {
   closeApplicationModal = () => {
     this.props.closeModal();
     this.props.fetchApplications({ mine_guid: this.props.mine.guid });
+  };
+
+  openAddApplicationModal = (event, title) => {
+    event.preventDefault();
+
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleAddApplication,
+        title,
+      },
+      content: modalConfig.ADD_APPLICATION,
+    });
   };
 
   openEditApplicationModal = (event, application) => {
@@ -48,6 +65,11 @@ export class MineApplicationInfo extends Component {
       },
       content: modalConfig.EDIT_APPLICATION,
     });
+  };
+
+  handleAddApplication = (values) => {
+    const payload = { mine_guid: this.props.mine.guid, ...values };
+    return this.props.createApplication(payload).then(this.closeApplicationModal);
   };
 
   handleEditApplication = (values) =>
@@ -67,10 +89,9 @@ export class MineApplicationInfo extends Component {
                 <Button
                   type="primary"
                   onClick={(event) =>
-                    this.openEditApplicationModal(
+                    this.openAddApplicationModal(
                       event,
-                      this.handleEditApplication,
-                      `${ModalContent.EDIT_APPLICATION} to ${this.props.mine.mine_name}`
+                      `${ModalContent.ADD_APPLICATION} to ${this.props.mine.mine_name}`
                     )
                   }
                 >
@@ -101,6 +122,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchApplications,
       updateApplication,
+      createApplication,
     },
     dispatch
   );

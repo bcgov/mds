@@ -45,7 +45,7 @@ const columns = [
   {
     title: "Received Date",
     dataIndex: "receivedDate",
-    key: "authorizationEndDate",
+    key: "receivedDate",
     render: (text) => <div title="Received Date">{text}</div>,
   },
 
@@ -53,7 +53,11 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-    render: (text) => <div title="First Issued">{text}</div>,
+    render: (text) => (
+      <div title="Description" style={{ maxWidth: "800px" }}>
+        {text}
+      </div>
+    ),
   },
   {
     title: "",

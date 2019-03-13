@@ -62,3 +62,24 @@ export const updateApplication = (application_guid, payload) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const createApplication = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_APPLICAION));
+  dispatch(showLoading("modal"));
+  return axios
+    .post(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({ message: "Successfully created a new application", duration: 10 });
+      dispatch(success(reducerTypes.CREATE_APPLICAION));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.CREATE_APPLICAION));
+      dispatch(hideLoading("modal"));
+    });
+};
