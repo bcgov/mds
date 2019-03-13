@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { renderToString } from "react-dom/server";
 import MapPopup from "@/components/maps/MapPopup";
 import { getMines, getMineIds } from "@/selectors/mineSelectors";
+import CustomPropTypes from "@/customPropTypes";
 /**
  * @class MinePin.js must be the child of arcGIS <Map /> or <Screen />,
  * MinePin is connected to redux to access/display all mines information - reusable on any view will display the correct state.
@@ -13,16 +14,15 @@ import { getMines, getMineIds } from "@/selectors/mineSelectors";
  */
 
 const propTypes = {
-  mines: PropTypes.object.isRequired,
-  mineIds: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+  mines: CustomPropTypes.mine,
+  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  view: PropTypes.objectOf(PropTypes.any).isRequired,
+  map: PropTypes.objectOf(PropTypes.any).isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
   mines: {},
-  mineIds: [],
-  view: {},
 };
 
 export class MinePin extends Component {

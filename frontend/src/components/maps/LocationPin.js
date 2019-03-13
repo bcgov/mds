@@ -7,14 +7,8 @@ import PropTypes from "prop-types";
  *
  */
 const propTypes = {
-  center: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired,
-  map: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  view: {},
-  map: {},
+  center: PropTypes.arrayOf(PropTypes.float).isRequired,
+  view: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export class LocationPin extends Component {
@@ -73,6 +67,5 @@ export class LocationPin extends Component {
 }
 
 LocationPin.propTypes = propTypes;
-LocationPin.defaultProps = defaultProps;
 
 export default LocationPin;

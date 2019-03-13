@@ -75,7 +75,6 @@ class MineMap extends Component {
 
   /**
    * Adds widgets to a given MapView instance
-   * MapImageLayer is required for the collection operation add to work.
    * @param {MapView} view
    */
   renderWidgets = async (view) => {
@@ -120,24 +119,18 @@ class MineMap extends Component {
       ];
       const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
 
-      adminLayerArray.forEach((layerTitle) => {
-        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
-        if (newTenureLayer) {
-          administrativeLayer.add(newTenureLayer);
-        }
-      });
-      tenureLayerArray.forEach((layerTitle) => {
-        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
-        if (newTenureLayer) {
-          tenureLayer.add(newTenureLayer);
-        }
-      });
-      roadLayerArray.forEach((layerTitle) => {
-        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
-        if (newTenureLayer) {
-          roadsLayer.add(newTenureLayer);
-        }
-      });
+      const addLayersToGroup = (layerNameArray, groupLayer) => {
+        layerNameArray.forEach((layerTitle) => {
+          const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
+          if (newTenureLayer) {
+            groupLayer.add(newTenureLayer);
+          }
+        });
+      };
+      addLayersToGroup(adminLayerArray, administrativeLayer);
+      addLayersToGroup(tenureLayerArray, tenureLayer);
+      addLayersToGroup(roadLayerArray, roadsLayer);
+
       const ntsContourLayer = view.map.allLayers.find(({ title }) => title === "NTS Contour Lines");
       const minePinLayer = view.map.allLayers.find(({ title }) => title === "Mine Pins");
 
