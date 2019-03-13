@@ -56,8 +56,7 @@ export class AddPartyModal extends Component {
 
   next() {
     if (!this.props.addPartyForm.syncErrors) {
-      const current = this.state.current + 1;
-      this.setState({ current });
+      this.setState((prevState) => ({ current: prevState.current + 1 }));
     } else {
       // submit form to trigger validation errors.... alternate suggestions??
       this.props.submit(FORM.ADD_FULL_PARTY);
@@ -65,8 +64,7 @@ export class AddPartyModal extends Component {
   }
 
   prev() {
-    const current = this.state.current - 1;
-    this.setState({ current });
+    this.setState((prevState) => ({ current: prevState.current - 1 }));
   }
 
   renderStepOne() {
