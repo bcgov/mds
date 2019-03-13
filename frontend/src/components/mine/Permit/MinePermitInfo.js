@@ -75,11 +75,10 @@ export class MinePermitInfo extends Component {
 
   openEditPermitModal = (event, permit) => {
     event.preventDefault();
-    const initialValues = { ...permit };
 
     this.props.openModal({
       props: {
-        initialValues,
+        initialValues: permit,
         onSubmit: this.handleEditPermit,
         title: `Edit permit status for ${permit.permit_no}`,
       },

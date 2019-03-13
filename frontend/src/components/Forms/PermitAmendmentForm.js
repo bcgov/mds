@@ -29,7 +29,7 @@ const defaultProps = {
   relatedDocuments: [],
 };
 
-class PermitAmendmentForm extends Component {
+export class PermitAmendmentForm extends Component {
   state = {
     showUploadFiles: false,
     relatedDocuments: this.props.initialValues.related_documents || [],

@@ -187,7 +187,7 @@ const childColumns = [
     dataIndex: "documents",
     key: "documents",
     render: (text) => (
-      <div>
+      <div title="Files">
         <ul>
           {text.map((file) => (
             <li>

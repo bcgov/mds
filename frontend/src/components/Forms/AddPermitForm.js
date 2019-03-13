@@ -78,7 +78,7 @@ const validateBusinessRules = (values) => {
   return errors;
 };
 
-class AddPermitForm extends Component {
+export class AddPermitForm extends Component {
   onFileLoad = (fileName, document_manager_guid) => {
     this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
   };
