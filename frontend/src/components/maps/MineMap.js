@@ -75,6 +75,7 @@ class MineMap extends Component {
 
   /**
    * Adds widgets to a given MapView instance
+   * MapImageLayer is required for the collection operation add to work.
    * @param {MapView} view
    */
   renderWidgets = async (view) => {
@@ -83,7 +84,76 @@ class MineMap extends Component {
       "esri/widgets/Expand",
       "esri/widgets/ScaleBar",
       "esri/widgets/Legend",
-    ]).then(([LayerListWidget, Expand, ScaleBar, Legend]) => {
+      "esri/layers/GroupLayer",
+    ]).then(([LayerListWidget, Expand, ScaleBar, Legend, GroupLayer]) => {
+      const roadsLayer = new GroupLayer({
+        title: "Roads",
+        visible: true,
+      });
+
+      const tenureLayer = new GroupLayer({
+        title: "Mineral, Placer, and Coal",
+        visible: true,
+      });
+
+      const administrativeLayer = new GroupLayer({
+        title: "Administrative Boundaries",
+        visible: true,
+      });
+
+      const tenureLayerArray = [
+        "Coal Licence Applications",
+        "Coal Leases",
+        "Coal Licences",
+        "Mining Leases",
+        "Mineral Claims",
+        "Placer Leases",
+        "Placer Claims",
+      ];
+      tenureLayerArray.forEach((layerTitle) => {
+        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
+        if (newTenureLayer) {
+          tenureLayer.add(newTenureLayer);
+        }
+      });
+      const adminLayerArray = [
+        "Indian Reserves & Band Names",
+        "BC Mine Regions",
+        "Natural Resource Regions",
+        "Natural Resource Regions - WMS",
+        "Land Status and Survey Parcels - PMBC",
+        "Regional Districts - WMS",
+        "Ministry of Transportation District Boundaries - WMS",
+        "Municipality Boundaries",
+      ];
+      adminLayerArray.forEach((layerTitle) => {
+        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
+        if (newTenureLayer) {
+          administrativeLayer.add(newTenureLayer);
+        }
+      });
+      const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
+      roadLayerArray.forEach((layerTitle) => {
+        const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
+        if (newTenureLayer) {
+          roadsLayer.add(newTenureLayer);
+        }
+      });
+      const ntsContourLayer = view.map.allLayers.find(({ title }) => title === "NTS Contour Lines");
+      const minePinLayer = view.map.allLayers.find(({ title }) => title === "Mine Pins");
+
+      // Add the new group layers to the map.
+      view.map.layers.add(administrativeLayer);
+      view.map.layers.add(tenureLayer);
+      view.map.layers.add(roadsLayer);
+      // Fix the order of non grouped layers
+      if (minePinLayer) {
+        view.map.layers.reorder(minePinLayer, view.map.layers.length - 1);
+      }
+      if (ntsContourLayer) {
+        view.map.layers.reorder(ntsContourLayer, view.map.layers.length - 3);
+      }
+
       const widgetPositionArray = {};
 
       widgetPositionArray["top-left"] = new LayerListWidget({

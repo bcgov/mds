@@ -58,7 +58,7 @@ export class MinePin extends Component {
           this.setState({ isFullMap: false });
         } else {
           this.setState({ isFullMap: true });
-          mineIds = this.props.mineIds;
+          mineIds = [...this.props.mineIds];
         }
 
         // The svg for the map pin is encoded directly into the default symbol
