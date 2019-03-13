@@ -1,4 +1,5 @@
 import uuid
+import logging
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
@@ -137,18 +138,21 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @requires_role_mine_create
     def put(self, party_guid):
+        logging.warn("step 1")
         data = PartyResource.parser.parse_args()
+        logging.warn(data)
         existing_party = Party.find_by_party_guid(party_guid)
+        logging.warn(existing_party)
         if not existing_party:
             return self.create_error_payload(404, 'Party not found'), 404
 
         try:
             existing_party.party_name        = data.get('party_name') or existing_party.party_name
-            existing_party.email             = data.get('email') or existing_party.email
             existing_party.phone_no          = data.get('phone_no') or existing_party.phone_no
             existing_party.party_type_code   = data.get('type') or existing_party.party_type_code
             existing_party.first_name        = data.get('first_name') or existing_party.first_name
             # Nullable fields
+            existing_party.email             = data.get('email') if 'email' in data else existing_party.email
             existing_party.suite_no          = data.get('suite_no') if 'suite_no' in data else existing_party.suite_no
             existing_party.address_line_1    = data.get('address_line_1') if 'address_line_1' in data else existing_party.address_line_1
             existing_party.address_line_2    = data.get('address_line_2') if 'address_line_2' in data else existing_party.address_line_2

@@ -143,6 +143,9 @@ body {
   &--right {
     padding-right: $default-padding-lg;
   }
+  &--left {
+    padding-left: $default-padding-lg;
+  }
 }
 
 .margin-small {
