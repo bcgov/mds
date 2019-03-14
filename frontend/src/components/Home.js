@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
+import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
-import { detectIE, detectTestEnvironment } from "@/utils/environmentUtils";
-
+import {
+  detectIE,
+  detectTestEnvironment,
+  detectDevelopmentEnvironment,
+} from "@/utils/environmentUtils";
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
  * Home is wrapped in AuthenticationGuard which checks keycloak authorization.
@@ -19,10 +23,21 @@ const propTypes = {
 };
 
 export class Home extends Component {
-  state = { isIE: false, isTest: false, activeNavButton: "", isMenuOpen: false };
+  state = {
+    isIE: false,
+    isTest: false,
+    isDev: false,
+    isMobile: true,
+    activeNavButton: "",
+    isMenuOpen: false,
+  };
 
   componentDidMount() {
-    this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
+    this.setState({
+      isIE: detectIE(),
+      isTest: detectTestEnvironment(),
+      isDev: detectDevelopmentEnvironment(),
+    });
     this.handleActiveButton(this.props.location.pathname);
   }
 
@@ -40,6 +55,10 @@ export class Home extends Component {
 
   handleIEClose = () => {
     this.setState({ isIE: false });
+  };
+
+  handleMobileWarningClose = () => {
+    this.setState({ isMobile: false });
   };
 
   toggleHamburgerMenu = () => {
@@ -69,6 +88,12 @@ export class Home extends Component {
         </div>
         {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
         {this.state.isTest && <WarningBanner type="test" />}
+        <MediaQuery maxWidth={500}>
+          {this.state.isMobile && !this.state.isDev && (
+            <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
+          )}
+        </MediaQuery>
+
         <Content className="content">
           <DashboardRoutes />
           <BackTop>
