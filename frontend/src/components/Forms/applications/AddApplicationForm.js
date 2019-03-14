@@ -62,7 +62,7 @@ export const AddApplicationForm = (props) => (
             name="description"
             label="Description"
             component={RenderAutoSizeField}
-            validate={[maxLength(280), required]}
+            validate={[maxLength(280)]}
           />
         </Form.Item>
       </Col>

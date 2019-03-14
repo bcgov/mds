@@ -22,7 +22,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  partyRelationships: [],
+  applications: [],
 };
 
 const columns = [

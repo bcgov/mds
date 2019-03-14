@@ -65,7 +65,7 @@ describe("`fetchApplications` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchApplications()(dispatch).then(() => {
+    return fetchApplications(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
