@@ -12,7 +12,7 @@ from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 from ...utils.access_decorators import requires_any_of, MINE_CREATE, MINE_VIEW, MINESPACE_PROPONENT
-from app.api.constants import TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.api.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
@@ -27,10 +27,6 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     )
     parser.add_argument(
         'filename', type=str, required=True, help='File name + extension of the document.')
-
-    def redis_key_file_size(self, id): return f'document-manager/{id}/file-size'
-    def redis_key_offset(self, id): return f'document-manager/{id}/offset'
-    def redis_key_file_path(self, id): return f'document-manager/{id}/file-path'
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self):
@@ -69,10 +65,10 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         except IOError as e:
             return self.create_error_payload(500, 'Unable to create file'), 500
 
-        cache.set(self.redis_key_file_size(document_guid),
+        cache.set(FILE_UPLOAD_SIZE(document_guid),
                   file_size, TIMEOUT_24_HOURS)
-        cache.set(self.redis_key_offset(document_guid), 0, TIMEOUT_24_HOURS)
-        cache.set(self.redis_key_file_path(document_guid),
+        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, TIMEOUT_24_HOURS)
+        cache.set(FILE_UPLOAD_PATH(document_guid),
                   file_path, TIMEOUT_24_HOURS)
 
         document_info = DocumentManager(
@@ -100,12 +96,12 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         if document_guid is None:
             return self.create_error_payload(400, 'Must specify document GUID in PATCH'), 400
 
-        file_path = cache.get(self.redis_key_file_path(document_guid))
+        file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
             return self.create_error_payload(404, 'PATCH sent for a upload that does not exist'), 404
 
         request_offset = int(request.headers.get('Upload-Offset', 0))
-        file_offset = cache.get(self.redis_key_offset(document_guid))
+        file_offset = cache.get(FILE_UPLOAD_OFFSET(document_guid))
         if request_offset != file_offset:
             return self.create_error_payload(409, "Offset in request does not match uploaded file's offest"), 409
 
@@ -115,7 +111,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         chunk_size = int(chunk_size)
 
         new_offset = file_offset + chunk_size
-        file_size = cache.get(self.redis_key_file_size(document_guid))
+        file_size = cache.get(FILE_UPLOAD_SIZE(document_guid))
         if new_offset > file_size:
             return self.create_error_payload(413, 'The uploaded chunk would put the file above its declared file size.'), 413
 
@@ -132,12 +128,12 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             doc.upload_completed_date = datetime.now()
             doc.save()
 
-            cache.delete(self.redis_key_file_size(document_guid))
-            cache.delete(self.redis_key_offset(document_guid))
-            cache.delete(self.redis_key_file_path(document_guid))
+            cache.delete(FILE_UPLOAD_SIZE(document_guid))
+            cache.delete(FILE_UPLOAD_OFFSET(document_guid))
+            cache.delete(FILE_UPLOAD_PATH(document_guid))
         else:
             # File upload still in progress
-            cache.set(self.redis_key_offset(document_guid),
+            cache.set(FILE_UPLOAD_OFFSET(document_guid),
                       new_offset, TIMEOUT_24_HOURS)
 
         response = make_response("", 204)
@@ -152,7 +148,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         if document_guid is None:
             return self.create_error_payload(400, 'Must specify document GUID in HEAD'), 400
 
-        file_path = cache.get(self.redis_key_file_path(document_guid))
+        file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
             return self.create_error_payload(404, 'File does not exist'), 404
 
@@ -160,9 +156,9 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers['Upload-Offset'] = cache.get(
-            self.redis_key_offset(document_guid))
+            FILE_UPLOAD_OFFSET(document_guid))
         response.headers['Upload-Length'] = cache.get(
-            self.redis_key_file_size(document_guid))
+            FILE_UPLOAD_SIZE(document_guid))
         response.headers['Cache-Control'] = 'no-store'
         response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset,Upload-Length,Cache-Control"
         return response
