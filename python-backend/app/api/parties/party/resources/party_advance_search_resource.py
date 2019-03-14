@@ -86,18 +86,13 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
             conditions.append(Party.party_type_code.like(type_filter_term))
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
+        if role_filter_term == "NONE":
+            conditions.append(Party.mine_party_appt == None)
         contact_query = Party.query.filter(and_(*conditions))
-        if role_filter_term:
-            role_filter_term_array = role_filter_term.split(',')
-            if "NONE" in role_filter_term_array:
-                role_filter_term_array.remove("NONE")
-                # This comparison must be done with == not 'is'
-                conditions.append(Party.mine_party_appt == None)
-                contact_query = Party.query.filter(and_(*conditions))
-            if len(role_filter_term_array) > 0:
-                role_filter = MinePartyAppointment.mine_party_appt_type_code.in_(role_filter_term_array)
-                role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
-                contact_query = contact_query.intersect(role_query) if contact_query else role_query
+        if role_filter_term and not role_filter_term == "NONE":
+            role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
+            role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
+            contact_query = contact_query.intersect(role_query) if contact_query else role_query
 
         sort_criteria = [{'model': 'Party', 'field': 'party_name', 'direction': 'asc'}]
         contact_query = apply_sort(contact_query, sort_criteria)
