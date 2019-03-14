@@ -28,15 +28,15 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
     def get(self, application_guid=None):
 
         mine_guid = request.args.get('mine_guid', None, type=str)
-        if mine_guid:
-            applications = Application.find_by_mine_guid(mine_guid)
-            result = [app.json() for app in applications]
-        elif application_guid:
+        if application_guid:
             application = Application.find_by_application_guid(application_guid)
             if not application:
                 result = self.create_error_payload(404, 'Application not found'), 404
             else:
                 result = application.json()
+        elif mine_guid:
+            applications = Application.find_by_mine_guid(mine_guid)
+            result = [app.json() for app in applications]
         else:
             result = self.create_error_payload(
                 400, 'An application guid or a mine guid mus be provided.'), 400
@@ -57,10 +57,9 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
                 404, 'There was no mine found with the provided mine_guid.'), 404
 
         try:
-            application = Application.create(mine.mine_guid, data.get('application_no'),
-                                             data.get('application_status_code'),
-                                             data.get('received_date'), data.get('description'),
-                                             self.get_create_update_dict())
+            application = Application.create(mine.mine_guid, data['application_no'],
+                                             data['application_status_code'], data['received_date'],
+                                             data['description'], self.get_create_update_dict())
             application.save()
         except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
