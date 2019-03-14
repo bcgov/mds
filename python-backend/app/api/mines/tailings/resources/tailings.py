@@ -66,7 +66,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             500,
                             'get_tsf_req_docs returned error' + str(get_tsf_docs_resp.status_code))
 
-                    tsf_required_documents = get_tsf_docs_resp.json()
+                    tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
