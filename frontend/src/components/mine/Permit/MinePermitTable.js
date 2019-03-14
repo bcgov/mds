@@ -157,21 +157,23 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="secondary" className="permit-table-button">
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                Add/Edit
-                <img
-                  className="padding-small--right icon-svg-filter"
-                  src={CARAT}
-                  alt="Menu"
-                  style={{ paddingLeft: "5px" }}
-                />
-              </div>
-            </Button>
-          </Dropdown>
+        <AuthorizationWrapper inTesting>
+          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+              <Button type="secondary" className="permit-table-button">
+                <div className="padding-small">
+                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                  Add/Edit
+                  <img
+                    className="padding-small--right icon-svg-filter"
+                    src={CARAT}
+                    alt="Menu"
+                    style={{ paddingLeft: "5px" }}
+                  />
+                </div>
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         </AuthorizationWrapper>
       );
     },
