@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
+import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
@@ -19,7 +20,7 @@ const propTypes = {
 };
 
 export class Home extends Component {
-  state = { isIE: false, isTest: false, activeNavButton: "", isMenuOpen: false };
+  state = { isIE: false, isTest: false, isMobile: true, activeNavButton: "", isMenuOpen: false };
 
   componentDidMount() {
     this.setState({ isIE: detectIE(), isTest: detectTestEnvironment() });
@@ -40,6 +41,10 @@ export class Home extends Component {
 
   handleIEClose = () => {
     this.setState({ isIE: false });
+  };
+
+  handleMobileWaringClose = () => {
+    this.setState({ isMobile: false });
   };
 
   toggleHamburgerMenu = () => {
@@ -69,6 +74,12 @@ export class Home extends Component {
         </div>
         {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
         {this.state.isTest && <WarningBanner type="test" />}
+        <MediaQuery maxWidth={769}>
+          {this.state.isMobile && (
+            <WarningBanner type="mobile" onClose={this.handleMobileWaringClose} />
+          )}
+        </MediaQuery>
+
         <Content className="content">
           <DashboardRoutes />
           <BackTop>
