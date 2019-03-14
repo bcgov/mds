@@ -62,7 +62,6 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          uploadedFiles: [],
           mine_guid: this.props.mine.guid,
         },
         onSubmit,

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { remove } from "lodash";
 import PropTypes from "prop-types";
-import { Field, reduxForm, formValueSelector } from "redux-form";
+import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderDate from "@/components/common/RenderDate";
@@ -24,11 +24,13 @@ const propTypes = {
   permitTypeCode: PropTypes.string,
   permitActivityTypeCode: PropTypes.string,
   mine_guid: PropTypes.string.isRequired,
+  change: PropTypes.func,
 };
 
 const defaultProps = {
   permitTypeCode: "",
   permitActivityTypeCode: "",
+  change,
 };
 
 const permitTypes = [
@@ -79,14 +81,20 @@ const validateBusinessRules = (values) => {
 };
 
 export class AddPermitForm extends Component {
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.props.initialValues.uploadedFiles.push({ fileName, document_manager_guid });
+  state = {
+    uploadedFiles: [],
   };
 
-  onRemoveFile = (fileItem) =>
-    remove(this.props.initialValues.uploadedFiles, {
-      document_manager_guid: fileItem.serverId,
-    });
+  // File upload handlers
+  onFileLoad = (fileName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  onRemoveFile = (fileItem) => {
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
 
   render() {
     return (
