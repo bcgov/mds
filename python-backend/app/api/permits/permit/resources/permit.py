@@ -6,7 +6,7 @@ from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
 from ...permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from ....mines.mine.models.mine import Mine
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
