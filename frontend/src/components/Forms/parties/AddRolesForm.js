@@ -40,8 +40,8 @@ export const AddRolesForm = (props) => (
               <Col span={12}>
                 <Field
                   label="Role"
-                  id={`role${roleNumber}`}
-                  name={`role${roleNumber}`}
+                  id={`mine_party_appt_type_code-${roleNumber}`}
+                  name={`mine_party_appt_type_code-${roleNumber}`}
                   placeholder="Please add Role"
                   component={renderConfig.SELECT}
                   // TODO: Insert real list via props
@@ -51,12 +51,12 @@ export const AddRolesForm = (props) => (
               <Col span={12}>
                 <Field
                   label="Mine"
-                  id={`mine${roleNumber}`}
-                  name={`mine${roleNumber}`}
+                  id={`mine_guid-${roleNumber}`}
+                  name={`mine_guid-${roleNumber}`}
                   placeholder="Please add Mine"
                   component={renderConfig.SELECT}
                   // TODO: Search by input and fill with mine list
-                  data={[{ value: "hi", label: "Hi There" }]}
+                  data={[{ value: "a1bd7d64-c2de-4308-8782-4c3688c1feeb", label: "Aguirre Cline" }]}
                 />
               </Col>
             </Row>
@@ -65,8 +65,8 @@ export const AddRolesForm = (props) => (
               <Col span={12}>
                 <Field
                   label="Start Date"
-                  id={`start_date${roleNumber}`}
-                  name={`start_date${roleNumber}`}
+                  id={`start_date-${roleNumber}`}
+                  name={`start_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
                   component={renderConfig.FIELD}
                 />
@@ -74,8 +74,8 @@ export const AddRolesForm = (props) => (
               <Col span={12}>
                 <Field
                   label="End Date"
-                  id={`end_date${roleNumber}`}
-                  name={`end_date${roleNumber}`}
+                  id={`end_date-${roleNumber}`}
+                  name={`end_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
                   component={renderConfig.FIELD}
                 />
@@ -95,6 +95,6 @@ export const AddRolesForm = (props) => (
 AddRolesForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_FULL_PARTY,
+  form: FORM.ADD_ROLES,
   destroyOnUnmount: false,
 })(AddRolesForm);

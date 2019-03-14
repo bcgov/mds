@@ -6,7 +6,7 @@ import { getFormValues, submit, reset } from "redux-form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { createParty } from "@/actionCreators/partiesActionCreator";
+import { createParty, addPartyRelationship } from "@/actionCreators/partiesActionCreator";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
 
@@ -19,13 +19,27 @@ const propTypes = {
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
+  addRolesFormValues: PropTypes.objectOf(PropTypes.strings),
   addPartyForm: PropTypes.objectOf(CustomPropTypes.genericFormState),
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  addPartyRelationship: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   addPartyFormValues: {},
+  addRolesFormValues: {},
   addPartyForm: {},
+};
+
+const groupRolePayloads = (formValues, party_guid) => {
+  const rolePayloads = {};
+  Object.entries(formValues).forEach(([key, value]) => {
+    const [field, roleNumber] = key.split("-");
+    rolePayloads[roleNumber] = rolePayloads[roleNumber] || {};
+    rolePayloads[roleNumber][field] = value;
+    rolePayloads[roleNumber].party_guid = party_guid;
+  });
+  return rolePayloads;
 };
 
 export class AddPartyModal extends Component {
@@ -35,14 +49,13 @@ export class AddPartyModal extends Component {
     this.setState({ isPerson: value.target.value });
   };
 
-  handlePartySubmit = (event, addAnother) => {
+  handlePartySubmit = async (event, addAnother) => {
     event.preventDefault();
     const type = this.state.isPerson ? "PER" : "ORG";
     const payload = { type, ...this.props.addPartyFormValues };
-    // TODO: Use party guid to add role(s) to party
-    return this.props
+    const party = await this.props
       .createParty(payload)
-      .then(() => {
+      .then(({ data }) => {
         this.props.reset(FORM.ADD_FULL_PARTY);
         if (addAnother) {
           this.prev();
@@ -50,10 +63,22 @@ export class AddPartyModal extends Component {
           this.props.fetchData();
           this.props.closeModal();
         }
+        return data;
       })
       .catch(() => {
         this.prev();
       });
+
+    if (!party) {
+      return Promise.resolve();
+    }
+
+    const rolePayloads = groupRolePayloads(this.props.addRolesFormValues, party.party_guid);
+    const createdRoles = Object.values(rolePayloads).map(this.props.addPartyRelationship);
+
+    return Promise.all(createdRoles).then(() => {
+      this.props.reset(FORM.ADD_ROLES);
+    });
   };
 
   addField = () => {
@@ -67,6 +92,12 @@ export class AddPartyModal extends Component {
     this.setState(({ roleNumbers: prevNumbers }) => ({
       roleNumbers: prevNumbers.filter((x) => x !== roleNumber),
     }));
+  };
+
+  cancel = () => {
+    this.props.closeModal();
+    this.props.reset(FORM.ADD_FULL_PARTY);
+    this.props.reset(FORM.ADD_ROLES);
   };
 
   next() {
@@ -158,7 +189,7 @@ export class AddPartyModal extends Component {
               title="Are you sure you want to cancel?"
               okText="Yes"
               cancelText="No"
-              onConfirm={this.props.closeModal}
+              onConfirm={this.cancel}
             >
               <Button type="secondary" className="full-mobile">
                 Cancel
@@ -192,11 +223,13 @@ export class AddPartyModal extends Component {
 
 const mapStateToProps = (state) => ({
   addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
+  addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
   addPartyForm: state.form[FORM.ADD_FULL_PARTY],
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      addPartyRelationship,
       submit,
       reset,
       createParty,
