@@ -14,22 +14,22 @@ const { Step } = Steps;
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  title: PropTypes.string,
   addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
   addPartyForm: PropTypes.objectOf(CustomPropTypes.genericFormState),
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
   addPartyFormValues: {},
   addPartyForm: {},
-  title: "",
 };
 
 export class AddPartyModal extends Component {
-  state = { isPerson: true, current: 0 };
+  state = { isPerson: true, current: 0, roleNumbers: [] };
 
   togglePartyChange = (value) => {
     this.setState({ isPerson: value.target.value });
@@ -39,6 +39,7 @@ export class AddPartyModal extends Component {
     event.preventDefault();
     const type = this.state.isPerson ? "PER" : "ORG";
     const payload = { type, ...this.props.addPartyFormValues };
+    // TODO: Use party guid to add role(s) to party
     return this.props
       .createParty(payload)
       .then(() => {
@@ -53,6 +54,19 @@ export class AddPartyModal extends Component {
       .catch(() => {
         this.prev();
       });
+  };
+
+  addField = () => {
+    this.setState(({ roleNumbers: prevNumbers }) => {
+      const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
+      return { roleNumbers: [...prevNumbers, String(highestRoleNumber + 1)] };
+    });
+  };
+
+  removeField = (roleNumber) => () => {
+    this.setState(({ roleNumbers: prevNumbers }) => ({
+      roleNumbers: prevNumbers.filter((x) => x !== roleNumber),
+    }));
   };
 
   next() {
@@ -71,11 +85,9 @@ export class AddPartyModal extends Component {
   renderStepOne() {
     return (
       <AddFullPartyForm
-        {...this.props}
-        onSubmit={this.handlePartySubmit}
         isPerson={this.state.isPerson}
         togglePartyChange={this.togglePartyChange}
-        handleFormReset={this.handleFormReset}
+        provinceOptions={this.props.provinceOptions}
       />
     );
   }
@@ -85,17 +97,17 @@ export class AddPartyModal extends Component {
     return (
       <div>
         <Row>
-          <Col md={12} sm={24} xs={24}>
+          <Col md={10} sm={22} xs={22}>
             <AddRolesForm
-              {...this.props}
-              onSubmit={this.handlePartySubmit}
-              isPerson={this.state.isPerson}
-              togglePartyChange={this.togglePartyChange}
-              handleFormReset={this.handleFormReset}
+              roleNumbers={this.state.roleNumbers}
+              addField={this.addField}
+              removeField={this.removeField}
             />
           </Col>
 
-          <Col md={12} sm={24} xs={24}>
+          <Col md={2} sm={2} xs={2} />
+
+          <Col md={10} sm={22} xs={22}>
             <p>
               You cannot add a role of Permittee or Engineer of Record through this section. Please
               go to the designated mine, under the contact information tab, to add the role of a
