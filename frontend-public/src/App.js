@@ -3,6 +3,7 @@ import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import { Layout, BackTop, Button, Icon } from "antd";
+import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,11 +13,15 @@ import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
 
 class App extends Component {
-  state = { isIE: true };
+  state = { isIE: true, isMobile: true };
 
   componentDidMount() {
     this.setState({ isIE: detectIE() });
   }
+
+  handleMobileWaringClose = () => {
+    this.setState({ isMobile: false });
+  };
 
   handleBannerClose = () => {
     this.setState({ isIE: false });
@@ -29,7 +34,12 @@ class App extends Component {
         <Fragment>
           <Layout className="layout">
             <Header />
-            {this.state.isIE && <WarningBanner onClose={this.handleBannerClose} />}
+            {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
+            <MediaQuery maxWidth={769}>
+              {this.state.isMobile && (
+                <WarningBanner type="mobile" onClose={this.handleMobileWaringClose} />
+              )}
+            </MediaQuery>
             <Content className="content">
               <Routes />
               <ModalWrapper />
