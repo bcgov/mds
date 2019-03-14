@@ -183,12 +183,14 @@ const childColumns = [
     title: "Amendment",
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
+    width: "130px",
     render: (text) => <div title="Amendment">{text}</div>,
   },
   {
     title: "Date Issued",
     dataIndex: "issueDate",
     key: "issueDate",
+    width: "90px",
     render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
@@ -211,7 +213,7 @@ const childColumns = [
       <div title="Files">
         <ul>
           {text.map((file) => (
-            <li>{renderDocumentLink(file, file.document_name)}</li>
+            <li className="wrapped-text">{renderDocumentLink(file, file.document_name)}</li>
           ))}
         </ul>
       </div>
