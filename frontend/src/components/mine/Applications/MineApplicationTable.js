@@ -15,7 +15,7 @@ import { EDIT_OUTLINE } from "@/constants/assets";
  */
 
 const propTypes = {
-  applications: PropTypes.arrayOf(PropTypes.object),
+  applications: PropTypes.arrayOf(CustomPropTypes.application),
   applicationStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openEditApplicationModal: PropTypes.func.isRequired,

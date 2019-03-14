@@ -22,7 +22,7 @@ import {
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  applications: PropTypes.arrayOf(PropTypes.object),
+  applications: PropTypes.arrayOf(CustomPropTypes.application),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
@@ -30,7 +30,9 @@ const propTypes = {
   createApplication: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  applications: [],
+};
 
 export class MineApplicationInfo extends Component {
   componentWillMount() {}
