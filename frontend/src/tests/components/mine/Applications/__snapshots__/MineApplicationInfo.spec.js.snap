@@ -4,6 +4,7 @@ exports[`MineApplicationInfo renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineApplicationInfo
+    applications={Array []}
     createApplication={[MockFunction]}
     fetchApplications={[MockFunction]}
     mine={
@@ -589,7 +590,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "applications": undefined,
+        "applications": Array [],
         "major_mine_ind": undefined,
         "openEditApplicationModal": [Function],
       },
