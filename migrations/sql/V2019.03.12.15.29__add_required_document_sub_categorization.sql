@@ -31,4 +31,7 @@ UPDATE mds_required_document SET req_document_sub_category_code = 'INI' where re
 UPDATE mds_required_document set req_document_description = null where req_document_name = 'OTHER_TEST_REPORT';
 UPDATE mds_required_document set hsrc_code = req_document_description;
 UPDATE mds_required_document set req_document_description = null;
+
+ALTER TABLE mine_expected_document ADD COLUMN hsrc_code character varying(15);
+
 ALTER TABLE mds_required_document RENAME COLUMN req_document_description TO description;

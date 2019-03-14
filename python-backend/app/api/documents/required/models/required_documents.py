@@ -26,7 +26,7 @@ class RequiredDocument(AuditMixin, Base):
         db.String, db.ForeignKey('required_document_sub_category.req_document_sub_category_code'))
     req_document_due_date_type = db.Column(
         db.String(3), db.ForeignKey('required_document_due_date_type.req_document_due_date_type'))
-
+    hsrc_code = db.Column(db.String)
     db.relationship('RequiredDocumentDueDateType', backref='req_document_guid', lazy='joined')
 
     def json(self):
@@ -37,6 +37,7 @@ class RequiredDocument(AuditMixin, Base):
             'req_document_sub_category_code': self.req_document_sub_category_code,
             'req_document_due_date_type': self.req_document_due_date_type,
             'req_document_due_date_period_months': self.req_document_due_date_period_months,
+            'hsrc_code': self.hsrc_code,
             'description': self.description,
         }
 

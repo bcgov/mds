@@ -53,6 +53,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_name=new_doc['document_name'],
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid=mine_guid,
+                hsrc_code=new_doc.get('hsrc_code'),
                 exp_document_status_code='MIA',
                 **self.get_create_update_dict())
 

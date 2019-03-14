@@ -80,7 +80,9 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_due_date_type':
                             tsf_req_doc['req_document_due_date_type'],
                             'document_due_date_period_months':
-                            tsf_req_doc['req_document_due_date_period_months']
+                            tsf_req_doc['req_document_due_date_period_months'],
+                            'hsrc_code':
+                            tsf_req_doc['hsrc_code']
                         })
                     #raise Exception(str(new_expected_documents) + str(request.headers))
                     doc_assignment_response = requests.post(
