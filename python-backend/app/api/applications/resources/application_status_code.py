@@ -11,4 +11,4 @@ from app.api.utils.access_decorators import requires_role_mine_view
 class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     def get(self):
-        return [x.json() for x in ApplicationStatusCode.query.all()]
+        return [x.json() for x in ApplicationStatusCode.find_all_active_application_status_code()]
