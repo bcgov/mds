@@ -34,12 +34,28 @@ const defaultProps = {
   partyRelationships: [],
 };
 
+const renderDocumentLink = (file, text) => (
+  <a
+    key={file.mine_document_guid}
+    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)}
+  >
+    {text}
+  </a>
+);
+
+const renderPermitNo = (permit) => {
+  const latestAmendment = permit.amendments[permit.amendments.length - 1];
+  return latestAmendment && latestAmendment.permit_amendment_type_code === amalgamtedPermit
+    ? renderDocumentLink(latestAmendment.related_documents[0], permit.permit_no)
+    : permit.permit_no;
+};
+
 const columns = [
   {
     title: "Permit No.",
     dataIndex: "permitNo",
     key: "permitNo",
-    render: (text) => <div title="Permit No.">{text}</div>,
+    render: (text, record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
   },
   {
     title: "Status",
@@ -192,16 +208,7 @@ const childColumns = [
       <div title="Files">
         <ul>
           {text.map((file) => (
-            <li>
-              <a
-                key={file.mine_document_guid}
-                onClick={() =>
-                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                }
-              >
-                {file.document_name}
-              </a>
-            </li>
+            <li>{renderDocumentLink(file, file.document_name)}</li>
           ))}
         </ul>
       </div>
