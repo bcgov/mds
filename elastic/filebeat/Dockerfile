@@ -11,32 +11,11 @@ ARG ES_LOGSTASH_PORT
 ENV ES_LOGSTASH_HOST=${ES_LOGSTASH_HOST}
 ENV ES_LOGSTASH_PORT=${ES_LOGSTASH_PORT}
 
-# # copy filebeat configuration
-# COPY config/filebeat.yml /usr/share/filebeat/filebeat.yml
-
-# # copy nginx module configuration
-# COPY config/nginx.yml /usr/share/filebeat/modules.d/nginx.yml
-
-# USER root
-
-# RUN chgrp -R 0 /usr/share/filebeat && \
-#     chmod -R go-w /usr/share/filebeat
-
-# # create directory to monitor access logs
-
-
-# # USER filebeat
-
-# CMD ["filebeat", "run", "--c", "/usr/share/filebeat/filebeat.yml"]
-
-
-
 COPY config/filebeat.yml /usr/share/filebeat/filebeat.yml
 COPY config/nginx.yml /usr/share/filebeat/modules.d/nginx.yml
 USER root
 
 RUN mkdir -p /usr/share/filebeat/monitor/access/
-COPY test/access.log /usr/share/filebeat/monitor/access/access.log
 
 RUN chgrp -R 0 /usr/share/filebeat/filebeat.yml \
     && chmod -R go-w /usr/share/filebeat/filebeat.yml \
