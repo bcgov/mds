@@ -28,8 +28,9 @@ import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString, formatDate, formatAddress } from "@/utils/helpers";
+import { formatTitleString, formatDate } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
+import Address from "@/components/common/Address";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -115,57 +116,6 @@ export class PartyProfile extends Component {
     });
   };
 
-  addressContainsTruthyValues = (object) => {
-    return Object.keys(object)
-      .filter((key) => key !== "address_type_code")
-      .some((key) => object[key]);
-  };
-
-  renderAddress = (address) => (
-    <div>
-      {this.addressContainsTruthyValues(address) ? (
-        <div>
-          {address.address_line_1 ? (
-            <div className="inline-flex">
-              <div>
-                <Icon type="contacts" className="icon-sm" />
-              </div>
-              <p>
-                {address.suite_no ? `${address.suite_no} - ` : ""}
-                {address.address_line_1}
-              </p>
-            </div>
-          ) : (
-            <div className="inline-flex">
-              <div>
-                <Icon type="contacts" className="icon-sm" />
-              </div>
-              <p>{address.address_line_2 ? address.address_line_2 : ""}</p>
-            </div>
-          )}
-
-          <div className="padding-large--left">
-            <p>{address.address_line_1 && address.address_line_2 ? address.address_line_2 : ""}</p>
-          </div>
-          <div className="padding-large--left">
-            <p>
-              {address.city ? `${address.city},` : ""}{" "}
-              {address.sub_division_code ? `${address.sub_division_code},` : ""}{" "}
-              {address.post_code ? address.post_code : ""}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="inline-flex">
-          <div>
-            <Icon type="contacts" className="icon-sm" />
-          </div>
-          <p>{Strings.EMPTY_FIELD}</p>
-        </div>
-      )}
-    </div>
-  );
-
   render() {
     const { id } = this.props.match.params;
     const parties = this.props.parties[id];
@@ -248,7 +198,7 @@ export class PartyProfile extends Component {
                 {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
               </p>
             </div>
-            <div>{this.renderAddress(parties.address[0])}</div>
+            <Address address={parties.address[0]} />
           </div>
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>

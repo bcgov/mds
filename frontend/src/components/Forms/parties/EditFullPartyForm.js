@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Button } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { required, email, phoneNumber, postalCode, maxLength, number } from "@/utils/Validate";
 import { normalizePhone, upperCase, resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
@@ -147,8 +147,9 @@ export const EditFullPartyForm = (props) => (
                   id="sub_division_code"
                   name="sub_division_code"
                   label="Province"
+                  format={null}
                   component={renderConfig.SELECT}
-                  data={props.provinceOptions}
+                  data={[{ label: "None", value: null }, ...props.provinceOptions]}
                 />
               </Form.Item>
             </Col>
@@ -173,7 +174,7 @@ export const EditFullPartyForm = (props) => (
                   label="Postal Code"
                   placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(6)]}
+                  validate={[maxLength(6), postalCode]}
                   normalize={upperCase}
                 />
               </Form.Item>
@@ -199,6 +200,7 @@ EditFullPartyForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.EDIT_FULL_PARTY,
-  enableReinitialize: true,
   onSubmitSuccess: resetForm(FORM.EDIT_FULL_PARTY),
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
 })(EditFullPartyForm);
