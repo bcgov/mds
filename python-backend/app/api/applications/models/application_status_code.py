@@ -30,7 +30,7 @@ class ApplicationStatusCode(AuditMixin, Base):
         return cls.query.filter_by(application_status_code=code).first()
 
     @classmethod
-    def find_all_application_status_code(cls):
+    def find_all_active_application_status_code(cls):
         try:
             return cls.query.filter_by(active_ind=True).all()
         except ValueError:
