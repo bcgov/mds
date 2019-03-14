@@ -102,15 +102,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Mine"
-                        className="padding-small--right"
+                        className="padding-small--right vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -131,15 +126,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="team"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -165,15 +155,10 @@ ShallowWrapper {
                   >
                     <img
                       alt="Admin"
-                      className="padding-small--right icon-sm"
+                      className="padding-small--right icon-sm vertical-align-sm"
                       src={
                         Object {
                           "process": [Function],
-                        }
-                      }
-                      style={
-                        Object {
-                          "verticalAlign": "-0.125em",
                         }
                       }
                     />
@@ -322,15 +307,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Mine"
-                          className="padding-small--right"
+                          className="padding-small--right vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -351,15 +331,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="team"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -385,15 +360,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -601,15 +571,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Mine"
-                          className="padding-small--right"
+                          className="padding-small--right vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -630,15 +595,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="team"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -664,15 +624,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -763,15 +718,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Mine"
-                            className="padding-small--right"
+                            className="padding-small--right vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -792,15 +742,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="team"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -826,15 +771,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -921,15 +861,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Mine"
-                            className="padding-small--right"
+                            className="padding-small--right vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -950,15 +885,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="team"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -989,15 +919,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="Mine"
-                              className="padding-small--right"
+                              className="padding-small--right vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -1018,15 +943,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="team"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -1055,15 +975,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="Mine"
-                              className="padding-small--right"
+                              className="padding-small--right vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -1082,15 +997,10 @@ ShallowWrapper {
                             "children": Array [
                               <img
                                 alt="Mine"
-                                className="padding-small--right"
+                                className="padding-small--right vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />,
@@ -1110,12 +1020,9 @@ ShallowWrapper {
                               "nodeType": "host",
                               "props": Object {
                                 "alt": "Mine",
-                                "className": "padding-small--right",
+                                "className": "padding-small--right vertical-align-sm",
                                 "src": Object {
                                   "process": [Function],
-                                },
-                                "style": Object {
-                                  "verticalAlign": "-0.125em",
                                 },
                               },
                               "ref": null,
@@ -1143,15 +1050,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="team"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -1170,15 +1072,10 @@ ShallowWrapper {
                             "children": Array [
                               <img
                                 alt="team"
-                                className="padding-small--right icon-sm"
+                                className="padding-small--right icon-sm vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />,
@@ -1198,12 +1095,9 @@ ShallowWrapper {
                               "nodeType": "host",
                               "props": Object {
                                 "alt": "team",
-                                "className": "padding-small--right icon-sm",
+                                "className": "padding-small--right icon-sm vertical-align-sm",
                                 "src": Object {
                                   "process": [Function],
-                                },
-                                "style": Object {
-                                  "verticalAlign": "-0.125em",
                                 },
                               },
                               "ref": null,
@@ -1240,15 +1134,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1273,15 +1162,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1300,15 +1184,10 @@ ShallowWrapper {
                         "children": Array [
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />,
@@ -1328,12 +1207,9 @@ ShallowWrapper {
                           "nodeType": "host",
                           "props": Object {
                             "alt": "Admin",
-                            "className": "padding-small--right icon-sm",
+                            "className": "padding-small--right icon-sm vertical-align-sm",
                             "src": Object {
                               "process": [Function],
-                            },
-                            "style": Object {
-                              "verticalAlign": "-0.125em",
                             },
                           },
                           "ref": null,
@@ -1578,15 +1454,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Mine"
-                          className="padding-small--right"
+                          className="padding-small--right vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1607,15 +1478,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="team"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1641,15 +1507,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -1798,15 +1659,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Mine"
-                            className="padding-small--right"
+                            className="padding-small--right vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -1827,15 +1683,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="team"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -1861,15 +1712,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -2077,15 +1923,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Mine"
-                            className="padding-small--right"
+                            className="padding-small--right vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2106,15 +1947,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="team"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2140,15 +1976,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -2239,15 +2070,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="Mine"
-                              className="padding-small--right"
+                              className="padding-small--right vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -2268,15 +2094,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="team"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -2302,15 +2123,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2397,15 +2213,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="Mine"
-                              className="padding-small--right"
+                              className="padding-small--right vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -2426,15 +2237,10 @@ ShallowWrapper {
                           >
                             <img
                               alt="team"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />
@@ -2465,15 +2271,10 @@ ShallowWrapper {
                             >
                               <img
                                 alt="Mine"
-                                className="padding-small--right"
+                                className="padding-small--right vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />
@@ -2494,15 +2295,10 @@ ShallowWrapper {
                             >
                               <img
                                 alt="team"
-                                className="padding-small--right icon-sm"
+                                className="padding-small--right icon-sm vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />
@@ -2531,15 +2327,10 @@ ShallowWrapper {
                             >
                               <img
                                 alt="Mine"
-                                className="padding-small--right"
+                                className="padding-small--right vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />
@@ -2558,15 +2349,10 @@ ShallowWrapper {
                               "children": Array [
                                 <img
                                   alt="Mine"
-                                  className="padding-small--right"
+                                  className="padding-small--right vertical-align-sm"
                                   src={
                                     Object {
                                       "process": [Function],
-                                    }
-                                  }
-                                  style={
-                                    Object {
-                                      "verticalAlign": "-0.125em",
                                     }
                                   }
                                 />,
@@ -2586,12 +2372,9 @@ ShallowWrapper {
                                 "nodeType": "host",
                                 "props": Object {
                                   "alt": "Mine",
-                                  "className": "padding-small--right",
+                                  "className": "padding-small--right vertical-align-sm",
                                   "src": Object {
                                     "process": [Function],
-                                  },
-                                  "style": Object {
-                                    "verticalAlign": "-0.125em",
                                   },
                                 },
                                 "ref": null,
@@ -2619,15 +2402,10 @@ ShallowWrapper {
                             >
                               <img
                                 alt="team"
-                                className="padding-small--right icon-sm"
+                                className="padding-small--right icon-sm vertical-align-sm"
                                 src={
                                   Object {
                                     "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
                                   }
                                 }
                               />
@@ -2646,15 +2424,10 @@ ShallowWrapper {
                               "children": Array [
                                 <img
                                   alt="team"
-                                  className="padding-small--right icon-sm"
+                                  className="padding-small--right icon-sm vertical-align-sm"
                                   src={
                                     Object {
                                       "process": [Function],
-                                    }
-                                  }
-                                  style={
-                                    Object {
-                                      "verticalAlign": "-0.125em",
                                     }
                                   }
                                 />,
@@ -2674,12 +2447,9 @@ ShallowWrapper {
                                 "nodeType": "host",
                                 "props": Object {
                                   "alt": "team",
-                                  "className": "padding-small--right icon-sm",
+                                  "className": "padding-small--right icon-sm vertical-align-sm",
                                   "src": Object {
                                     "process": [Function],
-                                  },
-                                  "style": Object {
-                                    "verticalAlign": "-0.125em",
                                   },
                                 },
                                 "ref": null,
@@ -2716,15 +2486,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2749,15 +2514,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2776,15 +2536,10 @@ ShallowWrapper {
                           "children": Array [
                             <img
                               alt="Admin"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />,
@@ -2804,12 +2559,9 @@ ShallowWrapper {
                             "nodeType": "host",
                             "props": Object {
                               "alt": "Admin",
-                              "className": "padding-small--right icon-sm",
+                              "className": "padding-small--right icon-sm vertical-align-sm",
                               "src": Object {
                                 "process": [Function],
-                              },
-                              "style": Object {
-                                "verticalAlign": "-0.125em",
                               },
                             },
                             "ref": null,

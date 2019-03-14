@@ -45,6 +45,7 @@ export class ContactSearch extends Component {
                 ]}
                 relationshipTypes={[
                   { value: "", label: "All Roles" },
+                  { value: "NONE", label: "No Role Assigned" },
                   ...this.props.partyRelationshipTypesList,
                 ]}
                 initialValues={this.props.initialValues}
