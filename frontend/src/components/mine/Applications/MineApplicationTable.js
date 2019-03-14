@@ -54,8 +54,10 @@ const columns = [
     dataIndex: "description",
     key: "description",
     render: (text) => (
-      <div title="Description" style={{ maxWidth: "800px" }}>
-        {text}
+      <div title="Description">
+        <p className="wrapped-text" style={{ maxWidth: "800px" }}>
+          {text}
+        </p>
       </div>
     ),
   },

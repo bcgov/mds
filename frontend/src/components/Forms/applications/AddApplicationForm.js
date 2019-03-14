@@ -31,7 +31,7 @@ export const AddApplicationForm = (props) => (
           <Field
             id="application_no"
             name="application_no"
-            label="Application Number"
+            label="Application Number*"
             component={RenderField}
             validate={[required]}
           />
@@ -51,7 +51,7 @@ export const AddApplicationForm = (props) => (
           <Field
             id="received_date"
             name="received_date"
-            label="Received date"
+            label="Received date*"
             component={RenderDate}
             validate={[required, dateNotInFuture]}
           />
