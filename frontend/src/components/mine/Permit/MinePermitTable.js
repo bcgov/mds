@@ -44,9 +44,12 @@ const renderDocumentLink = (file, text) => (
 );
 
 const renderPermitNo = (permit) => {
-  const latestAmendment = permit.amendments[permit.amendments.length - 1];
-  return latestAmendment && latestAmendment.permit_amendment_type_code === amalgamtedPermit
-    ? renderDocumentLink(latestAmendment.related_documents[0], permit.permit_no)
+  const permitNoShouldLinkToDocument =
+    permit.amendments[0] &&
+    permit.amendments[0].permit_amendment_type_code === amalgamtedPermit &&
+    permit.amendments[0].related_documents[0];
+  return permitNoShouldLinkToDocument
+    ? renderDocumentLink(permit.amendments[0].related_documents[0], permit.permit_no)
     : permit.permit_no;
 };
 
