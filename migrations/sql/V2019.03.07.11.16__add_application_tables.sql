@@ -19,7 +19,7 @@ CREATE TABLE application
     application_no character varying(16) NOT NULL,
     description character varying(280),
     application_status_code character varying(3) NOT NULL,
-    recieved_date date DEFAULT '9999-12-31'::date NOT NULL,
+    recieved_date date NOT NULL,
     create_user character varying(60) NOT NULL,
     create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
     update_user character varying(60) NOT NULL,
