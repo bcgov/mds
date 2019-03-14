@@ -65,11 +65,9 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         except IOError as e:
             return self.create_error_payload(500, 'Unable to create file'), 500
 
-        cache.set(FILE_UPLOAD_SIZE(document_guid),
-                  file_size, TIMEOUT_24_HOURS)
+        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, TIMEOUT_24_HOURS)
         cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, TIMEOUT_24_HOURS)
-        cache.set(FILE_UPLOAD_PATH(document_guid),
-                  file_path, TIMEOUT_24_HOURS)
+        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, TIMEOUT_24_HOURS)
 
         document_info = DocumentManager(
             document_guid=document_guid,
@@ -133,8 +131,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             cache.delete(FILE_UPLOAD_PATH(document_guid))
         else:
             # File upload still in progress
-            cache.set(FILE_UPLOAD_OFFSET(document_guid),
-                      new_offset, TIMEOUT_24_HOURS)
+            cache.set(FILE_UPLOAD_OFFSET(document_guid), new_offset, TIMEOUT_24_HOURS)
 
         response = make_response("", 204)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
@@ -155,10 +152,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         response = make_response("", 200)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers['Upload-Offset'] = cache.get(
-            FILE_UPLOAD_OFFSET(document_guid))
-        response.headers['Upload-Length'] = cache.get(
-            FILE_UPLOAD_SIZE(document_guid))
+        response.headers['Upload-Offset'] = cache.get(FILE_UPLOAD_OFFSET(document_guid))
+        response.headers['Upload-Length'] = cache.get(FILE_UPLOAD_SIZE(document_guid))
         response.headers['Cache-Control'] = 'no-store'
         response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset,Upload-Length,Cache-Control"
         return response
