@@ -23,6 +23,7 @@ const propTypes = {
   addPartyForm: PropTypes.objectOf(CustomPropTypes.genericFormState),
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   addPartyRelationship: PropTypes.func.isRequired,
+  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
@@ -133,6 +134,7 @@ export class AddPartyModal extends Component {
               roleNumbers={this.state.roleNumbers}
               addField={this.addField}
               removeField={this.removeField}
+              partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             />
           </Col>
 

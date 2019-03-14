@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Collapse, Button, Icon, Popconfirm, Form, Col, Row } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
@@ -9,7 +10,12 @@ const propTypes = {
   addField: PropTypes.func.isRequired,
   removeField: PropTypes.func.isRequired,
   roleNumbers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
+
+const complexRelationships = ["EOR", "PMT"];
+const simpleRelationships = (typesList) =>
+  typesList.filter(({ value }) => !complexRelationships.includes(value));
 
 const panelHeader = (removeField, roleNumber) => (
   <div className="inline-flex between">
@@ -44,8 +50,7 @@ export const AddRolesForm = (props) => (
                   name={`mine_party_appt_type_code-${roleNumber}`}
                   placeholder="Please add Role"
                   component={renderConfig.SELECT}
-                  // TODO: Insert real list via props
-                  data={[{ value: "MMG", label: "Mine Manager" }]}
+                  data={simpleRelationships(props.partyRelationshipTypesList)}
                 />
               </Col>
               <Col span={12}>
@@ -56,7 +61,10 @@ export const AddRolesForm = (props) => (
                   placeholder="Please add Mine"
                   component={renderConfig.SELECT}
                   // TODO: Search by input and fill with mine list
-                  data={[{ value: "a1bd7d64-c2de-4308-8782-4c3688c1feeb", label: "Aguirre Cline" }]}
+                  data={[
+                    { value: "a1bd7d64-c2de-4308-8782-4c3688c1feeb", label: "Aguirre Cline" },
+                    { value: "23dab9fc-7ccd-42bc-b886-93de490fb17c", label: "Allen Digregorio" },
+                  ]}
                 />
               </Col>
             </Row>
