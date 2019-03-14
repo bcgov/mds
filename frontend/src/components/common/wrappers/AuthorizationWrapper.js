@@ -43,6 +43,7 @@ const propTypes = {
   isMajorMine: PropTypes.bool,
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
+  tab: PropTypes.bool,
   children: PropTypes.element.isRequired,
 };
 

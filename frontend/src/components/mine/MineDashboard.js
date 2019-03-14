@@ -34,6 +34,7 @@ import {
 } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
@@ -154,6 +155,13 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
+                {mine.major_mine_ind && (
+                  <TabPane tab="Applications" key="applications">
+                    <div className="tab__content">
+                      <MineApplicationInfo mine={mine} {...this.props} />
+                    </div>
+                  </TabPane>
+                )}
                 <TabPane tab="Permit" key="permit">
                   <div className="tab__content">
                     <MinePermitInfo mine={mine} {...this.props} />
@@ -180,11 +188,6 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
-                <TabPane tab="Applications" key="applications">
-                  <div className="tab__content">
-                    <MineApplicationInfo mine={mine} {...this.props} />
-                  </div>
-                </TabPane>
                 {mine.mine_tailings_storage_facility.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">
