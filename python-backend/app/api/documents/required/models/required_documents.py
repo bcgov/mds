@@ -9,7 +9,7 @@ from app.extensions import db
 
 from ..models.required_document_categories import RequiredDocumentCategory
 from ..models.required_document_due_date_type import RequiredDocumentDueDateType
-
+from ..models.required_document_sub_categories import RequiredDocumentSubCategory
 from ....utils.models_mixins import AuditMixin, Base
 
 
@@ -18,11 +18,11 @@ class RequiredDocument(AuditMixin, Base):
     req_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     req_document_name = db.Column(db.String, nullable=False)
-    req_document_description = db.Column(db.String)
+    description = db.Column(db.String)
     req_document_due_date_period_months = db.Column(db.Integer, nullable=False)
     req_document_category = db.Column(
         db.String, db.ForeignKey('mine_required_document_category.req_document_category'))
-    req_document_sub_category = db.Column(
+    req_document_sub_category_code = db.Column(
         db.String, db.ForeignKey('required_document_sub_category.req_document_sub_category_code'))
     req_document_due_date_type = db.Column(
         db.String(3), db.ForeignKey('required_document_due_date_type.req_document_due_date_type'))
@@ -33,11 +33,11 @@ class RequiredDocument(AuditMixin, Base):
         return {
             'req_document_guid': str(self.req_document_guid),
             'req_document_name': self.req_document_name,
-            'req_document_description': self.req_document_description,
             'req_document_category': self.req_document_category,
             'req_document_sub_category_code': self.req_document_sub_category_code,
             'req_document_due_date_type': self.req_document_due_date_type,
-            'req_document_due_date_period_months': self.req_document_due_date_period_months
+            'req_document_due_date_period_months': self.req_document_due_date_period_months,
+            'description': self.description,
         }
 
     @classmethod
@@ -53,7 +53,7 @@ class RequiredDocument(AuditMixin, Base):
         try:
             result = cls.query.filter_by(req_document_category=category)
             if sub_category:
-                result = result.filter_by(req_document_sub_category=sub_category)
+                result = result.filter_by(req_document_sub_category_code=sub_category)
             return result.all()
         except ValueError:
             return None

@@ -18,9 +18,9 @@ ON CONFLICT DO NOTHING;
 
 ALTER TABLE mds_required_document ADD COLUMN IF NOT EXISTS req_document_sub_category_code character varying(3);
 ALTER TABLE mds_required_document ADD COLUMN hsrc_code character varying(15);
-ALTER TABLE mds_required_document ADD CONSTRAINT required_document_sub_category_fkey FOREIGN KEY (required_document_sub_category_code) REFERENCES required_document_sub_category(req_document_sub_category_code) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE mds_required_document ADD CONSTRAINT required_document_sub_category_fkey FOREIGN KEY (req_document_sub_category_code) REFERENCES required_document_sub_category(req_document_sub_category_code) DEFERRABLE INITIALLY DEFERRED;
 
-UPDATE mds_required_document SET required_document_sub_category_code = 'INI' where req_document_name in (
+UPDATE mds_required_document SET req_document_sub_category_code = 'INI' where req_document_name in (
     'Annual TSF and Dam safety recommendations',
     'ITRB Activities (Annual)', 
     'Register of tailings storage facilities and dams',
@@ -28,7 +28,7 @@ UPDATE mds_required_document SET required_document_sub_category_code = 'INI' whe
     '5 year DSR',
     'As Built Reports');
 
+UPDATE mds_required_document set req_document_description = null where req_document_name = 'OTHER_TEST_REPORT';
 UPDATE mds_required_document set hsrc_code = req_document_description;
 UPDATE mds_required_document set req_document_description = null;
-UPDATE mds_required_document set hsrc_code = null where req_document_name = OTHER_TEST_REPORT;
 ALTER TABLE mds_required_document RENAME COLUMN req_document_description TO description;

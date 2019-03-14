@@ -56,7 +56,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
             db.session.add(mine_tsf)
             if is_mine_first_tsf:
                 try:
-                    req_documents_url = get_documents_svc_url('/required?category=TSF')
+                    req_documents_url = get_documents_svc_url(
+                        '/required?category=TSF&sub_category=INI')
                     get_tsf_docs_resp = requests.get(
                         req_documents_url,
                         headers={'Authorization': request.headers.get('Authorization')})
@@ -66,7 +67,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             500,
                             'get_tsf_req_docs returned error' + str(get_tsf_docs_resp.status_code))
 
-                    tsf_required_documents = get_tsf_docs_resp.json()
+                    tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
                     new_expected_documents = []
                     for tsf_req_doc in tsf_required_documents:
                         new_expected_documents.append({
@@ -75,7 +76,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                             'document_name':
                             tsf_req_doc['req_document_name'],
                             'document_description':
-                            tsf_req_doc['req_document_description'],
+                            tsf_req_doc['description'],
                             'document_due_date_type':
                             tsf_req_doc['req_document_due_date_type'],
                             'document_due_date_period_months':
@@ -90,7 +91,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                         self.raise_error(500, "Error creating tsf expected documents")
                 except BaseException as e:
                     db.session.rollback()
-                    self.raise_error(500, str(e) + ", tsf not created")
+                    current_app.logger.error(str(e))
+                    return self.create_error_payload(500, str(e) + ", tsf not created"), 500
             db.session.commit()
             return {
                 'mine_tailings_storage_facilities':

@@ -19,7 +19,7 @@ class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
 
         else:
             search_category = request.args.get('category')
-            search_sub_category = request.args.get('search_sub_category')
+            search_sub_category = request.args.get('sub_category')
 
             if search_category:
                 search_sub_category = search_sub_category.upper() if search_sub_category else None
