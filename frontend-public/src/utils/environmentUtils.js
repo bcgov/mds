@@ -1,5 +1,3 @@
-import { ENVIRONMENT } from "@/constants/environment";
-
 /**
  * detect IE
  * @returns version of IE or false, if browser is not Internet Explorer
@@ -39,5 +37,3 @@ export const detectIE = () => {
   // other browser
   return false;
 };
-
-export const detectDevelopmentEnvironment = () => ENVIRONMENT.environment === "development";

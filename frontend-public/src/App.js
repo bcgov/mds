@@ -10,13 +10,13 @@ import { Footer } from "@/components/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
-import { detectIE, detectDevelopmentEnvironment } from "@/utils/environmentUtils";
+import { detectIE } from "@/utils/environmentUtils";
 
 class App extends Component {
-  state = { isIE: true, isDev: false, isMobile: true };
+  state = { isIE: true, isMobile: true };
 
   componentDidMount() {
-    this.setState({ isIE: detectIE(), isDev: detectDevelopmentEnvironment() });
+    this.setState({ isIE: detectIE() });
   }
 
   handleMobileWarningClose = () => {
@@ -36,7 +36,7 @@ class App extends Component {
             <Header />
             {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
             <MediaQuery maxWidth={500}>
-              {this.state.isMobile && !this.state.isDev && (
+              {this.state.isMobile && (
                 <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
               )}
             </MediaQuery>
