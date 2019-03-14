@@ -56,10 +56,19 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 404, 'There was no mine found with the provided mine_guid.'), 404
 
+        application_no, application_status_code, received_date = list(
+            map(data.get, ['application_no', 'application_status_code', 'received_date']))
+
+        if not application_no or not application_status_code or not received_date:
+            return self.create_error_payload(
+                404,
+                'An application Number, Received Date and Status are required for an application.'
+            ), 404
+
         try:
             application = Application.create(mine.mine_guid, data['application_no'],
                                              data['application_status_code'], data['received_date'],
-                                             data['description'], self.get_create_update_dict())
+                                             data.get('description'), self.get_create_update_dict())
             application.save()
         except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))
