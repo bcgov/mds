@@ -23,7 +23,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         'pretty_folder',
         type=str,
         required=True,
-        help='The sub folder path to store the document in with the guids replaced for more readable names.'
+        help=
+        'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
     parser.add_argument(
         'filename', type=str, required=True, help='File name + extension of the document.')
@@ -31,7 +32,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self):
         if request.headers.get('Tus-Resumable') is None:
-            return self.create_error_payload(400, 'Received file upload for unsupported file transfer protocol'), 400
+            return self.create_error_payload(
+                400, 'Received file upload for unsupported file transfer protocol'), 400
 
         file_size = request.headers.get('Upload-Length')
         max_file_size = current_app.config["MAX_CONTENT_LENGTH"]
@@ -39,7 +41,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, 'Received file upload of unspecified size'), 400
         file_size = int(file_size)
         if file_size > max_file_size:
-            return self.create_error_payload(413, f'The maximum file upload size is {max_file_size/1024/1024}MB.'), 413
+            return self.create_error_payload(
+                413, f'The maximum file upload size is {max_file_size/1024/1024}MB.'), 413
 
         data = self.parser.parse_args()
         filename = data.get('filename')
@@ -60,7 +63,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             if not os.path.exists(folder):
                 os.makedirs(folder)
             with open(file_path, "wb") as f:
-                f.seek(file_size -1)
+                f.seek(file_size - 1)
                 f.write(b"\0")
         except IOError as e:
             return self.create_error_payload(500, 'Unable to create file'), 500
@@ -79,13 +82,14 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         )
         document_info.save()
 
-        response = make_response(
-            jsonify(document_manager_guid=document_guid), 201)
+        response = make_response(jsonify(document_manager_guid=document_guid), 201)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
-        response.headers['Location'] = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager/{document_guid}'
+        response.headers[
+            'Location'] = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager/{document_guid}'
         response.headers['Upload-Offset'] = 0
-        response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Location,Upload-Offset"
+        response.headers[
+            'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Location,Upload-Offset"
         response.autocorrect_location_header = False
         return response
 
@@ -96,12 +100,14 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
-            return self.create_error_payload(404, 'PATCH sent for a upload that does not exist'), 404
+            return self.create_error_payload(404,
+                                             'PATCH sent for a upload that does not exist'), 404
 
         request_offset = int(request.headers.get('Upload-Offset', 0))
         file_offset = cache.get(FILE_UPLOAD_OFFSET(document_guid))
         if request_offset != file_offset:
-            return self.create_error_payload(409, "Offset in request does not match uploaded file's offest"), 409
+            return self.create_error_payload(
+                409, "Offset in request does not match uploaded file's offest"), 409
 
         chunk_size = request.headers.get('Content-Length')
         if chunk_size is None:
@@ -111,7 +117,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         new_offset = file_offset + chunk_size
         file_size = cache.get(FILE_UPLOAD_SIZE(document_guid))
         if new_offset > file_size:
-            return self.create_error_payload(413, 'The uploaded chunk would put the file above its declared file size.'), 413
+            return self.create_error_payload(
+                413, 'The uploaded chunk would put the file above its declared file size.'), 413
 
         try:
             with open(file_path, "r+b") as f:
@@ -137,7 +144,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers['Upload-Offset'] = new_offset
-        response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
+        response.headers[
+            'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
         return response
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
@@ -155,7 +163,8 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         response.headers['Upload-Offset'] = cache.get(FILE_UPLOAD_OFFSET(document_guid))
         response.headers['Upload-Length'] = cache.get(FILE_UPLOAD_SIZE(document_guid))
         response.headers['Cache-Control'] = 'no-store'
-        response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset,Upload-Length,Cache-Control"
+        response.headers[
+            'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset,Upload-Length,Cache-Control"
         return response
 
     @api.doc(params={
@@ -166,8 +175,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         if not document_guid:
             return self.create_error_payload(400, 'Must provide a document guid.'), 400
 
-        document_manager_doc = DocumentManager.find_by_document_manager_guid(
-            document_guid)
+        document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
 
         if not document_manager_doc:
             return self.create_error_payload(
@@ -189,6 +197,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         response.headers['Tus-Version'] = self.tus_api_supported_versions
         response.headers['Tus-Extension'] = "creation,termination"
         response.headers['Tus-Max-Size'] = self.max_file_size
-        response.headers['Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Tus-Extension,Tus-Max-Size"
+        response.headers[
+            'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Tus-Extension,Tus-Max-Size"
         response.status_code = 204
         return response
