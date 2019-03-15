@@ -117,7 +117,6 @@ export const MineApplicationTable = (props) => {
   return (
     <Table
       className="nested-table"
-      rowClassName={() => "table-row-align-middle"}
       align="left"
       pagination={false}
       columns={columns}
