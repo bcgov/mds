@@ -2,7 +2,7 @@ import sys
 import json
 import os
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_restplus import Resource
 from flask_compress import Compress
@@ -49,6 +49,11 @@ def register_extensions(app):
     apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
 
+    blueprint = Blueprint('swagger', __name__,
+                          url_prefix='/{}'.format(Config.BASE_PATH))
+    api.init_app(blueprint)
+    app.register_blueprint(blueprint)
+
     CORS(app)
     Compress(app)
 
@@ -56,7 +61,7 @@ def register_extensions(app):
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_NRIS_jobs(app)
-            #This is here to prevent this from running in production until we are confident in the permit data.
+            # This is here to prevent this from running in production until we are confident in the permit data.
             if app.config.get('ENVIRONMENT_NAME') == 'test':
                 _schedule_ETL_jobs(app)
 
