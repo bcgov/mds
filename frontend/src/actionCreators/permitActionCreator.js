@@ -126,3 +126,30 @@ export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatc
       dispatch(hideLoading());
     });
 };
+
+export const removePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+  dispatch(showLoading());
+  return axios
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(permitAmdendmentGuid, documentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully removed attached document`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+      dispatch(hideLoading());
+    });
+};
