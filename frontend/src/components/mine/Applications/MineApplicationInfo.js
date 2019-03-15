@@ -17,7 +17,7 @@ import {
 } from "@/actionCreators/applicationActionCreator";
 
 /**
- * @class  MinePermitInfo - contains all permit information
+ * @class  MineApplicationInfo - contains all application information
  */
 
 const propTypes = {
@@ -108,7 +108,7 @@ export class MineApplicationInfo extends Component {
       <br />,
       <MineApplicationTable
         applications={this.props.applications}
-        major_mine_ind={this.props.mine.major_mine_ind}
+        isMajorMine={this.props.mine.major_mine_ind}
         openEditApplicationModal={this.openEditApplicationModal}
       />,
     ];

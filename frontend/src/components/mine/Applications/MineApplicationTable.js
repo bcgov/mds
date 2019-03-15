@@ -11,13 +11,13 @@ import { connect } from "react-redux";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
- * @class  MinePermitTable - displays a table of permits and permit amendments
+ * @class  MineApplicationTable - displays a table of applicationsfor a mine.
  */
 
 const propTypes = {
   applications: PropTypes.arrayOf(CustomPropTypes.application),
   applicationStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  major_mine_ind: PropTypes.bool.isRequired,
+  isMajorMine: PropTypes.bool.isRequired,
   openEditApplicationModal: PropTypes.func.isRequired,
 };
 
@@ -68,7 +68,7 @@ const columns = [
     align: "right",
     render: (text, record) => (
       <AuthorizationWrapper inTesting>
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.isMajorMine}>
           <Button
             className="permit-table-button"
             type="ghost"
@@ -108,7 +108,7 @@ export const MineApplicationTable = (props) => {
   const rowData = props.applications.map((application) =>
     transformRowData(
       application,
-      props.major_mine_ind,
+      props.isMajorMine,
       props.applicationStatusOptions,
       props.openEditApplicationModal
     )

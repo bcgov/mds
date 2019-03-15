@@ -10,8 +10,6 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const fetchApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATIONS));
   dispatch(showLoading("modal"));
