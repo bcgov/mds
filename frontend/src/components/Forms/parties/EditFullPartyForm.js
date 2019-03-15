@@ -18,7 +18,7 @@ export const EditFullPartyForm = (props) => (
   <div>
     <Form onSubmit={props.handleSubmit}>
       <Row gutter={48}>
-        <Col md={12} sm={24} className="border--right--violet">
+        <Col md={12} sm={24} className="border--right--layout">
           <Row gutter={16}>
             <h5>Basic Details</h5>
           </Row>
@@ -183,12 +183,7 @@ export const EditFullPartyForm = (props) => (
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          disabled={props.submitting}
-        >
+        <Button className="full-mobile" type="primary" htmlType="submit">
           {props.isPerson ? "Update Personnel" : "Update Company"}
         </Button>
       </div>

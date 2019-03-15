@@ -48,13 +48,13 @@ const propTypes = {
   updateParty: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  fetchProvinceCodes: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  fetchProvinceCodes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -107,6 +107,7 @@ export class PartyProfile extends Component {
       props: { onSubmit, title, isPerson, initialValues, provinceOptions },
       content: modalConfig.EDIT_PARTY,
       widthSize: "75%",
+      clearOnSubmit: false,
     });
   };
 

@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { required, email, phoneNumber, maxLength, number, postalCode } from "@/utils/Validate";
 import { normalizePhone, upperCase } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
@@ -179,7 +179,7 @@ export const AddFullPartyForm = (props) => (
                   label="Postal Code"
                   placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(6)]}
+                  validate={[maxLength(6), postalCode]}
                   normalize={upperCase}
                 />
               </Form.Item>
