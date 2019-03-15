@@ -27,6 +27,8 @@ import { getMineBasicInfoListHash } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { formatTitleString, formatDate } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
@@ -161,24 +163,26 @@ export class PartyProfile extends Component {
       return (
         <div className="profile">
           <div className="profile__header">
-            <div className="inline-flex">
+            <div className="inline-flex between">
               <h1>{formatedName}</h1>
-              <Button
-                type="primary"
-                onClick={(event) =>
-                  this.openEditPartyModal(
-                    event,
-                    parties,
-                    this.editParty,
-                    ModalContent.EDIT_PARTY(formatedName),
-                    isPerson,
-                    this.props.provinceOptions
-                  )
-                }
-              >
-                <img alt="pencil" className="padding-small--right" src={EDIT} />
-                Update Party
-              </Button>
+              <AuthorizationWrapper permission={Permission.CREATE}>
+                <Button
+                  type="primary"
+                  onClick={(event) =>
+                    this.openEditPartyModal(
+                      event,
+                      parties,
+                      this.editParty,
+                      ModalContent.EDIT_PARTY(formatedName),
+                      isPerson,
+                      this.props.provinceOptions
+                    )
+                  }
+                >
+                  <img alt="pencil" className="padding-small--right" src={EDIT} />
+                  Update Party
+                </Button>
+              </AuthorizationWrapper>
             </div>
             <div className="inline-flex">
               <div className="padding-right">
