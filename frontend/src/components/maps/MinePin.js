@@ -13,16 +13,15 @@ import { getMines, getMineIds } from "@/selectors/mineSelectors";
  */
 
 const propTypes = {
-  mines: PropTypes.object.isRequired,
-  mineIds: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+  mines: PropTypes.objectOf(PropTypes.any).isRequired,
+  mineIds: PropTypes.arrayOf(PropTypes.string),
+  view: PropTypes.objectOf(PropTypes.any).isRequired,
+  map: PropTypes.objectOf(PropTypes.any).isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
-  mines: {},
   mineIds: [],
-  view: {},
 };
 
 export class MinePin extends Component {
@@ -58,7 +57,7 @@ export class MinePin extends Component {
           this.setState({ isFullMap: false });
         } else {
           this.setState({ isFullMap: true });
-          mineIds = this.props.mineIds;
+          mineIds = [...this.props.mineIds];
         }
 
         // The svg for the map pin is encoded directly into the default symbol

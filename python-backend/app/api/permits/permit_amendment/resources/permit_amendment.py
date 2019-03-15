@@ -14,19 +14,25 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
     parser.add_argument(
         'received_date',
+        location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
     parser.add_argument(
         'issue_date',
+        location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
     parser.add_argument(
         'authorization_end_date',
+        location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
-    parser.add_argument('permit_amendment_type_code', type=str, store_missing=False)
-    parser.add_argument('permit_amendment_status_code', type=str, store_missing=False)
-    parser.add_argument('description', type=str, store_missing=False)
+    parser.add_argument(
+        'permit_amendment_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'permit_amendment_status_code', type=str, location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -71,7 +77,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         authorization_end_date = data.get('authorization_end_date')
         permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
         description = data.get('description')
-
+        uploadedFiles = data.get('uploadedFiles', [])
         try:
             new_pa = PermitAmendment.create(
                 permit,
@@ -82,6 +88,15 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 self.get_create_update_dict(),
                 description=description,
                 save=True)
+
+            for newFile in uploadedFiles:
+                new_pa_doc = PermitAmendmentDocument(
+                    document_name=newFile['fileName'],
+                    document_manager_guid=newFile['document_manager_guid'],
+                    mine_guid=permit.mine_guid,
+                    **self.get_create_update_dict(),
+                )
+                new_pa.documents.append(new_pa_doc)
             new_pa.save()
         except Exception as e:
             return self.create_error_payload(500, 'Error: {}'.format(e)), 500
@@ -115,9 +130,18 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 pa.permit_amendment_type_code = data.get('permit_amendment_type_code')
             if 'description' in data:
                 pa.description = data.get('description')
+            for newFile in data.get('uploadedFiles', []):
+                new_pa_doc = PermitAmendmentDocument(
+                    document_name=newFile['fileName'],
+                    document_manager_guid=newFile['document_manager_guid'],
+                    mine_guid=pa.permit.mine_guid,
+                    **self.get_create_update_dict(),
+                )
+                pa.documents.append(new_pa_doc)
             pa.save()
         except Exception as e:
-            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
+            current_app.logger.error(f'PermitAmendmentResource.Put: Error >> {e}')
+            return self.create_error_payload(500, f'Error: {e}'), 500
 
         return pa.json()
 

@@ -7,7 +7,7 @@ import AddPartyRelationshipModal from "./AddPartyRelationshipModal";
 import EditPartyRelationshipModal from "./EditPartyRelationshipModal";
 import AddPartyModal from "./AddPartyModal";
 import AddPermitModal from "./AddPermitModal";
-import AddPermitAmendmentModal from "./AddPermitAmendmentModal";
+import PermitAmendmentModal from "./PermitAmendmentModal";
 import EditPermitModal from "./EditPermitModal";
 import EditPartyModal from "./EditPartyModal";
 
@@ -23,7 +23,7 @@ export const modalConfig = {
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,
-  ADD_PERMIT_AMENDMENT: AddPermitAmendmentModal,
+  PERMIT_AMENDMENT: PermitAmendmentModal,
   EDIT_PERMIT: EditPermitModal,
   EDIT_PARTY: EditPartyModal,
 };
