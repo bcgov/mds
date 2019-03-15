@@ -34,7 +34,6 @@ import {
 } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
@@ -70,6 +69,8 @@ const propTypes = {
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -158,7 +159,11 @@ export class MineDashboard extends Component {
                 {mine.major_mine_ind && (
                   <TabPane tab="Applications" key="applications">
                     <div className="tab__content">
-                      <MineApplicationInfo mine={mine} {...this.props} />
+                      <MineApplicationInfo
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
                     </div>
                   </TabPane>
                 )}
