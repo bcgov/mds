@@ -45,7 +45,7 @@ const columns = [
     dataIndex: "hsrc_code",
     width: 100,
     render: (text, record) => (
-      <div title="Name" style={errorStyle(record.isOverdue)}>
+      <div title="Name" style={record.isOverdue ? { color: errorRed } : {}}>
         {record.doc.hsrc_code}
       </div>
     ),
