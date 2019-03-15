@@ -41,6 +41,16 @@ const columns = [
     ),
   },
   {
+    title: "HSRC Code",
+    dataIndex: "hsrc_code",
+    width: 100,
+    render: (text, record) => (
+      <div title="Name" style={errorStyle(record.isOverdue)}>
+        {record.doc.hsrc_code}
+      </div>
+    ),
+  },
+  {
     title: "Due",
     dataIndex: "due",
     render: (text, record) => (
