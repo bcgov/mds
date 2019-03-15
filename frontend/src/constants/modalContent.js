@@ -20,7 +20,7 @@ export const COMPANY_NOT_FOUND =
 export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";
 
 export const ADD_PERMIT = "Add a new permit";
-export const ADD_PERMIT_AMENDMENT = "Add new amendment";
+export const PERMIT_AMENDMENT = "Add new amendment";
 export const EDIT_PERMIT = "Edit Permit";
 
 export const ADD_APPLICATION = "Add Application";
