@@ -6,6 +6,7 @@ import {
   updatePermit,
   createPermitAmendment,
   updatePermitAmendment,
+  removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -148,6 +149,34 @@ describe("`updatePermitAmendment` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
     return updatePermitAmendment(permitAmdendmentGuid, mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`removePermitAmendmentDocument` action creator", () => {
+  const permitAmdendmentGuid = "12345-6789";
+  const documentGuid = "98765-4321";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(
+    permitAmdendmentGuid,
+    documentGuid
+  )}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

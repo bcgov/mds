@@ -79,7 +79,7 @@ def test_post_permit(test_client, setup_info, auth_headers):
         'issue_date': '1999-12-21',
         'authorization_end_date': '2012-12-02'
     }
-    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
+    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], json=data)
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 200
@@ -90,7 +90,7 @@ def test_post_permit(test_client, setup_info, auth_headers):
 
 def test_post_permit_bad_mine_guid(test_client, setup_info, auth_headers):
     data = {'mine_guid': setup_info.get('bad_guid')}
-    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
+    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], json=data)
 
     assert post_resp.status_code == 404
 
@@ -98,7 +98,7 @@ def test_post_permit_bad_mine_guid(test_client, setup_info, auth_headers):
 def test_post_permit_with_duplicate_permit_no(test_client, setup_info, auth_headers):
     permit = Permit.find_by_permit_guid(setup_info.get('mine_2_permit_guid'))
     data = {'mine_guid': setup_info.get('mine_1_guid'), 'permit_no': permit.permit_no}
-    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], data=data)
+    post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], json=data)
 
     assert post_resp.status_code == 400
 
@@ -127,7 +127,7 @@ def test_put_permit(test_client, setup_info, auth_headers):
     old_permit_status = permit.permit_status_code
     data = {'permit_status_code': 'C'}
     put_resp = test_client.put(
-        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], data=data)
+        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], json=data)
 
     put_data = json.loads(put_resp.data.decode())
 
@@ -140,5 +140,5 @@ def test_put_permit_bad_permit_guid(test_client, setup_info, auth_headers):
     permit_guid = setup_info.get('bad_guid')
     data = {'permit_status_code': 'C'}
     put_resp = test_client.put(
-        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], data=data)
+        '/permits/' + permit_guid, headers=auth_headers['full_auth_header'], json=data)
     assert put_resp.status_code == 404

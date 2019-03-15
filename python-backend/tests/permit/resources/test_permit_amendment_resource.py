@@ -14,9 +14,9 @@ def setup_info(test_client):
 
     yield {'permit_amendment_1': test_pa}
 
-    db.session.delete(test_pa)
     try:
         #it may have been deleted by the test that executed, don't freak out.
+        db.session.delete(test_pa)
         db.session.commit()
     except:
         pass
@@ -73,7 +73,7 @@ def test_post_permit_amendment_with_date_params(test_client, auth_headers, setup
 
     post_resp = test_client.post(
         f'/permits/{TEST_PERMIT_GUID_1}/amendments',
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, post_resp.response
@@ -91,7 +91,7 @@ def test_post_permit_amendment_with_type_params(test_client, auth_headers, setup
 
     post_resp = test_client.post(
         f'/permits/{TEST_PERMIT_GUID_1}/amendments',
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, post_resp.response
@@ -108,7 +108,7 @@ def test_put_permit_amendment(test_client, auth_headers, setup_info):
     data = {'permit_amendment_type_code': 'OGP', 'permit_amendment_status_code': 'RMT'}
     put_resp = test_client.put(
         f'/permits/amendments/{setup_info["permit_amendment_1"].permit_amendment_guid}',
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200, put_resp.response
