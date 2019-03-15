@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, submit, reset } from "redux-form";
+import { getFormValues, submit, reset, change } from "redux-form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { createParty, addPartyRelationship } from "@/actionCreators/partiesActionCreator";
+import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
+import { getMineNames } from "@/selectors/mineSelectors";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
 
@@ -14,8 +16,10 @@ const { Step } = Steps;
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
+  fetchMineNameList: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
@@ -24,6 +28,7 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   addPartyRelationship: PropTypes.func.isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
 
 const defaultProps = {
@@ -45,6 +50,22 @@ const groupRolePayloads = (formValues, party_guid) => {
 
 export class AddPartyModal extends Component {
   state = { isPerson: true, current: 0, roleNumbers: [] };
+
+  componentWillMount() {
+    this.props.fetchMineNameList();
+  }
+
+  handleChange = (name) => {
+    if (name.length > 2) {
+      this.props.fetchMineNameList({ name });
+    } else if (name.length === 0) {
+      this.props.fetchMineNameList();
+    }
+  };
+
+  handleSelect = (roleNumber) => (value) => {
+    this.props.change(FORM.ADD_ROLES, `mine_guid-${roleNumber}`, value);
+  };
 
   togglePartyChange = (value) => {
     this.setState({ isPerson: value.target.value });
@@ -135,6 +156,9 @@ export class AddPartyModal extends Component {
               addField={this.addField}
               removeField={this.removeField}
               partyRelationshipTypesList={this.props.partyRelationshipTypesList}
+              mineNameList={this.props.mineNameList}
+              handleChange={this.handleChange}
+              handleSelect={this.handleSelect}
             />
           </Col>
 
@@ -226,15 +250,18 @@ export class AddPartyModal extends Component {
 const mapStateToProps = (state) => ({
   addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
   addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
+  mineNameList: getMineNames(state).mines,
   addPartyForm: state.form[FORM.ADD_FULL_PARTY],
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addPartyRelationship,
+      fetchMineNameList,
       submit,
       reset,
       createParty,
+      change,
     },
     dispatch
   );

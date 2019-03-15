@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Collapse, Button, Icon, Popconfirm, Form, Col, Row } from "antd";
+import { AutoComplete, Collapse, Button, Icon, Popconfirm, Form, Col, Row } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -9,8 +9,11 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   addField: PropTypes.func.isRequired,
   removeField: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSelect: PropTypes.func.isRequired,
   roleNumbers: PropTypes.arrayOf(PropTypes.string).isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
 
 const complexRelationships = ["EOR", "PMT"];
@@ -36,6 +39,13 @@ const panelHeader = (removeField, roleNumber) => (
   </div>
 );
 
+const transformMineNames = (names) =>
+  names.map(({ mine_name, guid }) => (
+    <AutoComplete.Option key={guid} value={guid}>
+      {mine_name}
+    </AutoComplete.Option>
+  ));
+
 export const AddRolesForm = (props) => (
   <div>
     <Form>
@@ -54,18 +64,17 @@ export const AddRolesForm = (props) => (
                 />
               </Col>
               <Col span={12}>
-                <Field
-                  label="Mine"
-                  id={`mine_guid-${roleNumber}`}
-                  name={`mine_guid-${roleNumber}`}
-                  placeholder="Please add Mine"
-                  component={renderConfig.SELECT}
-                  // TODO: Search by input and fill with mine list
-                  data={[
-                    { value: "a1bd7d64-c2de-4308-8782-4c3688c1feeb", label: "Aguirre Cline" },
-                    { value: "23dab9fc-7ccd-42bc-b886-93de490fb17c", label: "Allen Digregorio" },
-                  ]}
-                />
+                <Form.Item label="Mine">
+                  <Field
+                    id={`mine_guid-${roleNumber}`}
+                    name={`mine_guid-${roleNumber}`}
+                    component={renderConfig.AUTOCOMPLETE}
+                    placeholder="Please add Mine"
+                    data={transformMineNames(props.mineNameList)}
+                    handleChange={props.handleChange}
+                    handleSelect={props.handleSelect(roleNumber)}
+                  />
+                </Form.Item>
               </Col>
             </Row>
 
