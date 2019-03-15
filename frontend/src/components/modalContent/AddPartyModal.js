@@ -151,6 +151,10 @@ export class AddPartyModal extends Component {
       <div>
         <Row>
           <Col md={10} sm={22} xs={22}>
+            <p>
+              You cannot add a role of Permittee or Engineer of Record through this section. Please
+              go to the designated mine.
+            </p>
             <AddRolesForm
               roleNumbers={this.state.roleNumbers}
               addField={this.addField}
@@ -166,11 +170,6 @@ export class AddPartyModal extends Component {
 
           <Col md={10} sm={22} xs={22}>
             <p>
-              You cannot add a role of Permittee or Engineer of Record through this section. Please
-              go to the designated mine, under the contact information tab, to add the role of a
-              Permittee or Engineer of Record.
-            </p>
-            <p className="bold">
               If you would like to add another contact, click on the button below. Your current
               contact will be submitted once you opt to add a new contact.
             </p>

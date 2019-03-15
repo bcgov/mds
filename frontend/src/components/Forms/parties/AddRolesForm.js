@@ -5,6 +5,7 @@ import { AutoComplete, Collapse, Button, Icon, Popconfirm, Form, Col, Row } from
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { required } from "@/utils/Validate";
 
 const propTypes = {
   addField: PropTypes.func.isRequired,
@@ -58,9 +59,12 @@ export const AddRolesForm = (props) => (
                   label="Role"
                   id={`mine_party_appt_type_code-${roleNumber}`}
                   name={`mine_party_appt_type_code-${roleNumber}`}
-                  placeholder="Please add Role"
+                  placeholder="Search for Mine"
                   component={renderConfig.SELECT}
                   data={simpleRelationships(props.partyRelationshipTypesList)}
+                  // TODO: Get required validation working
+                  // and make all style changes that I listed in Slack
+                  validate={[required]}
                 />
               </Col>
               <Col span={12}>
@@ -73,6 +77,7 @@ export const AddRolesForm = (props) => (
                     data={transformMineNames(props.mineNameList)}
                     handleChange={props.handleChange}
                     handleSelect={props.handleSelect(roleNumber)}
+                    iconColor="#000" // TODO: Change to grey (same as divider)
                   />
                 </Form.Item>
               </Col>
@@ -85,7 +90,8 @@ export const AddRolesForm = (props) => (
                   id={`start_date-${roleNumber}`}
                   name={`start_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
-                  component={renderConfig.FIELD}
+                  component={renderConfig.DATE}
+                  validate={[required]}
                 />
               </Col>
               <Col span={12}>
@@ -94,7 +100,8 @@ export const AddRolesForm = (props) => (
                   id={`end_date-${roleNumber}`}
                   name={`end_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
-                  component={renderConfig.FIELD}
+                  component={renderConfig.DATE}
+                  validate={[required]}
                 />
               </Col>
             </Row>
