@@ -256,6 +256,7 @@ app {
                             'NAME':"mds-nginx",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
+                            'LOG_PVC_SIZE':"${vars.LOG_PVC_SIZE}",
                             'CPU_REQUEST':"${vars.resources.nginx.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.nginx.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
@@ -321,6 +322,7 @@ environments {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_PVC_SIZE = '1Gi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -422,6 +424,7 @@ environments {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             BACKUP_PVC_SIZE = '1Gi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -523,6 +526,7 @@ environments {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
             BACKUP_PVC_SIZE = '50Gi'
+            LOG_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }

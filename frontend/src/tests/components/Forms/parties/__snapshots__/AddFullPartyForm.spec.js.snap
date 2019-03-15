@@ -42,7 +42,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col
-            className="border--right--violet"
+            className="border--right--layout"
             md={12}
             sm={24}
           >
@@ -351,7 +351,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col
-            className="border--right--violet"
+            className="border--right--layout"
             md={12}
             sm={24}
           >
@@ -661,7 +661,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <Col
-              className="border--right--violet"
+              className="border--right--layout"
               md={12}
               sm={24}
             >
@@ -1103,7 +1103,7 @@ ShallowWrapper {
                   </Col>
                 </Row>,
               ],
-              "className": "border--right--violet",
+              "className": "border--right--layout",
               "md": 12,
               "sm": 24,
             },
@@ -2422,7 +2422,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col
-              className="border--right--violet"
+              className="border--right--layout"
               md={12}
               sm={24}
             >
@@ -2731,7 +2731,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col
-              className="border--right--violet"
+              className="border--right--layout"
               md={12}
               sm={24}
             >
@@ -3041,7 +3041,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <Col
-                className="border--right--violet"
+                className="border--right--layout"
                 md={12}
                 sm={24}
               >
@@ -3483,7 +3483,7 @@ ShallowWrapper {
                     </Col>
                   </Row>,
                 ],
-                "className": "border--right--violet",
+                "className": "border--right--layout",
                 "md": 12,
                 "sm": 24,
               },

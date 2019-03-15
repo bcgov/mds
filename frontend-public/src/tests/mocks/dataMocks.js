@@ -552,19 +552,19 @@ export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",
       req_document_description: "10.4.4a",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "ca3f5a58-d7ea-4620-a064-507450f082de",
       req_document_name: "Annual DSI",
       req_document_description: "10.4.4b",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "faa99067-3639-4d9c-a3e5-5401df15ad4b",
       req_document_name: "5 year DSR",
       req_document_description: "10.5.4",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
   ],
 };
