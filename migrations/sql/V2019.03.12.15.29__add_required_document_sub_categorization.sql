@@ -5,7 +5,7 @@ CREATE TABLE required_document_sub_category(
     description character varying(200)
 );
 ALTER TABLE required_document_sub_category OWNER TO mds;
-COMMENT ON TABLE required_document_sub_category IS 'This code can be used when additional behaviour is needed for required reports';
+COMMENT ON TABLE required_document_sub_category IS 'This code can be used when additional behaviour is needed for required reports. e.g. sub category `INI` would be used to flag default documents for mines with TSFs';
 
 INSERT INTO required_document_sub_category
 (
