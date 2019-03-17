@@ -43,7 +43,7 @@ def register_extensions(app):
 
     api.app = app
     # Overriding swaggerUI base path to serve content under a prefix
-    apidoc.apidoc.static_url_path = '{}/api/swaggerui'.format(Config.BASE_PATH)
+    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
 
     cache.init_app(app)
