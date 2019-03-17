@@ -13,7 +13,17 @@ db = SQLAlchemy()
 jwt = JwtManager()
 cache = Cache()
 sched = APScheduler()
-api = Api(
+
+
+class MyApi(Api):
+    @property
+    def specs_url(self):
+        """Monkey patch for HTTPS"""
+        scheme = 'http' if '5000' in self.base_url else 'https'
+        return url_for(self.endpoint('specs'), _external=True, _scheme=scheme)
+
+
+api = MyApi(
     prefix='{}'.format(Config.BASE_PATH),
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
