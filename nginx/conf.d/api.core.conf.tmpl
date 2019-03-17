@@ -13,7 +13,7 @@ location ${PATH_PREFIX}/api/ {
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
-location ${PATH_PREFIX}/swagger.json/ {
+location ${PATH_PREFIX}/swagger.json/(.*) {
   if (-f /opt/app-root/src/html/maintenance_on.html){
                 return 503;
         }
