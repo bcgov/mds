@@ -9,16 +9,7 @@ location ${PATH_PREFIX}/api/ {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
-        include /opt/app-root/etc/nginx.conf.d/proxy.params;
-}
-
-location ${PATH_PREFIX}/swagger.json/ {
-  if (-f /opt/app-root/src/html/maintenance_on.html){
-                return 503;
-        }
-
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/swagger.json;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
@@ -27,7 +18,7 @@ location ${PATH_PREFIX}/swagger.json {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/swagger.json;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/swagger.json;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
@@ -36,6 +27,6 @@ location ${PATH_PREFIX}/swaggerui/ {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/swaggerui/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/swaggerui/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
