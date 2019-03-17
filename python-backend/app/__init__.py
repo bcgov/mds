@@ -4,7 +4,7 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource
+from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 
 from app.api.parties.namespace.parties import api as parties_api
@@ -42,7 +42,10 @@ def create_app(test_config=None):
 def register_extensions(app):
 
     api.app = app
+    # Overriding swaggerUI base path to serve content under a prefix
+    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
+
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
