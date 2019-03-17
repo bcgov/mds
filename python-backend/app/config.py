@@ -16,8 +16,7 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-        DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
+    DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
@@ -27,15 +26,13 @@ class Config(object):
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
-    def JWT_ROLE_CALLBACK(jwt_dict): return (jwt_dict['realm_access']['roles'])
+    JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
     # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
     JWT_OIDC_CACHING_ENABLED = True
 
     # Microservice URLs
-    DOCUMENT_MS_URL = os.environ.get(
-        'DOCUMENT_MS_URL', 'http://localhost:5000')
-    DOCUMENT_MANAGER_URL = os.environ.get(
-        'DOCUMENT_MANAGER_URL', 'http://localhost:5000')
+    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5000')
     MINES_URL = os.environ.get('MINES_URL', 'http://localhost:5000')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
@@ -57,8 +54,7 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 300
 
     # Flask-uploads configs
-    UPLOADED_DOCUMENT_DEST = os.environ.get(
-        'UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
+    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     # 100MB file limit
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
 
@@ -66,8 +62,7 @@ class Config(object):
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
     ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
     ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get(
-        'ELASTIC_SERVER_URL', 'http://localhost:8200')
+    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
     ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', True)
     ELASTIC_APM = {
         'SERVICE_NAME': ELASTIC_SERVICE_NAME,

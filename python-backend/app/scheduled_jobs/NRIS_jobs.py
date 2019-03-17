@@ -40,8 +40,7 @@ def _cache_major_mines_list():
 def _cache_all_NRIS_major_mines_data():
     with sched.app.app_context():
         major_mine_list = cache.get(NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST)
-        if major_mine_list is None:
-            return
+        if major_mine_list is None:            return
 
         for mine in major_mine_list:
             if cache.get(NRIS_JOB_PREFIX + mine) == 'False':
