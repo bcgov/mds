@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+from werkzeug.contrib.fixers import ProxyFix
 
 from flask import Flask
 from flask_cors import CORS
@@ -41,6 +42,7 @@ def create_app(test_config=None):
 
 def register_extensions(app):
 
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     api.app = app
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
