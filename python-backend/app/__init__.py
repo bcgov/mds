@@ -2,7 +2,7 @@ import sys
 import json
 import os
 
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource
 from flask_compress import Compress
@@ -48,11 +48,6 @@ def register_extensions(app):
     jwt.init_app(app)
     apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
-
-    blueprint = Blueprint('swagger', __name__,
-                          url_prefix='/{}'.format(Config.BASE_PATH))
-    api.init_app(blueprint)
-    app.register_blueprint(blueprint)
 
     CORS(app)
     Compress(app)
