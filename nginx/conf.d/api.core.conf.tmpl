@@ -13,11 +13,11 @@ location ${PATH_PREFIX}/api/ {
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
-location ${PATH_PREFIX}/swaggerui/ {
-        if (-f /opt/app-root/src/html/maintenance_on.html){
+location ~* ${PATH_PREFIX}/swagger(.*)/ {
+  if (-f /opt/app-root/src/html/maintenance_on.html){
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/swaggerui/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/$1;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
