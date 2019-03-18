@@ -30,8 +30,8 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       dispatch(authenticationActions.authenticateUser(response.data));
     })
     .catch((err) => {
-      dispatch(unAuthenticateUser());
       dispatch(error(reducerTypes.GET_USER_INFO));
+      dispatch(unAuthenticateUser());
       if (errorMessage) {
         notification.error({
           message: errorMessage,
@@ -54,16 +54,16 @@ export const authenticateUser = (code) => (dispatch) => {
   return axios
     .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
-      dispatch(success(reducerTypes.AUTHENTICATE_USER));
       localStorage.setItem("jwt", response.data.access_token);
-      dispatch(getUserInfoFromToken(response.data.access_token));
+      dispatch(success(reducerTypes.AUTHENTICATE_USER));
+      return dispatch(getUserInfoFromToken(response.data.access_token));
     })
     .catch(() => {
       notification.error({
         message: "Unexpected error occured, please try again",
         duration: 10,
       });
-      unAuthenticateUser();
       dispatch(error(reducerTypes.AUTHENTICATE_USER));
+      dispatch(unAuthenticateUser());
     });
 };
