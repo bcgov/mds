@@ -36,11 +36,10 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text, record) => (
-      <div title="Status">
-        {record.applicationStatusOptions.find((item) => item.value === text).label}
-      </div>
-    ),
+    render: (text, record) => {
+      const status = record.applicationStatusOptions.find((item) => item.value === text);
+      return <div title="Status">{status && status.label}</div>;
+    },
   },
   {
     title: "Received Date",
