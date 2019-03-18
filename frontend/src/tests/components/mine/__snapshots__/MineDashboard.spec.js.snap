@@ -4,6 +4,13 @@ exports[`MineDashboard renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
+    fetchApplicationStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineCommodityOptions={
       [MockFunction] {
         "calls": Array [
