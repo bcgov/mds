@@ -150,7 +150,7 @@ export class AddPartyModal extends Component {
     return (
       <div>
         <Row>
-          <Col md={10} sm={22} xs={22}>
+          <Col md={10} sm={22} xs={22} style={{ marginTop: "16px" }}>
             <p>
               You cannot add a role of Permittee or Engineer of Record through this section. Please
               go to the designated mine.
@@ -168,7 +168,7 @@ export class AddPartyModal extends Component {
 
           <Col md={2} sm={2} xs={2} />
 
-          <Col md={10} sm={22} xs={22}>
+          <Col md={10} sm={22} xs={22} style={{ marginTop: "16px" }}>
             <p>
               If you would like to add another contact, click on the button below. Your current
               contact will be submitted once you opt to add a new contact.
@@ -194,7 +194,7 @@ export class AddPartyModal extends Component {
         content: this.renderStepOne(),
       },
       {
-        title: "Confirmation",
+        title: "Role",
         content: this.renderStepTwo(),
       },
     ];

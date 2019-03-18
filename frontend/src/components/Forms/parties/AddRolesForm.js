@@ -6,6 +6,10 @@ import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required } from "@/utils/Validate";
+import { COLOR } from "@/constants/styles";
+
+// TODO: Is this the correct grey?
+const { mediumGrey } = COLOR;
 
 const propTypes = {
   addField: PropTypes.func.isRequired,
@@ -77,7 +81,7 @@ export const AddRolesForm = (props) => (
                     data={transformMineNames(props.mineNameList)}
                     handleChange={props.handleChange}
                     handleSelect={props.handleSelect(roleNumber)}
-                    iconColor="#000" // TODO: Change to grey (same as divider)
+                    iconColor={mediumGrey}
                   />
                 </Form.Item>
               </Col>
@@ -109,7 +113,7 @@ export const AddRolesForm = (props) => (
         ))}
       </Collapse>
       <Button className="btn--dropdown" onClick={props.addField}>
-        <Icon type="plus" style={{ color: "#000" }} />
+        <Icon type="plus" style={{ color: mediumGrey }} />
         {props.roleNumbers.length > 0 ? "Add Another Role" : "Add Role"}
       </Button>
     </Form>
