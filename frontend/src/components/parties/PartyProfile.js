@@ -80,27 +80,19 @@ export class PartyProfile extends Component {
   }
 
   openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
+    const address = party.address[0];
     const initialValues = {
       email: party.email && party.email !== "Unknown" ? party.email : null,
       first_name: party.first_name ? party.first_name : null,
       party_name: party.party_name ? party.party_name : null,
       phone_ext: party.phone_ext ? party.phone_ext : null,
       phone_no: party.phone_no ? party.phone_no : null,
-      address_line_1:
-        party.address[0] && party.address[0].address_line_1
-          ? party.address[0].address_line_1
-          : null,
-      address_line_2:
-        party.address[0] && party.address[0].address_line_2
-          ? party.address[0].address_line_2
-          : null,
-      city: party.address[0] && party.address[0].city ? party.address[0].city : null,
-      post_code: party.address[0] && party.address[0].post_code ? party.address[0].post_code : null,
-      sub_division_code:
-        party.address[0] && party.address[0].sub_division_code
-          ? party.address[0].sub_division_code
-          : null,
-      suite_no: party.address[0] && party.address[0].suite_no ? party.address[0].suite_no : null,
+      address_line_1: address.address_line_1 ? address.address_line_1 : null,
+      address_line_2: address.address_line_2 ? address.address_line_2 : null,
+      city: address.city ? address.city : null,
+      post_code: address.post_code ? address.post_code : null,
+      sub_division_code: address.sub_division_code ? address.sub_division_code : null,
+      suite_no: address.suite_no ? address.suite_no : null,
     };
     event.preventDefault();
     this.props.openModal({
