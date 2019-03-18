@@ -4,8 +4,21 @@ exports[`EditPartyModal renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <EditPartyModal
+    closeModal={[MockFunction]}
+    isPerson={true}
     oSubmit={[MockFunction]}
-    title="mockTitle"
+    provinceOptions={
+      Array [
+        Object {
+          "label": "BC",
+          "value": "BC",
+        },
+        Object {
+          "label": "AB",
+          "value": "AB",
+        },
+      ]
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -21,8 +34,22 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <ReduxForm
-        oSubmit={[MockFunction]}
-        title="mockTitle"
+        closeModal={[MockFunction]}
+        initialValues={undefined}
+        isPerson={true}
+        onSubmit={undefined}
+        provinceOptions={
+          Array [
+            Object {
+              "label": "BC",
+              "value": "BC",
+            },
+            Object {
+              "label": "AB",
+              "value": "AB",
+            },
+          ]
+        }
       />,
     },
     "ref": null,
@@ -31,8 +58,20 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "oSubmit": [MockFunction],
-        "title": "mockTitle",
+        "closeModal": [MockFunction],
+        "initialValues": undefined,
+        "isPerson": true,
+        "onSubmit": undefined,
+        "provinceOptions": Array [
+          Object {
+            "label": "BC",
+            "value": "BC",
+          },
+          Object {
+            "label": "AB",
+            "value": "AB",
+          },
+        ],
       },
       "ref": null,
       "rendered": null,
@@ -47,8 +86,22 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <ReduxForm
-          oSubmit={[MockFunction]}
-          title="mockTitle"
+          closeModal={[MockFunction]}
+          initialValues={undefined}
+          isPerson={true}
+          onSubmit={undefined}
+          provinceOptions={
+            Array [
+              Object {
+                "label": "BC",
+                "value": "BC",
+              },
+              Object {
+                "label": "AB",
+                "value": "AB",
+              },
+            ]
+          }
         />,
       },
       "ref": null,
@@ -57,8 +110,20 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "oSubmit": [MockFunction],
-          "title": "mockTitle",
+          "closeModal": [MockFunction],
+          "initialValues": undefined,
+          "isPerson": true,
+          "onSubmit": undefined,
+          "provinceOptions": Array [
+            Object {
+              "label": "BC",
+              "value": "BC",
+            },
+            Object {
+              "label": "AB",
+              "value": "AB",
+            },
+          ],
         },
         "ref": null,
         "rendered": null,

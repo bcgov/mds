@@ -8,11 +8,13 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
   props.isPerson = false;
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
+  props.initialValues = {};
 };
 
 beforeEach(() => {

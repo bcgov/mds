@@ -1,16 +1,19 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { EditPartyModal } from "@/components/modalContent/EditPartyModal";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.oSubmit = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
-  props.title = "mockTitle";
+  props.isPerson = true;
+  props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
 };
 
 beforeEach(() => {

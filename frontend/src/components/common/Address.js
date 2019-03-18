@@ -14,7 +14,7 @@ const propTypes = {
 
 export class Address extends Component {
   addressContainsTruthyValues = (object) =>
-    // address_type_code is always "CAD" && if "suit_no" exists but nothing else, this field isn't helpful
+    // address_type_code is always "CAD" && if "suite_no" exists but nothing else, this field isn't helpful
     Object.keys(object)
       .filter((key) => key !== "address_type_code" && key !== "suite_no")
       .some((key) => object[key]);
@@ -22,9 +22,7 @@ export class Address extends Component {
   formatRowContent = (itemArr) =>
     itemArr
       .filter((item) => item)
-      .map((item, i) => (
-        <span key={item}>{i !== itemArr.length - 1 ? `${item}${" "}` : item}</span>
-      ));
+      .map((item, i) => <span key={item}>{i !== itemArr.length - 1 ? `${item} ` : item}</span>);
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">

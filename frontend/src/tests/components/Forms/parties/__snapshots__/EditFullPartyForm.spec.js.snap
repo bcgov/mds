@@ -4,7 +4,9 @@ exports[`EditFullPartyForm renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <EditFullPartyForm
+    closeModal={[MockFunction]}
     handleSubmit={[MockFunction]}
+    initialValues={Object {}}
     isPerson={false}
     provinceOptions={
       Array [
@@ -318,6 +320,33 @@ ShallowWrapper {
         <div
           className="right center-mobile"
         >
+          <Popconfirm
+            cancelText="No"
+            icon={
+              <Icon
+                theme="filled"
+                type="exclamation-circle"
+              />
+            }
+            okText="Yes"
+            okType="primary"
+            onConfirm={[MockFunction]}
+            placement="topRight"
+            prefixCls="ant-popover"
+            title="Are you sure you want to cancel?"
+            transitionName="zoom-big"
+            trigger="click"
+          >
+            <Button
+              block={false}
+              className="full-mobile"
+              ghost={false}
+              loading={false}
+              prefixCls="ant-btn"
+            >
+              Cancel
+            </Button>
+          </Popconfirm>
           <Button
             block={false}
             className="full-mobile"
@@ -619,6 +648,33 @@ ShallowWrapper {
           <div
             className="right center-mobile"
           >
+            <Popconfirm
+              cancelText="No"
+              icon={
+                <Icon
+                  theme="filled"
+                  type="exclamation-circle"
+                />
+              }
+              okText="Yes"
+              okType="primary"
+              onConfirm={[MockFunction]}
+              placement="topRight"
+              prefixCls="ant-popover"
+              title="Are you sure you want to cancel?"
+              transitionName="zoom-big"
+              trigger="click"
+            >
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+              >
+                Cancel
+              </Button>
+            </Popconfirm>
             <Button
               block={false}
               className="full-mobile"
@@ -2282,38 +2338,116 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              prefixCls="ant-btn"
-              type="primary"
-            >
-              Update Company
-            </Button>,
+            "children": Array [
+              <Popconfirm
+                cancelText="No"
+                icon={
+                  <Icon
+                    theme="filled"
+                    type="exclamation-circle"
+                  />
+                }
+                okText="Yes"
+                okType="primary"
+                onConfirm={[MockFunction]}
+                placement="topRight"
+                prefixCls="ant-popover"
+                title="Are you sure you want to cancel?"
+                transitionName="zoom-big"
+                trigger="click"
+              >
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                >
+                  Cancel
+                </Button>
+              </Popconfirm>,
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                htmlType="submit"
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                Update Company
+              </Button>,
+            ],
             "className": "right center-mobile",
           },
           "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": "Update Company",
-              "className": "full-mobile",
-              "ghost": false,
-              "htmlType": "submit",
-              "loading": false,
-              "prefixCls": "ant-btn",
-              "type": "primary",
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "cancelText": "No",
+                "children": <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                >
+                  Cancel
+                </Button>,
+                "icon": <Icon
+                  theme="filled"
+                  type="exclamation-circle"
+                />,
+                "okText": "Yes",
+                "okType": "primary",
+                "onConfirm": [MockFunction],
+                "placement": "topRight",
+                "prefixCls": "ant-popover",
+                "title": "Are you sure you want to cancel?",
+                "transitionName": "zoom-big",
+                "trigger": "click",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "Cancel",
+                  "className": "full-mobile",
+                  "ghost": false,
+                  "loading": false,
+                  "prefixCls": "ant-btn",
+                },
+                "ref": null,
+                "rendered": "Cancel",
+                "type": [Function],
+              },
+              "type": [Function],
             },
-            "ref": null,
-            "rendered": "Update Company",
-            "type": [Function],
-          },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "block": false,
+                "children": "Update Company",
+                "className": "full-mobile",
+                "ghost": false,
+                "htmlType": "submit",
+                "loading": false,
+                "prefixCls": "ant-btn",
+                "type": "primary",
+              },
+              "ref": null,
+              "rendered": "Update Company",
+              "type": [Function],
+            },
+          ],
           "type": "div",
         },
       ],
@@ -2613,6 +2747,33 @@ ShallowWrapper {
           <div
             className="right center-mobile"
           >
+            <Popconfirm
+              cancelText="No"
+              icon={
+                <Icon
+                  theme="filled"
+                  type="exclamation-circle"
+                />
+              }
+              okText="Yes"
+              okType="primary"
+              onConfirm={[MockFunction]}
+              placement="topRight"
+              prefixCls="ant-popover"
+              title="Are you sure you want to cancel?"
+              transitionName="zoom-big"
+              trigger="click"
+            >
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+              >
+                Cancel
+              </Button>
+            </Popconfirm>
             <Button
               block={false}
               className="full-mobile"
@@ -2914,6 +3075,33 @@ ShallowWrapper {
             <div
               className="right center-mobile"
             >
+              <Popconfirm
+                cancelText="No"
+                icon={
+                  <Icon
+                    theme="filled"
+                    type="exclamation-circle"
+                  />
+                }
+                okText="Yes"
+                okType="primary"
+                onConfirm={[MockFunction]}
+                placement="topRight"
+                prefixCls="ant-popover"
+                title="Are you sure you want to cancel?"
+                transitionName="zoom-big"
+                trigger="click"
+              >
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                >
+                  Cancel
+                </Button>
+              </Popconfirm>
               <Button
                 block={false}
                 className="full-mobile"
@@ -4577,38 +4765,116 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
-              >
-                Update Company
-              </Button>,
+              "children": Array [
+                <Popconfirm
+                  cancelText="No"
+                  icon={
+                    <Icon
+                      theme="filled"
+                      type="exclamation-circle"
+                    />
+                  }
+                  okText="Yes"
+                  okType="primary"
+                  onConfirm={[MockFunction]}
+                  placement="topRight"
+                  prefixCls="ant-popover"
+                  title="Are you sure you want to cancel?"
+                  transitionName="zoom-big"
+                  trigger="click"
+                >
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                  >
+                    Cancel
+                  </Button>
+                </Popconfirm>,
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  htmlType="submit"
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  Update Company
+                </Button>,
+              ],
               "className": "right center-mobile",
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Update Company",
-                "className": "full-mobile",
-                "ghost": false,
-                "htmlType": "submit",
-                "loading": false,
-                "prefixCls": "ant-btn",
-                "type": "primary",
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "cancelText": "No",
+                  "children": <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                  >
+                    Cancel
+                  </Button>,
+                  "icon": <Icon
+                    theme="filled"
+                    type="exclamation-circle"
+                  />,
+                  "okText": "Yes",
+                  "okType": "primary",
+                  "onConfirm": [MockFunction],
+                  "placement": "topRight",
+                  "prefixCls": "ant-popover",
+                  "title": "Are you sure you want to cancel?",
+                  "transitionName": "zoom-big",
+                  "trigger": "click",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "block": false,
+                    "children": "Cancel",
+                    "className": "full-mobile",
+                    "ghost": false,
+                    "loading": false,
+                    "prefixCls": "ant-btn",
+                  },
+                  "ref": null,
+                  "rendered": "Cancel",
+                  "type": [Function],
+                },
+                "type": [Function],
               },
-              "ref": null,
-              "rendered": "Update Company",
-              "type": [Function],
-            },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "Update Company",
+                  "className": "full-mobile",
+                  "ghost": false,
+                  "htmlType": "submit",
+                  "loading": false,
+                  "prefixCls": "ant-btn",
+                  "type": "primary",
+                },
+                "ref": null,
+                "rendered": "Update Company",
+                "type": [Function],
+              },
+            ],
             "type": "div",
           },
         ],

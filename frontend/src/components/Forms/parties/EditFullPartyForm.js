@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row, Button } from "antd";
+import { Form, Col, Row, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { required, email, phoneNumber, postalCode, maxLength, number } from "@/utils/Validate";
@@ -11,6 +11,7 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -183,6 +184,15 @@ export const EditFullPartyForm = (props) => (
         </Col>
       </Row>
       <div className="right center-mobile">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="full-mobile">Cancel</Button>
+        </Popconfirm>
         <Button className="full-mobile" type="primary" htmlType="submit">
           {props.isPerson ? "Update Personnel" : "Update Company"}
         </Button>
