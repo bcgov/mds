@@ -18,7 +18,7 @@ export const AddFullPartyForm = (props) => (
   <div>
     <Form>
       <Row gutter={48}>
-        <Col md={12} sm={24} className="border--right--violet">
+        <Col md={12} sm={24} className="border--right--layout">
           <div className="center margin-large">
             <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
               <Radio.Button value>Person</Radio.Button>
