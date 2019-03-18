@@ -168,11 +168,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "250m",
+            "cpu": "2",
             "memory": "2Gi"
           },
           "requests": {
-            "cpu": "150m",
+            "cpu": "1",
             "memory": "1Gi"
           }
         },
@@ -241,11 +241,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "250m",
+            "cpu": "2",
             "memory": "2Gi"
           },
           "requests": {
-            "cpu": "100m",
+            "cpu": "1",
             "memory": "1Gi"
           }
         },
