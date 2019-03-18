@@ -54,8 +54,8 @@ export const authenticateUser = (code) => (dispatch) => {
   return axios
     .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
-      localStorage.setItem("jwt", response.data.access_token);
       dispatch(success(reducerTypes.AUTHENTICATE_USER));
+      localStorage.setItem("jwt", response.data.access_token);
       return dispatch(getUserInfoFromToken(response.data.access_token));
     })
     .catch(() => {
