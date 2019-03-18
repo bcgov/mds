@@ -71,7 +71,7 @@ describe("`authenticateUser` action creator", () => {
     return authenticateUser()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 });
