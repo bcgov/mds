@@ -8,8 +8,7 @@ import { renderConfig } from "@/components/common/config";
 import { required } from "@/utils/Validate";
 import { COLOR } from "@/constants/styles";
 
-// TODO: Is this the correct grey?
-const { mediumGrey } = COLOR;
+const { layoutGrey } = COLOR;
 
 const propTypes = {
   addField: PropTypes.func.isRequired,
@@ -60,28 +59,27 @@ export const AddRolesForm = (props) => (
             <Row gutter={16}>
               <Col span={12}>
                 <Field
-                  label="Role"
+                  label="Role *"
                   id={`mine_party_appt_type_code-${roleNumber}`}
                   name={`mine_party_appt_type_code-${roleNumber}`}
                   placeholder="Search for Mine"
                   component={renderConfig.SELECT}
                   data={simpleRelationships(props.partyRelationshipTypesList)}
-                  // TODO: Get required validation working
-                  // and make all style changes that I listed in Slack
                   validate={[required]}
                 />
               </Col>
               <Col span={12}>
-                <Form.Item label="Mine">
+                <Form.Item label="Mine *">
                   <Field
                     id={`mine_guid-${roleNumber}`}
                     name={`mine_guid-${roleNumber}`}
                     component={renderConfig.AUTOCOMPLETE}
                     placeholder="Please add Mine"
                     data={transformMineNames(props.mineNameList)}
-                    handleChange={props.handleChange}
+                    handleChange={props.handleChange(roleNumber)}
                     handleSelect={props.handleSelect(roleNumber)}
-                    iconColor={mediumGrey}
+                    iconColor="rgba(0, 0, 0, 0.25)"
+                    validate={[required]}
                   />
                 </Form.Item>
               </Col>
@@ -90,7 +88,7 @@ export const AddRolesForm = (props) => (
             <Row gutter={16}>
               <Col span={12}>
                 <Field
-                  label="Start Date"
+                  label="Start Date *"
                   id={`start_date-${roleNumber}`}
                   name={`start_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
@@ -100,7 +98,7 @@ export const AddRolesForm = (props) => (
               </Col>
               <Col span={12}>
                 <Field
-                  label="End Date"
+                  label="End Date *"
                   id={`end_date-${roleNumber}`}
                   name={`end_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
@@ -113,7 +111,7 @@ export const AddRolesForm = (props) => (
         ))}
       </Collapse>
       <Button className="btn--dropdown" onClick={props.addField}>
-        <Icon type="plus" style={{ color: mediumGrey }} />
+        <Icon type="plus" style={{ color: layoutGrey }} />
         {props.roleNumbers.length > 0 ? "Add Another Role" : "Add Role"}
       </Button>
     </Form>

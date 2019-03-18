@@ -48,6 +48,16 @@ const groupRolePayloads = (formValues, party_guid) => {
   return rolePayloads;
 };
 
+const invalidRolePayload = (roleNumbers, addRolesFormValues) =>
+  Object.keys(addRolesFormValues).length > 0 &&
+  roleNumbers.some(
+    (roleNumber) =>
+      addRolesFormValues[`mine_guid-${roleNumber}`] === undefined ||
+      addRolesFormValues[`mine_party_appt_type_code-${roleNumber}`] === undefined ||
+      addRolesFormValues[`start_date-${roleNumber}`] === undefined ||
+      addRolesFormValues[`end_date-${roleNumber}`] === undefined
+  );
+
 export class AddPartyModal extends Component {
   state = { isPerson: true, current: 0, roleNumbers: [] };
 
@@ -55,10 +65,11 @@ export class AddPartyModal extends Component {
     this.props.fetchMineNameList();
   }
 
-  handleChange = (name) => {
+  handleChange = (roleNumber) => (name) => {
     if (name.length > 2) {
       this.props.fetchMineNameList({ name });
     } else if (name.length === 0) {
+      this.props.change(FORM.ADD_ROLES, `mine_guid-${roleNumber}`, name);
       this.props.fetchMineNameList();
     }
   };
@@ -103,6 +114,13 @@ export class AddPartyModal extends Component {
     });
   };
 
+  clearFieldValues = (roleNumber) => {
+    this.props.change(FORM.ADD_ROLES, `mine_guid-${roleNumber}`, "");
+    this.props.change(FORM.ADD_ROLES, `mine_party_appt_type_code-${roleNumber}`, "");
+    this.props.change(FORM.ADD_ROLES, `start_date-${roleNumber}`, "");
+    this.props.change(FORM.ADD_ROLES, `end_date-${roleNumber}`, "");
+  };
+
   addField = () => {
     this.setState(({ roleNumbers: prevNumbers }) => {
       const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
@@ -111,6 +129,9 @@ export class AddPartyModal extends Component {
   };
 
   removeField = (roleNumber) => () => {
+    // Clear field values from Redux store
+    this.clearFieldValues(roleNumber);
+    // Remove role number from state
     this.setState(({ roleNumbers: prevNumbers }) => ({
       roleNumbers: prevNumbers.filter((x) => x !== roleNumber),
     }));
@@ -149,8 +170,14 @@ export class AddPartyModal extends Component {
   renderStepTwo() {
     return (
       <div>
-        <Row>
-          <Col md={10} sm={22} xs={22} style={{ marginTop: "16px" }}>
+        <Row gutter={48}>
+          <Col
+            md={12}
+            sm={24}
+            xs={24}
+            className="border--right--layout"
+            style={{ marginTop: "16px" }}
+          >
             <p>
               You cannot add a role of Permittee or Engineer of Record through this section. Please
               go to the designated mine.
@@ -166,9 +193,7 @@ export class AddPartyModal extends Component {
             />
           </Col>
 
-          <Col md={2} sm={2} xs={2} />
-
-          <Col md={10} sm={22} xs={22} style={{ marginTop: "16px" }}>
+          <Col md={12} sm={24} xs={24} style={{ marginTop: "16px" }}>
             <p>
               If you would like to add another contact, click on the button below. Your current
               contact will be submitted once you opt to add a new contact.
@@ -235,6 +260,7 @@ export class AddPartyModal extends Component {
                 type="primary"
                 className="full-mobile"
                 onClick={(event) => this.handlePartySubmit(event, false)}
+                disabled={invalidRolePayload(this.state.roleNumbers, this.props.addRolesFormValues)}
               >
                 Submit
               </Button>
