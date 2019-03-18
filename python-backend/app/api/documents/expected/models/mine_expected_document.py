@@ -35,6 +35,7 @@ class MineExpectedDocument(AuditMixin, Base):
     due_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime, nullable=True, server_default=FetchedValue())
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    hsrc_code = db.Column(db.String)
 
     #relationships
     required_document = db.relationship(
@@ -63,6 +64,7 @@ class MineExpectedDocument(AuditMixin, Base):
             'due_date': str(self.due_date),
             'received_date': str(self.received_date) if self.received_date else None,
             'exp_document_status': self.expected_document_status.json(),
+            'hsrc_code': self.hsrc_code,
             'related_documents': [x.json() for x in self.mine_documents]
         }
 
