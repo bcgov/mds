@@ -48,8 +48,8 @@ const groupRolePayloads = (formValues, party_guid) => {
   return rolePayloads;
 };
 
-const invalidPartyPayload = (addPartyFormValues) =>
-  addPartyFormValues.first_name === undefined ||
+const invalidPartyPayload = (addPartyFormValues, isPerson) =>
+  (isPerson && addPartyFormValues.first_name === undefined) ||
   addPartyFormValues.party_name === undefined ||
   addPartyFormValues.phone_no === undefined;
 
@@ -152,12 +152,7 @@ export class AddPartyModal extends Component {
   };
 
   next() {
-    if (!this.props.addPartyForm.syncErrors) {
-      this.setState((prevState) => ({ current: prevState.current + 1 }));
-    } else {
-      // submit form to trigger validation errors.... alternate suggestions??
-      this.props.submit(FORM.ADD_FULL_PARTY);
-    }
+    this.setState((prevState) => ({ current: prevState.current + 1 }));
   }
 
   prev() {
@@ -265,7 +260,7 @@ export class AddPartyModal extends Component {
                 type="primary"
                 className="full-mobile"
                 onClick={() => this.next()}
-                disabled={invalidPartyPayload(this.props.addPartyFormValues)}
+                disabled={invalidPartyPayload(this.props.addPartyFormValues, this.state.isPerson)}
               >
                 Next
               </Button>
