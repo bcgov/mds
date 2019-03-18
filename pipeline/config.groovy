@@ -409,7 +409,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
@@ -511,7 +511,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = ""
+                    PATH = "/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
@@ -613,7 +613,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = ""
+                    PATH = "/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
