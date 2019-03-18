@@ -53,9 +53,7 @@ const invalidRolePayload = (roleNumbers, addRolesFormValues) =>
   roleNumbers.some(
     (roleNumber) =>
       addRolesFormValues[`mine_guid-${roleNumber}`] === undefined ||
-      addRolesFormValues[`mine_party_appt_type_code-${roleNumber}`] === undefined ||
-      addRolesFormValues[`start_date-${roleNumber}`] === undefined ||
-      addRolesFormValues[`end_date-${roleNumber}`] === undefined
+      addRolesFormValues[`mine_party_appt_type_code-${roleNumber}`] === undefined
   );
 
 export class AddPartyModal extends Component {
@@ -124,7 +122,8 @@ export class AddPartyModal extends Component {
   addField = () => {
     this.setState(({ roleNumbers: prevNumbers }) => {
       const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
-      return { roleNumbers: [...prevNumbers, String(highestRoleNumber + 1)] };
+      const newRoleNumber = String(highestRoleNumber + 1);
+      return { roleNumbers: [...prevNumbers, newRoleNumber], activeKey: newRoleNumber };
     });
   };
 
@@ -141,6 +140,10 @@ export class AddPartyModal extends Component {
     this.props.closeModal();
     this.props.reset(FORM.ADD_FULL_PARTY);
     this.props.reset(FORM.ADD_ROLES);
+  };
+
+  handleActivePanelChange = (roleNumber) => {
+    this.setState({ activeKey: roleNumber });
   };
 
   next() {
@@ -190,6 +193,8 @@ export class AddPartyModal extends Component {
               mineNameList={this.props.mineNameList}
               handleChange={this.handleChange}
               handleSelect={this.handleSelect}
+              activeKey={this.state.activeKey}
+              handleActivePanelChange={this.handleActivePanelChange}
             />
           </Col>
 

@@ -8,14 +8,16 @@ import { renderConfig } from "@/components/common/config";
 import { required } from "@/utils/Validate";
 import { COLOR } from "@/constants/styles";
 
-const { layoutGrey } = COLOR;
+const { mediumGrey, antIconGrey } = COLOR;
 
 const propTypes = {
   addField: PropTypes.func.isRequired,
   removeField: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
+  handleActivePanelChange: PropTypes.func.isRequired,
   roleNumbers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeKey: PropTypes.string.isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
@@ -53,7 +55,7 @@ const transformMineNames = (names) =>
 export const AddRolesForm = (props) => (
   <div>
     <Form>
-      <Collapse>
+      <Collapse accordion activeKey={[props.activeKey]} onChange={props.handleActivePanelChange}>
         {props.roleNumbers.map((roleNumber) => (
           <Collapse.Panel header={panelHeader(props.removeField, roleNumber)} key={roleNumber}>
             <Row gutter={16}>
@@ -78,7 +80,7 @@ export const AddRolesForm = (props) => (
                     data={transformMineNames(props.mineNameList)}
                     handleChange={props.handleChange(roleNumber)}
                     handleSelect={props.handleSelect(roleNumber)}
-                    iconColor="rgba(0, 0, 0, 0.25)"
+                    iconColor={antIconGrey}
                     validate={[required]}
                   />
                 </Form.Item>
@@ -93,7 +95,6 @@ export const AddRolesForm = (props) => (
                   name={`start_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
                   component={renderConfig.DATE}
-                  validate={[required]}
                 />
               </Col>
               <Col span={12}>
@@ -103,7 +104,6 @@ export const AddRolesForm = (props) => (
                   name={`end_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
                   component={renderConfig.DATE}
-                  validate={[required]}
                 />
               </Col>
             </Row>
@@ -111,7 +111,7 @@ export const AddRolesForm = (props) => (
         ))}
       </Collapse>
       <Button className="btn--dropdown" onClick={props.addField}>
-        <Icon type="plus" style={{ color: layoutGrey }} />
+        <Icon type="plus" style={{ color: mediumGrey }} />
         {props.roleNumbers.length > 0 ? "Add Another Role" : "Add Role"}
       </Button>
     </Form>

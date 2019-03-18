@@ -33,7 +33,14 @@ ShallowWrapper {
         prefixCls="ant-form"
       >
         <Collapse
+          accordion={true}
+          activeKey={
+            Array [
+              undefined,
+            ]
+          }
           bordered={true}
+          onChange={undefined}
           openAnimation={
             Object {
               "appear": [Function],
@@ -54,7 +61,7 @@ ShallowWrapper {
           <Icon
             style={
               Object {
-                "color": "e8e8e8",
+                "color": "#6b6363",
               }
             }
             type="plus"
@@ -71,7 +78,14 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <Collapse
+            accordion={true}
+            activeKey={
+              Array [
+                undefined,
+              ]
+            }
             bordered={true}
+            onChange={undefined}
             openAnimation={
               Object {
                 "appear": [Function],
@@ -92,7 +106,7 @@ ShallowWrapper {
             <Icon
               style={
                 Object {
-                  "color": "e8e8e8",
+                  "color": "#6b6363",
                 }
               }
               type="plus"
@@ -112,8 +126,13 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "accordion": true,
+            "activeKey": Array [
+              undefined,
+            ],
             "bordered": true,
             "children": Array [],
+            "onChange": undefined,
             "openAnimation": Object {
               "appear": [Function],
               "enter": [Function],
@@ -135,7 +154,7 @@ ShallowWrapper {
               <Icon
                 style={
                   Object {
-                    "color": "e8e8e8",
+                    "color": "#6b6363",
                   }
                 }
                 type="plus"
@@ -156,7 +175,7 @@ ShallowWrapper {
               "nodeType": "function",
               "props": Object {
                 "style": Object {
-                  "color": "e8e8e8",
+                  "color": "#6b6363",
                 },
                 "type": "plus",
               },
@@ -186,7 +205,14 @@ ShallowWrapper {
           prefixCls="ant-form"
         >
           <Collapse
+            accordion={true}
+            activeKey={
+              Array [
+                undefined,
+              ]
+            }
             bordered={true}
+            onChange={undefined}
             openAnimation={
               Object {
                 "appear": [Function],
@@ -207,7 +233,7 @@ ShallowWrapper {
             <Icon
               style={
                 Object {
-                  "color": "e8e8e8",
+                  "color": "#6b6363",
                 }
               }
               type="plus"
@@ -224,7 +250,14 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <Collapse
+              accordion={true}
+              activeKey={
+                Array [
+                  undefined,
+                ]
+              }
               bordered={true}
+              onChange={undefined}
               openAnimation={
                 Object {
                   "appear": [Function],
@@ -245,7 +278,7 @@ ShallowWrapper {
               <Icon
                 style={
                   Object {
-                    "color": "e8e8e8",
+                    "color": "#6b6363",
                   }
                 }
                 type="plus"
@@ -265,8 +298,13 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "accordion": true,
+              "activeKey": Array [
+                undefined,
+              ],
               "bordered": true,
               "children": Array [],
+              "onChange": undefined,
               "openAnimation": Object {
                 "appear": [Function],
                 "enter": [Function],
@@ -288,7 +326,7 @@ ShallowWrapper {
                 <Icon
                   style={
                     Object {
-                      "color": "e8e8e8",
+                      "color": "#6b6363",
                     }
                   }
                   type="plus"
@@ -309,7 +347,7 @@ ShallowWrapper {
                 "nodeType": "function",
                 "props": Object {
                   "style": Object {
-                    "color": "e8e8e8",
+                    "color": "#6b6363",
                   },
                   "type": "plus",
                 },
