@@ -23,6 +23,10 @@
       "required": true
     },
     {
+      "name": "LOG_PVC_SIZE",
+      "required": true
+    },
+    {
       "name": "ROUTE",
       "value": "/"
     },
@@ -76,6 +80,25 @@
     }
   ],
   "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "mds-logs${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${LOG_PVC_SIZE}"
+          }
+        }
+      }
+    },
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
@@ -181,11 +204,25 @@
                     "memory": "${MEMORY_REQUEST}"
                   }
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/nginx",
+                    "name": "${NAME}${SUFFIX}-log"
+                  }
+                ],
                 "ports": [
                   {
                     "containerPort": 8080
                   }
                 ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-log",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-logs${SUFFIX}"
+                }
               }
             ]
           }
