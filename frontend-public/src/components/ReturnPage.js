@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { notification } from "antd";
 import { getRedirect } from "@/selectors/authenticationSelectors";
 import { authenticateUser, unAuthenticateUser } from "@/actionCreators/authenticationActionCreator";
 import { signOutFromSSO } from "@/utils/authenticationHelpers";
