@@ -50,7 +50,7 @@ export const authenticateUser = (code) => (dispatch) => {
     redirect_uri: ENV.BCEID_LOGIN_REDIRECT_URI,
     client_id: ENV.KEYCLOAK.clientId,
   };
-  dispatch(request(reducerTypes.AUTHENTICATE_USERR));
+  dispatch(request(reducerTypes.AUTHENTICATE_USER));
   return axios
     .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
