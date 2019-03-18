@@ -12,6 +12,7 @@ import { createReducer } from "@/utils/helpers";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
+import applicationReducer from "@/reducers/applicationReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -20,6 +21,7 @@ export const reducerObject = {
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
   [reducerTypes.PERMITS]: permitReducer,
+  [reducerTypes.APPLICATIONS]: applicationReducer,
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
