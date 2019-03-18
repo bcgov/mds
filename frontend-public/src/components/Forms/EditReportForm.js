@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
-import moment from "moment";
 import { Form, Button, Col, Row } from "antd";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineFilePicker from "@/components/dashboard/mineInfo/MineFilePicker";
@@ -21,8 +20,8 @@ export const EditReportForm = (props) => (
         <Form.Item label="Attached Files">
           <div>
             <p>
-              Note: you will be able to remove files up until the March 31, {moment().year()}{" "}
-              deadline. After that date, all attached files will be considered official submissions
+              Note: You will be able to remove files up until the end of the reports due date. 
+              After that date, all attached files will be considered official submissions
               to the Ministry.
             </p>
           </div>

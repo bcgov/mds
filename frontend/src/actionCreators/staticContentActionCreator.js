@@ -144,6 +144,23 @@ export const fetchPermitStatusOptions = () => (dispatch) => {
     });
 };
 
+export const fetchApplicationStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_APPLICATION_STATUS_OPTIONS));
+  return axios
+    .get(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}/status-codes`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_APPLICATION_STATUS_OPTIONS));
+      dispatch(staticContentActions.storeApplicationStatusOptions(response.data));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_APPLICATION_STATUS_OPTIONS));
+    });
+};
+
 export const setOptionsLoaded = () => (dispatch) => {
   dispatch(staticContentActions.loadedOptions(true));
 };
