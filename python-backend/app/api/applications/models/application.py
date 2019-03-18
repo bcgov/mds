@@ -1,10 +1,11 @@
 import uuid
 from datetime import datetime
+from flask_restplus import fields
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
+from app.extensions import db, api
 
 from ...utils.models_mixins import AuditMixin, Base
 
@@ -18,6 +19,17 @@ class Application(AuditMixin, Base):
     application_status_code = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.String)
     recieved_date = db.Column(db.DateTime, nullable=False)
+
+    swagger_model = api.model(
+        'Application', {
+            'application_id': fields.Integer,
+            'mine_guid': fields.String,
+            'application_guid': fields.String,
+            'application_no': fields.String,
+            'application_status_code': fields.String,
+            'description': fields.String,
+            'received_date': fields.String,
+        })
 
     def __repr__(self):
         return '<Application %r>' % self.party_guid

@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, fields
 from flask import request
 from datetime import datetime
 
@@ -23,7 +23,16 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'description', type=str, help='Application description', store_missing=False)
 
-    @api.doc(params={'application_guid': 'Application guid.'})
+    @api.marshal_with(Application.swagger_model, code=200, description='Success', as_list=True)
+    @api.doc(
+        params={
+            'application_guid': 'Application guid to find a specific application.',
+            '?mine_guid': 'A mine guid to find all applications associated with.'
+        },
+        responses={
+            404: 'Not Found',
+            400: 'Bad Request',
+        })
     @requires_role_mine_view
     def get(self, application_guid=None):
 
