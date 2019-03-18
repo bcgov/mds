@@ -34,12 +34,7 @@ export class ReturnPage extends Component {
       signOutFromSSO();
     } else if (type === RETURN_PAGE_TYPE.LOGOUT) {
       // finished logging out from SSO, clear redux & token and redirect home
-      this.props.unAuthenticateUser().then(() => {
-        notification.success({
-          message: "You have successfully logged out",
-          duration: 10,
-        });
-      });
+      this.props.unAuthenticateUser("You have successfully logged out");
     }
 
     // if a user manually navigates to this route, (thus type would not exist), they will be redirected home

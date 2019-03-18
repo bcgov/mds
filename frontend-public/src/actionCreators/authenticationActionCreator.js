@@ -6,12 +6,18 @@ import * as authenticationActions from "@/actions/authenticationActions";
 import queryString from "query-string";
 import * as ENV from "@/constants/environment";
 
-export const unAuthenticateUser = () => (dispatch) => {
+export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");
+  if (toastMessage) {
+    notification.success({
+      message: toastMessage,
+      duration: 10,
+    });
+  }
 };
 
-export const getUserInfoFromToken = (token) => (dispatch) => {
+export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
     .get(ENV.KEYCLOAK.userInfoURL, {
@@ -22,6 +28,18 @@ export const getUserInfoFromToken = (token) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
+    })
+    .catch((err) => {
+      dispatch(unAuthenticateUser());
+      dispatch(error(reducerTypes.GET_USER_INFO));
+      if (errorMessage) {
+        notification.error({
+          message: errorMessage,
+          duration: 10,
+        });
+      } else {
+        throw err;
+      }
     });
 };
 
@@ -45,7 +63,7 @@ export const authenticateUser = (code) => (dispatch) => {
         message: "Unexpected error occured, please try again",
         duration: 10,
       });
-      dispatch(error(reducerTypes.AUTHENTICATE_USER));
       unAuthenticateUser();
+      dispatch(error(reducerTypes.AUTHENTICATE_USER));
     });
 };
