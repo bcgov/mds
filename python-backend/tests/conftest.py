@@ -36,6 +36,7 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.applications.models.application_status_code import ApplicationStatusCode
 
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
@@ -437,6 +438,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mine_doc1.mine_expected_document.append(expected_document1)
     mine_doc1.save()
+
+    application_status_code_1 = ApplicationStatusCode(
+        application_status_code='RIP',
+        description='In Review',
+        display_order=10,
+        **DUMMY_USER_KWARGS)
+    application_status_code_1.save()
+
+    application_status_code_2 = ApplicationStatusCode(
+        application_status_code='APR',
+        description='Approved',
+        display_order=20,
+        **DUMMY_USER_KWARGS)
+    application_status_code_2.save()
 
 
 def clear_data(session):
