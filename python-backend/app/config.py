@@ -26,7 +26,7 @@ class Config(object):
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
-    JWT_ROLE_CALLBACK = lambda jwt_dict: (jwt_dict['realm_access']['roles'])
+    def JWT_ROLE_CALLBACK(jwt_dict): return (jwt_dict['realm_access']['roles'])
     # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
     JWT_OIDC_CACHING_ENABLED = True
 
