@@ -5,6 +5,7 @@ import * as PermitTypes from "@/customPropTypes/permits";
 import * as PartyTypes from "@/customPropTypes/parties";
 import * as DocumentTypes from "@/customPropTypes/documents";
 import * as MinespaceTypes from "@/customPropTypes/minespace";
+import * as ApplicationTypes from "@/customPropTypes/applications";
 
 export default {
   ...CommonTypes,
@@ -13,4 +14,5 @@ export default {
   ...PartyTypes,
   ...DocumentTypes,
   ...MinespaceTypes,
+  ...ApplicationTypes,
 };
