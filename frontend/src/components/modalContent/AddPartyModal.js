@@ -48,6 +48,11 @@ const groupRolePayloads = (formValues, party_guid) => {
   return rolePayloads;
 };
 
+const invalidPartyPayload = (addPartyFormValues) =>
+  addPartyFormValues.first_name === undefined ||
+  addPartyFormValues.party_name === undefined ||
+  addPartyFormValues.phone_no === undefined;
+
 const invalidRolePayload = (roleNumbers, addRolesFormValues) =>
   Object.keys(addRolesFormValues).length > 0 &&
   roleNumbers.some(
@@ -256,7 +261,12 @@ export class AddPartyModal extends Component {
               </Button>
             )}
             {this.state.current < steps.length - 1 && (
-              <Button type="primary" className="full-mobile" onClick={() => this.next()}>
+              <Button
+                type="primary"
+                className="full-mobile"
+                onClick={() => this.next()}
+                disabled={invalidPartyPayload(this.props.addPartyFormValues)}
+              >
                 Next
               </Button>
             )}

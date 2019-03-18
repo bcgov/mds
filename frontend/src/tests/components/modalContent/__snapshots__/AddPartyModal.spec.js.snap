@@ -87,6 +87,7 @@ ShallowWrapper {
           <Button
             block={false}
             className="full-mobile"
+            disabled={true}
             ghost={false}
             loading={false}
             onClick={[Function]}
@@ -158,6 +159,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
+              disabled={true}
               ghost={false}
               loading={false}
               onClick={[Function]}
@@ -280,6 +282,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
+                disabled={true}
                 ghost={false}
                 loading={false}
                 onClick={[Function]}
@@ -352,6 +355,7 @@ ShallowWrapper {
                 "block": false,
                 "children": "Next",
                 "className": "full-mobile",
+                "disabled": true,
                 "ghost": false,
                 "loading": false,
                 "onClick": [Function],
@@ -431,6 +435,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
+              disabled={true}
               ghost={false}
               loading={false}
               onClick={[Function]}
@@ -502,6 +507,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
+                disabled={true}
                 ghost={false}
                 loading={false}
                 onClick={[Function]}
@@ -624,6 +630,7 @@ ShallowWrapper {
                 <Button
                   block={false}
                   className="full-mobile"
+                  disabled={true}
                   ghost={false}
                   loading={false}
                   onClick={[Function]}
@@ -696,6 +703,7 @@ ShallowWrapper {
                   "block": false,
                   "children": "Next",
                   "className": "full-mobile",
+                  "disabled": true,
                   "ghost": false,
                   "loading": false,
                   "onClick": [Function],
