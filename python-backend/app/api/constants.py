@@ -410,6 +410,7 @@ NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_JOB_PREFIX = "nris_sched_job_"
 NRIS_TOKEN = 'nris:token'
 def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:compliance-data'
+ETL = 'etl-jobs:running'
 
 
 #Cache Timeouts
