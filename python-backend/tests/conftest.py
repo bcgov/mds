@@ -28,6 +28,7 @@ from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
+from app.api.documents.required.models.required_document_sub_categories import RequiredDocumentSubCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
@@ -339,10 +340,16 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     required_document1.save()
 
+    required_document_sub_category = RequiredDocumentSubCategory(
+        req_document_sub_category_code=TEST_REQUIRED_REPORT_SUB_CATEGORY_1)
+    required_document_sub_category.save()
+
     required_document2 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
         req_document_name=TEST_REQUIRED_REPORT_NAME2,
         req_document_category=required_document_category1.req_document_category,
+        req_document_sub_category_code=required_document_sub_category.
+        req_document_sub_category_code,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
