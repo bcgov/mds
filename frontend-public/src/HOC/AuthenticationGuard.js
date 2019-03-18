@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import NullScreen from "@/components/common/NullScreen";
-import { getUserInfoFromToken } from "@/actionCreators/authenticationActionCreator";
+import {
+  getUserInfoFromToken,
+  unAuthenticateUser,
+} from "@/actionCreators/authenticationActionCreator";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -15,7 +18,9 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     componentDidMount() {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
-        this.props.getUserInfoFromToken(token);
+        this.props.getUserInfoFromToken(token).catch(() => {
+          unAuthenticateUser();
+        });
       }
     }
 

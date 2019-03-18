@@ -9,10 +9,6 @@ import * as ENV from "@/constants/environment";
 export const unAuthenticateUser = () => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");
-  notification.success({
-    message: "You have successfully logged out",
-    duration: 10,
-  });
 };
 
 export const getUserInfoFromToken = (token) => (dispatch) => {
@@ -26,14 +22,6 @@ export const getUserInfoFromToken = (token) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
-    })
-    .catch(() => {
-      notification.error({
-        message: "Unable to get user Information at this time. Try again",
-        duration: 10,
-      });
-      dispatch(unAuthenticateUser());
-      dispatch(error(reducerTypes.GET_USER_INFO));
     });
 };
 
@@ -58,5 +46,6 @@ export const authenticateUser = (code) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.AUTHENTICATE_USER));
+      unAuthenticateUser();
     });
 };
