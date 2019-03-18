@@ -19,7 +19,7 @@ export const KEYCLOAK = {
   "public-client": true,
   "confidential-port": 0,
   clientId: "<CLIENT_ID>",
-  idp_hint: "local",
+  idpHint: "local",
   loginURL: "<URL>",
   tokenURL: "<URL>",
   userInfoURL: "<URL>",
