@@ -6,7 +6,7 @@ from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_
 from app.api.utils.apm import register_apm
 
 
-#the schedule of these jobs is set using server time (UTC)
+# the schedule of these jobs is set using server time (UTC)
 def _schedule_NRIS_jobs(app):
     app.apscheduler.add_job(
         func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=9, minute=0)
@@ -51,10 +51,10 @@ def _cache_all_NRIS_major_mines_data():
                 except requests.exceptions.Timeout:
                     pass
                 except requests.exceptions.HTTPError as errhttp:
-                    #log error
+                    # log error
                     pass
                 except TypeError as e:
-                    #log error
+                    # log error
                     pass
 
                 if data is not None and len(data) > 0:

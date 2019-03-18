@@ -9,6 +9,6 @@ location ${PATH_PREFIX}/api/ {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/;
+        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
