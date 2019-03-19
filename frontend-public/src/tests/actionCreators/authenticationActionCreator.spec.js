@@ -39,7 +39,7 @@ describe("`getUserInfoFromToken` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return getUserInfoFromToken()(dispatch).then(() => {
+    return getUserInfoFromToken("A Token", "An Error Message")(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -71,7 +71,7 @@ describe("`authenticateUser` action creator", () => {
     return authenticateUser()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 });
