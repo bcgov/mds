@@ -28,6 +28,19 @@ VALUES
     ('C', 'Closed', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO application_status_code
+    (
+    application_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('RIP', 'In Review', 10, 'system-mds', 'system-mds'),
+    ('APR', 'Approved', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 INSERT INTO party_type_code
     (
     party_type_code,

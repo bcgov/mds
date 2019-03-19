@@ -11,7 +11,7 @@ export const mineDocument = shape({
 export const mineExpectedDocumentStatus = shape({
   exp_document_status_code: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-})
+});
 
 export const mineExpectedDocument = shape({
   exp_document_guid: PropTypes.string.isRequired,
@@ -23,4 +23,5 @@ export const mineExpectedDocument = shape({
   received_date: PropTypes.string,
   exp_document_status: mineExpectedDocumentStatus.isRequired,
   due_date: PropTypes.string,
+  hsrc_code: PropTypes.string,
 });
