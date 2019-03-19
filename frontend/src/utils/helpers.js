@@ -49,6 +49,8 @@ export const formatDate = (dateString) =>
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
+export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
+
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
