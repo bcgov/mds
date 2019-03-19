@@ -13,10 +13,12 @@ const propTypes = {
   handleSelect: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
+  iconColor: PropTypes.string,
 };
 
 const defaultProps = {
   placeholder: "",
+  iconColor: Styles.COLOR.violet,
 };
 
 const RenderAutoComplete = (props) => (
@@ -38,7 +40,7 @@ const RenderAutoComplete = (props) => (
     <Input
       autoComplete="off"
       id="search"
-      suffix={<Icon type="search" className="icon-sm" style={{ color: Styles.COLOR.violet }} />}
+      suffix={<Icon type="search" className="icon-sm" style={{ color: props.iconColor }} />}
     />
   </AutoComplete>
 );

@@ -410,7 +410,9 @@ NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_JOB_PREFIX = "nris_sched_job_"
 NRIS_TOKEN = 'nris:token'
 def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:compliance-data'
-
+def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
+def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
+def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'
 
 #Cache Timeouts
 TIMEOUT_60_MINUTES = 3600

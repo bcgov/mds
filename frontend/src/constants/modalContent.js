@@ -23,3 +23,6 @@ export const EDIT_PARTY_RELATIONSHIP = "Edit Contact";
 export const ADD_PERMIT = "Add a new permit";
 export const PERMIT_AMENDMENT = "Add new amendment";
 export const EDIT_PERMIT = "Edit Permit";
+
+export const ADD_APPLICATION = "Add Application";
+export const Edit_APPLICATION = "Edit Application";
