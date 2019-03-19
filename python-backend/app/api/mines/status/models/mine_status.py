@@ -13,7 +13,9 @@ class MineStatus(AuditMixin, Base):
     __tablename__ = 'mine_status'
     mine_status_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    mine_status_xref = db.relationship('MineStatusXref', backref='mine_status', lazy='joined')
+    mine_status_xref_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('mine_status_xref.mine_status_xref_guid'))
+    mine_status_xref = db.relationship('MineStatusXref', lazy='joined')
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(
         db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
@@ -31,26 +33,23 @@ class MineStatus(AuditMixin, Base):
     def create_mine_status_values_list(self):
         status_values_list = []
         if self.mine_status_xref.mine_operation_status_code:
-            status_values_list.append(
-                self.mine_status_xref.mine_operation_status_code.mine_operation_status_code)
+            status_values_list.append(self.mine_status_xref.mine_operation_status_code)
         if self.mine_status_xref.mine_operation_status_reason_code:
-            status_values_list.append(self.mine_status_xref.mine_operation_status_reason_code.
-                                      mine_operation_status_reason_code)
+            status_values_list.append(self.mine_status_xref.mine_operation_status_reason_code)
         if self.mine_status_xref.mine_operation_status_sub_reason_code:
-            status_values_list.append(self.mine_status_xref.mine_operation_status_sub_reason_code.
-                                      mine_operation_status_sub_reason_code)
+            status_values_list.append(self.mine_status_xref.mine_operation_status_sub_reason_code)
         return status_values_list
 
     def create_mine_status_labels_list(self):
         status_labels_list = []
         if self.mine_status_xref.mine_operation_status_code:
-            status_labels_list.append(self.mine_status_xref.mine_operation_status_code.description)
+            status_labels_list.append(self.mine_status_xref.mine_operation_status.description)
         if self.mine_status_xref.mine_operation_status_reason_code:
             status_labels_list.append(
-                self.mine_status_xref.mine_operation_status_reason_code.description)
+                self.mine_status_xref.mine_operation_status_reason.description)
         if self.mine_status_xref.mine_operation_status_sub_reason_code:
             status_labels_list.append(
-                self.mine_status_xref.mine_operation_status_sub_reason_code.description)
+                self.mine_status_xref.mine_operation_status_sub_reason.description)
         return status_labels_list
 
     def json(self, show_mgr=True):

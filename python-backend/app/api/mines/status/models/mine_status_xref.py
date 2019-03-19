@@ -14,25 +14,22 @@ from .mine_operation_status_sub_reason_code import MineOperationStatusSubReasonC
 class MineStatusXref(AuditMixin, Base):
     __tablename__ = 'mine_status_xref'
     mine_status_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_operation_status_code = db.Column(db.String(3))
-    mine_operation_status_reason_code = db.Column(db.String(3))
-    mine_operation_status_sub_reason_code = db.Column(db.String(3))
 
-    mine_operation_status = db.relationship(
-        'MineOperationStatusCode',
-        primaryjoin=
-        "and_(MineOperationStatusCode.mine_operation_status_code == MineStatusXref.mine_operation_status_code)",
-        lazy='joined')
-    mine_operation_status_reason = db.relationship(
-        'MineOperationStatusReasonCode',
-        primaryjoin=
-        "and_(MineOperationStatusReasonCode.mine_operation_status_reason_code == MineStatusXref.mine_operation_status_reason_code)",
-        lazy='joined')
+    mine_operation_status_code = db.Column(
+        db.String(3), db.ForeignKey('mine_operation_status_code.mine_operation_status_code'))
+    mine_operation_status = db.relationship('MineOperationStatusCode', lazy='joined')
+
+    mine_operation_status_reason_code = db.Column(
+        db.String(3),
+        db.ForeignKey('mine_operation_status_reason_code.mine_operation_status_reason_code'))
+    mine_operation_status_reason = db.relationship('MineOperationStatusReasonCode', lazy='joined')
+
+    mine_operation_status_sub_reason_code = db.Column(
+        db.String(3),
+        db.ForeignKey(
+            'mine_operation_status_sub_reason_code.mine_operation_status_sub_reason_code'))
     mine_operation_status_sub_reason = db.relationship(
-        'MineOperationStatusSubReasonCode',
-        primaryjoin=
-        "and_(MineOperationStatusSubReasonCode.mine_operation_status_sub_reason_code == MineStatusXref.mine_operation_status_sub_reason_code)",
-        lazy='joined')
+        'MineOperationStatusSubReasonCode', lazy='joined')
 
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
