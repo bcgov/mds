@@ -150,6 +150,7 @@ export class ContactHomePage extends Component {
         fetchData,
         title,
         provinceOptions,
+        partyRelationshipTypesList: this.props.partyRelationshipTypesList,
       },
       widthSize: "75vw",
       content: modalConfig.ADD_CONTACT,

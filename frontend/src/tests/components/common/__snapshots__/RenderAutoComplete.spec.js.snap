@@ -31,6 +31,7 @@ ShallowWrapper {
     }
     handleChange={[MockFunction]}
     handleSelect={[MockFunction]}
+    iconColor="#5e46a1"
     placeholder=""
   />,
   Symbol(enzyme.__renderer__): Object {

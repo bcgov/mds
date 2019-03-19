@@ -215,7 +215,7 @@ export class NavBar extends Component {
             </Col>
           </Row>
           <div className="menu--hamburger--footer">
-            <p style={{ color: Styles.COLOR.mediumGray }}>
+            <p style={{ color: Styles.COLOR.mediumGrey }}>
               Signed in as: {this.props.userInfo.preferred_username}
             </p>
           </div>
