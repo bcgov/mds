@@ -9,8 +9,8 @@ import { normalizePhone, upperCase } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  togglePartyChange: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  togglePartyChange: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
