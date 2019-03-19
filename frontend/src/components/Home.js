@@ -93,7 +93,6 @@ export class Home extends Component {
             <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
-
         <Content className="content">
           <DashboardRoutes />
           <BackTop>

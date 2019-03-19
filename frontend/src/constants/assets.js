@@ -32,3 +32,5 @@ export { default as SUCCESS_CHECKMARK } from "../assets/images/Checkmark.svg";
 export { default as CARAT } from "../assets/images/ThinCarat.svg";
 export { default as CLOSE } from "../assets/images/close.svg";
 export { default as TEAM } from "../assets/images/Team.svg";
+export { default as HOME } from "../assets/images/home.svg";
+export { default as COMPANY } from "../assets/images/Company.svg";

@@ -27,6 +27,7 @@ export const reducerObject = {
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
+  [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
   [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),
   [reducerTypes.CREATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.CREATE_MINE_RECORD),

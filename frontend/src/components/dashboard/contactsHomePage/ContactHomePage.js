@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { bindActionCreators, compose } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -12,7 +12,6 @@ import {
   fetchPartyRelationshipTypes,
 } from "@/actionCreators/partiesActionCreator";
 import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import {
@@ -167,7 +166,7 @@ export class ContactHomePage extends Component {
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
             </div>
-            <AuthorizationWrapper permission={Permission.ADMIN}>
+            <AuthorizationWrapper permission={Permission.CREATE}>
               <Button
                 className="full-mobile"
                 type="primary"
@@ -240,10 +239,7 @@ const mapDispatchToProps = (dispatch) =>
 
 ContactHomePage.propTypes = propTypes;
 
-export default compose(
-  AuthorizationGuard(Permission.IN_DEVELOPMENT),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(ContactHomePage);
