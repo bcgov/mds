@@ -8,6 +8,7 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.submit = jest.fn();
   dispatchProps.fetchData = jest.fn();
+  dispatchProps.fetchMineNameList = jest.fn();
   dispatchProps.createParty = jest.fn();
   dispatchProps.reset = jest.fn();
 };
