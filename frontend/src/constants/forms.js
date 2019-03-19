@@ -1,5 +1,6 @@
 // Redux Forms
 export const ADD_FULL_PARTY = "ADD_FULL_PARTY";
+export const ADD_ROLES = "ADD_ROLES";
 export const ADD_QUICK_PARTY = "ADD_QUICK_PARTY";
 export const ADD_TENURE_NUMBER = "ADD_TENURE_NUMBER";
 export const MINE_RECORD = "MINE_RECORD";

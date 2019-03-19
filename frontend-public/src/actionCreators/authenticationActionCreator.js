@@ -6,16 +6,18 @@ import * as authenticationActions from "@/actions/authenticationActions";
 import queryString from "query-string";
 import * as ENV from "@/constants/environment";
 
-export const unAuthenticateUser = () => (dispatch) => {
+export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
   localStorage.removeItem("jwt");
-  notification.success({
-    message: "You have successfully logged out",
-    duration: 10,
-  });
+  if (toastMessage) {
+    notification.success({
+      message: toastMessage,
+      duration: 10,
+    });
+  }
 };
 
-export const getUserInfoFromToken = (token) => (dispatch) => {
+export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
     .get(ENV.KEYCLOAK.userInfoURL, {
@@ -27,13 +29,17 @@ export const getUserInfoFromToken = (token) => (dispatch) => {
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
     })
-    .catch(() => {
-      notification.error({
-        message: "Unable to get user Information at this time. Try again",
-        duration: 10,
-      });
-      dispatch(unAuthenticateUser());
+    .catch((err) => {
       dispatch(error(reducerTypes.GET_USER_INFO));
+      dispatch(unAuthenticateUser());
+      if (errorMessage) {
+        notification.error({
+          message: errorMessage,
+          duration: 10,
+        });
+      } else {
+        throw err;
+      }
     });
 };
 
@@ -44,13 +50,13 @@ export const authenticateUser = (code) => (dispatch) => {
     redirect_uri: ENV.BCEID_LOGIN_REDIRECT_URI,
     client_id: ENV.KEYCLOAK.clientId,
   };
-  dispatch(request(reducerTypes.AUTHENTICATE_USERR));
+  dispatch(request(reducerTypes.AUTHENTICATE_USER));
   return axios
     .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
       dispatch(success(reducerTypes.AUTHENTICATE_USER));
       localStorage.setItem("jwt", response.data.access_token);
-      dispatch(getUserInfoFromToken(response.data.access_token));
+      return dispatch(getUserInfoFromToken(response.data.access_token));
     })
     .catch(() => {
       notification.error({
@@ -58,5 +64,6 @@ export const authenticateUser = (code) => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.AUTHENTICATE_USER));
+      dispatch(unAuthenticateUser());
     });
 };

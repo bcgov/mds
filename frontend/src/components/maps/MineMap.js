@@ -84,7 +84,8 @@ class MineMap extends Component {
       "esri/widgets/ScaleBar",
       "esri/widgets/Legend",
       "esri/layers/GroupLayer",
-    ]).then(([LayerListWidget, Expand, ScaleBar, Legend, GroupLayer]) => {
+      "esri/widgets/CoordinateConversion",
+    ]).then(([LayerListWidget, Expand, ScaleBar, Legend, GroupLayer, CoordinateConversion]) => {
       const administrativeLayer = new GroupLayer({
         title: "Administrative Boundaries",
         visible: true,
@@ -117,7 +118,7 @@ class MineMap extends Component {
         "Placer Leases",
         "Placer Claims",
       ];
-      const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
+      const roadLayerArray = ["Roads DRA", "Forest Tenure Roads", "Roads (DRA)"];
 
       const addLayersToGroup = (layerNameArray, groupLayer) => {
         layerNameArray.forEach((layerTitle) => {
@@ -147,6 +148,34 @@ class MineMap extends Component {
       }
 
       const widgetPositionArray = {};
+
+      widgetPositionArray["top-right"] = new CoordinateConversion({
+        view,
+      });
+
+      // set DD to default:
+      const ddFormat = widgetPositionArray["top-right"].formats.find(({ name }) => name === "dd");
+      if (ddFormat) {
+        widgetPositionArray["top-right"].formats.reorder(ddFormat, 0);
+      }
+
+      // Remove the xy conversion from the widget
+      const conversionToChange = widgetPositionArray["top-right"].conversions.find(
+        (conversion) => conversion.format.name === "xy"
+      );
+      if (conversionToChange) {
+        conversionToChange.format = ddFormat;
+      }
+
+      const formatsToRemove = ["basemap", "xy", "usng", "mgrs"];
+      formatsToRemove.forEach((formatName) => {
+        const formatToRemove = widgetPositionArray["top-right"].formats.find(
+          ({ name }) => name === formatName
+        );
+        if (formatToRemove) {
+          widgetPositionArray["top-right"].formats.remove(formatToRemove);
+        }
+      });
 
       widgetPositionArray["top-left"] = new LayerListWidget({
         view,
