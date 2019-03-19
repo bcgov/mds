@@ -120,7 +120,7 @@ export const MineApplicationTable = (props) => {
       pagination={false}
       columns={columns}
       dataSource={rowData}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
+      locale={{ emptyText: <NullScreen type="applications" /> }}
     />
   );
 };
