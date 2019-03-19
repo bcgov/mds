@@ -81,6 +81,7 @@
     "react-hot-loader": "^4.6.3",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
+    "thread-loader": "^2.1.2",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
     "webpack": "^4.20.2",
@@ -102,7 +103,7 @@
   },
   "scripts": {
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
-    "build": "webpack --env production",
+    "build": "webpack --env production --hide-modules",
     "build-serve": "npm run build && npm run start",
     "start": "node server.js",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --updateSnapshot --runInBand --coverage",

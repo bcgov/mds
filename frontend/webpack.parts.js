@@ -42,7 +42,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         test: /\.js$/,
         include,
         exclude,
-        loader: "babel-loader?cacheDirectory",
+        loader: ["thread-loader", "babel-loader?cacheDirectory"],
       },
     ],
   },
