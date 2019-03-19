@@ -220,7 +220,7 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
@@ -244,7 +244,7 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
 
@@ -329,7 +329,8 @@ environments {
             keycloak {
                 clientId = "mines-application-dev"
                 resource = "mines-application-dev"
-                idpHint = "dev"
+                idpHint_core = "dev"
+                idpHint_minespace = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
@@ -431,7 +432,8 @@ environments {
             keycloak {
                 clientId = "mines-application-test"
                 resource = "mines-application-test"
-                idpHint = "idir"
+                idpHint_core = "idir"
+                idpHint_minespace = "bceid"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
@@ -577,7 +579,8 @@ environments {
             keycloak {
                 clientId = "mines-application-prod"
                 resource = "mines-application-prod"
-                idpHint = "idir"
+                idpHint_core = "idir"
+                idpHint_minespace = "bceid"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logon.gov.bc.ca"
