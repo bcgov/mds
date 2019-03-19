@@ -57,51 +57,40 @@ export class NavBar extends Component {
 
   renderFullNav = () => (
     <div className="inline-flex">
-      <AuthorizationWrapper inDevelopment>
-        {/* temporary style needed only because AuthWrapper only accepts one child element */}
-        <span style={{ height: "100%" }}>
-          <Link
-            to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
-            <Button
-              id={
-                includes(this.props.activeButton, router.MINE_HOME_PAGE.route)
-                  ? "active-mine-btn"
-                  : ""
-              }
-              className="menu__btn--link"
-            >
-              <img alt="Mine" className="padding-small--right vertical-align-sm" src={MINE} />
-              Mines
-            </Button>
-          </Link>
-          <Link
-            to={router.CONTACT_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
-            <Button
-              id={
-                includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
-                  ? "active-contact-btn"
-                  : ""
-              }
-              className="menu__btn--link"
-            >
-              <img
-                alt="team"
-                className="padding-small--right icon-sm vertical-align-sm"
-                src={TEAM}
-              />
-              Contacts
-            </Button>
-          </Link>
-        </span>
-      </AuthorizationWrapper>
+      <Link
+        to={router.MINE_HOME_PAGE.dynamicRoute({
+          page: Strings.DEFAULT_PAGE,
+          per_page: Strings.DEFAULT_PER_PAGE,
+        })}
+      >
+        <Button
+          id={
+            includes(this.props.activeButton, router.MINE_HOME_PAGE.route) ? "active-mine-btn" : ""
+          }
+          className="menu__btn--link"
+        >
+          <img alt="Mine" className="padding-small--right vertical-align-sm" src={MINE} />
+          Mines
+        </Button>
+      </Link>
+      <Link
+        to={router.CONTACT_HOME_PAGE.dynamicRoute({
+          page: Strings.DEFAULT_PAGE,
+          per_page: Strings.DEFAULT_PER_PAGE,
+        })}
+      >
+        <Button
+          id={
+            includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
+              ? "active-contact-btn"
+              : ""
+          }
+          className="menu__btn--link"
+        >
+          <img alt="team" className="padding-small--right icon-sm vertical-align-sm" src={TEAM} />
+          Contacts
+        </Button>
+      </Link>
       <AuthorizationWrapper permission={Permission.ADMIN}>
         <Link to={router.ADMIN_DASHBOARD.route}>
           <Button
