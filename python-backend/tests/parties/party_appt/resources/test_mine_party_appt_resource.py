@@ -1,5 +1,5 @@
 import json, uuid, pytest
-from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1, TEST_TAILINGS_STORAGE_FACILITY_GUID1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1, TEST_TAILINGS_STORAGE_FACILITY_GUID1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db
 
@@ -10,8 +10,7 @@ def setup_info(test_client):
         mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
-        **DUMMY_USER_KWARGS)
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1)
     mpa.save()
     yield dict(mine_party_appointment=mpa)
     db.session.delete(mpa)
@@ -43,8 +42,7 @@ def test_get_mine_party_appt_by_type(test_client, auth_headers):
     new_mpa = MinePartyAppointment(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        **DUMMY_USER_KWARGS)
+        mine_guid=uuid.UUID(TEST_MINE_GUID))
     new_mpa.save()
 
     get_resp = test_client.get(
@@ -60,8 +58,7 @@ def test_get_mine_party_appt_by_multiple_types(test_client, auth_headers):
     new_mpa = MinePartyAppointment(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        **DUMMY_USER_KWARGS)
+        mine_guid=uuid.UUID(TEST_MINE_GUID))
     new_mpa.save()
 
     get_resp = test_client.get(

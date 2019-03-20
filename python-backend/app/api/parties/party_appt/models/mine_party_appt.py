@@ -65,9 +65,7 @@ class MinePartyAppointment(AuditMixin, Base):
             'end_date': str(self.end_date) if self.end_date else None,
         }
         if 'party' in relationships:
-            result.update({
-                'party': self.party.json(show_mgr=False) if self.party else str({})
-            })
+            result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
@@ -162,16 +160,15 @@ class MinePartyAppointment(AuditMixin, Base):
         return '\n'.join(rows)
 
     @classmethod
-    def create_mine_party_appt(cls,
-                               mine_guid,
-                               party_guid,
-                               mine_party_appt_type_code,
-                               user_kwargs,
-                               start_date=None,
-                               end_date=None,
-                               processed_by=processed_by,
-                               permit_guid=None,
-                               save=True):
+    def create(cls,
+               mine_guid,
+               party_guid,
+               mine_party_appt_type_code,
+               start_date=None,
+               end_date=None,
+               processed_by=processed_by,
+               permit_guid=None,
+               save=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
@@ -179,8 +176,7 @@ class MinePartyAppointment(AuditMixin, Base):
             mine_party_appt_type_code="PMT",
             start_date=start_date,
             end_date=end_date,
-            processed_by=processed_by,
-            **user_kwargs)
+            processed_by=processed_by)
         if save:
             mpa.save(commit=False)
         return mpa

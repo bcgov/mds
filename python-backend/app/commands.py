@@ -48,7 +48,7 @@ def register_commands(app):
 
             db.session.commit()
             # raise Exception(str(mine_permit.permit_guid) + str(mine_permit.mine_guid))
-            mpa = MinePartyAppointment.create_mine_party_appt(
+            mpa = MinePartyAppointment.create(
                 mine_guid=mine_permit.mine_guid,
                 party_guid=permittee_party,
                 permit_guid=mine_permit.permit_guid,
@@ -56,7 +56,6 @@ def register_commands(app):
                 start_date=None,
                 end_date=None,
                 processed_by=DUMMY_USER_KWARGS.get('update_user'),
-                user_kwargs=DUMMY_USER_KWARGS,
                 save=True)
 
     # in terminal you can run $flask <cmd> <arg>
