@@ -327,7 +327,8 @@ app {
                     'params':[
                             'NAME':"metabase",
                             'VERSION':"${app.deployment.version}",
-                            'SUFFIX': "${vars.deployment.suffix}"
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
                     ]
                 ]
         ]
@@ -435,6 +436,9 @@ environments {
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -538,6 +542,9 @@ environments {
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -640,6 +647,9 @@ environments {
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

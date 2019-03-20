@@ -11,8 +11,7 @@ RUN apk add --update bash git wget make gettext ttf-dejavu fontconfig java-cacer
 RUN wget http://downloads.metabase.com/v0.31.2/metabase.jar
 
 # create the plugins directory, with writable permissions
-RUN mkdir -p /app/plugins
-RUN chmod a+rwx /app/plugins
+RUN chmod -R 777 /app
 
 # expose our default runtime port
 EXPOSE 3000
