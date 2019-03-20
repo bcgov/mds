@@ -6,6 +6,26 @@
   },
   "objects": [
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -20,6 +40,17 @@
         "triggers": [
           {
             "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["${NAME}"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
           }
         ],
         "replicas": 1,
@@ -35,8 +66,8 @@
           "spec": {
             "containers": [
               {
-                "name": "app",
-                "image": "docker.io/metabase/metabase:${IMAGE_VERSION}",
+                "name": "${NAME}",
+                "image": " ",
                 "ports": [
                   {
                     "containerPort": 3000,
@@ -102,8 +133,8 @@
       "required": true
     },
     {
-      "name": "IMAGE_VERSION",
-      "value": "v0.31.2"
+      "name": "VERSION",
+      "required": true
     }
   ]
 }

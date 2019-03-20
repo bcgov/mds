@@ -139,6 +139,16 @@ app {
                             'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/metabase.bc.json',
+                    'params':[
+                            'NAME':"metabase",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "docker-images/metabase",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
                 ]
         ]
     }
@@ -316,6 +326,7 @@ app {
                     'file':'openshift/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
+                            'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}"
                     ]
                 ]
