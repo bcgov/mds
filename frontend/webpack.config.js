@@ -117,7 +117,7 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
 
-    plugins: [new HardSourceWebpackPlugin()],
+    plugins: [new HardSourceWebpackPlugin(), new HardSourceWebpackPlugin.ParallelModulePlugin()],
   },
   parts.clean(PATHS.build),
   parts.extractCSS({

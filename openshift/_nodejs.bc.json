@@ -168,12 +168,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
-            "memory": "2Gi"
-          },
-          "requests": {
             "cpu": "1",
             "memory": "1Gi"
+          },
+          "requests": {
+            "cpu": "500m",
+            "memory": "512Mi"
           }
         },
         "postCommit": {},
@@ -241,12 +241,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
-            "memory": "2Gi"
+            "cpu": "1.5",
+            "memory": "1Gi"
           },
           "requests": {
             "cpu": "1",
-            "memory": "1Gi"
+            "memory": "512Mi"
           }
         },
         "nodeSelector": null
