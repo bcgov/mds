@@ -10,11 +10,8 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhel7-openjdk-8",
+        "name": "${NAME}",
         "creationTimestamp": null,
-        "annotations": {
-          "description": "Postgres10 Base Image"
-        },
         "labels": {
           "shared": "true"
         }
@@ -25,80 +22,16 @@
         },
         "tags": [
           {
-            "name": "jdk1.6-18",
+            "name": "${VERSION}",
             "annotations": null,
             "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.6-18"
+              "kind": "ImageStreamTag",
+              "name": "docker.io/metabase/metabase:v0.31.2"
             },
             "importPolicy": {},
             "referencePolicy": {
               "type": "Source"
             }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": []
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "labels": {
-          "app": "${NAME}${SUFFIX}",
-          "buildconfig": "${NAME}${SUFFIX}"
-        }
-      },
-      "spec": {
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${GIT_REF}"
-          },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
-        },
-        "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "rhel7-openjdk-8:jdk1.6-18"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}:${VERSION}"
-          }
-        },
-        "triggers": [
-          {
-            "type": "ConfigChange"
-          },
-          {
-            "type": "ImageChange"
           }
         ]
       }
