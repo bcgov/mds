@@ -10,7 +10,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "metabase",
         "creationTimestamp": null,
         "labels": {
           "shared": "true"
@@ -22,16 +22,80 @@
         },
         "tags": [
           {
-            "name": "${VERSION}",
+            "name": "v0.31.2",
             "annotations": null,
             "from": {
-              "kind": "ImageStreamTag",
+              "kind": "DockerImage",
               "name": "docker.io/metabase/metabase:v0.31.2"
             },
             "importPolicy": {},
             "referencePolicy": {
               "type": "Source"
             }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "labels": {
+          "app": "${NAME}${SUFFIX}",
+          "buildconfig": "${NAME}${SUFFIX}"
+        }
+      },
+      "spec": {
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${GIT_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "docker.io/metabase/metabase:v0.31.2"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange"
           }
         ]
       }
