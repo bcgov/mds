@@ -15,6 +15,7 @@ api.add_resource(PermitAmendmentResource, '/<string:permit_guid>/amendments',
 
 api.add_resource(
     PermitAmendmentDocumentResource,
+    '/amendments/documents',
     '/amendments/documents/<string:document_guid>',
     '/amendments/<string:permit_amendment_guid>/documents',
     '/amendments/<string:permit_amendment_guid>/documents/<string:document_guid>',
