@@ -2,7 +2,7 @@
 # STAGE 1: builder
 ###################
 
-FROM openjdk:8-jdk-alpine
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.6-18
 
 WORKDIR /app/source
 
