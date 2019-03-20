@@ -528,13 +528,15 @@ environments {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             BACKUP_PVC_SIZE = '1Gi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
             keycloak {
                 clientId = "mines-application-test"
                 resource = "mines-application-test"
-                idpHint = "idir"
+                idpHint_core = "idir"
+                idpHint_minespace = "bceid"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
@@ -613,7 +615,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = ""
+                    PATH = "/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
