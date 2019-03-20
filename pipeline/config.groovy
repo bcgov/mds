@@ -311,6 +311,13 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
+                ],
+                [
+                    'file':'openshift/metabase.dc.json',
+                    'params':[
+                            'NAME':"metabase",
+                            'SUFFIX': "${vars.deployment.suffix}"
+                    ]
                 ]
         ]
     }
