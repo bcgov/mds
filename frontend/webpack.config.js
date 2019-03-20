@@ -1,6 +1,5 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
@@ -116,16 +115,8 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
-
-    plugins: [
-      new HardSourceWebpackPlugin(),
-      new HardSourceWebpackPlugin.ParallelModulePlugin({
-        numWorkers: 4,
-        minModules: 0,
-      }),
-    ],
   },
-  parts.clean(PATHS.build),
+  parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
@@ -171,12 +162,6 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
-module.exports = (mode) => {
-  if (mode === PRODUCTION) {
-    return merge(commonConfig, prodConfig, { mode });
-  }
+const prod = merge(commonConfig, prodConfig, { mode: "production" });
 
-  if (mode === DEVELOPMENT) {
-    return merge(commonConfig, devConfig, { mode });
-  }
-};
+module.exports = prod;

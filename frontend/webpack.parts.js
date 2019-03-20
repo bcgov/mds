@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
+const path = require("path");
 const cssnano = require("cssnano")({ zindex: false });
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -10,6 +11,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
 const AntdScssThemePlugin = require("antd-scss-theme-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
@@ -214,6 +216,10 @@ exports.setEnvironmentVariable = (dotenv = {}) => ({
       },
     }),
   ],
+});
+
+exports.hardSourceWebPackPlugin = () => ({
+  plugins: [new HardSourceWebpackPlugin()],
 });
 
 exports.clean = (path) => ({

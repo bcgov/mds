@@ -116,13 +116,7 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
-    plugins: [
-      new HardSourceWebpackPlugin(),
-      new HardSourceWebpackPlugin.ParallelModulePlugin({
-        numWorkers: () => 4,
-        minModules: 0,
-      }),
-    ],
+    plugins: [new HardSourceWebpackPlugin()],
   },
   parts.clean(PATHS.build),
   parts.extractCSS({
