@@ -83,24 +83,22 @@ export class MineApplicationInfo extends Component {
         <div className="inline-flex between">
           <div />
           <div className="inline-flex between">
-            <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  this.openAddApplicationModal(
+                    event,
+                    `${ModalContent.ADD_APPLICATION} to ${this.props.mine.mine_name}`
+                  )
+                }
               >
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    this.openAddApplicationModal(
-                      event,
-                      `${ModalContent.ADD_APPLICATION} to ${this.props.mine.mine_name}`
-                    )
-                  }
-                >
-                  <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                  Add a New Application
-                </Button>
-              </AuthorizationWrapper>
+                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+                Add a New Application
+              </Button>
             </AuthorizationWrapper>
           </div>
         </div>
