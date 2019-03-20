@@ -10,6 +10,36 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
+        "name": "mb",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "v0.31.2",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "metabase/metabase:v0.31.2"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -50,7 +80,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "docker.io/metabase/metabase:v0.31.2"
+              "name": "mb:v0.31.2"
             }
           }
         },
