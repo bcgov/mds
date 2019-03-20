@@ -323,7 +323,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/metabase.dc.json',
+                    'file':'openshift/tools/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
                             'VERSION':"${app.deployment.version}",
