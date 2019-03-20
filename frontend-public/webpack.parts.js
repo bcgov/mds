@@ -216,6 +216,10 @@ exports.setEnvironmentVariable = (dotenv = {}) => ({
   ],
 });
 
+exports.hardSourceWebPackPlugin = () => ({
+  plugins: [new HardSourceWebpackPlugin()],
+});
+
 exports.clean = (path) => ({
   plugins: [new CleanWebpackPlugin([path])],
 });

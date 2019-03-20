@@ -167,10 +167,8 @@ module.exports = (mode) => {
   if (mode === PRODUCTION) {
     return merge(commonConfig, prodConfig, { mode });
   }
-  const prod = merge(commonConfig, prodConfig, { mode: "production" });
 
   if (mode === DEVELOPMENT) {
     return merge(commonConfig, devConfig, { mode });
   }
 };
-module.exports = prod;
