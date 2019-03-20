@@ -124,54 +124,52 @@ export class NavBar extends Component {
     <div>
       {this.props.isMenuOpen && (
         <div className="menu--hamburger">
-          <AuthorizationWrapper inDevelopment>
-            <span>
-              <Row>
-                <Col span={24}>
-                  <Link
-                    to={router.MINE_HOME_PAGE.dynamicRoute({
-                      page: Strings.DEFAULT_PAGE,
-                      per_page: Strings.DEFAULT_PER_PAGE,
-                    })}
+          <span>
+            <Row>
+              <Col span={24}>
+                <Link
+                  to={router.MINE_HOME_PAGE.dynamicRoute({
+                    page: Strings.DEFAULT_PAGE,
+                    per_page: Strings.DEFAULT_PER_PAGE,
+                  })}
+                >
+                  <Button
+                    id={
+                      includes(this.props.activeButton, router.MINE_HOME_PAGE.route)
+                        ? "active-mine-btn--mobile"
+                        : ""
+                    }
+                    className="menu--hamburger__btn--link"
                   >
-                    <Button
-                      id={
-                        includes(this.props.activeButton, router.MINE_HOME_PAGE.route)
-                          ? "active-mine-btn--mobile"
-                          : ""
-                      }
-                      className="menu--hamburger__btn--link"
-                    >
-                      <img alt="Mine" className="img-lg padding-large--right" src={MINE} />
-                      Mines
-                    </Button>
-                  </Link>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <Link
-                    to={router.CONTACT_HOME_PAGE.dynamicRoute({
-                      page: Strings.DEFAULT_PAGE,
-                      per_page: Strings.DEFAULT_PER_PAGE,
-                    })}
+                    <img alt="Mine" className="img-lg padding-large--right" src={MINE} />
+                    Mines
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <Link
+                  to={router.CONTACT_HOME_PAGE.dynamicRoute({
+                    page: Strings.DEFAULT_PAGE,
+                    per_page: Strings.DEFAULT_PER_PAGE,
+                  })}
+                >
+                  <Button
+                    id={
+                      includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
+                        ? "active-contact-btn--mobile"
+                        : ""
+                    }
+                    className="menu--hamburger__btn--link"
                   >
-                    <Button
-                      id={
-                        includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
-                          ? "active-contact-btn--mobile"
-                          : ""
-                      }
-                      className="menu--hamburger__btn--link"
-                    >
-                      <img alt="team" src={TEAM} className="img-lg padding-large--right" />
-                      Contacts
-                    </Button>
-                  </Link>
-                </Col>
-              </Row>
-            </span>
-          </AuthorizationWrapper>
+                    <img alt="team" src={TEAM} className="img-lg padding-large--right" />
+                    Contacts
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </span>
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
               <Col span={24}>
