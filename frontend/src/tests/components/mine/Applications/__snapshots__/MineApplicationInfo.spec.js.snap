@@ -90,7 +90,42 @@ ShallowWrapper {
           className="inline-flex between"
         >
           <Connect(AuthorizationWrapper)
-            inTesting={true}
+            isMajorMine={undefined}
+            permission="role_create"
+          >
+            <Button
+              block={false}
+              ghost={false}
+              loading={false}
+              onClick={[Function]}
+              prefixCls="ant-btn"
+              type="primary"
+            >
+              <Icon
+                style={
+                  Object {
+                    "fontSize": "18px",
+                  }
+                }
+                theme="outlined"
+                type="plus"
+              />
+              Add a New Application
+            </Button>
+          </Connect(AuthorizationWrapper)>
+        </div>
+      </div>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div />,
+          <div
+            className="inline-flex between"
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
@@ -116,49 +151,6 @@ ShallowWrapper {
                 Add a New Application
               </Button>
             </Connect(AuthorizationWrapper)>
-          </Connect(AuthorizationWrapper)>
-        </div>
-      </div>,
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <div />,
-          <div
-            className="inline-flex between"
-          >
-            <Connect(AuthorizationWrapper)
-              inTesting={true}
-            >
-              <Connect(AuthorizationWrapper)
-                isMajorMine={undefined}
-                permission="role_create"
-              >
-                <Button
-                  block={false}
-                  ghost={false}
-                  loading={false}
-                  onClick={[Function]}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  <Icon
-                    style={
-                      Object {
-                        "fontSize": "18px",
-                      }
-                    }
-                    theme="outlined"
-                    type="plus"
-                  />
-                  Add a New Application
-                </Button>
-              </Connect(AuthorizationWrapper)>
-            </Connect(AuthorizationWrapper)>
           </div>,
         ],
         "className": "inline-flex between",
@@ -180,7 +172,164 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
-              inTesting={true}
+              isMajorMine={undefined}
+              permission="role_create"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
+                Add a New Application
+              </Button>
+            </Connect(AuthorizationWrapper)>,
+            "className": "inline-flex between",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
+                Add a New Application
+              </Button>,
+              "isMajorMine": undefined,
+              "permission": "role_create",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "block": false,
+                "children": Array [
+                  <Icon
+                    style={
+                      Object {
+                        "fontSize": "18px",
+                      }
+                    }
+                    theme="outlined"
+                    type="plus"
+                  />,
+                  "Add a New Application",
+                ],
+                "ghost": false,
+                "loading": false,
+                "onClick": [Function],
+                "prefixCls": "ant-btn",
+                "type": "primary",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "style": Object {
+                      "fontSize": "18px",
+                    },
+                    "theme": "outlined",
+                    "type": "plus",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "Add a New Application",
+              ],
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <div
+          className="inline-flex between"
+        >
+          <div />
+          <div
+            className="inline-flex between"
+          >
+            <Connect(AuthorizationWrapper)
+              isMajorMine={undefined}
+              permission="role_create"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
+                Add a New Application
+              </Button>
+            </Connect(AuthorizationWrapper)>
+          </div>
+        </div>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div />,
+            <div
+              className="inline-flex between"
             >
               <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
@@ -206,14 +355,25 @@ ShallowWrapper {
                   Add a New Application
                 </Button>
               </Connect(AuthorizationWrapper)>
-            </Connect(AuthorizationWrapper)>,
-            "className": "inline-flex between",
-          },
-          "ref": null,
-          "rendered": Object {
+            </div>,
+          ],
+          "className": "inline-flex between",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "class",
+            "nodeType": "host",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
             "props": Object {
               "children": <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
@@ -239,7 +399,7 @@ ShallowWrapper {
                   Add a New Application
                 </Button>
               </Connect(AuthorizationWrapper)>,
-              "inTesting": true,
+              "className": "inline-flex between",
             },
             "ref": null,
             "rendered": Object {
@@ -313,258 +473,6 @@ ShallowWrapper {
                   },
                   "Add a New Application",
                 ],
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          "type": "div",
-        },
-      ],
-      "type": "div",
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <div
-          className="inline-flex between"
-        >
-          <div />
-          <div
-            className="inline-flex between"
-          >
-            <Connect(AuthorizationWrapper)
-              inTesting={true}
-            >
-              <Connect(AuthorizationWrapper)
-                isMajorMine={undefined}
-                permission="role_create"
-              >
-                <Button
-                  block={false}
-                  ghost={false}
-                  loading={false}
-                  onClick={[Function]}
-                  prefixCls="ant-btn"
-                  type="primary"
-                >
-                  <Icon
-                    style={
-                      Object {
-                        "fontSize": "18px",
-                      }
-                    }
-                    theme="outlined"
-                    type="plus"
-                  />
-                  Add a New Application
-                </Button>
-              </Connect(AuthorizationWrapper)>
-            </Connect(AuthorizationWrapper)>
-          </div>
-        </div>,
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <div />,
-            <div
-              className="inline-flex between"
-            >
-              <Connect(AuthorizationWrapper)
-                inTesting={true}
-              >
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    onClick={[Function]}
-                    prefixCls="ant-btn"
-                    type="primary"
-                  >
-                    <Icon
-                      style={
-                        Object {
-                          "fontSize": "18px",
-                        }
-                      }
-                      theme="outlined"
-                      type="plus"
-                    />
-                    Add a New Application
-                  </Button>
-                </Connect(AuthorizationWrapper)>
-              </Connect(AuthorizationWrapper)>
-            </div>,
-          ],
-          "className": "inline-flex between",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": "div",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": <Connect(AuthorizationWrapper)
-                inTesting={true}
-              >
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    onClick={[Function]}
-                    prefixCls="ant-btn"
-                    type="primary"
-                  >
-                    <Icon
-                      style={
-                        Object {
-                          "fontSize": "18px",
-                        }
-                      }
-                      theme="outlined"
-                      type="plus"
-                    />
-                    Add a New Application
-                  </Button>
-                </Connect(AuthorizationWrapper)>
-              </Connect(AuthorizationWrapper)>,
-              "className": "inline-flex between",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    onClick={[Function]}
-                    prefixCls="ant-btn"
-                    type="primary"
-                  >
-                    <Icon
-                      style={
-                        Object {
-                          "fontSize": "18px",
-                        }
-                      }
-                      theme="outlined"
-                      type="plus"
-                    />
-                    Add a New Application
-                  </Button>
-                </Connect(AuthorizationWrapper)>,
-                "inTesting": true,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    onClick={[Function]}
-                    prefixCls="ant-btn"
-                    type="primary"
-                  >
-                    <Icon
-                      style={
-                        Object {
-                          "fontSize": "18px",
-                        }
-                      }
-                      theme="outlined"
-                      type="plus"
-                    />
-                    Add a New Application
-                  </Button>,
-                  "isMajorMine": undefined,
-                  "permission": "role_create",
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "block": false,
-                    "children": Array [
-                      <Icon
-                        style={
-                          Object {
-                            "fontSize": "18px",
-                          }
-                        }
-                        theme="outlined"
-                        type="plus"
-                      />,
-                      "Add a New Application",
-                    ],
-                    "ghost": false,
-                    "loading": false,
-                    "onClick": [Function],
-                    "prefixCls": "ant-btn",
-                    "type": "primary",
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "function",
-                      "props": Object {
-                        "style": Object {
-                          "fontSize": "18px",
-                        },
-                        "theme": "outlined",
-                        "type": "plus",
-                      },
-                      "ref": null,
-                      "rendered": null,
-                      "type": [Function],
-                    },
-                    "Add a New Application",
-                  ],
-                  "type": [Function],
-                },
                 "type": [Function],
               },
               "type": [Function],
