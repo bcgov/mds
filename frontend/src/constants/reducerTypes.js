@@ -29,6 +29,7 @@ export const AUTHENTICATION = "AUTHENTICATION";
 export const STATIC_CONTENT = "STATIC_CONTENT";
 
 export const CREATE_PARTY = "CREATE_PARTY";
+export const UPDATE_PARTY = "UPDATE_PARTY";
 export const PARTIES = "PARTIES";
 export const GET_PARTIES = "GET_PARTIES";
 export const GET_PARTY = "GET_PARTY";
