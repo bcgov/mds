@@ -41,6 +41,7 @@ from app.api.applications.models.application_status_code import ApplicationStatu
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 from app import auth
+from app.api.utils.include.user_info import User
 
 auth.apply_security = False
 
@@ -100,6 +101,8 @@ def test_client():
     ctx = app.app_context()
     ctx.push()
     setup_data(db.session)
+
+    User._test_mode = True
 
     yield client
 

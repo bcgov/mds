@@ -27,6 +27,8 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
+from app.api.utils.include.user_info import User
+
 
 def register_commands(app):
     DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
@@ -58,6 +60,7 @@ def register_commands(app):
                 save=True)
 
     # in terminal you can run $flask <cmd> <arg>
+
     @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
@@ -72,6 +75,8 @@ def register_commands(app):
         :param threading: use threading or not
         :return: None
         """
+        User.test_mode = True
+
         if threading:
             with ThreadPoolExecutor() as executor:
                 batch_size = 100
