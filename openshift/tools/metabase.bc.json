@@ -80,7 +80,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "docker.io/metabase/metabase:v0.31.2"
+              "name": "metabase:v0.31.2"
             }
           }
         },
