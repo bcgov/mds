@@ -1,6 +1,5 @@
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
-const path = require("path");
 const cssnano = require("cssnano")({ zindex: false });
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");

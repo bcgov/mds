@@ -116,6 +116,7 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
   },
+  parts.clean(PATHS.build),
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
@@ -162,6 +163,14 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
-const prod = merge(commonConfig, prodConfig, { mode: "production" });
+module.exports = (mode) => {
+  if (mode === PRODUCTION) {
+    return merge(commonConfig, prodConfig, { mode });
+  }
+  const prod = merge(commonConfig, prodConfig, { mode: "production" });
 
+  if (mode === DEVELOPMENT) {
+    return merge(commonConfig, devConfig, { mode });
+  }
+};
 module.exports = prod;
