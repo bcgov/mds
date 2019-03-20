@@ -10,7 +10,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mb",
+        "name": "openjdk",
         "creationTimestamp": null,
         "labels": {
           "shared": "true"
@@ -22,11 +22,11 @@
         },
         "tags": [
           {
-            "name": "v0.31.2",
+            "name": "8-jdk-alpine",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "metabase/metabase:v0.31.2"
+              "name": "openjdk:8-jdk-alpine"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -80,7 +80,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "mb:v0.31.2"
+              "name": "openjdk:-jdk-alpine"
             }
           }
         },

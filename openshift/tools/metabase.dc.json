@@ -78,6 +78,18 @@
                   {
                     "name": "MB_PASSWORD_COMPLEXITY",
                     "value": "strong"
+                  },
+                  {
+                    "name": "MB_JETTY_HOST",
+                    "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "MB_DB_FILE",
+                    "value": "/app/data/metabase.db"
+                  },
+                  {
+                    "name": "MB_DB_TYPE",
+                    "value": "h2"
                   }
                 ],
                 "resources": {
