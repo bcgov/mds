@@ -27,11 +27,12 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         }
 
     @classmethod
-    def create_tailings_facility(cls, mine_guid, tailings_facility_name, user_kwargs):
-        new_mine = cls(
-            mine_guid=mine_guid,
-            mine_tailings_storage_facility_name=tailings_facility_name,
-            **user_kwargs)
+    def create(cls, mine_guid, tailings_facility_name, save=False):
+        new_tsf = cls(
+            mine_guid=mine_guid, mine_tailings_storage_facility_name=tailings_facility_name)
+        if save:
+            new_tsf.save(commit=False)
+        return new_tsf
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
