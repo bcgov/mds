@@ -25,7 +25,7 @@
             "name": "v0.31.2",
             "annotations": null,
             "from": {
-              "kind": "DockerImage",
+              "kind": "ImageStreamTag",
               "name": "docker.io/metabase/metabase:v0.31.2"
             },
             "importPolicy": {},
