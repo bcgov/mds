@@ -78,7 +78,6 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             upload_started_date=datetime.now(),
             file_display_name=filename,
             path_display_name=pretty_path,
-            **self.get_create_update_dict(),
         )
         document_info.save()
 

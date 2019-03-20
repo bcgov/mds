@@ -253,7 +253,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         mine_region = data['mine_region']
-        mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
+        mine = Mine(mine_guid=uuid.uuid4())
         try:
             # query the mine tables and check if that mine name exists
             self.throw_error_if_mine_exists(data['name'])
@@ -263,8 +263,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_name=data['name'],
                 mine_note=note if note else '',
                 major_mine_ind=major_mine_ind,
-                mine_region=mine_region,
-                **self.get_create_update_dict())
+                mine_region=mine_region)
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         mine.save()
@@ -274,8 +273,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
                 latitude=lat,
-                longitude=lon,
-                **self.get_create_update_dict())
+                longitude=lon)
             location.save()
             cache.delete(MINE_MAP_CACHE)
         mine_status = self.mine_status_processor(status, mine.mine_guid) if status else None
@@ -339,8 +337,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 tenure = MineralTenureXref(
                     mineral_tenure_xref_guid=uuid.uuid4(),
                     mine_guid=mine.mine_guid,
-                    tenure_number_id=tenure,
-                    **self.get_create_update_dict())
+                    tenure_number_id=tenure)
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
@@ -359,8 +356,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
                 latitude=lat,
-                longitude=lon,
-                **self.get_create_update_dict())
+                longitude=lon)
             location.save()
             cache.delete(MINE_MAP_CACHE)
 
