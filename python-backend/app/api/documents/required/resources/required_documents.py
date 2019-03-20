@@ -10,15 +10,22 @@ class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'req_doc_guid': 'Required Document guid.'})
     @requires_role_mine_view
     def get(self, req_doc_guid=None):
+        result = []
         if req_doc_guid:
             req_doc = RequiredDocument.find_by_req_doc_guid(req_doc_guid)
-            if req_doc:
-                return req_doc.json()
-            return self.create_error_payload(404, 'Required Document not found')
+            if not req_doc:
+                return self.create_error_payload(404, 'Required Document not found'), 404
+            result = req_doc.json()
+
         else:
-            search_category = request.args.get('category', None, type=str)
+            search_category = request.args.get('category')
+            search_sub_category = request.args.get('sub_category')
+
             if search_category:
-                req_docs = RequiredDocument.find_by_req_doc_category(search_category)
+                search_sub_category = search_sub_category.upper() if search_sub_category else None
+                req_docs = RequiredDocument.find_by_req_doc_category(search_category.upper(),
+                                                                     search_sub_category)
             else:
                 req_docs = RequiredDocument.query.all()
-            return { 'required_documents' : list(map(lambda x: x.json(), req_docs))  }
+            result = {'required_documents': [x.json() for x in req_docs]}
+        return result

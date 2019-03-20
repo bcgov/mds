@@ -5,6 +5,15 @@ Runs at the end of each migration.
 NOTE: If you add a new entry here, don't forget to update the flask delete_data command
 ***/
 
+INSERT INTO mine_required_document_category
+    (
+    req_document_category,
+    description
+    )
+VALUES
+    ('TSF', 'Code required documents for mines with Tailings Storage Factilies'),
+    ('OTH', 'Other...')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_status_code
     (
@@ -17,6 +26,19 @@ INSERT INTO permit_status_code
 VALUES
     ('O', 'Open', 10, 'system-mds', 'system-mds'),
     ('C', 'Closed', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO application_status_code
+    (
+    application_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('RIP', 'In Review', 10, 'system-mds', 'system-mds'),
+    ('APR', 'Approved', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO party_type_code

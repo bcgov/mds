@@ -57,15 +57,10 @@ export class UploadedFilesList extends React.Component {
                 <Col span={3} className="right">
                   <Popconfirm
                     placement="top"
-                    title={
-                      <div>
-                        <p className="p-large">Are you sure you want to remove this file?</p>
-                        <br />
-                        <p className="p">
-                          If it is not attached to any other reports it will be deleted.
-                        </p>
-                      </div>
-                    }
+                    title={[
+                      <h3>Are you sure you want to remove this file?</h3>,
+                      <p>If it is not attached to any other reports it will be deleted.</p>,
+                    ]}
                     okText="Yes"
                     cancelText="No"
                     onConfirm={(event) =>

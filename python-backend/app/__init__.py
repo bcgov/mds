@@ -4,10 +4,11 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource
+from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 
 from app.api.parties.namespace.parties import api as parties_api
+from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
 from app.api.permits.namespace.permits import api as permits_api
 from app.api.documents.namespace.documents import api as document_api
@@ -41,7 +42,10 @@ def create_app(test_config=None):
 def register_extensions(app):
 
     api.app = app
+    # Overriding swaggerUI base path to serve content under a prefix
+    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
+
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
@@ -55,7 +59,7 @@ def register_extensions(app):
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_NRIS_jobs(app)
-            #This is here to prevent this from running in production until we are confident in the permit data.
+            # This is here to prevent this from running in production until we are confident in the permit data.
             if app.config.get('ENVIRONMENT_NAME') == 'test':
                 _schedule_ETL_jobs(app)
 
@@ -72,6 +76,7 @@ def register_routes(app):
     api.add_namespace(document_api)
     api.add_namespace(document_manager_api)
     api.add_namespace(users_api)
+    api.add_namespace(applications_api)
 
     # Healthcheck endpoint
     @api.route('/health')

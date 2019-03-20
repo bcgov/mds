@@ -78,76 +78,54 @@ ShallowWrapper {
             <div
               className="inline-flex"
             >
-              <Connect(AuthorizationWrapper)
-                inDevelopment={true}
+              <Link
+                replace={false}
+                to="/dashboard/mines/?page=1&per_page=25"
               >
-                <span
-                  style={
-                    Object {
-                      "height": "100%",
-                    }
-                  }
+                <Button
+                  block={false}
+                  className="menu__btn--link"
+                  ghost={false}
+                  id=""
+                  loading={false}
+                  prefixCls="ant-btn"
                 >
-                  <Link
-                    replace={false}
-                    to="/dashboard/mines/?page=1&per_page=25"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      id=""
-                      loading={false}
-                      prefixCls="ant-btn"
-                    >
-                      <img
-                        alt="Mine"
-                        className="padding-small--right"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
-                          }
-                        }
-                      />
-                      Mines
-                    </Button>
-                  </Link>
-                  <Link
-                    replace={false}
-                    to="/dashboard/contacts/?page=1&per_page=25"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      id=""
-                      loading={false}
-                      prefixCls="ant-btn"
-                    >
-                      <img
-                        alt="team"
-                        className="padding-small--right icon-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
-                          }
-                        }
-                      />
-                      Contacts
-                    </Button>
-                  </Link>
-                </span>
-              </Connect(AuthorizationWrapper)>
+                  <img
+                    alt="Mine"
+                    className="padding-small--right vertical-align-sm"
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                  />
+                  Mines
+                </Button>
+              </Link>
+              <Link
+                replace={false}
+                to="/dashboard/contacts/?page=1&per_page=25"
+              >
+                <Button
+                  block={false}
+                  className="menu__btn--link"
+                  ghost={false}
+                  id=""
+                  loading={false}
+                  prefixCls="ant-btn"
+                >
+                  <img
+                    alt="team"
+                    className="padding-small--right icon-sm vertical-align-sm"
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                  />
+                  Contacts
+                </Button>
+              </Link>
               <Connect(AuthorizationWrapper)
                 permission="role_admin"
               >
@@ -165,15 +143,10 @@ ShallowWrapper {
                   >
                     <img
                       alt="Admin"
-                      className="padding-small--right icon-sm"
+                      className="padding-small--right icon-sm vertical-align-sm"
                       src={
                         Object {
                           "process": [Function],
-                        }
-                      }
-                      style={
-                        Object {
-                          "verticalAlign": "-0.125em",
                         }
                       }
                     />
@@ -298,76 +271,54 @@ ShallowWrapper {
               <div
                 className="inline-flex"
               >
-                <Connect(AuthorizationWrapper)
-                  inDevelopment={true}
+                <Link
+                  replace={false}
+                  to="/dashboard/mines/?page=1&per_page=25"
                 >
-                  <span
-                    style={
-                      Object {
-                        "height": "100%",
-                      }
-                    }
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
                   >
-                    <Link
-                      replace={false}
-                      to="/dashboard/mines/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="Mine"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Mines
-                      </Button>
-                    </Link>
-                    <Link
-                      replace={false}
-                      to="/dashboard/contacts/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Contacts
-                      </Button>
-                    </Link>
-                  </span>
-                </Connect(AuthorizationWrapper)>
+                    <img
+                      alt="Mine"
+                      className="padding-small--right vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Mines
+                  </Button>
+                </Link>
+                <Link
+                  replace={false}
+                  to="/dashboard/contacts/?page=1&per_page=25"
+                >
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
+                  >
+                    <img
+                      alt="team"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Contacts
+                  </Button>
+                </Link>
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
@@ -385,15 +336,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -577,76 +523,54 @@ ShallowWrapper {
               "children": <div
                 className="inline-flex"
               >
-                <Connect(AuthorizationWrapper)
-                  inDevelopment={true}
+                <Link
+                  replace={false}
+                  to="/dashboard/mines/?page=1&per_page=25"
                 >
-                  <span
-                    style={
-                      Object {
-                        "height": "100%",
-                      }
-                    }
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
                   >
-                    <Link
-                      replace={false}
-                      to="/dashboard/mines/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="Mine"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Mines
-                      </Button>
-                    </Link>
-                    <Link
-                      replace={false}
-                      to="/dashboard/contacts/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Contacts
-                      </Button>
-                    </Link>
-                  </span>
-                </Connect(AuthorizationWrapper)>
+                    <img
+                      alt="Mine"
+                      className="padding-small--right vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Mines
+                  </Button>
+                </Link>
+                <Link
+                  replace={false}
+                  to="/dashboard/contacts/?page=1&per_page=25"
+                >
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
+                  >
+                    <img
+                      alt="team"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Contacts
+                  </Button>
+                </Link>
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
@@ -664,15 +588,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -739,76 +658,54 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": Array [
-                  <Connect(AuthorizationWrapper)
-                    inDevelopment={true}
+                  <Link
+                    replace={false}
+                    to="/dashboard/mines/?page=1&per_page=25"
                   >
-                    <span
-                      style={
-                        Object {
-                          "height": "100%",
-                        }
-                      }
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
                     >
-                      <Link
-                        replace={false}
-                        to="/dashboard/mines/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="Mine"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Mines
-                        </Button>
-                      </Link>
-                      <Link
-                        replace={false}
-                        to="/dashboard/contacts/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="team"
-                            className="padding-small--right icon-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Contacts
-                        </Button>
-                      </Link>
-                    </span>
-                  </Connect(AuthorizationWrapper)>,
+                      <img
+                        alt="Mine"
+                        className="padding-small--right vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Mines
+                    </Button>
+                  </Link>,
+                  <Link
+                    replace={false}
+                    to="/dashboard/contacts/?page=1&per_page=25"
+                  >
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
+                    >
+                      <img
+                        alt="team"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Contacts
+                    </Button>
+                  </Link>,
                   <Connect(AuthorizationWrapper)
                     permission="role_admin"
                   >
@@ -826,15 +723,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -900,324 +792,148 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <span
-                      style={
-                        Object {
-                          "height": "100%",
-                        }
-                      }
+                    "children": <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
                     >
-                      <Link
-                        replace={false}
-                        to="/dashboard/mines/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="Mine"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Mines
-                        </Button>
-                      </Link>
-                      <Link
-                        replace={false}
-                        to="/dashboard/contacts/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="team"
-                            className="padding-small--right icon-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Contacts
-                        </Button>
-                      </Link>
-                    </span>,
-                    "inDevelopment": true,
+                      <img
+                        alt="Mine"
+                        className="padding-small--right vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Mines
+                    </Button>,
+                    "replace": false,
+                    "to": "/dashboard/mines/?page=1&per_page=25",
                   },
                   "ref": null,
                   "rendered": Object {
                     "instance": null,
                     "key": undefined,
-                    "nodeType": "host",
+                    "nodeType": "class",
                     "props": Object {
+                      "block": false,
                       "children": Array [
-                        <Link
-                          replace={false}
-                          to="/dashboard/mines/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="Mine"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Mines
-                          </Button>
-                        </Link>,
-                        <Link
-                          replace={false}
-                          to="/dashboard/contacts/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="team"
-                              className="padding-small--right icon-sm"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Contacts
-                          </Button>
-                        </Link>,
+                        <img
+                          alt="Mine"
+                          className="padding-small--right vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />,
+                        "Mines",
                       ],
-                      "style": Object {
-                        "height": "100%",
-                      },
+                      "className": "menu__btn--link",
+                      "ghost": false,
+                      "id": "",
+                      "loading": false,
+                      "prefixCls": "ant-btn",
                     },
                     "ref": null,
                     "rendered": Array [
                       Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "class",
+                        "nodeType": "host",
                         "props": Object {
-                          "children": <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="Mine"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Mines
-                          </Button>,
-                          "replace": false,
-                          "to": "/dashboard/mines/?page=1&per_page=25",
+                          "alt": "Mine",
+                          "className": "padding-small--right vertical-align-sm",
+                          "src": Object {
+                            "process": [Function],
+                          },
                         },
                         "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "block": false,
-                            "children": Array [
-                              <img
-                                alt="Mine"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />,
-                              "Mines",
-                            ],
-                            "className": "menu__btn--link",
-                            "ghost": false,
-                            "id": "",
-                            "loading": false,
-                            "prefixCls": "ant-btn",
-                          },
-                          "ref": null,
-                          "rendered": Array [
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "alt": "Mine",
-                                "className": "padding-small--right",
-                                "src": Object {
-                                  "process": [Function],
-                                },
-                                "style": Object {
-                                  "verticalAlign": "-0.125em",
-                                },
-                              },
-                              "ref": null,
-                              "rendered": null,
-                              "type": "img",
-                            },
-                            "Mines",
-                          ],
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                        "rendered": null,
+                        "type": "img",
                       },
+                      "Mines",
+                    ],
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
+                    >
+                      <img
+                        alt="team"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Contacts
+                    </Button>,
+                    "replace": false,
+                    "to": "/dashboard/contacts/?page=1&per_page=25",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": false,
+                      "children": Array [
+                        <img
+                          alt="team"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />,
+                        "Contacts",
+                      ],
+                      "className": "menu__btn--link",
+                      "ghost": false,
+                      "id": "",
+                      "loading": false,
+                      "prefixCls": "ant-btn",
+                    },
+                    "ref": null,
+                    "rendered": Array [
                       Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "class",
+                        "nodeType": "host",
                         "props": Object {
-                          "children": <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="team"
-                              className="padding-small--right icon-sm"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Contacts
-                          </Button>,
-                          "replace": false,
-                          "to": "/dashboard/contacts/?page=1&per_page=25",
+                          "alt": "team",
+                          "className": "padding-small--right icon-sm vertical-align-sm",
+                          "src": Object {
+                            "process": [Function],
+                          },
                         },
                         "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "block": false,
-                            "children": Array [
-                              <img
-                                alt="team"
-                                className="padding-small--right icon-sm"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />,
-                              "Contacts",
-                            ],
-                            "className": "menu__btn--link",
-                            "ghost": false,
-                            "id": "",
-                            "loading": false,
-                            "prefixCls": "ant-btn",
-                          },
-                          "ref": null,
-                          "rendered": Array [
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "alt": "team",
-                                "className": "padding-small--right icon-sm",
-                                "src": Object {
-                                  "process": [Function],
-                                },
-                                "style": Object {
-                                  "verticalAlign": "-0.125em",
-                                },
-                              },
-                              "ref": null,
-                              "rendered": null,
-                              "type": "img",
-                            },
-                            "Contacts",
-                          ],
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                        "rendered": null,
+                        "type": "img",
                       },
+                      "Contacts",
                     ],
-                    "type": "span",
+                    "type": [Function],
                   },
                   "type": [Function],
                 },
@@ -1240,15 +956,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1273,15 +984,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -1300,15 +1006,10 @@ ShallowWrapper {
                         "children": Array [
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />,
@@ -1328,12 +1029,9 @@ ShallowWrapper {
                           "nodeType": "host",
                           "props": Object {
                             "alt": "Admin",
-                            "className": "padding-small--right icon-sm",
+                            "className": "padding-small--right icon-sm vertical-align-sm",
                             "src": Object {
                               "process": [Function],
-                            },
-                            "style": Object {
-                              "verticalAlign": "-0.125em",
                             },
                           },
                           "ref": null,
@@ -1554,76 +1252,54 @@ ShallowWrapper {
               <div
                 className="inline-flex"
               >
-                <Connect(AuthorizationWrapper)
-                  inDevelopment={true}
+                <Link
+                  replace={false}
+                  to="/dashboard/mines/?page=1&per_page=25"
                 >
-                  <span
-                    style={
-                      Object {
-                        "height": "100%",
-                      }
-                    }
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
                   >
-                    <Link
-                      replace={false}
-                      to="/dashboard/mines/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="Mine"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Mines
-                      </Button>
-                    </Link>
-                    <Link
-                      replace={false}
-                      to="/dashboard/contacts/?page=1&per_page=25"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        id=""
-                        loading={false}
-                        prefixCls="ant-btn"
-                      >
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
-                            }
-                          }
-                        />
-                        Contacts
-                      </Button>
-                    </Link>
-                  </span>
-                </Connect(AuthorizationWrapper)>
+                    <img
+                      alt="Mine"
+                      className="padding-small--right vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Mines
+                  </Button>
+                </Link>
+                <Link
+                  replace={false}
+                  to="/dashboard/contacts/?page=1&per_page=25"
+                >
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    id=""
+                    loading={false}
+                    prefixCls="ant-btn"
+                  >
+                    <img
+                      alt="team"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Contacts
+                  </Button>
+                </Link>
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
@@ -1641,15 +1317,10 @@ ShallowWrapper {
                     >
                       <img
                         alt="Admin"
-                        className="padding-small--right icon-sm"
+                        className="padding-small--right icon-sm vertical-align-sm"
                         src={
                           Object {
                             "process": [Function],
-                          }
-                        }
-                        style={
-                          Object {
-                            "verticalAlign": "-0.125em",
                           }
                         }
                       />
@@ -1774,76 +1445,54 @@ ShallowWrapper {
                 <div
                   className="inline-flex"
                 >
-                  <Connect(AuthorizationWrapper)
-                    inDevelopment={true}
+                  <Link
+                    replace={false}
+                    to="/dashboard/mines/?page=1&per_page=25"
                   >
-                    <span
-                      style={
-                        Object {
-                          "height": "100%",
-                        }
-                      }
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
                     >
-                      <Link
-                        replace={false}
-                        to="/dashboard/mines/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="Mine"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Mines
-                        </Button>
-                      </Link>
-                      <Link
-                        replace={false}
-                        to="/dashboard/contacts/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="team"
-                            className="padding-small--right icon-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Contacts
-                        </Button>
-                      </Link>
-                    </span>
-                  </Connect(AuthorizationWrapper)>
+                      <img
+                        alt="Mine"
+                        className="padding-small--right vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Mines
+                    </Button>
+                  </Link>
+                  <Link
+                    replace={false}
+                    to="/dashboard/contacts/?page=1&per_page=25"
+                  >
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
+                    >
+                      <img
+                        alt="team"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Contacts
+                    </Button>
+                  </Link>
                   <Connect(AuthorizationWrapper)
                     permission="role_admin"
                   >
@@ -1861,15 +1510,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -2053,76 +1697,54 @@ ShallowWrapper {
                 "children": <div
                   className="inline-flex"
                 >
-                  <Connect(AuthorizationWrapper)
-                    inDevelopment={true}
+                  <Link
+                    replace={false}
+                    to="/dashboard/mines/?page=1&per_page=25"
                   >
-                    <span
-                      style={
-                        Object {
-                          "height": "100%",
-                        }
-                      }
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
                     >
-                      <Link
-                        replace={false}
-                        to="/dashboard/mines/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="Mine"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Mines
-                        </Button>
-                      </Link>
-                      <Link
-                        replace={false}
-                        to="/dashboard/contacts/?page=1&per_page=25"
-                      >
-                        <Button
-                          block={false}
-                          className="menu__btn--link"
-                          ghost={false}
-                          id=""
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <img
-                            alt="team"
-                            className="padding-small--right icon-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
-                              }
-                            }
-                          />
-                          Contacts
-                        </Button>
-                      </Link>
-                    </span>
-                  </Connect(AuthorizationWrapper)>
+                      <img
+                        alt="Mine"
+                        className="padding-small--right vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Mines
+                    </Button>
+                  </Link>
+                  <Link
+                    replace={false}
+                    to="/dashboard/contacts/?page=1&per_page=25"
+                  >
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      id=""
+                      loading={false}
+                      prefixCls="ant-btn"
+                    >
+                      <img
+                        alt="team"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Contacts
+                    </Button>
+                  </Link>
                   <Connect(AuthorizationWrapper)
                     permission="role_admin"
                   >
@@ -2140,15 +1762,10 @@ ShallowWrapper {
                       >
                         <img
                           alt="Admin"
-                          className="padding-small--right icon-sm"
+                          className="padding-small--right icon-sm vertical-align-sm"
                           src={
                             Object {
                               "process": [Function],
-                            }
-                          }
-                          style={
-                            Object {
-                              "verticalAlign": "-0.125em",
                             }
                           }
                         />
@@ -2215,76 +1832,54 @@ ShallowWrapper {
                 "nodeType": "host",
                 "props": Object {
                   "children": Array [
-                    <Connect(AuthorizationWrapper)
-                      inDevelopment={true}
+                    <Link
+                      replace={false}
+                      to="/dashboard/mines/?page=1&per_page=25"
                     >
-                      <span
-                        style={
-                          Object {
-                            "height": "100%",
-                          }
-                        }
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        id=""
+                        loading={false}
+                        prefixCls="ant-btn"
                       >
-                        <Link
-                          replace={false}
-                          to="/dashboard/mines/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="Mine"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Mines
-                          </Button>
-                        </Link>
-                        <Link
-                          replace={false}
-                          to="/dashboard/contacts/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="team"
-                              className="padding-small--right icon-sm"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Contacts
-                          </Button>
-                        </Link>
-                      </span>
-                    </Connect(AuthorizationWrapper)>,
+                        <img
+                          alt="Mine"
+                          className="padding-small--right vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Mines
+                      </Button>
+                    </Link>,
+                    <Link
+                      replace={false}
+                      to="/dashboard/contacts/?page=1&per_page=25"
+                    >
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        id=""
+                        loading={false}
+                        prefixCls="ant-btn"
+                      >
+                        <img
+                          alt="team"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Contacts
+                      </Button>
+                    </Link>,
                     <Connect(AuthorizationWrapper)
                       permission="role_admin"
                     >
@@ -2302,15 +1897,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2376,324 +1966,148 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <span
-                        style={
-                          Object {
-                            "height": "100%",
-                          }
-                        }
+                      "children": <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        id=""
+                        loading={false}
+                        prefixCls="ant-btn"
                       >
-                        <Link
-                          replace={false}
-                          to="/dashboard/mines/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="Mine"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Mines
-                          </Button>
-                        </Link>
-                        <Link
-                          replace={false}
-                          to="/dashboard/contacts/?page=1&per_page=25"
-                        >
-                          <Button
-                            block={false}
-                            className="menu__btn--link"
-                            ghost={false}
-                            id=""
-                            loading={false}
-                            prefixCls="ant-btn"
-                          >
-                            <img
-                              alt="team"
-                              className="padding-small--right icon-sm"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
-                                }
-                              }
-                            />
-                            Contacts
-                          </Button>
-                        </Link>
-                      </span>,
-                      "inDevelopment": true,
+                        <img
+                          alt="Mine"
+                          className="padding-small--right vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Mines
+                      </Button>,
+                      "replace": false,
+                      "to": "/dashboard/mines/?page=1&per_page=25",
                     },
                     "ref": null,
                     "rendered": Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "host",
+                      "nodeType": "class",
                       "props": Object {
+                        "block": false,
                         "children": Array [
-                          <Link
-                            replace={false}
-                            to="/dashboard/mines/?page=1&per_page=25"
-                          >
-                            <Button
-                              block={false}
-                              className="menu__btn--link"
-                              ghost={false}
-                              id=""
-                              loading={false}
-                              prefixCls="ant-btn"
-                            >
-                              <img
-                                alt="Mine"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />
-                              Mines
-                            </Button>
-                          </Link>,
-                          <Link
-                            replace={false}
-                            to="/dashboard/contacts/?page=1&per_page=25"
-                          >
-                            <Button
-                              block={false}
-                              className="menu__btn--link"
-                              ghost={false}
-                              id=""
-                              loading={false}
-                              prefixCls="ant-btn"
-                            >
-                              <img
-                                alt="team"
-                                className="padding-small--right icon-sm"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />
-                              Contacts
-                            </Button>
-                          </Link>,
+                          <img
+                            alt="Mine"
+                            className="padding-small--right vertical-align-sm"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />,
+                          "Mines",
                         ],
-                        "style": Object {
-                          "height": "100%",
-                        },
+                        "className": "menu__btn--link",
+                        "ghost": false,
+                        "id": "",
+                        "loading": false,
+                        "prefixCls": "ant-btn",
                       },
                       "ref": null,
                       "rendered": Array [
                         Object {
                           "instance": null,
                           "key": undefined,
-                          "nodeType": "class",
+                          "nodeType": "host",
                           "props": Object {
-                            "children": <Button
-                              block={false}
-                              className="menu__btn--link"
-                              ghost={false}
-                              id=""
-                              loading={false}
-                              prefixCls="ant-btn"
-                            >
-                              <img
-                                alt="Mine"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />
-                              Mines
-                            </Button>,
-                            "replace": false,
-                            "to": "/dashboard/mines/?page=1&per_page=25",
+                            "alt": "Mine",
+                            "className": "padding-small--right vertical-align-sm",
+                            "src": Object {
+                              "process": [Function],
+                            },
                           },
                           "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "class",
-                            "props": Object {
-                              "block": false,
-                              "children": Array [
-                                <img
-                                  alt="Mine"
-                                  className="padding-small--right"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  style={
-                                    Object {
-                                      "verticalAlign": "-0.125em",
-                                    }
-                                  }
-                                />,
-                                "Mines",
-                              ],
-                              "className": "menu__btn--link",
-                              "ghost": false,
-                              "id": "",
-                              "loading": false,
-                              "prefixCls": "ant-btn",
-                            },
-                            "ref": null,
-                            "rendered": Array [
-                              Object {
-                                "instance": null,
-                                "key": undefined,
-                                "nodeType": "host",
-                                "props": Object {
-                                  "alt": "Mine",
-                                  "className": "padding-small--right",
-                                  "src": Object {
-                                    "process": [Function],
-                                  },
-                                  "style": Object {
-                                    "verticalAlign": "-0.125em",
-                                  },
-                                },
-                                "ref": null,
-                                "rendered": null,
-                                "type": "img",
-                              },
-                              "Mines",
-                            ],
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                          "rendered": null,
+                          "type": "img",
                         },
+                        "Mines",
+                      ],
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        id=""
+                        loading={false}
+                        prefixCls="ant-btn"
+                      >
+                        <img
+                          alt="team"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Contacts
+                      </Button>,
+                      "replace": false,
+                      "to": "/dashboard/contacts/?page=1&per_page=25",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "block": false,
+                        "children": Array [
+                          <img
+                            alt="team"
+                            className="padding-small--right icon-sm vertical-align-sm"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />,
+                          "Contacts",
+                        ],
+                        "className": "menu__btn--link",
+                        "ghost": false,
+                        "id": "",
+                        "loading": false,
+                        "prefixCls": "ant-btn",
+                      },
+                      "ref": null,
+                      "rendered": Array [
                         Object {
                           "instance": null,
                           "key": undefined,
-                          "nodeType": "class",
+                          "nodeType": "host",
                           "props": Object {
-                            "children": <Button
-                              block={false}
-                              className="menu__btn--link"
-                              ghost={false}
-                              id=""
-                              loading={false}
-                              prefixCls="ant-btn"
-                            >
-                              <img
-                                alt="team"
-                                className="padding-small--right icon-sm"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                style={
-                                  Object {
-                                    "verticalAlign": "-0.125em",
-                                  }
-                                }
-                              />
-                              Contacts
-                            </Button>,
-                            "replace": false,
-                            "to": "/dashboard/contacts/?page=1&per_page=25",
+                            "alt": "team",
+                            "className": "padding-small--right icon-sm vertical-align-sm",
+                            "src": Object {
+                              "process": [Function],
+                            },
                           },
                           "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "class",
-                            "props": Object {
-                              "block": false,
-                              "children": Array [
-                                <img
-                                  alt="team"
-                                  className="padding-small--right icon-sm"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  style={
-                                    Object {
-                                      "verticalAlign": "-0.125em",
-                                    }
-                                  }
-                                />,
-                                "Contacts",
-                              ],
-                              "className": "menu__btn--link",
-                              "ghost": false,
-                              "id": "",
-                              "loading": false,
-                              "prefixCls": "ant-btn",
-                            },
-                            "ref": null,
-                            "rendered": Array [
-                              Object {
-                                "instance": null,
-                                "key": undefined,
-                                "nodeType": "host",
-                                "props": Object {
-                                  "alt": "team",
-                                  "className": "padding-small--right icon-sm",
-                                  "src": Object {
-                                    "process": [Function],
-                                  },
-                                  "style": Object {
-                                    "verticalAlign": "-0.125em",
-                                  },
-                                },
-                                "ref": null,
-                                "rendered": null,
-                                "type": "img",
-                              },
-                              "Contacts",
-                            ],
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                          "rendered": null,
+                          "type": "img",
                         },
+                        "Contacts",
                       ],
-                      "type": "span",
+                      "type": [Function],
                     },
                     "type": [Function],
                   },
@@ -2716,15 +2130,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2749,15 +2158,10 @@ ShallowWrapper {
                         >
                           <img
                             alt="Admin"
-                            className="padding-small--right icon-sm"
+                            className="padding-small--right icon-sm vertical-align-sm"
                             src={
                               Object {
                                 "process": [Function],
-                              }
-                            }
-                            style={
-                              Object {
-                                "verticalAlign": "-0.125em",
                               }
                             }
                           />
@@ -2776,15 +2180,10 @@ ShallowWrapper {
                           "children": Array [
                             <img
                               alt="Admin"
-                              className="padding-small--right icon-sm"
+                              className="padding-small--right icon-sm vertical-align-sm"
                               src={
                                 Object {
                                   "process": [Function],
-                                }
-                              }
-                              style={
-                                Object {
-                                  "verticalAlign": "-0.125em",
                                 }
                               }
                             />,
@@ -2804,12 +2203,9 @@ ShallowWrapper {
                             "nodeType": "host",
                             "props": Object {
                               "alt": "Admin",
-                              "className": "padding-small--right icon-sm",
+                              "className": "padding-small--right icon-sm vertical-align-sm",
                               "src": Object {
                                 "process": [Function],
-                              },
-                              "style": Object {
-                                "verticalAlign": "-0.125em",
                               },
                             },
                             "ref": null,

@@ -220,7 +220,7 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
@@ -244,7 +244,7 @@ app {
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
-                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint}",
+                            'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
 
@@ -256,6 +256,7 @@ app {
                             'NAME':"mds-nginx",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
+                            'LOG_PVC_SIZE':"${vars.LOG_PVC_SIZE}",
                             'CPU_REQUEST':"${vars.resources.nginx.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.nginx.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.nginx.memory_request}",
@@ -321,13 +322,15 @@ environments {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_PVC_SIZE = '1Gi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
             keycloak {
                 clientId = "mines-application-dev"
                 resource = "mines-application-dev"
-                idpHint = "dev"
+                idpHint_core = "dev"
+                idpHint_minespace = "dev"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
@@ -406,7 +409,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = "/${vars.git.changeId}"
+                    PATH = "/${vars.git.changeId}/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
@@ -422,13 +425,15 @@ environments {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             BACKUP_PVC_SIZE = '1Gi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
             keycloak {
                 clientId = "mines-application-test"
                 resource = "mines-application-test"
-                idpHint = "idir"
+                idpHint_core = "idir"
+                idpHint_minespace = "bceid"
                 url = "https://sso-test.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
@@ -507,7 +512,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = ""
+                    PATH = "/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
@@ -624,6 +629,7 @@ environments {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
             BACKUP_PVC_SIZE = '50Gi'
+            LOG_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -674,7 +680,8 @@ environments {
             keycloak {
                 clientId = "mines-application-prod"
                 resource = "mines-application-prod"
-                idpHint = "idir"
+                idpHint_core = "idir"
+                idpHint_minespace = "bceid"
                 url = "https://sso.pathfinder.gov.bc.ca/auth"
                 known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logon.gov.bc.ca"
@@ -709,7 +716,7 @@ environments {
                 }
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = ""
+                    PATH = "/api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"

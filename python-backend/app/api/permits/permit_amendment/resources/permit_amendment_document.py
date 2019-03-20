@@ -24,6 +24,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
+    parser.add_argument('mine_guid', type=str)
     #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
 
     @api.doc(
@@ -32,23 +33,32 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             'Required: The guid of the permit amendment that this upload will be attached to.'
         })
     @requires_role_mine_create
-    def post(self, permit_amendment_guid, permit_guid=None):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-        if not permit_amendment:
-            return self.create_error_payload(404, 'Permit amendment not found'), 404
-
+    def post(self, permit_guid=None, document_guid=None):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             return self.create_error_payload(400,
                                              'Filename not found in request metadata header'), 400
 
-        folder, pretty_folder = self._parse_upload_folders(permit_amendment)
+        mine_guid = request.args.get('mine_guid')
+
+        try:
+            #check formatting
+            uuid.UUID(mine_guid)
+            valid_guid = True
+        except:
+            valid_guid = False
+
+        if not mine_guid or not valid_guid:
+            return self.create_error_payload(400, 'valid mine_guid is required'), 400
+
+        folder, pretty_folder = self._parse_upload_folders(mine_guid)
         data = {
             'folder': folder,
             'pretty_folder': pretty_folder,
             'filename': metadata.get('filename')
         }
-        document_manager_URL = get_document_manager_svc_url()
+
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
 
         resp = requests.post(
             url=document_manager_URL,
@@ -106,9 +116,9 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
 
         return ('', 204)
 
-    def _parse_upload_folders(self, permit_amendment):
-        folder = f'mines/{str(permit_amendment.mine_guid)}/permits'
-        pretty_folder = f'mines/{permit_amendment.mine_guid}/permits'
+    def _parse_upload_folders(self, mine_guid):
+        folder = f'mines/{str(mine_guid)}/permits'
+        pretty_folder = f'mines/{mine_guid}/permits'
 
         return folder, pretty_folder
 

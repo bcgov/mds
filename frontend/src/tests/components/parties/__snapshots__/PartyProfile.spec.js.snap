@@ -4,6 +4,7 @@ exports[`PartyProfile renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <PartyProfile
+    closrModal={[MockFunction]}
     fetchMineBasicInfoList={[MockFunction]}
     fetchPartyById={
       [MockFunction] {
@@ -27,6 +28,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchProvinceCodes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     match={
       Object {
         "isExact": true,
@@ -42,6 +50,7 @@ ShallowWrapper {
         "db059bf5-14aa-4b98-af67-9c1e635a6120": "mockMineName",
       }
     }
+    openModal={[MockFunction]}
     parties={
       Object {
         "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -66,6 +75,19 @@ ShallowWrapper {
       }
     }
     partyRelationships={Array []}
+    provinceOptions={
+      Array [
+        Object {
+          "label": "BC",
+          "value": "BC",
+        },
+        Object {
+          "label": "AB",
+          "value": "AB",
+        },
+      ]
+    }
+    updateParty={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
