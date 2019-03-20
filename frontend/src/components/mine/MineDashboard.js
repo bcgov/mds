@@ -20,6 +20,7 @@ import {
   fetchApplicationStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
+import { createVariance, fetchVariancesById } from "@/actionCreators/varianceActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
@@ -34,11 +35,11 @@ import {
 } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
-
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
+import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -104,6 +105,7 @@ export class MineDashboard extends Component {
       this.props.setOptionsLoaded();
     }
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+    this.props.fetchVariancesById();
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -185,6 +187,17 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
+                <TabPane tab="Variance" key="variance">
+                  <div className="tab__content">
+                    <MineVariance
+                      mine={mine}
+                      createVariance={this.props.createVariance}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                      fetchVariancesById={this.props.fetchVariancesById}
+                    />
+                  </div>
+                </TabPane>
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">
@@ -241,6 +254,8 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
+      createVariance,
+      fetchVariancesById,
     },
     dispatch
   );

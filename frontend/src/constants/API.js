@@ -52,3 +52,6 @@ export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
   `${PERMIT()}/amendments/${permitAmendmentGuid}/documents`;
 
 export const APPLICATIONS = "/applications";
+
+// variances
+export const VARIANCE = (mineGuid) => `/variance/${mineGuid}`;

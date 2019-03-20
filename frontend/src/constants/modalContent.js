@@ -26,3 +26,5 @@ export const EDIT_PERMIT = "Edit Permit";
 
 export const ADD_APPLICATION = "Add Application";
 export const Edit_APPLICATION = "Edit Application";
+
+export const ADD_VARIANCE = (mineName) => `Add Variance to ${mineName}`;
