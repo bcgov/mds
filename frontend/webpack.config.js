@@ -116,6 +116,7 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
+
     plugins: [new HardSourceWebpackPlugin()],
   },
   parts.clean(PATHS.build),

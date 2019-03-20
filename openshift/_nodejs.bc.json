@@ -168,7 +168,7 @@
         },
         "resources": {
           "limits": {
-            "cpu": "4",
+            "cpu": "2",
             "memory": "2Gi"
           },
           "requests": {
@@ -241,7 +241,7 @@
         },
         "resources": {
           "limits": {
-            "cpu": "4",
+            "cpu": "2",
             "memory": "2Gi"
           },
           "requests": {
