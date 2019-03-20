@@ -5,6 +5,3 @@ RUN chown -R 1001:0 /app && \
     chmod -R ug+rwx /app
 
 USER 1001
-
-# run it
-ENTRYPOINT ["/app/bin/start"]
