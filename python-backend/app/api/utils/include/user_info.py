@@ -10,6 +10,9 @@ DUMMY_AUTH_CLAIMS = {
     "preferred_username": "mds",
     "email": "test-email",
     "given_name": "test-given-name",
+    "realm_access": {
+        "roles": []
+    }
 }
 
 
