@@ -120,7 +120,7 @@ const prodConfig = merge([
     plugins: [
       new HardSourceWebpackPlugin(),
       new HardSourceWebpackPlugin.ParallelModulePlugin({
-        numWorkers: () => 10,
+        numWorkers: 4,
       }),
     ],
   },

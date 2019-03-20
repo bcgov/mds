@@ -241,7 +241,7 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
+            "cpu": "4",
             "memory": "1Gi"
           },
           "requests": {
