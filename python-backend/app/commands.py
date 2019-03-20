@@ -134,48 +134,6 @@ def register_commands(app):
                 db.session.rollback()
                 raise
 
-    @app.cli.command()
-    def delete_data():
-        from . import auth
-        auth.apply_security = False
-
-        meta = db.metadata
-        for table in reversed(meta.sorted_tables):
-            if 'view' in table.name:
-                continue
-            db.session.execute(table.delete())
-        # Reseed Mandatory Data
-        PermitStatusCode.create_mine_permit_status_code('O', 'Open permit', 10, DUMMY_USER_KWARGS)
-        PermitStatusCode.create_mine_permit_status_code('C', 'Closed permit', 20, DUMMY_USER_KWARGS)
-        PartyTypeCode.create_party_type_code('PER', 'Person', 10, DUMMY_USER_KWARGS)
-        PartyTypeCode.create_party_type_code('ORG', 'Organzation', 20, DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS.items():
-            MineOperationStatusCode.create_mine_operation_status_code(v['value'], v['label'], 1,
-                                                                      DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS_REASON.items():
-            MineOperationStatusReasonCode.create_mine_operation_status_reason_code(
-                v['value'], v['label'], 1, DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
-            MineOperationStatusSubReasonCode.create_mine_operation_status_sub_reason_code(
-                v['value'], v['label'], 1, DUMMY_USER_KWARGS)
-
-        display_order = 10
-        for item in MINE_REGION_OPTIONS:
-            MineRegionCode.create_mine_region_code(item['value'], item['label'], display_order,
-                                                   random_date(), random_date(), DUMMY_USER_KWARGS)
-            display_order += 10
-
-        try:
-            db.session.commit()
-            click.echo(f'Database has been cleared.')
-        except DBAPIError:
-            db.session.rollback()
-            click.echo(f'Error, failed on commit.')
-            raise
-
     if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
         @sched.app.cli.command()
