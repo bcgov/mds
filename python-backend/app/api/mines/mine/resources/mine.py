@@ -221,8 +221,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             _mine_status = MineStatus(
                 mine_status_guid=uuid.uuid4(),
                 mine_guid=mine_guid,
-                mine_status_xref_guid=mine_status_xref.mine_status_xref_guid,
-                **self.get_create_update_dict())
+                mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         _mine_status.save()
@@ -235,7 +234,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mines_name_query = Mine.query.filter(name_filter)
             mines_with_name = mines_name_query.all()
             if len(mines_with_name) > 0:
-                self.raise_error(400, 'A mine with that name already exists. The Mine No. is %s' % mines_with_name[0].mine_no)
+                self.raise_error(
+                    400, 'A mine with that name already exists. The Mine No. is %s' %
+                    mines_with_name[0].mine_no)
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -255,7 +256,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
         try:
             # query the mine tables and check if that mine name exists
-            self.throw_error_if_mine_exists( data['name'])
+            self.throw_error_if_mine_exists(data['name'])
             mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
@@ -297,7 +298,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        mine_name =  data['name'].strip() if data['name'] else None
+        mine_name = data['name'].strip() if data['name'] else None
         mine_note = data['note']
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
@@ -370,9 +371,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
 
 class MineListSearch(Resource):
-    @api.doc(params={
-        'name': 'Search term in mine name.',
-        'term': 'Search term in mine name, mine number, and permit.'
+    @api.doc(
+        params={
+            'name': 'Search term in mine name.',
+            'term': 'Search term in mine name, mine number, and permit.'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
