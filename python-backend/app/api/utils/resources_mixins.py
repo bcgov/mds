@@ -7,9 +7,6 @@ class UserMixin(object):
         user = User()
         return user.get_user_username()
 
-    def get_create_update_dict(self):
-        return {'create_user': self.get_user_info(), 'update_user': self.get_user_info()}
-
     def get_update_user(self):
         return self.get_user_info()
 

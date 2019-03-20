@@ -104,8 +104,7 @@ def register_commands(app):
                 prev_party_guid = party.party_guid if party else None
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
                                         random_mine_category(), random_region(), DUMMY_USER_KWARGS)
-                MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
-                                          DUMMY_USER_KWARGS)
+                MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes))
                 MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
 
                 first_name = names.get_first_name()
