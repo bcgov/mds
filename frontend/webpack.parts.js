@@ -47,7 +47,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
           {
             loader: "thread-loader",
             options: {
-              workerParallelJobs: 50,
+              workerParallelJobs: 25,
               workerNodeArgs: ["--max-old-space-size=1024"],
             },
           },

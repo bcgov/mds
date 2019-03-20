@@ -7,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
 const AntdScssThemePlugin = require("antd-scss-theme-plugin");
@@ -46,7 +47,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
           {
             loader: "thread-loader",
             options: {
-              workerParallelJobs: 50,
+              workerParallelJobs: 25,
               workerNodeArgs: ["--max-old-space-size=1024"],
             },
           },
