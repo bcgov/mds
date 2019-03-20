@@ -16,10 +16,6 @@ from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
 from .api.permits.permit.models.permit import Permit
-from .api.permits.permit.models.permit_status_code import PermitStatusCode
-from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
-from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
-from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
