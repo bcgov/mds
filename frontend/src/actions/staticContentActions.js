@@ -49,3 +49,8 @@ export const storePermitStatusOptions = (payload) => ({
   type: ActionTypes.STORE_PERMIT_STATUS_OPTIONS,
   payload,
 });
+
+export const storeApplicationStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_APPLICATION_STATUS_OPTIONS,
+  payload,
+});

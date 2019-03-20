@@ -5,6 +5,7 @@ import {
   fetchParties,
   fetchPartyById,
   downloadMineManagerHistory,
+  updateParty,
 } from "@/actionCreators/partiesActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -44,6 +45,33 @@ describe("`createParty` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return createParty(mockPayload)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateParty` action creator", () => {
+  const mockPayload = {
+    first_name: "mockName",
+    party_name: "mockSurname",
+  };
+  const partyGuid = "475837594";
+  const url = `${ENVIRONMENT.apiUrl + API.PARTY}/${partyGuid}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return updateParty(mockPayload, partyGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    return updateParty(mockPayload, partyGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

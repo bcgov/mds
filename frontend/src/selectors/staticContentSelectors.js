@@ -13,6 +13,7 @@ export const {
   getOptionsLoaded,
   getProvinceOptions,
   getPermitStatusOptions,
+  getApplicationStatusOptions,
 } = staticContentReducer;
 
 export const getMineTenureTypesHash = createSelector(
@@ -87,4 +88,9 @@ export const getDropdownProvinceOptions = createSelector(
 export const getDropdownPermitStatusOptions = createSelector(
   [getPermitStatusOptions],
   (options) => createDropDownList(options, "description", "permit_status_code")
+);
+
+export const getDropdownApplicationStatusOptions = createSelector(
+  [getApplicationStatusOptions],
+  (options) => createDropDownList(options, "description", "application_status_code")
 );
