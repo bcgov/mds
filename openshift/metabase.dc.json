@@ -6,6 +6,36 @@
   },
   "objects": [
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "metabase-dockerhub",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "${IMAGE_VERSION}",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "docker.io/metabase/metabase:${IMAGE_VERSION}"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Source"
+            }
+          }
+        ]
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -25,8 +55,7 @@
               "containerNames": ["app"],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "metabase:${IMAGE_VERSION}",
-                "namespace": "metabase"
+                "name": "metabase-dockerhub:${IMAGE_VERSION}"
               }
             }
           },
