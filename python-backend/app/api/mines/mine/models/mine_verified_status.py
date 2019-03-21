@@ -29,7 +29,10 @@ class MineVerifiedStatus(Base):
         onupdate=datetime.datetime.now)
 
     mine = db.relationship(
-        'Mine', backref=backref("verified_status", uselist=False), lazy='joined', uselist=False)
+        'Mine',
+        backref=backref("verified_status", uselist=False, lazy='joined'),
+        lazy='select',
+        uselist=False)
 
     def json(self):
         return {
