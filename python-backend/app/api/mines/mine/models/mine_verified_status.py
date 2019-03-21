@@ -11,12 +11,16 @@ from app.api.utils.include.user_info import User
 class MineVerifiedStatus(Base):
     __tablename__ = 'mine_verified_status'
 
-    mine_verified_status_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    mine_verified_status_id = db.Column(
+        db.Integer, primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    healthy_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    healthy_ind = db.Column(db.Boolean, nullable=False,
+                            server_default=FetchedValue())
 
-    verifying_user = db.Column(db.String, nullable=False, default=User().get_user_username)
-    verifying_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    verifying_user = db.Column(
+        db.String, nullable=False, default=User().get_user_username)
+    verifying_timestamp = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     update_user = db.Column(
         db.String(60),
         nullable=False,
@@ -32,16 +36,20 @@ class MineVerifiedStatus(Base):
 
     def json(self):
         return {
+            'mine_guid': str(self.mine_guid),
             'healthy': self.healthy_ind,
             'verifying_user': self.verifying_user,
-            'verifying_timestamp':
-            str(self.verifying_timestamp) if self.verifying_timestamp else None,
+            'verifying_timestamp': str(self.verifying_timestamp)
         }
 
     @classmethod
-    def find_by_mine_guid(cls, _id):
+    def find_by_mine_guid(cls, mine_guid):
         try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).first()
+            uuid.UUID(mine_guid, version=4)
+            return cls.query.filter_by(mine_guid=mine_guid).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_user_id(cls, user_id):
+        return cls.query.filter_by(verifying_user=user_id).all()
