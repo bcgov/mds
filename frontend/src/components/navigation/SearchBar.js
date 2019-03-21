@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Input } from "antd";
+import SearchBarDropdown from "@/components/navigation/SearchBarDropdown";
 
 const Search = Input.Search;
 
@@ -21,7 +22,16 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <div style={this.state.isSelected ? { width: "400px" } : { width: "200px" }}>
+      <div
+        style={{
+          width: "30vw",
+          minWidth: "350px",
+          marginLeft: "auto",
+          marginTop: "auto",
+          marginBottom: "auto",
+          paddingRight: "20px",
+        }}
+      >
         <Search
           onFocus={() =>
             this.setState({
@@ -37,6 +47,7 @@ export class SearchBar extends Component {
           onSearch={(value) => console.log(value)}
           size="large"
         />
+        <SearchBarDropdown />
       </div>
     );
   }

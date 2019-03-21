@@ -235,10 +235,8 @@ export class NavBar extends Component {
               <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
             </Button>
           </MediaQuery>
-          <div className="menu">
-            <SearchBar />
-            <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
-          </div>
+          <SearchBar />
+          <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
         </div>
         <MediaQuery maxWidth={768}>{this.renderHamburgerNav()}</MediaQuery>
       </div>
