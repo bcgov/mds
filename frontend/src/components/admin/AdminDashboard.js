@@ -63,7 +63,7 @@ export class AdminDashboard extends Component {
             </Col>
             <Col sm={20} md={12} lg={6}>
               <div>
-                <p>Healthy Mines</p>
+                <p>Verified Mines</p>
                 {this.props.healthyMines.length > 0 &&
                   this.props.healthyMines.map((healthyMine) => (
                     <div key={healthyMine.mine_guid}>
@@ -76,7 +76,7 @@ export class AdminDashboard extends Component {
             </Col>
             <Col sm={20} md={12} lg={6}>
               <div>
-                <p>Unhealthy Mines</p>
+                <p>Mines Needing Re-Verification</p>
                 {this.props.unhealthyMines.length > 0 &&
                   this.props.unhealthyMines.map((unhealthyMine) => (
                     <div key={unhealthyMine.mine_guid}>
