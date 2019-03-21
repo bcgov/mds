@@ -20,17 +20,6 @@ class Application(AuditMixin, Base):
     description = db.Column(db.String)
     recieved_date = db.Column(db.DateTime, nullable=False)
 
-    swagger_model = api.model(
-        'Application', {
-            'application_id': fields.Integer,
-            'mine_guid': fields.String,
-            'application_guid': fields.String,
-            'application_no': fields.String,
-            'application_status_code': fields.String,
-            'description': fields.String,
-            'received_date': fields.String,
-        })
-
     def __repr__(self):
         return '<Application %r>' % self.party_guid
 

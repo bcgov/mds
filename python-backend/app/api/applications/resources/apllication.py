@@ -1,6 +1,7 @@
 from flask_restplus import Resource, reqparse, fields
 from flask import request
 from datetime import datetime
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from ..models.application import Application
@@ -23,15 +24,21 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'description', type=str, help='Application description', store_missing=False)
 
-    @api.marshal_with(Application.swagger_model, code=200, description='Success', as_list=True)
+    application_model = api.model(
+        'Application', {
+            'application_no': fields.String,
+            'application_status_code': fields.String,
+            'description': fields.String,
+            'received_date': fields.DateTime,
+        })
+
+    @api.marshal_with(application_model, envelope='applications', code=200)
     @api.doc(
+        description=
+        'This endpoint returns a list of applications and can be accessed with either and application guid or a mine guid.',
         params={
             'application_guid': 'Application guid to find a specific application.',
             '?mine_guid': 'A mine guid to find all applications associated with.'
-        },
-        responses={
-            404: 'Not Found',
-            400: 'Bad Request',
         })
     @requires_role_mine_view
     def get(self, application_guid=None):
@@ -40,15 +47,13 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         if application_guid:
             application = Application.find_by_application_guid(application_guid)
             if not application:
-                result = self.create_error_payload(404, 'Application not found'), 404
+                raise NotFound('Application not found')
             else:
-                result = application.json()
+                result = application
         elif mine_guid:
-            applications = Application.find_by_mine_guid(mine_guid)
-            result = [app.json() for app in applications]
+            result = Application.find_by_mine_guid(mine_guid)
         else:
-            result = self.create_error_payload(
-                400, 'An application guid or a mine guid mus be provided.'), 400
+            raise BadRequest('An application guid or a mine guid must be provided.')
         return result
 
     @requires_role_mine_create
