@@ -80,7 +80,8 @@ class Mine(AuditMixin, Base):
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verification': self.verification.json() if self.verification else None, 
         }
 
     def json_for_list(self):

@@ -38,6 +38,14 @@ class MineVerifiedStatus(Base):
 
     mine = db.relationship('Mine', backref='verification', lazy='joined')
 
+    def json(self):
+        return {
+            'healthy': self.healthy_ind,
+            'verifying_user': self.verifying_user,
+            'verifying_timestamp':
+            str(self.verifying_timestamp) if self.verifying_timestamp else None,
+        }
+
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
