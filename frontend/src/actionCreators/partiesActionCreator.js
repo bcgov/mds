@@ -32,6 +32,31 @@ export const createParty = (payload) => (dispatch) => {
     });
 };
 
+export const updateParty = (payload, partyGuid) => (dispatch) => {
+  const name = payload.first_name
+    ? `${payload.first_name}  ${payload.party_name}`
+    : payload.party_name;
+  dispatch(request(reducerTypes.UPDATE_PARTY));
+  dispatch(showLoading("modal"));
+  return axios
+    .put(`${ENVIRONMENT.apiUrl + API.PARTY}/${partyGuid}`, payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading("modal"));
+      notification.success({ message: `Successfully updated ${name}`, duration: 10 });
+      dispatch(success(reducerTypes.UPDATE_PARTY));
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UPDATE_PARTY));
+      dispatch(hideLoading("modal"));
+      throw new Error(err);
+    });
+};
+
 export const fetchParties = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading("modal"));

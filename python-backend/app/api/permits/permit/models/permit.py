@@ -24,7 +24,7 @@ class Permit(AuditMixin, Base):
         primaryjoin=
         "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
         order_by='desc(PermitAmendment.issue_date)',
-        lazy='selectin')
+        lazy='select')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
@@ -37,6 +37,15 @@ class Permit(AuditMixin, Base):
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
             'amendments': [x.json() for x in self.permit_amendments]
+        }
+
+    def json_for_list(self):
+        return {
+            'permit_id': str(self.permit_id),
+            'permit_guid': str(self.permit_guid),
+            'mine_guid': str(self.mine_guid),
+            'permit_no': self.permit_no,
+            'permit_status_code': self.permit_status_code
         }
 
     @classmethod

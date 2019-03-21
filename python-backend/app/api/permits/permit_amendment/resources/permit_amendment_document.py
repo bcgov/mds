@@ -57,7 +57,8 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             'pretty_folder': pretty_folder,
             'filename': metadata.get('filename')
         }
-        document_manager_URL = get_document_manager_svc_url()
+
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
 
         resp = requests.post(
             url=document_manager_URL,

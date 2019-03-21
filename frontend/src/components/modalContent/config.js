@@ -9,6 +9,7 @@ import AddPartyModal from "./AddPartyModal";
 import AddPermitModal from "./AddPermitModal";
 import PermitAmendmentModal from "./PermitAmendmentModal";
 import EditPermitModal from "./EditPermitModal";
+import EditPartyModal from "./EditPartyModal";
 import AddApplicationModal from "./AddApplicationModal";
 import EditApplicationModal from "./EditApplicationModal";
 
@@ -26,6 +27,7 @@ export const modalConfig = {
   ADD_PERMIT: AddPermitModal,
   PERMIT_AMENDMENT: PermitAmendmentModal,
   EDIT_PERMIT: EditPermitModal,
+  EDIT_PARTY: EditPartyModal,
   ADD_APPLICATION: AddApplicationModal,
   EDIT_APPLICATION: EditApplicationModal,
 };
