@@ -1,11 +1,10 @@
-from threading import Thread
+import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
 
-from app.extensions import db, api
+from app.extensions import db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -38,7 +37,6 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('search_types', type=str, help='Search types.')
 
     #Split search term on space?
-
     #@requires_role_mine_view
     def get(self):
         search_results = []
@@ -48,51 +46,37 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
         search_types = request.args.get('search_types', None, type=str)
         search_types = search_types.split(',') if search_types else []
 
-        # for type, type_config in search_targets.items():
-        #     search_results = search_results + execute_search(
-        #         search_term, type, type_config[0], type_config[1], type_config[2], type_config[3],
-        #         *type_config[4])
+        regex = re.compile(r'\'.*?\' | ".*?" | \S+ ', re.VERBOSE)
+        search_terms = regex.findall(search_term)
+        search_terms = [term.replace('"', '') for term in search_terms]
 
         with ThreadPoolExecutor() as executor:
             task_list = []
-            for type, type_config in search_targets.items():
-                task_list.append(
-                    executor.submit(execute_search, app, search_results, search_term, type,
-                                    type_config[0], type_config[1], type_config[2], type_config[3],
-                                    *type_config[4]))
-            for task in as_completed(task_list):
-                try:
-                    data = task.result()
-                except Exception as exc:
-                    current_app.logger.error(
-                        f'generated an exception: {exc} with search term - {search_term}')
-
-        # search_threads = [
-        #     Thread(
-        #         target=execute_search,
-        #         args=(app, search_results, search_term, type, type_config[0], type_config[1],
-        #               type_config[2], type_config[3], *type_config[4]))
-        #     for type, type_config in search_targets.items()
-        # ]
-
-        # for thread in search_threads:
-        #     thread.start()
-
-        # for thread in search_threads:
-        #     thread.join()
+            for term in search_terms:
+                for type, type_config in search_targets.items():
+                    task_list.append(
+                        executor.submit(execute_search, app, search_results, term, type,
+                                        type_config[0], type_config[1], type_config[2],
+                                        type_config[3], *type_config[4]))
+                for task in as_completed(task_list):
+                    try:
+                        data = task.result()
+                    except Exception as exc:
+                        current_app.logger.error(
+                            f'generated an exception: {exc} with search term - {search_term}')
 
         search_results.sort(key=lambda x: x.score, reverse=True)
 
         return {'search_results': [y.json() for y in search_results]}
 
 
-def execute_search(app, search_results, search_term, type, model, columns, has_deleted_ind,
+def execute_search(app, search_results, term, type, model, columns, has_deleted_ind,
                    json_function_name, *json_function_args):
     with app.app_context():
         for column in columns:
-            exact = db.session.query(model).filter(column.ilike(search_term))
-            starts_with = db.session.query(model).filter(column.ilike(f'{search_term}%'))
-            contains = db.session.query(model).filter(column.ilike(f'%{search_term}%'))
+            exact = db.session.query(model).filter(column.ilike(term))
+            starts_with = db.session.query(model).filter(column.ilike(f'{term}%'))
+            contains = db.session.query(model).filter(column.ilike(f'%{term}%'))
             #fuzzy = model.query.filter(
             #    text(f'{column}=={search_term}')
 
