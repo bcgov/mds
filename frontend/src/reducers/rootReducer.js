@@ -13,6 +13,7 @@ import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
 import applicationReducer from "@/reducers/applicationReducer";
+import searchReducer from "@/reducers/searchReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -26,6 +27,7 @@ export const reducerObject = {
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
+  [reducerTypes.SEARCH]: searchReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
