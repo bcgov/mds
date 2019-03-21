@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { StaticRouter } from "react-router";
+import { Link, StaticRouter } from "react-router-dom";
 import { Button } from "antd";
 
 const propTypes = {

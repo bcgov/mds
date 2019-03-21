@@ -25,9 +25,10 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openEditPermitModal: PropTypes.func.isRequired,
-  openEditAmendmentModal: PropTypes.func.isRequired,
   openAddPermitAmendmentModal: PropTypes.func.isRequired,
   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
+  // This prop is used. Linting issue is unclear
+  openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 };
 
 const defaultProps = {
