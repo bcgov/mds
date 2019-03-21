@@ -148,7 +148,11 @@ class MineHeader extends Component {
           <button
             type="button"
             className="full"
-            onClick={() => this.props.setMineVerifiedStatus(this.props.mine.guid, true)}
+            onClick={() =>
+              this.props
+                .setMineVerifiedStatus(this.props.mine.guid, true)
+                .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+            }
           >
             <img
               alt="checkmark"
@@ -164,7 +168,11 @@ class MineHeader extends Component {
           <button
             type="button"
             className="full"
-            onClick={() => this.props.setMineVerifiedStatus(this.props.mine.guid, false)}
+            onClick={() =>
+              this.props
+                .setMineVerifiedStatus(this.props.mine.guid, false)
+                .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+            }
           >
             <img
               alt="hazard"
