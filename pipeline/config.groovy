@@ -329,7 +329,7 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
-                            'ENVIRONMENT_NAME':"test",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
                             'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
@@ -405,10 +405,10 @@ environments {
                     memory_limit = "128Mi"
                 }
                 metabase {
-                    cpu_request = "150m"
-                    cpu_limit = "450m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
                 }
             }
             deployment {
