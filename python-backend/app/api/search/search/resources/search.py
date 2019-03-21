@@ -109,10 +109,11 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
                 search_results.append(
                     SearchResult(100, type,
                                  getattr(x, json_function_name)(*json_function_args)))
+
             for item in starts_with:
                 in_list = False
                 for item2 in search_results:
-                    if getattr(item, comparator) == item2.get('result').get(comparator):
+                    if str(getattr(item, comparator)) == item2.result.get(comparator):
                         in_list = True
                 if not in_list:
                     search_results.append(
@@ -122,7 +123,7 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
             for item in contains:
                 in_list = False
                 for item2 in search_results:
-                    if getattr(item, comparator) == item2.get('result').get(comparator):
+                    if str(getattr(item, comparator)) == item2.result.get(comparator):
                         in_list = True
                 if not in_list:
                     search_results.append(
