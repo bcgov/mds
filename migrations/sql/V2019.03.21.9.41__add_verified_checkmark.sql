@@ -4,6 +4,8 @@ CREATE TABLE mine_verified_status (
     active_ind boolean DEFAULT true NOT NULL,
     verifying_user character varying(60) NOT NULL,
     verifying_timestamp timestamp with time zone DEFAULT now(),
+    update_user character varying(60) NOT NULL,
+    update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 
     CONSTRAINT mine_unique UNIQUE (mine_guid) 
 );
