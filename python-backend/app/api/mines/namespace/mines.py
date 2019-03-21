@@ -32,4 +32,4 @@ api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
 api.add_resource(MineVerifiedStatusResource, '/verified-status',
-                 '/verified-status/<string:mine_guid>')
+                 '/<string:mine_guid>/verified-status')

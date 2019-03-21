@@ -30,7 +30,7 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
 
     @api.expect(parser)
     @requires_role_mine_create
-    def post(self, mine_guid=None):
+    def put(self, mine_guid=None):
         mine_guid = self.parser.parse_args()['mine_guid']
         if not mine_guid:
             raise BadRequest('Mine_guid not provided')
