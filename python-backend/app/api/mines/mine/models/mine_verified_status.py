@@ -35,3 +35,9 @@ class MineVerifiedStatus(Base):
         nullable=False,
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.now)
+
+    mine = db.relationship('Mine', backref='verification', lazy='joined')
+
+    @classmethod
+    def find_by_mine_guid(cls, mine_guid):
+        return cls.query.filter_by(mine_guid=mine_guid).first()
