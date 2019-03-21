@@ -25,8 +25,7 @@ class Party(AuditMixin, Base):
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    # todo figure out how to use the deleted indicator!!!
-    deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     suite_no = db.Column(db.String, nullable=True)
     address_line_1 = db.Column(db.String, nullable=True)
@@ -86,14 +85,15 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_party_guid(cls, _id):
-        return cls.query.filter_by(party_guid=_id).first()
+        return cls.query.filter_by(party_guid=_id, deleted_ind=False).first()
 
     @classmethod
     def find_by_name(cls, party_name, first_name=None):
         party_type_code = 'PER' if first_name else 'ORG'
         filters = [
             func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == party_type_code
+            cls.party_type_code == party_type_code,
+            cls.deleted_ind == False
         ]
         if first_name:
             filters.append(func.lower(cls.first_name) == func.lower(first_name))
@@ -104,9 +104,9 @@ class Party(AuditMixin, Base):
         _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
             return cls.query.filter(
-                cls.party_type_code == party_type).filter(_filter_by_name).limit(query_limit)
+                cls.party_type_code == party_type).filter(_filter_by_name).filter(cls.deleted_ind == False).limit(query_limit)
         else:
-            return cls.query.filter(_filter_by_name).limit(query_limit)
+            return cls.query.filter(_filter_by_name).filter(cls.deleted_ind == False).limit(query_limit)
 
     @classmethod
     def create(cls,
