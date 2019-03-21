@@ -39,5 +39,9 @@ class MineVerifiedStatus(Base):
     mine = db.relationship('Mine', backref='verification', lazy='joined')
 
     @classmethod
-    def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).first()
+    def find_by_mine_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_guid=_id).first()
+        except ValueError:
+            return None
