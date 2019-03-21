@@ -150,10 +150,5 @@
   },
   "browserslist": [
     "> 0.1%"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-push": "npm test"
-    }
-  }
+  ]
 }

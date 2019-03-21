@@ -380,11 +380,12 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
     });
 };
 
+// MineVeriifcationStatus
 export const fetchMineVerifiedStatus = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
   dispatch(showLoading());
   return axios
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(params)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
       dispatch(mineActions.storeMineVerifiedStatuses(response.data));
@@ -398,5 +399,26 @@ export const fetchMineVerifiedStatus = (params = {}) => (dispatch) => {
       });
       dispatch(error(reducerTypes.GET_MINE_VERIFIED_STATUS));
       dispatch(hideLoading());
+    });
+};
+
+export const setMineVerifiedStatus = (mine_guid, healthy) => (dispatch) => {
+  dispatch(request(reducerTypes.SET_MINE_VERIFIED_STATUS));
+  return axios
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(mine_guid)}`,
+      { healthy },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.SET_MINE_VERIFIED_STATUS));
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS));
     });
 };

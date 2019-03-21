@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
@@ -9,8 +11,8 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
-  SUCCESS_CHECKMARK,
   YELLOW_HAZARD,
+  SUCCESS_CHECKMARK,
 } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -18,6 +20,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import { setMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -28,6 +31,7 @@ const propTypes = {
   updateMineRecord: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
+  setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -138,6 +142,38 @@ class MineHeader extends Component {
           >
             <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
+          </button>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <button
+            type="button"
+            className="full"
+            onClick={() => this.props.setMineVerifiedStatus(this.props.mine.guid, true)}
+          >
+            <img
+              alt="checkmark"
+              className="padding-small"
+              src={SUCCESS_CHECKMARK}
+              height="35"
+              width="35"
+            />
+            Verify Mine Data
+          </button>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <button
+            type="button"
+            className="full"
+            onClick={() => this.props.setMineVerifiedStatus(this.props.mine.guid, false)}
+          >
+            <img
+              alt="hazard"
+              className="padding-small"
+              src={YELLOW_HAZARD}
+              height="35"
+              width="35"
+            />
+            Unverify Mine Data
           </button>
         </Menu.Item>
       </Menu>
@@ -317,6 +353,17 @@ class MineHeader extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setMineVerifiedStatus,
+    },
+    dispatch
+  );
+
 MineHeader.propTypes = propTypes;
 
-export default MineHeader;
+export default connect(
+  null,
+  mapDispatchToProps
+)(MineHeader);
