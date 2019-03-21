@@ -54,6 +54,25 @@
       }
     },
     {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${METABASE_PVC_SIZE}"
+          }
+        }
+      }
+    },
+    {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
@@ -107,6 +126,7 @@
         },
         "template": {
           "metadata": {
+            "name": "${NAME}${SUFFIX}",
             "labels": {
               "name": "${NAME}${SUFFIX}"
             }
@@ -121,6 +141,11 @@
                     "containerPort": 3000,
                     "protocol": "TCP"
                   }
+                ],
+                "command": [
+                  "bash",
+                  "-c",
+                  "cd /app && if [[ $ENVIRONMENT_NAME == 'dev' ]]; then tail -f /dev/null; else java -jar metabase.jar; fi"
                 ],
                 "env": [
                   {
@@ -140,6 +165,10 @@
                     "value": "h2"
                   },
                   {
+                    "name": "ENVIRONMENT_NAME",
+                    "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
                     "name": "MB_ENCRYPTION_SECRET_KEY",
                     "valueFrom": {
                       "secretKeyRef": {
@@ -147,6 +176,12 @@
                         "key": "database-password"
                       }
                     }
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/app/data",
+                    "name": "${NAME}${SUFFIX}-data"
                   }
                 ],
                 "resources": {
@@ -162,6 +197,14 @@
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {}
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${NAME}{SUFFIX}"
+                }
               }
             ],
             "restartPolicy": "Always",
@@ -189,6 +232,10 @@
       "value": "1.5Gi"
     },
     {
+      "name": "ENVIRONMENT_NAME",
+      "value": "dev"
+    },
+    {
       "name": "NAME",
       "displayName": "Object names",
       "description": "The name of the OpenShift objects.",
@@ -207,6 +254,10 @@
     },
     {
       "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "METABASE_PVC_SIZE",
       "required": true
     },
     {

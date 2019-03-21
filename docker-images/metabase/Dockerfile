@@ -8,7 +8,7 @@ ENV LC_CTYPE en_US.UTF-8
 RUN apk add --update bash git wget make gettext ttf-dejavu fontconfig java-cacerts
 
 # add Metabase jar
-RUN wget http://downloads.metabase.com/v0.31.2/metabase.jar
+RUN wget -q http://downloads.metabase.com/v0.31.2/metabase.jar
 
 # create the plugins directory, with writable permissions
 RUN chmod -R 777 /app

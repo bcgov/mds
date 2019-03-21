@@ -328,7 +328,12 @@ app {
                             'NAME':"metabase",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'ENVIRONMENT_NAME':"test",
                             'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
                     ]
                 ]
         ]
@@ -396,6 +401,12 @@ environments {
                     cpu_limit = "5m"
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
+                }
+                metabase {
+                    cpu_request = "150m"
+                    cpu_limit = "450m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {
@@ -503,6 +514,12 @@ environments {
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
+                metabase {
+                    cpu_request = "200m"
+                    cpu_limit = "500m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
             }
             deployment {
                 env {
@@ -599,6 +616,12 @@ environments {
                     cpu_limit = "450m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                }
+                metabase {
+                    cpu_request = "500m"
+                    cpu_limit = "1"
+                    memory_request = "2Gi"
+                    memory_limit = "4Gi"
                 }
             }
             keycloak {
