@@ -1,10 +1,11 @@
 from threading import Thread
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from flask_restplus import Resource, reqparse
 from datetime import datetime
-from flask import current_app, request
+from flask import request, current_app
 
-from app.extensions import api
+from app.extensions import db, api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -41,63 +42,74 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     #@requires_role_mine_view
     def get(self):
         search_results = []
+        app = current_app._get_current_object()
 
-        search_term = request.args.get('search_term', None, type=str)    
+        search_term = request.args.get('search_term', None, type=str)
         search_types = request.args.get('search_types', None, type=str)
         search_types = search_types.split(',') if search_types else []
 
+        # for type, type_config in search_targets.items():
+        #     search_results = search_results + execute_search(
+        #         search_term, type, type_config[0], type_config[1], type_config[2], type_config[3],
+        #         *type_config[4])
 
-        for type, type_config in search_targets.items():
-            search_results = search_results + execute_search(
-                search_term, type, type_config[0], type_config[1], type_config[2], type_config[3],
-                *type_config[4])
+        with ThreadPoolExecutor() as executor:
+            task_list = []
+            for type, type_config in search_targets.items():
+                task_list.append(
+                    executor.submit(execute_search, app, search_results, search_term, type,
+                                    type_config[0], type_config[1], type_config[2], type_config[3],
+                                    *type_config[4]))
+            for task in as_completed(task_list):
+                try:
+                    data = task.result()
+                except Exception as exc:
+                    current_app.logger.error(
+                        f'generated an exception: {exc} with search term - {search_term}')
 
-        #thread = Thread(target=lambda: results.append(number))
-        #search_threads = [
-        #    Thread(
-        #        target=execute_search,
-        #        args=(search_results, search_term, type, type_config[0], type_config[1],
-        #              type_config[2], type_config[3], *type_config[4]))
-        #    for type, type_config in search_targets.items()
-        #]
+        # search_threads = [
+        #     Thread(
+        #         target=execute_search,
+        #         args=(app, search_results, search_term, type, type_config[0], type_config[1],
+        #               type_config[2], type_config[3], *type_config[4]))
+        #     for type, type_config in search_targets.items()
+        # ]
 
-        #for thread in search_threads:
-        #    thread.start()
+        # for thread in search_threads:
+        #     thread.start()
 
-        #for thread in search_threads:
-        #    thread.join()
+        # for thread in search_threads:
+        #     thread.join()
 
         search_results.sort(key=lambda x: x.score, reverse=True)
 
         return {'search_results': [y.json() for y in search_results]}
 
 
-def execute_search(search_term, type, model, columns, has_deleted_ind, json_function_name,
-                   *json_function_args):
-    results = []
-    for column in columns:
-        exact = model.query.filter(column.ilike(search_term))
-        starts_with = model.query.filter(column.ilike(f'{search_term}%'))
-        contains = model.query.filter(column.ilike(f'%{search_term}%'))
-        #fuzzy = model.query.filter(
-        #    text(f'{column}=={search_term}')
+def execute_search(app, search_results, search_term, type, model, columns, has_deleted_ind,
+                   json_function_name, *json_function_args):
+    with app.app_context():
+        for column in columns:
+            exact = db.session.query(model).filter(column.ilike(search_term))
+            starts_with = db.session.query(model).filter(column.ilike(f'{search_term}%'))
+            contains = db.session.query(model).filter(column.ilike(f'%{search_term}%'))
+            #fuzzy = model.query.filter(
+            #    text(f'{column}=={search_term}')
 
-        if has_deleted_ind:
-            exact = exact.filter_by(deleted_ind=False)
-            starts_with = starts_with.filter_by(deleted_ind=False)
-            contains = contains.filter_by(deleted_ind=False)
+            if has_deleted_ind:
+                exact = exact.filter_by(deleted_ind=False)
+                starts_with = starts_with.filter_by(deleted_ind=False)
+                contains = contains.filter_by(deleted_ind=False)
 
-        for x in exact.limit(5):
-            results.append(
-                SearchResult(100, type,
-                             getattr(x, json_function_name)(*json_function_args)))
-        for x in starts_with.limit(5):
-            results.append(
-                SearchResult(50, type,
-                             getattr(x, json_function_name)(*json_function_args)))
-        for x in contains.limit(5):
-            results.append(
-                SearchResult(25, type,
-                             getattr(x, json_function_name)(*json_function_args)))
-
-    return results
+            for x in exact.limit(5):
+                search_results.append(
+                    SearchResult(100, type,
+                                 getattr(x, json_function_name)(*json_function_args)))
+            for x in starts_with.limit(5):
+                search_results.append(
+                    SearchResult(50, type,
+                                 getattr(x, json_function_name)(*json_function_args)))
+            for x in contains.limit(5):
+                search_results.append(
+                    SearchResult(25, type,
+                                 getattr(x, json_function_name)(*json_function_args)))
