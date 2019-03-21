@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Input, Button } from "antd";
+import { Input, Button, Row, Col } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
+import { Link } from "react-router-dom";
 
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
@@ -53,7 +55,22 @@ export class AdminDashboard extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <h1>Admin View</h1>
+          <Row>
+            <Col sm={22} md={14} lg={12}>
+              <h1>Admin View</h1>
+            </Col>
+            <Col sm={22} md={14} lg={12}>
+              {this.props.healthyMines.len > 0 &&
+                this.props.healthyMines.map((healthyMine) => (
+                  <div>
+                    <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
+                      {healthyMine.mine_name}
+                    </Link>
+                    )
+                  </div>
+                ))}
+            </Col>
+          </Row>
         </div>
         <div className="landing-page__content">
           <div className="tab__content">
