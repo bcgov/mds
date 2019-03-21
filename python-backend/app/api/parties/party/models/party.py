@@ -25,6 +25,8 @@ class Party(AuditMixin, Base):
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
+    # todo figure out how to use the deleted indicator!!!
+    deleted_ind = db.Column(db.Boolean, nullable=False, default=True)
 
     suite_no = db.Column(db.String, nullable=True)
     address_line_1 = db.Column(db.String, nullable=True)

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import * as Strings from "@/constants/strings";
-import { Tabs, Icon, Table, Button } from "antd";
+import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq } from "lodash";
 import {
   fetchPartyById,
@@ -85,7 +85,6 @@ export class PartyProfile extends Component {
       ...party.address[0],
       email: party.email && party.email !== "Unknown" ? party.email : null,
     };
-
     event.preventDefault();
     this.props.openModal({
       props: { onSubmit, title, isPerson, initialValues, provinceOptions },
@@ -101,6 +100,16 @@ export class PartyProfile extends Component {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
+  };
+
+  deleteParty = () => {
+    // delete the party, it's roles, and navigate back to the contacts page!
+    const { id } = this.props.match.params;
+    console.log("***********THE PARTY WAS DELETED*********");
+    // this.props.updateParty(values, id).then(() => {
+    //   this.props.fetchPartyById(id);
+    //   this.props.closeModal();
+    // });
   };
 
   render() {
@@ -150,24 +159,41 @@ export class PartyProfile extends Component {
           <div className="profile__header">
             <div className="inline-flex between">
               <h1>{formatedName}</h1>
-              <AuthorizationWrapper permission={Permission.CREATE}>
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    this.openEditPartyModal(
-                      event,
-                      parties,
-                      this.editParty,
-                      ModalContent.EDIT_PARTY(formatedName),
-                      isPerson,
-                      this.props.provinceOptions
-                    )
-                  }
-                >
-                  <img alt="pencil" className="padding-small--right" src={EDIT} />
-                  Update Party
-                </Button>
-              </AuthorizationWrapper>
+              <div>
+                <AuthorizationWrapper permission={Permission.ADMIN}>
+                  <Popconfirm
+                    placement="bottom"
+                    title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
+                     remove the party and all associated roles.`}
+                    onConfirm={this.deleteParty()}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="ghost" style={{ color: "#BC2929", borderColor: "#BC2929" }}>
+                      <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+                      Delete Party
+                    </Button>
+                  </Popconfirm>
+                </AuthorizationWrapper>
+                <AuthorizationWrapper permission={Permission.CREATE}>
+                  <Button
+                    type="primary"
+                    onClick={(event) =>
+                      this.openEditPartyModal(
+                        event,
+                        parties,
+                        this.editParty,
+                        ModalContent.EDIT_PARTY(formatedName),
+                        isPerson,
+                        this.props.provinceOptions
+                      )
+                    }
+                  >
+                    <img alt="pencil" className="padding-small--right" src={EDIT} />
+                    Update Party
+                  </Button>
+                </AuthorizationWrapper>
+              </div>
             </div>
             <div className="inline-flex">
               <div className="padding-right">

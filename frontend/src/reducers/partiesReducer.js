@@ -43,6 +43,10 @@ const partiesReducer = (state = initialState, action) => {
         ...state,
         partyRelationships: action.payload,
       };
+    case actionTypes.DELETE_PARTY:
+      return {
+        ...state,
+      };
     default:
       return state;
   }

@@ -6,7 +6,7 @@ from sqlalchemy.exc import DBAPIError
 
 from ..models.party import Party
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -161,3 +161,6 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: {}'.format(e))
 
         return existing_party.json()
+
+    @requires_role_mine_admin
+    def delete(self, party_guid):
