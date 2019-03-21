@@ -379,3 +379,24 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const fetchMineVerifiedStatus = (params = {}) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
+  dispatch(showLoading());
+  return axios
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(params)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
+      dispatch(mineActions.storeMineVerifiedStatuses(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINE_VERIFIED_STATUS));
+      dispatch(hideLoading());
+    });
+};

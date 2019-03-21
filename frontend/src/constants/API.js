@@ -40,6 +40,8 @@ export const MINE_MANAGER_HISTORY = (mineNo) =>
 export const MINESPACE_USER = "/users/minespace";
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
+export const MINE_VERIFIED_STATUS = (params) =>
+  params ? `/mines/verified-status?${queryString.stringify(params)}` : "/mines/verified-status";
 // permits
 export const PERMIT = (params) =>
   params ? `/permits?${queryString.stringify(params)}` : "/permits";

@@ -1,13 +1,22 @@
 import React, { Component } from "react";
 import { Input, Button } from "antd";
+import { compose, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
 
+import { fetchMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
+import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
+
+const propTypes = {
+  unhealthyMines: PropTypes.array,
+  healthyMines: PropTypes.array,
+};
 
 export class AdminDashboard extends Component {
   constructor(props) {
@@ -53,4 +62,25 @@ export class AdminDashboard extends Component {
   }
 }
 
-export default AuthorizationGuard(Permission.ADMIN)(AdminDashboard);
+const mapStateToProps = (state) => ({
+  unhealthyMines: getUnhealthyMines(state),
+  healthyMines: getHealthyMines(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineVerifiedStatus,
+    },
+    dispatch
+  );
+
+AdminDashboard.propTypes = propTypes;
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  AuthorizationGuard(Permission.ADMIN) // isPublic === true
+)(AdminDashboard);
