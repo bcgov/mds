@@ -15,6 +15,7 @@ const propTypes = {
     "manager-small",
     "tenure",
     "permit",
+    "variance",
     "no-results",
     "unauthorized",
     "view-mine-manager",
@@ -66,6 +67,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_PERMIT}</h3>
+      </div>
+    )}
+    {props.type === "variance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_VARIANCE}</h3>
       </div>
     )}
     {props.type === "no-results" && (

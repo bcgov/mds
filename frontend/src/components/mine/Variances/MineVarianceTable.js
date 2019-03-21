@@ -79,7 +79,7 @@ const MineVarianceTable = (props) => (
       align="left"
       pagination={false}
       columns={columns}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
+      locale={{ emptyText: <NullScreen type="variance" /> }}
       // dataSource={}
     />
   </div>

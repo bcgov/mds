@@ -184,8 +184,9 @@ export class MinePermitInfo extends Component {
   render() {
     return [
       <div>
-        <div className="inline-flex flex-end">
-          <AuthorizationWrapper inTesting>
+        <div className="inline-flex between">
+          <div />
+          <div className="inline-flex between">
             <AuthorizationWrapper
               permission={Permission.CREATE}
               isMajorMine={this.props.mine.major_mine_ind}
@@ -204,7 +205,7 @@ export class MinePermitInfo extends Component {
                 Add a New Permit
               </Button>
             </AuthorizationWrapper>
-          </AuthorizationWrapper>
+          </div>
         </div>
       </div>,
       <br />,
