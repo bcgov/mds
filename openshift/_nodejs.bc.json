@@ -241,11 +241,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "1.5",
+            "cpu": "1",
             "memory": "1Gi"
           },
           "requests": {
-            "cpu": "500m",
+            "cpu": "1",
             "memory": "512Mi"
           }
         },
