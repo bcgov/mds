@@ -12,8 +12,6 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 
 
 class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-
     @requires_role_mine_view
     def get(self):
         user_id = request.args.get('user_id')
