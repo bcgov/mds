@@ -3,6 +3,7 @@ from datetime import datetime
 from werkzeug.exceptions import *
 from flask_restplus import Resource, reqparse
 from app.extensions import api
+from flask import request
 
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin

@@ -18,6 +18,12 @@ import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
 const propTypes = {
   unhealthyMines: PropTypes.array,
   healthyMines: PropTypes.array,
+  fetchMineVerifiedStatus: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  unhealthyMines: [],
+  healthyMines: [],
 };
 
 export class AdminDashboard extends Component {
@@ -26,6 +32,10 @@ export class AdminDashboard extends Component {
     this.state = {
       mineNo: "",
     };
+  }
+
+  componentWillMount() {
+    this.props.fetchMineVerifiedStatus();
   }
 
   handleChange = (e) => {
@@ -78,6 +88,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 AdminDashboard.propTypes = propTypes;
+AdminDashboard.defaultProps = defaultProps;
 
 export default compose(
   connect(
