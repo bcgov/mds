@@ -84,8 +84,9 @@ def register_routes(app):
         def get(self):
             return {'success': 'true'}
 
-    # Default error handler to propagate lower level errors up to the API level
-    @api.errorhandler
+    @api.errorhandler(Exception)
     def default_error_handler(error):
-        _, value, traceback = sys.exc_info()
-        return json.loads({"error": str(traceback)})
+        return {
+            'status': getattr(error, 'code', 500),
+            'message': str(error)
+        }, getattr(error, 'code', 500)

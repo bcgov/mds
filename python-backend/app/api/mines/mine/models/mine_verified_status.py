@@ -15,16 +15,8 @@ class MineVerifiedStatus(Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     healthy_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    verifying_user = db.Column(
-        db.String,
-        nullable=False,
-        default=User().get_user_username,
-        onupdate=User().get_user_username)
-    verifying_timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.datetime.utcnow,
-        onupdate=datetime.datetime.now)
+    verifying_user = db.Column(db.String, nullable=False, default=User().get_user_username)
+    verifying_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     update_user = db.Column(
         db.String(60),
         nullable=False,
