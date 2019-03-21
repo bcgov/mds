@@ -1,4 +1,5 @@
-import re
+import regex
+from multiprocessing import Process
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from flask_restplus import Resource, reqparse
 from datetime import datetime
@@ -14,10 +15,10 @@ from app.api.permits.permit.models.permit import Permit
 
 # 'TYPE': (Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
-    'MINE': (Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
+    'MINE': (Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', 'mine_guid', []),
     'CONTACT': (Party, [Party.first_name, Party.party_name, Party.email], False, 'json',
-                [True, ['mine_party_appt']]),
-    'PERMIT': (Permit, [Permit.permit_no], False, 'json_for_list', [])
+                'party_guid', [True, ['mine_party_appt']]),
+    'PERMIT': (Permit, [Permit.permit_no], False, 'json_for_list', 'permit_guid', [])
 }
 
 
@@ -40,39 +41,55 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     #@requires_role_mine_view
     def get(self):
         search_results = []
+        search_process = []
         app = current_app._get_current_object()
 
         search_term = request.args.get('search_term', None, type=str)
         search_types = request.args.get('search_types', None, type=str)
         search_types = search_types.split(',') if search_types else []
 
-        regex = re.compile(r'\'.*?\' | ".*?" | \S+ ', re.VERBOSE)
-        search_terms = regex.findall(search_term)
+        reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
+        search_terms = reg_exp.findall(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
-        with ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor(max_workers=50) as executor:
             task_list = []
             for term in search_terms:
                 for type, type_config in search_targets.items():
                     task_list.append(
                         executor.submit(execute_search, app, search_results, term, type,
                                         type_config[0], type_config[1], type_config[2],
-                                        type_config[3], *type_config[4]))
-                for task in as_completed(task_list):
-                    try:
-                        data = task.result()
-                    except Exception as exc:
-                        current_app.logger.error(
-                            f'generated an exception: {exc} with search term - {search_term}')
+                                        type_config[3], type_config[4], *type_config[5]))
+                    for task in as_completed(task_list):
+                        try:
+                            data = task.result()
+                        except Exception as exc:
+                            current_app.logger.error(
+                                f'generated an exception: {exc} with search term - {search_term}')
+
+        # for term in search_terms:
+        #     for type, type_config in search_targets.items():
+        #         search_process.append(
+        #             Process(
+        #                 target=execute_search,
+        #                 args=(app, search_results, term, type, type_config[0], type_config[1],
+        #                       type_config[2], type_config[3], *type_config[4])))
+
+        # for proc in search_process:
+        #     proc.start()
+
+        # for proc in search_process:
+        #     proc.join()
 
         search_results.sort(key=lambda x: x.score, reverse=True)
 
-        return {'search_results': [y.json() for y in search_results]}
+        return {'search_terms': search_terms, 'search_results': [y.json() for y in search_results]}
 
 
 def execute_search(app, search_results, term, type, model, columns, has_deleted_ind,
-                   json_function_name, *json_function_args):
+                   json_function_name, comparator, *json_function_args):
     with app.app_context():
+        app.logger.error(comparator)
         for column in columns:
             exact = db.session.query(model).filter(column.ilike(term))
             starts_with = db.session.query(model).filter(column.ilike(f'{term}%'))
@@ -85,15 +102,32 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
                 starts_with = starts_with.filter_by(deleted_ind=False)
                 contains = contains.filter_by(deleted_ind=False)
 
-            for x in exact.limit(5):
+            contains = contains.limit(5)
+            starts_with = starts_with.limit(5)
+            exact = exact.limit(5)
+
+            contains = [
+                item for item, item2 in zip(contains, exact)
+                if getattr(item, comparator) != getattr(item2, comparator)
+            ]
+            contains = [
+                item for item, item2 in zip(contains, starts_with)
+                if getattr(item, comparator) != getattr(item2, comparator)
+            ]
+            starts_with = [
+                item for item, item2 in zip(starts_with, exact)
+                if getattr(item, comparator) != getattr(item2, comparator)
+            ]
+
+            for x in exact:
                 search_results.append(
                     SearchResult(100, type,
                                  getattr(x, json_function_name)(*json_function_args)))
-            for x in starts_with.limit(5):
+            for x in starts_with:
                 search_results.append(
                     SearchResult(50, type,
                                  getattr(x, json_function_name)(*json_function_args)))
-            for x in contains.limit(5):
+            for x in contains:
                 search_results.append(
                     SearchResult(25, type,
                                  getattr(x, json_function_name)(*json_function_args)))
