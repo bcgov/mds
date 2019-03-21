@@ -89,7 +89,6 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
 def execute_search(app, search_results, term, type, model, columns, has_deleted_ind,
                    json_function_name, comparator, *json_function_args):
     with app.app_context():
-        app.logger.error(comparator)
         for column in columns:
             exact = db.session.query(model).filter(column.ilike(term))
             starts_with = db.session.query(model).filter(column.ilike(f'{term}%'))
@@ -106,28 +105,39 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
             starts_with = starts_with.limit(5)
             exact = exact.limit(5)
 
-            contains = [
-                item for item, item2 in zip(contains, exact)
-                if getattr(item, comparator) != getattr(item2, comparator)
-            ]
-            contains = [
-                item for item, item2 in zip(contains, starts_with)
-                if getattr(item, comparator) != getattr(item2, comparator)
-            ]
-            starts_with = [
-                item for item, item2 in zip(starts_with, exact)
-                if getattr(item, comparator) != getattr(item2, comparator)
-            ]
-
             for x in exact:
                 search_results.append(
                     SearchResult(100, type,
                                  getattr(x, json_function_name)(*json_function_args)))
-            for x in starts_with:
-                search_results.append(
-                    SearchResult(50, type,
-                                 getattr(x, json_function_name)(*json_function_args)))
-            for x in contains:
-                search_results.append(
-                    SearchResult(25, type,
-                                 getattr(x, json_function_name)(*json_function_args)))
+            for item in starts_with:
+                in_list = False
+                for item2 in search_results:
+                    if getattr(item, comparator) == item2.get('result').get(comparator):
+                        in_list = True
+                if not in_list:
+                    search_results.append(
+                        SearchResult(50, type,
+                                     getattr(item, json_function_name)(*json_function_args)))
+
+            for item in contains:
+                in_list = False
+                for item2 in search_results:
+                    if getattr(item, comparator) == item2.get('result').get(comparator):
+                        in_list = True
+                if not in_list:
+                    search_results.append(
+                        SearchResult(25, type,
+                                     getattr(item, json_function_name)(*json_function_args)))
+
+            # for x in exact:
+            #     search_results.append(
+            #         SearchResult(100, type,
+            #                      getattr(x, json_function_name)(*json_function_args)))
+            # for x in starts_with:
+            #     search_results.append(
+            #         SearchResult(50, type,
+            #                      getattr(x, json_function_name)(*json_function_args)))
+            # for x in contains:
+            #     search_results.append(
+            #         SearchResult(25, type,
+            #                      getattr(x, json_function_name)(*json_function_args)))
