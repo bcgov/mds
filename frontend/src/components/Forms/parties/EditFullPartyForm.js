@@ -1,30 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row, Radio } from "antd";
+import { Form, Col, Row, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { required, email, phoneNumber, maxLength, number, postalCode } from "@/utils/Validate";
-import { normalizePhone, upperCase } from "@/utils/helpers";
+import { required, email, phoneNumber, postalCode, maxLength, number } from "@/utils/Validate";
+import { normalizePhone, upperCase, resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
-  togglePartyChange: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
-export const AddFullPartyForm = (props) => (
+export const EditFullPartyForm = (props) => (
   <div>
-    <Form>
+    <Form onSubmit={props.handleSubmit}>
       <Row gutter={48}>
         <Col md={12} sm={24} className="border--right--layout">
-          <div className="center margin-large">
-            <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
-              <Radio.Button value>Person</Radio.Button>
-              <Radio.Button value={false}>Company</Radio.Button>
-            </Radio.Group>
-          </div>
           <Row gutter={16}>
             <h5>Basic Details</h5>
           </Row>
@@ -109,7 +104,7 @@ export const AddFullPartyForm = (props) => (
             </Col>
           </Row>
         </Col>
-        <Col md={12} sm={24} style={{ marginTop: "80px" }}>
+        <Col md={12} sm={24}>
           <Row gutter={16}>
             <h5>Address</h5>
           </Row>
@@ -153,8 +148,9 @@ export const AddFullPartyForm = (props) => (
                   id="sub_division_code"
                   name="sub_division_code"
                   label="Province"
+                  format={null}
                   component={renderConfig.SELECT}
-                  data={props.provinceOptions}
+                  data={[{ label: "None", value: null }, ...props.provinceOptions]}
                 />
               </Form.Item>
             </Col>
@@ -187,13 +183,29 @@ export const AddFullPartyForm = (props) => (
           </Row>
         </Col>
       </Row>
+      <div className="right center-mobile">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="full-mobile">Cancel</Button>
+        </Popconfirm>
+        <Button className="full-mobile" type="primary" htmlType="submit">
+          {props.isPerson ? "Update Personnel" : "Update Company"}
+        </Button>
+      </div>
     </Form>
   </div>
 );
 
-AddFullPartyForm.propTypes = propTypes;
+EditFullPartyForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_FULL_PARTY,
-  destroyOnUnmount: false,
-})(AddFullPartyForm);
+  form: FORM.EDIT_FULL_PARTY,
+  onSubmitSuccess: resetForm(FORM.EDIT_FULL_PARTY),
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
+})(EditFullPartyForm);
