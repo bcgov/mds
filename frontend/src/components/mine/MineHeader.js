@@ -9,6 +9,8 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
+  SUCCESS_CHECKMARK,
+  YELLOW_HAZARD,
 } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -140,11 +142,31 @@ class MineHeader extends Component {
         </Menu.Item>
       </Menu>
     );
+
+    if (this.props.mine.verified_status) {
+      this.healthy = this.props.mine.verified_status.healthy;
+    }
+
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
-            <h1>{this.props.mine.mine_name} </h1>
+            <h1>
+              {this.props.mine.mine_name}{" "}
+              {this.props.mine.verified_status && (
+                <img
+                  alt="verification"
+                  className="padding-small"
+                  src={this.healthy ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                  title={
+                    this.healthy
+                      ? "Mine data verified"
+                      : "Please double-check this mine's data and re-verify"
+                  }
+                  width="25%"
+                />
+              )}
+            </h1>
             <AuthorizationWrapper
               permission={Permission.CREATE}
               isMajorMine={this.props.mine.major_mine_ind}
