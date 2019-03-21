@@ -36,8 +36,15 @@ const defaultProps = {
 
 const renderDocumentLink = (file, text) => (
   <a
+    role="link"
     key={file.mine_document_guid}
     onClick={() => downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)}
+    // Accessibility: Event listener
+    onKeyPress={() =>
+      downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+    }
+    // Accessibility: Focusable element
+    tabIndex="0"
   >
     {text}
   </a>
