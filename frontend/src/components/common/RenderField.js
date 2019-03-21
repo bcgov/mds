@@ -7,35 +7,42 @@ import { Form, Input } from "antd";
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  input: PropTypes.any,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object,
-  inlineLabel: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  inlineLabel: PropTypes.string.isRequired,
 };
 
-const RenderField = ({
-  id,
-  input,
-  label,
-  placeholder,
-  defaultValue,
-  meta: { touched, error, warning },
-  inlineLabel,
-}) => (
+const RenderField = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <div className="inline-flex">
-      {inlineLabel && (
-        <label className="nowrap" style={{ paddingRight: "10px", fontSize: "20px" }}>
-          {inlineLabel}
+      {props.inlineLabel && (
+        <label
+          htmlFor={props.id}
+          className="nowrap"
+          style={{ paddingRight: "10px", fontSize: "20px" }}
+        >
+          {props.inlineLabel}
         </label>
       )}
-      <Input defaultValue={defaultValue} id={id} placeholder={placeholder} {...input} />
+      <Input
+        defaultValue={props.defaultValue}
+        id={props.id}
+        placeholder={props.placeholder}
+        {...props.input}
+      />
     </div>
   </Form.Item>
 );

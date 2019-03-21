@@ -13,6 +13,9 @@ const defaultProps = {
   id: "",
 };
 
+// FIXME: For some reason, this component requires this.context, preventing it
+// from being refactored into a pure function
+// eslint-disable-next-line react/prefer-stateless-function
 export class MapPopup extends Component {
   render() {
     return (

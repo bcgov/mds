@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Card, Row, Col, Button } from "antd";
+import { Icon, Card, Button } from "antd";
 import * as router from "@/constants/routes";
 import { Redirect } from "react-router";
 import CustomPropTypes from "@/customPropTypes";
