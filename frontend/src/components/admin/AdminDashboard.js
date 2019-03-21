@@ -68,7 +68,7 @@ export class AdminDashboard extends Component {
             <div className="inline-flex evenly">
               <div>
                 <h4>Verified Mines</h4>
-                <div style={{ height: "300px", width: "400px", "overflow-y": "scroll" }}>
+                <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
                   {this.props.healthyMines.length > 0 &&
                     this.props.healthyMines.map((healthyMine) => (
                       <div key={healthyMine.mine_guid}>
@@ -81,7 +81,7 @@ export class AdminDashboard extends Component {
               </div>
               <div>
                 <h4>Mines Needing Re-Verification</h4>
-                <div style={{ height: "300px", width: "400px", "overflow-y": "scroll" }}>
+                <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
                   {this.props.unhealthyMines.length > 0 &&
                     this.props.unhealthyMines.map((unhealthyMine) => (
                       <div key={unhealthyMine.mine_guid}>

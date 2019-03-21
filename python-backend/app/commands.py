@@ -20,12 +20,15 @@ from .api.permits.permit.models.permit_status_code import PermitStatusCode
 from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
 from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
 from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from .api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
 from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
+
+from app.api.utils.include.user_info import User
 
 
 def register_commands(app):
@@ -96,6 +99,7 @@ def register_commands(app):
             _create_data(num)
 
     def _create_data(num):
+        User._test_mode = True
         with app.app_context():
             party = None
             mine_tenure_type_codes = list(
@@ -108,7 +112,9 @@ def register_commands(app):
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
                                           DUMMY_USER_KWARGS)
                 MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
-
+                if random.choice([True, False]):
+                    mine.verified_status = MineVerifiedStatus(
+                        healthy_ind=random.choice([True, False]))
                 first_name = names.get_first_name()
                 last_name = names.get_last_name()
                 email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
