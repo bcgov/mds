@@ -168,12 +168,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "2",
-            "memory": "1Gi"
+            "cpu": "1",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "1",
-            "memory": "512Mi"
+            "cpu": "500m",
+            "memory": "1Gi"
           }
         },
         "postCommit": {},
@@ -245,7 +245,7 @@
             "memory": "2Gi"
           },
           "requests": {
-            "cpu": "1",
+            "cpu": "500m",
             "memory": "1Gi"
           }
         },
