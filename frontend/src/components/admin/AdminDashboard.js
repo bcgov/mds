@@ -61,35 +61,39 @@ export class AdminDashboard extends Component {
             <Col sm={22} md={14} lg={12}>
               <h1>Admin View</h1>
             </Col>
-            <Col sm={20} md={12} lg={6}>
-              <div>
-                <p>Verified Mines</p>
-                {this.props.healthyMines.length > 0 &&
-                  this.props.healthyMines.map((healthyMine) => (
-                    <div key={healthyMine.mine_guid}>
-                      <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
-                        {healthyMine.mine_name}
-                      </Link>
-                    </div>
-                  ))}
-              </div>
-            </Col>
-            <Col sm={20} md={12} lg={6}>
-              <div>
-                <p>Mines Needing Re-Verification</p>
-                {this.props.unhealthyMines.length > 0 &&
-                  this.props.unhealthyMines.map((unhealthyMine) => (
-                    <div key={unhealthyMine.mine_guid}>
-                      <Link to={router.MINE_SUMMARY.dynamicRoute(unhealthyMine.mine_guid)}>
-                        {unhealthyMine.mine_name}
-                      </Link>
-                    </div>
-                  ))}
-              </div>
-            </Col>
           </Row>
         </div>
         <div className="landing-page__content">
+          <div className="tab__content">
+            <div className="inline-flex evenly">
+              <div>
+                <h4>Verified Mines</h4>
+                <div style={{ height: "300px", width: "400px", "overflow-y": "scroll" }}>
+                  {this.props.healthyMines.length > 0 &&
+                    this.props.healthyMines.map((healthyMine) => (
+                      <div key={healthyMine.mine_guid}>
+                        <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
+                          {healthyMine.mine_name}
+                        </Link>
+                      </div>
+                    ))}
+                </div>
+              </div>
+              <div>
+                <h4>Mines Needing Re-Verification</h4>
+                <div style={{ height: "300px", width: "400px", "overflow-y": "scroll" }}>
+                  {this.props.unhealthyMines.length > 0 &&
+                    this.props.unhealthyMines.map((unhealthyMine) => (
+                      <div key={unhealthyMine.mine_guid}>
+                        <Link to={router.MINE_SUMMARY.dynamicRoute(unhealthyMine.mine_guid)}>
+                          {unhealthyMine.mine_name}
+                        </Link>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="tab__content">
             <h2>Pull Mine Manager History</h2>
             <Input
