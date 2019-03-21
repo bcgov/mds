@@ -47,3 +47,10 @@ export const mineComplianceInfo = shape({
   section_35_orders: PropTypes.number.isRequired,
   warnings: PropTypes.number.isRequired,
 });
+
+export const mineVerificationStatus = shape({
+  mine_guid: PropTypes.string.isRequired,
+  healthy: PropTypes.bool,
+  verifying_user: PropTypes.string,
+  verifying_timestamp: PropTypes.string,
+});

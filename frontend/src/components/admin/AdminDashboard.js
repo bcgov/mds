@@ -3,6 +3,7 @@ import { Input, Button } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
@@ -16,8 +17,8 @@ import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
  */
 
 const propTypes = {
-  unhealthyMines: PropTypes.array,
-  healthyMines: PropTypes.array,
+  unhealthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
+  healthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
   fetchMineVerifiedStatus: PropTypes.func.isRequired,
 };
 
