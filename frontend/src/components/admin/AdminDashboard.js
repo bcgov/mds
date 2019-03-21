@@ -61,13 +61,27 @@ export class AdminDashboard extends Component {
             <Col sm={22} md={14} lg={12}>
               <h1>Admin View</h1>
             </Col>
-            <Col sm={22} md={14} lg={12}>
+            <Col sm={20} md={12} lg={6}>
               <div>
+                <p>Healthy Mines</p>
                 {this.props.healthyMines.length > 0 &&
                   this.props.healthyMines.map((healthyMine) => (
                     <div key={healthyMine.mine_guid}>
                       <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
                         {healthyMine.mine_name}
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            </Col>
+            <Col sm={20} md={12} lg={6}>
+              <div>
+                <p>Unhealthy Mines</p>
+                {this.props.unhealthyMines.length > 0 &&
+                  this.props.unhealthyMines.map((unhealthyMine) => (
+                    <div key={unhealthyMine.mine_guid}>
+                      <Link to={router.MINE_SUMMARY.dynamicRoute(unhealthyMine.mine_guid)}>
+                        {unhealthyMine.mine_name}
                       </Link>
                     </div>
                   ))}
