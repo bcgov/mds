@@ -34,6 +34,7 @@ class SearchResult:
 class SearchResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('search_term', type=str, help='Search term.')
+    parser.add_argument('search_types', type=str, help='Search types.')
 
     #Split search term on space?
 
@@ -41,7 +42,10 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     def get(self):
         search_results = []
 
-        search_term = request.args.get('search_term', None, type=str)
+        search_term = request.args.get('search_term', None, type=str)    
+        search_types = request.args.get('search_types', None, type=str)
+        search_types = search_types.split(',') if search_types else []
+
 
         for type, type_config in search_targets.items():
             search_results = search_results + execute_search(
