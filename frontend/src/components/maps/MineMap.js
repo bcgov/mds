@@ -95,8 +95,99 @@ class MineMap extends Component {
       "esri/widgets/Expand",
       "esri/widgets/ScaleBar",
       "esri/widgets/Legend",
-    ]).then(([LayerListWidget, Expand, ScaleBar, Legend]) => {
+      "esri/layers/GroupLayer",
+      "esri/widgets/CoordinateConversion",
+    ]).then(([LayerListWidget, Expand, ScaleBar, Legend, GroupLayer, CoordinateConversion]) => {
+      const administrativeLayer = new GroupLayer({
+        title: "Administrative Boundaries",
+        visible: true,
+      });
+      const tenureLayer = new GroupLayer({
+        title: "Mineral, Placer, and Coal",
+        visible: true,
+      });
+      const roadsLayer = new GroupLayer({
+        title: "Roads",
+        visible: true,
+      });
+
+      const adminLayerArray = [
+        "Indian Reserves & Band Names",
+        "BC Mine Regions",
+        "Natural Resource Regions",
+        "Natural Resource Regions - WMS",
+        "Land Status and Survey Parcels - PMBC",
+        "Regional Districts - WMS",
+        "Ministry of Transportation District Boundaries - WMS",
+        "Municipality Boundaries",
+      ];
+      const tenureLayerArray = [
+        "Coal Licence Applications",
+        "Coal Leases",
+        "Coal Licences",
+        "Mining Leases",
+        "Mineral Claims",
+        "Placer Leases",
+        "Placer Claims",
+      ];
+      const roadLayerArray = ["Roads DRA", "Forest Tenure Roads", "Roads (DRA)"];
+
+      const addLayersToGroup = (layerNameArray, groupLayer) => {
+        layerNameArray.forEach((layerTitle) => {
+          const newTenureLayer = view.map.allLayers.find(({ title }) => title === layerTitle);
+          if (newTenureLayer) {
+            groupLayer.add(newTenureLayer);
+          }
+        });
+      };
+      addLayersToGroup(adminLayerArray, administrativeLayer);
+      addLayersToGroup(tenureLayerArray, tenureLayer);
+      addLayersToGroup(roadLayerArray, roadsLayer);
+
+      const ntsContourLayer = view.map.allLayers.find(({ title }) => title === "NTS Contour Lines");
+      const minePinLayer = view.map.allLayers.find(({ title }) => title === "Mine Pins");
+
+      // Add the new group layers to the map (order added determines display order in widget).
+      view.map.layers.add(administrativeLayer);
+      view.map.layers.add(tenureLayer);
+      view.map.layers.add(roadsLayer);
+      // Fix the order of non grouped layers
+      if (minePinLayer) {
+        view.map.layers.reorder(minePinLayer, view.map.layers.length - 1);
+      }
+      if (ntsContourLayer) {
+        view.map.layers.reorder(ntsContourLayer, view.map.layers.length - 3);
+      }
+
       const widgetPositionArray = {};
+
+      widgetPositionArray["top-right"] = new CoordinateConversion({
+        view,
+      });
+
+      // set DD to default:
+      const ddFormat = widgetPositionArray["top-right"].formats.find(({ name }) => name === "dd");
+      if (ddFormat) {
+        widgetPositionArray["top-right"].formats.reorder(ddFormat, 0);
+      }
+
+      // Remove the xy conversion from the widget
+      const conversionToChange = widgetPositionArray["top-right"].conversions.find(
+        (conversion) => conversion.format.name === "xy"
+      );
+      if (conversionToChange) {
+        conversionToChange.format = ddFormat;
+      }
+
+      const formatsToRemove = ["basemap", "xy", "usng", "mgrs"];
+      formatsToRemove.forEach((formatName) => {
+        const formatToRemove = widgetPositionArray["top-right"].formats.find(
+          ({ name }) => name === formatName
+        );
+        if (formatToRemove) {
+          widgetPositionArray["top-right"].formats.remove(formatToRemove);
+        }
+      });
 
       widgetPositionArray["top-left"] = new LayerListWidget({
         view,

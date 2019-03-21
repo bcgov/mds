@@ -8,6 +8,7 @@ import {
   storeDisturbanceOptions,
   storeCommodityOptions,
   storeProvinceCodes,
+  storeApplicationStatusOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -21,6 +22,7 @@ const baseExpectedValue = {
   mineCommodityOptions: [],
   provinceOptions: [],
   permitStatusCodes: [],
+  applicationStatusCodes: [],
   optionsLoaded: false,
 };
 
@@ -97,6 +99,16 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.provinceOptions = MOCK.PROVINCE_OPTIONS.options;
     const result = staticContentReducer(undefined, storeProvinceCodes(MOCK.PROVINCE_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_APPLICATION_STATUS_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.applicationStatusCodes = MOCK.APPLICATION_STATUS_CODE_OPTIONS;
+    const result = staticContentReducer(
+      undefined,
+      storeApplicationStatusOptions(MOCK.APPLICATION_STATUS_CODE_OPTIONS)
+    );
     expect(result).toEqual(expectedValue);
   });
 });

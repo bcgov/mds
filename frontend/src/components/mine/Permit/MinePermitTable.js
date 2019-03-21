@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -33,12 +34,31 @@ const defaultProps = {
   partyRelationships: [],
 };
 
+const renderDocumentLink = (file, text) => (
+  <a
+    key={file.mine_document_guid}
+    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)}
+  >
+    {text}
+  </a>
+);
+
+const renderPermitNo = (permit) => {
+  const permitNoShouldLinkToDocument =
+    permit.amendments[0] &&
+    permit.amendments[0].permit_amendment_type_code === amalgamtedPermit &&
+    permit.amendments[0].related_documents[0];
+  return permitNoShouldLinkToDocument
+    ? renderDocumentLink(permit.amendments[0].related_documents[0], permit.permit_no)
+    : permit.permit_no;
+};
+
 const columns = [
   {
     title: "Permit No.",
     dataIndex: "permitNo",
     key: "permitNo",
-    render: (text) => <div title="Permit No.">{text}</div>,
+    render: (text, record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
   },
   {
     title: "Status",
@@ -87,9 +107,7 @@ const columns = [
             <button
               type="button"
               className="full add-permit-dropdown-button"
-              onClick={(event) =>
-                record.openAddAmalgamatedPermitModal(event, text.guid, text.permit_no)
-              }
+              onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
                 <Icon
@@ -97,7 +115,7 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Add permit amendment" : "Add amalgamated permit"}
+                {text.hasAmalgamated ? "Add permit amendment" : "Amalgamate permit"}
               </div>
             </button>
           </Menu.Item>
@@ -106,9 +124,7 @@ const columns = [
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  record.openAddPermitAmendmentModal(event, text.guid, text.permit_no)
-                }
+                onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
                   <Icon
@@ -126,7 +142,7 @@ const columns = [
               type="button"
               className="full"
               onClick={(event) =>
-                record.openEditPermitModal(event, text.guid, text.permit_no, record.description)
+                record.openEditPermitModal(event, record.permit, record.description)
               }
             >
               <img
@@ -141,23 +157,21 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper inTesting>
-          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-              <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add/Edit
-                  <img
-                    className="padding-small--right icon-svg-filter"
-                    src={CARAT}
-                    alt="Menu"
-                    style={{ paddingLeft: "5px" }}
-                  />
-                </div>
-              </Button>
-            </Dropdown>
-          </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+            <Button type="secondary" className="permit-table-button">
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Add/Edit
+                <img
+                  className="padding-small--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </div>
+            </Button>
+          </Dropdown>
         </AuthorizationWrapper>
       );
     },
@@ -169,19 +183,41 @@ const childColumns = [
     title: "Amendment",
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
+    width: "130px",
     render: (text) => <div title="Amendment">{text}</div>,
   },
   {
     title: "Date Issued",
     dataIndex: "issueDate",
     key: "issueDate",
+    width: "90px",
     render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
     title: "Description",
     dataIndex: "description",
     key: "description",
-    render: (text) => <div title="Description">{text}</div>,
+    render: (text) => (
+      <div title="Description">
+        <p className="wrapped-text" style={{ maxWidth: "800px" }}>
+          {text}
+        </p>
+      </div>
+    ),
+  },
+  {
+    title: "Files",
+    dataIndex: "documents",
+    key: "documents",
+    render: (text) => (
+      <div title="Files">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">{renderDocumentLink(file, file.document_name)}</li>
+          ))}
+        </ul>
+      </div>
+    ),
   },
   {
     title: "",
@@ -189,26 +225,16 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper inTesting>
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Button
-            className="permit-table-button"
-            type="ghost"
-            onClick={(event) =>
-              record.openEditAmendmentModal(
-                event,
-                text.guid,
-                text.permit_guid,
-                record.amendmentType,
-                text.description
-              )
-            }
-          >
-            <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-            </div>
-          </Button>
-        </AuthorizationWrapper>
+      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <Button
+          className="permit-table-button"
+          type="ghost"
+          onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
+        >
+          <div>
+            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+          </div>
+        </Button>
       </AuthorizationWrapper>
     ),
   },
@@ -256,15 +282,14 @@ const transformRowData = (
     amendments: permit.amendments,
     status: permit.permit_status_code,
     addEditButton: {
-      guid: permit.permit_guid,
       major_mine_ind,
       hasAmalgamated,
-      permit_no: permit.permit_no,
     },
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
     permitStatusOptions,
+    permit,
   };
 };
 
@@ -282,33 +307,27 @@ const transformChildRowData = (
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   amendmentEdit: {
-    guid: amendment.permit_amendment_guid,
-    permit_guid: amendment.permit_guid,
     major_mine_ind,
-    description: amendment.description,
+    amendment,
   },
   openEditAmendmentModal,
+  permit: record.permit,
+  documents: amendment.related_documents,
 });
 
 export const MinePermitTable = (props) => {
-  const amendmentHistory = (record) => {
-    const childRowData = record.amendments.map((amendment, index) =>
+  const amendmentHistory = (permit) => {
+    const childRowData = permit.amendments.map((amendment, index) =>
       transformChildRowData(
         amendment,
-        record,
-        record.amendments.length - index,
+        permit,
+        permit.amendments.length - index,
         props.major_mine_ind,
         props.openEditAmendmentModal
       )
     );
     return (
-      <Table
-        rowClassName={() => "table-row-align-middle"}
-        align="left"
-        pagination={false}
-        columns={childColumns}
-        dataSource={childRowData}
-      />
+      <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
   };
 

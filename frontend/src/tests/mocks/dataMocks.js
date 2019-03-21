@@ -573,19 +573,19 @@ export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",
       req_document_description: "10.4.4a",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "ca3f5a58-d7ea-4620-a064-507450f082de",
       req_document_name: "Annual DSI",
       req_document_description: "10.4.4b",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "faa99067-3639-4d9c-a3e5-5401df15ad4b",
       req_document_name: "5 year DSR",
       req_document_description: "10.5.4",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
   ],
 };
@@ -974,5 +974,31 @@ export const OPEN_ORDERS = [
     violation: "Looks dangerous",
     report_no: "report1",
     inspector: "Paul",
+  },
+];
+
+export const APPLICATION_STATUS_CODE_OPTIONS = [
+  { application_status_code: "RIP", description: "In Review" },
+  { application_status_code: "APR", description: "Approved" },
+];
+
+export const APPLICATION_LIST = [
+  {
+    application_id: 1,
+    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
+    application_guid: "ad3eaab6-6248-414c-9c15-8fe4880f0a61",
+    application_no: "TA-09876",
+    application_status_code: "RIP",
+    description: "Test.",
+    received_date: "2019-03-06",
+  },
+  {
+    application_id: 3,
+    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
+    application_guid: "a54c5c76-53a4-4967-8686-4ca15cc1863a",
+    application_no: "TA-93475",
+    application_status_code: "RIP",
+    description: null,
+    received_date: "2019-02-25",
   },
 ];

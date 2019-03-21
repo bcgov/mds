@@ -143,6 +143,9 @@ body {
   &--right {
     padding-right: $default-padding-lg;
   }
+  &--left {
+    padding-left: 25px;
+  }
 }
 
 .margin-small {
@@ -186,6 +189,26 @@ body {
       border-right: 1px solid $violet;
       @include tablet {
         border-right: 0;
+      }
+    }
+    &--layout {
+      border-right: 1px solid $layout-grey;
+      @include tablet {
+        border-right: 0;
+      }
+    }
+  }
+  &--left {
+    &--violet {
+      border-left: 1px solid $violet;
+      @include tablet {
+        border-left: 0;
+      }
+    }
+    &--layout {
+      border-left: 1px solid $layout-grey;
+      @include tablet {
+        border-left: 0;
       }
     }
   }

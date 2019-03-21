@@ -11,6 +11,7 @@ import {
   updatePermit,
   updatePermitAmendment,
   createPermitAmendment,
+  removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
 import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
@@ -22,6 +23,7 @@ import { getPermits } from "../../../reducers/permitReducer";
  */
 
 const amalgamtedPermit = "ALG";
+const originalPermit = "OGP";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -34,6 +36,7 @@ const propTypes = {
   updatePermit: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
+  removePermitAmendmentDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -58,28 +61,26 @@ export class MinePermitInfo extends Component {
 
     this.props.openModal({
       props: {
+        initialValues: {
+          mine_guid: this.props.mine.guid,
+        },
         onSubmit,
         title,
+        mine_guid: this.props.mine.guid,
       },
+      widthSize: "50vw",
       content: modalConfig.ADD_PERMIT,
     });
   };
 
-  openEditPermitModal = (event, permit_guid, permit_no) => {
+  openEditPermitModal = (event, permit) => {
     event.preventDefault();
-
-    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
-
-    const initialValues = {
-      permit_status_code: permit.permit_status_code,
-      permit_guid,
-    };
 
     this.props.openModal({
       props: {
-        initialValues,
+        initialValues: permit,
         onSubmit: this.handleEditPermit,
-        title: `Edit permit status for ${permit_no}`,
+        title: `Edit permit status for ${permit.permit_no}`,
       },
       content: modalConfig.EDIT_PERMIT,
     });
@@ -102,62 +103,59 @@ export class MinePermitInfo extends Component {
 
   // Amendment Modals
 
-  openAddAmendmentModal = (event, onSubmit, title, permit_guid) => {
+  openAddAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: { permit_guid },
+        initialValues: {
+          mine_guid: permit.mine_guid,
+          permit_guid: permit.permit_guid,
+          permit_amendment_type_code: type,
+        },
         onSubmit,
         title,
+        mine_guid: permit.mine_guid,
       },
-      content: modalConfig.ADD_PERMIT_AMENDMENT,
+      widthSize: "50vw",
+      content: modalConfig.PERMIT_AMENDMENT,
     });
   };
 
-  openEditAmendmentModal = (
-    event,
-    permit_amendment_guid,
-    permit_guid,
-    permit_amendment_type_code,
-    description
-  ) => {
-    const permit = this.props.permits.find((p) => p.permit_guid === permit_guid);
-    const permit_amendment = permit.amendments.find(
-      (pa) => pa.permit_amendment_guid === permit_amendment_guid
-    );
-
-    const initialValues = {
-      issue_date: permit_amendment.issue_date,
-      permit_amendment_guid,
-      permit_amendment_type_code,
-      description,
-    };
-
+  openEditAmendmentModal = (event, permit_amendment, permit) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues,
+        initialValues: {
+          ...permit_amendment,
+        },
         onSubmit: this.handleEditPermitAmendment,
-        title: `Edit permit amendment for ${permit.permit_no}`,
+        title:
+          permit_amendment.permit_amendment_type_code === originalPermit
+            ? `Edit initial permit for ${permit.permit_no}`
+            : `Edit permit amendment for ${permit.permit_no}`,
+        mine_guid: permit.mine_guid,
+        handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },
-      content: modalConfig.ADD_PERMIT_AMENDMENT,
+      widthSize: "50vw",
+      content: modalConfig.PERMIT_AMENDMENT,
     });
   };
 
-  openAddAmalgamatedPermitModal = (event, permit_guid, permit_no) =>
+  openAddAmalgamatedPermitModal = (event, permit) =>
     this.openAddAmendmentModal(
       event,
       this.handleAddAmalgamatedPermit,
-      `Add amalgamated permit to ${permit_no}`,
-      permit_guid
+      `Add amalgamated permit to ${permit.permit_no}`,
+      permit,
+      amalgamtedPermit
     );
 
-  openAddPermitAmendmentModal = (event, permit_guid, permit_no) =>
+  openAddPermitAmendmentModal = (event, permit) =>
     this.openAddAmendmentModal(
       event,
       this.handleAddPermitAmendment,
-      `Add permit amendment to ${permit_no}`,
-      permit_guid
+      `Add permit amendment to ${permit.permit_no}`,
+      permit
     );
 
   // Amendment Handlers
@@ -178,31 +176,34 @@ export class MinePermitInfo extends Component {
       })
       .then(this.closePermitModal);
 
+  handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) =>
+    this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
+      this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    });
+
   render() {
     return [
       <div>
         <div className="inline-flex between">
           <div />
           <div className="inline-flex between">
-            <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
+            <AuthorizationWrapper
+              permission={Permission.CREATE}
+              isMajorMine={this.props.mine.major_mine_ind}
+            >
+              <Button
+                type="primary"
+                onClick={(event) =>
+                  this.openAddPermitModal(
+                    event,
+                    this.handleAddPermit,
+                    `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
+                  )
+                }
               >
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    this.openAddPermitModal(
-                      event,
-                      this.handleAddPermit,
-                      `${ModalContent.ADD_PERMIT} to ${this.props.mine.mine_name}`
-                    )
-                  }
-                >
-                  <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                  Add a New Permit
-                </Button>
-              </AuthorizationWrapper>
+                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+                Add a New Permit
+              </Button>
             </AuthorizationWrapper>
           </div>
         </div>
@@ -235,6 +236,7 @@ const mapDispatchToProps = (dispatch) =>
       updatePermit,
       updatePermitAmendment,
       createPermitAmendment,
+      removePermitAmendmentDocument,
     },
     dispatch
   );

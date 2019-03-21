@@ -39,7 +39,7 @@ import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/env
  */
 
 const propTypes = {
-  permission: PropTypes.string.isRequired,
+  permission: PropTypes.string,
   isMajorMine: PropTypes.bool,
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
@@ -50,6 +50,7 @@ const defaultProps = {
   isMajorMine: true,
   inDevelopment: false,
   inTesting: false,
+  permission: "",
 };
 
 export const AuthorizationWrapper = ({ children: Children, ...props }) => (
