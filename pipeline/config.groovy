@@ -328,6 +328,7 @@ app {
                             'NAME':"metabase",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"test",
                             'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
                             'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
@@ -347,6 +348,7 @@ environments {
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
+            METABASE_PVC_SIZE = '256Mi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -459,6 +461,7 @@ environments {
             DOCUMENT_PVC_SIZE = '5Gi'
             BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
+            METABASE_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -571,6 +574,7 @@ environments {
             DOCUMENT_PVC_SIZE = '50Gi'
             BACKUP_PVC_SIZE = '50Gi'
             LOG_PVC_SIZE = '5Gi'
+            METABASE_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
