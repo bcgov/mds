@@ -160,10 +160,10 @@ class MineHeader extends Component {
                   src={this.healthy ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
                   title={
                     this.healthy
-                      ? "Mine data verified"
+                      ? `Mine data verified by ${this.props.mine.verified_status.verifying_user}`
                       : "Please double-check this mine's data and re-verify"
                   }
-                  width="25%"
+                  width="45"
                 />
               )}
             </h1>
