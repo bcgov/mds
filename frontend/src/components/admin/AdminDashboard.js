@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Input, Button } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
