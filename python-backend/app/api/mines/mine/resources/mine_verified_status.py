@@ -25,7 +25,6 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
             'unhealthy': [x.json() for x in statuses if not x.healthy_ind]
         }
 
-    @api.expect(parser)
     @requires_role_mine_create
     def put(self, mine_guid=None):
         if not mine_guid:
@@ -38,7 +37,6 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
         mine_verified_status.save()
         return mine_verified_status.json()
 
-    @api.expect(parser)
     @requires_role_mine_admin
     def delete(self, mine_guid=None):
         if not mine_guid:
