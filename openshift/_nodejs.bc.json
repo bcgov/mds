@@ -241,12 +241,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "1.5",
-            "memory": "1Gi"
+            "cpu": "1",
+            "memory": "2Gi"
           },
           "requests": {
             "cpu": "1",
-            "memory": "512Mi"
+            "memory": "1Gi"
           }
         },
         "nodeSelector": null
