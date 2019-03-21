@@ -1,6 +1,6 @@
 import uuid, datetime
 
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, backref
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -28,7 +28,8 @@ class MineVerifiedStatus(Base):
         default=datetime.datetime.utcnow,
         onupdate=datetime.datetime.now)
 
-    mine = db.relationship('Mine', backref='verification', lazy='joined')
+    mine = db.relationship(
+        'Mine', backref=backref("verified_status", uselist=False), lazy='joined', uselist=False)
 
     def json(self):
         return {

@@ -52,6 +52,8 @@ export class AdminDashboard extends Component {
   };
 
   render() {
+    console.log(this.props.healthyMines);
+
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -60,15 +62,16 @@ export class AdminDashboard extends Component {
               <h1>Admin View</h1>
             </Col>
             <Col sm={22} md={14} lg={12}>
-              {this.props.healthyMines.len > 0 &&
-                this.props.healthyMines.map((healthyMine) => (
-                  <div>
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
-                      {healthyMine.mine_name}
-                    </Link>
-                    )
-                  </div>
-                ))}
+              <div>
+                {this.props.healthyMines.length > 0 &&
+                  this.props.healthyMines.map((healthyMine) => (
+                    <div key={healthyMine.mine_guid}>
+                      <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
+                        {healthyMine.mine_name}
+                      </Link>
+                    </div>
+                  ))}
+              </div>
             </Col>
           </Row>
         </div>
