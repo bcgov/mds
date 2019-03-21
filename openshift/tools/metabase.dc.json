@@ -203,7 +203,7 @@
               {
                 "name": "${NAME}${SUFFIX}-data",
                 "persistentVolumeClaim": {
-                  "claimName": "${NAME}{SUFFIX}"
+                  "claimName": "${NAME}${SUFFIX}"
                 }
               }
             ],
