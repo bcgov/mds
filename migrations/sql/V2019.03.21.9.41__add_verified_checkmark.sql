@@ -1,7 +1,7 @@
 CREATE TABLE mine_verified_status (
     mine_verified_status_id SERIAL PRIMARY KEY,
     mine_guid uuid NOT NULL,
-    active_ind boolean DEFAULT true NOT NULL,
+    healthy_ind boolean DEFAULT true NOT NULL,
     verifying_user character varying(60) NOT NULL,
     verifying_timestamp timestamp with time zone DEFAULT now(),
     update_user character varying(60) NOT NULL,
