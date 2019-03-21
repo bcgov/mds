@@ -1,6 +1,5 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const merge = require("webpack-merge");
 const path = require("path");
@@ -116,9 +115,9 @@ const prodConfig = merge([
       chunkFilename: BUILD_FILE_NAMES.vendor,
       filename: BUILD_FILE_NAMES.bundle,
     },
-    plugins: [new HardSourceWebpackPlugin()],
   },
   parts.clean(PATHS.build),
+  parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
