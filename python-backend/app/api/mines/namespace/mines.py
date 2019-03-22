@@ -30,4 +30,4 @@ api.add_resource(MineTypeResource, '/mine-types', '/mine-types/<string:mine_type
 api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
-api.add_resource(MineNotificationResource, '/<string:mine_guid>/subscribe')
+api.add_resource(MineNotificationResource, '/subscribe','/<string:mine_guid>/subscribe')

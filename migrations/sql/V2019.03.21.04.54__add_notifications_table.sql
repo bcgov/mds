@@ -1,5 +1,6 @@
 CREATE TABLE notification
 (
+    user_id serial PRIMARY KEY,
     idir character varying(30) NOT NULL,
     mine_guid uuid NOT NULL,
 
