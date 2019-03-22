@@ -15,7 +15,7 @@ from app.api.permits.permit.models.permit import Permit
 
 # 'TYPE': (Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
-    'MINE': (Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', 'mine_guid', []),
+    'MINE': (Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', 'guid', []),
     'CONTACT': (Party, [Party.first_name, Party.party_name, Party.email], False, 'json',
                 'party_guid', [True, ['mine_party_appt']]),
     'PERMIT': (Permit, [Permit.permit_no], False, 'json_for_list', 'permit_guid', [])
@@ -113,7 +113,7 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
             for item in starts_with:
                 in_list = False
                 for item2 in search_results:
-                    if str(getattr(item, comparator)) == item2.result.get(comparator):
+                    if str(getattr(item, comparator)) == str(item2.result.get(comparator)):
                         in_list = True
                 if not in_list:
                     search_results.append(
@@ -123,7 +123,7 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
             for item in contains:
                 in_list = False
                 for item2 in search_results:
-                    if str(getattr(item, comparator)) == item2.result.get(comparator):
+                    if str(getattr(item, comparator)) == str(item2.result.get(comparator)):
                         in_list = True
                 if not in_list:
                     search_results.append(
