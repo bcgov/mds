@@ -3,6 +3,7 @@ import { Input, Button } from "antd";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
+import DocumentUploadsMetabaseDashboard from "@/components/admin/DocumentUploadsMetabaseDashboard";
 import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
 
 /**
@@ -46,6 +47,9 @@ export class AdminDashboard extends Component {
           </div>
           <div className="tab__content">
             <MinespaceUserManagement />
+          </div>
+          <div className="tab__content">
+            <DocumentUploadsMetabaseDashboard />
           </div>
         </div>
       </div>

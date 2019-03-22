@@ -63,6 +63,11 @@ ShallowWrapper {
           >
             <Connect(MinespaceUserManagement) />
           </div>
+          <div
+            className="tab__content"
+          >
+            <Connect(authorizationGuard) />
+          </div>
         </div>,
       ],
       "className": "landing-page",
@@ -133,6 +138,11 @@ ShallowWrapper {
               className="tab__content"
             >
               <Connect(MinespaceUserManagement) />
+            </div>,
+            <div
+              className="tab__content"
+            >
+              <Connect(authorizationGuard) />
             </div>,
           ],
           "className": "landing-page__content",
@@ -246,6 +256,26 @@ ShallowWrapper {
             },
             "type": "div",
           },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Connect(authorizationGuard) />,
+              "className": "tab__content",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
         ],
         "type": "div",
       },
@@ -303,6 +333,11 @@ ShallowWrapper {
               className="tab__content"
             >
               <Connect(MinespaceUserManagement) />
+            </div>
+            <div
+              className="tab__content"
+            >
+              <Connect(authorizationGuard) />
             </div>
           </div>,
         ],
@@ -374,6 +409,11 @@ ShallowWrapper {
                 className="tab__content"
               >
                 <Connect(MinespaceUserManagement) />
+              </div>,
+              <div
+                className="tab__content"
+              >
+                <Connect(authorizationGuard) />
               </div>,
             ],
             "className": "landing-page__content",
@@ -473,6 +513,26 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": <Connect(MinespaceUserManagement) />,
+                "className": "tab__content",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Connect(authorizationGuard) />,
                 "className": "tab__content",
               },
               "ref": null,
