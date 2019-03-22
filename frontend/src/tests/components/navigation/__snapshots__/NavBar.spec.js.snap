@@ -71,6 +71,7 @@ ShallowWrapper {
               />
             </Button>
           </MediaQuery>
+          <Connect(withRouter(SearchBar)) />
           <MediaQuery
             minWidth={769}
             values={Object {}}
@@ -264,6 +265,7 @@ ShallowWrapper {
                 />
               </Button>
             </MediaQuery>,
+            <Connect(withRouter(SearchBar)) />,
             <MediaQuery
               minWidth={769}
               values={Object {}}
@@ -513,6 +515,15 @@ ShallowWrapper {
               },
               "type": [Function],
             },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
             "type": [Function],
           },
           Object {
@@ -1245,6 +1256,7 @@ ShallowWrapper {
                 />
               </Button>
             </MediaQuery>
+            <Connect(withRouter(SearchBar)) />
             <MediaQuery
               minWidth={769}
               values={Object {}}
@@ -1438,6 +1450,7 @@ ShallowWrapper {
                   />
                 </Button>
               </MediaQuery>,
+              <Connect(withRouter(SearchBar)) />,
               <MediaQuery
                 minWidth={769}
                 values={Object {}}
@@ -1687,6 +1700,15 @@ ShallowWrapper {
                 },
                 "type": [Function],
               },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
               "type": [Function],
             },
             Object {
