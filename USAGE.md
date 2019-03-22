@@ -71,6 +71,22 @@ docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCust
 
 ## Developing workflow tips for MDS
 
+If you are developing on other projects, you will likely run into version issues with node and npm.  Install a node version manager like nvm (if you're on a mac).
+
+```
+brew install nvm
+nvm install 10.10
+```
+This should get you the correct versions, you should see an output from nvm of "Now using node v10.10.0 (npm v6.4.1)".
+
+Then add the following lines to your ~/.bash_profile file:
+
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+```
+
 If you are rebuilding often, you will have to deal with caching issues in your browser.
 
 In Chrome/Chromium, you can right-click on the page, choose "inspect", then right-click on the refresh icon next to the URL bar and choose hard reset.
@@ -83,12 +99,13 @@ Typically one does not wish to run a full 'make project' for every little change
 
 Have a look in the file called "Makefile" to see all the helpful aliased make targets for rebuilding whichever part of the application you are currently working in.  
 
-For example, if you have made some changes in the frontend, use the make target:
+For example, if you have made some changes in the frontend, you will want to load a locally running version of the frontend with webpack in it:
+
 ```
-make frontend
+make webpack-frontend
 ```
 
-Same if you have made changes to the backend:
+If you have made changes to the backend:
 ```
 make backend
 ```
