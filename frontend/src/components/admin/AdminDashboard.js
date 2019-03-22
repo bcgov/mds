@@ -52,8 +52,6 @@ export class AdminDashboard extends Component {
   };
 
   render() {
-    console.log(this.props.healthyMines);
-
     return (
       <div className="landing-page">
         <div className="landing-page__header">
