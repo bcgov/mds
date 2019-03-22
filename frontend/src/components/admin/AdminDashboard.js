@@ -51,6 +51,16 @@ export class AdminDashboard extends Component {
     downloadMineManagerHistory(this.state.mineNo, { window, document });
   };
 
+  compareMineName = (a, b) => {
+    if (a.mine_name < b.mine_name) {
+      return -1;
+    }
+    if (a.mine_name > b.mine_name) {
+      return 1;
+    }
+    return 0;
+  };
+
   render() {
     return (
       <div className="landing-page">
@@ -68,7 +78,7 @@ export class AdminDashboard extends Component {
                 <h4>{this.props.healthyMines.length}&nbsp;Verified Mines</h4>
                 <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
                   {this.props.healthyMines.length > 0 &&
-                    this.props.healthyMines.map((healthyMine) => (
+                    this.props.healthyMines.sort(this.compareMineName).map((healthyMine) => (
                       <div key={healthyMine.mine_guid}>
                         <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
                           {healthyMine.mine_name}
@@ -81,7 +91,7 @@ export class AdminDashboard extends Component {
                 <h4>{this.props.unhealthyMines.length}&nbsp;Mines Needing Re-Verification</h4>
                 <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
                   {this.props.unhealthyMines.length > 0 &&
-                    this.props.unhealthyMines.map((unhealthyMine) => (
+                    this.props.unhealthyMines.sort(this.compareMineName).map((unhealthyMine) => (
                       <div key={unhealthyMine.mine_guid}>
                         <Link to={router.MINE_SUMMARY.dynamicRoute(unhealthyMine.mine_guid)}>
                           {unhealthyMine.mine_name}
