@@ -7,18 +7,14 @@ import * as Strings from "@/constants/strings";
 import { Tabs, Icon, Table, Button, Row, Col } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { uniq, uniqBy, map, toArray } from "lodash";
-import {
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
 import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 
-getPartyRelationshipTypeHash,
-} from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
 
-import {
-  fetchPartyRelationshipTypes,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 
 /**
  * @class Search - search results
@@ -34,6 +30,7 @@ import {
 const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
+  partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
 };
 
 const defaultProps = {
@@ -97,6 +94,8 @@ export class SearchResults extends Component {
       .orderBy("score", "desc")
       .value();
 
+    alert(JSON.stringify(this.props.partyRelationshipTypeHash));
+
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -124,6 +123,7 @@ export class SearchResults extends Component {
 const mapStateToProps = (state) => ({
   searchResults: getSearchResults(state),
   searchTerms: getSearchTerms(state),
+  partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
