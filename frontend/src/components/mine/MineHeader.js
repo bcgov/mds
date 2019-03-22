@@ -21,6 +21,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { setMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
+import { formatDate } from "@/utils/helpers";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -144,46 +145,38 @@ class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
-        <Menu.Item key="2">
-          <button
-            type="button"
-            className="full"
-            onClick={() =>
-              this.props
-                .setMineVerifiedStatus(this.props.mine.guid, true)
-                .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
-            }
-          >
-            <img
-              alt="checkmark"
-              className="padding-small"
-              src={SUCCESS_CHECKMARK}
-              height="35"
-              width="35"
-            />
-            Verify Mine Data
-          </button>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <button
-            type="button"
-            className="full"
-            onClick={() =>
-              this.props
-                .setMineVerifiedStatus(this.props.mine.guid, false)
-                .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
-            }
-          >
-            <img
-              alt="hazard"
-              className="padding-small"
-              src={YELLOW_HAZARD}
-              height="35"
-              width="35"
-            />
-            Unverify Mine Data
-          </button>
-        </Menu.Item>
+        {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy) && (
+          <Menu.Item key="2">
+            <button
+              type="button"
+              className="full"
+              onClick={() =>
+                this.props
+                  .setMineVerifiedStatus(this.props.mine.guid, true)
+                  .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+              }
+            >
+              <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
+              Confirm Verification of Mine Data
+            </button>
+          </Menu.Item>
+        )}
+        {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy) && (
+          <Menu.Item key="3">
+            <button
+              type="button"
+              className="full"
+              onClick={() =>
+                this.props
+                  .setMineVerifiedStatus(this.props.mine.guid, false)
+                  .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+              }
+            >
+              <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
+              Confirm Mine Data Needs Verification
+            </button>
+          </Menu.Item>
+        )}
       </Menu>
     );
 
@@ -199,12 +192,14 @@ class MineHeader extends Component {
               {this.props.mine.mine_name}{" "}
               {this.props.mine.verified_status && (
                 <img
-                  alt="verification"
+                  alt=""
                   className="padding-small"
                   src={this.healthy ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
                   title={
                     this.healthy
-                      ? `Mine data verified by ${this.props.mine.verified_status.verifying_user}`
+                      ? `Mine data verified by ${
+                          this.props.mine.verified_status.verifying_user
+                        } on ${formatDate(this.props.mine.verified_status.verifying_timestamp)}`
                       : "Please double-check this mine's data and re-verify"
                   }
                   width="45"
