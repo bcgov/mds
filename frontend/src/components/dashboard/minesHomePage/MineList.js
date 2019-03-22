@@ -34,8 +34,8 @@ const columns = [
             alt="checkmark"
             className="padding-small"
             src={SUCCESS_CHECKMARK}
-            height="25"
             width="25"
+            title="Mine data verified"
           />
         )}
       </Link>
