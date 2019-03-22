@@ -125,15 +125,16 @@ export class MineDashboard extends Component {
     }
   }
 
-  handleSubscription = (mineGuid) => {
+  handleSubscription = () => {
     const { id } = this.props.match.params;
-    this.props.subscribe(id);
+    this.props.subscribe(id).then(() => {
+      this.props.fetchSubscribedMinesByUser();
+    });
   };
 
-  handleUnSubscribe = (mineGuid) => {
+  handleUnSubscribe = () => {
     const { id } = this.props.match.params;
     this.props.unSubscribe(id).then(() => {
-      console.log("STOPPING SUBSCRIPTION");
       this.props.fetchSubscribedMinesByUser();
     });
   };

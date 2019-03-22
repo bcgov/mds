@@ -381,12 +381,10 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
 };
 
 export const subscribe = (mineGuid) => (dispatch) => {
-  console.log(mineGuid);
-  console.log("doing the next thing!!!");
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
   return axios
-    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
     .then(() => {
       notification.success({
         message: "Successfully subscribed",
@@ -411,6 +409,10 @@ export const unSubscribe = (mineGuid) => (dispatch) => {
   return axios
     .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
     .then(() => {
+      notification.success({
+        message: "Successfully unsubscribed",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UNSUBSCRIBE));
       dispatch(hideLoading());
     })

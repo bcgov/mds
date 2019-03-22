@@ -11,7 +11,7 @@ import {
   fetchMineTenureTypes,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import PropTypes, { objectOf, arrayOf, string } from "prop-types";
+import PropTypes, { objectOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table, Popconfirm } from "antd";
 import { uniqBy } from "lodash";
@@ -20,7 +20,7 @@ import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { UNSUBSCRIBE } from "@/constants/assets";
-import { getMines, getMineIds, getSubscribedMines } from "@/selectors/mineSelectors";
+import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
 
 /**
@@ -33,9 +33,8 @@ const propTypes = {
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-  mines: objectOf(CustomPropTypes.mine).isRequired,
-  mineIds: arrayOf(string).isRequired,
+  unSubscribe: PropTypes.func.isRequired,
+  subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: objectOf(string).isRequired,
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,
@@ -51,8 +50,9 @@ export class CustomHomePage extends Component {
 
   handleUnSubscribe = (event, mineGuid) => {
     event.preventDefault();
-    console.log(mineGuid);
-    this.props.unsubscribe(mineGuid);
+    this.props.unSubscribe(mineGuid).then(() => {
+      this.props.fetchSubscribedMinesByUser();
+    });
   };
 
   transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
@@ -176,7 +176,7 @@ export class CustomHomePage extends Component {
             title={`Are you sure you want to unsubscribe from ${record.mineName}?`}
             okText="Yes"
             cancelText="No"
-            onConfirm={(event) => this.handleUnSubscribe(event, record.id)}
+            onConfirm={(event) => this.handleUnSubscribe(event, record.key)}
           >
             <button type="button">
               <img alt="document" src={UNSUBSCRIBE} />
@@ -185,25 +185,22 @@ export class CustomHomePage extends Component {
         ),
       },
     ];
-    console.log(this.props.subscribedMines);
     return (
-      <div className="landing-page">
-        <div className="landing-page__content">
-          <div className="tab__content">
-            <h5> Subscribed Mines</h5>
-            <Table
-              align="left"
-              pagination={false}
-              columns={columns}
-              dataSource={this.transformRowData(
-                this.props.subscribedMines,
-                this.props.mineRegionHash,
-                this.props.mineTenureHash,
-                this.props.mineCommodityOptionsHash
-              )}
-              locale={{ emptyText: <NullScreen type="no-results" /> }}
-            />
-          </div>
+      <div className="custom-dashboard">
+        <div className="custom-dashboard__container--white">
+          <h5> Subscribed Mines</h5>
+          <Table
+            align="left"
+            pagination={false}
+            columns={columns}
+            dataSource={this.transformRowData(
+              this.props.subscribedMines,
+              this.props.mineRegionHash,
+              this.props.mineTenureHash,
+              this.props.mineCommodityOptionsHash
+            )}
+            locale={{ emptyText: <NullScreen type="subscription" /> }}
+          />
         </div>
       </div>
     );
@@ -214,8 +211,6 @@ CustomHomePage.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   subscribedMines: getSubscribedMines(state),
-  // mines: getMines(state),
-  // mineIds: getMineIds(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),

@@ -140,18 +140,21 @@ class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
-        <Menu.Item key="2">
-          <button type="button" className="full" onClick={this.props.handleSubscription}>
-            <img alt="document" className="padding-small" src={BELL} />
-            Subscribe
-          </button>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <button type="button" className="full" onClick={this.props.handleUnSubscribe}>
-            <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
-            Unsubscribe
-          </button>
-        </Menu.Item>
+        {this.props.subscribed ? (
+          <Menu.Item key="2">
+            <button type="button" className="full" onClick={this.props.handleUnSubscribe}>
+              <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+              Unsubscribe
+            </button>
+          </Menu.Item>
+        ) : (
+          <Menu.Item key="2">
+            <button type="button" className="full" onClick={this.props.handleSubscription}>
+              <img alt="document" className="padding-small" src={BELL} />
+              Subscribe
+            </button>
+          </Menu.Item>
+        )}
       </Menu>
     );
     return (
