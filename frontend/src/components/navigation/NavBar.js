@@ -63,10 +63,9 @@ export class NavBar extends Component {
   );
 
   componentDidMount() {
-    this.props.fetchCurrentUserMineVerifiedStatus({
-      // TODO: Don't hardcode idir into this
-      user_id: `idir\\${this.props.userInfo.preferred_username}`,
-    });
+    this.props.fetchCurrentUserMineVerifiedStatus(
+      `idir\\${this.props.userInfo.preferred_username}`
+    );
   }
 
   unhealthyMinesMenu = () => (

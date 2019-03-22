@@ -381,11 +381,11 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
 };
 
 // MineVeriifcationStatus
-export const fetchCurrentUserMineVerifiedStatus = (params) => (dispatch) => {
+export const fetchCurrentUserMineVerifiedStatus = (user_id) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
   dispatch(showLoading());
   return axios
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES({ user_id })}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
       dispatch(mineActions.storeCurrentUserMineVerifiedStatuses(response.data));
