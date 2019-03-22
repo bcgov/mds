@@ -8,6 +8,10 @@ import { Tabs, Icon, Table, Button, Row, Col } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { uniq, uniqBy, map, toArray } from "lodash";
 
+import { MineResultsTable } from "@/components/search/MineResultsTable";
+import { PermitResultsTable } from "@/components/search/PermitResultsTable";
+import { ContactResultsTable } from "@/components/search/ContactResultsTable";
+
 /**
  * @class Search - search results
  * 
@@ -29,15 +33,17 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const renderSearchResultGroup = (group) => (
-  <Col md={12}>
-    <h2>{group.type}</h2>
-    {group.results.map((result) => (
-      <p>{`${result.mine_name || ""}${result.name || ""}${result.permit_no || ""}`}</p>
-    ))}
-    <br />
-  </Col>
-);
+const renderSearchResultGroup = (group) => {
+  if (group.type === "Mines") {
+    return <MineResultsTable header={group.type} searchResults={group.results} />;
+  }
+  if (group.type === "Permits") {
+    return <PermitResultsTable header={group.type} searchResults={group.results} />;
+  }
+  if (group.type === "Contacts") {
+    return <ContactResultsTable header={group.type} searchResults={group.results} />;
+  }
+};
 
 export class SearchResults extends Component {
   componentDidMount() {}
@@ -67,7 +73,9 @@ export class SearchResults extends Component {
               <h2>No Results Found</h2>,
               <p>Please try another search.</p>,
             ]}
-            {groupedSearchResults.map((group) => renderSearchResultGroup(group))}
+            <Row gutter={48}>
+              {groupedSearchResults.map((group) => renderSearchResultGroup(group))}
+            </Row>
           </div>
         </div>
       </div>
