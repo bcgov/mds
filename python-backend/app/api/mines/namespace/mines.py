@@ -12,7 +12,7 @@ from ..region.resources.region import MineRegionResource
 from ..tailings.resources.tailings import MineTailingsStorageFacilityResource
 from ..compliance.resources.compliance import MineComplianceResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
-
+from ..notification.resources.notification import MineNotificationResource
 api = Namespace('mines', description='Mine related operations')
 
 api.add_resource(MineResource, '', '/<string:mine_no_or_guid>')
@@ -30,3 +30,4 @@ api.add_resource(MineTypeResource, '/mine-types', '/mine-types/<string:mine_type
 api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
+api.add_resource(MineNotificationResource, '/subscribe','/<string:mine_guid>/subscribe')
