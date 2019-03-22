@@ -16,5 +16,6 @@ def get_mines_svc_url(path):
 
 def get_document_manager_svc_url(path=''):
     #inserts basepath to handle openshift deployments
+    #ODUCMENT_MANAGER_URL secret ends with '/api', causing conflicts with also using base path,
     return current_app.config['DOCUMENT_MANAGER_URL'] + current_app.config[
         'BASE_PATH'] + '/document-manager' + path

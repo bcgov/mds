@@ -102,6 +102,12 @@ database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"
 	@docker-compose up -d postgres flyway
 
+webpack-frontend:
+	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
+	@docker-compose rm -f -v -s frontend
+	@rm -rf ./frontend/node_modules/
+	@cd ./frontend/; npm i; npm run serve; cd ..
+
 frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"
 	@docker-compose build frontend
