@@ -111,9 +111,18 @@ export class MineDashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activeTab } = nextProps.match.params;
+    const { id, activeTab } = nextProps.match.params;
     if (activeTab !== this.props.activeTab) {
       this.setState({ activeTab });
+    }
+    if (this.props.match.params.id !== nextProps.match.params.id) {
+      this.props.fetchMineRecordById(id).then(() => {
+        this.props.fetchApplications({ mine_guid: this.props.mines[id].guid });
+        this.setState({ isLoaded: true });
+        this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
+          this.setState({ complianceInfoLoading: false });
+        });
+      });
     }
   }
 
