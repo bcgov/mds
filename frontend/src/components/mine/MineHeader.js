@@ -14,13 +14,17 @@ import {
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
+import { getUserInfo, getKeycloak } from "@/selectors/authenticationSelectors";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
-import { setMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
+import {
+  setMineVerifiedStatus,
+  fetchCurrentUserMineVerifiedStatus,
+} from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
 
 /**
@@ -40,6 +44,8 @@ const propTypes = {
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   transformedMineTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.strings)).isRequired,
+  fetchCurrentUserMineVerifiedStatus: PropTypes.func.isRequired,
+  userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
 };
 
 class MineHeader extends Component {
@@ -151,9 +157,12 @@ class MineHeader extends Component {
               type="button"
               className="full"
               onClick={() =>
-                this.props
-                  .setMineVerifiedStatus(this.props.mine.guid, true)
-                  .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+                this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
+                  this.props.fetchMineRecordById(this.props.mine.guid);
+                  this.props.fetchCurrentUserMineVerifiedStatus(
+                    `idir\\${this.props.userInfo.preferred_username}`
+                  );
+                })
               }
             >
               <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
@@ -167,9 +176,12 @@ class MineHeader extends Component {
               type="button"
               className="full"
               onClick={() =>
-                this.props
-                  .setMineVerifiedStatus(this.props.mine.guid, false)
-                  .then(() => this.props.fetchMineRecordById(this.props.mine.guid))
+                this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
+                  this.props.fetchMineRecordById(this.props.mine.guid);
+                  this.props.fetchCurrentUserMineVerifiedStatus(
+                    `idir\\${this.props.userInfo.preferred_username}`
+                  );
+                })
               }
             >
               <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
@@ -356,10 +368,15 @@ class MineHeader extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  userInfo: getUserInfo(state),
+});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       setMineVerifiedStatus,
+      fetchCurrentUserMineVerifiedStatus,
     },
     dispatch
   );
@@ -367,6 +384,6 @@ const mapDispatchToProps = (dispatch) =>
 MineHeader.propTypes = propTypes;
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(MineHeader);
