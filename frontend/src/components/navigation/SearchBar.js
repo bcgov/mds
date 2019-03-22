@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { includes } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
-import { getSearchResults } from "@/selectors/searchSelectors";
-import { fetchSearchResults } from "@/actionCreators/searchActionCreator";
+import { getSearchBarResults } from "@/selectors/searchSelectors";
+import { fetchSearchResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
@@ -17,10 +17,11 @@ const Search = Input.Search;
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object),
+  clearSearchBarResults: PropTypes.func.isRequired,
+  searchBarResults: PropTypes.arrayOf(PropTypes.object),
 };
 const defaultProps = {
-  searchResults: [],
+  searchBarResults: [],
 };
 
 const defaultPlaceholderText = "Search";
@@ -58,11 +59,11 @@ const selectMenuItem = (item, key, keyPath) => {
   alert(JSON.stringify(item));
 };
 
-const searchResultDropdown = (searchTerm, searchResults) => (
+const searchResultDropdown = (searchTerm, searchBarResults) => (
   <Menu>
     {searchTerm.length > 0
       ? [
-          searchResults.slice(0, 10).map((result) => (
+          searchBarResults.map((result) => (
             <Menu.Item>
               <p>{`${result.result.mine_name || ""}${result.result.name || ""}${result.result
                 .permit_no || ""}`}</p>
@@ -88,7 +89,6 @@ export class SearchBar extends Component {
   onChangeSearchTerm = (e) => {
     const newSearchTerm = e.target.value;
     this.setState({ searchTerm: newSearchTerm });
-
     // Automatically update results every 3 seconds
     if (this.state.searchTerm.length > 3 && this.state.canSearch) {
       this.props.fetchSearchResults(newSearchTerm);
@@ -132,6 +132,7 @@ export class SearchBar extends Component {
   };
 
   clearSearch = () => {
+    this.props.clearSearchBarResults();
     this.setState({
       isSelected: true,
       canSearch: true,
@@ -153,7 +154,7 @@ export class SearchBar extends Component {
         }}
       >
         <Dropdown
-          overlay={searchResultDropdown(this.state.searchTerm, this.props.searchResults)}
+          overlay={searchResultDropdown(this.state.searchTerm, this.props.searchBarResults)}
           trigger={[""]}
           visible={this.state.isSelected}
         >
@@ -178,13 +179,14 @@ export class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  searchResults: getSearchResults(state),
+  searchBarResults: getSearchBarResults(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchSearchResults,
+      clearSearchBarResults,
     },
     dispatch
   );
