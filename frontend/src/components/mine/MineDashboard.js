@@ -9,6 +9,9 @@ import {
   updateMineRecord,
   createTailingsStorageFacility,
   removeMineType,
+  fetchSubscribedMinesByUser,
+  unSubscribe,
+  subscribe,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -20,7 +23,12 @@ import {
   fetchApplicationStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
-import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
+import {
+  getMines,
+  getCurrentMineTypes,
+  getTransformedMineTypes,
+  getIsUserSubscribed,
+} from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -117,6 +125,21 @@ export class MineDashboard extends Component {
     }
   }
 
+  handleSubscription = () => {
+    console.log(this.props.subscribed);
+    this.props.subscribe(this.props.mine.guid).then(() => {
+      console.log("SUBSCRIBBBBBING");
+      fetchSubscribedMinesByUser(this.props.mine.guid);
+    });
+  };
+
+  handleUnSubscribe = () => {
+    this.props.unSubscribe(this.props.mine.guid).then(() => {
+      console.log("STOPPING SUBSCRIPTION");
+      fetchSubscribedMinesByUser(this.props.mine.guid);
+    });
+  };
+
   handleChange = (activeTab) => {
     this.setState({ activeTab });
     this.props.history.push(
@@ -135,7 +158,12 @@ export class MineDashboard extends Component {
         {this.state.isLoaded && (
           <div className="dashboard">
             <div>
-              <MineHeader mine={mine} {...this.props} />
+              <MineHeader
+                mine={mine}
+                {...this.props}
+                handleSubscription={this.handleSubscription}
+                subscribed={this.props.subscribed}
+              />
             </div>
             <div className="dashboard__content">
               <Tabs
@@ -218,6 +246,7 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
+  subscribed: getIsUserSubscribed(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -241,6 +270,9 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
+      fetchSubscribedMinesByUser,
+      unSubscribe,
+      subscribe,
     },
     dispatch
   );

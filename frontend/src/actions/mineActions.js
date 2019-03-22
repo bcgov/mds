@@ -25,3 +25,8 @@ export const storeMineDocuments = (payload) => ({
   type: ActionTypes.STORE_MINE_DOCUMENTS,
   payload,
 });
+
+export const storeSubscribedMines = (payload) => ({
+  type: ActionTypes.STORE_SUBSCRIBED_MINES,
+  payload,
+});

@@ -215,12 +215,7 @@ export class NavBar extends Component {
     return (
       <div>
         <div className="menu">
-          <Link
-            to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
+          <Link to={router.CUSTOM_HOME_PAGE.route}>
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
           <MediaQuery maxWidth={768}>

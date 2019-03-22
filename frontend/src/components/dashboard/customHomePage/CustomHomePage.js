@@ -1,0 +1,239 @@
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import {
+  getMineRegionHash,
+  getMineTenureTypesHash,
+  getCommodityOptionHash,
+} from "@/selectors/staticContentSelectors";
+import {
+  fetchRegionOptions,
+  fetchMineTenureTypes,
+  fetchMineCommodityOptions,
+} from "@/actionCreators/staticContentActionCreator";
+import PropTypes, { objectOf, arrayOf, string } from "prop-types";
+import { Link } from "react-router-dom";
+import { Table, Popconfirm } from "antd";
+import { uniqBy } from "lodash";
+import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
+import NullScreen from "@/components/common/NullScreen";
+import CustomPropTypes from "@/customPropTypes";
+import { UNSUBSCRIBE } from "@/constants/assets";
+import { getMines, getMineIds, getSubscribedMines } from "@/selectors/mineSelectors";
+import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
+
+/**
+ * @class CustomHomePage is the main landing page of the application
+ *
+ */
+
+const propTypes = {
+  fetchSubscribedMinesByUser: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  unsubscribe: PropTypes.func.isRequired,
+  mines: objectOf(CustomPropTypes.mine).isRequired,
+  mineIds: arrayOf(string).isRequired,
+  mineRegionHash: objectOf(string).isRequired,
+  mineTenureHash: objectOf(string).isRequired,
+  mineCommodityOptionsHash: objectOf(string).isRequired,
+};
+
+export class CustomHomePage extends Component {
+  componentDidMount() {
+    this.props.fetchSubscribedMinesByUser();
+    this.props.fetchMineTenureTypes();
+    this.props.fetchRegionOptions();
+    this.props.fetchMineCommodityOptions();
+  }
+
+  handleUnSubscribe = (event, mineGuid) => {
+    event.preventDefault();
+    console.log(mineGuid);
+    this.props.unsubscribe(mineGuid);
+  };
+
+  transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCommodityHash) =>
+    mineIds.map((id) => ({
+      key: id,
+      emptyField: Strings.EMPTY_FIELD,
+      mineName: mines[id].mine_name ? mines[id].mine_name : Strings.EMPTY_FIELD,
+      mineNo: mines[id].mine_no ? mines[id].mine_no : Strings.EMPTY_FIELD,
+      operationalStatus: mines[id].mine_status[0]
+        ? mines[id].mine_status[0].status_labels[0]
+        : Strings.EMPTY_FIELD,
+      permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
+      region: mines[id].region_code ? mineRegionHash[mines[id].region_code] : Strings.EMPTY_FIELD,
+      commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
+      commodityHash: mineCommodityHash,
+      tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
+      tenureHash: mineTenureHash,
+      tsf: mines[id].mine_tailings_storage_facility
+        ? mines[id].mine_tailings_storage_facility.length
+        : Strings.EMPTY_FIELD,
+    }));
+
+  render() {
+    const columns = [
+      {
+        title: "Mine Name",
+        width: 200,
+        dataIndex: "mineName",
+        render: (text, record) => (
+          <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
+        ),
+      },
+      {
+        title: "Mine No.",
+        width: 100,
+        dataIndex: "mineNo",
+        render: (text) => <div title="Mine Number">{text}</div>,
+      },
+      {
+        title: "Operational Status",
+        width: 150,
+        dataIndex: "operationalStatus",
+        render: (text) => <div title="Operational Status">{text}</div>,
+      },
+      {
+        title: "Permit No.",
+        dataIndex: "permit",
+        width: 150,
+        render: (text, record) => (
+          <div title="Permit Number">
+            <ul className="mine-list__permits">
+              {text &&
+                uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
+                  <li key={permit_guid}>{permit_no}</li>
+                ))}
+              {!text && <li>{record.emptyField}</li>}
+            </ul>
+          </div>
+        ),
+      },
+      {
+        title: "Region",
+        dataIndex: "region",
+        width: 150,
+        render: (text, record) => (
+          <div title="Region">
+            {text}
+            {!text && <div>{record.emptyField}</div>}
+          </div>
+        ),
+      },
+      {
+        title: "Tenure",
+        dataIndex: "tenure",
+        width: 150,
+        render: (text, record) => (
+          <div title="Tenure">
+            {text &&
+              text.map((tenure) => (
+                <span className="mine_tenure" key={tenure.mine_type_guid}>
+                  {record.tenureHash[tenure.mine_tenure_type_code]}
+                </span>
+              ))}
+            {!text && <div>{record.emptyField}</div>}
+          </div>
+        ),
+      },
+      {
+        title: "Commodity",
+        dataIndex: "commodity",
+        width: 150,
+        render: (text, record) => (
+          <div title="Commodity">
+            {text &&
+              text.map(({ mine_type_detail, mine_type_guid }) => (
+                <div key={mine_type_guid}>
+                  {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
+                    <span key={mine_type_detail_guid}>
+                      {mine_commodity_code && `${record.commodityHash[mine_commodity_code]},`}
+                    </span>
+                  ))}
+                </div>
+              ))}
+          </div>
+        ),
+      },
+      {
+        title: "TSF",
+        dataIndex: "tsf",
+        width: 150,
+        render: (text) => <div title="TSF">{text}</div>,
+      },
+      {
+        title: "",
+        dataIndex: "",
+        width: 150,
+        render: (text, record) => (
+          <Popconfirm
+            placement="top"
+            title={`Are you sure you want to unsubscribe from ${record.mineName}?`}
+            okText="Yes"
+            cancelText="No"
+            onConfirm={(event) => this.handleUnSubscribe(event, record.id)}
+          >
+            <button type="button">
+              <img alt="document" src={UNSUBSCRIBE} />
+            </button>
+          </Popconfirm>
+        ),
+      },
+    ];
+
+    return (
+      <div className="landing-page">
+        <div className="landing-page__content">
+          <div className="tab__content">
+            <h5> Subscribed Mines</h5>
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={this.transformRowData(
+                this.props.mines,
+                this.props.mineIds,
+                this.props.mineRegionHash,
+                this.props.mineTenureHash,
+                this.props.mineCommodityOptionsHash
+              )}
+              locale={{ emptyText: <NullScreen type="no-results" /> }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+CustomHomePage.propTypes = propTypes;
+
+const mapStateToProps = (state) => ({
+  subscribedMines: getSubscribedMines(state),
+  mines: getMines(state),
+  mineIds: getMineIds(state),
+  mineRegionHash: getMineRegionHash(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchSubscribedMinesByUser,
+      unSubscribe,
+      fetchRegionOptions,
+      fetchMineTenureTypes,
+      fetchMineCommodityOptions,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomHomePage);

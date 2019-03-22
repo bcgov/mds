@@ -9,6 +9,8 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
+  BELL,
+  UNSUBSCRIBE,
 } from "@/constants/assets";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -138,26 +140,39 @@ class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
+        <Menu.Item key="2">
+          <button type="button" className="full" onClick={() => this.props.handleSubscription()}>
+            <img
+              alt="document"
+              className="padding-small"
+              src={this.props.subscribed ? UNSUBSCRIBE : BELL}
+            />
+            {this.props.subscribed ? "Unsubscribe" : "Subscribe"}
+          </button>
+        </Menu.Item>
       </Menu>
     );
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
-            <h1>{this.props.mine.mine_name} </h1>
-            <AuthorizationWrapper
-              permission={Permission.CREATE}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                <Button type="primary">
-                  <div className="padding-small">
-                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                    Add/Edit
-                  </div>
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
+            <h1>{this.props.mine.mine_name}</h1>
+            <div>
+              {this.props.subscribed && <img src={BELL} alt="bell" />}
+              <AuthorizationWrapper
+                permission={Permission.CREATE}
+                isMajorMine={this.props.mine.major_mine_ind}
+              >
+                <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                  <Button type="primary">
+                    <div className="padding-small">
+                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
+            </div>
           </div>
           <Divider className="custom-large-divider" />
           <div className="inline-flex between block-mobile">

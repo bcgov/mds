@@ -379,3 +379,62 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const subscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.SUBSCRIBE));
+  dispatch(showLoading());
+  return axios
+    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
+    .then(() => {
+      dispatch(success(reducerTypes.SUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.SUBSCRIBE));
+      dispatch(hideLoading());
+    });
+};
+
+export const unSubscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UNSUBSCRIBE));
+  dispatch(showLoading());
+  return axios
+    .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
+    .then(() => {
+      dispatch(success(reducerTypes.UNSUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.UNSUBSCRIBE));
+      dispatch(hideLoading());
+    });
+};
+
+export const fetchSubscribedMinesByUser = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_SUBSCRIBED_MINES));
+  dispatch(showLoading());
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(mineActions.storeSubscribedMines(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(hideLoading());
+    });
+};
