@@ -6,3 +6,8 @@ export const storeSearchResults = (payload) => ({
   type: ActionTypes.STORE_SEARCH_RESULTS,
   payload,
 });
+
+export const clearSearchBarResults = (payload) => ({
+  type: ActionTypes.CLEAR_SEARCH_RESULTS,
+  payload,
+});

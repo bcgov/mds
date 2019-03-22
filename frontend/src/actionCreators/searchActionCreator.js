@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { request, success, error } from "@/actions/genericActions";
+import { request, success, error, clear } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as searchActions from "@/actions/searchActions";
 import * as String from "@/constants/strings";
@@ -29,4 +29,10 @@ export const fetchSearchResults = (searchTerm) => (dispatch) => {
       dispatch(error(reducerTypes.GET_SEARCH_RESULTS));
       dispatch(hideLoading("modal"));
     });
+};
+
+export const clearSearchBarResults = () => (dispatch) => {
+  dispatch(clear(reducerTypes.CLEAR_SEARCH_RESULTS));
+  dispatch(searchActions.clearSearchBarResults());
+  dispatch(success(reducerTypes.CLEAR_SEARCH_RESULTS));
 };
