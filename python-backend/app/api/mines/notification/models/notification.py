@@ -1,5 +1,4 @@
 import uuid
-from flask import current_app
 from app.api.utils.include.user_info import User
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
@@ -27,7 +26,6 @@ class Notification( Base):
     def delete_subscription(cls, mine_guid):
         user_name = User().get_user_username()
         subscription_to_delete = Notification.query.filter_by(mine_guid=uuid.UUID(mine_guid)).filter_by(idir=user_name).first()
-        current_app.logger.debug("The subscription_to_delete is: " + str(subscription_to_delete))
         db.session.delete(subscription_to_delete)
         db.session.commit()
         return subscription_to_delete
