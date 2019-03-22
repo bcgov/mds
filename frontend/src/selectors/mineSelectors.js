@@ -11,10 +11,9 @@ export const getMineDocuments = (state) => mineReducer.getMineDocuments(state);
 export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(state);
 
 export const getIsUserSubscribed = createSelector(
-  [getMineGuid],
-  (mineGuid) => {
+  [getSubscribedMines, getMineGuid],
+  (subscribedMines, mineGuid) => {
     if (mineGuid) {
-      const subscribedMines = [{ guid: mineGuid }];
       return subscribedMines.filter((mine) => mine.guid === mineGuid);
     }
   }

@@ -112,7 +112,7 @@ export class MineDashboard extends Component {
       this.props.setOptionsLoaded();
     }
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
-
+    this.props.fetchSubscribedMinesByUser();
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
     }
@@ -125,18 +125,16 @@ export class MineDashboard extends Component {
     }
   }
 
-  handleSubscription = () => {
-    console.log(this.props.subscribed);
-    this.props.subscribe(this.props.mine.guid).then(() => {
-      console.log("SUBSCRIBBBBBING");
-      fetchSubscribedMinesByUser(this.props.mine.guid);
-    });
+  handleSubscription = (mineGuid) => {
+    const { id } = this.props.match.params;
+    this.props.subscribe(id);
   };
 
-  handleUnSubscribe = () => {
-    this.props.unSubscribe(this.props.mine.guid).then(() => {
+  handleUnSubscribe = (mineGuid) => {
+    const { id } = this.props.match.params;
+    this.props.unSubscribe(id).then(() => {
       console.log("STOPPING SUBSCRIPTION");
-      fetchSubscribedMinesByUser(this.props.mine.guid);
+      this.props.fetchSubscribedMinesByUser();
     });
   };
 
@@ -161,6 +159,7 @@ export class MineDashboard extends Component {
               <MineHeader
                 mine={mine}
                 {...this.props}
+                handleUnSubscribe={this.handleUnSubscribe}
                 handleSubscription={this.handleSubscription}
                 subscribed={this.props.subscribed}
               />

@@ -55,23 +55,24 @@ export class CustomHomePage extends Component {
     this.props.unsubscribe(mineGuid);
   };
 
-  transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCommodityHash) =>
-    mineIds.map((id) => ({
-      key: id,
+  transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
+    mines &&
+    mines.map((mine) => ({
+      key: mine.guid,
       emptyField: Strings.EMPTY_FIELD,
-      mineName: mines[id].mine_name ? mines[id].mine_name : Strings.EMPTY_FIELD,
-      mineNo: mines[id].mine_no ? mines[id].mine_no : Strings.EMPTY_FIELD,
-      operationalStatus: mines[id].mine_status[0]
-        ? mines[id].mine_status[0].status_labels[0]
+      mineName: mine.mine_name ? mine.mine_name : Strings.EMPTY_FIELD,
+      mineNo: mine.mine_no ? mine.mine_no : Strings.EMPTY_FIELD,
+      operationalStatus: mine.mine_status[0]
+        ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-      permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
-      region: mines[id].region_code ? mineRegionHash[mines[id].region_code] : Strings.EMPTY_FIELD,
-      commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
+      permit: mine.mine_permit[0] ? mine.mine_permit : null,
+      region: mine.region_code ? mineRegionHash[mine.region_code] : Strings.EMPTY_FIELD,
+      commodity: mine.mine_type[0] ? mine.mine_type : null,
       commodityHash: mineCommodityHash,
-      tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
+      tenure: mine.mine_type[0] ? mine.mine_type : null,
       tenureHash: mineTenureHash,
-      tsf: mines[id].mine_tailings_storage_facility
-        ? mines[id].mine_tailings_storage_facility.length
+      tsf: mine.mine_tailings_storage_facility
+        ? mine.mine_tailings_storage_facility.length
         : Strings.EMPTY_FIELD,
     }));
 
@@ -184,7 +185,7 @@ export class CustomHomePage extends Component {
         ),
       },
     ];
-
+    console.log(this.props.subscribedMines);
     return (
       <div className="landing-page">
         <div className="landing-page__content">
@@ -195,8 +196,7 @@ export class CustomHomePage extends Component {
               pagination={false}
               columns={columns}
               dataSource={this.transformRowData(
-                this.props.mines,
-                this.props.mineIds,
+                this.props.subscribedMines,
                 this.props.mineRegionHash,
                 this.props.mineTenureHash,
                 this.props.mineCommodityOptionsHash
@@ -214,8 +214,8 @@ CustomHomePage.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   subscribedMines: getSubscribedMines(state),
-  mines: getMines(state),
-  mineIds: getMineIds(state),
+  // mines: getMines(state),
+  // mineIds: getMineIds(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),

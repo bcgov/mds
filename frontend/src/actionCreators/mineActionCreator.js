@@ -381,11 +381,17 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
 };
 
 export const subscribe = (mineGuid) => (dispatch) => {
+  console.log(mineGuid);
+  console.log("doing the next thing!!!");
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
   return axios
     .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
     .then(() => {
+      notification.success({
+        message: "Successfully subscribed",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.SUBSCRIBE));
       dispatch(hideLoading());
     })

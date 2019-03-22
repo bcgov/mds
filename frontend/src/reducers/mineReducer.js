@@ -53,7 +53,7 @@ const mineReducer = (state = initialState, action) => {
     case actionTypes.STORE_SUBSCRIBED_MINES:
       return {
         ...state,
-        subscribedMines: action.payload,
+        subscribedMines: action.payload.mines,
       };
     default:
       return state;
