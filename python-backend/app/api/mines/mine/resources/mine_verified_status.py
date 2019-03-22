@@ -47,6 +47,7 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
 
         if healthy:
             mine_verified_status.verifying_user = User().get_user_username()
+            mine_verified_status.verifying_timestamp = datetime.now()
 
         mine_verified_status.healthy_ind = healthy
         mine_verified_status.save()
