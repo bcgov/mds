@@ -7,10 +7,18 @@ import * as Strings from "@/constants/strings";
 import { Tabs, Icon, Table, Button, Row, Col } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { uniq, uniqBy, map, toArray } from "lodash";
-
+import {
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
 import { ContactResultsTable } from "@/components/search/ContactResultsTable";
+import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
+
+getPartyRelationshipTypeHash,
+} from "@/selectors/partiesSelectors";
+
+import {
+  fetchPartyRelationshipTypes,
+} from "@/actionCreators/partiesActionCreator";
 
 /**
  * @class Search - search results
@@ -56,6 +64,15 @@ const renderSearchResultGroup = (group, searchTerms) => {
   if (group.type === "Contacts") {
     return (
       <ContactResultsTable
+        header={group.type}
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    );
+  }
+  if (group.type === "Permit Documents") {
+    return (
+      <DocumentResultsTable
         header={group.type}
         highlightRegex={highlightRegex}
         searchResults={group.results}

@@ -38,15 +38,20 @@ export const ContactResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={12}>Roles</Col>
-          <Col span={4}>Email</Col>
-          <Col span={8}>
+          <Col span={3}>Roles</Col>
+
+          <Col span={9}>
+            {record.mine_party_appt.map((pr) => [
+              <span>{pr.mine_party_appt_type_code}</span>,
+              <br />,
+            ])}
+          </Col>
+          <Col span={3}>Email</Col>
+          <Col span={9}>
             <Highlight search={props.highlightRegex}>{record.email}</Highlight>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
           <Col span={12} />
-          <Col span={4}>Phone</Col>
+          <Col span={3}>Phone</Col>
           <Col>
             <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
             {record.phone_ext && record.phone_ext}

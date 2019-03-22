@@ -44,9 +44,7 @@ export const MineResultsTable = (props) => {
           </Col>
           <Col span={4}>Permit No.</Col>
           <Col span={10}>
-            <Highlight search="/[A-Za-z]+/">
-              {record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}
-            </Highlight>
+            {record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
