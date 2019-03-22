@@ -11,9 +11,11 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
+import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesList";
 
 import { fetchMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
 import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
+
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
@@ -76,28 +78,22 @@ export class AdminDashboard extends Component {
             <div className="inline-flex evenly">
               <div>
                 <h4>{this.props.healthyMines.length}&nbsp;Verified Mines</h4>
-                <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
-                  {this.props.healthyMines.length > 0 &&
-                    this.props.healthyMines.sort(this.compareMineName).map((healthyMine) => (
-                      <div key={healthyMine.mine_guid}>
-                        <Link to={router.MINE_SUMMARY.dynamicRoute(healthyMine.mine_guid)}>
-                          {healthyMine.mine_name}
-                        </Link>
-                      </div>
-                    ))}
+                <div>
+                  {this.props.healthyMines.length > 0 && (
+                    <AdminVerifiedMinesList
+                      minesVerifiedStatusList={this.props.healthyMines.sort(this.compareMineName)}
+                    />
+                  )}
                 </div>
               </div>
               <div>
                 <h4>{this.props.unhealthyMines.length}&nbsp;Mines Needing Re-Verification</h4>
-                <div style={{ height: "200px", width: "400px", "overflow-y": "scroll" }}>
-                  {this.props.unhealthyMines.length > 0 &&
-                    this.props.unhealthyMines.sort(this.compareMineName).map((unhealthyMine) => (
-                      <div key={unhealthyMine.mine_guid}>
-                        <Link to={router.MINE_SUMMARY.dynamicRoute(unhealthyMine.mine_guid)}>
-                          {unhealthyMine.mine_name}
-                        </Link>
-                      </div>
-                    ))}
+                <div>
+                  {this.props.unhealthyMines.length > 0 && (
+                    <AdminVerifiedMinesList
+                      minesVerifiedStatusList={this.props.unhealthyMines.sort(this.compareMineName)}
+                    />
+                  )}
                 </div>
               </div>
             </div>
