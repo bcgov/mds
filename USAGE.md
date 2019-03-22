@@ -71,7 +71,7 @@ docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCust
 
 ## Developing workflow tips for MDS
 
-If you are developing on other projects, you will likely run into version issues with node and npm.  Install a node version manager like nvm (if you're on a mac).
+If you are developing on other projects, you will likely run into version issues with node and npm.  Install a node version manager like nvm (if you're on a mac - or replace brew with choco if you're on Windows).
 
 ```
 brew install nvm
