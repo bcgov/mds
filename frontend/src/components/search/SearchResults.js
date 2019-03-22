@@ -33,15 +33,34 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const renderSearchResultGroup = (group) => {
+const renderSearchResultGroup = (group, searchTerms) => {
+  const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
   if (group.type === "Mines") {
-    return <MineResultsTable header={group.type} searchResults={group.results} />;
+    return (
+      <MineResultsTable
+        header={group.type}
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    );
   }
   if (group.type === "Permits") {
-    return <PermitResultsTable header={group.type} searchResults={group.results} />;
+    return (
+      <PermitResultsTable
+        header={group.type}
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    );
   }
   if (group.type === "Contacts") {
-    return <ContactResultsTable header={group.type} searchResults={group.results} />;
+    return (
+      <ContactResultsTable
+        header={group.type}
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    );
   }
 };
 
@@ -74,7 +93,9 @@ export class SearchResults extends Component {
               <p>Please try another search.</p>,
             ]}
             <Row gutter={48}>
-              {groupedSearchResults.map((group) => renderSearchResultGroup(group))}
+              {groupedSearchResults.map((group) =>
+                renderSearchResultGroup(group, this.props.searchTerms)
+              )}
             </Row>
           </div>
         </div>

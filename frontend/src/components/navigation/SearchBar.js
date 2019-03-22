@@ -137,6 +137,7 @@ export class SearchBar extends Component {
       canSearch: true,
       searchTerm: "",
     });
+    // clear store? clear local copy of results?
   };
 
   render() {
