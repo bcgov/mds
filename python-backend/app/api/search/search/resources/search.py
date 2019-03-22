@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
+from sqlalchemy import desc
 
 from app.extensions import db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -12,13 +13,19 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.permits.permit.models.permit import Permit
+from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 # 'Description': (Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
-    'Mines': ('guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
+    'Mines': ('mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
     'Contacts': ('party_guid', Party, [Party.first_name, Party.party_name, Party.email], False,
                  'json', [True, ['mine_party_appt']]),
-    'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', [])
+    'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
+    'Mine_Documents': ('mine_document_guid', MineDocument, [MineDocument.document_name], False,
+                       'json', []),
+    'Permit_Documents': ('permit_amendment_document_guid', PermitAmendmentDocument,
+                         [PermitAmendmentDocument.document_name], False, 'json', [])
 }
 
 
@@ -40,7 +47,6 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     #@requires_role_mine_view
     def get(self):
         search_results = []
-        search_process = []
         app = current_app._get_current_object()
 
         search_term = request.args.get('search_term', None, type=str)
@@ -85,9 +91,9 @@ def execute_search(app, search_results, term, type, comparator, model, columns, 
                 starts_with = starts_with.filter_by(deleted_ind=False)
                 contains = contains.filter_by(deleted_ind=False)
 
-            contains = contains.limit(5)
-            starts_with = starts_with.limit(5)
-            exact = exact.limit(5)
+            contains = contains.order_by(desc(column)).limit(25)
+            starts_with = starts_with.order_by(desc(column)).limit(25)
+            exact = exact.order_by(desc(column)).limit(50)
 
             for item in exact:
                 search_results.append(
@@ -97,7 +103,9 @@ def execute_search(app, search_results, term, type, comparator, model, columns, 
             for item in starts_with:
                 in_list = False
                 for item2 in search_results:
-                    if str(getattr(item, comparator)) == str(item2.result.get(comparator)):
+                    if getattr(item,
+                               json_function_name)(*json_function_args).get(comparator) == str(
+                                   item2.result.get(comparator)):
                         in_list = True
                 if not in_list:
                     search_results.append(
@@ -107,7 +115,9 @@ def execute_search(app, search_results, term, type, comparator, model, columns, 
             for item in contains:
                 in_list = False
                 for item2 in search_results:
-                    if str(getattr(item, comparator)) == str(item2.result.get(comparator)):
+                    if getattr(item,
+                               json_function_name)(*json_function_args).get(comparator) == str(
+                                   item2.result.get(comparator)):
                         in_list = True
                 if not in_list:
                     search_results.append(
