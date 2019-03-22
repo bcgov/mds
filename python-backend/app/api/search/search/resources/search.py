@@ -13,12 +13,12 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.permits.permit.models.permit import Permit
 
-# 'TYPE': (Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
+# 'Description': (Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
-    'MINE': (Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', 'guid', []),
-    'CONTACT': (Party, [Party.first_name, Party.party_name, Party.email], False, 'json',
-                'party_guid', [True, ['mine_party_appt']]),
-    'PERMIT': (Permit, [Permit.permit_no], False, 'json_for_list', 'permit_guid', [])
+    'Mines': ('guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
+    'Contacts': ('party_guid', Party, [Party.first_name, Party.party_name, Party.email], False,
+                 'json', [True, ['mine_party_appt']]),
+    'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', [])
 }
 
 
@@ -37,7 +37,6 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('search_term', type=str, help='Search term.')
     parser.add_argument('search_types', type=str, help='Search types.')
 
-    #Split search term on space?
     #@requires_role_mine_view
     def get(self):
         search_results = []
@@ -67,34 +66,19 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
                             current_app.logger.error(
                                 f'generated an exception: {exc} with search term - {search_term}')
 
-        # for term in search_terms:
-        #     for type, type_config in search_targets.items():
-        #         search_process.append(
-        #             Process(
-        #                 target=execute_search,
-        #                 args=(app, search_results, term, type, type_config[0], type_config[1],
-        #                       type_config[2], type_config[3], *type_config[4])))
-
-        # for proc in search_process:
-        #     proc.start()
-
-        # for proc in search_process:
-        #     proc.join()
-
         search_results.sort(key=lambda x: x.score, reverse=True)
 
         return {'search_terms': search_terms, 'search_results': [y.json() for y in search_results]}
 
 
-def execute_search(app, search_results, term, type, model, columns, has_deleted_ind,
-                   json_function_name, comparator, *json_function_args):
+def execute_search(app, search_results, term, type, comparator, model, columns, has_deleted_ind,
+                   json_function_name, *json_function_args):
     with app.app_context():
         for column in columns:
             exact = db.session.query(model).filter(column.ilike(term))
             starts_with = db.session.query(model).filter(column.ilike(f'{term}%'))
             contains = db.session.query(model).filter(column.ilike(f'%{term}%'))
-            #fuzzy = model.query.filter(
-            #    text(f'{column}=={search_term}')
+            #fuzzy? Soundex?
 
             if has_deleted_ind:
                 exact = exact.filter_by(deleted_ind=False)
@@ -105,10 +89,10 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
             starts_with = starts_with.limit(5)
             exact = exact.limit(5)
 
-            for x in exact:
+            for item in exact:
                 search_results.append(
-                    SearchResult(100, type,
-                                 getattr(x, json_function_name)(*json_function_args)))
+                    SearchResult(500, type,
+                                 getattr(item, json_function_name)(*json_function_args)))
 
             for item in starts_with:
                 in_list = False
@@ -117,7 +101,7 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
                         in_list = True
                 if not in_list:
                     search_results.append(
-                        SearchResult(50, type,
+                        SearchResult(75, type,
                                      getattr(item, json_function_name)(*json_function_args)))
 
             for item in contains:
@@ -129,16 +113,3 @@ def execute_search(app, search_results, term, type, model, columns, has_deleted_
                     search_results.append(
                         SearchResult(25, type,
                                      getattr(item, json_function_name)(*json_function_args)))
-
-            # for x in exact:
-            #     search_results.append(
-            #         SearchResult(100, type,
-            #                      getattr(x, json_function_name)(*json_function_args)))
-            # for x in starts_with:
-            #     search_results.append(
-            #         SearchResult(50, type,
-            #                      getattr(x, json_function_name)(*json_function_args)))
-            # for x in contains:
-            #     search_results.append(
-            #         SearchResult(25, type,
-            #                      getattr(x, json_function_name)(*json_function_args)))

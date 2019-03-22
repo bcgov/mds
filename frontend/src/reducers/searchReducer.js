@@ -8,6 +8,7 @@ import { SEARCH } from "@/constants/reducerTypes";
 
 const initialState = {
   searchResults: [],
+  searchTerms: [],
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -16,10 +17,12 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         searchResults: action.payload.search_results,
+        searchTerms: action.payload.search_terms,
       };
     case actionTypes.CLEAR:
       return {
         searchResults: [],
+        searchTerms: [],
       };
     default:
       return state;
@@ -27,5 +30,6 @@ const searchReducer = (state = initialState, action) => {
 };
 
 export const getSearchResults = (state) => state[SEARCH].searchResults;
+export const getSearchTerms = (state) => state[SEARCH].searchTerms;
 
 export default searchReducer;
