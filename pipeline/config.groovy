@@ -149,6 +149,16 @@ app {
                             'SOURCE_CONTEXT_DIR': "docker-images/metabase",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/logstash.bc.json',
+                    'params':[
+                            'NAME':"metabase",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "elastic/logstash",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
                 ]
         ]
     }
