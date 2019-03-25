@@ -25,9 +25,10 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openEditPermitModal: PropTypes.func.isRequired,
-  openEditAmendmentModal: PropTypes.func.isRequired,
   openAddPermitAmendmentModal: PropTypes.func.isRequired,
   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
+  // This prop is used. Linting issue is unclear
+  openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 };
 
 const defaultProps = {
@@ -36,8 +37,15 @@ const defaultProps = {
 
 const renderDocumentLink = (file, text) => (
   <a
+    role="link"
     key={file.mine_document_guid}
     onClick={() => downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)}
+    // Accessibility: Event listener
+    onKeyPress={() =>
+      downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
+    }
+    // Accessibility: Focusable element
+    tabIndex="0"
   >
     {text}
   </a>
@@ -157,23 +165,21 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper inTesting>
-          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-              <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add/Edit
-                  <img
-                    className="padding-small--right icon-svg-filter"
-                    src={CARAT}
-                    alt="Menu"
-                    style={{ paddingLeft: "5px" }}
-                  />
-                </div>
-              </Button>
-            </Dropdown>
-          </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+            <Button type="secondary" className="permit-table-button">
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Add/Edit
+                <img
+                  className="padding-small--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </div>
+            </Button>
+          </Dropdown>
         </AuthorizationWrapper>
       );
     },
@@ -227,18 +233,16 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper inTesting>
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Button
-            className="permit-table-button"
-            type="ghost"
-            onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
-          >
-            <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-            </div>
-          </Button>
-        </AuthorizationWrapper>
+      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <Button
+          className="permit-table-button"
+          type="ghost"
+          onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
+        >
+          <div>
+            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+          </div>
+        </Button>
       </AuthorizationWrapper>
     ),
   },

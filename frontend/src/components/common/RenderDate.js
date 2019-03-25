@@ -8,25 +8,32 @@ import { Form, DatePicker } from "antd";
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  input: PropTypes.any,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
-  meta: PropTypes.object,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-const RenderDate = ({ id, input, label, placeholder, meta: { touched, error, warning } }) => (
+
+const RenderDate = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <DatePicker
-      id={id}
-      {...input}
-      placeholder={placeholder}
-      onChange={(date, dateString) => input.onChange(dateString)}
-      value={input.value ? moment(input.value) : null}
+      id={props.id}
+      {...props.input}
+      placeholder={props.placeholder}
+      onChange={(date, dateString) => props.input.onChange(dateString)}
+      value={props.input.value ? moment(props.input.value) : null}
     />
   </Form.Item>
 );

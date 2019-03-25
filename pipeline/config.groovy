@@ -139,6 +139,16 @@ app {
                             'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/metabase.bc.json',
+                    'params':[
+                            'NAME':"metabase",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "docker-images/metabase",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
                 ]
         ]
     }
@@ -311,6 +321,21 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/metabase.dc.json',
+                    'params':[
+                            'NAME':"metabase",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -323,6 +348,7 @@ environments {
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
+            METABASE_PVC_SIZE = '256Mi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -378,6 +404,12 @@ environments {
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
+                metabase {
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
+                }
             }
             deployment {
                 env {
@@ -417,6 +449,9 @@ environments {
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -426,6 +461,7 @@ environments {
             DOCUMENT_PVC_SIZE = '5Gi'
             BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
+            METABASE_PVC_SIZE = '5Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -481,6 +517,12 @@ environments {
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
+                metabase {
+                    cpu_request = "200m"
+                    cpu_limit = "500m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                }
             }
             deployment {
                 env {
@@ -520,6 +562,9 @@ environments {
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
@@ -529,6 +574,7 @@ environments {
             DOCUMENT_PVC_SIZE = '50Gi'
             BACKUP_PVC_SIZE = '50Gi'
             LOG_PVC_SIZE = '5Gi'
+            METABASE_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -574,6 +620,12 @@ environments {
                     cpu_limit = "450m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                }
+                metabase {
+                    cpu_request = "500m"
+                    cpu_limit = "1"
+                    memory_request = "2Gi"
+                    memory_limit = "4Gi"
                 }
             }
             keycloak {
@@ -622,6 +674,9 @@ environments {
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'metabase' {
+                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

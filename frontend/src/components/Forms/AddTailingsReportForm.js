@@ -11,7 +11,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  mineTSFRequiredReportsDropDown: PropTypes.array.isRequired,
+  mineTSFRequiredReportsDropDown: PropTypes.arrayOf(PropTypes.any).isRequired,
   submitting: PropTypes.bool.isRequired,
 };
 

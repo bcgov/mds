@@ -92,6 +92,9 @@ if ! mountpoint $NPM_TMP; then
     rm -rf $NPM_TMP/npm-*
 fi
 
+# Remove cache created by package installs
+rm -rf node_modules/.cache/
+
 
 # Fix source directory permissions
 fix-permissions ./

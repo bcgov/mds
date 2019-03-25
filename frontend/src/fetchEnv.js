@@ -12,7 +12,7 @@ export default function fetchEnv() {
         return DEFAULT_ENVIRONMENT;
       }
     })
-    .catch((error) => DEFAULT_ENVIRONMENT)
+    .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
       ENVIRONMENT.mapPortalId = env.mapPortalId;
