@@ -13,10 +13,27 @@ Elastic Images
 | ES_USER | elastic user |
 | ES_PASSWORD | elastic password |
 
-## Filebeat Container
+## Openshift Configuration
 
-Filebeat container monitors `access.log` in /usr/share/filebeat/monitor/access/.
+Build the docker image
 
-## Logstash Container
+```bash
+cd mds/elastic/logstash
+docker build --build-arg ES_VERSION=6.6.2
+```
 
-Logstash container exposes port 5044
+Set up your deployment environemt with the following Environment Variables
+
+| Name | Description |
+| --- | --- |
+| ES_HOST | elastic cloud host |
+| ES_USER | elastic user |
+| ES_PASSWORD | elastic password |
+
+Mount a pvc at the following path in the container:
+
+```bash
+/usr/share/logstash/monitor
+```
+
+NGINX access.log written to this volume will be monitored by logstash.

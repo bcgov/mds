@@ -1,22 +1,6 @@
 version: '3.5'
 
 services:
-  
-  mds-filebeat:
-    build:
-      context: filebeat/
-      args:
-        - ES_LOGSTASH_HOST=mds-logstash
-        - ES_LOGSTASH_PORT=5044
-        - ES_VERSION=${ES_VERSION}
-    container_name: mds-filebeat
-    networks:
-      - mds
-    depends_on: 
-      - mds-logstash
-    restart: always
-    volumes:
-      - ./filebeat/test:/usr/share/filebeat/monitor/access/
   mds-logstash:
     build:
       context: logstash/
@@ -32,6 +16,8 @@ services:
       - "5044:5044"
     networks:
       - mds
+    volumes:
+      - ./logstash/test:/usr/share/logstash/monitor
     restart: always
 networks:
   mds:
