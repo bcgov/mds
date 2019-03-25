@@ -292,6 +292,44 @@ ShallowWrapper {
                         + Add TSF
                       </button>
                     </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="full"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <img
+                          alt="checkmark"
+                          className="padding-small"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                          width="30"
+                        />
+                        Confirm Verification of Mine Data
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="full"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <img
+                          alt="hazard"
+                          className="padding-small"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                          width="30"
+                        />
+                        Confirm Mine Data Needs Verification
+                      </button>
+                    </MenuItem>
                   </Menu>
                 }
                 placement="bottomLeft"
@@ -596,6 +634,44 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="checkmark"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Verification of Mine Data
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="hazard"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Mine Data Needs Verification
+                        </button>
+                      </MenuItem>
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -802,6 +878,44 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Verification of Mine Data
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Mine Data Needs Verification
+                          </button>
+                        </MenuItem>
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -844,12 +958,14 @@ ShallowWrapper {
                   "children": Array [
                     "mine3",
                     " ",
+                    undefined,
                   ],
                 },
                 "ref": null,
                 "rendered": Array [
                   "mine3",
                   " ",
+                  undefined,
                 ],
                 "type": "h1",
               },
@@ -903,6 +1019,44 @@ ShallowWrapper {
                               }
                             />
                             + Add TSF
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Verification of Mine Data
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Mine Data Needs Verification
                           </button>
                         </MenuItem>
                       </Menu>
@@ -1007,6 +1161,44 @@ ShallowWrapper {
                             }
                           />
                           + Add TSF
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="checkmark"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Verification of Mine Data
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="hazard"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Mine Data Needs Verification
                         </button>
                       </MenuItem>
                     </Menu>,
@@ -1923,6 +2115,44 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="checkmark"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Verification of Mine Data
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="hazard"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="30"
+                          />
+                          Confirm Mine Data Needs Verification
+                        </button>
+                      </MenuItem>
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -2227,6 +2457,44 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Verification of Mine Data
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Mine Data Needs Verification
+                          </button>
+                        </MenuItem>
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -2433,6 +2701,44 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Confirm Verification of Mine Data
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Confirm Mine Data Needs Verification
+                            </button>
+                          </MenuItem>
                         </Menu>
                       }
                       placement="bottomLeft"
@@ -2475,12 +2781,14 @@ ShallowWrapper {
                     "children": Array [
                       "mine3",
                       " ",
+                      undefined,
                     ],
                   },
                   "ref": null,
                   "rendered": Array [
                     "mine3",
                     " ",
+                    undefined,
                   ],
                   "type": "h1",
                 },
@@ -2534,6 +2842,44 @@ ShallowWrapper {
                                 }
                               />
                               + Add TSF
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Confirm Verification of Mine Data
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Confirm Mine Data Needs Verification
                             </button>
                           </MenuItem>
                         </Menu>
@@ -2638,6 +2984,44 @@ ShallowWrapper {
                               }
                             />
                             + Add TSF
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Verification of Mine Data
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Confirm Mine Data Needs Verification
                           </button>
                         </MenuItem>
                       </Menu>,

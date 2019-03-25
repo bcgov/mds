@@ -5,6 +5,17 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <NavBar
     activeButton=""
+    currentUserUnverifiedMines={Array []}
+    currentUserVerifiedMines={Array []}
+    fetchMineVerifiedStatuses={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            "idir\\\\undefined",
+          ],
+        ],
+      }
+    }
     isMenuOpen={false}
     keycloak={Object {}}
     logoutUser={[MockFunction]}
@@ -202,6 +213,47 @@ ShallowWrapper {
                   />
                 </button>
               </Dropdown>
+              <Dropdown
+                disabled={true}
+                mouseEnterDelay={0.15}
+                mouseLeaveDelay={0.1}
+                overlay={
+                  <Menu
+                    className=""
+                    focusable={false}
+                    prefixCls="ant-menu"
+                    theme="light"
+                  >
+                    <MenuItemGroup
+                      disabled={true}
+                      title="Please re-verify the following mines:"
+                    />
+                  </Menu>
+                }
+                placement="bottomLeft"
+                prefixCls="ant-dropdown"
+              >
+                <button
+                  className="menu__btn"
+                  type="button"
+                >
+                  <img
+                    alt="GoodMines"
+                    className="padding-small--right icon-sm vertical-align-sm"
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    width="25"
+                  />
+                  <span
+                    className="padding-small--right"
+                  >
+                    0
+                  </span>
+                </button>
+              </Dropdown>
             </div>
           </MediaQuery>
         </div>,
@@ -393,6 +445,47 @@ ShallowWrapper {
                     <Icon
                       type="down"
                     />
+                  </button>
+                </Dropdown>
+                <Dropdown
+                  disabled={true}
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItemGroup
+                        disabled={true}
+                        title="Please re-verify the following mines:"
+                      />
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
+                >
+                  <button
+                    className="menu__btn"
+                    type="button"
+                  >
+                    <img
+                      alt="GoodMines"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      width="25"
+                    />
+                    <span
+                      className="padding-small--right"
+                    >
+                      0
+                    </span>
                   </button>
                 </Dropdown>
               </div>
@@ -647,6 +740,47 @@ ShallowWrapper {
                     />
                   </button>
                 </Dropdown>
+                <Dropdown
+                  disabled={true}
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItemGroup
+                        disabled={true}
+                        title="Please re-verify the following mines:"
+                      />
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
+                >
+                  <button
+                    className="menu__btn"
+                    type="button"
+                  >
+                    <img
+                      alt="GoodMines"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      width="25"
+                    />
+                    <span
+                      className="padding-small--right"
+                    >
+                      0
+                    </span>
+                  </button>
+                </Dropdown>
               </div>,
               "minWidth": 769,
               "values": Object {},
@@ -780,6 +914,47 @@ ShallowWrapper {
                       <Icon
                         type="down"
                       />
+                    </button>
+                  </Dropdown>,
+                  <Dropdown
+                    disabled={true}
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItemGroup
+                          disabled={true}
+                          title="Please re-verify the following mines:"
+                        />
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <button
+                      className="menu__btn"
+                      type="button"
+                    >
+                      <img
+                        alt="GoodMines"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        width="25"
+                      />
+                      <span
+                        className="padding-small--right"
+                      >
+                        0
+                      </span>
                     </button>
                   </Dropdown>,
                 ],
@@ -1158,6 +1333,111 @@ ShallowWrapper {
                   },
                   "type": [Function],
                 },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <button
+                      className="menu__btn"
+                      type="button"
+                    >
+                      <img
+                        alt="GoodMines"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        width="25"
+                      />
+                      <span
+                        className="padding-small--right"
+                      >
+                        0
+                      </span>
+                    </button>,
+                    "disabled": true,
+                    "mouseEnterDelay": 0.15,
+                    "mouseLeaveDelay": 0.1,
+                    "overlay": <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItemGroup
+                        disabled={true}
+                        title="Please re-verify the following mines:"
+                      />
+                    </Menu>,
+                    "placement": "bottomLeft",
+                    "prefixCls": "ant-dropdown",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <img
+                          alt="GoodMines"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                          width="25"
+                        />,
+                        <span
+                          className="padding-small--right"
+                        >
+                          0
+                        </span>,
+                        false,
+                      ],
+                      "className": "menu__btn",
+                      "type": "button",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "alt": "GoodMines",
+                          "className": "padding-small--right icon-sm vertical-align-sm",
+                          "src": Object {
+                            "process": [Function],
+                          },
+                          "width": "25",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": "img",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": 0,
+                          "className": "padding-small--right",
+                        },
+                        "ref": null,
+                        "rendered": 0,
+                        "type": "span",
+                      },
+                      false,
+                    ],
+                    "type": "button",
+                  },
+                  "type": [Function],
+                },
               ],
               "type": "div",
             },
@@ -1376,6 +1656,47 @@ ShallowWrapper {
                     />
                   </button>
                 </Dropdown>
+                <Dropdown
+                  disabled={true}
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItemGroup
+                        disabled={true}
+                        title="Please re-verify the following mines:"
+                      />
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
+                >
+                  <button
+                    className="menu__btn"
+                    type="button"
+                  >
+                    <img
+                      alt="GoodMines"
+                      className="padding-small--right icon-sm vertical-align-sm"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      width="25"
+                    />
+                    <span
+                      className="padding-small--right"
+                    >
+                      0
+                    </span>
+                  </button>
+                </Dropdown>
               </div>
             </MediaQuery>
           </div>,
@@ -1567,6 +1888,47 @@ ShallowWrapper {
                       <Icon
                         type="down"
                       />
+                    </button>
+                  </Dropdown>
+                  <Dropdown
+                    disabled={true}
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItemGroup
+                          disabled={true}
+                          title="Please re-verify the following mines:"
+                        />
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <button
+                      className="menu__btn"
+                      type="button"
+                    >
+                      <img
+                        alt="GoodMines"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        width="25"
+                      />
+                      <span
+                        className="padding-small--right"
+                      >
+                        0
+                      </span>
                     </button>
                   </Dropdown>
                 </div>
@@ -1821,6 +2183,47 @@ ShallowWrapper {
                       />
                     </button>
                   </Dropdown>
+                  <Dropdown
+                    disabled={true}
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItemGroup
+                          disabled={true}
+                          title="Please re-verify the following mines:"
+                        />
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
+                  >
+                    <button
+                      className="menu__btn"
+                      type="button"
+                    >
+                      <img
+                        alt="GoodMines"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        width="25"
+                      />
+                      <span
+                        className="padding-small--right"
+                      >
+                        0
+                      </span>
+                    </button>
+                  </Dropdown>
                 </div>,
                 "minWidth": 769,
                 "values": Object {},
@@ -1954,6 +2357,47 @@ ShallowWrapper {
                         <Icon
                           type="down"
                         />
+                      </button>
+                    </Dropdown>,
+                    <Dropdown
+                      disabled={true}
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItemGroup
+                            disabled={true}
+                            title="Please re-verify the following mines:"
+                          />
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      prefixCls="ant-dropdown"
+                    >
+                      <button
+                        className="menu__btn"
+                        type="button"
+                      >
+                        <img
+                          alt="GoodMines"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                          width="25"
+                        />
+                        <span
+                          className="padding-small--right"
+                        >
+                          0
+                        </span>
                       </button>
                     </Dropdown>,
                   ],
@@ -2327,6 +2771,111 @@ ShallowWrapper {
                           "rendered": null,
                           "type": [Function],
                         },
+                      ],
+                      "type": "button",
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <button
+                        className="menu__btn"
+                        type="button"
+                      >
+                        <img
+                          alt="GoodMines"
+                          className="padding-small--right icon-sm vertical-align-sm"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                          width="25"
+                        />
+                        <span
+                          className="padding-small--right"
+                        >
+                          0
+                        </span>
+                      </button>,
+                      "disabled": true,
+                      "mouseEnterDelay": 0.15,
+                      "mouseLeaveDelay": 0.1,
+                      "overlay": <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItemGroup
+                          disabled={true}
+                          title="Please re-verify the following mines:"
+                        />
+                      </Menu>,
+                      "placement": "bottomLeft",
+                      "prefixCls": "ant-dropdown",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="GoodMines"
+                            className="padding-small--right icon-sm vertical-align-sm"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="25"
+                          />,
+                          <span
+                            className="padding-small--right"
+                          >
+                            0
+                          </span>,
+                          false,
+                        ],
+                        "className": "menu__btn",
+                        "type": "button",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "GoodMines",
+                            "className": "padding-small--right icon-sm vertical-align-sm",
+                            "src": Object {
+                              "process": [Function],
+                            },
+                            "width": "25",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": 0,
+                            "className": "padding-small--right",
+                          },
+                          "ref": null,
+                          "rendered": 0,
+                          "type": "span",
+                        },
+                        false,
                       ],
                       "type": "button",
                     },
