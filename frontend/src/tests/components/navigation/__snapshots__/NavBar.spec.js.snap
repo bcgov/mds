@@ -30,7 +30,7 @@ ShallowWrapper {
         >
           <Link
             replace={false}
-            to="/dashboard/mines/?page=1&per_page=25"
+            to="/home/"
           >
             <img
               alt="Home"
@@ -223,7 +223,7 @@ ShallowWrapper {
           "children": Array [
             <Link
               replace={false}
-              to="/dashboard/mines/?page=1&per_page=25"
+              to="/home/"
             >
               <img
                 alt="Home"
@@ -417,7 +417,7 @@ ShallowWrapper {
                 }
               />,
               "replace": false,
-              "to": "/dashboard/mines/?page=1&per_page=25",
+              "to": "/home/",
             },
             "ref": null,
             "rendered": Object {
@@ -1204,7 +1204,7 @@ ShallowWrapper {
           >
             <Link
               replace={false}
-              to="/dashboard/mines/?page=1&per_page=25"
+              to="/home/"
             >
               <img
                 alt="Home"
@@ -1397,7 +1397,7 @@ ShallowWrapper {
             "children": Array [
               <Link
                 replace={false}
-                to="/dashboard/mines/?page=1&per_page=25"
+                to="/home/"
               >
                 <img
                   alt="Home"
@@ -1591,7 +1591,7 @@ ShallowWrapper {
                   }
                 />,
                 "replace": false,
-                "to": "/dashboard/mines/?page=1&per_page=25",
+                "to": "/home/",
               },
               "ref": null,
               "rendered": Object {

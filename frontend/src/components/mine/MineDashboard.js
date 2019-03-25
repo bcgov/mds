@@ -63,6 +63,9 @@ const { TabPane } = Tabs;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  fetchSubscribedMinesByUser: PropTypes.func.isRequired,
+  subscribe: PropTypes.func.isRequired,
+  unSubscribe: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   setOptionsLoaded: PropTypes.func.isRequired,

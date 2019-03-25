@@ -12,7 +12,8 @@ export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(stat
 
 export const getIsUserSubscribed = createSelector(
   [getSubscribedMines, getMineGuid],
-  (subscribedMines, mineGuid) => mineGuid ? subscribedMines.map(({ guid }) => guid).includes(mineGuid) : false
+  (subscribedMines, mineGuid) =>
+    mineGuid ? subscribedMines.map(({ guid }) => guid).includes(mineGuid) : false
 );
 
 export const getCurrentMineTypes = createSelector(

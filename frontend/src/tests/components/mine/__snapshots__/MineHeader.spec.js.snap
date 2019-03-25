@@ -239,88 +239,107 @@ ShallowWrapper {
           >
             <h1>
               mine3
-               
             </h1>
-            <Connect(AuthorizationWrapper)
-              isMajorMine={undefined}
-              permission="role_create"
-            >
-              <Dropdown
-                className="full-height full-mobile"
-                mouseEnterDelay={0.15}
-                mouseLeaveDelay={0.1}
-                overlay={
-                  <Menu
-                    className=""
-                    focusable={false}
-                    prefixCls="ant-menu"
-                    theme="light"
-                  >
-                    <MenuItem>
-                      <button
-                        className="full"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <img
-                          alt="pencil"
-                          className="padding-small"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        Update Mine Record
-                      </button>
-                    </MenuItem>
-                    <MenuItem>
-                      <button
-                        className="full"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <img
-                          alt="document"
-                          className="padding-small"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        + Add TSF
-                      </button>
-                    </MenuItem>
-                  </Menu>
-                }
-                placement="bottomLeft"
-                prefixCls="ant-dropdown"
+            <div>
+              <Connect(AuthorizationWrapper)
+                isMajorMine={undefined}
+                permission="role_create"
               >
-                <Button
-                  block={false}
-                  ghost={false}
-                  loading={false}
-                  prefixCls="ant-btn"
-                  type="primary"
+                <Dropdown
+                  className="full-height full-mobile"
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="pencil"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Update Mine Record
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          + Add TSF
+                        </button>
+                      </MenuItem>
+                      <MenuItem>
+                        <button
+                          className="full"
+                          onClick={undefined}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Subscribe
+                        </button>
+                      </MenuItem>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  prefixCls="ant-dropdown"
                 >
-                  <div
-                    className="padding-small"
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
-                    <img
-                      alt="Add/Edit"
-                      className="padding-small--right"
-                      src={
-                        Object {
-                          "process": [Function],
+                    <div
+                      className="padding-small"
+                    >
+                      <img
+                        alt="Add/Edit"
+                        className="padding-small--right"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
                         }
-                      }
-                    />
-                    Add/Edit
-                  </div>
-                </Button>
-              </Dropdown>
-            </Connect(AuthorizationWrapper)>
+                      />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </Connect(AuthorizationWrapper)>
+            </div>
           </div>
           <Divider
             className="custom-large-divider"
@@ -543,88 +562,107 @@ ShallowWrapper {
             >
               <h1>
                 mine3
-                 
               </h1>
-              <Connect(AuthorizationWrapper)
-                isMajorMine={undefined}
-                permission="role_create"
-              >
-                <Dropdown
-                  className="full-height full-mobile"
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="pencil"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Update Mine Record
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          + Add TSF
-                        </button>
-                      </MenuItem>
-                    </Menu>
-                  }
-                  placement="bottomLeft"
-                  prefixCls="ant-dropdown"
+              <div>
+                <Connect(AuthorizationWrapper)
+                  isMajorMine={undefined}
+                  permission="role_create"
                 >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    prefixCls="ant-btn"
-                    type="primary"
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Subscribe
+                          </button>
+                        </MenuItem>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
                   >
-                    <div
-                      className="padding-small"
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
                     >
-                      <img
-                        alt="Add/Edit"
-                        className="padding-small--right"
-                        src={
-                          Object {
-                            "process": [Function],
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
                           }
-                        }
-                      />
-                      Add/Edit
-                    </div>
-                  </Button>
-                </Dropdown>
-              </Connect(AuthorizationWrapper)>
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
+                </Connect(AuthorizationWrapper)>
+              </div>
             </div>,
             <Divider
               className="custom-large-divider"
@@ -749,88 +787,107 @@ ShallowWrapper {
               "children": Array [
                 <h1>
                   mine3
-                   
                 </h1>,
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Dropdown
-                    className="full-height full-mobile"
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                    prefixCls="ant-dropdown"
+                <div>
+                  <Connect(AuthorizationWrapper)
+                    isMajorMine={undefined}
+                    permission="role_create"
                   >
-                    <Button
-                      block={false}
-                      ghost={false}
-                      loading={false}
-                      prefixCls="ant-btn"
-                      type="primary"
+                    <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              + Add TSF
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Subscribe
+                            </button>
+                          </MenuItem>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      prefixCls="ant-dropdown"
                     >
-                      <div
-                        className="padding-small"
+                      <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        type="primary"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
                             }
-                          }
-                        />
-                        Add/Edit
-                      </div>
-                    </Button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>,
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>
+                    </Dropdown>
+                  </Connect(AuthorizationWrapper)>
+                </div>,
               ],
               "className": "inline-flex between center-mobile",
             },
@@ -841,250 +898,393 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": Array [
-                    "mine3",
-                    " ",
-                  ],
+                  "children": "mine3",
                 },
                 "ref": null,
-                "rendered": Array [
-                  "mine3",
-                  " ",
-                ],
+                "rendered": "mine3",
                 "type": "h1",
               },
               Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "class",
+                "nodeType": "host",
                 "props": Object {
-                  "children": <Dropdown
-                    className="full-height full-mobile"
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                    prefixCls="ant-dropdown"
-                  >
-                    <Button
-                      block={false}
-                      ghost={false}
-                      loading={false}
-                      prefixCls="ant-btn"
-                      type="primary"
+                  "children": Array [
+                    undefined,
+                    <Connect(AuthorizationWrapper)
+                      isMajorMine={undefined}
+                      permission="role_create"
                     >
-                      <div
-                        className="padding-small"
+                      <Dropdown
+                        className="full-height full-mobile"
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={
+                          <Menu
+                            className=""
+                            focusable={false}
+                            prefixCls="ant-menu"
+                            theme="light"
+                          >
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                + Add TSF
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Subscribe
+                              </button>
+                            </MenuItem>
+                          </Menu>
+                        }
+                        placement="bottomLeft"
+                        prefixCls="ant-dropdown"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        Add/Edit
-                      </div>
-                    </Button>
-                  </Dropdown>,
-                  "isMajorMine": undefined,
-                  "permission": "role_create",
+                        <Button
+                          block={false}
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          type="primary"
+                        >
+                          <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Add/Edit
+                          </div>
+                        </Button>
+                      </Dropdown>
+                    </Connect(AuthorizationWrapper)>,
+                  ],
                 },
                 "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Button
-                      block={false}
-                      ghost={false}
-                      loading={false}
-                      prefixCls="ant-btn"
-                      type="primary"
-                    >
-                      <div
-                        className="padding-small"
-                      >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        Add/Edit
-                      </div>
-                    </Button>,
-                    "className": "full-height full-mobile",
-                    "mouseEnterDelay": 0.15,
-                    "mouseLeaveDelay": 0.1,
-                    "overlay": <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="pencil"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Update Mine Record
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          + Add TSF
-                        </button>
-                      </MenuItem>
-                    </Menu>,
-                    "placement": "bottomLeft",
-                    "prefixCls": "ant-dropdown",
-                  },
-                  "ref": null,
-                  "rendered": Object {
+                "rendered": Array [
+                  undefined,
+                  Object {
                     "instance": null,
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "block": false,
-                      "children": <div
-                        className="padding-small"
+                      "children": <Dropdown
+                        className="full-height full-mobile"
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={
+                          <Menu
+                            className=""
+                            focusable={false}
+                            prefixCls="ant-menu"
+                            theme="light"
+                          >
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                + Add TSF
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Subscribe
+                              </button>
+                            </MenuItem>
+                          </Menu>
+                        }
+                        placement="bottomLeft"
+                        prefixCls="ant-dropdown"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        Add/Edit
-                      </div>,
-                      "ghost": false,
-                      "loading": false,
-                      "prefixCls": "ant-btn",
-                      "type": "primary",
+                        <Button
+                          block={false}
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          type="primary"
+                        >
+                          <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Add/Edit
+                          </div>
+                        </Button>
+                      </Dropdown>,
+                      "isMajorMine": undefined,
+                      "permission": "role_create",
                     },
                     "ref": null,
                     "rendered": Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "host",
+                      "nodeType": "class",
                       "props": Object {
-                        "children": Array [
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
+                        "children": <Button
+                          block={false}
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          type="primary"
+                        >
+                          <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />,
-                          "Add/Edit",
-                        ],
-                        "className": "padding-small",
+                            />
+                            Add/Edit
+                          </div>
+                        </Button>,
+                        "className": "full-height full-mobile",
+                        "mouseEnterDelay": 0.15,
+                        "mouseLeaveDelay": 0.1,
+                        "overlay": <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              + Add TSF
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Subscribe
+                            </button>
+                          </MenuItem>
+                        </Menu>,
+                        "placement": "bottomLeft",
+                        "prefixCls": "ant-dropdown",
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "block": false,
+                          "children": <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Add/Edit
+                          </div>,
+                          "ghost": false,
+                          "loading": false,
+                          "prefixCls": "ant-btn",
+                          "type": "primary",
+                        },
+                        "ref": null,
+                        "rendered": Object {
                           "instance": null,
                           "key": undefined,
                           "nodeType": "host",
                           "props": Object {
-                            "alt": "Add/Edit",
-                            "className": "padding-small--right",
-                            "src": Object {
-                              "process": [Function],
-                            },
+                            "children": Array [
+                              <img
+                                alt="Add/Edit"
+                                className="padding-small--right"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />,
+                              "Add/Edit",
+                            ],
+                            "className": "padding-small",
                           },
                           "ref": null,
-                          "rendered": null,
-                          "type": "img",
+                          "rendered": Array [
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "alt": "Add/Edit",
+                                "className": "padding-small--right",
+                                "src": Object {
+                                  "process": [Function],
+                                },
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": "img",
+                            },
+                            "Add/Edit",
+                          ],
+                          "type": "div",
                         },
-                        "Add/Edit",
-                      ],
-                      "type": "div",
+                        "type": [Function],
+                      },
+                      "type": [Function],
                     },
                     "type": [Function],
                   },
-                  "type": [Function],
-                },
-                "type": [Function],
+                ],
+                "type": "div",
               },
             ],
             "type": "div",
@@ -1870,88 +2070,107 @@ ShallowWrapper {
             >
               <h1>
                 mine3
-                 
               </h1>
-              <Connect(AuthorizationWrapper)
-                isMajorMine={undefined}
-                permission="role_create"
-              >
-                <Dropdown
-                  className="full-height full-mobile"
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="pencil"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Update Mine Record
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          + Add TSF
-                        </button>
-                      </MenuItem>
-                    </Menu>
-                  }
-                  placement="bottomLeft"
-                  prefixCls="ant-dropdown"
+              <div>
+                <Connect(AuthorizationWrapper)
+                  isMajorMine={undefined}
+                  permission="role_create"
                 >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    prefixCls="ant-btn"
-                    type="primary"
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            + Add TSF
+                          </button>
+                        </MenuItem>
+                        <MenuItem>
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Subscribe
+                          </button>
+                        </MenuItem>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    prefixCls="ant-dropdown"
                   >
-                    <div
-                      className="padding-small"
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      prefixCls="ant-btn"
+                      type="primary"
                     >
-                      <img
-                        alt="Add/Edit"
-                        className="padding-small--right"
-                        src={
-                          Object {
-                            "process": [Function],
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
                           }
-                        }
-                      />
-                      Add/Edit
-                    </div>
-                  </Button>
-                </Dropdown>
-              </Connect(AuthorizationWrapper)>
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
+                </Connect(AuthorizationWrapper)>
+              </div>
             </div>
             <Divider
               className="custom-large-divider"
@@ -2174,88 +2393,107 @@ ShallowWrapper {
               >
                 <h1>
                   mine3
-                   
                 </h1>
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Dropdown
-                    className="full-height full-mobile"
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                    prefixCls="ant-dropdown"
+                <div>
+                  <Connect(AuthorizationWrapper)
+                    isMajorMine={undefined}
+                    permission="role_create"
                   >
-                    <Button
-                      block={false}
-                      ghost={false}
-                      loading={false}
-                      prefixCls="ant-btn"
-                      type="primary"
+                    <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              + Add TSF
+                            </button>
+                          </MenuItem>
+                          <MenuItem>
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Subscribe
+                            </button>
+                          </MenuItem>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      prefixCls="ant-dropdown"
                     >
-                      <div
-                        className="padding-small"
+                      <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        prefixCls="ant-btn"
+                        type="primary"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
                             }
-                          }
-                        />
-                        Add/Edit
-                      </div>
-                    </Button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>
+                    </Dropdown>
+                  </Connect(AuthorizationWrapper)>
+                </div>
               </div>,
               <Divider
                 className="custom-large-divider"
@@ -2380,88 +2618,107 @@ ShallowWrapper {
                 "children": Array [
                   <h1>
                     mine3
-                     
                   </h1>,
-                  <Connect(AuthorizationWrapper)
-                    isMajorMine={undefined}
-                    permission="role_create"
-                  >
-                    <Dropdown
-                      className="full-height full-mobile"
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      overlay={
-                        <Menu
-                          className=""
-                          focusable={false}
-                          prefixCls="ant-menu"
-                          theme="light"
-                        >
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </MenuItem>
-                        </Menu>
-                      }
-                      placement="bottomLeft"
-                      prefixCls="ant-dropdown"
+                  <div>
+                    <Connect(AuthorizationWrapper)
+                      isMajorMine={undefined}
+                      permission="role_create"
                     >
-                      <Button
-                        block={false}
-                        ghost={false}
-                        loading={false}
-                        prefixCls="ant-btn"
-                        type="primary"
+                      <Dropdown
+                        className="full-height full-mobile"
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={
+                          <Menu
+                            className=""
+                            focusable={false}
+                            prefixCls="ant-menu"
+                            theme="light"
+                          >
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                + Add TSF
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Subscribe
+                              </button>
+                            </MenuItem>
+                          </Menu>
+                        }
+                        placement="bottomLeft"
+                        prefixCls="ant-dropdown"
                       >
-                        <div
-                          className="padding-small"
+                        <Button
+                          block={false}
+                          ghost={false}
+                          loading={false}
+                          prefixCls="ant-btn"
+                          type="primary"
                         >
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
+                          <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />
-                          Add/Edit
-                        </div>
-                      </Button>
-                    </Dropdown>
-                  </Connect(AuthorizationWrapper)>,
+                            />
+                            Add/Edit
+                          </div>
+                        </Button>
+                      </Dropdown>
+                    </Connect(AuthorizationWrapper)>
+                  </div>,
                 ],
                 "className": "inline-flex between center-mobile",
               },
@@ -2472,250 +2729,393 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": Array [
-                      "mine3",
-                      " ",
-                    ],
+                    "children": "mine3",
                   },
                   "ref": null,
-                  "rendered": Array [
-                    "mine3",
-                    " ",
-                  ],
+                  "rendered": "mine3",
                   "type": "h1",
                 },
                 Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "class",
+                  "nodeType": "host",
                   "props": Object {
-                    "children": <Dropdown
-                      className="full-height full-mobile"
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      overlay={
-                        <Menu
-                          className=""
-                          focusable={false}
-                          prefixCls="ant-menu"
-                          theme="light"
-                        >
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </MenuItem>
-                        </Menu>
-                      }
-                      placement="bottomLeft"
-                      prefixCls="ant-dropdown"
-                    >
-                      <Button
-                        block={false}
-                        ghost={false}
-                        loading={false}
-                        prefixCls="ant-btn"
-                        type="primary"
+                    "children": Array [
+                      undefined,
+                      <Connect(AuthorizationWrapper)
+                        isMajorMine={undefined}
+                        permission="role_create"
                       >
-                        <div
-                          className="padding-small"
+                        <Dropdown
+                          className="full-height full-mobile"
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu
+                              className=""
+                              focusable={false}
+                              prefixCls="ant-menu"
+                              theme="light"
+                            >
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  + Add TSF
+                                </button>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Subscribe
+                                </button>
+                              </MenuItem>
+                            </Menu>
+                          }
+                          placement="bottomLeft"
+                          prefixCls="ant-dropdown"
                         >
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Add/Edit
-                        </div>
-                      </Button>
-                    </Dropdown>,
-                    "isMajorMine": undefined,
-                    "permission": "role_create",
+                          <Button
+                            block={false}
+                            ghost={false}
+                            loading={false}
+                            prefixCls="ant-btn"
+                            type="primary"
+                          >
+                            <div
+                              className="padding-small"
+                            >
+                              <img
+                                alt="Add/Edit"
+                                className="padding-small--right"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Add/Edit
+                            </div>
+                          </Button>
+                        </Dropdown>
+                      </Connect(AuthorizationWrapper)>,
+                    ],
                   },
                   "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Button
-                        block={false}
-                        ghost={false}
-                        loading={false}
-                        prefixCls="ant-btn"
-                        type="primary"
-                      >
-                        <div
-                          className="padding-small"
-                        >
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Add/Edit
-                        </div>
-                      </Button>,
-                      "className": "full-height full-mobile",
-                      "mouseEnterDelay": 0.15,
-                      "mouseLeaveDelay": 0.1,
-                      "overlay": <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                      </Menu>,
-                      "placement": "bottomLeft",
-                      "prefixCls": "ant-dropdown",
-                    },
-                    "ref": null,
-                    "rendered": Object {
+                  "rendered": Array [
+                    undefined,
+                    Object {
                       "instance": null,
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "block": false,
-                        "children": <div
-                          className="padding-small"
+                        "children": <Dropdown
+                          className="full-height full-mobile"
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu
+                              className=""
+                              focusable={false}
+                              prefixCls="ant-menu"
+                              theme="light"
+                            >
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  + Add TSF
+                                </button>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Subscribe
+                                </button>
+                              </MenuItem>
+                            </Menu>
+                          }
+                          placement="bottomLeft"
+                          prefixCls="ant-dropdown"
                         >
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Add/Edit
-                        </div>,
-                        "ghost": false,
-                        "loading": false,
-                        "prefixCls": "ant-btn",
-                        "type": "primary",
+                          <Button
+                            block={false}
+                            ghost={false}
+                            loading={false}
+                            prefixCls="ant-btn"
+                            type="primary"
+                          >
+                            <div
+                              className="padding-small"
+                            >
+                              <img
+                                alt="Add/Edit"
+                                className="padding-small--right"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Add/Edit
+                            </div>
+                          </Button>
+                        </Dropdown>,
+                        "isMajorMine": undefined,
+                        "permission": "role_create",
                       },
                       "ref": null,
                       "rendered": Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "host",
+                        "nodeType": "class",
                         "props": Object {
-                          "children": Array [
-                            <img
-                              alt="Add/Edit"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
+                          "children": <Button
+                            block={false}
+                            ghost={false}
+                            loading={false}
+                            prefixCls="ant-btn"
+                            type="primary"
+                          >
+                            <div
+                              className="padding-small"
+                            >
+                              <img
+                                alt="Add/Edit"
+                                className="padding-small--right"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />,
-                            "Add/Edit",
-                          ],
-                          "className": "padding-small",
+                              />
+                              Add/Edit
+                            </div>
+                          </Button>,
+                          "className": "full-height full-mobile",
+                          "mouseEnterDelay": 0.15,
+                          "mouseLeaveDelay": 0.1,
+                          "overlay": <Menu
+                            className=""
+                            focusable={false}
+                            prefixCls="ant-menu"
+                            theme="light"
+                          >
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                + Add TSF
+                              </button>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Subscribe
+                              </button>
+                            </MenuItem>
+                          </Menu>,
+                          "placement": "bottomLeft",
+                          "prefixCls": "ant-dropdown",
                         },
                         "ref": null,
-                        "rendered": Array [
-                          Object {
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "block": false,
+                            "children": <div
+                              className="padding-small"
+                            >
+                              <img
+                                alt="Add/Edit"
+                                className="padding-small--right"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Add/Edit
+                            </div>,
+                            "ghost": false,
+                            "loading": false,
+                            "prefixCls": "ant-btn",
+                            "type": "primary",
+                          },
+                          "ref": null,
+                          "rendered": Object {
                             "instance": null,
                             "key": undefined,
                             "nodeType": "host",
                             "props": Object {
-                              "alt": "Add/Edit",
-                              "className": "padding-small--right",
-                              "src": Object {
-                                "process": [Function],
-                              },
+                              "children": Array [
+                                <img
+                                  alt="Add/Edit"
+                                  className="padding-small--right"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />,
+                                "Add/Edit",
+                              ],
+                              "className": "padding-small",
                             },
                             "ref": null,
-                            "rendered": null,
-                            "type": "img",
+                            "rendered": Array [
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "alt": "Add/Edit",
+                                  "className": "padding-small--right",
+                                  "src": Object {
+                                    "process": [Function],
+                                  },
+                                },
+                                "ref": null,
+                                "rendered": null,
+                                "type": "img",
+                              },
+                              "Add/Edit",
+                            ],
+                            "type": "div",
                           },
-                          "Add/Edit",
-                        ],
-                        "type": "div",
+                          "type": [Function],
+                        },
+                        "type": [Function],
                       },
                       "type": [Function],
                     },
-                    "type": [Function],
-                  },
-                  "type": [Function],
+                  ],
+                  "type": "div",
                 },
               ],
               "type": "div",
