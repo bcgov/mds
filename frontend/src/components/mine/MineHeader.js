@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MineMap from "@/components/maps/MineMap";
-import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
+import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm } from "antd";
 import {
   ELLIPSE,
   BRAND_PENCIL,
@@ -153,29 +153,33 @@ export class MineHeader extends Component {
         </Menu.Item>
         {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy) && (
           <Menu.Item key="2">
-            <button
-              type="button"
-              className="full"
-              onClick={() =>
+            <Popconfirm
+              placement="left"
+              title="Are you sure?"
+              onConfirm={() => {
                 this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
                   this.props.fetchMineRecordById(this.props.mine.guid);
                   this.props.fetchMineVerifiedStatuses(
                     `idir\\${this.props.userInfo.preferred_username}`
                   );
-                })
-              }
+                });
+              }}
+              okText="Yes"
+              cancelText="No"
             >
-              <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
-              Confirm Verification of Mine Data
-            </button>
+              <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
+                Verify Mine Data
+              </button>
+            </Popconfirm>
           </Menu.Item>
         )}
         {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy) && (
           <Menu.Item key="3">
-            <button
-              type="button"
-              className="full"
-              onClick={() =>
+            <Popconfirm
+              placement="left"
+              title="Are you sure?"
+              onConfirm={() =>
                 this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
                   this.props.fetchMineRecordById(this.props.mine.guid);
                   this.props.fetchMineVerifiedStatuses(
@@ -183,10 +187,14 @@ export class MineHeader extends Component {
                   );
                 })
               }
+              okText="Yes"
+              cancelText="No"
             >
-              <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
-              Confirm Mine Data Needs Verification
-            </button>
+              <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
+                Mark Data for Verification
+              </button>
+            </Popconfirm>
           </Menu.Item>
         )}
       </Menu>
