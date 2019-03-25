@@ -14,7 +14,6 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   mine: CustomPropTypes.mine,
-  initialValues: PropTypes.object,
   submitting: PropTypes.bool.isRequired,
 };
 

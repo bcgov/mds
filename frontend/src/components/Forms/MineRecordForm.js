@@ -219,7 +219,7 @@ export class MineRecordForm extends Component {
               </Collapse.Panel>
             ))}
           {fields.map((type, index) => (
-            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
+            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={type}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
