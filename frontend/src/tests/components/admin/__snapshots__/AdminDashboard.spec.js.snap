@@ -46,63 +46,98 @@ ShallowWrapper {
         <div
           className="landing-page__content"
         >
-          <div
-            className="tab__content"
-          >
-            <div
-              className="inline-flex evenly"
-            >
-              <div>
-                <h4>
-                  0
-                   Verified Mines
-                </h4>
-                <div />
-              </div>
-              <div>
-                <h4>
-                  0
-                   Mines Needing Re-Verification
-                </h4>
-                <div />
-              </div>
-            </div>
-          </div>
-          <div
-            className="tab__content"
-          >
-            <h2>
-              Pull Mine Manager History
-            </h2>
-            <Input
-              disabled={false}
-              onChange={[Function]}
-              placeholder="Enter a Mine Number"
-              prefixCls="ant-input"
-              style={
-                Object {
-                  "max-width": "300px",
-                  "width": "50%",
-                }
+          <Tabs
+            activeKey="verifiedMines"
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
               }
-              type="text"
-              value=""
-            />
-            <Button
-              block={false}
-              ghost={false}
-              loading={false}
-              onClick={[Function]}
-              prefixCls="ant-btn"
-            >
-              Download History
-            </Button>
-          </div>
-          <div
-            className="tab__content"
+            }
+            defaultActiveKey="summary"
+            hideAdd={false}
+            onChange={[Function]}
+            prefixCls="ant-tabs"
+            size="large"
           >
-            <Connect(MinespaceUserManagement) />
-          </div>
+            <TabPane
+              placeholder={null}
+              tab="Verified Mines"
+            >
+              <div
+                className="tab__content"
+              >
+                <div>
+                  <h4>
+                    0
+                     Verified Mines
+                  </h4>
+                  <div />
+                </div>
+              </div>
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Mines to be Checked"
+            >
+              <div
+                className="tab__content"
+              >
+                <div>
+                  <h4>
+                    0
+                     Mines Needing Re-Verification
+                  </h4>
+                  <div />
+                </div>
+              </div>
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Pull Mine Manager History"
+            >
+              <div
+                className="tab__content"
+              >
+                <h2>
+                  Pull Mine Manager History
+                </h2>
+                <Input
+                  disabled={false}
+                  onChange={[Function]}
+                  placeholder="Enter a Mine Number"
+                  prefixCls="ant-input"
+                  style={
+                    Object {
+                      "max-width": "300px",
+                      "width": "50%",
+                    }
+                  }
+                  type="text"
+                  value=""
+                />
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  onClick={[Function]}
+                  prefixCls="ant-btn"
+                >
+                  Download History
+                </Button>
+              </div>
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Manage Minespace Users"
+            >
+              <div
+                className="tab__content"
+              >
+                <Connect(MinespaceUserManagement) />
+              </div>
+            </TabPane>
+          </Tabs>
         </div>,
       ],
       "className": "landing-page",
@@ -182,12 +217,26 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": Array [
-            <div
-              className="tab__content"
+          "children": <Tabs
+            activeKey="verifiedMines"
+            animated={
+              Object {
+                "inkBar": true,
+                "tabPane": false,
+              }
+            }
+            defaultActiveKey="summary"
+            hideAdd={false}
+            onChange={[Function]}
+            prefixCls="ant-tabs"
+            size="large"
+          >
+            <TabPane
+              placeholder={null}
+              tab="Verified Mines"
             >
               <div
-                className="inline-flex evenly"
+                className="tab__content"
               >
                 <div>
                   <h4>
@@ -196,6 +245,15 @@ ShallowWrapper {
                   </h4>
                   <div />
                 </div>
+              </div>
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Mines to be Checked"
+            >
+              <div
+                className="tab__content"
+              >
                 <div>
                   <h4>
                     0
@@ -204,99 +262,189 @@ ShallowWrapper {
                   <div />
                 </div>
               </div>
-            </div>,
-            <div
-              className="tab__content"
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Pull Mine Manager History"
             >
-              <h2>
-                Pull Mine Manager History
-              </h2>
-              <Input
-                disabled={false}
-                onChange={[Function]}
-                placeholder="Enter a Mine Number"
-                prefixCls="ant-input"
-                style={
-                  Object {
-                    "max-width": "300px",
-                    "width": "50%",
-                  }
-                }
-                type="text"
-                value=""
-              />
-              <Button
-                block={false}
-                ghost={false}
-                loading={false}
-                onClick={[Function]}
-                prefixCls="ant-btn"
+              <div
+                className="tab__content"
               >
-                Download History
-              </Button>
-            </div>,
-            <div
-              className="tab__content"
+                <h2>
+                  Pull Mine Manager History
+                </h2>
+                <Input
+                  disabled={false}
+                  onChange={[Function]}
+                  placeholder="Enter a Mine Number"
+                  prefixCls="ant-input"
+                  style={
+                    Object {
+                      "max-width": "300px",
+                      "width": "50%",
+                    }
+                  }
+                  type="text"
+                  value=""
+                />
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  onClick={[Function]}
+                  prefixCls="ant-btn"
+                >
+                  Download History
+                </Button>
+              </div>
+            </TabPane>
+            <TabPane
+              placeholder={null}
+              tab="Manage Minespace Users"
             >
-              <Connect(MinespaceUserManagement) />
-            </div>,
-          ],
+              <div
+                className="tab__content"
+              >
+                <Connect(MinespaceUserManagement) />
+              </div>
+            </TabPane>
+          </Tabs>,
           "className": "landing-page__content",
         },
         "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": <div
-                className="inline-flex evenly"
-              >
-                <div>
-                  <h4>
-                    0
-                     Verified Mines
-                  </h4>
-                  <div />
-                </div>
-                <div>
-                  <h4>
-                    0
-                     Mines Needing Re-Verification
-                  </h4>
-                  <div />
-                </div>
-              </div>,
-              "className": "tab__content",
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "activeKey": "verifiedMines",
+            "animated": Object {
+              "inkBar": true,
+              "tabPane": false,
             },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
+            "children": Array [
+              <TabPane
+                placeholder={null}
+                tab="Verified Mines"
+              >
+                <div
+                  className="tab__content"
+                >
                   <div>
                     <h4>
                       0
                        Verified Mines
                     </h4>
                     <div />
-                  </div>,
+                  </div>
+                </div>
+              </TabPane>,
+              <TabPane
+                placeholder={null}
+                tab="Mines to be Checked"
+              >
+                <div
+                  className="tab__content"
+                >
                   <div>
                     <h4>
                       0
                        Mines Needing Re-Verification
                     </h4>
                     <div />
-                  </div>,
-                ],
-                "className": "inline-flex evenly",
+                  </div>
+                </div>
+              </TabPane>,
+              <TabPane
+                placeholder={null}
+                tab="Pull Mine Manager History"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <h2>
+                    Pull Mine Manager History
+                  </h2>
+                  <Input
+                    disabled={false}
+                    onChange={[Function]}
+                    placeholder="Enter a Mine Number"
+                    prefixCls="ant-input"
+                    style={
+                      Object {
+                        "max-width": "300px",
+                        "width": "50%",
+                      }
+                    }
+                    type="text"
+                    value=""
+                  />
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    onClick={[Function]}
+                    prefixCls="ant-btn"
+                  >
+                    Download History
+                  </Button>
+                </div>
+              </TabPane>,
+              <TabPane
+                placeholder={null}
+                tab="Manage Minespace Users"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <Connect(MinespaceUserManagement) />
+                </div>
+              </TabPane>,
+            ],
+            "defaultActiveKey": "summary",
+            "hideAdd": false,
+            "onChange": [Function],
+            "prefixCls": "ant-tabs",
+            "size": "large",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "verifiedMines",
+              "nodeType": "class",
+              "props": Object {
+                "children": <div
+                  className="tab__content"
+                >
+                  <div>
+                    <h4>
+                      0
+                       Verified Mines
+                    </h4>
+                    <div />
+                  </div>
+                </div>,
+                "placeholder": null,
+                "tab": "Verified Mines",
               },
               "ref": null,
-              "rendered": Array [
-                Object {
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <div>
+                    <h4>
+                      0
+                       Verified Mines
+                    </h4>
+                    <div />
+                  </div>,
+                  "className": "tab__content",
+                },
+                "ref": null,
+                "rendered": Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
@@ -342,7 +490,46 @@ ShallowWrapper {
                   ],
                   "type": "div",
                 },
-                Object {
+                "type": "div",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "unverifiedMines",
+              "nodeType": "class",
+              "props": Object {
+                "children": <div
+                  className="tab__content"
+                >
+                  <div>
+                    <h4>
+                      0
+                       Mines Needing Re-Verification
+                    </h4>
+                    <div />
+                  </div>
+                </div>,
+                "placeholder": null,
+                "tab": "Mines to be Checked",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <div>
+                    <h4>
+                      0
+                       Mines Needing Re-Verification
+                    </h4>
+                    <div />
+                  </div>,
+                  "className": "tab__content",
+                },
+                "ref": null,
+                "rendered": Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
@@ -388,119 +575,177 @@ ShallowWrapper {
                   ],
                   "type": "div",
                 },
-              ],
-              "type": "div",
+                "type": "div",
+              },
+              "type": [Function],
             },
-            "type": "div",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": Array [
-                <h2>
-                  Pull Mine Manager History
-                </h2>,
-                <Input
-                  disabled={false}
-                  onChange={[Function]}
-                  placeholder="Enter a Mine Number"
-                  prefixCls="ant-input"
-                  style={
-                    Object {
-                      "max-width": "300px",
-                      "width": "50%",
-                    }
-                  }
-                  type="text"
-                  value=""
-                />,
-                <Button
-                  block={false}
-                  ghost={false}
-                  loading={false}
-                  onClick={[Function]}
-                  prefixCls="ant-btn"
+            Object {
+              "instance": null,
+              "key": "mineManagerHistory",
+              "nodeType": "class",
+              "props": Object {
+                "children": <div
+                  className="tab__content"
                 >
-                  Download History
-                </Button>,
-              ],
-              "className": "tab__content",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
+                  <h2>
+                    Pull Mine Manager History
+                  </h2>
+                  <Input
+                    disabled={false}
+                    onChange={[Function]}
+                    placeholder="Enter a Mine Number"
+                    prefixCls="ant-input"
+                    style={
+                      Object {
+                        "max-width": "300px",
+                        "width": "50%",
+                      }
+                    }
+                    type="text"
+                    value=""
+                  />
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    onClick={[Function]}
+                    prefixCls="ant-btn"
+                  >
+                    Download History
+                  </Button>
+                </div>,
+                "placeholder": null,
+                "tab": "Pull Mine Manager History",
+              },
+              "ref": null,
+              "rendered": Object {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Pull Mine Manager History",
+                  "children": Array [
+                    <h2>
+                      Pull Mine Manager History
+                    </h2>,
+                    <Input
+                      disabled={false}
+                      onChange={[Function]}
+                      placeholder="Enter a Mine Number"
+                      prefixCls="ant-input"
+                      style={
+                        Object {
+                          "max-width": "300px",
+                          "width": "50%",
+                        }
+                      }
+                      type="text"
+                      value=""
+                    />,
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      onClick={[Function]}
+                      prefixCls="ant-btn"
+                    >
+                      Download History
+                    </Button>,
+                  ],
+                  "className": "tab__content",
                 },
                 "ref": null,
-                "rendered": "Pull Mine Manager History",
-                "type": "h2",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "disabled": false,
-                  "onChange": [Function],
-                  "placeholder": "Enter a Mine Number",
-                  "prefixCls": "ant-input",
-                  "style": Object {
-                    "max-width": "300px",
-                    "width": "50%",
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Pull Mine Manager History",
+                    },
+                    "ref": null,
+                    "rendered": "Pull Mine Manager History",
+                    "type": "h2",
                   },
-                  "type": "text",
-                  "value": "",
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "disabled": false,
+                      "onChange": [Function],
+                      "placeholder": "Enter a Mine Number",
+                      "prefixCls": "ant-input",
+                      "style": Object {
+                        "max-width": "300px",
+                        "width": "50%",
+                      },
+                      "type": "text",
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": false,
+                      "children": "Download History",
+                      "ghost": false,
+                      "loading": false,
+                      "onClick": [Function],
+                      "prefixCls": "ant-btn",
+                    },
+                    "ref": null,
+                    "rendered": "Download History",
+                    "type": [Function],
+                  },
+                ],
+                "type": "div",
               },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "block": false,
-                  "children": "Download History",
-                  "ghost": false,
-                  "loading": false,
-                  "onClick": [Function],
-                  "prefixCls": "ant-btn",
-                },
-                "ref": null,
-                "rendered": "Download History",
-                "type": [Function],
-              },
-            ],
-            "type": "div",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": <Connect(MinespaceUserManagement) />,
-              "className": "tab__content",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
               "type": [Function],
             },
-            "type": "div",
-          },
-        ],
+            Object {
+              "instance": null,
+              "key": "managerMinespaceUsers",
+              "nodeType": "class",
+              "props": Object {
+                "children": <div
+                  className="tab__content"
+                >
+                  <Connect(MinespaceUserManagement) />
+                </div>,
+                "placeholder": null,
+                "tab": "Manage Minespace Users",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Connect(MinespaceUserManagement) />,
+                  "className": "tab__content",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
         "type": "div",
       },
     ],
@@ -533,63 +778,98 @@ ShallowWrapper {
           <div
             className="landing-page__content"
           >
-            <div
-              className="tab__content"
-            >
-              <div
-                className="inline-flex evenly"
-              >
-                <div>
-                  <h4>
-                    0
-                     Verified Mines
-                  </h4>
-                  <div />
-                </div>
-                <div>
-                  <h4>
-                    0
-                     Mines Needing Re-Verification
-                  </h4>
-                  <div />
-                </div>
-              </div>
-            </div>
-            <div
-              className="tab__content"
-            >
-              <h2>
-                Pull Mine Manager History
-              </h2>
-              <Input
-                disabled={false}
-                onChange={[Function]}
-                placeholder="Enter a Mine Number"
-                prefixCls="ant-input"
-                style={
-                  Object {
-                    "max-width": "300px",
-                    "width": "50%",
-                  }
+            <Tabs
+              activeKey="verifiedMines"
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
                 }
-                type="text"
-                value=""
-              />
-              <Button
-                block={false}
-                ghost={false}
-                loading={false}
-                onClick={[Function]}
-                prefixCls="ant-btn"
-              >
-                Download History
-              </Button>
-            </div>
-            <div
-              className="tab__content"
+              }
+              defaultActiveKey="summary"
+              hideAdd={false}
+              onChange={[Function]}
+              prefixCls="ant-tabs"
+              size="large"
             >
-              <Connect(MinespaceUserManagement) />
-            </div>
+              <TabPane
+                placeholder={null}
+                tab="Verified Mines"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <div>
+                    <h4>
+                      0
+                       Verified Mines
+                    </h4>
+                    <div />
+                  </div>
+                </div>
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Mines to be Checked"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <div>
+                    <h4>
+                      0
+                       Mines Needing Re-Verification
+                    </h4>
+                    <div />
+                  </div>
+                </div>
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Pull Mine Manager History"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <h2>
+                    Pull Mine Manager History
+                  </h2>
+                  <Input
+                    disabled={false}
+                    onChange={[Function]}
+                    placeholder="Enter a Mine Number"
+                    prefixCls="ant-input"
+                    style={
+                      Object {
+                        "max-width": "300px",
+                        "width": "50%",
+                      }
+                    }
+                    type="text"
+                    value=""
+                  />
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    onClick={[Function]}
+                    prefixCls="ant-btn"
+                  >
+                    Download History
+                  </Button>
+                </div>
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Manage Minespace Users"
+              >
+                <div
+                  className="tab__content"
+                >
+                  <Connect(MinespaceUserManagement) />
+                </div>
+              </TabPane>
+            </Tabs>
           </div>,
         ],
         "className": "landing-page",
@@ -669,12 +949,26 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": Array [
-              <div
-                className="tab__content"
+            "children": <Tabs
+              activeKey="verifiedMines"
+              animated={
+                Object {
+                  "inkBar": true,
+                  "tabPane": false,
+                }
+              }
+              defaultActiveKey="summary"
+              hideAdd={false}
+              onChange={[Function]}
+              prefixCls="ant-tabs"
+              size="large"
+            >
+              <TabPane
+                placeholder={null}
+                tab="Verified Mines"
               >
                 <div
-                  className="inline-flex evenly"
+                  className="tab__content"
                 >
                   <div>
                     <h4>
@@ -683,6 +977,15 @@ ShallowWrapper {
                     </h4>
                     <div />
                   </div>
+                </div>
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Mines to be Checked"
+              >
+                <div
+                  className="tab__content"
+                >
                   <div>
                     <h4>
                       0
@@ -691,99 +994,189 @@ ShallowWrapper {
                     <div />
                   </div>
                 </div>
-              </div>,
-              <div
-                className="tab__content"
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Pull Mine Manager History"
               >
-                <h2>
-                  Pull Mine Manager History
-                </h2>
-                <Input
-                  disabled={false}
-                  onChange={[Function]}
-                  placeholder="Enter a Mine Number"
-                  prefixCls="ant-input"
-                  style={
-                    Object {
-                      "max-width": "300px",
-                      "width": "50%",
-                    }
-                  }
-                  type="text"
-                  value=""
-                />
-                <Button
-                  block={false}
-                  ghost={false}
-                  loading={false}
-                  onClick={[Function]}
-                  prefixCls="ant-btn"
+                <div
+                  className="tab__content"
                 >
-                  Download History
-                </Button>
-              </div>,
-              <div
-                className="tab__content"
+                  <h2>
+                    Pull Mine Manager History
+                  </h2>
+                  <Input
+                    disabled={false}
+                    onChange={[Function]}
+                    placeholder="Enter a Mine Number"
+                    prefixCls="ant-input"
+                    style={
+                      Object {
+                        "max-width": "300px",
+                        "width": "50%",
+                      }
+                    }
+                    type="text"
+                    value=""
+                  />
+                  <Button
+                    block={false}
+                    ghost={false}
+                    loading={false}
+                    onClick={[Function]}
+                    prefixCls="ant-btn"
+                  >
+                    Download History
+                  </Button>
+                </div>
+              </TabPane>
+              <TabPane
+                placeholder={null}
+                tab="Manage Minespace Users"
               >
-                <Connect(MinespaceUserManagement) />
-              </div>,
-            ],
+                <div
+                  className="tab__content"
+                >
+                  <Connect(MinespaceUserManagement) />
+                </div>
+              </TabPane>
+            </Tabs>,
             "className": "landing-page__content",
           },
           "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": <div
-                  className="inline-flex evenly"
-                >
-                  <div>
-                    <h4>
-                      0
-                       Verified Mines
-                    </h4>
-                    <div />
-                  </div>
-                  <div>
-                    <h4>
-                      0
-                       Mines Needing Re-Verification
-                    </h4>
-                    <div />
-                  </div>
-                </div>,
-                "className": "tab__content",
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "activeKey": "verifiedMines",
+              "animated": Object {
+                "inkBar": true,
+                "tabPane": false,
               },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
+              "children": Array [
+                <TabPane
+                  placeholder={null}
+                  tab="Verified Mines"
+                >
+                  <div
+                    className="tab__content"
+                  >
                     <div>
                       <h4>
                         0
                          Verified Mines
                       </h4>
                       <div />
-                    </div>,
+                    </div>
+                  </div>
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Mines to be Checked"
+                >
+                  <div
+                    className="tab__content"
+                  >
                     <div>
                       <h4>
                         0
                          Mines Needing Re-Verification
                       </h4>
                       <div />
-                    </div>,
-                  ],
-                  "className": "inline-flex evenly",
+                    </div>
+                  </div>
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Pull Mine Manager History"
+                >
+                  <div
+                    className="tab__content"
+                  >
+                    <h2>
+                      Pull Mine Manager History
+                    </h2>
+                    <Input
+                      disabled={false}
+                      onChange={[Function]}
+                      placeholder="Enter a Mine Number"
+                      prefixCls="ant-input"
+                      style={
+                        Object {
+                          "max-width": "300px",
+                          "width": "50%",
+                        }
+                      }
+                      type="text"
+                      value=""
+                    />
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      onClick={[Function]}
+                      prefixCls="ant-btn"
+                    >
+                      Download History
+                    </Button>
+                  </div>
+                </TabPane>,
+                <TabPane
+                  placeholder={null}
+                  tab="Manage Minespace Users"
+                >
+                  <div
+                    className="tab__content"
+                  >
+                    <Connect(MinespaceUserManagement) />
+                  </div>
+                </TabPane>,
+              ],
+              "defaultActiveKey": "summary",
+              "hideAdd": false,
+              "onChange": [Function],
+              "prefixCls": "ant-tabs",
+              "size": "large",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": "verifiedMines",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div
+                    className="tab__content"
+                  >
+                    <div>
+                      <h4>
+                        0
+                         Verified Mines
+                      </h4>
+                      <div />
+                    </div>
+                  </div>,
+                  "placeholder": null,
+                  "tab": "Verified Mines",
                 },
                 "ref": null,
-                "rendered": Array [
-                  Object {
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <div>
+                      <h4>
+                        0
+                         Verified Mines
+                      </h4>
+                      <div />
+                    </div>,
+                    "className": "tab__content",
+                  },
+                  "ref": null,
+                  "rendered": Object {
                     "instance": null,
                     "key": undefined,
                     "nodeType": "host",
@@ -829,7 +1222,46 @@ ShallowWrapper {
                     ],
                     "type": "div",
                   },
-                  Object {
+                  "type": "div",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "unverifiedMines",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div
+                    className="tab__content"
+                  >
+                    <div>
+                      <h4>
+                        0
+                         Mines Needing Re-Verification
+                      </h4>
+                      <div />
+                    </div>
+                  </div>,
+                  "placeholder": null,
+                  "tab": "Mines to be Checked",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <div>
+                      <h4>
+                        0
+                         Mines Needing Re-Verification
+                      </h4>
+                      <div />
+                    </div>,
+                    "className": "tab__content",
+                  },
+                  "ref": null,
+                  "rendered": Object {
                     "instance": null,
                     "key": undefined,
                     "nodeType": "host",
@@ -875,119 +1307,177 @@ ShallowWrapper {
                     ],
                     "type": "div",
                   },
-                ],
-                "type": "div",
+                  "type": "div",
+                },
+                "type": [Function],
               },
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  <h2>
-                    Pull Mine Manager History
-                  </h2>,
-                  <Input
-                    disabled={false}
-                    onChange={[Function]}
-                    placeholder="Enter a Mine Number"
-                    prefixCls="ant-input"
-                    style={
-                      Object {
-                        "max-width": "300px",
-                        "width": "50%",
-                      }
-                    }
-                    type="text"
-                    value=""
-                  />,
-                  <Button
-                    block={false}
-                    ghost={false}
-                    loading={false}
-                    onClick={[Function]}
-                    prefixCls="ant-btn"
+              Object {
+                "instance": null,
+                "key": "mineManagerHistory",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div
+                    className="tab__content"
                   >
-                    Download History
-                  </Button>,
-                ],
-                "className": "tab__content",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
+                    <h2>
+                      Pull Mine Manager History
+                    </h2>
+                    <Input
+                      disabled={false}
+                      onChange={[Function]}
+                      placeholder="Enter a Mine Number"
+                      prefixCls="ant-input"
+                      style={
+                        Object {
+                          "max-width": "300px",
+                          "width": "50%",
+                        }
+                      }
+                      type="text"
+                      value=""
+                    />
+                    <Button
+                      block={false}
+                      ghost={false}
+                      loading={false}
+                      onClick={[Function]}
+                      prefixCls="ant-btn"
+                    >
+                      Download History
+                    </Button>
+                  </div>,
+                  "placeholder": null,
+                  "tab": "Pull Mine Manager History",
+                },
+                "ref": null,
+                "rendered": Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "Pull Mine Manager History",
+                    "children": Array [
+                      <h2>
+                        Pull Mine Manager History
+                      </h2>,
+                      <Input
+                        disabled={false}
+                        onChange={[Function]}
+                        placeholder="Enter a Mine Number"
+                        prefixCls="ant-input"
+                        style={
+                          Object {
+                            "max-width": "300px",
+                            "width": "50%",
+                          }
+                        }
+                        type="text"
+                        value=""
+                      />,
+                      <Button
+                        block={false}
+                        ghost={false}
+                        loading={false}
+                        onClick={[Function]}
+                        prefixCls="ant-btn"
+                      >
+                        Download History
+                      </Button>,
+                    ],
+                    "className": "tab__content",
                   },
                   "ref": null,
-                  "rendered": "Pull Mine Manager History",
-                  "type": "h2",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "disabled": false,
-                    "onChange": [Function],
-                    "placeholder": "Enter a Mine Number",
-                    "prefixCls": "ant-input",
-                    "style": Object {
-                      "max-width": "300px",
-                      "width": "50%",
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Pull Mine Manager History",
+                      },
+                      "ref": null,
+                      "rendered": "Pull Mine Manager History",
+                      "type": "h2",
                     },
-                    "type": "text",
-                    "value": "",
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "disabled": false,
+                        "onChange": [Function],
+                        "placeholder": "Enter a Mine Number",
+                        "prefixCls": "ant-input",
+                        "style": Object {
+                          "max-width": "300px",
+                          "width": "50%",
+                        },
+                        "type": "text",
+                        "value": "",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "block": false,
+                        "children": "Download History",
+                        "ghost": false,
+                        "loading": false,
+                        "onClick": [Function],
+                        "prefixCls": "ant-btn",
+                      },
+                      "ref": null,
+                      "rendered": "Download History",
+                      "type": [Function],
+                    },
+                  ],
+                  "type": "div",
                 },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "block": false,
-                    "children": "Download History",
-                    "ghost": false,
-                    "loading": false,
-                    "onClick": [Function],
-                    "prefixCls": "ant-btn",
-                  },
-                  "ref": null,
-                  "rendered": "Download History",
-                  "type": [Function],
-                },
-              ],
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": <Connect(MinespaceUserManagement) />,
-                "className": "tab__content",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {},
-                "ref": null,
-                "rendered": null,
                 "type": [Function],
               },
-              "type": "div",
-            },
-          ],
+              Object {
+                "instance": null,
+                "key": "managerMinespaceUsers",
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div
+                    className="tab__content"
+                  >
+                    <Connect(MinespaceUserManagement) />
+                  </div>,
+                  "placeholder": null,
+                  "tab": "Manage Minespace Users",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <Connect(MinespaceUserManagement) />,
+                    "className": "tab__content",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
           "type": "div",
         },
       ],

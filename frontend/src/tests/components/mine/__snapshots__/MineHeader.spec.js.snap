@@ -292,44 +292,88 @@ ShallowWrapper {
                         + Add TSF
                       </button>
                     </MenuItem>
-                    <MenuItem>
-                      <button
-                        className="full"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <img
-                          alt="checkmark"
-                          className="padding-small"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
+                    <Connect(AuthorizationWrapper)
+                      inTesting={true}
+                    >
+                      <MenuItem>
+                        <Popconfirm
+                          cancelText="No"
+                          icon={
+                            <Icon
+                              theme="filled"
+                              type="exclamation-circle"
+                            />
                           }
-                          width="30"
-                        />
-                        Confirm Verification of Mine Data
-                      </button>
-                    </MenuItem>
-                    <MenuItem>
-                      <button
-                        className="full"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <img
-                          alt="hazard"
-                          className="padding-small"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
+                          okText="Yes"
+                          okType="primary"
+                          onConfirm={[Function]}
+                          placement="left"
+                          prefixCls="ant-popover"
+                          title="Are you sure?"
+                          transitionName="zoom-big"
+                          trigger="click"
+                        >
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Verify Mine Data
+                          </button>
+                        </Popconfirm>
+                      </MenuItem>
+                    </Connect(AuthorizationWrapper)>
+                    <Connect(AuthorizationWrapper)
+                      inTesting={true}
+                    >
+                      <MenuItem>
+                        <Popconfirm
+                          cancelText="No"
+                          icon={
+                            <Icon
+                              theme="filled"
+                              type="exclamation-circle"
+                            />
                           }
-                          width="30"
-                        />
-                        Confirm Mine Data Needs Verification
-                      </button>
-                    </MenuItem>
+                          okText="Yes"
+                          okType="primary"
+                          onConfirm={[Function]}
+                          placement="left"
+                          prefixCls="ant-popover"
+                          title="Are you sure?"
+                          transitionName="zoom-big"
+                          trigger="click"
+                        >
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Mark Data for Verification
+                          </button>
+                        </Popconfirm>
+                      </MenuItem>
+                    </Connect(AuthorizationWrapper)>
                   </Menu>
                 }
                 placement="bottomLeft"
@@ -634,44 +678,88 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="checkmark"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Verification of Mine Data
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="hazard"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Verify Mine Data
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Mine Data Needs Verification
-                        </button>
-                      </MenuItem>
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Mark Data for Verification
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -878,44 +966,88 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="checkmark"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Verification of Mine Data
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="hazard"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Mine Data Needs Verification
-                          </button>
-                        </MenuItem>
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -1021,44 +1153,88 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="checkmark"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Verification of Mine Data
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="hazard"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Mine Data Needs Verification
-                          </button>
-                        </MenuItem>
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -1163,44 +1339,88 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="checkmark"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Verification of Mine Data
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="hazard"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Verify Mine Data
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Mine Data Needs Verification
-                        </button>
-                      </MenuItem>
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Mark Data for Verification
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
                     </Menu>,
                     "placement": "bottomLeft",
                     "prefixCls": "ant-dropdown",
@@ -2115,44 +2335,88 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="checkmark"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Verification of Mine Data
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="hazard"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Verify Mine Data
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        inTesting={true}
+                      >
+                        <MenuItem>
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
                             }
-                            width="30"
-                          />
-                          Confirm Mine Data Needs Verification
-                        </button>
-                      </MenuItem>
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            prefixCls="ant-popover"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Mark Data for Verification
+                            </button>
+                          </Popconfirm>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -2457,44 +2721,88 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="checkmark"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Verification of Mine Data
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="hazard"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Mine Data Needs Verification
-                          </button>
-                        </MenuItem>
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -2701,44 +3009,88 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="checkmark"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
+                          <Connect(AuthorizationWrapper)
+                            inTesting={true}
+                          >
+                            <MenuItem>
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
                                 }
-                                width="30"
-                              />
-                              Confirm Verification of Mine Data
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="hazard"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                prefixCls="ant-popover"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="checkmark"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Verify Mine Data
+                                </button>
+                              </Popconfirm>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <Connect(AuthorizationWrapper)
+                            inTesting={true}
+                          >
+                            <MenuItem>
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
                                 }
-                                width="30"
-                              />
-                              Confirm Mine Data Needs Verification
-                            </button>
-                          </MenuItem>
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                prefixCls="ant-popover"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="hazard"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Mark Data for Verification
+                                </button>
+                              </Popconfirm>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
                       placement="bottomLeft"
@@ -2844,44 +3196,88 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="checkmark"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
+                          <Connect(AuthorizationWrapper)
+                            inTesting={true}
+                          >
+                            <MenuItem>
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
                                 }
-                                width="30"
-                              />
-                              Confirm Verification of Mine Data
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="hazard"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                prefixCls="ant-popover"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="checkmark"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Verify Mine Data
+                                </button>
+                              </Popconfirm>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <Connect(AuthorizationWrapper)
+                            inTesting={true}
+                          >
+                            <MenuItem>
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
                                 }
-                                width="30"
-                              />
-                              Confirm Mine Data Needs Verification
-                            </button>
-                          </MenuItem>
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                prefixCls="ant-popover"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="hazard"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Mark Data for Verification
+                                </button>
+                              </Popconfirm>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
                       placement="bottomLeft"
@@ -2986,44 +3382,88 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="checkmark"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Verification of Mine Data
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="hazard"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          inTesting={true}
+                        >
+                          <MenuItem>
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
                               }
-                              width="30"
-                            />
-                            Confirm Mine Data Needs Verification
-                          </button>
-                        </MenuItem>
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              prefixCls="ant-popover"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
                       </Menu>,
                       "placement": "bottomLeft",
                       "prefixCls": "ant-dropdown",
