@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
@@ -22,12 +21,12 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
-  relatedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
 };
 
 const defaultProps = {
-  relatedDocuments: [],
+  initialValues: {},
   change,
 };
 

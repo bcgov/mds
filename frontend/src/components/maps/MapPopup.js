@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { StaticRouter } from "react-router";
+import { Link, StaticRouter } from "react-router-dom";
 import { Button } from "antd";
 
 const propTypes = {
@@ -13,6 +12,9 @@ const defaultProps = {
   id: "",
 };
 
+// FIXME: For some reason, this component requires this.context, preventing it
+// from being refactored into a pure function
+// eslint-disable-next-line react/prefer-stateless-function
 export class MapPopup extends Component {
   render() {
     return (
