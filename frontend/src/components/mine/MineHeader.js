@@ -23,7 +23,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import {
   setMineVerifiedStatus,
-  fetchCurrentUserMineVerifiedStatus,
+  fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
 
@@ -44,7 +44,7 @@ const propTypes = {
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   transformedMineTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.strings)).isRequired,
-  fetchCurrentUserMineVerifiedStatus: PropTypes.func.isRequired,
+  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
 };
 
@@ -159,7 +159,7 @@ class MineHeader extends Component {
               onClick={() =>
                 this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
                   this.props.fetchMineRecordById(this.props.mine.guid);
-                  this.props.fetchCurrentUserMineVerifiedStatus(
+                  this.props.fetchMineVerifiedStatuses(
                     `idir\\${this.props.userInfo.preferred_username}`
                   );
                 })
@@ -178,7 +178,7 @@ class MineHeader extends Component {
               onClick={() =>
                 this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
                   this.props.fetchMineRecordById(this.props.mine.guid);
-                  this.props.fetchCurrentUserMineVerifiedStatus(
+                  this.props.fetchMineVerifiedStatuses(
                     `idir\\${this.props.userInfo.preferred_username}`
                   );
                 })
@@ -376,7 +376,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       setMineVerifiedStatus,
-      fetchCurrentUserMineVerifiedStatus,
+      fetchMineVerifiedStatuses,
     },
     dispatch
   );

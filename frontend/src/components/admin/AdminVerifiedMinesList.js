@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Table, Input, Button, Row, Col } from "antd";
-import { compose, bindActionCreators } from "redux";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
@@ -9,13 +7,6 @@ import { Link } from "react-router-dom";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
-import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
-import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
-
-import { fetchMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
-import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
