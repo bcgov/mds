@@ -7,15 +7,15 @@ import { Form, Checkbox } from "antd";
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  label: PropTypes.string,
-  meta: PropTypes.object,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  label: PropTypes.string.isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const RenderCheckbox = ({ id, input, label, meta: { touched, error } }) => (
-  <Form.Item validateStatus={touched ? error && "error" : ""}>
-    <Checkbox id={id} checked={input.value} {...input}>
-      {label}
+const RenderCheckbox = (props) => (
+  <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
+    <Checkbox id={props.id} checked={props.input.value} {...props.input}>
+      {props.label}
     </Checkbox>
   </Form.Item>
 );
