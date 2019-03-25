@@ -212,19 +212,13 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
-// BEGIN JON DOODLING
+
 export const deleteParty = (party_guid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PARTY));
   dispatch(showLoading());
   return axios
-    .delete(
-      // SEND THE API CALL
-      `${ENVIRONMENT.apiUrl + API.PARTY}/${party_guid}`,
-      createRequestHeader()
-    )
+    .delete(`${ENVIRONMENT.apiUrl + API.PARTY}/${party_guid}`, createRequestHeader())
     .then((response) => {
-      // GIVE SUCCESS MESSAGE
-      // NAVIGATE TO CONTACTS PAGE
       notification.success({ message: "Successfully removed the party", duration: 10 });
       dispatch(success(reducerTypes.DELETE_PARTY));
       dispatch(hideLoading());
@@ -236,7 +230,7 @@ export const deleteParty = (party_guid) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
-// END JON DOODLING
+
 export const downloadMineManagerHistory = (mineNo, { window, document }) =>
   axios({
     method: "GET",

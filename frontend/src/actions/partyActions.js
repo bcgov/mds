@@ -20,8 +20,3 @@ export const storePartyRelationships = (payload) => ({
   type: ActionTypes.STORE_PARTY_RELATIONSHIPS,
   payload,
 });
-
-export const deleteParty = (payload) => ({
-  type: ActionTypes.DELETE_PARTY,
-  payload,
-});
