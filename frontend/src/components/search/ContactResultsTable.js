@@ -17,6 +17,7 @@ const propTypes = {
   header: PropTypes.string.isRequired,
   highlightRegex: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
 };
 
 const defaultProps = {};
@@ -41,10 +42,11 @@ export const ContactResultsTable = (props) => {
           <Col span={3}>Roles</Col>
 
           <Col span={9}>
-            {record.mine_party_appt.map((pr) => [
-              <span>{pr.mine_party_appt_type_code}</span>,
-              <br />,
-            ])}
+            {props.partyRelationshipTypeHash.PMT &&
+              record.mine_party_appt.map((pr) => [
+                <span>{props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}</span>,
+                <br />,
+              ])}
           </Col>
           <Col span={3}>Email</Col>
           <Col span={9}>

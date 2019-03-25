@@ -31,6 +31,7 @@ const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
+  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -38,7 +39,7 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const renderSearchResultGroup = (group, searchTerms) => {
+const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) => {
   const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
   if (group.type === "Mines") {
     return (
@@ -64,6 +65,7 @@ const renderSearchResultGroup = (group, searchTerms) => {
         header={group.type}
         highlightRegex={highlightRegex}
         searchResults={group.results}
+        partyRelationshipTypeHash={partyRelationshipTypeHash}
       />
     );
   }
@@ -79,7 +81,11 @@ const renderSearchResultGroup = (group, searchTerms) => {
 };
 
 export class SearchResults extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    if (!this.props.partyRelationshipTypeHash.PMT) {
+      this.props.fetchPartyRelationshipTypes();
+    }
+  }
 
   render() {
     // const resultTypes = uniq(this.props.searchResults.map(({ type }) => type));
@@ -93,8 +99,6 @@ export class SearchResults extends Component {
       }))
       .orderBy("score", "desc")
       .value();
-
-    alert(JSON.stringify(this.props.partyRelationshipTypeHash));
 
     return (
       <div className="landing-page">
@@ -110,7 +114,11 @@ export class SearchResults extends Component {
             ]}
             <Row gutter={48}>
               {groupedSearchResults.map((group) =>
-                renderSearchResultGroup(group, this.props.searchTerms)
+                renderSearchResultGroup(
+                  group,
+                  this.props.searchTerms,
+                  this.props.partyRelationshipTypeHash
+                )
               )}
             </Row>
           </div>
@@ -126,7 +134,13 @@ const mapStateToProps = (state) => ({
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchPartyRelationshipTypes,
+    },
+    dispatch
+  );
 
 SearchResults.propTypes = propTypes;
 SearchResults.defaultProps = defaultProps;
