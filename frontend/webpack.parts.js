@@ -10,6 +10,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
 const AntdScssThemePlugin = require("antd-scss-theme-plugin");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
@@ -42,7 +43,17 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         test: /\.js$/,
         include,
         exclude,
-        loader: "babel-loader?cacheDirectory",
+        loader: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 1,
+              workerParallelJobs: 50,
+              workerNodeArgs: ["--max-old-space-size=1024"],
+            },
+          },
+          "babel-loader?cacheDirectory",
+        ],
       },
     ],
   },
@@ -205,6 +216,10 @@ exports.setEnvironmentVariable = (dotenv = {}) => ({
       },
     }),
   ],
+});
+
+exports.hardSourceWebPackPlugin = () => ({
+  plugins: [new HardSourceWebpackPlugin()],
 });
 
 exports.clean = (path) => ({
