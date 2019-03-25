@@ -88,6 +88,7 @@ export class PartyProfile extends Component {
       ...party.address[0],
       email: party.email && party.email !== "Unknown" ? party.email : null,
     };
+
     event.preventDefault();
     this.props.openModal({
       props: { onSubmit, title, isPerson, initialValues, provinceOptions },

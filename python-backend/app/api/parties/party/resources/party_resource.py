@@ -172,11 +172,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         except DBAPIError:
             return self.create_error_payload(422, 'Invalid Party guid'), 422
         if party is not None:
-            # TODO Check that party is not connected to an active role
             party.deleted_ind = True
             party.save()
             mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
-            # TODO Set party appointments to deleted_ind=True
             for mine_party_appt in mine_party_appts:
                 mine_party_appt.deleted_ind = True
                 mine_party_appt.save()
