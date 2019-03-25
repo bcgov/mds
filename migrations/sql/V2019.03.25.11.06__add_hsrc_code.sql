@@ -52,11 +52,6 @@ CREATE TABLE IF NOT EXISTS compliance_article
     expiry_date           date                     DEFAULT '9999-12-31'::date NOT NULL
 );
 
-COMMENT ON TABLE compliance_article IS 'Contains a list of compliance sections as defined in a Legislative Act or Regulation; i.e. HSRC 1.2.2';
-
-ALTER TABLE ONLY compliance_article
-    ADD CONSTRAINT compliance_article_act_code_fkey FOREIGN KEY (article_act_code) REFERENCES article_act_code(article_act_code);
-
 CREATE SEQUENCE compliance_article_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -67,6 +62,16 @@ CREATE SEQUENCE compliance_article_id_seq
 ALTER TABLE compliance_article_id_seq OWNER TO mds;
 ALTER SEQUENCE compliance_article_id_seq OWNED BY compliance_article.compliance_article_id;
 ALTER TABLE ONLY compliance_article ALTER COLUMN compliance_article_id SET DEFAULT nextval('compliance_article_id_seq'::regclass);
+
+
+-- Constraints
+ALTER TABLE ONLY compliance_article
+    ADD CONSTRAINT compliance_article_act_code_fkey FOREIGN KEY (article_act_code) REFERENCES article_act_code(article_act_code);
+
+
+-- Comments
+COMMENT ON TABLE compliance_article IS 'Contains a list of compliance sections as defined in a Legislative Act or Regulation; i.e. HSRC 1.2.2';
+
 
 INSERT INTO compliance_article
 (
