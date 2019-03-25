@@ -14,7 +14,7 @@ import {
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
-import { getUserInfo, getKeycloak } from "@/selectors/authenticationSelectors";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -65,7 +65,7 @@ export class MineHeader extends Component {
 
   handleDeleteMineType = (event, mineTypeCode) => {
     event.preventDefault();
-    this.props.mine.mine_type.map((type) => {
+    this.props.mine.mine_type.forEach((type) => {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
         this.props.removeMineType(type.mine_type_guid, tenure).then(() => {

@@ -3,8 +3,6 @@ import { Input, Button, Row, Col, Tabs } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";

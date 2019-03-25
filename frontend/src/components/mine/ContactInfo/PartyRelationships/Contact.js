@@ -14,7 +14,7 @@ const propTypes = {
   openEditPartyRelationshipModal: PropTypes.func,
   onSubmitEditPartyRelationship: PropTypes.func,
   removePartyRelationship: PropTypes.func,
-  otherDetails: PropTypes.object,
+  otherDetails: PropTypes.objectOf(PropTypes.any),
   isEditable: PropTypes.bool,
   compact: PropTypes.bool,
 };

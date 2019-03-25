@@ -1,4 +1,4 @@
-import { PropTypes, shape, arrayOf } from "prop-types";
+import { PropTypes, shape } from "prop-types";
 
 export const minespaceUser = shape({
   email: PropTypes.string.isRequired,

@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import * as Strings from "@/constants/strings";
-import { Tabs, Icon, Table, Button } from "antd";
+import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq } from "lodash";
 import {
   fetchPartyById,
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
   updateParty,
+  deleteParty,
 } from "@/actionCreators/partiesActionCreator";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
@@ -45,7 +46,9 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
+  deleteParty: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchProvinceCodes: PropTypes.func.isRequired,
@@ -103,6 +106,18 @@ export class PartyProfile extends Component {
     });
   };
 
+  deleteParty = () => {
+    const { id } = this.props.match.params;
+    this.props.deleteParty(id).then(() => {
+      this.props.history.push(
+        router.CONTACT_HOME_PAGE.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
+      );
+    });
+  };
+
   render() {
     const { id } = this.props.match.params;
     const parties = this.props.parties[id];
@@ -150,24 +165,41 @@ export class PartyProfile extends Component {
           <div className="profile__header">
             <div className="inline-flex between">
               <h1>{formatedName}</h1>
-              <AuthorizationWrapper permission={Permission.CREATE}>
-                <Button
-                  type="primary"
-                  onClick={(event) =>
-                    this.openEditPartyModal(
-                      event,
-                      parties,
-                      this.editParty,
-                      ModalContent.EDIT_PARTY(formatedName),
-                      isPerson,
-                      this.props.provinceOptions
-                    )
-                  }
-                >
-                  <img alt="pencil" className="padding-small--right" src={EDIT} />
-                  Update Party
-                </Button>
-              </AuthorizationWrapper>
+              <div>
+                <AuthorizationWrapper permission={Permission.ADMIN}>
+                  <Popconfirm
+                    placement="bottom"
+                    title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
+                     remove the party and all associated roles.`}
+                    onConfirm={this.deleteParty}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="danger">
+                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                      Delete Party
+                    </Button>
+                  </Popconfirm>
+                </AuthorizationWrapper>
+                <AuthorizationWrapper permission={Permission.CREATE}>
+                  <Button
+                    type="primary"
+                    onClick={(event) =>
+                      this.openEditPartyModal(
+                        event,
+                        parties,
+                        this.editParty,
+                        ModalContent.EDIT_PARTY(formatedName),
+                        isPerson,
+                        this.props.provinceOptions
+                      )
+                    }
+                  >
+                    <img alt="pencil" className="padding-small--right" src={EDIT} />
+                    Update Party
+                  </Button>
+                </AuthorizationWrapper>
+              </div>
             </div>
             <div className="inline-flex">
               <div className="padding-right">
@@ -227,6 +259,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       fetchMineBasicInfoList,
       fetchProvinceCodes,
+      deleteParty,
       updateParty,
       openModal,
       closeModal,
