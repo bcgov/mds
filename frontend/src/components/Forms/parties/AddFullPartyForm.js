@@ -4,13 +4,13 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { required, email, phoneNumber, maxLength, number } from "@/utils/Validate";
+import { required, email, phoneNumber, maxLength, number, postalCode } from "@/utils/Validate";
 import { normalizePhone, upperCase } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  togglePartyChange: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  togglePartyChange: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -179,7 +179,7 @@ export const AddFullPartyForm = (props) => (
                   label="Postal Code"
                   placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(6)]}
+                  validate={[maxLength(6), postalCode]}
                   normalize={upperCase}
                 />
               </Form.Item>

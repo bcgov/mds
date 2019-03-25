@@ -6,8 +6,16 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <AddPartyModal
     addPartyForm={Object {}}
     addPartyFormValues={Object {}}
+    addRolesFormValues={Object {}}
     createParty={[MockFunction]}
     fetchData={[MockFunction]}
+    fetchMineNameList={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     reset={[MockFunction]}
     submit={[MockFunction]}
     title="mockTitle"
@@ -35,21 +43,13 @@ ShallowWrapper {
             title="Basic Information"
           />
           <Step
-            title="Confirmation"
+            title="Role"
           />
         </Steps>
         <div>
           <ReduxForm
-            addPartyForm={Object {}}
-            addPartyFormValues={Object {}}
-            createParty={[MockFunction]}
-            fetchData={[MockFunction]}
-            handleFormReset={undefined}
             isPerson={true}
-            onSubmit={[Function]}
-            reset={[MockFunction]}
-            submit={[MockFunction]}
-            title="mockTitle"
+            provinceOptions={undefined}
             togglePartyChange={[Function]}
           />
         </div>
@@ -66,7 +66,7 @@ ShallowWrapper {
             }
             okText="Yes"
             okType="primary"
-            onConfirm={undefined}
+            onConfirm={[Function]}
             placement="top"
             prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
@@ -87,6 +87,7 @@ ShallowWrapper {
           <Button
             block={false}
             className="full-mobile"
+            disabled={true}
             ghost={false}
             loading={false}
             onClick={[Function]}
@@ -114,21 +115,13 @@ ShallowWrapper {
               title="Basic Information"
             />
             <Step
-              title="Confirmation"
+              title="Role"
             />
           </Steps>,
           <div>
             <ReduxForm
-              addPartyForm={Object {}}
-              addPartyFormValues={Object {}}
-              createParty={[MockFunction]}
-              fetchData={[MockFunction]}
-              handleFormReset={undefined}
               isPerson={true}
-              onSubmit={[Function]}
-              reset={[MockFunction]}
-              submit={[MockFunction]}
-              title="mockTitle"
+              provinceOptions={undefined}
               togglePartyChange={[Function]}
             />
           </div>,
@@ -145,7 +138,7 @@ ShallowWrapper {
               }
               okText="Yes"
               okType="primary"
-              onConfirm={undefined}
+              onConfirm={[Function]}
               placement="top"
               prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
@@ -166,6 +159,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
+              disabled={true}
               ghost={false}
               loading={false}
               onClick={[Function]}
@@ -189,7 +183,7 @@ ShallowWrapper {
                 title="Basic Information"
               />,
               <Step
-                title="Confirmation"
+                title="Role"
               />,
             ],
             "current": 0,
@@ -211,10 +205,10 @@ ShallowWrapper {
             },
             Object {
               "instance": null,
-              "key": "Confirmation",
+              "key": "Role",
               "nodeType": "class",
               "props": Object {
-                "title": "Confirmation",
+                "title": "Role",
               },
               "ref": null,
               "rendered": null,
@@ -229,16 +223,8 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <ReduxForm
-              addPartyForm={Object {}}
-              addPartyFormValues={Object {}}
-              createParty={[MockFunction]}
-              fetchData={[MockFunction]}
-              handleFormReset={undefined}
               isPerson={true}
-              onSubmit={[Function]}
-              reset={[MockFunction]}
-              submit={[MockFunction]}
-              title="mockTitle"
+              provinceOptions={undefined}
               togglePartyChange={[Function]}
             />,
           },
@@ -248,16 +234,8 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "addPartyForm": Object {},
-              "addPartyFormValues": Object {},
-              "createParty": [MockFunction],
-              "fetchData": [MockFunction],
-              "handleFormReset": undefined,
               "isPerson": true,
-              "onSubmit": [Function],
-              "reset": [MockFunction],
-              "submit": [MockFunction],
-              "title": "mockTitle",
+              "provinceOptions": undefined,
               "togglePartyChange": [Function],
             },
             "ref": null,
@@ -282,7 +260,7 @@ ShallowWrapper {
                 }
                 okText="Yes"
                 okType="primary"
-                onConfirm={undefined}
+                onConfirm={[Function]}
                 placement="top"
                 prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
@@ -304,6 +282,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
+                disabled={true}
                 ghost={false}
                 loading={false}
                 onClick={[Function]}
@@ -340,7 +319,7 @@ ShallowWrapper {
                 />,
                 "okText": "Yes",
                 "okType": "primary",
-                "onConfirm": undefined,
+                "onConfirm": [Function],
                 "placement": "top",
                 "prefixCls": "ant-popover",
                 "title": "Are you sure you want to cancel?",
@@ -376,6 +355,7 @@ ShallowWrapper {
                 "block": false,
                 "children": "Next",
                 "className": "full-mobile",
+                "disabled": true,
                 "ghost": false,
                 "loading": false,
                 "onClick": [Function],
@@ -411,21 +391,13 @@ ShallowWrapper {
               title="Basic Information"
             />
             <Step
-              title="Confirmation"
+              title="Role"
             />
           </Steps>
           <div>
             <ReduxForm
-              addPartyForm={Object {}}
-              addPartyFormValues={Object {}}
-              createParty={[MockFunction]}
-              fetchData={[MockFunction]}
-              handleFormReset={undefined}
               isPerson={true}
-              onSubmit={[Function]}
-              reset={[MockFunction]}
-              submit={[MockFunction]}
-              title="mockTitle"
+              provinceOptions={undefined}
               togglePartyChange={[Function]}
             />
           </div>
@@ -442,7 +414,7 @@ ShallowWrapper {
               }
               okText="Yes"
               okType="primary"
-              onConfirm={undefined}
+              onConfirm={[Function]}
               placement="top"
               prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
@@ -463,6 +435,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
+              disabled={true}
               ghost={false}
               loading={false}
               onClick={[Function]}
@@ -490,21 +463,13 @@ ShallowWrapper {
                 title="Basic Information"
               />
               <Step
-                title="Confirmation"
+                title="Role"
               />
             </Steps>,
             <div>
               <ReduxForm
-                addPartyForm={Object {}}
-                addPartyFormValues={Object {}}
-                createParty={[MockFunction]}
-                fetchData={[MockFunction]}
-                handleFormReset={undefined}
                 isPerson={true}
-                onSubmit={[Function]}
-                reset={[MockFunction]}
-                submit={[MockFunction]}
-                title="mockTitle"
+                provinceOptions={undefined}
                 togglePartyChange={[Function]}
               />
             </div>,
@@ -521,7 +486,7 @@ ShallowWrapper {
                 }
                 okText="Yes"
                 okType="primary"
-                onConfirm={undefined}
+                onConfirm={[Function]}
                 placement="top"
                 prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
@@ -542,6 +507,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
+                disabled={true}
                 ghost={false}
                 loading={false}
                 onClick={[Function]}
@@ -565,7 +531,7 @@ ShallowWrapper {
                   title="Basic Information"
                 />,
                 <Step
-                  title="Confirmation"
+                  title="Role"
                 />,
               ],
               "current": 0,
@@ -587,10 +553,10 @@ ShallowWrapper {
               },
               Object {
                 "instance": null,
-                "key": "Confirmation",
+                "key": "Role",
                 "nodeType": "class",
                 "props": Object {
-                  "title": "Confirmation",
+                  "title": "Role",
                 },
                 "ref": null,
                 "rendered": null,
@@ -605,16 +571,8 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": <ReduxForm
-                addPartyForm={Object {}}
-                addPartyFormValues={Object {}}
-                createParty={[MockFunction]}
-                fetchData={[MockFunction]}
-                handleFormReset={undefined}
                 isPerson={true}
-                onSubmit={[Function]}
-                reset={[MockFunction]}
-                submit={[MockFunction]}
-                title="mockTitle"
+                provinceOptions={undefined}
                 togglePartyChange={[Function]}
               />,
             },
@@ -624,16 +582,8 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "addPartyForm": Object {},
-                "addPartyFormValues": Object {},
-                "createParty": [MockFunction],
-                "fetchData": [MockFunction],
-                "handleFormReset": undefined,
                 "isPerson": true,
-                "onSubmit": [Function],
-                "reset": [MockFunction],
-                "submit": [MockFunction],
-                "title": "mockTitle",
+                "provinceOptions": undefined,
                 "togglePartyChange": [Function],
               },
               "ref": null,
@@ -658,7 +608,7 @@ ShallowWrapper {
                   }
                   okText="Yes"
                   okType="primary"
-                  onConfirm={undefined}
+                  onConfirm={[Function]}
                   placement="top"
                   prefixCls="ant-popover"
                   title="Are you sure you want to cancel?"
@@ -680,6 +630,7 @@ ShallowWrapper {
                 <Button
                   block={false}
                   className="full-mobile"
+                  disabled={true}
                   ghost={false}
                   loading={false}
                   onClick={[Function]}
@@ -716,7 +667,7 @@ ShallowWrapper {
                   />,
                   "okText": "Yes",
                   "okType": "primary",
-                  "onConfirm": undefined,
+                  "onConfirm": [Function],
                   "placement": "top",
                   "prefixCls": "ant-popover",
                   "title": "Are you sure you want to cancel?",
@@ -752,6 +703,7 @@ ShallowWrapper {
                   "block": false,
                   "children": "Next",
                   "className": "full-mobile",
+                  "disabled": true,
                   "ghost": false,
                   "loading": false,
                   "onClick": [Function],

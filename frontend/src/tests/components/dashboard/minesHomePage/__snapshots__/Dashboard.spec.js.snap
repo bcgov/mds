@@ -6,6 +6,13 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <Dashboard
     closeModal={[MockFunction]}
     createMineRecord={[MockFunction]}
+    fetchApplicationStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineCommodityOptions={
       [MockFunction] {
         "calls": Array [

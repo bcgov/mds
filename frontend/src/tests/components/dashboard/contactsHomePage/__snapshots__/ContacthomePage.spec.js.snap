@@ -245,7 +245,7 @@ ShallowWrapper {
               </p>
             </div>
             <Connect(AuthorizationWrapper)
-              permission="role_admin"
+              permission="role_create"
             >
               <Button
                 block={false}
@@ -422,7 +422,7 @@ ShallowWrapper {
               </p>
             </div>
             <Connect(AuthorizationWrapper)
-              permission="role_admin"
+              permission="role_create"
             >
               <Button
                 block={false}
@@ -455,7 +455,7 @@ ShallowWrapper {
                 </p>
               </div>,
               <Connect(AuthorizationWrapper)
-                permission="role_admin"
+                permission="role_create"
               >
                 <Button
                   block={false}
@@ -531,7 +531,7 @@ ShallowWrapper {
                 >
                   Add New Contact
                 </Button>,
-                "permission": "role_admin",
+                "permission": "role_create",
               },
               "ref": null,
               "rendered": Object {
@@ -882,7 +882,7 @@ ShallowWrapper {
                 </p>
               </div>
               <Connect(AuthorizationWrapper)
-                permission="role_admin"
+                permission="role_create"
               >
                 <Button
                   block={false}
@@ -1059,7 +1059,7 @@ ShallowWrapper {
                 </p>
               </div>
               <Connect(AuthorizationWrapper)
-                permission="role_admin"
+                permission="role_create"
               >
                 <Button
                   block={false}
@@ -1092,7 +1092,7 @@ ShallowWrapper {
                   </p>
                 </div>,
                 <Connect(AuthorizationWrapper)
-                  permission="role_admin"
+                  permission="role_create"
                 >
                   <Button
                     block={false}
@@ -1168,7 +1168,7 @@ ShallowWrapper {
                   >
                     Add New Contact
                   </Button>,
-                  "permission": "role_admin",
+                  "permission": "role_create",
                 },
                 "ref": null,
                 "rendered": Object {

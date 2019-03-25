@@ -31,15 +31,15 @@ class Mine(AuditMixin, Base):
     mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
-
-    #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
-        lazy='selectin')
+        lazy='joined')
+
+    #Almost always used, but faster to use selectin to load related data
+    mine_permit = db.relationship(
+        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
         'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
 
@@ -97,7 +97,7 @@ class Mine(AuditMixin, Base):
             self.major_mine_ind,
             'region_code':
             self.mine_region,
-            'mine_permit': [item.json() for item in self.mine_permit],
+            'mine_permit': [item.json_for_list() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],

@@ -12,6 +12,7 @@ import { createReducer } from "@/utils/helpers";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
+import applicationReducer from "@/reducers/applicationReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -20,11 +21,13 @@ export const reducerObject = {
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
   [reducerTypes.PERMITS]: permitReducer,
+  [reducerTypes.APPLICATIONS]: applicationReducer,
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
+  [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
   [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),
   [reducerTypes.CREATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.CREATE_MINE_RECORD),
