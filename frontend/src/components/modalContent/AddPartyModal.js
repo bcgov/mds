@@ -20,11 +20,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
   addRolesFormValues: PropTypes.objectOf(PropTypes.strings),
-  addPartyForm: PropTypes.objectOf(CustomPropTypes.genericFormState),
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   addPartyRelationship: PropTypes.func.isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -34,7 +32,6 @@ const propTypes = {
 const defaultProps = {
   addPartyFormValues: {},
   addRolesFormValues: {},
-  addPartyForm: {},
 };
 
 const groupRolePayloads = (formValues, party_guid) => {

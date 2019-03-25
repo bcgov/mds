@@ -31,8 +31,6 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
-  fetchParties: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),

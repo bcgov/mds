@@ -81,8 +81,9 @@ def register_commands(app):
                 # E.g. 520 -> [100, 100, 100, 100, 100, 20]
                 full_batches = int(num / batch_size)
                 batches = [batch_size] * full_batches
-                batches.append(num % batch_size)
-
+                if 0 < num % batch_size:
+                    batches.append(num % batch_size)
+                
                 task_list = []
                 for batch in batches:
                     task_list.append(executor.submit(_create_data, batch))
