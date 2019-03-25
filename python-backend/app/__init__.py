@@ -7,6 +7,8 @@ from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 
+from flask_jwt_oidc.exceptions import AuthError
+
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
@@ -83,6 +85,13 @@ def register_routes(app):
     class Healthcheck(Resource):
         def get(self):
             return {'success': 'true'}
+
+    @api.errorhandler(AuthError)
+    def jwt_oidc_auth_error_handler(error):
+        return {
+            'status': getattr(error, 'status_code', 401),
+            'message': str(error)
+        }, getattr(error, 'status_code', 401)
 
     @api.errorhandler(Exception)
     def default_error_handler(error):
