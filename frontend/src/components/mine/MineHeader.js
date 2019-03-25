@@ -52,7 +52,7 @@ class MineHeader extends Component {
 
   handleDeleteMineType = (event, mineTypeCode) => {
     event.preventDefault();
-    this.props.mine.mine_type.map((type) => {
+    this.props.mine.mine_type.forEach((type) => {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
         this.props.removeMineType(type.mine_type_guid, tenure).then(() => {

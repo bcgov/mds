@@ -20,7 +20,7 @@ export const getCurrentMineTypes = createSelector(
           mine_disturbance_code: [],
         };
         mine_types.mine_tenure_type_code = type.mine_tenure_type_code;
-        type.mine_type_detail.map((detail) => {
+        type.mine_type_detail.forEach((detail) => {
           if (detail.mine_commodity_code) {
             mine_types.mine_commodity_code.push(detail.mine_commodity_code);
           } else if (detail.mine_disturbance_code) {
@@ -31,6 +31,7 @@ export const getCurrentMineTypes = createSelector(
       });
       return mineTypesArr;
     }
+    return undefined;
   }
 );
 
@@ -55,6 +56,7 @@ export const getTransformedMineTypes = createSelector(
       });
       return mine_types;
     }
+    return undefined;
   }
 );
 

@@ -4,8 +4,8 @@ import AddTailingsReportForm from "@/components/Forms/AddTailingsReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  mineTSFRequiredReportsDropDown: PropTypes.array.isRequired,
+  title: PropTypes.string,
+  mineTSFRequiredReportsDropDown: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -13,10 +13,10 @@ const defaultProps = {
 };
 
 export const AddTailingsReportModal = (props) => (
-    <div>
-      <AddTailingsReportForm {...props} />
-    </div>
-  );
+  <div>
+    <AddTailingsReportForm {...props} />
+  </div>
+);
 
 AddTailingsReportModal.propTypes = propTypes;
 AddTailingsReportModal.defaultProps = defaultProps;
