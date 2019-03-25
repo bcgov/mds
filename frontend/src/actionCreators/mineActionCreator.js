@@ -380,7 +380,7 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
     });
 };
 
-// MineVeriifcationStatus
+// MineVerifcationStatus
 export const fetchMineVerifiedStatuses = (user_id) => (dispatch) => {
   const params = user_id ? { user_id } : null;
   dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
