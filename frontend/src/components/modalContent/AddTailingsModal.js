@@ -4,7 +4,7 @@ import AddTailingsForm from "@/components/Forms/AddTailingsForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 const defaultProps = {

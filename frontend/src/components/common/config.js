@@ -8,6 +8,8 @@ import RenderLargeSelect from "./RenderLargeSelect";
 import RenderSelect from "./RenderSelect";
 import RenderMultiSelect from "./RenderMultiSelect";
 
+// This file is anticipated to have multiple exports
+// eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
   AUTOCOMPLETE: RenderAutocomplete,
