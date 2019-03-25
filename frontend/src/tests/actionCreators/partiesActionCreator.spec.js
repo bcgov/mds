@@ -6,6 +6,7 @@ import {
   fetchPartyById,
   downloadMineManagerHistory,
   updateParty,
+  deleteParty,
 } from "@/actionCreators/partiesActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -72,6 +73,29 @@ describe("`updateParty` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
     return updateParty(mockPayload, partyGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("'deleteParties' action creator", () => {
+  const partyGuid = "475837594";
+  const url = `${ENVIRONMENT.apiUrl + API.PARTY}/${partyGuid}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return deleteParty(partyGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return deleteParty(partyGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
