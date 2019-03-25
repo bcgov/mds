@@ -151,52 +151,62 @@ export class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
-        {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy) && (
-          <Menu.Item key="2">
-            <Popconfirm
-              placement="left"
-              title="Are you sure?"
-              onConfirm={() => {
-                this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
-                  this.props.fetchMineRecordById(this.props.mine.guid);
-                  this.props.fetchMineVerifiedStatuses(
-                    `idir\\${this.props.userInfo.preferred_username}`
-                  );
-                });
-              }}
-              okText="Yes"
-              cancelText="No"
-            >
-              <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
-                <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
-                Verify Mine Data
-              </button>
-            </Popconfirm>
-          </Menu.Item>
-        )}
-        {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy) && (
-          <Menu.Item key="3">
-            <Popconfirm
-              placement="left"
-              title="Are you sure?"
-              onConfirm={() =>
-                this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
-                  this.props.fetchMineRecordById(this.props.mine.guid);
-                  this.props.fetchMineVerifiedStatuses(
-                    `idir\\${this.props.userInfo.preferred_username}`
-                  );
-                })
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
-                <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
-                Mark Data for Verification
-              </button>
-            </Popconfirm>
-          </Menu.Item>
-        )}
+
+        <AuthorizationWrapper inTesting>
+          {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy) && (
+            <Menu.Item key="2">
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                onConfirm={() => {
+                  this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
+                    this.props.fetchMineRecordById(this.props.mine.guid);
+                    this.props.fetchMineVerifiedStatuses(
+                      `idir\\${this.props.userInfo.preferred_username}`
+                    );
+                  });
+                }}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                  <img
+                    alt="checkmark"
+                    className="padding-small"
+                    src={SUCCESS_CHECKMARK}
+                    width="30"
+                  />
+                  Verify Mine Data
+                </button>
+              </Popconfirm>
+            </Menu.Item>
+          )}
+        </AuthorizationWrapper>
+        <AuthorizationWrapper inTesting>
+          {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy) && (
+            <Menu.Item key="3">
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                onConfirm={() =>
+                  this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
+                    this.props.fetchMineRecordById(this.props.mine.guid);
+                    this.props.fetchMineVerifiedStatuses(
+                      `idir\\${this.props.userInfo.preferred_username}`
+                    );
+                  })
+                }
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                  <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
+                  Mark Data for Verification
+                </button>
+              </Popconfirm>
+            </Menu.Item>
+          )}
+        </AuthorizationWrapper>
       </Menu>
     );
 
