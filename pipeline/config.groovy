@@ -153,7 +153,7 @@ app {
                 [
                     'file':'openshift/tools/logstash.bc.json',
                     'params':[
-                            'NAME':"metabase",
+                            'NAME':"logstash",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "elastic/logstash",
