@@ -11,6 +11,7 @@ import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
   updateParty,
+  deleteParty,
 } from "@/actionCreators/partiesActionCreator";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
@@ -45,7 +46,9 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
+  deleteParty: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchProvinceCodes: PropTypes.func.isRequired,
@@ -103,13 +106,17 @@ export class PartyProfile extends Component {
   };
 
   deleteParty = () => {
-    // delete the party, it's roles, and navigate back to the contacts page!
     const { id } = this.props.match.params;
-    console.log("***********THE PARTY WAS DELETED*********");
-    // this.props.updateParty(values, id).then(() => {
-    //   this.props.fetchPartyById(id);
-    //   this.props.closeModal();
-    // });
+    this.props.deleteParty(id).then(() => {
+      const page = String.DEFAULT_PAGE;
+      const per_page = String.DEFAULT_PER_PAGE;
+      this.props.history.push(
+        router.CONTACT_HOME_PAGE.dynamicRoute({
+          page,
+          per_page,
+        })
+      );
+    });
   };
 
   render() {
@@ -165,7 +172,7 @@ export class PartyProfile extends Component {
                     placement="bottom"
                     title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
                      remove the party and all associated roles.`}
-                    onConfirm={this.deleteParty()}
+                    onConfirm={this.deleteParty}
                     okText="Yes"
                     cancelText="No"
                   >
@@ -253,6 +260,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       fetchMineBasicInfoList,
       fetchProvinceCodes,
+      deleteParty,
       updateParty,
       openModal,
       closeModal,
