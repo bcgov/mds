@@ -3,32 +3,20 @@ import { Input, Button, Row, Col } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as router from "@/constants/routes";
-import { Link } from "react-router-dom";
 
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
 import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesList";
-
-import { fetchMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
-import { getHealthyMines, getUnhealthyMines } from "@/reducers/mineReducer";
+import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 
 const propTypes = {
-  unhealthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
-  healthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
-  fetchMineVerifiedStatus: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  unhealthyMines: [],
-  healthyMines: [],
+  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
 };
 
 export class AdminDashboard extends Component {
@@ -36,11 +24,18 @@ export class AdminDashboard extends Component {
     super(props);
     this.state = {
       mineNo: "",
+      verifiedMines: [],
+      unverifiedMines: [],
     };
   }
 
   componentWillMount() {
-    this.props.fetchMineVerifiedStatus();
+    this.props.fetchMineVerifiedStatuses().then((response) => {
+      this.setState({
+        verifiedMines: response.data.healthy,
+        unverifiedMines: response.data.unhealthy,
+      });
+    });
   }
 
   handleChange = (e) => {
@@ -77,21 +72,23 @@ export class AdminDashboard extends Component {
           <div className="tab__content">
             <div className="inline-flex evenly">
               <div>
-                <h4>{this.props.healthyMines.length}&nbsp;Verified Mines</h4>
+                <h4>{this.state.verifiedMines.length}&nbsp;Verified Mines</h4>
                 <div>
-                  {this.props.healthyMines.length > 0 && (
+                  {this.state.verifiedMines.length > 0 && (
                     <AdminVerifiedMinesList
-                      minesVerifiedStatusList={this.props.healthyMines.sort(this.compareMineName)}
+                      minesVerifiedStatusList={this.state.verifiedMines.sort(this.compareMineName)}
                     />
                   )}
                 </div>
               </div>
               <div>
-                <h4>{this.props.unhealthyMines.length}&nbsp;Mines Needing Re-Verification</h4>
+                <h4>{this.state.unverifiedMines.length}&nbsp;Mines Needing Re-Verification</h4>
                 <div>
-                  {this.props.unhealthyMines.length > 0 && (
+                  {this.state.unverifiedMines.length > 0 && (
                     <AdminVerifiedMinesList
-                      minesVerifiedStatusList={this.props.unhealthyMines.sort(this.compareMineName)}
+                      minesVerifiedStatusList={this.state.unverifiedMines.sort(
+                        this.compareMineName
+                      )}
                     />
                   )}
                 </div>
@@ -117,25 +114,19 @@ export class AdminDashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  unhealthyMines: getUnhealthyMines(state),
-  healthyMines: getHealthyMines(state),
-});
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineVerifiedStatus,
+      fetchMineVerifiedStatuses,
     },
     dispatch
   );
 
 AdminDashboard.propTypes = propTypes;
-AdminDashboard.defaultProps = defaultProps;
 
 export default compose(
   connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
   ),
   AuthorizationGuard(Permission.ADMIN) // isPublic === true

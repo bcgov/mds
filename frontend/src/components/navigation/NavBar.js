@@ -26,8 +26,8 @@ import {
   YELLOW_HAZARD,
 } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchCurrentUserMineVerifiedStatus } from "@/actionCreators/mineActionCreator";
-import { getCurrentUserHealthyMines, getCurrentUserUnhealthyMines } from "@/reducers/mineReducer";
+import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
+import { getCurrentUserVerifiedMines, getCurrentUserUnverifiedMines } from "@/reducers/mineReducer";
 
 /**
  * @class NavBar - fixed and responsive navigation
@@ -40,14 +40,14 @@ const propTypes = {
   logoutUser: PropTypes.func.isRequired,
   toggleHamburgerMenu: PropTypes.func.isRequired,
   keycloak: { logout: PropTypes.func.isRequired }.isRequired,
-  fetchCurrentUserMineVerifiedStatus: PropTypes.func.isRequired,
-  currentUserHealthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
-  currentUserUnhealthyMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
+  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
+  currentUserVerifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
+  currentUserUnverifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
 };
 
 const defaultProps = {
-  currentUserHealthyMines: [],
-  currentUserUnhealthyMines: [],
+  currentUserVerifiedMines: [],
+  currentUserUnverifiedMines: [],
 };
 
 export class NavBar extends Component {
@@ -63,15 +63,15 @@ export class NavBar extends Component {
   );
 
   componentDidMount() {
-    this.props.fetchCurrentUserMineVerifiedStatus(
+    this.props.fetchMineVerifiedStatuses(
       `idir\\${this.props.userInfo.preferred_username}`
     );
   }
 
-  unhealthyMinesMenu = () => (
+  unverifiedMinesMenu = () => (
     <Menu>
       <Menu.ItemGroup title="Please re-verify the following mines:" />
-      {this.props.currentUserUnhealthyMines.map((mineVerificationStatus) => (
+      {this.props.currentUserUnverifiedMines.map((mineVerificationStatus) => (
         <Menu.Item key={mineVerificationStatus.mine_guid}>
           <Link to={router.MINE_SUMMARY.dynamicRoute(mineVerificationStatus.mine_guid)}>
             {mineVerificationStatus.mine_name}
@@ -150,9 +150,9 @@ export class NavBar extends Component {
         </button>
       </Dropdown>
       <Dropdown
-        overlay={this.unhealthyMinesMenu()}
+        overlay={this.unverifiedMinesMenu()}
         placement="bottomLeft"
-        disabled={this.props.currentUserUnhealthyMines.length === 0}
+        disabled={this.props.currentUserUnverifiedMines.length === 0}
       >
         <button type="button" className="menu__btn">
           <img
@@ -161,8 +161,8 @@ export class NavBar extends Component {
             src={SUCCESS_CHECKMARK}
             width="25"
           />
-          <span className="padding-small--right">{this.props.currentUserHealthyMines.length}</span>
-          {this.props.currentUserUnhealthyMines.length > 0 && (
+          <span className="padding-small--right">{this.props.currentUserVerifiedMines.length}</span>
+          {this.props.currentUserUnverifiedMines.length > 0 && (
             <img
               alt="BadMines"
               className="padding-small--right icon-sm vertical-align-sm"
@@ -300,15 +300,15 @@ export class NavBar extends Component {
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
   keycloak: getKeycloak(state),
-  currentUserHealthyMines: getCurrentUserHealthyMines(state),
-  currentUserUnhealthyMines: getCurrentUserUnhealthyMines(state),
+  currentUserVerifiedMines: getCurrentUserVerifiedMines(state),
+  currentUserUnverifiedMines: getCurrentUserUnverifiedMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       logoutUser,
-      fetchCurrentUserMineVerifiedStatus,
+      fetchMineVerifiedStatuses,
     },
     dispatch
   );

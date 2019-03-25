@@ -381,35 +381,17 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
 };
 
 // MineVeriifcationStatus
-export const fetchCurrentUserMineVerifiedStatus = (user_id) => (dispatch) => {
+export const fetchMineVerifiedStatuses = (user_id) => (dispatch) => {
+  const params = user_id ? { user_id } : null;
   dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
   dispatch(showLoading());
   return axios
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES({ user_id })}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
-      dispatch(mineActions.storeCurrentUserMineVerifiedStatuses(response.data));
-      dispatch(hideLoading());
-      return response;
-    })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_VERIFIED_STATUS));
-      dispatch(hideLoading());
-    });
-};
-
-export const fetchMineVerifiedStatus = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
-  dispatch(showLoading());
-  return axios
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES()}`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
-      dispatch(mineActions.storeMineVerifiedStatuses(response.data));
+      if (params) {
+        dispatch(mineActions.storeCurrentUserMineVerifiedStatuses(response.data));
+      }
       dispatch(hideLoading());
       return response;
     })
