@@ -177,8 +177,8 @@ export class PartyProfile extends Component {
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button type="ghost" style={{ color: "#BC2929", borderColor: "#BC2929" }}>
-                      <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+                    <Button type="danger">
+                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
                       Delete Party
                     </Button>
                   </Popconfirm>
