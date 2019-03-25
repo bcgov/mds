@@ -109,12 +109,10 @@ export class PartyProfile extends Component {
   deleteParty = () => {
     const { id } = this.props.match.params;
     this.props.deleteParty(id).then(() => {
-      const page = String.DEFAULT_PAGE;
-      const per_page = String.DEFAULT_PER_PAGE;
       this.props.history.push(
         router.CONTACT_HOME_PAGE.dynamicRoute({
-          page,
-          per_page,
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
         })
       );
     });
