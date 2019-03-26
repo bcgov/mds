@@ -8,7 +8,7 @@ import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 
 /**
- * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
+ * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.
  */
 
 const propTypes = {

@@ -155,5 +155,5 @@ export default compose(
     null,
     mapDispatchToProps
   ),
-  AuthorizationGuard(Permission.ADMIN) // isPublic === true
+  AuthorizationGuard(Permission.ADMIN)
 )(AdminDashboard);
