@@ -91,6 +91,33 @@
                         "key": "logstash-cloud-auth"
                       }
                     }
+                  },
+                  {
+                    "name": "ELASTIC_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "elastic-host"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_USERNAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "logstash-username"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "logstash-password"
+                      }
+                    }
                   }
                 ],
                 "resources": {
