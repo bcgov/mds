@@ -75,29 +75,20 @@
                     "value": "/usr/share/logstash"
                   },
                   {
-                    "name": "ES_HOST",
+                    "name": "ELASTIC_CLOUD_ID",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "elastic-url"
+                        "key": "logstash-cloud-id"
                       }
                     }
                   },
                   {
-                    "name": "ES_USER",
+                    "name": "ELASTIC_CLOUD_AUTH",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "logstash-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "ES_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "logstash-password"
+                        "key": "logstash-cloud-auth"
                       }
                     }
                   }

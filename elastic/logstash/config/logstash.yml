@@ -5,3 +5,5 @@
 http.host: "0.0.0.0"
 path.config: /usr/share/logstash/pipeline
 log.level: debug
+cloud.id: ${ELASTIC_CLOUD_ID}
+cloud.auth: ${ELASTIC_CLOUD_AUTH}
