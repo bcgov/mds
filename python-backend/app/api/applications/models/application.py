@@ -18,21 +18,10 @@ class Application(AuditMixin, Base):
     application_no = db.Column(db.String(150), nullable=False)
     application_status_code = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.String)
-    recieved_date = db.Column(db.DateTime, nullable=False)
+    received_date = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return '<Application %r>' % self.party_guid
-
-    def json(self):
-        return {
-            'application_id': self.application_id,
-            'mine_guid': str(self.mine_guid),
-            'application_guid': str(self.application_guid),
-            'application_no': self.application_no,
-            'application_status_code': self.application_status_code,
-            'description': self.description,
-            'received_date': str(self.recieved_date),
-        }
 
     @classmethod
     def find_by_application_guid(cls, application_guid):
@@ -55,7 +44,7 @@ class Application(AuditMixin, Base):
                mine_guid,
                application_no,
                application_status_code,
-               recieved_date,
+               received_date,
                description,
                user_kwargs,
                save=True):
@@ -63,7 +52,7 @@ class Application(AuditMixin, Base):
             mine_guid=mine_guid,
             application_no=application_no,
             application_status_code=application_status_code,
-            recieved_date=recieved_date,
+            received_date=received_date,
             description=description,
             **user_kwargs)
         if save:
