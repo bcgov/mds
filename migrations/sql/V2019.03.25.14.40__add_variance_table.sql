@@ -1,12 +1,16 @@
 CREATE TABLE IF NOT EXISTS variance
 (
-    variance_id           integer                PRIMARY KEY                           ,
-    compliance_article_id integer                                              NOT NULL,
-    mine_guid             uuid                                                 NOT NULL,
-    note                  character varying(300) DEFAULT ''::character varying NOT NULL,
-    issue_date            date                   DEFAULT '9999-12-31'::date    NOT NULL,
-    received_date         date                   DEFAULT '9999-12-31'::date    NOT NULL,
-    expiry_date           date                   DEFAULT '9999-12-31'::date    NOT NULL
+    variance_id           integer                  PRIMARY KEY                           ,
+    compliance_article_id integer                                                NOT NULL,
+    mine_guid             uuid                                                   NOT NULL,
+    note                  character varying(300)   DEFAULT ''::character varying NOT NULL,
+    issue_date            date                     DEFAULT '9999-12-31'::date    NOT NULL,
+    received_date         date                     DEFAULT '9999-12-31'::date    NOT NULL,
+    expiry_date           date                     DEFAULT '9999-12-31'::date    NOT NULL,
+    create_user           character varying(60)                                  NOT NULL,
+    create_timestamp      timestamp with time zone DEFAULT now()                 NOT NULL,
+    update_user           character varying(60)                                  NOT NULL,
+    update_timestamp      timestamp with time zone DEFAULT now()                 NOT NULL
 );
 
 CREATE SEQUENCE variance_id_seq
