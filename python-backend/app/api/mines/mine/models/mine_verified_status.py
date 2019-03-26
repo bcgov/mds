@@ -16,17 +16,14 @@ class MineVerifiedStatus(Base):
     healthy_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     verifying_user = db.Column(db.String, nullable=False, default=User().get_user_username)
-    verifying_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    verifying_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     update_user = db.Column(
         db.String(60),
         nullable=False,
         default=User().get_user_username,
         onupdate=User().get_user_username)
     update_timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.datetime.utcnow,
-        onupdate=datetime.datetime.now)
+        db.DateTime, nullable=False, server_default=FetchedValue(), onupdate=datetime.datetime.now)
 
     mine = db.relationship(
         'Mine',
