@@ -1,0 +1,150 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-logstash-dc"
+  },
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["${NAME}"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+              "name": "${NAME}${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${NAME}",
+                "image": " ",
+                "ports": [],
+                "env": [
+                  {
+                    "name": "LS_JAVA_OPTS",
+                    "value": "-Xmx256m -Xms256m"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/app/data",
+                    "name": "${NAME}${SUFFIX}-data"
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {}
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${NAME}${SUFFIX}"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "CPU_LIMIT",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "1.5Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "100m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "1Gi"
+    },
+    {
+      "name": "NAME",
+      "displayName": "Object names",
+      "description": "The name of the OpenShift objects.",
+      "value": "redis",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    }
+  ]
+}

@@ -346,6 +346,14 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
                     ]
+                ],
+                [
+                    'file':'openshift/tools/logstash.dc.json',
+                    'params':[
+                            'NAME':"mds-logstash",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                    ]
                 ]
         ]
     }
