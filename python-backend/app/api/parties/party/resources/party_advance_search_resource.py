@@ -73,7 +73,7 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         email_filter_term = args['email']
         phone_filter_term = args['phone_no']
 
-        conditions = []
+        conditions = [Party.deleted_ind == False]
         if first_name_filter_term:
             conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
         if last_name_filter_term:
