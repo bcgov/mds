@@ -86,6 +86,22 @@ export class MineHeader extends Component {
         this.props.fetchMineRecordById(this.props.mine.guid);
       });
 
+  handleVerifyMineData = (e) => {
+    e.stopPropagation();
+    this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+    });
+  };
+
+  handleUnverifyMineData = (e) => {
+    e.stopPropagation();
+    this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+    });
+  };
+
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
@@ -158,18 +174,11 @@ export class MineHeader extends Component {
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
-                onConfirm={() => {
-                  this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
-                    this.props.fetchMineRecordById(this.props.mine.guid);
-                    this.props.fetchMineVerifiedStatuses(
-                      `idir\\${this.props.userInfo.preferred_username}`
-                    );
-                  });
-                }}
+                onConfirm={this.handleVerifyMineData}
                 okText="Yes"
                 cancelText="No"
               >
-                <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                <button type="button" className="full">
                   <img
                     alt="checkmark"
                     className="padding-small"
@@ -188,18 +197,11 @@ export class MineHeader extends Component {
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
-                onConfirm={() =>
-                  this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
-                    this.props.fetchMineRecordById(this.props.mine.guid);
-                    this.props.fetchMineVerifiedStatuses(
-                      `idir\\${this.props.userInfo.preferred_username}`
-                    );
-                  })
-                }
+                onConfirm={this.handleUnverifyMineData}
                 okText="Yes"
                 cancelText="No"
               >
-                <button type="button" className="full" onClick={(e) => e.stopPropagation()}>
+                <button type="button" className="full">
                   <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
                   Mark Data for Verification
                 </button>
