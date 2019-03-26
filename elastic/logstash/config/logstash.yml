@@ -10,5 +10,3 @@ cloud.auth: "${ELASTIC_CLOUD_AUTH}"
 xpack:
   monitoring:
     enabled: false
-    elasticsearch:
-      url: ${ELASTIC_HOST}
