@@ -63,9 +63,7 @@ export class NavBar extends Component {
   );
 
   componentDidMount() {
-    this.props.fetchMineVerifiedStatuses(
-      `idir\\${this.props.userInfo.preferred_username}`
-    );
+    this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
 
   unverifiedMinesMenu = () => (
@@ -149,29 +147,33 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
-      <Dropdown
-        overlay={this.unverifiedMinesMenu()}
-        placement="bottomLeft"
-        disabled={this.props.currentUserUnverifiedMines.length === 0}
-      >
-        <button type="button" className="menu__btn">
-          <img
-            alt="GoodMines"
-            className="padding-small--right icon-sm vertical-align-sm"
-            src={SUCCESS_CHECKMARK}
-            width="25"
-          />
-          <span className="padding-small--right">{this.props.currentUserVerifiedMines.length}</span>
-          {this.props.currentUserUnverifiedMines.length > 0 && (
+      <AuthorizationWrapper inTesting>
+        <Dropdown
+          overlay={this.unverifiedMinesMenu()}
+          placement="bottomLeft"
+          disabled={this.props.currentUserUnverifiedMines.length === 0}
+        >
+          <button type="button" className="menu__btn">
             <img
-              alt="BadMines"
+              alt="GoodMines"
               className="padding-small--right icon-sm vertical-align-sm"
-              src={YELLOW_HAZARD}
+              src={SUCCESS_CHECKMARK}
               width="25"
             />
-          )}
-        </button>
-      </Dropdown>
+            <span className="padding-small--right">
+              {this.props.currentUserVerifiedMines.length}
+            </span>
+            {this.props.currentUserUnverifiedMines.length > 0 && (
+              <img
+                alt="BadMines"
+                className="padding-small--right icon-sm vertical-align-sm"
+                src={YELLOW_HAZARD}
+                width="25"
+              />
+            )}
+          </button>
+        </Dropdown>
+      </AuthorizationWrapper>
     </div>
   );
 
