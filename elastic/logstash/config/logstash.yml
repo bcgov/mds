@@ -5,3 +5,10 @@
 http.host: "0.0.0.0"
 path.config: /usr/share/logstash/pipeline
 log.level: debug
+xpack:
+  monitoring:
+    enabled: false
+    elasticsearch:
+      url: ${ELASTIC_HOST}
+      username: ${ELASTIC_USER}
+      password: ${ELASTIC_PASSWORD}
