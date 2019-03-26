@@ -25,8 +25,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 major_mine_ind    boolean,
             deleted_ind       boolean
             );
-            CREATE INDEX ON ETL_MINE (mine_no);
-            CREATE INDEX ON ETL_MINE (mine_guid);
+            CREATE INDEX IF NOT EXISTS etl_mine_mine_no_idx ON ETL_MINE (mine_no);
+            CREATE INDEX IF NOT EXISTS etl_mine_mine_guid_idx ON ETL_MINE (mine_guid);
             SELECT count(*) FROM ETL_MINE into old_row;
             
             -- Migration step from previous ETL process
