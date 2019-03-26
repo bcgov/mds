@@ -35,3 +35,17 @@ ALTER TABLE ONLY variance
 -- Comments
 COMMENT ON TABLE variance IS 'A request to be exempt from the rules of an HSRC code.';
 COMMENT ON COLUMN variance.expiry_date IS 'Expiry Date reflects the legal date a variance is no longer valid. 9999-12-31 implies the variance is still valid.';
+
+
+CREATE TABLE IF NOT EXISTS variance_document_xref
+(
+    variance_document_xref_guid uuid    DEFAULT gen_random_uuid() NOT NULL,
+    mine_document_guid          uuid                              NOT NULL,
+    variance_id                 integer                           NOT NULL
+);
+
+-- Constraints
+ALTER TABLE ONLY variance_document_xref
+    ADD CONSTRAINT variance_document_xref_mine_document_guid_fkey FOREIGN KEY (mine_document_guid) REFERENCES mine_document(mine_document_guid);
+ALTER TABLE ONLY variance_document_xref
+    ADD CONSTRAINT variance_document_xref_variance_id_fkey FOREIGN KEY (variance_id) REFERENCES variance(variance_id);
