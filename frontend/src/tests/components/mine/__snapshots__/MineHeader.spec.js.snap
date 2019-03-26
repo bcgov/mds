@@ -315,7 +315,6 @@ ShallowWrapper {
                         >
                           <button
                             className="full"
-                            onClick={[Function]}
                             type="button"
                           >
                             <img
@@ -356,7 +355,6 @@ ShallowWrapper {
                         >
                           <button
                             className="full"
-                            onClick={[Function]}
                             type="button"
                           >
                             <img
@@ -701,7 +699,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -742,7 +739,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -989,7 +985,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -1030,7 +1025,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -1176,7 +1170,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -1217,7 +1210,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -1362,7 +1354,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -1403,7 +1394,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -2358,7 +2348,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -2399,7 +2388,6 @@ ShallowWrapper {
                           >
                             <button
                               className="full"
-                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -2744,7 +2732,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -2785,7 +2772,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -3032,7 +3018,6 @@ ShallowWrapper {
                               >
                                 <button
                                   className="full"
-                                  onClick={[Function]}
                                   type="button"
                                 >
                                   <img
@@ -3073,7 +3058,6 @@ ShallowWrapper {
                               >
                                 <button
                                   className="full"
-                                  onClick={[Function]}
                                   type="button"
                                 >
                                   <img
@@ -3219,7 +3203,6 @@ ShallowWrapper {
                               >
                                 <button
                                   className="full"
-                                  onClick={[Function]}
                                   type="button"
                                 >
                                   <img
@@ -3260,7 +3243,6 @@ ShallowWrapper {
                               >
                                 <button
                                   className="full"
-                                  onClick={[Function]}
                                   type="button"
                                 >
                                   <img
@@ -3405,7 +3387,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -3446,7 +3427,6 @@ ShallowWrapper {
                             >
                               <button
                                 className="full"
-                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
