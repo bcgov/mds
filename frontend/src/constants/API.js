@@ -44,7 +44,8 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
   `/mines/verified-status?${queryString.stringify(params)}`;
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 // permits
-export const PERMIT = (params = {}) => `/permits?${queryString.stringify(params)}`;
+export const PERMIT = (params) =>
+  params ? `/permits?${queryString.stringify(params)}` : "/permits";
 export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT()}/${permitGuid}/amendments`;
 export const PERMITAMENDMENT = (permitAmendmentGuid) =>
   `${PERMIT()}/amendments/${permitAmendmentGuid}`;
