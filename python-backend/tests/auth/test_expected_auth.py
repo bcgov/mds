@@ -61,6 +61,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineTypeDetailResource, "delete", [MINE_CREATE]), (MineTypeResource, "post", [MINE_CREATE]),
      (MineTypeResource, "delete", [MINE_CREATE]), (PartyResource, "get", [MINE_VIEW]),
      (PartyResource, "post", [MINE_CREATE]), (PartyResource, "put", [MINE_CREATE]),
+     (PartyResource, "delete", [MINE_ADMIN]), (PartyResource, "delete", [MINE_ADMIN]),
      (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
      (PermitResource, "put", [MINE_CREATE]), (RequiredDocumentResource, "get", [MINE_VIEW]),
      (PermitAmendmentResource, "post", [MINE_CREATE]),

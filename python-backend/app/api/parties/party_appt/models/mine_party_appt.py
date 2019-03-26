@@ -84,6 +84,14 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_all_by_mine_party_appt_guid(cls, _id):
+        try:
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
+                deleted_ind=False)
+        except ValueError:
+            return None
+
+    @classmethod
     def find_by_mine_guid(cls, _id):
         try:
             return cls.find_by(mine_guid=_id)
