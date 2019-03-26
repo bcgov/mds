@@ -32,9 +32,9 @@ import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/env
  *
  * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated,
  * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
- * 
- * 
- * inDevelopment - If the feature is still being built and not ready to be shared with a larger audience, `inDevelopment` only displays the content in local and dev environment 
+ *
+ *
+ * inDevelopment - If the feature is still being built and not ready to be shared with a larger audience, `inDevelopment` only displays the content in local and dev environment
  * inTesting - if the feature is ready to be shared with a larger audience, but not ready to be displayed in PROD, `inTesting` will display content in every environment except Prod.
  */
 
@@ -44,6 +44,7 @@ const propTypes = {
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
   children: PropTypes.element.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -53,6 +54,8 @@ const defaultProps = {
   permission: "",
 };
 
+// Disabling this rule because I don't feel comfortable refactoring this critical component at this point
+// eslint-disable-next-line react/destructuring-assignment
 export const AuthorizationWrapper = ({ children: Children, ...props }) => (
   <span>
     {props.inDevelopment && detectDevelopmentEnvironment() && <span>{Children}</span>}
