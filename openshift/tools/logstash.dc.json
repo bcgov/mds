@@ -69,11 +69,33 @@
               {
                 "name": "${NAME}",
                 "image": " ",
-                "ports": [],
                 "env": [
                   {
-                    "name": "LS_JAVA_OPTS",
-                    "value": "-Xmx256m -Xms256m"
+                    "name": "ES_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "server-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ES_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "secret-token"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ES_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${ELASTIC_SECRET_NAME}",
+                        "key": "secret-token"
+                      }
+                    }
                   }
                 ],
                 "resources": {
@@ -86,9 +108,23 @@
                     "memory": "${MEMORY_LIMIT}"
                   }
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/usr/share/logstash/monitor",
+                    "name": "${NAME}${SUFFIX}-log"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {}
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-log",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-logs${SUFFIX}"
+                }
               }
             ],
             "restartPolicy": "Always",
@@ -131,6 +167,10 @@
     {
       "name": "VERSION",
       "required": true
+    },
+    {
+      "name": "ELASTIC_SECRET_NAME",
+      "value": "template.mds-elastic-secret"
     }
   ]
 }
