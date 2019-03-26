@@ -56,15 +56,7 @@ export class AdminDashboard extends Component {
     downloadMineManagerHistory(this.state.mineNo, { window, document });
   };
 
-  compareMineName = (a, b) => {
-    if (a.mine_name < b.mine_name) {
-      return -1;
-    }
-    if (a.mine_name > b.mine_name) {
-      return 1;
-    }
-    return 0;
-  };
+  compareMineName = (a, b) => a.mine_name.localeCompare(b.mine_name);
 
   render() {
     return (
