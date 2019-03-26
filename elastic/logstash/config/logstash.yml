@@ -7,10 +7,4 @@ path.config: /usr/share/logstash/pipeline
 log.level: debug
 cloud.id: "${ELASTIC_CLOUD_ID}"
 cloud.auth: "${ELASTIC_CLOUD_AUTH}"
-xpack:
-  monitoring:
-    enabled: false
-    elasticsearch:
-      url: ${ELASTIC_HOST}
-      username: ${ELASTIC_USERNAME}
-      password: ${ELASTIC_PASSWORD}
+xpack.monitoring.enabled: false

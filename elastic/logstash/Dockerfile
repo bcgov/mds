@@ -10,9 +10,6 @@ COPY dictionaries /usr/share/logstash/dictionaries
 COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 
-# Install plugins
-RUN logstash-plugin install logstash-output-amazon_es
-
 # Fix directory permissions
 #USER root
 #RUN chmod -R 777 /usr/share/logstash
