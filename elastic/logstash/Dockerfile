@@ -9,6 +9,7 @@ COPY dictionaries /usr/share/logstash/dictionaries
 COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 
+
 # Fix directory permissions
 # USER 0
 # RUN chmod -R 777 /usr/share/logstash

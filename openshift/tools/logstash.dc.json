@@ -84,7 +84,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "secret-token"
+                        "key": "logstash-user"
                       }
                     }
                   },
@@ -93,7 +93,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "secret-token"
+                        "key": "logstash-password"
                       }
                     }
                   }
