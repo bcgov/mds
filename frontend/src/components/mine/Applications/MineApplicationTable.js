@@ -68,18 +68,16 @@ const columns = [
     key: "applicationEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper inTesting>
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.isMajorMine}>
-          <Button
-            className="permit-table-button"
-            type="ghost"
-            onClick={(event) => record.openEditApplicationModal(event, text.application)}
-          >
-            <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-            </div>
-          </Button>
-        </AuthorizationWrapper>
+      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.isMajorMine}>
+        <Button
+          className="permit-table-button"
+          type="ghost"
+          onClick={(event) => record.openEditApplicationModal(event, text.application)}
+        >
+          <div>
+            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+          </div>
+        </Button>
       </AuthorizationWrapper>
     ),
   },
@@ -89,21 +87,19 @@ const transformRowData = (
   major_mine_ind,
   applicationStatusOptions,
   openEditApplicationModal
-) => {
-  return {
-    key: application.permit_guid,
-    applicationNo: application.application_no || Strings.EMPTY_FIELD,
-    status: application.application_status_code || Strings.EMPTY_FIELD,
-    receivedDate: formatFullDateTime(application.received_date) || Strings.EMPTY_FIELD,
-    description: application.description || Strings.EMPTY_FIELD,
-    applicationEdit: {
-      application,
-      major_mine_ind,
-    },
-    applicationStatusOptions,
-    openEditApplicationModal,
-  };
-};
+) => ({
+  key: application.permit_guid,
+  applicationNo: application.application_no || Strings.EMPTY_FIELD,
+  status: application.application_status_code || Strings.EMPTY_FIELD,
+  receivedDate: formatFullDateTime(application.received_date) || Strings.EMPTY_FIELD,
+  description: application.description || Strings.EMPTY_FIELD,
+  applicationEdit: {
+    application,
+    major_mine_ind,
+  },
+  applicationStatusOptions,
+  openEditApplicationModal,
+});
 
 export const MineApplicationTable = (props) => {
   const rowData = props.applications.map((application) =>
