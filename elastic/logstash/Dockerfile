@@ -10,4 +10,4 @@ COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 
 # Fix directory permissions
-RUN chmod -R 777 /user/share/logstash
+RUN chmod -R 777 /usr/share/logstash
