@@ -71,11 +71,19 @@
                 "image": " ",
                 "env": [
                   {
+                    "name": "PIPELINE_WORKERS",
+                    "value": "1"
+                  },
+                  {
+                    "name": "LOGSTASH_HOME",
+                    "value": "/usr/share/logstash"
+                  },
+                  {
                     "name": "ES_HOST",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${ELASTIC_SECRET_NAME}",
-                        "key": "server-url"
+                        "key": "elastic-url"
                       }
                     }
                   },
