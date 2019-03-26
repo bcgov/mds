@@ -12,5 +12,4 @@ COPY config/ /usr/share/logstash/config/
 
 
 # Fix directory permissions
-# USER 0
-# RUN chmod -R 777 /usr/share/logstash
+RUN chmod -R 777 /usr/share/logstash
