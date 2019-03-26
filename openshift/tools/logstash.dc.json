@@ -137,19 +137,19 @@
   "parameters": [
     {
       "name": "CPU_LIMIT",
-      "value": "500m"
+      "value": "1"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1.5Gi"
+      "value": "1Gi"
     },
     {
       "name": "CPU_REQUEST",
-      "value": "100m"
+      "value": "200m"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "1Gi"
+      "value": "500Mi"
     },
     {
       "name": "NAME",
