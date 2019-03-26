@@ -405,12 +405,12 @@ export const fetchMineVerifiedStatuses = (user_id) => (dispatch) => {
     });
 };
 
-export const setMineVerifiedStatus = (mine_guid, healthy) => (dispatch) => {
+export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.SET_MINE_VERIFIED_STATUS));
   return axios
     .put(
       `${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(mine_guid)}`,
-      { healthy },
+      { ...payload },
       createRequestHeader()
     )
     .then((response) => {

@@ -88,7 +88,7 @@ export class MineHeader extends Component {
 
   handleVerifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, true).then(() => {
+    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: true }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
@@ -96,7 +96,7 @@ export class MineHeader extends Component {
 
   handleUnverifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, false).then(() => {
+    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: false }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
