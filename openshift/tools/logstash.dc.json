@@ -76,12 +76,6 @@
                     "value": "-Xmx256m -Xms256m"
                   }
                 ],
-                "volumeMounts": [
-                  {
-                    "mountPath": "/app/data",
-                    "name": "${NAME}${SUFFIX}-data"
-                  }
-                ],
                 "resources": {
                   "requests": {
                     "cpu": "${CPU_REQUEST}",
@@ -95,14 +89,6 @@
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {}
-              }
-            ],
-            "volumes": [
-              {
-                "name": "${NAME}${SUFFIX}-data",
-                "persistentVolumeClaim": {
-                  "claimName": "${NAME}${SUFFIX}"
-                }
               }
             ],
             "restartPolicy": "Always",
