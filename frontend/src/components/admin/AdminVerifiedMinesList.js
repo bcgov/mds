@@ -21,8 +21,8 @@ const columns = [
     width: 300,
     dataIndex: "mine_name",
     render: (text, record) => (
-      <div key={record.mine_guid}>
-        <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
+      <div key={record.key}>
+        <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
       </div>
     ),
   },
