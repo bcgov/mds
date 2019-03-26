@@ -39,10 +39,10 @@ const columns = [
 ];
 
 const transformRowData = (verifiedMinesList) =>
-  verifiedMinesList.map((status) => ({
-    key: status.mine_guid,
-    formatted_timestamp: formatDate(status.verifying_timestamp),
-    ...status,
+  verifiedMinesList.map(({ mine_guid, verifying_timestamp, ...rest }) => ({
+    key: mine_guid,
+    formatted_timestamp: formatDate(verifying_timestamp),
+    ...rest,
   }));
 
 export const AdminVerifiedMinesList = (props) => (
