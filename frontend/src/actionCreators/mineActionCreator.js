@@ -410,7 +410,7 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
   return axios
     .put(
       `${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(mine_guid)}`,
-      { ...payload },
+      payload,
       createRequestHeader()
     )
     .then((response) => {
