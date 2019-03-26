@@ -10,5 +10,5 @@ xpack:
     enabled: false
     elasticsearch:
       url: ${ELASTIC_HOST}
-      username: ${ELASTIC_USER}
+      username: ${ELASTIC_USERNAME}
       password: ${ELASTIC_PASSWORD}
