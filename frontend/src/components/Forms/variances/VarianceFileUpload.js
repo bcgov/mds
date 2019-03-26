@@ -13,7 +13,7 @@ const propTypes = {
   allowMultiple: PropTypes.bool.isRequired,
 };
 
-export const PermitAmendmentFileUpload = (props) => (
+export const VarianceFileUpload = (props) => (
   <Form.Item>
     <Field
       id="fileUpload"
@@ -29,6 +29,6 @@ export const PermitAmendmentFileUpload = (props) => (
   </Form.Item>
 );
 
-PermitAmendmentFileUpload.propTypes = propTypes;
+VarianceFileUpload.propTypes = propTypes;
 
-export default PermitAmendmentFileUpload;
+export default VarianceFileUpload;

@@ -1,9 +1,8 @@
+/* eslint-disable  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-// import RenderField from "@/components/common/RenderField";
-// import RenderSelect from "@/components/common/RenderSelect";
-// import RenderDate from "@/components/common/RenderDate";
+import { Field, reduxForm, change } from "redux-form";
+import { remove } from "lodash";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -20,6 +19,21 @@ const propTypes = {
 const defaultProps = {};
 
 export class AddVarianceForm extends Component {
+  state = {
+    uploadedFiles: [],
+  };
+
+  // File upload handlers
+  onFileLoad = (fileName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  onRemoveFile = (fileItem) => {
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -27,10 +41,10 @@ export class AddVarianceForm extends Component {
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
               <Field
-                id="permit_type"
-                name="permit_type"
-                label="Permit type*"
-                placeholder="Select a permit type"
+                id="compliance_article_id"
+                name="compliance_article_id"
+                label="Part of Code*"
+                placeholder="Select a part of the code"
                 component={renderConfig.SELECT}
                 validate={[required]}
                 data={[{ value: 1, label: "1.1.1" }]}
@@ -40,7 +54,7 @@ export class AddVarianceForm extends Component {
               <Field
                 id="received_date"
                 name="received_date"
-                label="Received date"
+                label="Received date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
@@ -49,7 +63,7 @@ export class AddVarianceForm extends Component {
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue date"
+                label="Issue date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
@@ -58,9 +72,9 @@ export class AddVarianceForm extends Component {
               <Field
                 id="expiry_date"
                 name="expiry_date"
-                label="Expiry date"
+                label="Expiry date*"
                 component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
+                validate={[required]}
               />
             </Form.Item>
             <Form.Item>

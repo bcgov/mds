@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Icon, Button } from "antd";
@@ -11,16 +12,17 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   createVariance: PropTypes.func.isRequired,
-  fetchVariancesById: PropTypes.func.isRequired,
+  fetchVariancesByMine: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
 class MineVariance extends Component {
-  handleAddVariances = (value) => {
-    this.props.createVariance(value, this.props.mine.guid).then(() => {
+  handleAddVariances = (values) => {
+    console.log(values);
+    this.props.createVariance(values, this.props.mine.guid).then(() => {
       this.props.closeModal();
-      this.props.fetchVariancesById(this.props.mine.guid);
+      this.props.fetchVariancesByMine(this.props.mine.guid);
     });
   };
 
@@ -31,8 +33,8 @@ class MineVariance extends Component {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
       },
-      content: modalConfig.ADD_VARIANCE,
       widthSize: "75vw",
+      content: modalConfig.ADD_VARIANCE,
     });
   }
 

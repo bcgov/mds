@@ -20,7 +20,7 @@ import {
   fetchApplicationStatusOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
-import { createVariance, fetchVariancesById } from "@/actionCreators/varianceActionCreator";
+import { createVariance, fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
@@ -105,7 +105,7 @@ export class MineDashboard extends Component {
       this.props.setOptionsLoaded();
     }
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
-    this.props.fetchVariancesById();
+    this.props.fetchVariancesByMine();
 
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
@@ -194,7 +194,7 @@ export class MineDashboard extends Component {
                       createVariance={this.props.createVariance}
                       openModal={this.props.openModal}
                       closeModal={this.props.closeModal}
-                      fetchVariancesById={this.props.fetchVariancesById}
+                      fetchVariancesByMine={this.props.fetchVariancesByMine}
                     />
                   </div>
                 </TabPane>
@@ -255,7 +255,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceInfo,
       fetchApplications,
       createVariance,
-      fetchVariancesById,
+      fetchVariancesByMine,
     },
     dispatch
   );

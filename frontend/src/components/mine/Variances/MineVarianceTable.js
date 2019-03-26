@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
@@ -26,37 +27,37 @@ const columns = [
     ),
   },
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "Variance No",
+    dataIndex: "varianceNo",
     render: (text, record) => (
-      <div title="Name" style={errorStyle(record.isOverdue)}>
+      <div title="Variance No" style={errorStyle(record.isOverdue)}>
         {record.doc.exp_document_name}
       </div>
     ),
   },
   {
-    title: "HSRC Code",
-    dataIndex: "hsrc_code",
+    title: "Code",
+    dataIndex: "code",
     render: (text, record) => (
-      <div title="Name" style={errorStyle(record.isOverdue)}>
+      <div title="Code" style={errorStyle(record.isOverdue)}>
         {record.doc.hsrc_code}
       </div>
     ),
   },
   {
-    title: "Due",
-    dataIndex: "due",
+    title: "Issue Date",
+    dataIndex: "issuedate",
     render: (text, record) => (
-      <div title="Due" style={errorStyle(record.isOverdue)}>
+      <div title="Issue Date" style={errorStyle(record.isOverdue)}>
         {formatDate(record.doc.due_date) || "-"}
       </div>
     ),
   },
   {
-    title: "Received",
-    dataIndex: "received",
+    title: "Expiry Date",
+    dataIndex: "receivedDate",
     render: (text, record) => (
-      <div title="Received" style={errorStyle(record.isOverdue)}>
+      <div title="Expiry Date" style={errorStyle(record.isOverdue)}>
         {" "}
         {formatDate(record.doc.received_date) || "-"}
       </div>
@@ -67,6 +68,15 @@ const columns = [
     dataIndex: "status",
     render: (text, record) => (
       <div title="Status" style={errorStyle(record.isOverdue)}>
+        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+      </div>
+    ),
+  },
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    render: (text, record) => (
+      <div title="Documents" style={errorStyle(record.isOverdue)}>
         {record.doc ? record.doc.exp_document_status.description : String.LOADING}
       </div>
     ),

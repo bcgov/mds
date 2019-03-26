@@ -31,7 +31,7 @@ export const createVariance = (payload, mineGuid) => (dispatch) => {
     });
 };
 
-export const fetchVariancesById = (mineGuid) => (dispatch) => {
+export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
   return axios

@@ -4,11 +4,12 @@ import AddVarianceForm from "@/components/Forms/variances/AddVarianceForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export const AddVarianceModal = (props) => (
   <div>
-    <AddVarianceForm {...props} />
+    <AddVarianceForm onSubmit={props.onSubmit} closeModal={props.closeModal} />
   </div>
 );
 
