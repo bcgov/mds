@@ -36,4 +36,12 @@ if [[ "$(id -u)" == "0" ]]; then
     fi
 fi
 
-run_as_other_user_if_needed /usr/share/logstash/bin/logstash "${es_opts[@]}"
+env2yaml /usr/share/logstash/config/logstash.yml
+
+export LS_JAVA_OPTS="-Dls.cgroup.cpuacct.path.override=/ -Dls.cgroup.cpu.path.override=/ $LS_JAVA_OPTS"
+
+if [[ -z $1 ]] || [[ ${1:0:1} == '-' ]] ; then
+  run_as_other_user_if_needed logstash "$@"
+else
+  run_as_other_user_if_needed "$@"
+fi
