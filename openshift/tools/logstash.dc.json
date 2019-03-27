@@ -26,6 +26,37 @@
       }
     },
     {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "5044-tcp",
+            "protocol": "TCP",
+            "port": 5044,
+            "targetPort": 5044
+          },
+          {
+            "name": "9600-tcp",
+            "protocol": "TCP",
+            "port": 9600,
+            "targetPort": 9600
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
