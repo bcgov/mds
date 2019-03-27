@@ -6,10 +6,7 @@ COPY dictionaries /usr/share/logstash/dictionaries
 
 COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
-COPY docker-entrypoint.sh /usr/local/bin/
 
 # Fix directory permissions
 USER root
-RUN chgrp 0 /usr/local/bin/docker-entrypoint.sh && \
-    chmod g=u /etc/passwd && \
-    chmod 0775 /usr/local/bin/docker-entrypoint.sh
+RUN chmod -R 777 /usr/share/logstash
