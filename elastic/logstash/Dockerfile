@@ -10,7 +10,6 @@ COPY uid_entrypoint /usr/local/bin
 
 # Fix directory permissions
 USER root
-RUN chmod g+w /etc/passwd
 RUN usermod -u 1002510000 logstash
 
 USER 1002510000
