@@ -10,8 +10,8 @@ RUN mkdir -p /usr/share/logstash/dictionaries
 ADD dictionaries /usr/share/logstash/dictionaries
 
 # copy tempate
-RUN mkdir -p /usr/share/logstash/templates
-ADD templates /usr/share/logstash/templates
+# RUN mkdir -p /usr/share/logstash/templates
+# ADD templates /usr/share/logstash/templates
 
 ADD pipeline/ /usr/share/logstash/pipeline/
 ADD config/ /usr/share/logstash/config/
