@@ -88,7 +88,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         uploadedFiles = data.get('uploadedFiles', [])
         try:
             permit = Permit.create(mine.mine_guid, data.get('permit_no'),
-                                   data.get('permit_status_code'), self.get_create_update_dict())
+                                   data.get('permit_status_code'))
 
             amendment = PermitAmendment.create(
                 permit,
@@ -96,7 +96,6 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 data.get('issue_date'),
                 data.get('authorization_end_date'),
                 'OGP',
-                self.get_create_update_dict(),
                 description='Initial permit issued.')
             db.session.add(permit)
             db.session.add(amendment)
@@ -106,7 +105,6 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                     document_name=newFile['fileName'],
                     document_manager_guid=newFile['document_manager_guid'],
                     mine_guid=permit.mine_guid,
-                    **self.get_create_update_dict(),
                 )
                 amendment.documents.append(new_pa_doc)
             db.session.commit()

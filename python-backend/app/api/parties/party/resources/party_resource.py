@@ -128,7 +128,6 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 data.get('party_name'),
                 data.get('phone_no'),
                 data.get('party_type_code'),
-                self.get_create_update_dict(),
                 # Nullable fields
                 email=data.get('email'),
                 first_name=data.get('first_name'),

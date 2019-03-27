@@ -30,6 +30,19 @@ const defaultProps = {
   change,
 };
 
+const validateBusinessRules = (values) => {
+  const errors = {};
+  if (values.permit_amendment_type_code !== originalPermit) {
+    const originalPermitAmendment = values.amendments.filter(
+      (x) => x.permit_amendment_type_code === originalPermit
+    )[0];
+    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date)
+      errors.issue_date = "Issue Date cannot be before the permits First Issued date.";
+  }
+
+  return errors;
+};
+
 export class PermitAmendmentForm extends Component {
   state = {
     showUploadFiles: false,
@@ -161,6 +174,7 @@ PermitAmendmentForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.PERMIT_AMENDMENT,
+  validate: validateBusinessRules,
   touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
 })(PermitAmendmentForm);

@@ -25,3 +25,8 @@ export const storeMineDocuments = (payload) => ({
   type: ActionTypes.STORE_MINE_DOCUMENTS,
   payload,
 });
+
+export const storeCurrentUserMineVerifiedStatuses = (payload) => ({
+  type: ActionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS,
+  payload,
+});

@@ -68,7 +68,7 @@ class ApplicationResource(Resource, UserMixin, ErrorMixin):
         try:
             application = Application.create(mine.mine_guid, data['application_no'],
                                              data['application_status_code'], data['received_date'],
-                                             data.get('description'), self.get_create_update_dict())
+                                             data.get('description'))
             application.save()
         except Exception as e:
             self.raise_error(500, 'Error: {}'.format(e))

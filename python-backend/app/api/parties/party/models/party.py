@@ -124,7 +124,6 @@ class Party(AuditMixin, Base):
             party_name,
             phone_no,
             party_type_code,
-            user_kwargs,
             # Optional fields
             address_type_code=None,
             # Nullable fields
@@ -144,7 +143,6 @@ class Party(AuditMixin, Base):
             party_name=party_name,
             phone_no=phone_no,
             party_type_code=party_type_code,
-            **user_kwargs,
             # Optional fields
             email=email,
             address_type_code=address_type_code,

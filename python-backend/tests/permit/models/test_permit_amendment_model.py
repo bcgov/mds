@@ -3,7 +3,7 @@ import uuid
 
 import pytest
 
-from tests.constants import TEST_PERMIT_GUID_1, DUMMY_USER_KWARGS
+from tests.constants import TEST_PERMIT_GUID_1
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit.models.permit import Permit
 
@@ -14,7 +14,7 @@ from app.extensions import db
 def setup_info(test_client):
     permit = Permit.find_by_permit_guid(TEST_PERMIT_GUID_1)
 
-    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD', DUMMY_USER_KWARGS)
+    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD')
     test_pa.save()
 
     yield {'permit_1': permit, 'permit_amendment_1': test_pa}
