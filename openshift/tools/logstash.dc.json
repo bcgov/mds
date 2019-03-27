@@ -69,6 +69,9 @@
               {
                 "name": "${NAME}",
                 "image": " ",
+                "securityContext": {
+                  "runAsUser": "1000"
+                },
                 "env": [
                   {
                     "name": "LOGSTASH_HOME",

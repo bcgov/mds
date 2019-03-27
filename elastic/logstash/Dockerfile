@@ -1,6 +1,8 @@
 FROM docker.elastic.co/logstash/logstash:6.7.0
 RUN rm -f /usr/share/logstash/pipeline/logstash.conf
 
+USER 1000
+
 RUN mkdir -p /usr/share/logstash/dictionaries
 COPY dictionaries /usr/share/logstash/dictionaries
 
@@ -11,8 +13,6 @@ COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 
 RUN logstash-plugin update logstash-output-elasticsearch
-
-USER 1000
 
 # Fix directory permissions
 #USER root
