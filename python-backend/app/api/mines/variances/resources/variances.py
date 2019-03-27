@@ -16,9 +16,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('compliance_article_id',
                         type=int,
                         help='ID representing the MA or HSRCM code to which this variance relates.')
-    parser.add_argument('mine_guid',
-                        type=str,
-                        help='guid representing the mine to which this variance relates.')
     parser.add_argument('note',
                         type=str,
                         help='A note to include on the variance. Limited to 300 characters.')
@@ -52,33 +49,30 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     # FIXME Copied code
     @api.expect(parser)
     @requires_role_mine_create
-    def post(self, party_guid=None):
-        if party_guid:
-            self.raise_error(400, 'Error: Unexpected party id in Url.')
-        data = PartyResource.parser.parse_args()
+    def post(self, mine_guid=None):
+        if not mine_guid:
+            return self.create_error_payload(422, 'Missing mine_guid'), 422
+
+        data = VarianceResource.parser.parse_args()
+        compliance_article_id = data['compliance_article_id']
+
+        if not compliance_article_id:
+            self.raise_error(400, 'Error: Missing compliance_article_id')
 
         try:
-            party = Party.create(
-                data['party_name'],
-                data['phone_no'],
-                data['type'],
-                # Nullable fields
-                email=data.get('email'),
-                first_name=data.get('first_name'),
-                phone_ext=data.get('phone_ext'),
-                suite_no=data.get('suite_no'),
-                address_line_1=data.get('address_line_1'),
-                address_line_2=data.get('address_line_2'),
-                city=data.get('city'),
-                sub_division_code=data.get('sub_division_code'),
-                post_code=data.get('post_code'))
-        except KeyError as e:
-            self.raise_error(400, 'Error: Missing value for required field(s)')
+            variance = Variance.create(
+                compliance_article_id,
+                mine_guid,
+                # Optional fields
+                note=data.get('note'),
+                issue_date=data.get('issue_date'),
+                received_date=data.get('received_date'),
+                expiry_date=data.get('expiry_date'))
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
 
-        if not party:
-            self.raise_error(400, 'Error: Failed to create party')
+        if not variance:
+            self.raise_error(400, 'Error: Failed to create variance')
 
-        party.save()
-        return party.json()
+        variance.save()
+        return variance.json()

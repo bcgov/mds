@@ -57,6 +57,7 @@ class Variance(AuditMixin, Base):
             expiry_date=expiry_date)
         if save:
             new_variance.save(commit=False)
+        return new_variance
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
