@@ -7,6 +7,7 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
 /**
  * @class MineList - paginated list of mines
@@ -25,7 +26,20 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
+    render: (text, record) => (
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>
+        {text}
+        {record.verified && (
+          <img
+            alt="checkmark"
+            className="padding-small"
+            src={SUCCESS_CHECKMARK}
+            width="25"
+            title="Mine data verified"
+          />
+        )}
+      </Link>
+    ),
   },
   {
     title: "Mine No.",
@@ -127,6 +141,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     tsf: mines[id].mine_tailings_storage_facility
       ? mines[id].mine_tailings_storage_facility.length
       : Strings.EMPTY_FIELD,
+    verified: mines[id].verified_status ? mines[id].verified_status.healthy : null,
   }));
 
 export const MineList = (props) => (
