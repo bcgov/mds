@@ -23,7 +23,7 @@ class Permit(AuditMixin, Base):
         backref='permit',
         primaryjoin=
         "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
-        order_by='desc(PermitAmendment.issue_date)',
+        order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
     def __repr__(self):

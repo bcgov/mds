@@ -6,6 +6,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string,
+  mine_guid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
