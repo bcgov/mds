@@ -90,7 +90,7 @@
             "name": "${NAME}:${VERSION}"
           }
         },
-        "completionDeadlineSeconds": 600,
+        "completionDeadlineSeconds": 1200,
         "triggers": [
           {
             "type": "ConfigChange"
