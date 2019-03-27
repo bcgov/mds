@@ -85,7 +85,6 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 issue_date,
                 authorization_end_date,
                 permit_amendment_type_code,
-                self.get_create_update_dict(),
                 description=description,
                 save=True)
 
@@ -94,7 +93,6 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                     document_name=newFile['fileName'],
                     document_manager_guid=newFile['document_manager_guid'],
                     mine_guid=permit.mine_guid,
-                    **self.get_create_update_dict(),
                 )
                 new_pa.documents.append(new_pa_doc)
             new_pa.save()
@@ -135,7 +133,6 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                     document_name=newFile['fileName'],
                     document_manager_guid=newFile['document_manager_guid'],
                     mine_guid=pa.permit.mine_guid,
-                    **self.get_create_update_dict(),
                 )
                 pa.documents.append(new_pa_doc)
             pa.save()

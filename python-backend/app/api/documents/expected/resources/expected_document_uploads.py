@@ -92,8 +92,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             mine_doc = MineDocument(
                 mine_guid=expected_document.mine_guid,
                 document_manager_guid=data.get('document_manager_guid'),
-                document_name=filename,
-                **self.get_create_update_dict())
+                document_name=filename)
 
             expected_document.mine_documents.append(mine_doc)
             db.session.commit()
