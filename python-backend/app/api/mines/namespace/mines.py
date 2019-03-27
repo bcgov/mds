@@ -13,6 +13,7 @@ from ..tailings.resources.tailings import MineTailingsStorageFacilityResource
 from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
+from ..variances.resources.variances import VarianceResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
 
 api = Namespace('mines', description='Mine related operations')
@@ -35,3 +36,4 @@ api.add_resource(MineTypeDetailResource, '/mine-types/details',
 api.add_resource(MineBasicInfoResource, '/basicinfo')
 api.add_resource(MineVerifiedStatusResource, '/verified-status',
                  '/<string:mine_guid>/verified-status')
+api.add_resource(VarianceResource, '/<string:mine_guid>/variances')
