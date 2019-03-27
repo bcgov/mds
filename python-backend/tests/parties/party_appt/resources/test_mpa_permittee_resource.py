@@ -5,7 +5,7 @@ from datetime import datetime
 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db
-from tests.constants import TEST_PARTY_PER_GUID_1, TEST_MINE_GUID, TEST_PERMIT_GUID_1, TEST_PARTY_PER_GUID_3, DUMMY_USER_KWARGS
+from tests.constants import TEST_PARTY_PER_GUID_1, TEST_MINE_GUID, TEST_PERMIT_GUID_1, TEST_PARTY_PER_GUID_3
 
 
 @pytest.fixture(scope="function")
@@ -18,8 +18,7 @@ def setup_info(test_client):
         mine_party_appt_type_code='PMT',
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
+        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1))
     permittee.save()
 
     yield dict(permittee_guid=str(permittee.mine_party_appt_guid), bad_guid=NON_EXISTENT_GUID)

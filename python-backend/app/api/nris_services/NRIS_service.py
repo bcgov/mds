@@ -18,9 +18,11 @@ from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS, TIME
 def _get_datetime_from_NRIS_data(date):
     return datetime.strptime(date, '%Y-%m-%d %H:%M')
 
+
 def _get_inspector_from_report(report):
     prefix, inspector = report.get('assessor').split('\\')
     return inspector
+
 
 def _get_NRIS_token():
     result = cache.get(NRIS_TOKEN)
@@ -51,7 +53,7 @@ def _get_NRIS_token():
 
 
 def _get_EMPR_data_from_NRIS(mine_no):
-    current_date = datetime.now()
+    current_date = datetime.utcnow()
 
     try:
         token = _get_NRIS_token()
@@ -109,7 +111,7 @@ def _process_NRIS_data(data, mine_no):
         stops = inspection.get('stops')
         order_count = 1
 
-        one_year_ago = datetime.now() - relativedelta(years=1)
+        one_year_ago = datetime.utcnow() - relativedelta(years=1)
         for stop in stops:
 
             stop_orders = stop.get('stopOrders')
@@ -166,6 +168,5 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_COMPLIANCE_DATA(mine_no),
-              overview, timeout=TIMEOUT_24_HOURS)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_24_HOURS)
     return overview
