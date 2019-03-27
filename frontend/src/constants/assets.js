@@ -34,3 +34,4 @@ export { default as CLOSE } from "../assets/images/close.svg";
 export { default as TEAM } from "../assets/images/Team.svg";
 export { default as HOME } from "../assets/images/home.svg";
 export { default as COMPANY } from "../assets/images/Company.svg";
+export { default as YELLOW_HAZARD } from "../assets/images/Hazard.svg";
