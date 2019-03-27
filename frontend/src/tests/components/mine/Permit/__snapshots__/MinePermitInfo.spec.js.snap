@@ -103,11 +103,25 @@ ShallowWrapper {
             isMajorMine={undefined}
             permission="role_create"
           >
-            <AddButton
+            <Button
+              block={false}
+              ghost={false}
+              loading={false}
               onClick={[Function]}
+              prefixCls="ant-btn"
+              type="primary"
             >
+              <Icon
+                style={
+                  Object {
+                    "fontSize": "18px",
+                  }
+                }
+                theme="outlined"
+                type="plus"
+              />
               Add a New Permit
-            </AddButton>
+            </Button>
           </Connect(AuthorizationWrapper)>
         </div>
       </div>,
@@ -127,11 +141,25 @@ ShallowWrapper {
               isMajorMine={undefined}
               permission="role_create"
             >
-              <AddButton
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
                 Add a New Permit
-              </AddButton>
+              </Button>
             </Connect(AuthorizationWrapper)>
           </div>,
         ],
@@ -157,11 +185,25 @@ ShallowWrapper {
               isMajorMine={undefined}
               permission="role_create"
             >
-              <AddButton
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
                 Add a New Permit
-              </AddButton>
+              </Button>
             </Connect(AuthorizationWrapper)>,
             "className": "inline-flex between",
           },
@@ -171,11 +213,25 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <AddButton
+              "children": <Button
+                block={false}
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
                 Add a New Permit
-              </AddButton>,
+              </Button>,
               "isMajorMine": undefined,
               "permission": "role_create",
             },
@@ -183,13 +239,46 @@ ShallowWrapper {
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "function",
+              "nodeType": "class",
               "props": Object {
-                "children": "Add a New Permit",
+                "block": false,
+                "children": Array [
+                  <Icon
+                    style={
+                      Object {
+                        "fontSize": "18px",
+                      }
+                    }
+                    theme="outlined"
+                    type="plus"
+                  />,
+                  "Add a New Permit",
+                ],
+                "ghost": false,
+                "loading": false,
                 "onClick": [Function],
+                "prefixCls": "ant-btn",
+                "type": "primary",
               },
               "ref": null,
-              "rendered": "Add a New Permit",
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "style": Object {
+                      "fontSize": "18px",
+                    },
+                    "theme": "outlined",
+                    "type": "plus",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "Add a New Permit",
+              ],
               "type": [Function],
             },
             "type": [Function],
@@ -218,11 +307,25 @@ ShallowWrapper {
               isMajorMine={undefined}
               permission="role_create"
             >
-              <AddButton
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
+                <Icon
+                  style={
+                    Object {
+                      "fontSize": "18px",
+                    }
+                  }
+                  theme="outlined"
+                  type="plus"
+                />
                 Add a New Permit
-              </AddButton>
+              </Button>
             </Connect(AuthorizationWrapper)>
           </div>
         </div>,
@@ -242,11 +345,25 @@ ShallowWrapper {
                 isMajorMine={undefined}
                 permission="role_create"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
+                  <Icon
+                    style={
+                      Object {
+                        "fontSize": "18px",
+                      }
+                    }
+                    theme="outlined"
+                    type="plus"
+                  />
                   Add a New Permit
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>
             </div>,
           ],
@@ -272,11 +389,25 @@ ShallowWrapper {
                 isMajorMine={undefined}
                 permission="role_create"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
+                  <Icon
+                    style={
+                      Object {
+                        "fontSize": "18px",
+                      }
+                    }
+                    theme="outlined"
+                    type="plus"
+                  />
                   Add a New Permit
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>,
               "className": "inline-flex between",
             },
@@ -286,11 +417,25 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <AddButton
+                "children": <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
+                  <Icon
+                    style={
+                      Object {
+                        "fontSize": "18px",
+                      }
+                    }
+                    theme="outlined"
+                    type="plus"
+                  />
                   Add a New Permit
-                </AddButton>,
+                </Button>,
                 "isMajorMine": undefined,
                 "permission": "role_create",
               },
@@ -298,13 +443,46 @@ ShallowWrapper {
               "rendered": Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "function",
+                "nodeType": "class",
                 "props": Object {
-                  "children": "Add a New Permit",
+                  "block": false,
+                  "children": Array [
+                    <Icon
+                      style={
+                        Object {
+                          "fontSize": "18px",
+                        }
+                      }
+                      theme="outlined"
+                      type="plus"
+                    />,
+                    "Add a New Permit",
+                  ],
+                  "ghost": false,
+                  "loading": false,
                   "onClick": [Function],
+                  "prefixCls": "ant-btn",
+                  "type": "primary",
                 },
                 "ref": null,
-                "rendered": "Add a New Permit",
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "style": Object {
+                        "fontSize": "18px",
+                      },
+                      "theme": "outlined",
+                      "type": "plus",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "Add a New Permit",
+                ],
                 "type": [Function],
               },
               "type": [Function],

@@ -13,7 +13,7 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
-import AddButton from "@/components/common/AddButton";
+import { Icon, Button } from "antd";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -194,7 +194,8 @@ export class MinePermitInfo extends Component {
               permission={Permission.CREATE}
               isMajorMine={this.props.mine.major_mine_ind}
             >
-              <AddButton
+              <Button
+                type="primary"
                 onClick={(event) =>
                   this.openAddPermitModal(
                     event,
@@ -203,8 +204,9 @@ export class MinePermitInfo extends Component {
                   )
                 }
               >
+                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
                 Add a New Permit
-              </AddButton>
+              </Button>
             </AuthorizationWrapper>
           </div>
         </div>

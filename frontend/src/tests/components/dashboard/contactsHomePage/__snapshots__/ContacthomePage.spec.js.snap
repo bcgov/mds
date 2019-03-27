@@ -247,11 +247,17 @@ ShallowWrapper {
             <Connect(AuthorizationWrapper)
               permission="role_create"
             >
-              <AddButton
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
                 Add New Contact
-              </AddButton>
+              </Button>
             </Connect(AuthorizationWrapper)>
           </div>
         </div>,
@@ -418,11 +424,17 @@ ShallowWrapper {
             <Connect(AuthorizationWrapper)
               permission="role_create"
             >
-              <AddButton
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                loading={false}
                 onClick={[Function]}
+                prefixCls="ant-btn"
+                type="primary"
               >
                 Add New Contact
-              </AddButton>
+              </Button>
             </Connect(AuthorizationWrapper)>
           </div>,
           "className": "landing-page__header",
@@ -445,11 +457,17 @@ ShallowWrapper {
               <Connect(AuthorizationWrapper)
                 permission="role_create"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Add New Contact
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>,
             ],
             "className": "inline-flex between center-mobile",
@@ -502,21 +520,33 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <AddButton
+                "children": <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Add New Contact
-                </AddButton>,
+                </Button>,
                 "permission": "role_create",
               },
               "ref": null,
               "rendered": Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "function",
+                "nodeType": "class",
                 "props": Object {
+                  "block": false,
                   "children": "Add New Contact",
+                  "className": "full-mobile",
+                  "ghost": false,
+                  "loading": false,
                   "onClick": [Function],
+                  "prefixCls": "ant-btn",
+                  "type": "primary",
                 },
                 "ref": null,
                 "rendered": "Add New Contact",
@@ -854,11 +884,17 @@ ShallowWrapper {
               <Connect(AuthorizationWrapper)
                 permission="role_create"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Add New Contact
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>
             </div>
           </div>,
@@ -1025,11 +1061,17 @@ ShallowWrapper {
               <Connect(AuthorizationWrapper)
                 permission="role_create"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Add New Contact
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>
             </div>,
             "className": "landing-page__header",
@@ -1052,11 +1094,17 @@ ShallowWrapper {
                 <Connect(AuthorizationWrapper)
                   permission="role_create"
                 >
-                  <AddButton
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Add New Contact
-                  </AddButton>
+                  </Button>
                 </Connect(AuthorizationWrapper)>,
               ],
               "className": "inline-flex between center-mobile",
@@ -1109,21 +1157,33 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <AddButton
+                  "children": <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Add New Contact
-                  </AddButton>,
+                  </Button>,
                   "permission": "role_create",
                 },
                 "ref": null,
                 "rendered": Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "function",
+                  "nodeType": "class",
                   "props": Object {
+                    "block": false,
                     "children": "Add New Contact",
+                    "className": "full-mobile",
+                    "ghost": false,
+                    "loading": false,
                     "onClick": [Function],
+                    "prefixCls": "ant-btn",
+                    "type": "primary",
                   },
                   "ref": null,
                   "rendered": "Add New Contact",

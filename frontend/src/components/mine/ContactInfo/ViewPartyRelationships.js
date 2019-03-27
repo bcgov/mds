@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
+import { Row, Col, Menu, Icon, Popconfirm, Divider, Dropdown, Button } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -13,7 +13,6 @@ import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationship
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import { uniq, uniqBy } from "lodash";
-import AddButton from "@/components/common/AddButton";
 
 import {
   addPartyRelationship,
@@ -384,9 +383,12 @@ export class ViewPartyRelationships extends Component {
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}
                 placement="bottomLeft"
               >
-                <div>
-                  <AddButton>Add New Contact</AddButton>
-                </div>
+                <Button type="primary">
+                  <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
+                    <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
+                    &nbsp; Add New Contact
+                  </div>
+                </Button>
               </Dropdown>
             </AuthorizationWrapper>
           </div>

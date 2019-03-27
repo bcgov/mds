@@ -507,11 +507,17 @@ ShallowWrapper {
               <Connect(AuthorizationWrapper)
                 permission="role_admin"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Create Mine Record
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>
             </div>
           </div>
@@ -546,11 +552,17 @@ ShallowWrapper {
               <Connect(AuthorizationWrapper)
                 permission="role_admin"
               >
-                <AddButton
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  loading={false}
                   onClick={[Function]}
+                  prefixCls="ant-btn"
+                  type="primary"
                 >
                   Create Mine Record
-                </AddButton>
+                </Button>
               </Connect(AuthorizationWrapper)>
             </div>
           </div>,
@@ -575,11 +587,17 @@ ShallowWrapper {
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
-                  <AddButton
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Create Mine Record
-                  </AddButton>
+                  </Button>
                 </Connect(AuthorizationWrapper)>
               </div>,
             ],
@@ -636,11 +654,17 @@ ShallowWrapper {
                 "children": <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
-                  <AddButton
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Create Mine Record
-                  </AddButton>
+                  </Button>
                 </Connect(AuthorizationWrapper)>,
               },
               "ref": null,
@@ -649,21 +673,33 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <AddButton
+                  "children": <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Create Mine Record
-                  </AddButton>,
+                  </Button>,
                   "permission": "role_admin",
                 },
                 "ref": null,
                 "rendered": Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "function",
+                  "nodeType": "class",
                   "props": Object {
+                    "block": false,
                     "children": "Create Mine Record",
+                    "className": "full-mobile",
+                    "ghost": false,
+                    "loading": false,
                     "onClick": [Function],
+                    "prefixCls": "ant-btn",
+                    "type": "primary",
                   },
                   "ref": null,
                   "rendered": "Create Mine Record",
@@ -726,11 +762,17 @@ ShallowWrapper {
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
-                  <AddButton
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Create Mine Record
-                  </AddButton>
+                  </Button>
                 </Connect(AuthorizationWrapper)>
               </div>
             </div>
@@ -765,11 +807,17 @@ ShallowWrapper {
                 <Connect(AuthorizationWrapper)
                   permission="role_admin"
                 >
-                  <AddButton
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    loading={false}
                     onClick={[Function]}
+                    prefixCls="ant-btn"
+                    type="primary"
                   >
                     Create Mine Record
-                  </AddButton>
+                  </Button>
                 </Connect(AuthorizationWrapper)>
               </div>
             </div>,
@@ -794,11 +842,17 @@ ShallowWrapper {
                   <Connect(AuthorizationWrapper)
                     permission="role_admin"
                   >
-                    <AddButton
+                    <Button
+                      block={false}
+                      className="full-mobile"
+                      ghost={false}
+                      loading={false}
                       onClick={[Function]}
+                      prefixCls="ant-btn"
+                      type="primary"
                     >
                       Create Mine Record
-                    </AddButton>
+                    </Button>
                   </Connect(AuthorizationWrapper)>
                 </div>,
               ],
@@ -855,11 +909,17 @@ ShallowWrapper {
                   "children": <Connect(AuthorizationWrapper)
                     permission="role_admin"
                   >
-                    <AddButton
+                    <Button
+                      block={false}
+                      className="full-mobile"
+                      ghost={false}
+                      loading={false}
                       onClick={[Function]}
+                      prefixCls="ant-btn"
+                      type="primary"
                     >
                       Create Mine Record
-                    </AddButton>
+                    </Button>
                   </Connect(AuthorizationWrapper)>,
                 },
                 "ref": null,
@@ -868,21 +928,33 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <AddButton
+                    "children": <Button
+                      block={false}
+                      className="full-mobile"
+                      ghost={false}
+                      loading={false}
                       onClick={[Function]}
+                      prefixCls="ant-btn"
+                      type="primary"
                     >
                       Create Mine Record
-                    </AddButton>,
+                    </Button>,
                     "permission": "role_admin",
                   },
                   "ref": null,
                   "rendered": Object {
                     "instance": null,
                     "key": undefined,
-                    "nodeType": "function",
+                    "nodeType": "class",
                     "props": Object {
+                      "block": false,
                       "children": "Create Mine Record",
+                      "className": "full-mobile",
+                      "ghost": false,
+                      "loading": false,
                       "onClick": [Function],
+                      "prefixCls": "ant-btn",
+                      "type": "primary",
                     },
                     "ref": null,
                     "rendered": "Create Mine Record",

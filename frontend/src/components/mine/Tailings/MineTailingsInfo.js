@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
+import { Row, Col, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -23,7 +23,6 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
-import AddButton from "@/components/common/AddButton";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -147,32 +146,7 @@ export class MineTailingsInfo extends Component {
         <br />
         <br />
         <div>
-          <div>
-            <div className="inline-flex between">
-              <div>
-                <h3>Reports</h3>
-              </div>
-              <div className="inline-flex between">
-                <AuthorizationWrapper
-                  permission={Permission.CREATE}
-                  isMajorMine={this.props.mine.major_mine_ind}
-                >
-                  <AddButton
-                    onClick={(event) =>
-                      this.openAddReportModal(
-                        event,
-                        this.handleAddReportSubmit,
-                        ModalContent.ADD_TAILINGS_REPORT,
-                        this.props.mineTSFRequiredReports
-                      )
-                    }
-                  >
-                    {ModalContent.ADD_TAILINGS_REPORT}
-                  </AddButton>
-                </AuthorizationWrapper>
-              </div>
-            </div>
-          </div>
+          <h3>Reports</h3>
           <br />
           <MineTailingsTable
             mine={this.props.mine}
@@ -183,6 +157,33 @@ export class MineTailingsInfo extends Component {
             removeReport={this.removeReport}
             handleEditReportSubmit={this.handleEditReportSubmit}
           />
+          <div key="0">
+            <Row gutter={16} justify="center" align="top">
+              <Col span={8} align="left">
+                <AuthorizationWrapper
+                  permission={Permission.CREATE}
+                  isMajorMine={this.props.mine.major_mine_ind}
+                >
+                  <Button
+                    type="secondary"
+                    ghost
+                    onClick={(event) =>
+                      this.openAddReportModal(
+                        event,
+                        this.handleAddReportSubmit,
+                        ModalContent.ADD_TAILINGS_REPORT,
+                        this.props.mineTSFRequiredReports
+                      )
+                    }
+                  >
+                    {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
+                  </Button>
+                </AuthorizationWrapper>
+              </Col>
+              <Col span={12} />
+              <Col span={4} align="right" />
+            </Row>
+          </div>
         </div>
       </div>
     );
