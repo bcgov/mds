@@ -3,7 +3,7 @@ from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 from ..models.party import Party
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
@@ -157,7 +157,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest(e)
 
         if not party:
-            raise Exception('Error: Failed to create party')
+            raise InternalServerError('Error: Failed to create party')
 
         party.save()
         return party.json()
@@ -177,7 +177,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
             existing_party.save()
         except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
+            raise BadRequest(e)
 
         return existing_party.json()
 
