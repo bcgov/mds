@@ -54,7 +54,6 @@ class PermitAmendment(AuditMixin, Base):
                issue_date,
                authorization_end_date,
                permit_amendment_type_code,
-               user_kwargs,
                description=None,
                permit_amendment_status_code='ACT',
                save=True):
@@ -65,8 +64,7 @@ class PermitAmendment(AuditMixin, Base):
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
-            description=description,
-            **user_kwargs)
+            description=description)
         permit.permit_amendments.append(new_pa)
         if save:
             new_pa.save(commit=False)
