@@ -12,16 +12,16 @@ from app.extensions import db
 class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    compliance_article_id = db.Column(
-        db.Integer,
-        db.ForeignKey('compliance_article.compliance_article_id'),
-        server_default=FetchedValue())
+    compliance_article_id = db.Column(db.Integer,
+                                      db.ForeignKey('compliance_article.compliance_article_id'),
+                                      server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     note = db.Column(db.String(300), server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
 
     def __repr__(self):
