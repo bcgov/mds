@@ -5,10 +5,7 @@ RUN rm -f /usr/share/logstash/
 USER root
 RUN curl -Lo - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
     tar zxf - -C /usr/share && \
-    mv /usr/share/logstash-6.7.0 /usr/share/logstash && \
-    chmod -R g=u /usr/share/logstash && \
-    find /usr/share/logstash -type d -exec chmod g+s {} \; && \
-    ln -s /usr/share/logstash /opt/logstash
+    mv /usr/share/logstash-6.7.0 /usr/share/logstash
 
 ENV ELASTIC_CONTAINER false
 ENV PATH=/usr/share/logstash/bin:$PATH
