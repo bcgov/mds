@@ -20,7 +20,7 @@ CREATE SEQUENCE variance_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER TABLE variance_id_seq OWNER TO mds;
+ALTER TABLE variance OWNER TO mds;
 ALTER SEQUENCE variance_id_seq OWNED BY variance.variance_id;
 ALTER TABLE ONLY variance ALTER COLUMN variance_id SET DEFAULT nextval('variance_id_seq'::regclass);
 

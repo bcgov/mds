@@ -63,7 +63,7 @@ CREATE SEQUENCE compliance_article_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER TABLE compliance_article_id_seq OWNER TO mds;
+ALTER TABLE compliance_article OWNER TO mds;
 ALTER SEQUENCE compliance_article_id_seq OWNED BY compliance_article.compliance_article_id;
 ALTER TABLE ONLY compliance_article ALTER COLUMN compliance_article_id SET DEFAULT nextval('compliance_article_id_seq'::regclass);
 
