@@ -1,7 +1,10 @@
-import json, uuid, requests
-from tests.constants import TEST_MINE_GUID, TEST_TAILINGS_STORAGE_FACILITY_NAME2, TEST_TAILINGS_STORAGE_FACILITY_NAME1, DUMMY_USER_KWARGS
+import json, uuid, requests, pytest
+from tests.constants import TEST_MINE_GUID, TEST_TAILINGS_STORAGE_FACILITY_NAME2, DUMMY_USER_KWARGS
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.extensions import db
+
 from unittest import mock
 
 TAILING_REQUIRED_DOCUMENTS = {
@@ -36,18 +39,31 @@ class MockResponse:
         return
 
 
+@pytest.fixture(scope="function")
+def setup_info(test_client):
+    mine_tsf1 = MineTailingsStorageFacility.create(
+        mine_guid=TEST_MINE_GUID, tailings_facility_name='Tailings Facility 1')
+    mine_tsf1.save()
+
+    yield dict(tsf1=mine_tsf1)
+    db.session.delete(mine_tsf1)
+    db.session.commit()
+
+
 # GET
-def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers):
+def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers, setup_info):
     get_resp = test_client.get(
-        '/mines/tailings?mine_guid=' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
+        '/mines/tailings?mine_guid=' + str(setup_info['tsf1'].mine_guid),
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert len(get_data['mine_storage_tailings_facilities']) == 1
 
 
-def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers):
+def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers, setup_info):
     get_resp = test_client.get(
-        '/mines/tailings?mine_guid=' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
+        '/mines/tailings?mine_guid=' + str(setup_info['tsf1'].mine_guid),
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     org_mine_tsf_list_len = len(get_data['mine_storage_tailings_facilities'])
@@ -55,7 +71,7 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, auth_head
     post_resp = test_client.post(
         '/mines/tailings',
         data={
-            'mine_guid': TEST_MINE_GUID,
+            'mine_guid': str(setup_info['tsf1'].mine_guid),
             'tsf_name': TEST_TAILINGS_STORAGE_FACILITY_NAME2
         },
         headers=auth_headers['full_auth_header'])

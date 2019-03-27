@@ -68,6 +68,7 @@ export const getMineGuid = (state) => state[MINES].mineGuid;
 export const getMineBasicInfoList = (state) => state[MINES].mineBasicInfoList;
 export const getMineDocuments = (state) => state[MINES].mineDocuments;
 export const getCurrentUserVerifiedMines = (state) => state[MINES].currentUserVerifiedMines;
-export const getCurrentUserUnverifiedMines = (state) => state[MINES].currentUserUnverifiedMinesMines;
+export const getCurrentUserUnverifiedMines = (state) =>
+  state[MINES].currentUserUnverifiedMinesMines;
 
 export default mineReducer;
