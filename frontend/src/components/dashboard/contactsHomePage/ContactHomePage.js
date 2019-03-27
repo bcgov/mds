@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -28,6 +27,7 @@ import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
+import AddButton from "@/components/common/AddButton";
 
 /**
  * @class ContactHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -167,9 +167,7 @@ export class ContactHomePage extends Component {
               <p>To find a contact profile, search in the list section below.</p>
             </div>
             <AuthorizationWrapper permission={Permission.CREATE}>
-              <Button
-                className="full-mobile"
-                type="primary"
+              <AddButton
                 onClick={(event) =>
                   this.openAddContactModal(
                     event,
@@ -180,7 +178,7 @@ export class ContactHomePage extends Component {
                 }
               >
                 {ModalContent.ADD_CONTACT}
-              </Button>
+              </AddButton>
             </AuthorizationWrapper>
           </div>
         </div>
