@@ -22,11 +22,11 @@
         },
         "tags": [
           {
-            "name": "v6.6.2",
+            "name": "v6.7.0",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "docker.elastic.co/logstash/logstash:6.6.2"
+              "name": "docker.elastic.co/logstash/logstash:6.7.0"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -80,7 +80,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "logstash:v6.6.2"
+              "name": "logstash:v6.7.0"
             }
           }
         },

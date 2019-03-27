@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:6.6.2
+FROM docker.elastic.co/logstash/logstash:6.7.0
 RUN rm -f /usr/share/logstash/pipeline/logstash.conf
 
 RUN mkdir -p /usr/share/logstash/dictionaries
