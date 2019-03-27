@@ -11,7 +11,6 @@ COPY uid_entrypoint /usr/local/bin
 # Fix directory permissions
 USER root
 RUN chmod g+w /etc/passwd
-RUN chown -R 1002510000:0 /usr/share/logstash && \
-    chmod -R ug+rwx /usr/share/logstash
+RUN usermod -u 1002510000 logstash
 
 USER 1002510000
