@@ -77,7 +77,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
                 if not map_result:
                     records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
-                    last_modified = datetime.now()
+                    last_modified = datetime.utcnow()
 
                     # jsonify then store in cache
                     map_result = json.dumps(
