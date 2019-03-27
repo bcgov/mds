@@ -49,6 +49,15 @@
   }
 }
 
+.ant-btn-danger,
+.anticon anticon-minus-circle btn-danger--icon {
+  color: #bc2929;
+  border: #bc2929;
+  &:hover {
+    color: black;
+  }
+}
+
 .ant-btn-tertiary {
   font-weight: $light;
   color: $pure-white;

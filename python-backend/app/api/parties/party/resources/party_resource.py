@@ -5,8 +5,9 @@ from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
 
 from ..models.party import Party
+from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -65,7 +66,6 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 party = Party.find_by_party_guid(party_guid)
             except DBAPIError:
                 return self.create_error_payload(422, 'Invalid Party guid'), 422
-
             if party:
                 return party.json()
             else:
@@ -161,3 +161,22 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: {}'.format(e))
 
         return existing_party.json()
+
+    @api.doc(params={'party_guid': 'Required: Party guid. Deletes expected document.'})
+    @requires_role_mine_admin
+    def delete(self, party_guid):
+        if party_guid is None:
+            return self.create_error_payload(404, 'Must provide a party guid.'), 404
+        try:
+            party = Party.find_by_party_guid(party_guid)
+        except DBAPIError:
+            return self.create_error_payload(422, 'Invalid Party guid'), 422
+        if party is not None:
+            party.deleted_ind = True
+            party.save()
+            mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
+            for mine_party_appt in mine_party_appts:
+                mine_party_appt.deleted_ind = True
+                mine_party_appt.save()
+            return {'status': 200, 'message': 'contact deleted successfully.'}
+        return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
