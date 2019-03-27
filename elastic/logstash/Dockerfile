@@ -1,11 +1,13 @@
 FROM docker.elastic.co/logstash/logstash:6.7.0
+RUN rm -f /usr/share/logstash/
 
-# Re-install logstash
+# Re-Install logstash
 USER root
-RUN rm -rf /usr/share/logstash/
 RUN curl -Lo - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
     tar zxf - -C /usr/share && \
     mv /usr/share/logstash-6.7.0 /usr/share/logstash && \
+    chmod -R g=u /usr/share/logstash && \
+    find /usr/share/logstash -type d -exec chmod g+s {} \; && \
     ln -s /usr/share/logstash /opt/logstash
 
 RUN mkdir -p /usr/share/logstash/dictionaries
