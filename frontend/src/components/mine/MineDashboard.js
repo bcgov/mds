@@ -47,6 +47,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
+import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -194,17 +195,20 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                <TabPane tab="Variance" key="variance">
-                  <div className="tab__content">
-                    <MineVariance
-                      mine={mine}
-                      createVariance={this.props.createVariance}
-                      openModal={this.props.openModal}
-                      closeModal={this.props.closeModal}
-                      fetchVariancesByMine={this.props.fetchVariancesByMine}
-                    />
-                  </div>
-                </TabPane>
+                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
+                {detectDevelopmentEnvironment() && (
+                  <TabPane tab="Variance" key="variance">
+                    <div className="tab__content">
+                      <MineVariance
+                        mine={mine}
+                        createVariance={this.props.createVariance}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                        fetchVariancesByMine={this.props.fetchVariancesByMine}
+                      />
+                    </div>
+                  </TabPane>
+                )}
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">

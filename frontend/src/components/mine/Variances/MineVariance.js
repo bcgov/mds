@@ -69,13 +69,11 @@ class MineVariance extends Component {
     return (
       <div>
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper inDevelopment>
-            <AuthorizationWrapper permission={Permission.CREATE}>
-              <Button type="primary" onClick={(event) => this.openVarianceModal(event)}>
-                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                Add New Variance
-              </Button>
-            </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.CREATE}>
+            <Button type="primary" onClick={(event) => this.openVarianceModal(event)}>
+              <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+              Add New Variance
+            </Button>
           </AuthorizationWrapper>
         </div>
         <br />

@@ -1,9 +1,7 @@
-/* eslint-disable  */
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
 import { RED_CLOCK } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
@@ -12,7 +10,9 @@ import { COLOR } from "@/constants/styles";
 
 const { errorRed } = COLOR;
 
-const propTypes = {};
+const propTypes = {
+  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+};
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
@@ -85,20 +85,17 @@ const transformRowData = (variances) =>
     isOverdue: Date.parse(variance.expiry_date) < new Date(),
   }));
 
-const MineVarianceTable = (props) => {
-  console.log(props);
-  return (
-    <div>
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns}
-        locale={{ emptyText: <NullScreen type="variance" /> }}
-        dataSource={transformRowData(props.variances.data)}
-      />
-    </div>
-  );
-};
+const MineVarianceTable = (props) => (
+  <div>
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      locale={{ emptyText: <NullScreen type="variance" /> }}
+      dataSource={transformRowData(props.variances.data)}
+    />
+  </div>
+);
 
 MineVarianceTable.propTypes = propTypes;
 
