@@ -8,8 +8,6 @@ COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 COPY uid_entrypoint /usr/local/bin
 
-RUN logstash-plugin update logstash-output-elasticsearch
-
 # Fix directory permissions
 USER root
 RUN chmod g+w /etc/passwd
@@ -17,5 +15,3 @@ RUN chown -R 1002510000:0 /usr/share/logstash && \
     chmod -R ug+rwx /usr/share/logstash
 
 USER 1002510000
-
-ENTRYPOINT [ "uid_entrypoint" ]
