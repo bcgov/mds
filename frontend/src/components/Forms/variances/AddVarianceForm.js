@@ -8,7 +8,7 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import VarianceFileUpload from "./VarianceFileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -81,21 +81,21 @@ export class AddVarianceForm extends Component {
               <Field
                 id="note"
                 name="note"
-                label="Notes"
+                label="Description"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[maxLength(300)]}
               />
             </Form.Item>
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item label="Upload files">
+            <Form.Item label="Upload files*">
               <Field
                 id="PermitDocumentFileUpload"
                 name="PermitDocumentFileUpload"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
-                // mineGuid={this.props.mine_guid}
-                component={PermitAmendmentFileUpload}
+                mineGuid={this.props.mineGuid}
+                component={VarianceFileUpload}
               />
             </Form.Item>
           </Col>
@@ -118,7 +118,7 @@ export class AddVarianceForm extends Component {
             htmlType="submit"
             disabled={this.props.submitting}
           >
-            Add Variance
+            Add Approved Variance
           </Button>
         </div>
       </Form>
@@ -131,6 +131,6 @@ AddVarianceForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_VARIANCE,
-  touchOnBlur: true,
+  touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
 })(AddVarianceForm);

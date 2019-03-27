@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@/constants/strings";
 import { RED_CLOCK } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
@@ -22,44 +23,34 @@ const columns = [
     width: 10,
     render: (text, record) => (
       <div title="">
-        {record.expired ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
-      </div>
-    ),
-  },
-  {
-    title: "Variance No",
-    dataIndex: "varianceNo",
-    render: (text, record) => (
-      <div title="Variance No" style={errorStyle(record.isOverdue)}>
-        {record.doc.exp_document_name}
+        {record.isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
       </div>
     ),
   },
   {
     title: "Code",
-    dataIndex: "code",
+    dataIndex: "compliance_article_id",
     render: (text, record) => (
       <div title="Code" style={errorStyle(record.isOverdue)}>
-        {record.doc.hsrc_code}
+        {text}
       </div>
     ),
   },
   {
     title: "Issue Date",
-    dataIndex: "issuedate",
+    dataIndex: "issue_date",
     render: (text, record) => (
       <div title="Issue Date" style={errorStyle(record.isOverdue)}>
-        {formatDate(record.doc.due_date) || "-"}
+        {text}
       </div>
     ),
   },
   {
     title: "Expiry Date",
-    dataIndex: "receivedDate",
+    dataIndex: "expiry_date",
     render: (text, record) => (
       <div title="Expiry Date" style={errorStyle(record.isOverdue)}>
-        {" "}
-        {formatDate(record.doc.received_date) || "-"}
+        {text}
       </div>
     ),
   },
@@ -68,7 +59,7 @@ const columns = [
     dataIndex: "status",
     render: (text, record) => (
       <div title="Status" style={errorStyle(record.isOverdue)}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {record.isOverdue ? "Expired" : "Aciive"}
       </div>
     ),
   },
@@ -77,23 +68,37 @@ const columns = [
     dataIndex: "documents",
     render: (text, record) => (
       <div title="Documents" style={errorStyle(record.isOverdue)}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {text}
       </div>
     ),
   },
 ];
 
-const MineVarianceTable = (props) => (
-  <div className="mine-info-padding">
-    <Table
-      align="left"
-      pagination={false}
-      columns={columns}
-      locale={{ emptyText: <NullScreen type="variance" /> }}
-      // dataSource={}
-    />
-  </div>
-);
+const transformRowData = (variances) =>
+  variances.map((variance) => ({
+    key: variance.variance_id,
+    compliance_article_id: variance.compliance_article_id || String.EMPTY_FIELD,
+    expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
+    issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
+    note: variance.note,
+    received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
+    isOverdue: Date.parse(variance.expiry_date) < new Date(),
+  }));
+
+const MineVarianceTable = (props) => {
+  console.log(props);
+  return (
+    <div>
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns}
+        locale={{ emptyText: <NullScreen type="variance" /> }}
+        dataSource={transformRowData(props.variances.data)}
+      />
+    </div>
+  );
+};
 
 MineVarianceTable.propTypes = propTypes;
 

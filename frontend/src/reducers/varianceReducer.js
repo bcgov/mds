@@ -10,7 +10,7 @@ const varianceReducer = (state = initialState, action) => {
     case actionTypes.STORE_VARIANCES:
       return {
         ...state,
-        variances: action.payload,
+        variances: action.payload.data,
       };
     default:
       return state;

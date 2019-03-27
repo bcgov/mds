@@ -19,7 +19,6 @@ const propTypes = {
 
 class MineVariance extends Component {
   handleAddVariances = (values) => {
-    console.log(values);
     this.props.createVariance(values, this.props.mine.guid).then(() => {
       this.props.closeModal();
       this.props.fetchVariancesByMine(this.props.mine.guid);
@@ -32,6 +31,7 @@ class MineVariance extends Component {
       props: {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
+        mineGuid: this.props.mine.guid,
       },
       widthSize: "75vw",
       content: modalConfig.ADD_VARIANCE,
@@ -39,6 +39,33 @@ class MineVariance extends Component {
   }
 
   render() {
+    const variancePayload = {
+      data: [
+        {
+          variance_id: 1249,
+          compliance_article_id: 1,
+          expiry_date: "2019-03-30",
+          issue_date: "2019-03-01",
+          note: "notesss",
+          received_date: "2019-03-01",
+        },
+        {
+          variance_id: 59285,
+          compliance_article_id: 1,
+          expiry_date: "2028-03-25",
+          issue_date: "2019-03-06",
+          note: "this is a variance",
+          received_date: "2019-03-10",
+        },
+        {
+          compliance_article_id: 1,
+          variance_id: 5545486,
+          expiry_date: "2019-03-04",
+          issue_date: "2016-03-06",
+          received_date: "2015-03-03",
+        },
+      ],
+    };
     return (
       <div>
         <div className="inline-flex flex-end">
@@ -52,7 +79,7 @@ class MineVariance extends Component {
           </AuthorizationWrapper>
         </div>
         <br />
-        <MineVarianceTable />
+        <MineVarianceTable variances={variancePayload} />
       </div>
     );
   }
