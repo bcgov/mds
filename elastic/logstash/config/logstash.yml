@@ -3,7 +3,6 @@
 ## from https://github.com/elastic/logstash-docker/blob/master/build/logstash/config/logstash-oss.yml
 #
 http.host: "0.0.0.0"
-path.config: "/usr/share/logstash/"
 log.level: debug
 cloud.id: "${ELASTIC_CLOUD_ID}"
 cloud.auth: "${ELASTIC_CLOUD_AUTH}"
