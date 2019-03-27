@@ -9,7 +9,7 @@ const propTypes = {};
 
 const AddButton = (props) => (
   <Button type="primary" className="full-mobile" {...props}>
-    <Icon type="plus" theme="outlined" style={{ fontSize: "18px", paddingRight: "5px" }} />
+    <Icon type="plus" theme="outlined" className="padding-small--right icon-sm" />
     {props.children}
   </Button>
 );
