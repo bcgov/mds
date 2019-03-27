@@ -35,7 +35,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         store_missing=False)
     parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
     parser.add_argument(
-        'type', type=str, help='The type of the party. Ex: PER', store_missing=False)
+        'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
     parser.add_argument(
         'suite_no',
         type=str,
@@ -127,7 +127,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             party = Party.create(
                 data.get('party_name'),
                 data.get('phone_no'),
-                data.get('type'),
+                data.get('party_type_code'),
                 self.get_create_update_dict(),
                 # Nullable fields
                 email=data.get('email'),
@@ -158,11 +158,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         try:
             for key, value in data.items():
-                if key == 'type':
-                    #party_type_code maps to type
-                    existing_party.party_type_code = data['type']
-                else:
-                    setattr(existing_party, key, value)
+                setattr(existing_party, key, value)
 
             existing_party.save()
         except AssertionError as e:
