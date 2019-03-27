@@ -80,7 +80,8 @@ class Mine(AuditMixin, Base):
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None, 
         }
 
     def json_for_list(self):
@@ -101,7 +102,8 @@ class Mine(AuditMixin, Base):
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None, 
         }
 
     def json_for_map(self):
