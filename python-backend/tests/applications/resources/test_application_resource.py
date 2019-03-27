@@ -17,7 +17,7 @@ def setup_info(test_client):
     mine_2.save()
 
     application_1 = Application.create(mine_1.mine_guid, 'TA-1234', 'RIP', '1998-04-30',
-                                       'This is a test.', DUMMY_USER_KWARGS)
+                                       'This is a test.')
     application_1.save()
 
     MINE_1_GUID = str(mine_1.mine_guid)

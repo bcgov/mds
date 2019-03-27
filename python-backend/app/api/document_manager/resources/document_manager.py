@@ -75,10 +75,9 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         document_info = DocumentManager(
             document_guid=document_guid,
             full_storage_path=file_path,
-            upload_started_date=datetime.now(),
+            upload_started_date=datetime.utcnow(),
             file_display_name=filename,
             path_display_name=pretty_path,
-            **self.get_create_update_dict(),
         )
         document_info.save()
 
@@ -130,7 +129,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         if new_offset == file_size:
             # File transfer complete.
             doc = DocumentManager.find_by_document_manager_guid(document_guid)
-            doc.upload_completed_date = datetime.now()
+            doc.upload_completed_date = datetime.utcnow()
             doc.save()
 
             cache.delete(FILE_UPLOAD_SIZE(document_guid))
