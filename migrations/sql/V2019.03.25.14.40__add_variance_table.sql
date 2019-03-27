@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS variance
     update_timestamp      timestamp with time zone DEFAULT now()                 NOT NULL
 );
 
+ALTER TABLE variance OWNER TO mds;
+
 CREATE SEQUENCE variance_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -20,7 +22,7 @@ CREATE SEQUENCE variance_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER TABLE variance OWNER TO mds;
+ALTER TABLE variance_id_seq OWNER TO mds;
 ALTER SEQUENCE variance_id_seq OWNED BY variance.variance_id;
 ALTER TABLE ONLY variance ALTER COLUMN variance_id SET DEFAULT nextval('variance_id_seq'::regclass);
 
