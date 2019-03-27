@@ -16,6 +16,7 @@ from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
 from .api.permits.permit.models.permit import Permit
+from .api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
@@ -96,6 +97,7 @@ def register_commands(app):
             _create_data(num)
 
     def _create_data(num):
+        User._test_mode = True
         with app.app_context():
             party = None
             mine_tenure_type_codes = list(
@@ -107,7 +109,9 @@ def register_commands(app):
                                         random_mine_category(), random_region(), DUMMY_USER_KWARGS)
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes))
                 MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
-
+                if random.choice([True, False]):
+                    mine.verified_status = MineVerifiedStatus(
+                        healthy_ind=random.choice([True, False]))
                 first_name = names.get_first_name()
                 last_name = names.get_last_name()
                 email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
