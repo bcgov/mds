@@ -108,6 +108,14 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('issue_date')
     def validate_issue_date(self, key, issue_date):
+        if self.permit_amendment_type_code != 'OGP':
+            original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
+                permit_amendment_type_code='OGP').first()
+            if original_permit_amendment and original_permit_amendment.issue_date:
+                if original_permit_amendment.issue_date > issue_date.date():
+                    raise AssertionError(
+                        'Permit amendment issue date cannot be before the permits First Issued date.'
+                    )
         if issue_date:
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
