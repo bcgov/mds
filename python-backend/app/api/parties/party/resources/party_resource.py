@@ -1,8 +1,9 @@
 import uuid
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
+from werkzeug.exceptions import BadRequest
 
 from ..models.party import Party
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
@@ -16,26 +17,35 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'first_name',
         type=str,
+        trim=True,
         help='First name of the party, if the party is a person.',
         store_missing=False)
     parser.add_argument(
         'party_name',
         type=str,
+        trim=True,
         help='Last name of the party (Person), or the Organization name (Organization).',
         store_missing=False)
     parser.add_argument(
         'phone_no',
         type=str,
+        trim=True,
         help='The phone number of the party. Ex: 123-123-1234',
         store_missing=False)
     parser.add_argument(
         'phone_ext',
         type=str,
+        trim=True,
         help='The extension of the phone number. Ex: 1234',
         store_missing=False)
-    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
     parser.add_argument(
-        'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
+        'email', type=str, trim=True, help='The email of the party.', store_missing=False)
+    parser.add_argument(
+        'party_type_code',
+        type=str,
+        trim=True,
+        help='The type of the party. Ex: PER',
+        store_missing=False)
     parser.add_argument(
         'suite_no',
         type=str,
@@ -44,26 +54,31 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'address_line_1',
         type=str,
+        trim=True,
         store_missing=False,
         help='The first address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument(
         'address_line_2',
         type=str,
+        trim=True,
         store_missing=False,
         help='The second address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument(
         'city',
         type=str,
+        trim=True,
         store_missing=False,
         help='The city where the party is located. Ex: FooTown')
     parser.add_argument(
         'sub_division_code',
         type=str,
+        trim=True,
         store_missing=False,
         help='The region code where the party is located. Ex: BC')
     parser.add_argument(
         'post_code',
         type=str,
+        trim=True,
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
 
@@ -139,10 +154,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 sub_division_code=data.get('sub_division_code'),
                 post_code=data.get('post_code'))
         except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
+            raise BadRequest(e)
 
         if not party:
-            self.raise_error(400, 'Error: Failed to create party')
+            raise Exception('Error: Failed to create party')
 
         party.save()
         return party.json()
@@ -156,6 +171,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Party not found'), 404
 
         try:
+            current_app.logger.info(f'Updating {existing_party} with {data}')
             for key, value in data.items():
                 setattr(existing_party, key, value)
 
