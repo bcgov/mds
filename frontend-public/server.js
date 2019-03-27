@@ -35,6 +35,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     apiUrl: process.env.API_URL,
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
+    keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
     keycloak_url: process.env.KEYCLOAK_URL,
     siteminder_url: process.env.SITEMINDER_URL,
   });

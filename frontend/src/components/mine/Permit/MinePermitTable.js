@@ -157,23 +157,21 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper inTesting>
-          <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-              <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add/Edit
-                  <img
-                    className="padding-small--right icon-svg-filter"
-                    src={CARAT}
-                    alt="Menu"
-                    style={{ paddingLeft: "5px" }}
-                  />
-                </div>
-              </Button>
-            </Dropdown>
-          </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+            <Button type="secondary" className="permit-table-button">
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Add/Edit
+                <img
+                  className="padding-small--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </div>
+            </Button>
+          </Dropdown>
         </AuthorizationWrapper>
       );
     },
@@ -227,18 +225,16 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper inTesting>
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
-          <Button
-            className="permit-table-button"
-            type="ghost"
-            onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
-          >
-            <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-            </div>
-          </Button>
-        </AuthorizationWrapper>
+      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <Button
+          className="permit-table-button"
+          type="ghost"
+          onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
+        >
+          <div>
+            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+          </div>
+        </Button>
       </AuthorizationWrapper>
     ),
   },

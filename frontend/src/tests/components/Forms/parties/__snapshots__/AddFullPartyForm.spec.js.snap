@@ -331,6 +331,7 @@ ShallowWrapper {
                     validate={
                       Array [
                         [Function],
+                        [Function],
                       ]
                     }
                   />
@@ -639,6 +640,7 @@ ShallowWrapper {
                     placeholder="e.g xxxxxx"
                     validate={
                       Array [
+                        [Function],
                         [Function],
                       ]
                     }
@@ -949,6 +951,7 @@ ShallowWrapper {
                       placeholder="e.g xxxxxx"
                       validate={
                         Array [
+                          [Function],
                           [Function],
                         ]
                       }
@@ -1779,6 +1782,7 @@ ShallowWrapper {
                         validate={
                           Array [
                             [Function],
+                            [Function],
                           ]
                         }
                       />
@@ -2239,6 +2243,7 @@ ShallowWrapper {
                           validate={
                             Array [
                               [Function],
+                              [Function],
                             ]
                           }
                         />
@@ -2338,6 +2343,7 @@ ShallowWrapper {
                           validate={
                             Array [
                               [Function],
+                              [Function],
                             ]
                           }
                         />
@@ -2362,6 +2368,7 @@ ShallowWrapper {
                           validate={
                             Array [
                               [Function],
+                              [Function],
                             ]
                           }
                         />,
@@ -2382,6 +2389,7 @@ ShallowWrapper {
                           "normalize": [Function],
                           "placeholder": "e.g xxxxxx",
                           "validate": Array [
+                            [Function],
                             [Function],
                           ],
                         },
@@ -2711,6 +2719,7 @@ ShallowWrapper {
                       validate={
                         Array [
                           [Function],
+                          [Function],
                         ]
                       }
                     />
@@ -3019,6 +3028,7 @@ ShallowWrapper {
                       placeholder="e.g xxxxxx"
                       validate={
                         Array [
+                          [Function],
                           [Function],
                         ]
                       }
@@ -3329,6 +3339,7 @@ ShallowWrapper {
                         placeholder="e.g xxxxxx"
                         validate={
                           Array [
+                            [Function],
                             [Function],
                           ]
                         }
@@ -4159,6 +4170,7 @@ ShallowWrapper {
                           validate={
                             Array [
                               [Function],
+                              [Function],
                             ]
                           }
                         />
@@ -4619,6 +4631,7 @@ ShallowWrapper {
                             validate={
                               Array [
                                 [Function],
+                                [Function],
                               ]
                             }
                           />
@@ -4718,6 +4731,7 @@ ShallowWrapper {
                             validate={
                               Array [
                                 [Function],
+                                [Function],
                               ]
                             }
                           />
@@ -4742,6 +4756,7 @@ ShallowWrapper {
                             validate={
                               Array [
                                 [Function],
+                                [Function],
                               ]
                             }
                           />,
@@ -4762,6 +4777,7 @@ ShallowWrapper {
                             "normalize": [Function],
                             "placeholder": "e.g xxxxxx",
                             "validate": Array [
+                              [Function],
                               [Function],
                             ],
                           },
