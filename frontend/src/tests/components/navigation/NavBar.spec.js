@@ -8,6 +8,7 @@ const dispatchProps = {};
 const setupDispatchProps = () => {
   dispatchProps.logoutUser = jest.fn();
   dispatchProps.toggleHamburgerMenu = jest.fn();
+  dispatchProps.fetchMineVerifiedStatuses = jest.fn();
 };
 
 const setupProps = () => {
