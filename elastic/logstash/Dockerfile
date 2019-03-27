@@ -10,6 +10,8 @@ COPY dictionaries /usr/share/logstash/dictionaries
 COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
 
+RUN logstash-plugin update logstash-output-elasticsearch
+
 # Fix directory permissions
 #USER root
 #RUN chmod -R 777 /usr/share/logstash
