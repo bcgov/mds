@@ -157,13 +157,12 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Party not found'), 404
 
         try:
-
-            for key, value in data:
+            for key, value in data.items():
                 if key == 'type':
                     #party_type_code maps to type
                     existing_party.party_type_code = data['type']
                 else:
-                    existing_party.setattr(key, value)
+                    setattr(existing_party, key, value)
 
             existing_party.save()
         except AssertionError as e:
