@@ -2,10 +2,13 @@ FROM docker.elastic.co/logstash/logstash:6.7.0
 
 # Re-Install logstash
 USER root
+WORKDIR /tmp
 RUN rm -rf /usr/share/logstash/
 RUN curl -Lo - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
     tar zxf - -C /usr/share && \
     mv /usr/share/logstash-6.7.0 /usr/share/logstash
+
+WORKDIR /usr/share/logstash
 
 ENV ELASTIC_CONTAINER false
 ENV PATH=/usr/share/logstash/bin:$PATH
