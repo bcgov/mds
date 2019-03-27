@@ -12,6 +12,8 @@ COPY config/ /usr/share/logstash/config/
 
 RUN logstash-plugin update logstash-output-elasticsearch
 
+USER 1000
+
 # Fix directory permissions
 #USER root
 #RUN chmod -R 777 /usr/share/logstash
