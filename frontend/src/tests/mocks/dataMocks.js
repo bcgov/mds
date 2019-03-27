@@ -1002,3 +1002,31 @@ export const APPLICATION_LIST = [
     received_date: "2019-02-25",
   },
 ];
+
+export const VARIANCES = {
+  records: [
+    {
+      variance_id: 1249,
+      compliance_article_id: 1,
+      expiry_date: "2019-03-30",
+      issue_date: "2019-03-01",
+      note: "notesss",
+      received_date: "2019-03-01",
+    },
+    {
+      variance_id: 59285,
+      compliance_article_id: 1,
+      expiry_date: "2028-03-25",
+      issue_date: "2019-03-06",
+      note: "this is a variance",
+      received_date: "2019-03-10",
+    },
+    {
+      compliance_article_id: 1,
+      variance_id: 5545486,
+      expiry_date: "2019-03-04",
+      issue_date: "2016-03-06",
+      received_date: "2015-03-03",
+    },
+  ],
+};

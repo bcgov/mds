@@ -4,6 +4,7 @@ exports[`MineDashboard renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
+    createVariance={[MockFunction]}
     fetchApplicationStatusOptions={
       [MockFunction] {
         "calls": Array [
@@ -76,6 +77,13 @@ ShallowWrapper {
     }
     fetchRelationshipTypes={[MockFunction]}
     fetchStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchVariancesByMine={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -526,6 +534,33 @@ ShallowWrapper {
       }
     }
     updateMineRecord={[MockFunction]}
+    variances={
+      Array [
+        Object {
+          "compliance_article_id": 1,
+          "expiry_date": "2019-03-30",
+          "issue_date": "2019-03-01",
+          "note": "notesss",
+          "received_date": "2019-03-01",
+          "variance_id": 1249,
+        },
+        Object {
+          "compliance_article_id": 1,
+          "expiry_date": "2028-03-25",
+          "issue_date": "2019-03-06",
+          "note": "this is a variance",
+          "received_date": "2019-03-10",
+          "variance_id": 59285,
+        },
+        Object {
+          "compliance_article_id": 1,
+          "expiry_date": "2019-03-04",
+          "issue_date": "2016-03-06",
+          "received_date": "2015-03-03",
+          "variance_id": 5545486,
+        },
+      ]
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],

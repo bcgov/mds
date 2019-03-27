@@ -29,6 +29,7 @@ import {
   getCommodityOptionHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
+import { getMineVariances } from "@/selectors/varianceSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -57,6 +58,7 @@ const { TabPane } = Tabs;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   setOptionsLoaded: PropTypes.func.isRequired,
@@ -68,6 +70,7 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
+  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
@@ -205,6 +208,7 @@ export class MineDashboard extends Component {
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
                         fetchVariancesByMine={this.props.fetchVariancesByMine}
+                        variances={this.props.variances}
                       />
                     </div>
                   </TabPane>
@@ -242,6 +246,7 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
+  variances: getMineVariances(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
