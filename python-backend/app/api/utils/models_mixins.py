@@ -65,4 +65,4 @@ class AuditMixin(object):
         default=User().get_user_username,
         onupdate=User().get_user_username)
     update_timestamp = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.now)
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
