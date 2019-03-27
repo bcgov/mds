@@ -75,6 +75,12 @@ const NullScreen = (props) => (
         <h3>{String.NO_VARIANCE}</h3>
       </div>
     )}
+    {props.type === "applications" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_APPLICATION}</h3>
+      </div>
+    )}
     {props.type === "no-results" && (
       <div>
         <img alt="mine_img" src={NO_MINE} />
