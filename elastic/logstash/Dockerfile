@@ -10,6 +10,9 @@ RUN curl -Lo - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.ta
     find /usr/share/logstash -type d -exec chmod g+s {} \; && \
     ln -s /usr/share/logstash /opt/logstash
 
+ENV ELASTIC_CONTAINER false
+ENV PATH=/usr/share/logstash/bin:$PATH
+
 RUN mkdir -p /usr/share/logstash/dictionaries
 COPY dictionaries /usr/share/logstash/dictionaries
 
