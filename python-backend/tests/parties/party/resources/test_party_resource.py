@@ -4,7 +4,8 @@ from tests.constants import (TEST_MINE_GUID,
                              TEST_PARTY_PER_FIRST_NAME_1,
                              TEST_PARTY_PER_PARTY_NAME_1,
                              TEST_PARTY_PER_FIRST_NAME_2,
-                             TEST_PARTY_PER_PARTY_NAME_2)
+                             TEST_PARTY_PER_PARTY_NAME_2,
+                             TEST_PARTY_PER_GUID_3)
 
 
 # GET
@@ -192,3 +193,9 @@ def test_put_person_success(test_client, auth_headers):
     assert address['post_code'] == test_person_data['post_code']
     assert address['address_type_code'] == test_person_data['address_type_code']
 
+# DELETE
+def test_delete_person_as_admin(test_client, auth_headers):
+    delete_resp = test_client.delete('/parties/' + TEST_PARTY_PER_GUID_3, headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 200
+    get_resp = test_client.get('/parties/' + TEST_PARTY_PER_GUID_3, headers=auth_headers['full_auth_header'])
+    assert get_resp.status_code == 404
