@@ -6,10 +6,12 @@ COPY dictionaries /usr/share/logstash/dictionaries
 
 COPY pipeline/ /usr/share/logstash/pipeline/
 COPY config/ /usr/share/logstash/config/
-COPY uid_entrypoint /usr/local/bin
+COPY uid_entrypoint.sh /usr/local/bin/uid_entrypoint.sh
 
 # Fix directory permissions
 USER root
-RUN usermod -u 1002510000 logstash
+RUN chgrp 0 /usr/local/bin/uid_entrypoint.sh && \
+    chmod g=u /etc/passwd && \
+    chmod 0775 /usr/local/bin/uid_entrypoint.sh
 
-USER 1002510000
+ENTRYPOINT ["/usr/local/bin/uid_entrypoint"]
