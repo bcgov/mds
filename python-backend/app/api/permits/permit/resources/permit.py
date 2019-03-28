@@ -117,21 +117,19 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def put(self, permit_guid=None):
         if not permit_guid:
-            return self.create_error_payload(400, 'Error: Permit guid was not provided.'), 400
+            raise BadRequest('Permit guid was not provided.')
 
         permit = Permit.find_by_permit_guid(permit_guid)
 
         if not permit:
-            return self.create_error_payload(404, 'There was no permit found with that guid.'), 404
+            raise BadRequest('Permit not found')
 
         data = self.parser.parse_args()
-        if 'permit_status_code' in data:
-            permit.permit_status_code = data.get('permit_status_code')
-        if 'description' in data:
-            permit.description = data.get('description')
+        for key, value in data.items():
+            if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
+                continue  # non-editable fields from Put
+            setattr(permit, key, value)
 
-        try:
-            permit.save()
-        except Exception as e:
-            self.raise_error(500, 'Error: {}'.format(e))
+        permit.save()
+
         return permit.json()
