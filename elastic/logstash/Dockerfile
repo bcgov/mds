@@ -4,14 +4,15 @@ WORKDIR /app
 
 USER 0
 # Add packages
-RUN apk add --update bash wget make java-cacerts go git musl-dev openssl
+RUN apk add --update --no-cache bash wget make java-cacerts go git musl-dev openssl
 
 # Install env2yaml
-ADD bin/env2yaml.go /tmp
-WORKDIR /tmp
+RUN mkdir -p /tmp/golang
+WORKDIR /tmp/golang
+COPY bin/env2yaml.go /tmp/golang
 RUN go get gopkg.in/yaml.v2
 RUN go build -o env2yaml
-RUN cp /tmp/go/env2yaml /usr/local/bin
+RUN cp /tmp/golang/env2yaml /usr/local/bin
 
 USER 1000
 
