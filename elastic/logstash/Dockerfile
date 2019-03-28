@@ -3,7 +3,7 @@ FROM openjdk:8-jdk-alpine
 WORKDIR /app
 
 # Add packages
-RUN apk add --update bash wget make java-cacerts go git .build-deps gcc musl-dev openssl
+RUN apk add --update bash wget make java-cacerts go git musl-dev openssl
 
 # Add Logstash.
 RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
