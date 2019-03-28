@@ -318,9 +318,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
 
         tenure = data.get('tenure_number_id')
-        lat = data.get('latitude')
-        lon = data.get('longitude')
         status = data.get('mine_status')
+
+        if (data['latitude'] and not data['longitude']) or (data['longitude']
+                                                            and not data['latitude']):
+            raise BadRequest('latitude and longitude must both be empty, or both provided')
 
         # if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
         #         and not region and major_mine_ind is None):
@@ -353,23 +355,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
 
-        if (lat and not lon) or (lon and not lat):
-            raise BadRequest('latitude and longitude must both be empty, or both provided')
-
         if mine.mine_location:
             #update existing record
             if "latitude" in data:
-                mine.mine_location.latitude = lat
+                mine.mine_location.latitude = data['latitude']
             if "longitude" in data:
-                mine.mine_location.longitude = lon
+                mine.mine_location.longitude = data['longitude']
             mine.mine_location.save()
-        if lat and lon and not mine.mine_location:
-            location = MineLocation(
-                mine_location_guid=uuid.uuid4(),
-                mine_guid=mine.mine_guid,
-                latitude=lat,
-                longitude=lon)
-            location.save()
+
+        elif data['latitude'] and data['longitude'] and not mine.mine_location:
+            mine.mine_location = MineLocation.create(
+                latitude=data['latitude'], longitude=data['longitude'])
+            mine.save()
             cache.delete(MINE_MAP_CACHE)
 
         # Status validation
