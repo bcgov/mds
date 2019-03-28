@@ -2,12 +2,22 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /app
 
-RUN apk add --update bash wget make java-cacerts
+# Add packages
+RUN apk add --update bash wget make java-cacerts go
 
-# Add Logstash itself.
+# Add Logstash.
 RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
 RUN tar -zxf logstash-6.7.0.tar.gz -C /app
 RUN mv /app/logstash-6.7.0 /app/logstash
+
+# Install env2yaml
+ADD bin/env2yaml.go /tmp/go
+RUN go get gopkg.in/yaml.v2
+WORKDIR /tmp/go
+RUN go build -o env2yaml
+RUN cp /tmp/go/env2yaml /usr/local/bin
+
+WORKDIR /app
 
 ENV ELASTIC_CONTAINER false
 ENV PATH=/app/logstash/bin:$PATH
@@ -31,7 +41,5 @@ ADD bin/docker-entrypoint /usr/local/bin/
 RUN chmod 0755 /usr/local/bin/docker-entrypoint
 
 USER 1000
-
-ADD bin/env2yaml /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
