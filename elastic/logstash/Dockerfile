@@ -1,7 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-WORKDIR /app
-
 USER 0
 # Add packages
 RUN apk add --update --no-cache bash wget make java-cacerts go git musl-dev openssl
@@ -15,13 +13,12 @@ RUN go build -o env2yaml
 RUN cp /tmp/golang/env2yaml /usr/local/bin
 
 USER 1000
+WORKDIR /app
 
 # Add Logstash.
 RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
 RUN tar -zxf logstash-6.7.0.tar.gz -C /app
 RUN mv /app/logstash-6.7.0 /app/logstash
-
-WORKDIR /app
 
 ENV ELASTIC_CONTAINER false
 ENV PATH=/app/logstash/bin:$PATH
