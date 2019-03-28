@@ -103,7 +103,7 @@
                 "env": [
                   {
                     "name": "LOGSTASH_HOME",
-                    "value": "/usr/share/logstash"
+                    "value": "/app/logstash"
                   },
                   {
                     "name": "ELASTIC_CLOUD_ID",
@@ -163,7 +163,7 @@
                 },
                 "volumeMounts": [
                   {
-                    "mountPath": "/usr/share/logstash/monitor",
+                    "mountPath": "/app/logstash/monitor",
                     "name": "${NAME}${SUFFIX}-log"
                   }
                 ],
