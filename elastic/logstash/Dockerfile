@@ -3,7 +3,7 @@ FROM openjdk:8-jdk-alpine
 WORKDIR /app
 
 # Add packages
-RUN apk add --update bash wget make java-cacerts go
+RUN apk add --update bash wget make java-cacerts go git .build-deps gcc musl-dev openssl
 
 # Add Logstash.
 RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
@@ -12,8 +12,8 @@ RUN mv /app/logstash-6.7.0 /app/logstash
 
 # Install env2yaml
 ADD bin/env2yaml.go /tmp/go
-RUN go get gopkg.in/yaml.v2
 WORKDIR /tmp/go
+RUN go get gopkg.in/yaml.v2
 RUN go build -o env2yaml
 RUN cp /tmp/go/env2yaml /usr/local/bin
 
