@@ -73,44 +73,42 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def post(self, permit_guid=None):
         if permit_guid:
-            return self.create_error_payload(400, 'unexpected permit_guid'), 400
+            raise BadRequest("unexepected permit_guid")
 
         data = self.parser.parse_args()
 
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
         if not mine:
-            return self.create_error_payload(
-                404, 'There was no mine found with the provided mine_guid.'), 404
+            raise NotFound('There was no mine found with the provided mine_guid.')
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
         if permit:
-            return self.create_error_payload(400, 'That permit number is already in use.'), 400
+            raise BadRequest("That permit number is already in use.")
 
         uploadedFiles = data.get('uploadedFiles', [])
-        try:
-            permit = Permit.create(mine.mine_guid, data.get('permit_no'),
-                                   data.get('permit_status_code'))
 
-            amendment = PermitAmendment.create(
-                permit,
-                data.get('received_date'),
-                data.get('issue_date'),
-                data.get('authorization_end_date'),
-                'OGP',
-                description='Initial permit issued.')
-            db.session.add(permit)
-            db.session.add(amendment)
+        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
+                               data.get('permit_status_code'))
 
-            for newFile in uploadedFiles:
-                new_pa_doc = PermitAmendmentDocument(
-                    document_name=newFile['fileName'],
-                    document_manager_guid=newFile['document_manager_guid'],
-                    mine_guid=permit.mine_guid,
-                )
-                amendment.documents.append(new_pa_doc)
-            db.session.commit()
-        except Exception as e:
-            self.raise_error(500, 'Error: {}'.format(e))
+        amendment = PermitAmendment.create(
+            permit,
+            data.get('received_date'),
+            data.get('issue_date'),
+            data.get('authorization_end_date'),
+            'OGP',
+            description='Initial permit issued.')
+        db.session.add(permit)
+        db.session.add(amendment)
+
+        for newFile in uploadedFiles:
+            new_pa_doc = PermitAmendmentDocument(
+                document_name=newFile['fileName'],
+                document_manager_guid=newFile['document_manager_guid'],
+                mine_guid=permit.mine_guid,
+            )
+            amendment.documents.append(new_pa_doc)
+        db.session.commit()
+
         return permit.json()
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
@@ -127,7 +125,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
-                continue  # non-editable fields from Put
+                continue  # non-editable fields from put
             setattr(permit, key, value)
 
         permit.save()
