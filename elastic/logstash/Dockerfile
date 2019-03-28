@@ -12,7 +12,6 @@ RUN go get gopkg.in/yaml.v2
 RUN go build -o env2yaml
 RUN cp /tmp/golang/env2yaml /usr/local/bin
 
-USER 1000
 WORKDIR /app
 
 # Add Logstash.
@@ -31,7 +30,7 @@ COPY config/ /app/logstash/config/
 # Ensure Logstash gets a UTF-8 locale by default.
 ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
 
-# create the plugins directory, with writable permissions
+# create permissions
 RUN chmod -R 777 /app
 
 # expose our default runtime port
