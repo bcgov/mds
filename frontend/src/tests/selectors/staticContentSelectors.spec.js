@@ -10,6 +10,9 @@ import {
   getDropdownCommodityOptions,
   getProvinceOptions,
   getDropdownProvinceOptions,
+  getComplianceCodes,
+  getDropdownHSRCMComplianceCodes,
+  getHSRCMComplianceCodesHash,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -20,6 +23,7 @@ import {
   storeDisturbanceOptions,
   storeCommodityOptions,
   storeProvinceCodes,
+  storeComplianceCodes,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -33,6 +37,7 @@ const mockState = {
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.options,
   provinceOptions: Mock.PROVINCE_OPTIONS.options,
+  complianceCodes: Mock.COMPLIANCE_CODES.records,
 };
 
 describe("mineSelectors", () => {
@@ -133,5 +138,45 @@ describe("mineSelectors", () => {
     };
     const mockProvinceCodes = Mock.DROPDOWN_PROVINCE_OPTIONS;
     expect(getDropdownProvinceOptions(localMockState)).toEqual(mockProvinceCodes);
+  });
+
+  it("`getComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeComplianceCodes(Mock.COMPLIANCE_CODES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockComplianceCodes = Mock.COMPLIANCE_CODES.records;
+    expect(getComplianceCodes(localMockState)).toEqual(mockComplianceCodes);
+  });
+
+  it("`getComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeComplianceCodes(Mock.COMPLIANCE_CODES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockComplianceCodes = Mock.COMPLIANCE_CODES.records;
+    expect(getComplianceCodes(localMockState)).toEqual(mockComplianceCodes);
+  });
+
+  it("`getDropdownHSRCMComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeComplianceCodes(Mock.COMPLIANCE_CODES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockComplianceCodesDropdown = Mock.DROPDOWN_HSRCM_CODES;
+    expect(getDropdownHSRCMComplianceCodes(localMockState)).toEqual(mockComplianceCodesDropdown);
+  });
+
+  it("`getHSRCMComplianceCodesHash` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeComplianceCodes(Mock.COMPLIANCE_CODES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockComplianceCodesHash = Mock.HSRCM_HASH;
+    expect(getHSRCMComplianceCodesHash(localMockState)).toEqual(mockComplianceCodesHash);
   });
 });

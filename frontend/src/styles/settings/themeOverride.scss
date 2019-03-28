@@ -51,12 +51,19 @@
   }
 }
 
-.ant-btn-danger,
-.anticon anticon-minus-circle btn-danger--icon {
-  color: #bc2929;
-  border: #bc2929;
+.ant-btn-danger {
+  color: $danger-btn-color;
+  background-color: white;
+  border: 1px solid $danger-btn-color;
   &:hover {
-    color: black;
+    background-color: white;
+    border: 1px solid $danger-btn-color-hover;
+    color: $danger-btn-color-hover;
+  }
+}
+.btn-danger--icon {
+  &:hover {
+    color: $danger-btn-color-hover;
   }
 }
 

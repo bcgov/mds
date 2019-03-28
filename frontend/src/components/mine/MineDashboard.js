@@ -68,8 +68,6 @@ const propTypes = {
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
-  permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
@@ -85,8 +83,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  permittees: [],
-  permitteesIds: [],
   mineTenureHash: {},
   mineComplianceInfo: {},
 };
@@ -151,7 +147,6 @@ export class MineDashboard extends Component {
     if (!mine) {
       return <Loading />;
     }
-    console.log(this.props.complianceCodes);
     return (
       <div>
         {this.state.isLoaded && (
@@ -171,8 +166,6 @@ export class MineDashboard extends Component {
                   <div className="tab__content">
                     <MineSummary
                       mine={mine}
-                      permittees={this.props.permittees}
-                      permitteeIds={this.props.permitteeIds}
                       mineComplianceInfo={this.props.mineComplianceInfo}
                       complianceInfoLoading={this.state.complianceInfoLoading}
                     />

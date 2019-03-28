@@ -4,6 +4,24 @@ exports[`MineDashboard renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
+    complianceCodes={
+      Array [
+        Object {
+          "label": "2.3.7 - Spills",
+          "value": 305,
+        },
+        Object {
+          "label": "2.3.8 - Flammable Waste Storage",
+          "value": 306,
+        },
+      ]
+    }
+    complianceCodesHash={
+      Object {
+        "305": "2.3.7 - Spills",
+        "306": "2.3.8 - Flammable Waste Storage",
+      }
+    }
     createVariance={[MockFunction]}
     fetchApplicationStatusOptions={
       [MockFunction] {
@@ -13,6 +31,13 @@ ShallowWrapper {
       }
     }
     fetchMineCommodityOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineComplianceCodes={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -517,9 +542,6 @@ ShallowWrapper {
         },
       }
     }
-    permitteeIds={Array []}
-    permittees={Object {}}
-    permitteesIds={Array []}
     setOptionsLoaded={
       [MockFunction] {
         "calls": Array [

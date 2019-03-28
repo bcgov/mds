@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Button } from "antd";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
+import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
@@ -42,15 +42,13 @@ class MineVariance extends Component {
   }
 
   render() {
-    console.log(this.props.complianceCodes);
     return (
       <div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
-            <Button type="primary" onClick={(event) => this.openVarianceModal(event)}>
-              <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-              Add New Variance
-            </Button>
+            <AddButton onClick={(event) => this.openVarianceModal(event)}>
+              Add a New Variance
+            </AddButton>
           </AuthorizationWrapper>
         </div>
         <br />

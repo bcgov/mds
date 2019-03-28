@@ -1030,3 +1030,46 @@ export const VARIANCES = {
     },
   ],
 };
+
+export const COMPLIANCE_CODES = {
+  records: [
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 305,
+      description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "7",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 306,
+      description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "8",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+  ],
+};
+
+export const DROPDOWN_HSRCM_CODES = [
+  {
+    value: 305,
+    label: "2.3.7 - Spills",
+  },
+  {
+    value: 306,
+    label: "2.3.8 - Flammable Waste Storage",
+  },
+];
+
+export const HSRCM_HASH = {
+  305: "2.3.7 - Spills",
+  306: "2.3.8 - Flammable Waste Storage",
+};
