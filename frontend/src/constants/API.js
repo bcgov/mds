@@ -59,3 +59,5 @@ export const APPLICATIONS = "/applications";
 // variances
 export const VARIANCE = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
+export const VARIANCE_DOCUMENT_UPLOAD = (varianceId) =>
+  ` /documents/variances/${varianceId}/variances/document`;

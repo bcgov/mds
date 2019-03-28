@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
@@ -15,6 +14,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -25,15 +25,16 @@ export class AddVarianceForm extends Component {
     uploadedFiles: [],
   };
 
-  // File upload handlers
+  // WIP
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  // WIP
   onRemoveFile = (fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    change("uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {

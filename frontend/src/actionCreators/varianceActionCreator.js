@@ -27,7 +27,6 @@ export const createVariance = (payload, mineGuid) => (dispatch) => {
       });
       dispatch(error(reducerTypes.CREATE_MINE_VARIANCE));
       dispatch(hideLoading());
-      throw new Error(err);
     });
 };
 
@@ -41,9 +40,9 @@ export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
       dispatch(varianceActions.storeVariances(response.data));
       dispatch(hideLoading());
     })
-    .catch(() => {
+    .catch((err) => {
       notification.error({
-        message: String.ERROR,
+        message: err.response ? err.response.data.error.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_VARIANCES));

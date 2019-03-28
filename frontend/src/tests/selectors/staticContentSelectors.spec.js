@@ -40,7 +40,7 @@ const mockState = {
   complianceCodes: Mock.COMPLIANCE_CODES.records,
 };
 
-describe("mineSelectors", () => {
+describe("staticContentSelectors", () => {
   const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
   const { mineTSFRequiredReports, provinceOptions } = mockState;
   let { mineRegionOptions, mineTenureTypes } = mockState;

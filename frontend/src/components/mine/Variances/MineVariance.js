@@ -19,13 +19,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
-class MineVariance extends Component {
-  handleAddVariances = (values) => {
+export class MineVariance extends Component {
+  handleAddVariances = (values) =>
     this.props.createVariance(values, this.props.mine.guid).then(() => {
       this.props.closeModal();
       this.props.fetchVariancesByMine(this.props.mine.guid);
     });
-  };
 
   openVarianceModal(event) {
     event.preventDefault();
