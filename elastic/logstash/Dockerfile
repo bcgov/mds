@@ -5,7 +5,7 @@ RUN apk add --update --no-cache bash wget make java-cacerts go git musl-dev open
 
 # Install env2yaml
 RUN mkdir -p /app/golang
-WORKDIR /tmp/app
+WORKDIR /app/golang
 COPY bin/env2yaml.go /app/golang
 RUN go get gopkg.in/yaml.v2
 RUN go build -o env2yaml
