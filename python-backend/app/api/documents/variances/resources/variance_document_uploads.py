@@ -1,8 +1,9 @@
 # import decimal
 # import uuid
 import base64
+import logging
 import requests
-# import json
+import json
 
 # from datetime import datetime
 from flask import request, current_app, Response
@@ -13,7 +14,7 @@ from flask_restplus import Resource, reqparse
 
 from ..models.variance import VarianceDocument
 # from ...expected.models.mine_expected_document_xref import VarianceDocumentXref
-# from ...mines.models.mine_document import MineDocument
+from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db
 from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
@@ -42,12 +43,14 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400,
                                              'Filename not found in request metadata header'), 400
 
+        # Save file
+        filename = metadata.get('filename')
         folder = f'variances/{variance_id}'
 
         data = {
             'folder': folder,
             'pretty_folder': folder,
-            'filename': metadata.get('filename')
+            'filename': filename
         }
         document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
 
@@ -59,8 +62,29 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
+        # Add file to mine_document table
+        document_manager_record = json.loads(resp.content)
+        if not document_manager_record:
+            return self.create_error_payload(400, 'Unable to complete upload'), 400
+
+        document_manager_guid = document_manager_record['document_manager_guid']
+        doc = MineDocument.find_by_document_manager_guid(document_manager_guid)
+        if not doc:
+            return self.create_error_payload(400, 'Unable to complete upload'), 400
+
+        doc_json = doc.json()
+
+        # TODO: Add try/except
+        mine_doc = MineDocument(
+            mine_guid=doc_json.get('mine_guid'),
+            document_manager_guid=doc_json.get('document_manager_guid'),
+            document_name=filename)
+
+        mine_doc.save()
+
+        response = Response(str(mine_doc.json()), resp.status_code, resp.raw.headers.items())
         return response
+
 
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, variance_id=None):
