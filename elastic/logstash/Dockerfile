@@ -1,23 +1,32 @@
-FROM docker.elastic.co/logstash/logstash:6.7.0
+FROM openjdk:8-jdk-alpine
 
-# Re-Install logstash
-USER root
-WORKDIR /tmp
-RUN rm -rf /usr/share/logstash/
-RUN curl -Lo - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
-    tar zxf - -C /usr/share && \
-    mv /usr/share/logstash-6.7.0 /usr/share/logstash
+WORKDIR /app
 
-WORKDIR /usr/share/logstash
+RUN apk add --update bash wget make java-cacerts
+
+# Add Logstash itself.
+RUN wget -q - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
+    tar zxf - -C /app && \
+    mv /app/logstash-6.7.0 /app/logstash
 
 ENV ELASTIC_CONTAINER false
-ENV PATH=/usr/share/logstash/bin:$PATH
+ENV PATH=/app/logstash/bin:$PATH
 
-RUN mkdir -p /usr/share/logstash/dictionaries
-COPY dictionaries /usr/share/logstash/dictionaries
+COPY dictionaries /app/logstash/dictionaries
 
-COPY pipeline/ /usr/share/logstash/pipeline/
-COPY config/ /usr/share/logstash/config/
+COPY pipeline/ /app/logstash/pipeline/
+COPY config/ /app/logstash/config/
 
-# Fix directory permissions
-RUN chmod -R 777 /usr/share/logstash
+ADD bin/env2yaml /usr/local/bin/
+
+# Ensure Logstash gets a UTF-8 locale by default.
+ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
+
+# create the plugins directory, with writable permissions
+RUN chmod -R 777 /app
+
+# expose our default runtime port
+EXPOSE 9600 5044
+
+# run it
+ENTRYPOINT ["logstash"]

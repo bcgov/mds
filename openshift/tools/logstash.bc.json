@@ -10,7 +10,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "logstash",
+        "name": "openjdk",
         "creationTimestamp": null,
         "labels": {
           "shared": "true"
@@ -22,11 +22,11 @@
         },
         "tags": [
           {
-            "name": "v6.7.0",
+            "name": "8-jdk-alpine",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "docker.elastic.co/logstash/logstash:6.7.0"
+              "name": "openjdk:8-jdk-alpine"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -80,7 +80,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "logstash:v6.7.0"
+              "name": "openjdk:8-jdk-alpine"
             }
           }
         },
