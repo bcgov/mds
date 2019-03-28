@@ -65,6 +65,7 @@
         }
       },
       "spec": {
+        "completionDeadlineSeconds": 600,
         "triggers": [
           {
             "type": "ImageChange"
