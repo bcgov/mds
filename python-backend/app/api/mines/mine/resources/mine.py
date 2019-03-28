@@ -6,6 +6,7 @@ import json
 from flask import request, make_response
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -30,24 +31,42 @@ from ....permits.permit.models.permit import Permit
 
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str, help='Name of the mine.')
-    parser.add_argument('note', type=str, help='Any additional notes to be added to the mine.')
-    parser.add_argument('tenure_number_id', type=int, help='Tenure number for the mine.')
     parser.add_argument(
-        'longitude', type=lambda x: Decimal(x) if x else None, help='Longitude point for the mine.')
+        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False)
     parser.add_argument(
-        'latitude', type=lambda x: Decimal(x) if x else None, help='Latitude point for the mine.')
+        'mine_note',
+        type=str,
+        help='Any additional notes to be added to the mine.',
+        trim=True,
+        store_missing=False)
+    parser.add_argument(
+        'tenure_number_id',
+        type=int,
+        help='Tenure number for the mine.',
+        trim=True,
+        store_missing=False)
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        store_missing=False)
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        store_missing=False)
     parser.add_argument(
         'mine_status',
         action='split',
         help=
-        'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code '
-    )
+        'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
+        store_missing=False)
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".')
-    parser.add_argument('mine_region', type=str, help='Region for the mine.')
+    parser.add_argument(
+        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False)
 
     @api.doc(
         params={
