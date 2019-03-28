@@ -1,7 +1,5 @@
 from datetime import datetime
-import uuid
 
-from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 

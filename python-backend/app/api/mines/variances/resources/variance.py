@@ -1,14 +1,10 @@
 from datetime import datetime
-import uuid
-from flask import request
 from flask_restplus import Resource, reqparse
-from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
 
-# TODO: Make this singular
-from ..models.variances import Variance
+from ..models.variance import Variance
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -47,7 +43,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Unable to fetch variances'), 404
 
 
-    # FIXME Copied code
     @api.expect(parser)
     @requires_role_mine_create
     def post(self, mine_guid=None):
