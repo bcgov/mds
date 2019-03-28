@@ -103,15 +103,17 @@ const columns = [
     render: (text, record) => (
       <div title="Commodity">
         {text &&
-          text.map(({ mine_type_detail, mine_type_guid }) => (
-            <div key={mine_type_guid}>
-              {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
-                <span key={mine_type_detail_guid}>
-                  {mine_commodity_code && `${record.commodityHash[mine_commodity_code]},`}
-                </span>
-              ))}
-            </div>
-          ))}
+          text
+            .map(({ mine_type_detail }) =>
+              mine_type_detail
+                .map(
+                  ({ mine_commodity_code }) =>
+                    mine_commodity_code && record.commodityHash[mine_commodity_code]
+                )
+                .filter(Boolean)
+                .join(", ")
+            )
+            .join(", ")}
       </div>
     ),
   },
