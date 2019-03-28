@@ -57,6 +57,10 @@ export const reducerObject = {
   ),
   [reducerTypes.REMOVE_MINE_TYPE]: createReducer(networkReducer, reducerTypes.REMOVE_MINE_TYPE),
   [reducerTypes.GET_PROVINCE_CODES]: createReducer(networkReducer, reducerTypes.GET_PROVINCE_CODES),
+  [reducerTypes.GET_COMPLIANCE_CODES]: createReducer(
+    networkReducer,
+    reducerTypes.GET_COMPLIANCE_CODES
+  ),
   [reducerTypes.CREATE_MINE_VARIANCE]: createReducer(
     networkReducer,
     reducerTypes.CREATE_MINE_VARIANCE

@@ -59,6 +59,7 @@ export const GET_MINESPACE_USER_MINES = "GET_MINESPACE_USER_MINES";
 
 // static content
 export const GET_PROVINCE_CODES = "GET_PROVINCE_CODES";
+export const GET_COMPLIANCE_CODES = "GET_COMPLIANCE_CODES";
 // Permit reducer
 export const PERMITS = "PERMITS";
 export const CREATE_PERMIT = "CREATE_PERMIT";

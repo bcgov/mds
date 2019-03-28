@@ -9,11 +9,13 @@ import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import VarianceFileUpload from "./VarianceFileUpload";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {};
@@ -47,7 +49,7 @@ export class AddVarianceForm extends Component {
                 placeholder="Select a part of the code"
                 component={renderConfig.SELECT}
                 validate={[required]}
-                data={[{ value: 1, label: "1.1.1" }]}
+                data={this.props.complianceCodes}
               />
             </Form.Item>
             <Form.Item>

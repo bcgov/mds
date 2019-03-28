@@ -58,3 +58,4 @@ export const APPLICATIONS = "/applications";
 
 // variances
 export const VARIANCE = (mineGuid) => `/variance/${mineGuid}`;
+export const COMPLIANCE_CODES = "/mines/compliance/codes";

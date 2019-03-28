@@ -18,6 +18,7 @@ const initialState = {
   optionsLoaded: false,
   permitStatusCodes: [],
   applicationStatusCodes: [],
+  complianceCodes: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -77,6 +78,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         applicationStatusCodes: action.payload,
       };
+    case actionTypes.STORE_COMPLIANCE_CODES:
+      return {
+        ...state,
+        complianceCodes: action.payload.records,
+      };
     default:
       return state;
   }
@@ -94,5 +100,6 @@ export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptio
 export const getOptionsLoaded = (state) => state[STATIC_CONTENT].optionsLoaded;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
+export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 
 export default staticContentReducer;

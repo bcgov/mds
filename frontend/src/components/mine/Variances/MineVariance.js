@@ -10,7 +10,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  // variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   createVariance: PropTypes.func.isRequired,
+  complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -31,6 +33,7 @@ class MineVariance extends Component {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.guid,
+        complianceCodes: this.props.complianceCodes,
       },
       widthSize: "75vw",
       content: modalConfig.ADD_VARIANCE,
@@ -38,6 +41,7 @@ class MineVariance extends Component {
   }
 
   render() {
+    // console.log(this.props.complianceCodes);
     const variancePayload = {
       data: [
         {

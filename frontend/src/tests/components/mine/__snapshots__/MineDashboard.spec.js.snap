@@ -83,13 +83,7 @@ ShallowWrapper {
         ],
       }
     }
-    fetchVariancesByMine={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
+    fetchVariancesByMine={[MockFunction]}
     match={
       Object {
         "isExact": true,

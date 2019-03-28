@@ -14,6 +14,7 @@ export const {
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
+  getComplianceCodes,
 } = staticContentReducer;
 
 export const getMineTenureTypesHash = createSelector(
@@ -93,4 +94,16 @@ export const getDropdownPermitStatusOptions = createSelector(
 export const getDropdownApplicationStatusOptions = createSelector(
   [getApplicationStatusOptions],
   (options) => createDropDownList(options, "description", "application_status_code")
+);
+
+export const getHSRCMComplianceCodes = createSelector(
+  [getComplianceCodes],
+  (codes) => {
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .map((code) => {
+        const composedLabel = code.description;
+        return { value: code.compliance_article_id, label: composedLabel };
+      });
+  }
 );
