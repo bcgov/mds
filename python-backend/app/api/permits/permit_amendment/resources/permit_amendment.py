@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask_restplus import Resource, reqparse
 from flask import current_app
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ...permit.models.permit import Permit
 from ..models.permit_amendment import PermitAmendment
@@ -50,7 +50,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         if permit_amendment_guid:
             permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
             if not permit_amendment:
-                raise BadRequest("Permit Amendment not found")
+                raise NotFound("Permit Amendment not found")
             result = permit_amendment.json()
 
         elif permit_guid:
