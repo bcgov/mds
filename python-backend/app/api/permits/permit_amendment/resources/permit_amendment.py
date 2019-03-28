@@ -125,26 +125,18 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {pa} with >> {data}')
 
-        try:
-            current_app.logger.info(f'Updating {pa} with {data}')
-            for key, value in data.items():
-                if key == 'uploadedFiles':
-                    for newFile in value:
-                        new_pa_doc = PermitAmendmentDocument(
-                            document_name=newFile['fileName'],
-                            document_manager_guid=newFile['document_manager_guid'],
-                            mine_guid=pa.permit.mine_guid,
-                        )
-                        pa.documents.append(new_pa_doc)
-                    pa.save()
-                else:
-                    setattr(pa, key, value)
-
-        except AssertionError as e:
-            raise BadRequest(e)
-        except Exception as e:
-            current_app.logger.error(f'PermitAmendmentResource.Put: Error >> {e}')
-            raise InternalServerError(e)
+        for key, value in data.items():
+            if key == 'uploadedFiles':
+                for newFile in value:
+                    new_pa_doc = PermitAmendmentDocument(
+                        document_name=newFile['fileName'],
+                        document_manager_guid=newFile['document_manager_guid'],
+                        mine_guid=pa.permit.mine_guid,
+                    )
+                    pa.documents.append(new_pa_doc)
+                pa.save()
+            else:
+                setattr(pa, key, value)
 
         return pa.json()
 
