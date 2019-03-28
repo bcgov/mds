@@ -353,6 +353,10 @@ app {
                             'NAME':"mds-logstash",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
                     ]
                 ]
         ]
@@ -427,6 +431,12 @@ environments {
                     cpu_limit = "5m"
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
+                }
+                logstash {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {
@@ -541,6 +551,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
+                logstash {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "1Gi"
+                    memory_limit = "1.5Gi"
+                }
             }
             deployment {
                 env {
@@ -644,6 +660,12 @@ environments {
                     cpu_limit = "1"
                     memory_request = "2Gi"
                     memory_limit = "4Gi"
+                }
+                logstash {
+                    cpu_request = "100m"
+                    cpu_limit = "250m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
                 }
             }
             keycloak {
