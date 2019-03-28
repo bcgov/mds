@@ -2,7 +2,7 @@ import sys
 import json
 import os
 
-from flask import Flask
+from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -93,8 +93,17 @@ def register_routes(app):
             'message': str(error)
         }, getattr(error, 'status_code', 401)
 
+    @api.errorhandler(AssertionError)
+    def assertion_error_handler(error):
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error)
+        }, getattr(error, 'code', 400)
+
     @api.errorhandler(Exception)
     def default_error_handler(error):
+        if error.code == 500:
+            current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error)
