@@ -17,8 +17,6 @@ COPY dictionaries /app/logstash/dictionaries
 COPY pipeline/ /app/logstash/pipeline/
 COPY config/ /app/logstash/config/
 
-ADD bin/env2yaml /usr/local/bin/
-
 # Ensure Logstash gets a UTF-8 locale by default.
 ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
 
@@ -28,5 +26,12 @@ RUN chmod -R 777 /app
 # expose our default runtime port
 EXPOSE 9600 5044
 
-# run it
-ENTRYPOINT ["logstash"]
+# Place the startup wrapper script.
+ADD bin/docker-entrypoint /usr/local/bin/
+RUN chmod 0755 /usr/local/bin/docker-entrypoint
+
+USER 1000
+
+ADD bin/env2yaml /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
