@@ -81,11 +81,3 @@ class Permit(AuditMixin, Base):
         if len(permit_no) > 16:
             raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no
-
-    @validates('permit_status_code')
-    def validate_ppermit_status_code(self, key, permit_status_code):
-        if not permit_status_code:
-            raise AssertionError('Status code is not provided.')
-        if len(permit_status_code) > 2:
-            raise AssertionError('Invalid status code')
-        return permit_status_code
