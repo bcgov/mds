@@ -132,6 +132,12 @@ body {
   }
 }
 
+.btn--middle {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 .card-buttons {
   flex-direction: column;
 }

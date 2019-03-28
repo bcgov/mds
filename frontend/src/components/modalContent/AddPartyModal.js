@@ -84,8 +84,8 @@ export class AddPartyModal extends Component {
 
   handlePartySubmit = async (event, addAnother) => {
     event.preventDefault();
-    const type = this.state.isPerson ? "PER" : "ORG";
-    const payload = { type, ...this.props.addPartyFormValues };
+    const party_type_code = this.state.isPerson ? "PER" : "ORG";
+    const payload = { party_type_code, ...this.props.addPartyFormValues };
     const party = await this.props
       .createParty(payload)
       .then(({ data }) => {
