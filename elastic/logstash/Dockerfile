@@ -1,16 +1,15 @@
 FROM openjdk:8-jdk-alpine
 
-USER 0
 # Add packages
 RUN apk add --update --no-cache bash wget make java-cacerts go git musl-dev openssl
 
 # Install env2yaml
-RUN mkdir -p /tmp/golang
-WORKDIR /tmp/golang
-COPY bin/env2yaml.go /tmp/golang
+RUN mkdir -p /app/golang
+WORKDIR /tmp/app
+COPY bin/env2yaml.go /app/golang
 RUN go get gopkg.in/yaml.v2
 RUN go build -o env2yaml
-RUN cp /tmp/golang/env2yaml /usr/local/bin
+RUN cp /app/golang/env2yaml /usr/local/bin
 
 WORKDIR /app
 
@@ -31,7 +30,7 @@ COPY config/ /app/logstash/config/
 ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
 
 # create permissions
-RUN chmod -R 777 /app
+RUN chmod -R 0777 /app
 
 # expose our default runtime port
 EXPOSE 9600 5044
@@ -39,5 +38,6 @@ EXPOSE 9600 5044
 # Place the startup wrapper script.
 ADD bin/docker-entrypoint /usr/local/bin/
 RUN chmod 0755 /usr/local/bin/docker-entrypoint
+RUN chmod 0755 /usr/local/bin/env2yaml
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
