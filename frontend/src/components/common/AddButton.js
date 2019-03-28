@@ -8,7 +8,7 @@ import { Icon, Button } from "antd";
 const propTypes = {};
 
 const AddButton = (props) => (
-  <Button type="primary" className="full-mobile" {...props}>
+  <Button type="primary" className="full-mobile btn--middle" {...props}>
     <Icon type="plus" theme="outlined" className="padding-small--right icon-sm" />
     {props.children}
   </Button>
