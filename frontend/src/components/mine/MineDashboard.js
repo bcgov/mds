@@ -28,7 +28,8 @@ import {
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-  getHSRCMComplianceCodes,
+  getDropdownHSRCMComplianceCodes,
+  getHSRCMComplianceCodesHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
@@ -75,6 +76,7 @@ const propTypes = {
   optionsLoaded: PropTypes.bool.isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
@@ -149,6 +151,7 @@ export class MineDashboard extends Component {
     if (!mine) {
       return <Loading />;
     }
+    console.log(this.props.complianceCodes);
     return (
       <div>
         {this.state.isLoaded && (
@@ -215,7 +218,8 @@ export class MineDashboard extends Component {
                         closeModal={this.props.closeModal}
                         fetchVariancesByMine={this.props.fetchVariancesByMine}
                         variances={this.props.variances}
-                        complianceCode={this.props.complianceCode}
+                        complianceCodes={this.props.complianceCodes}
+                        complianceCodesHash={this.props.complianceCodesHash}
                       />
                     </div>
                   </TabPane>
@@ -254,7 +258,8 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
   variances: getMineVariances(state),
-  complianceCodes: getHSRCMComplianceCodes(state),
+  complianceCodes: getDropdownHSRCMComplianceCodes(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

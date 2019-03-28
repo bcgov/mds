@@ -10,9 +10,10 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  // variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   createVariance: PropTypes.func.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -41,34 +42,7 @@ class MineVariance extends Component {
   }
 
   render() {
-    // console.log(this.props.complianceCodes);
-    const variancePayload = {
-      data: [
-        {
-          variance_id: 1249,
-          compliance_article_id: 1,
-          expiry_date: "2019-03-30",
-          issue_date: "2019-03-01",
-          note: "notesss",
-          received_date: "2019-03-01",
-        },
-        {
-          variance_id: 59285,
-          compliance_article_id: 1,
-          expiry_date: "2028-03-25",
-          issue_date: "2019-03-06",
-          note: "this is a variance",
-          received_date: "2019-03-10",
-        },
-        {
-          compliance_article_id: 1,
-          variance_id: 5545486,
-          expiry_date: "2019-03-04",
-          issue_date: "2016-03-06",
-          received_date: "2015-03-03",
-        },
-      ],
-    };
+    console.log(this.props.complianceCodes);
     return (
       <div>
         <div className="inline-flex flex-end">
@@ -80,7 +54,10 @@ class MineVariance extends Component {
           </AuthorizationWrapper>
         </div>
         <br />
-        <MineVarianceTable variances={variancePayload} />
+        <MineVarianceTable
+          variances={this.props.variances}
+          complianceCodesHash={this.props.complianceCodesHash}
+        />
       </div>
     );
   }

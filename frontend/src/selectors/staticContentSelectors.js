@@ -96,14 +96,31 @@ export const getDropdownApplicationStatusOptions = createSelector(
   (options) => createDropDownList(options, "description", "application_status_code")
 );
 
-export const getHSRCMComplianceCodes = createSelector(
+export const getDropdownHSRCMComplianceCodes = createSelector(
   [getComplianceCodes],
-  (codes) => {
+  (codes) =>
     codes
       .filter(({ article_act_code }) => article_act_code === "HSRCM")
       .map((code) => {
-        const composedLabel = code.description;
+        const composedLabel = `${code.section}.${code.sub_section}.${code.paragraph} - ${
+          code.description
+        }`;
         return { value: code.compliance_article_id, label: composedLabel };
-      });
-  }
+      })
+);
+
+export const getHSRCMComplianceCodesHash = createSelector(
+  [getComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .reduce((map, code) => {
+        const composedValue = `${code.section}.${code.sub_section}.${code.paragraph} - ${
+          code.description
+        }`;
+        return {
+          [code.compliance_article_id]: composedValue,
+          ...map,
+        };
+      }, {})
 );

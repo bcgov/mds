@@ -57,5 +57,5 @@ export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
 export const APPLICATIONS = "/applications";
 
 // variances
-export const VARIANCE = (mineGuid) => `/variance/${mineGuid}`;
+export const VARIANCE = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
