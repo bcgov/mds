@@ -5,9 +5,9 @@ WORKDIR /app
 RUN apk add --update bash wget make java-cacerts
 
 # Add Logstash itself.
-RUN wget -q - https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz | \
-    tar zxf - -C /app && \
-    mv /app/logstash-6.7.0 /app/logstash
+RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
+RUN tar -zxf logstash-6.7.0.tar.gz -C /app
+RUN mv /app/logstash-6.7.0 /app/logstash
 
 ENV ELASTIC_CONTAINER false
 ENV PATH=/app/logstash/bin:$PATH
