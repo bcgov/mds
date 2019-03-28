@@ -328,7 +328,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Mine Detail
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
-            self.throw_error_if_mine_exists(mine_name)
+            self.throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
