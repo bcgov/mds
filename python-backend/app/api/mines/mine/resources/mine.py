@@ -317,14 +317,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         data = self.parser.parse_args()
 
-        tenure = data['tenure_number_id']
-        lat = data['latitude']
-        lon = data['longitude']
-        mine_name = data['mine_name']
-        mine_note = data['mine_note']
-        status = data['mine_status']
-        major_mine_ind = data['major_mine_ind']
-        region = data['mine_region']
+        tenure = data.get('tenure_number_id')
+        lat = data.get('latitude')
+        lon = data.get('longitude')
+        status = data.get('mine_status')
 
         # if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
         #         and not region and major_mine_ind is None):
@@ -346,8 +342,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
             if tenure_exists:
-                tenure_exists_mine_guid = tenure_exists.mine_guid
-                if tenure_exists_mine_guid == mine.mine_guid:
+                if tenure_exists.mine_guid == mine.mine_guid:
                     self.raise_error(400, 'Error: Field tenure_id already exists for this mine.')
             try:
                 tenure = MineralTenureXref(
@@ -359,12 +354,13 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             tenure.save()
 
         if (lat and not lon) or (lon and not lat):
-            self.raise_error(400, 'latitude and longitude must both be empty, or both provided')
+            raise BadRequest('latitude and longitude must both be empty, or both provided')
+
         if mine.mine_location:
             #update existing record
-            if "latitude" in data.keys():
+            if "latitude" in data:
                 mine.mine_location.latitude = lat
-            if "longitude" in data.keys():
+            if "longitude" in data:
                 mine.mine_location.longitude = lon
             mine.mine_location.save()
         if lat and lon and not mine.mine_location:

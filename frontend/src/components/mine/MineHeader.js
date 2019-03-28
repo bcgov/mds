@@ -55,7 +55,7 @@ export class MineHeader extends Component {
       .updateMineRecord(
         this.props.mine.guid,
         { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
-        value.name
+        value.mine_name
       )
       .then(() => {
         this.props.closeModal();
