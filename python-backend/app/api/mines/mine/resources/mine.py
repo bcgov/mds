@@ -311,39 +311,36 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
+        mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
+        if not mine:
+            raise NotFound("Mine not found")
+
         data = self.parser.parse_args()
+
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        mine_name = data['name'].strip() if data['name'] else None
-        mine_note = data['note']
+        mine_name = data['mine_name']
+        mine_note = data['mine_note']
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         region = data['mine_region']
 
-        if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
-                and not region and major_mine_ind is None):
-            self.raise_error(400, 'Error: No fields filled.')
-        mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
-        if not mine:
-            return self.create_error_payload(404, 'Mine not found'), 404
+        # if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
+        #         and not region and major_mine_ind is None):
+        #     self.raise_error(400, 'Error: No fields filled.')
 
         # Mine Detail
-        if mine_name or mine_note or major_mine_ind is not None:
-            try:
-                mine.update_user = self.get_update_user()
-                if mine_name:
-                    if mine.mine_name != mine_name:
-                        self.throw_error_if_mine_exists(mine_name)
-                    mine.mine_name = mine_name
-                mine.mine_note = mine_note
-                if major_mine_ind is not None:
-                    mine.major_mine_ind = major_mine_ind
-                if region:
-                    mine.mine_region = region
-            except AssertionError as e:
-                self.raise_error(400, 'Error: {}'.format(e))
-            mine.save()
+        if 'mine_name' in data and mine.mine_name != data['mine_name']:
+            self.throw_error_if_mine_exists(mine_name)
+            mine.mine_name = data['mine_name']
+        if 'mine_note' in data:
+            mine.mine_note = data['mine_note']
+        if 'major_mine_ind' in data:
+            mine.major_mine_ind = data['major_mine_ind']
+        if 'mine_region' in data:
+            mine.mine_region = data['mine_region']
+        mine.save()
 
         # Tenure validation
         if tenure:

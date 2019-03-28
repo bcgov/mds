@@ -113,13 +113,13 @@ export class MineHeader extends Component {
   openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
     const initialValues = {
-      name: mine.mine_name ? mine.mine_name : null,
+      mine_name: mine.mine_name,
       latitude: mine.mine_location ? mine.mine_location.latitude : null,
       longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
-      mine_region: mine.region_code ? mine.region_code : null,
-      note: mine.mine_note ? mine.mine_note : null,
+      mine_region: mine.region_code,
+      mine_note: mine.mine_note,
     };
 
     this.props.openModal({
