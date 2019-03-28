@@ -246,16 +246,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         _mine_status.save()
         return _mine_status
 
-    def throw_error_if_mine_exists(self, mine_name):
+    def _throw_error_if_mine_exists(self, mine_name):
         # query the mine tables and check if that mine name exists
         if mine_name:
             name_filter = Mine.mine_name.ilike(mine_name.strip())
             mines_name_query = Mine.query.filter(name_filter)
             mines_with_name = mines_name_query.all()
             if len(mines_with_name) > 0:
-                self.raise_error(
-                    400, 'A mine with that name already exists. The Mine No. is %s' %
-                    mines_with_name[0].mine_no)
+                raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -330,7 +328,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         # Mine Detail
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
-            self.throw_error_if_mine_exists(data['mine_name'])
+            self._throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
@@ -364,7 +362,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.mine_location.save()
 
         elif data['latitude'] and data['longitude'] and not mine.mine_location:
-            mine.mine_location = MineLocation.create(
+            mine.mine_location = MineLocation(
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
             cache.delete(MINE_MAP_CACHE)
