@@ -11,7 +11,8 @@ from .mine_status_xref import MineStatusXref
 
 class MineStatus(AuditMixin, Base):
     __tablename__ = 'mine_status'
-    mine_status_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_status_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine_status_xref_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_status_xref.mine_status_xref_guid'))

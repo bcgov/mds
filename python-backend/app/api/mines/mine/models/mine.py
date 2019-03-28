@@ -18,7 +18,7 @@ from ....permits.permit.models.permit import Permit
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
-    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
@@ -226,3 +226,11 @@ class Mine(AuditMixin, Base):
         if mine_no and len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no
+
+    @validates('mine_region')
+    def validate_mine_region(self, key, mine_region):
+        if not mine_region:
+            raise AssertionError('No mine region code provided.')
+        if len(mine_region) > 2:
+            raise AssertionError('Invalid region code')
+        return mine_region
