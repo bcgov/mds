@@ -99,3 +99,10 @@ def register_routes(app):
             'status': getattr(error, 'code', 500),
             'message': str(error)
         }, getattr(error, 'code', 500)
+
+    @api.errorhandler(AssertionError)
+    def assertion_error_handler(error):
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error)
+        }, getattr(error, 'code', 400)

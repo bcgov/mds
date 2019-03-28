@@ -121,7 +121,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         current_app.logger.info(f'updating {pa} with >> {data}')
 
         try:
-            current_app.logger.info(f'Updating {existing_party} with {data}')
+            current_app.logger.info(f'Updating {pa} with {data}')
             for key, value in data.items():
                 if key == 'uploadedFiles':
                     for newFile in value:
@@ -137,7 +137,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
         except AssertionError as e:
             raise BadRequest(e)
-        except:
+        except Exception as e:
             current_app.logger.error(f'PermitAmendmentResource.Put: Error >> {e}')
             raise InternalServerError(e)
 
