@@ -86,18 +86,18 @@ const transformRowData = (
   applicationStatusOptions,
   openEditApplicationModal
 ) => ({
-    key: application.permit_guid,
-    applicationNo: application.application_no || Strings.EMPTY_FIELD,
-    status: application.application_status_code || Strings.EMPTY_FIELD,
-    receivedDate: application.received_date || Strings.EMPTY_FIELD,
-    description: application.description || Strings.EMPTY_FIELD,
-    applicationEdit: {
-      application,
-      major_mine_ind,
-    },
-    applicationStatusOptions,
-    openEditApplicationModal,
-  });
+  key: application.permit_guid,
+  applicationNo: application.application_no || Strings.EMPTY_FIELD,
+  status: application.application_status_code || Strings.EMPTY_FIELD,
+  receivedDate: application.received_date || Strings.EMPTY_FIELD,
+  description: application.description || Strings.EMPTY_FIELD,
+  applicationEdit: {
+    application,
+    major_mine_ind,
+  },
+  applicationStatusOptions,
+  openEditApplicationModal,
+});
 
 export const MineApplicationTable = (props) => {
   const rowData = props.applications.map((application) =>
