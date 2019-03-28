@@ -273,7 +273,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mine = Mine(mine_guid=uuid.uuid4())
         try:
             # query the mine tables and check if that mine name exists
-            self.throw_error_if_mine_exists(data['name'])
+            self._throw_error_if_mine_exists(data['name'])
             mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
