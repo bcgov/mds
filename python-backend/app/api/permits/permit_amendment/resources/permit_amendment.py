@@ -45,19 +45,24 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     })
     @requires_role_mine_view
     def get(self, permit_guid=None, permit_amendment_guid=None):
+        result = []
+
         if permit_amendment_guid:
             permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-            if permit_amendment:
-                return permit_amendment.json()
+            if not permit_amendment:
+                raise BadRequest("Permit Amendment not found")
+            result = permit_amendment.json()
 
-        if permit_guid:
+        elif permit_guid:
             permit = Permit.find_by_permit_guid(permit_guid)
-            if permit:
-                permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
-                if permit_amendments:
-                    return [x.json() for x in permit_amendments]
+            if not permit:
+                raise BadRequest("Permit not found")
+            permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
+            result = [x.json() for x in permit_amendments]
 
-        return self.create_error_payload(404, 'Permit amendment(s) not found'), 404
+        else:
+            raise BadRequest("Provide a permit_amendment_guid or permit_guid")
+        return result
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',

@@ -66,7 +66,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 result = [p.json() for p in permits]
 
         else:
-            result = [x.json for x in Permit.query.filter_by(deleted_ind=False).all()]
+            raise BadRequest("Provide a permit_guid, permit_no, or mine_guid")
         return result
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
