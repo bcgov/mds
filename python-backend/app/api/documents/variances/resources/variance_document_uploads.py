@@ -27,6 +27,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
+    parser.add_argument('mine_guid', type=str)
 
     @api.doc(
         params={
@@ -62,27 +63,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        # Add file to mine_document table
-        document_manager_record = json.loads(resp.content)
-        if not document_manager_record:
-            return self.create_error_payload(400, 'Unable to complete upload'), 400
-
-        document_manager_guid = document_manager_record['document_manager_guid']
-        doc = MineDocument.find_by_document_manager_guid(document_manager_guid)
-        if not doc:
-            return self.create_error_payload(400, 'Unable to complete upload'), 400
-
-        doc_json = doc.json()
-
-        # TODO: Add try/except
-        mine_doc = MineDocument(
-            mine_guid=doc_json.get('mine_guid'),
-            document_manager_guid=doc_json.get('document_manager_guid'),
-            document_name=filename)
-
-        mine_doc.save()
-
-        response = Response(str(mine_doc.json()), resp.status_code, resp.raw.headers.items())
+        response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
         return response
 
 
@@ -92,12 +73,26 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(400, 'Missing variance_id'), 400
 
         data = self.parser.parse_args()
-        mine_document_guid = data.get('mine_document_guid')
+        document_manager_guid = data.get('document_manager_guid')
+        filename = data.get('filename')
+        mine_guid = data.get('mine_guid')
 
-        if not mine_document_guid:
-            return self.create_error_payload(422, 'Must specify Mine Document'), 422
+        if not document_manager_guid:
+            return self.create_error_payload(422, 'Must provide document_manager_guid'), 422
 
-        document = VarianceDocument.create(mine_document_guid, variance_id)
+        # Register new file upload
+        mine_doc = MineDocument(
+            mine_guid=mine_guid,
+            document_manager_guid=document_manager_guid,
+            document_name=filename)
+
+        if not mine_doc:
+            return self.create_error_payload(400, 'Unable to register uploaded file as document'), 400
+
+        mine_doc.save()
+
+        # Relate mine document to a variance
+        document = VarianceDocument.create(mine_doc.mine_document_guid, variance_id)
 
         if not document:
             return self.create_error_payload(400, 'Unable to assign document to variance'), 400
