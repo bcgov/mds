@@ -120,7 +120,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
 
         if not permit:
-            raise BadRequest('Permit not found')
+            raise NotFound('Permit not found')
 
         data = self.parser.parse_args()
         for key, value in data.items():
