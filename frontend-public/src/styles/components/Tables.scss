@@ -62,3 +62,11 @@
     background: #fff;
   }
 }
+
+.wrapped-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  font-size: 100%;
+}

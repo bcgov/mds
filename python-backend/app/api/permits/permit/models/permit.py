@@ -72,6 +72,8 @@ class Permit(AuditMixin, Base):
     def validate_status_code(self, key, permit_status_code):
         if not permit_status_code:
             raise AssertionError('Permit status code is not provided.')
+        if len(permit_status_code) > 2:
+            raise AssertionError('Permit status code is invalid.')
         return permit_status_code
 
     @validates('permit_no')
