@@ -6,3 +6,8 @@ This file contains the style overrides for ArcGIS Map components
 path[path="M25,0 C60,0, 60,50, 25,50 C-10,50, -10,0, 25,0"] {
   @include pulsateAnimation;
 }
+
+.minePopUpText {
+  line-height: 1.5;
+  font-size: 1rem;
+}
