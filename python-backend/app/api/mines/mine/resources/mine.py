@@ -335,7 +335,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
             if tenure_exists:
                 if tenure_exists.mine_guid == mine.mine_guid:
-                    self.raise_error(400, 'Error: Field tenure_id already exists for this mine.')
+                    raise BadRequest('Error: Field tenure_id already exists for this mine.')
             try:
                 tenure = MineralTenureXref(
                     mineral_tenure_xref_guid=uuid.uuid4(),
