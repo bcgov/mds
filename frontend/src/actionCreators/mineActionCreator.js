@@ -67,7 +67,7 @@ export const createMineRecord = (payload) => (dispatch) => {
     .then(createMineTypeRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
-        message: `Successfully created: ${payload.name}`,
+        message: `Successfully created: ${payload.mine_name}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
