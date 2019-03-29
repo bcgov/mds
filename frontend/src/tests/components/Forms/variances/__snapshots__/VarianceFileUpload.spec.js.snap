@@ -44,7 +44,7 @@ ShallowWrapper {
         name="fileUpload"
         onFileLoad={[MockFunction]}
         onRemoveFile={[MockFunction]}
-        uploadUrl=" /documents/variances/48593/variances/document"
+        uploadUrl=" /documents/variances/48593/document"
       />,
       "colon": true,
       "hasFeedback": false,
@@ -76,7 +76,7 @@ ShallowWrapper {
         "name": "fileUpload",
         "onFileLoad": [MockFunction],
         "onRemoveFile": [MockFunction],
-        "uploadUrl": " /documents/variances/48593/variances/document",
+        "uploadUrl": " /documents/variances/48593/document",
       },
       "ref": null,
       "rendered": null,
@@ -113,7 +113,7 @@ ShallowWrapper {
           name="fileUpload"
           onFileLoad={[MockFunction]}
           onRemoveFile={[MockFunction]}
-          uploadUrl=" /documents/variances/48593/variances/document"
+          uploadUrl=" /documents/variances/48593/document"
         />,
         "colon": true,
         "hasFeedback": false,
@@ -145,7 +145,7 @@ ShallowWrapper {
           "name": "fileUpload",
           "onFileLoad": [MockFunction],
           "onRemoveFile": [MockFunction],
-          "uploadUrl": " /documents/variances/48593/variances/document",
+          "uploadUrl": " /documents/variances/48593/document",
         },
         "ref": null,
         "rendered": null,

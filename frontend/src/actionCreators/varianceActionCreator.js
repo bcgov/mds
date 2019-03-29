@@ -51,7 +51,6 @@ export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
 };
 
 export const addDocumentToVariance = (varianceGuid, payload) => (dispatch) => {
-  console.log(payload);
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return axios

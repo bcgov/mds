@@ -22,6 +22,7 @@ const propTypes = {
 export class MineVariance extends Component {
   handleAddVariances = (values) =>
     this.props.createVariance(values, this.props.mine.guid).then(() => {
+      // this.addDocumentToVariance(response.variance_id, values);
       this.props.closeModal();
       this.props.fetchVariancesByMine(this.props.mine.guid);
     });
