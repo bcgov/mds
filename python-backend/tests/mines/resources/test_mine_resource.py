@@ -233,12 +233,7 @@ def test_put_mine_tenure_invalid_length(test_client, auth_headers):
         '/mines/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 400
-    assert put_data == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Tenure number must be 6 or 7 digits long.'
-        }
-    }
+    assert '6 or 7 digits' in put_data['message']
 
 
 def test_put_mine_tenure_already_exists(test_client, auth_headers):
@@ -251,12 +246,7 @@ def test_put_mine_tenure_already_exists(test_client, auth_headers):
         '/mines/' + TEST_MINE_NO, data=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 400
-    assert put_data == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Field tenure_id already exists for this mine.'
-        }
-    }
+    assert 'already exists' in put_data['message']
 
 
 def test_put_mine_tenure_by_mine_no(test_client, auth_headers):
