@@ -38,7 +38,7 @@ def test_get_permit_amendment_not_found(test_client, auth_headers, setup_info):
         '/permits/amendments/' + TEST_PERMIT_GUID_1, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
-    assert get_data['error']['message'] is not None
+    assert get_data['message'] is not None
 
 
 def test_get_permit_amendment_by_permit(test_client, auth_headers, setup_info):
