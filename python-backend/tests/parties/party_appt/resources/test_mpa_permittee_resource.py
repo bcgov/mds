@@ -46,14 +46,7 @@ def test_get_permittee(test_client, setup_info, auth_headers):
     assert get_data['mine_party_appt_type_code'] == 'PMT'
 
 
-# POST
-def test_post_permittee_unexpected_id_in_url(test_client, setup_info, auth_headers):
-    post_resp = test_client.post('/parties/unexpected_id', headers=auth_headers['full_auth_header'])
-    assert post_resp.status_code == 400, str(post_resp.response)
-    post_data = json.loads(post_resp.data.decode())
-    assert post_data['message']
-
-
+#POST
 def test_post_permittee_no_party(test_client, setup_info, auth_headers):
     data = {
         'mine_party_appt_guid': setup_info.get('permittee_guid'),
@@ -153,18 +146,3 @@ def test_post_permittee_party_guid_not_found(test_client, setup_info, auth_heade
     assert post_resp.status_code == 400, str(post_resp.response)
     post_data = json.loads(post_resp.data.decode())
     assert post_data['message']
-
-
-def test_put_permittee_permittee_guid_not_found(test_client, setup_info, auth_headers):
-    data = {
-        'party_guid': TEST_PARTY_PER_GUID_3,
-        'related_guid': TEST_PERMIT_GUID_1,
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
-    }
-    put_resp = test_client.put(
-        '/parties/' + setup_info.get('bad_guid'),
-        data=data,
-        headers=auth_headers['full_auth_header'])
-    assert put_resp.status_code == 404, str(put_resp.response)
-    put_data = json.loads(put_resp.data.decode())
-    assert put_data['message']

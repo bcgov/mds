@@ -41,7 +41,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if mine_party_appt_guid:
             mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
             if not mpa:
-                self.raise_error(404, 'Mine Party Appointment not found')
+                raise NotFound('Mine Party Appointment not found')
             result = mpa.json(relationships=relationships)
         else:
             mine_guid = request.args.get('mine_guid')
@@ -49,7 +49,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             types = request.args.getlist('types')  #list
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_codes=types)
-            result = list(map(lambda x: x.json(relationships=relationships), mpas))
+            result = [x.json(relationships=relationships) for x in mpas]
         return result
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
@@ -58,31 +58,30 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         if mine_party_appt_guid:
             raise BadRequest('unexpected mine party appointment guid')
         data = self.parser.parse_args()
+
+        new_mpa = MinePartyAppointment(
+            mine_guid=data.get('mine_guid'),
+            party_guid=data.get('party_guid'),
+            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
+            start_date=data.get('start_date'),
+            end_date=data.get('end_date'),
+            processed_by=self.get_user_info())
+
+        if new_mpa.mine_party_appt_type_code == "EOR":
+            new_mpa.assign_related_guid(data.get('related_guid'))
+            if not new_mpa.mine_tailings_storage_facility_guid:
+                raise AssertionError(
+                    'mine_tailings_storage_facility_guid must be provided for Engineer of Record')
+            #TODO move db foreign key constraint when services get separated
+            pass
+
+        if new_mpa.mine_party_appt_type_code == "PMT":
+            new_mpa.assign_related_guid(data.get('related_guid'))
+            if not new_mpa.permit_guid:
+                raise AssertionError('permit_guid must be provided for Permittee')
+            #TODO move db foreign key constraint when services get separated
+            pass
         try:
-            new_mpa = MinePartyAppointment(
-                mine_guid=data.get('mine_guid'),
-                party_guid=data.get('party_guid'),
-                mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
-                start_date=data.get('start_date'),
-                end_date=data.get('end_date'),
-                processed_by=self.get_user_info())
-
-            if new_mpa.mine_party_appt_type_code == "EOR":
-                new_mpa.assign_related_guid(data.get('related_guid'))
-                if not new_mpa.mine_tailings_storage_facility_guid:
-                    raise AssertionError(
-                        'mine_tailings_storage_facility_guid must be provided for Engineer of Record'
-                    )
-                #TODO move db foreign key constraint when services get separated
-                pass
-
-            if new_mpa.mine_party_appt_type_code == "PMT":
-                new_mpa.assign_related_guid(data.get('related_guid'))
-                if not new_mpa.permit_guid:
-                    raise AssertionError('permit_guid must be provided for Permittee')
-                #TODO move db foreign key constraint when services get separated
-                pass
-
             new_mpa.save()
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
