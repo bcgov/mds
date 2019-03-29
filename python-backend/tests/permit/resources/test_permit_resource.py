@@ -46,7 +46,7 @@ def test_get_permit_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
         '/permits/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'error': {'status': 404, 'message': 'Permit not found'}}
+    assert 'not found' in get_data['message']
     assert get_resp.status_code == 404
 
 
