@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -228,7 +230,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  AuthorizationGuard(Permission.IN_DEVELOPMENT)
 )(CustomHomePage);

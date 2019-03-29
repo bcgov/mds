@@ -405,7 +405,7 @@ describe("`subscribe` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return subscribe(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

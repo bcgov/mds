@@ -249,10 +249,12 @@ ShallowWrapper {
                   className="full-height full-mobile"
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
+                  onVisibleChange={[Function]}
                   overlay={
                     <Menu
                       className=""
                       focusable={false}
+                      onClick={[Function]}
                       prefixCls="ant-menu"
                       theme="light"
                     >
@@ -292,28 +294,36 @@ ShallowWrapper {
                           + Add TSF
                         </button>
                       </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={undefined}
-                          type="button"
+                      <Connect(AuthorizationWrapper)
+                        inDevelopment={true}
+                      >
+                        <div
+                          className="custom-menu-item"
                         >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />
-                          Subscribe
-                        </button>
-                      </MenuItem>
+                            />
+                            Subscribe
+                          </button>
+                        </div>
+                      </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         inTesting={true}
                       >
-                        <MenuItem>
+                        <div
+                          className="custom-menu-item"
+                        >
                           <Popconfirm
                             cancelText="No"
                             icon={
@@ -348,12 +358,14 @@ ShallowWrapper {
                               Verify Mine Data
                             </button>
                           </Popconfirm>
-                        </MenuItem>
+                        </div>
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         inTesting={true}
                       >
-                        <MenuItem>
+                        <div
+                          className="custom-menu-item"
+                        >
                           <Popconfirm
                             cancelText="No"
                             icon={
@@ -388,12 +400,13 @@ ShallowWrapper {
                               Mark Data for Verification
                             </button>
                           </Popconfirm>
-                        </MenuItem>
+                        </div>
                       </Connect(AuthorizationWrapper)>
                     </Menu>
                   }
                   placement="bottomLeft"
                   prefixCls="ant-dropdown"
+                  visible={false}
                 >
                   <Button
                     block={false}
@@ -652,10 +665,12 @@ ShallowWrapper {
                     className="full-height full-mobile"
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
+                    onVisibleChange={[Function]}
                     overlay={
                       <Menu
                         className=""
                         focusable={false}
+                        onClick={[Function]}
                         prefixCls="ant-menu"
                         theme="light"
                       >
@@ -695,28 +710,36 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={undefined}
-                            type="button"
+                        <Connect(AuthorizationWrapper)
+                          inDevelopment={true}
+                        >
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            Subscribe
-                          </button>
-                        </MenuItem>
+                              />
+                              Subscribe
+                            </button>
+                          </div>
+                        </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <MenuItem>
+                          <div
+                            className="custom-menu-item"
+                          >
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -751,12 +774,14 @@ ShallowWrapper {
                                 Verify Mine Data
                               </button>
                             </Popconfirm>
-                          </MenuItem>
+                          </div>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <MenuItem>
+                          <div
+                            className="custom-menu-item"
+                          >
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -791,12 +816,13 @@ ShallowWrapper {
                                 Mark Data for Verification
                               </button>
                             </Popconfirm>
-                          </MenuItem>
+                          </div>
                         </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
                     placement="bottomLeft"
                     prefixCls="ant-dropdown"
+                    visible={false}
                   >
                     <Button
                       block={false}
@@ -957,10 +983,12 @@ ShallowWrapper {
                       className="full-height full-mobile"
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
+                      onVisibleChange={[Function]}
                       overlay={
                         <Menu
                           className=""
                           focusable={false}
+                          onClick={[Function]}
                           prefixCls="ant-menu"
                           theme="light"
                         >
@@ -1000,28 +1028,36 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={undefined}
-                              type="button"
+                          <Connect(AuthorizationWrapper)
+                            inDevelopment={true}
+                          >
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Subscribe
-                            </button>
-                          </MenuItem>
+                                />
+                                Subscribe
+                              </button>
+                            </div>
+                          </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1056,12 +1092,14 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1096,12 +1134,13 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
                       placement="bottomLeft"
                       prefixCls="ant-dropdown"
+                      visible={false}
                     >
                       <Button
                         block={false}
@@ -1165,10 +1204,12 @@ ShallowWrapper {
                         className="full-height full-mobile"
                         mouseEnterDelay={0.15}
                         mouseLeaveDelay={0.1}
+                        onVisibleChange={[Function]}
                         overlay={
                           <Menu
                             className=""
                             focusable={false}
+                            onClick={[Function]}
                             prefixCls="ant-menu"
                             theme="light"
                           >
@@ -1208,28 +1249,36 @@ ShallowWrapper {
                                 + Add TSF
                               </button>
                             </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={undefined}
-                                type="button"
+                            <Connect(AuthorizationWrapper)
+                              inDevelopment={true}
+                            >
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Subscribe
-                              </button>
-                            </MenuItem>
+                                  />
+                                  Subscribe
+                                </button>
+                              </div>
+                            </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1264,12 +1313,14 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1304,12 +1355,13 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
                         placement="bottomLeft"
                         prefixCls="ant-dropdown"
+                        visible={false}
                       >
                         <Button
                           block={false}
@@ -1349,10 +1401,12 @@ ShallowWrapper {
                         className="full-height full-mobile"
                         mouseEnterDelay={0.15}
                         mouseLeaveDelay={0.1}
+                        onVisibleChange={[Function]}
                         overlay={
                           <Menu
                             className=""
                             focusable={false}
+                            onClick={[Function]}
                             prefixCls="ant-menu"
                             theme="light"
                           >
@@ -1392,28 +1446,36 @@ ShallowWrapper {
                                 + Add TSF
                               </button>
                             </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={undefined}
-                                type="button"
+                            <Connect(AuthorizationWrapper)
+                              inDevelopment={true}
+                            >
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Subscribe
-                              </button>
-                            </MenuItem>
+                                  />
+                                  Subscribe
+                                </button>
+                              </div>
+                            </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1448,12 +1510,14 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1488,12 +1552,13 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
                         placement="bottomLeft"
                         prefixCls="ant-dropdown"
+                        visible={false}
                       >
                         <Button
                           block={false}
@@ -1552,9 +1617,11 @@ ShallowWrapper {
                         "className": "full-height full-mobile",
                         "mouseEnterDelay": 0.15,
                         "mouseLeaveDelay": 0.1,
+                        "onVisibleChange": [Function],
                         "overlay": <Menu
                           className=""
                           focusable={false}
+                          onClick={[Function]}
                           prefixCls="ant-menu"
                           theme="light"
                         >
@@ -1594,28 +1661,36 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={undefined}
-                              type="button"
+                          <Connect(AuthorizationWrapper)
+                            inDevelopment={true}
+                          >
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Subscribe
-                            </button>
-                          </MenuItem>
+                                />
+                                Subscribe
+                              </button>
+                            </div>
+                          </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1650,12 +1725,14 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1690,11 +1767,12 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                         </Menu>,
                         "placement": "bottomLeft",
                         "prefixCls": "ant-dropdown",
+                        "visible": false,
                       },
                       "ref": null,
                       "rendered": Object {
@@ -2566,10 +2644,12 @@ ShallowWrapper {
                     className="full-height full-mobile"
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
+                    onVisibleChange={[Function]}
                     overlay={
                       <Menu
                         className=""
                         focusable={false}
+                        onClick={[Function]}
                         prefixCls="ant-menu"
                         theme="light"
                       >
@@ -2609,28 +2689,36 @@ ShallowWrapper {
                             + Add TSF
                           </button>
                         </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={undefined}
-                            type="button"
+                        <Connect(AuthorizationWrapper)
+                          inDevelopment={true}
+                        >
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            Subscribe
-                          </button>
-                        </MenuItem>
+                              />
+                              Subscribe
+                            </button>
+                          </div>
+                        </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <MenuItem>
+                          <div
+                            className="custom-menu-item"
+                          >
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -2665,12 +2753,14 @@ ShallowWrapper {
                                 Verify Mine Data
                               </button>
                             </Popconfirm>
-                          </MenuItem>
+                          </div>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <MenuItem>
+                          <div
+                            className="custom-menu-item"
+                          >
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -2705,12 +2795,13 @@ ShallowWrapper {
                                 Mark Data for Verification
                               </button>
                             </Popconfirm>
-                          </MenuItem>
+                          </div>
                         </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
                     placement="bottomLeft"
                     prefixCls="ant-dropdown"
+                    visible={false}
                   >
                     <Button
                       block={false}
@@ -2969,10 +3060,12 @@ ShallowWrapper {
                       className="full-height full-mobile"
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
+                      onVisibleChange={[Function]}
                       overlay={
                         <Menu
                           className=""
                           focusable={false}
+                          onClick={[Function]}
                           prefixCls="ant-menu"
                           theme="light"
                         >
@@ -3012,28 +3105,36 @@ ShallowWrapper {
                               + Add TSF
                             </button>
                           </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={undefined}
-                              type="button"
+                          <Connect(AuthorizationWrapper)
+                            inDevelopment={true}
+                          >
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Subscribe
-                            </button>
-                          </MenuItem>
+                                />
+                                Subscribe
+                              </button>
+                            </div>
+                          </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -3068,12 +3169,14 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -3108,12 +3211,13 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </MenuItem>
+                            </div>
                           </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
                       placement="bottomLeft"
                       prefixCls="ant-dropdown"
+                      visible={false}
                     >
                       <Button
                         block={false}
@@ -3274,10 +3378,12 @@ ShallowWrapper {
                         className="full-height full-mobile"
                         mouseEnterDelay={0.15}
                         mouseLeaveDelay={0.1}
+                        onVisibleChange={[Function]}
                         overlay={
                           <Menu
                             className=""
                             focusable={false}
+                            onClick={[Function]}
                             prefixCls="ant-menu"
                             theme="light"
                           >
@@ -3317,28 +3423,36 @@ ShallowWrapper {
                                 + Add TSF
                               </button>
                             </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={undefined}
-                                type="button"
+                            <Connect(AuthorizationWrapper)
+                              inDevelopment={true}
+                            >
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Subscribe
-                              </button>
-                            </MenuItem>
+                                  />
+                                  Subscribe
+                                </button>
+                              </div>
+                            </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -3373,12 +3487,14 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -3413,12 +3529,13 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
                         placement="bottomLeft"
                         prefixCls="ant-dropdown"
+                        visible={false}
                       >
                         <Button
                           block={false}
@@ -3482,10 +3599,12 @@ ShallowWrapper {
                           className="full-height full-mobile"
                           mouseEnterDelay={0.15}
                           mouseLeaveDelay={0.1}
+                          onVisibleChange={[Function]}
                           overlay={
                             <Menu
                               className=""
                               focusable={false}
+                              onClick={[Function]}
                               prefixCls="ant-menu"
                               theme="light"
                             >
@@ -3525,28 +3644,36 @@ ShallowWrapper {
                                   + Add TSF
                                 </button>
                               </MenuItem>
-                              <MenuItem>
-                                <button
-                                  className="full"
-                                  onClick={undefined}
-                                  type="button"
+                              <Connect(AuthorizationWrapper)
+                                inDevelopment={true}
+                              >
+                                <div
+                                  className="custom-menu-item"
                                 >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
+                                  <button
+                                    className="full"
+                                    onClick={undefined}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="document"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
                                       }
-                                    }
-                                  />
-                                  Subscribe
-                                </button>
-                              </MenuItem>
+                                    />
+                                    Subscribe
+                                  </button>
+                                </div>
+                              </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <MenuItem>
+                                <div
+                                  className="custom-menu-item"
+                                >
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3581,12 +3708,14 @@ ShallowWrapper {
                                       Verify Mine Data
                                     </button>
                                   </Popconfirm>
-                                </MenuItem>
+                                </div>
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <MenuItem>
+                                <div
+                                  className="custom-menu-item"
+                                >
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3621,12 +3750,13 @@ ShallowWrapper {
                                       Mark Data for Verification
                                     </button>
                                   </Popconfirm>
-                                </MenuItem>
+                                </div>
                               </Connect(AuthorizationWrapper)>
                             </Menu>
                           }
                           placement="bottomLeft"
                           prefixCls="ant-dropdown"
+                          visible={false}
                         >
                           <Button
                             block={false}
@@ -3666,10 +3796,12 @@ ShallowWrapper {
                           className="full-height full-mobile"
                           mouseEnterDelay={0.15}
                           mouseLeaveDelay={0.1}
+                          onVisibleChange={[Function]}
                           overlay={
                             <Menu
                               className=""
                               focusable={false}
+                              onClick={[Function]}
                               prefixCls="ant-menu"
                               theme="light"
                             >
@@ -3709,28 +3841,36 @@ ShallowWrapper {
                                   + Add TSF
                                 </button>
                               </MenuItem>
-                              <MenuItem>
-                                <button
-                                  className="full"
-                                  onClick={undefined}
-                                  type="button"
+                              <Connect(AuthorizationWrapper)
+                                inDevelopment={true}
+                              >
+                                <div
+                                  className="custom-menu-item"
                                 >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
+                                  <button
+                                    className="full"
+                                    onClick={undefined}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="document"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
                                       }
-                                    }
-                                  />
-                                  Subscribe
-                                </button>
-                              </MenuItem>
+                                    />
+                                    Subscribe
+                                  </button>
+                                </div>
+                              </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <MenuItem>
+                                <div
+                                  className="custom-menu-item"
+                                >
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3765,12 +3905,14 @@ ShallowWrapper {
                                       Verify Mine Data
                                     </button>
                                   </Popconfirm>
-                                </MenuItem>
+                                </div>
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <MenuItem>
+                                <div
+                                  className="custom-menu-item"
+                                >
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3805,12 +3947,13 @@ ShallowWrapper {
                                       Mark Data for Verification
                                     </button>
                                   </Popconfirm>
-                                </MenuItem>
+                                </div>
                               </Connect(AuthorizationWrapper)>
                             </Menu>
                           }
                           placement="bottomLeft"
                           prefixCls="ant-dropdown"
+                          visible={false}
                         >
                           <Button
                             block={false}
@@ -3869,9 +4012,11 @@ ShallowWrapper {
                           "className": "full-height full-mobile",
                           "mouseEnterDelay": 0.15,
                           "mouseLeaveDelay": 0.1,
+                          "onVisibleChange": [Function],
                           "overlay": <Menu
                             className=""
                             focusable={false}
+                            onClick={[Function]}
                             prefixCls="ant-menu"
                             theme="light"
                           >
@@ -3911,28 +4056,36 @@ ShallowWrapper {
                                 + Add TSF
                               </button>
                             </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={undefined}
-                                type="button"
+                            <Connect(AuthorizationWrapper)
+                              inDevelopment={true}
+                            >
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={undefined}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Subscribe
-                              </button>
-                            </MenuItem>
+                                  />
+                                  Subscribe
+                                </button>
+                              </div>
+                            </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -3967,12 +4120,14 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -4007,11 +4162,12 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </MenuItem>
+                              </div>
                             </Connect(AuthorizationWrapper)>
                           </Menu>,
                           "placement": "bottomLeft",
                           "prefixCls": "ant-dropdown",
+                          "visible": false,
                         },
                         "ref": null,
                         "rendered": Object {
