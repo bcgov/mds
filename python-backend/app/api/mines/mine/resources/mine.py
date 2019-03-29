@@ -77,7 +77,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
                 if not map_result:
                     records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
-                    last_modified = datetime.now()
+                    last_modified = datetime.utcnow()
 
                     # jsonify then store in cache
                     map_result = json.dumps(
@@ -221,8 +221,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             _mine_status = MineStatus(
                 mine_status_guid=uuid.uuid4(),
                 mine_guid=mine_guid,
-                mine_status_xref_guid=mine_status_xref.mine_status_xref_guid,
-                **self.get_create_update_dict())
+                mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         _mine_status.save()
@@ -235,7 +234,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mines_name_query = Mine.query.filter(name_filter)
             mines_with_name = mines_name_query.all()
             if len(mines_with_name) > 0:
-                self.raise_error(400, 'A mine with that name already exists. The Mine No. is %s' % mines_with_name[0].mine_no)
+                self.raise_error(
+                    400, 'A mine with that name already exists. The Mine No. is %s' %
+                    mines_with_name[0].mine_no)
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -252,18 +253,17 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
         mine_region = data['mine_region']
-        mine = Mine(mine_guid=uuid.uuid4(), **self.get_create_update_dict())
+        mine = Mine(mine_guid=uuid.uuid4())
         try:
             # query the mine tables and check if that mine name exists
-            self.throw_error_if_mine_exists( data['name'])
+            self.throw_error_if_mine_exists(data['name'])
             mine = Mine(
                 mine_guid=uuid.uuid4(),
                 mine_no=generate_mine_no(),
                 mine_name=data['name'],
                 mine_note=note if note else '',
                 major_mine_ind=major_mine_ind,
-                mine_region=mine_region,
-                **self.get_create_update_dict())
+                mine_region=mine_region)
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
         mine.save()
@@ -273,8 +273,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
                 latitude=lat,
-                longitude=lon,
-                **self.get_create_update_dict())
+                longitude=lon)
             location.save()
             cache.delete(MINE_MAP_CACHE)
         mine_status = self.mine_status_processor(status, mine.mine_guid) if status else None
@@ -297,7 +296,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         tenure = data['tenure_number_id']
         lat = data['latitude']
         lon = data['longitude']
-        mine_name =  data['name'].strip() if data['name'] else None
+        mine_name = data['name'].strip() if data['name'] else None
         mine_note = data['note']
         status = data['mine_status']
         major_mine_ind = data['major_mine_ind']
@@ -338,8 +337,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 tenure = MineralTenureXref(
                     mineral_tenure_xref_guid=uuid.uuid4(),
                     mine_guid=mine.mine_guid,
-                    tenure_number_id=tenure,
-                    **self.get_create_update_dict())
+                    tenure_number_id=tenure)
             except AssertionError as e:
                 self.raise_error(400, 'Error: {}'.format(e))
             tenure.save()
@@ -358,8 +356,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine_location_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
                 latitude=lat,
-                longitude=lon,
-                **self.get_create_update_dict())
+                longitude=lon)
             location.save()
             cache.delete(MINE_MAP_CACHE)
 
@@ -370,9 +367,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
 
 class MineListSearch(Resource):
-    @api.doc(params={
-        'name': 'Search term in mine name.',
-        'term': 'Search term in mine name, mine number, and permit.'
+    @api.doc(
+        params={
+            'name': 'Search term in mine name.',
+            'term': 'Search term in mine name, mine number, and permit.'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):

@@ -30,17 +30,11 @@ class MineOperationStatusReasonCode(AuditMixin, Base):
         return cls.query.filter_by(mine_operation_status_reason_code=_id).first()
 
     @classmethod
-    def create_mine_operation_status_reason_code(cls,
-                                                 code,
-                                                 description,
-                                                 display_order,
-                                                 user_kwargs,
-                                                 save=True):
+    def create(cls, code, description, display_order, save=True):
         mine_operation_status_reason_code = cls(
             mine_operation_status_reason_code=code,
             description=description,
-            display_order=display_order,
-            **user_kwargs)
+            display_order=display_order)
         if save:
             mine_operation_status_reason_code.save(commit=False)
         return mine_operation_status_reason_code

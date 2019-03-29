@@ -17,11 +17,20 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
-    parser.add_argument('mine_party_appt_type_code', type=str, help='code for the type of appt.')
-    parser.add_argument('related_guid', type=str)
     parser.add_argument(
-        'start_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('end_date', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'mine_party_appt_type_code',
+        type=str,
+        help='code for the type of appt.',
+        store_missing=False)
+    parser.add_argument('related_guid', type=str, store_missing=False)
+    parser.add_argument(
+        'start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
     @requires_role_mine_view
@@ -55,8 +64,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
                 start_date=data.get('start_date'),
                 end_date=data.get('end_date'),
-                processed_by=self.get_user_info(),
-                **self.get_create_update_dict())
+                processed_by=self.get_user_info())
 
             if new_mpa.mine_party_appt_type_code == "EOR":
                 new_mpa.assign_related_guid(data.get('related_guid'))

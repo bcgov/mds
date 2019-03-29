@@ -88,8 +88,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             new_pa_doc = PermitAmendmentDocument(
                 mine_guid=permit_amendment.permit.mine_guid,
                 document_manager_guid=data.get('document_manager_guid'),
-                document_name=filename,
-                **self.get_create_update_dict())
+                document_name=filename)
 
             permit_amendment.documents.append(new_pa_doc)
             permit_amendment.save()

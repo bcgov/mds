@@ -1,5 +1,5 @@
 import json, pytest, uuid
-from tests.constants import TEST_PERMIT_GUID_1, TEST_MINE_GUID, DUMMY_USER_KWARGS
+from tests.constants import TEST_PERMIT_GUID_1, TEST_MINE_GUID
 
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -14,23 +14,21 @@ TEST_DOCUMENT_MANAGER_GUID_2 = uuid.uuid4()
 def setup_info(test_client):
     permit = Permit.find_by_permit_guid(TEST_PERMIT_GUID_1)
 
-    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD', DUMMY_USER_KWARGS)
+    test_pa = PermitAmendment.create(permit, None, None, None, 'AMD')
     test_pa.save()
 
     test_pa_doc = PermitAmendmentDocument(
         document_name="test1.pdf",
         mine_guid=TEST_MINE_GUID,
         permit_amendment_id=test_pa.permit_amendment_id,
-        document_manager_guid=TEST_DOCUMENT_MANAGER_GUID_1,
-        **DUMMY_USER_KWARGS)
+        document_manager_guid=TEST_DOCUMENT_MANAGER_GUID_1)
     test_pa_doc.save()
 
     test_orphan_doc = PermitAmendmentDocument(
         document_name="orphan.pdf",
         mine_guid=TEST_MINE_GUID,
         permit_amendment_id=None,
-        document_manager_guid=TEST_DOCUMENT_MANAGER_GUID_2,
-        **DUMMY_USER_KWARGS)
+        document_manager_guid=TEST_DOCUMENT_MANAGER_GUID_2)
     test_orphan_doc.save()
 
     yield {
