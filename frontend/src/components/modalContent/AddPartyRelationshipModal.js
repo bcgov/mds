@@ -44,8 +44,8 @@ export class AddPartyRelationshipModal extends Component {
   };
 
   handlePartySubmit = (values) => {
-    const type = this.state.isPerson ? "PER" : "ORG";
-    const payload = { type, ...values };
+    const party_type_code = this.state.isPerson ? "PER" : "ORG";
+    const payload = { party_type_code, ...values };
     this.props
       .createParty(payload)
       .then(() => {
