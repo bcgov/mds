@@ -62,9 +62,7 @@ const columns = [
   {
     title: "Received Date",
     dataIndex: "receivedDate",
-    render: (text, record) => (
-      <div title="Received Date">{record.doc.received_date || "-"}</div>
-    ),
+    render: (text, record) => <div title="Received Date">{record.doc.received_date || "-"}</div>,
   },
   {
     title: "Status",
@@ -80,26 +78,35 @@ const columns = [
     dataIndex: "documents",
     render: (text, record) => (
       <div title="Documents">
-        {!record.doc.related_documents || record.doc.related_documents.length === 0
-          ? "-"
-          : record.doc.related_documents.map((file) => (
-              <span key={file.mine_document_guid}>
-                <a
-                  role="link"
-                  onClick={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Event listener
-                  onKeyPress={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Focusable element
-                  tabIndex="0"
-                >
-                  {file.document_name}
-                </a>{" "}
-              </span>
-            ))}
+        <ul>
+          {!record.doc.related_documents || record.doc.related_documents.length === 0
+            ? "-"
+            : record.doc.related_documents.map((file) => (
+                <li className="wrapped-text">
+                  <a
+                    role="link"
+                    key={file.mine_document_guid}
+                    onClick={() =>
+                      downloadFileFromDocumentManager(
+                        file.document_manager_guid,
+                        file.document_name
+                      )
+                    }
+                    // Accessibility: Event listener
+                    onKeyPress={() =>
+                      downloadFileFromDocumentManager(
+                        file.document_manager_guid,
+                        file.document_name
+                      )
+                    }
+                    // Accessibility: Focusable element
+                    tabIndex="0"
+                  >
+                    {file.document_name}
+                  </a>
+                </li>
+              ))}
+        </ul>
       </div>
     ),
   },
