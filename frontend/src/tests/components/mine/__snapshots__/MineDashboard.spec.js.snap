@@ -82,6 +82,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchSubscribedMinesByUser={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     match={
       Object {
         "isExact": true,
@@ -525,6 +532,8 @@ ShallowWrapper {
         ],
       }
     }
+    subscribe={[MockFunction]}
+    unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
