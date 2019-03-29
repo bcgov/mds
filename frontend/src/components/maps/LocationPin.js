@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { loadModules } from "react-arcgis";
 import PropTypes from "prop-types";
 

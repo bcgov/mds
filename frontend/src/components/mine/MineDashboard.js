@@ -96,13 +96,7 @@ export class MineDashboard extends Component {
 
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
-    this.props.fetchMineRecordById(id).then(() => {
-      this.props.fetchApplications({ mine_guid: this.props.mines[id].guid });
-      this.setState({ isLoaded: true });
-      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
-        this.setState({ complianceInfoLoading: false });
-      });
-    });
+    this.loadMineData(id);
     if (!this.props.optionsLoaded) {
       this.props.fetchStatusOptions();
       this.props.fetchRegionOptions();
@@ -122,9 +116,12 @@ export class MineDashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activeTab } = nextProps.match.params;
+    const { id, activeTab } = nextProps.match.params;
     if (activeTab !== this.props.activeTab) {
       this.setState({ activeTab });
+    }
+    if (this.props.match.params.id !== nextProps.match.params.id) {
+      this.loadMineData(id);
     }
   }
 
@@ -148,6 +145,16 @@ export class MineDashboard extends Component {
       router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
     );
   };
+
+  loadMineData(id) {
+    this.props.fetchMineRecordById(id).then(() => {
+      this.props.fetchApplications({ mine_guid: this.props.mines[id].guid });
+      this.setState({ isLoaded: true });
+      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
+        this.setState({ complianceInfoLoading: false });
+      });
+    });
+  }
 
   render() {
     const { id } = this.props.match.params;

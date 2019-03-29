@@ -4,6 +4,7 @@ from flask_restplus import Resource, Namespace
 from app.extensions import api as app_api
 from app.api.utils.access_decorators import *
 from app import auth
+from app.api.utils.include.user_info import User
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
@@ -38,6 +39,7 @@ app_api.add_namespace(api)
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
+    User._test_mode = False
     auth.clear_cache()
 
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
 import RenderDate from "@/components/common/RenderDate";
@@ -22,13 +21,26 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
-  relatedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
 };
 
 const defaultProps = {
-  relatedDocuments: [],
+  initialValues: {},
   change,
+};
+
+const validateBusinessRules = (values) => {
+  const errors = {};
+  if (values.permit_amendment_type_code !== originalPermit) {
+    const originalPermitAmendment = values.amendments.filter(
+      (x) => x.permit_amendment_type_code === originalPermit
+    )[0];
+    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date)
+      errors.issue_date = "Issue Date cannot be before the permits First Issued date.";
+  }
+
+  return errors;
 };
 
 export class PermitAmendmentForm extends Component {
@@ -162,6 +174,7 @@ PermitAmendmentForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.PERMIT_AMENDMENT,
+  validate: validateBusinessRules,
   touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
 })(PermitAmendmentForm);

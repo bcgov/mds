@@ -35,4 +35,5 @@ export { default as TEAM } from "../assets/images/Team.svg";
 export { default as HOME } from "../assets/images/home.svg";
 export { default as COMPANY } from "../assets/images/Company.svg";
 export { default as BELL } from "../assets/images/bell.svg";
-export { default as UNSUBSCRIBE } from "../assets/images/notifications.svg";
+export { default as UNSUBSCRIBE } from "../assets/images/Notifications.svg";
+export { default as YELLOW_HAZARD } from "../assets/images/Hazard.svg";

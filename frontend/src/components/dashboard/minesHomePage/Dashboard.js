@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
-import { Tabs, Col, Divider, notification, Button } from "antd";
+import { Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
@@ -43,6 +43,7 @@ import MineMap from "@/components/maps/MineMap";
 import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
+import AddButton from "@/components/common/AddButton";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -371,15 +372,13 @@ export class Dashboard extends Component {
             </div>
             <div>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button
-                  className="full-mobile"
-                  type="primary"
+                <AddButton
                   onClick={(event) =>
                     this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
                   }
                 >
                   {ModalContent.CREATE_MINE_RECORD}
-                </Button>
+                </AddButton>
               </AuthorizationWrapper>
             </div>
           </div>

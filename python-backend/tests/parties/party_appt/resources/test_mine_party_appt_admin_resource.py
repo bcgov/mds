@@ -1,6 +1,6 @@
 import json, uuid, pytest
 from unittest import mock
-from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_PERMIT_GUID_1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_PERMIT_GUID_1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db
 
@@ -22,8 +22,7 @@ def setup_info(test_client):
         mine_party_appt_type_code='PMT',
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
         mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
+        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1))
     permittee.save()
 
     yield dict(permittee_guid=permittee.mine_party_appt_guid)
