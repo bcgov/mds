@@ -46,15 +46,13 @@ class Application(AuditMixin, Base):
                application_status_code,
                received_date,
                description,
-               user_kwargs,
                save=True):
         application = cls(
             mine_guid=mine_guid,
             application_no=application_no,
             application_status_code=application_status_code,
             received_date=received_date,
-            description=description,
-            **user_kwargs)
+            description=description)
         if save:
             application.save(commit=False)
         return application

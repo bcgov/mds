@@ -11,7 +11,7 @@ def _schedule_ETL_jobs(app):
 @register_apm
 def _run_ETL():
     with sched.app.app_context():
-        job_running = cache.get(ETL())
+        job_running = cache.get(ETL)
         if not job_running:
             cache.set(ETL, 'True', timeout=TIMEOUT_24_HOURS)
             db.session.execute('select transfer_mine_information();')

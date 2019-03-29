@@ -7,11 +7,14 @@ from ....utils.access_decorators import requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.mine_type import MineType
 
+
 class MineTypeResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('mine_guid', type=str, help='Unique identifier for the mine with which to associate this mine type.')
+    parser.add_argument(
+        'mine_guid',
+        type=str,
+        help='Unique identifier for the mine with which to associate this mine type.')
     parser.add_argument('mine_tenure_type_code', type=str, help='Mine tenure type identifier.')
-
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -28,12 +31,7 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Missing mine_tenure_type_code.')
 
         try:
-            mine_type = MineType.create_mine_type(
-                mine_guid,
-                mine_tenure_type_code,
-                self.get_create_update_dict(),
-                save=False
-            )
+            mine_type = MineType.create_mine_type(mine_guid, mine_tenure_type_code, save=False)
             mine_type.save()
         except exc.IntegrityError as e:
             self.raise_error(400, 'Error: Unable to create mine_type.')
@@ -55,9 +53,6 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
         try:
             MineType.expire_record(mine_type)
         except exc.IntegrityError as e:
-            self.raise_error(
-                400,
-                'Error: Unable to update mine_type.'
-            )
+            self.raise_error(400, 'Error: Unable to update mine_type.')
 
         return mine_type.json()
