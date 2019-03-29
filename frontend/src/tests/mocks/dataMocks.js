@@ -985,14 +985,14 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
 export const APPLICATION_LIST = {
   applications: [
     {
-      application_id: 1,
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd14",
       application_no: "TA-09876",
       application_status_code: "RIP",
       description: "Test.",
       received_date: "2019-03-06",
     },
     {
-      application_id: 3,
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd11",
       application_no: "TA-93475",
       application_status_code: "RIP",
       description: null,

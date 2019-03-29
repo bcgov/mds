@@ -11,7 +11,7 @@ from app.api.utils.access_decorators import requires_role_mine_view, requires_ro
 
 application_model = api.model(
     'Application', {
-        'application_id': fields.Integer,
+        'application_guid': fields.String,
         'application_no': fields.String,
         'application_status_code': fields.String,
         'description': fields.String,
@@ -103,7 +103,7 @@ class ApplicationResource(Resource, UserMixin):
     parser.add_argument(
         'description', type=str, help='Application description', store_missing=False)
 
-    @api.marshal_with(application_model, envelope='applications', code=200, as_list=True)
+    @api.marshal_with(application_model, envelope='applications', code=200)
     @api.doc(
         description='This endpoint returns a single application based on its application guid.',
         params={
@@ -119,7 +119,7 @@ class ApplicationResource(Resource, UserMixin):
         if not application:
             raise NotFound('Application not found')
 
-        return application
+        return [application]
 
     @api.expect(parser)
     @api.doc(
