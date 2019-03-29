@@ -83,13 +83,11 @@ class ApplicationListResource(Resource, UserMixin):
             raise BadRequest(
                 'An application Number, Received Date and Status are required for an application.')
 
-        try:
-            application = Application.create(mine.mine_guid, data['application_no'],
-                                             data['application_status_code'], data['received_date'],
-                                             data.get('description'))
-            application.save()
-        except Exception as e:
-            raise InternalServerError('Error: {}'.format(e))
+        application = Application.create(mine.mine_guid, data['application_no'],
+                                         data['application_status_code'], data['received_date'],
+                                         data.get('description'))
+        application.save()
+
         return application, 201
 
 
