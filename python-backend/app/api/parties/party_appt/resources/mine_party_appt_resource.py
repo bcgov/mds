@@ -107,7 +107,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             raise NotFound('mine party appointment not found')
 
         for key, value in data.items():
-            if key in ['related_guid']:
+            if key in ['party_guid', 'mine_guid']:
                 continue
             elif key == "related_guid":
                 mpa.assign_related_guid(data.get('related_guid'))
