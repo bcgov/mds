@@ -1,8 +1,9 @@
 import uuid
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 from ..models.party import Party
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
@@ -14,16 +15,37 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 class PartyResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'first_name', type=str, help='First name of the party, if the party is a person.')
+        'first_name',
+        type=str,
+        trim=True,
+        help='First name of the party, if the party is a person.',
+        store_missing=False)
     parser.add_argument(
         'party_name',
         type=str,
-        help='Last name of the party (Person), or the Organization name (Organization).')
+        trim=True,
+        help='Last name of the party (Person), or the Organization name (Organization).',
+        store_missing=False)
     parser.add_argument(
-        'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
-    parser.add_argument('email', type=str, help='The email of the party.')
-    parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
+        'phone_no',
+        type=str,
+        trim=True,
+        help='The phone number of the party. Ex: 123-123-1234',
+        store_missing=False)
+    parser.add_argument(
+        'phone_ext',
+        type=str,
+        trim=True,
+        help='The extension of the phone number. Ex: 1234',
+        store_missing=False)
+    parser.add_argument(
+        'email', type=str, trim=True, help='The email of the party.', store_missing=False)
+    parser.add_argument(
+        'party_type_code',
+        type=str,
+        trim=True,
+        help='The type of the party. Ex: PER',
+        store_missing=False)
     parser.add_argument(
         'suite_no',
         type=str,
@@ -32,26 +54,31 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'address_line_1',
         type=str,
+        trim=True,
         store_missing=False,
         help='The first address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument(
         'address_line_2',
         type=str,
+        trim=True,
         store_missing=False,
         help='The second address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument(
         'city',
         type=str,
+        trim=True,
         store_missing=False,
         help='The city where the party is located. Ex: FooTown')
     parser.add_argument(
         'sub_division_code',
         type=str,
+        trim=True,
         store_missing=False,
         help='The region code where the party is located. Ex: BC')
     parser.add_argument(
         'post_code',
         type=str,
+        trim=True,
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
 
@@ -113,9 +140,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         try:
             party = Party.create(
-                data['party_name'],
-                data['phone_no'],
-                data['type'],
+                data.get('party_name'),
+                data.get('phone_no'),
+                data.get('party_type_code'),
                 # Nullable fields
                 email=data.get('email'),
                 first_name=data.get('first_name'),
@@ -126,13 +153,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 city=data.get('city'),
                 sub_division_code=data.get('sub_division_code'),
                 post_code=data.get('post_code'))
-        except KeyError as e:
-            self.raise_error(400, 'Error: Missing value for required field(s)')
         except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
+            raise BadRequest(e)
 
         if not party:
-            self.raise_error(400, 'Error: Failed to create party')
+            raise InternalServerError('Error: Failed to create party')
 
         party.save()
         return party.json()
@@ -146,28 +171,13 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(404, 'Party not found'), 404
 
         try:
-            existing_party.party_name = data.get('party_name') or existing_party.party_name
-            existing_party.phone_no = data.get('phone_no') or existing_party.phone_no
-            existing_party.party_type_code = data.get('type') or existing_party.party_type_code
-            existing_party.first_name = data.get('first_name') or existing_party.first_name
-            # Nullable fields
-            existing_party.email = data.get('email') if 'email' in data else existing_party.email
-            existing_party.suite_no = data.get(
-                'suite_no') if 'suite_no' in data else existing_party.suite_no
-            existing_party.address_line_1 = data.get(
-                'address_line_1') if 'address_line_1' in data else existing_party.address_line_1
-            existing_party.address_line_2 = data.get(
-                'address_line_2') if 'address_line_2' in data else existing_party.address_line_2
-            existing_party.city = data.get('city') if 'city' in data else existing_party.city
-            existing_party.sub_division_code = data.get(
-                'sub_division_code'
-            ) if 'sub_division_code' in data else existing_party.sub_division_code
-            existing_party.post_code = data.get(
-                'post_code') if 'post_code' in data else existing_party.post_code
+            current_app.logger.info(f'Updating {existing_party} with {data}')
+            for key, value in data.items():
+                setattr(existing_party, key, value)
 
             existing_party.save()
         except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
+            raise BadRequest(e)
 
         return existing_party.json()
 
@@ -180,12 +190,14 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             party = Party.find_by_party_guid(party_guid)
         except DBAPIError:
             return self.create_error_payload(422, 'Invalid Party guid'), 422
-        if party is not None:
-            party.deleted_ind = True
-            party.save()
-            mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
-            for mine_party_appt in mine_party_appts:
-                mine_party_appt.deleted_ind = True
-                mine_party_appt.save()
-            return {'status': 200, 'message': 'contact deleted successfully.'}
-        return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
+        if party is None:
+            return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
+
+        mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
+        for mine_party_appt in mine_party_appts:
+            mine_party_appt.deleted_ind = True
+            mine_party_appt.save()
+
+        party.deleted_ind = True
+        party.save()
+        return ('', 204)

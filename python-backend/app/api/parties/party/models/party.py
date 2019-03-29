@@ -100,8 +100,7 @@ class Party(AuditMixin, Base):
         party_type_code = 'PER' if first_name else 'ORG'
         filters = [
             func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == party_type_code,
-            cls.deleted_ind == False
+            cls.party_type_code == party_type_code, cls.deleted_ind == False
         ]
         if first_name:
             filters.append(func.lower(cls.first_name) == func.lower(first_name))
@@ -112,9 +111,11 @@ class Party(AuditMixin, Base):
         _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
             return cls.query.filter(
-                cls.party_type_code == party_type).filter(_filter_by_name).filter(cls.deleted_ind == False).limit(query_limit)
+                cls.party_type_code == party_type).filter(_filter_by_name).filter(
+                    cls.deleted_ind == False).limit(query_limit)
         else:
-            return cls.query.filter(_filter_by_name).filter(cls.deleted_ind == False).limit(query_limit)
+            return cls.query.filter(_filter_by_name).filter(
+                cls.deleted_ind == False).limit(query_limit)
 
     @classmethod
     def create(
