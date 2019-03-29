@@ -4,6 +4,7 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy import or_, exc as alch_exceptions
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
@@ -55,7 +56,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
-            return self.create_error_payload(400, 'unexpected mine party appointment guid'), 400
+            raise BadRequest('unexpected mine party appointment guid')
         data = self.parser.parse_args()
         try:
             new_mpa = MinePartyAppointment(
@@ -83,15 +84,11 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
                 pass
 
             new_mpa.save()
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
                     data.get('mine_party_appt_type_code')).description
-                self.raise_error(500, f'Error: Date ranges for {mpa_type_name} must not overlap')
-            else:
-                self.raise_error(500, "Error: {}".format(e))
+                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap')
         return new_mpa.json()
 
     @api.doc(
@@ -102,26 +99,26 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def put(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
-            return self.create_error_payload(400, 'missing mine party appointment guid'), 400
+            raise BadRequest('missing mine party appointment guid')
+
         data = self.parser.parse_args()
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
-            return self.create_error_payload(404, 'mine party appointment not found'), 404
+            raise NotFound('mine party appointment not found')
 
-        if 'start_date' in data.keys():
-            mpa.start_date = data.get('start_date')
-        if 'end_date' in data.keys():
-            mpa.end_date = data.get('end_date')
-        if "related_guid" in data.keys():
-            mpa.assign_related_guid(data.get('related_guid'))
+        for key, value in data.items():
+            if key in ['related_guid']:
+                continue
+            elif key == "related_guid":
+                mpa.assign_related_guid(data.get('related_guid'))
+            else:
+                setattr(mpa, key, value)
         try:
             mpa.save()
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = mpa.mine_party_appt_type.description
-                self.raise_error(500, f'Error: Date ranges for {mpa_type_name} must not overlap')
+                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap')
 
         return mpa.json()
 
@@ -129,11 +126,14 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def delete(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
-            return self.create_error_payload(400, 'expected mine party appointment guid'), 400
+            raise BadRequest('expected mine party appointment guid')
+
         data = self.parser.parse_args()
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
-            return self.create_error_payload(404, 'mine party appointment not found'), 404
+            raise NotFound('mine party appointment not found')
+
         mpa.deleted_ind = True
         mpa.save()
-        return {'status': 200, 'message': 'mine_party_appointment deleted successfully.'}
+
+        return ('', 204)
