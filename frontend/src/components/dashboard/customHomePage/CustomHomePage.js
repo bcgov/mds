@@ -58,20 +58,19 @@ export class CustomHomePage extends Component {
   };
 
   transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
-    mines &&
     mines.map((mine) => ({
       key: mine.guid,
       emptyField: Strings.EMPTY_FIELD,
-      mineName: mine.mine_name ? mine.mine_name : Strings.EMPTY_FIELD,
-      mineNo: mine.mine_no ? mine.mine_no : Strings.EMPTY_FIELD,
-      operationalStatus: mine.mine_status[0]
+      mineName: mine.mine_name || Strings.EMPTY_FIELD,
+      mineNo: mine.mine_no || Strings.EMPTY_FIELD,
+      operationalStatus: mine.mine_status.length
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-      permit: mine.mine_permit[0] ? mine.mine_permit : null,
+      permit: mine.mine_permit.length ? mine.mine_permit : null,
       region: mine.region_code ? mineRegionHash[mine.region_code] : Strings.EMPTY_FIELD,
-      commodity: mine.mine_type[0] ? mine.mine_type : null,
+      commodity: mine.mine_type.length ? mine.mine_type : null,
       commodityHash: mineCommodityHash,
-      tenure: mine.mine_type[0] ? mine.mine_type : null,
+      tenure: mine.mine_type.length ? mine.mine_type : null,
       tenureHash: mineTenureHash,
       tsf: mine.mine_tailings_storage_facility
         ? mine.mine_tailings_storage_facility.length
@@ -190,7 +189,7 @@ export class CustomHomePage extends Component {
     return (
       <div className="custom-dashboard">
         <div className="custom-dashboard__container--white">
-          <h5> Subscribed Mines</h5>
+          <h5>Subscribed Mines</h5>
           <Table
             align="left"
             pagination={false}
