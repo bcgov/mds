@@ -76,7 +76,7 @@ export const createMineRecord = (payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.CREATE_MINE_RECORD));
@@ -101,7 +101,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
