@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { Component } from "react";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
@@ -36,16 +34,20 @@ export class MapPopup extends Component {
       });
     }
     const commodity_list = Array.from(commoditySet);
-    const commodity_string = commodity_list.length > 0 ? commodity_list.join(", ") : "N/A";
+    const commodity_list_length = commodity_list.length;
+    const max_number_displayed = 3;
+    const commodity =
+      commodity_list_length > 0
+        ? commodity_list.slice(0, max_number_displayed).map((code) => <Tag key={code}>{code}</Tag>)
+        : String.EMPTY_FIELD;
 
-    let permits = "";
-    // if (permit_array) {
-    //   permits = permit_array
-    //     .filter((permit) => permit.permit_status_code === "O")
-    //     .map((permit) => <li key={permit.permit_guid}> {permit.permit_no} </li>);
+    // if (commodity_list_length > 0) {
+    //   commodity = commodity_list
+    //     .slice(0, max_number_displayed)
+    //     .map((code) => <Tag key={code}>{code}</Tag>);
     // }
-    // permits = permits.length > 0 ? permits : <li>N/A</li>;
 
+    // console.log("Two called: ", commodity);
     const permit_set = new Set();
     if (permit_array) {
       permit_array.forEach((permit) => {
@@ -55,62 +57,49 @@ export class MapPopup extends Component {
       });
     }
     const open_permit_arrray = Array.from(permit_set);
-    permits = open_permit_arrray.length > 0 ? open_permit_arrray.join(", ") : "N/A";
+    const permit_list_length = open_permit_arrray.length;
+
+    const permits =
+      open_permit_arrray.length > 0
+        ? open_permit_arrray.splice(0, max_number_displayed).join(", ")
+        : String.EMPTY_FIELD;
 
     return (
       <div>
-        {/* <div className="inline-flex padding-small wrap">
-          <p className="field-title">Commodity</p>
-          {commodity_list.length > 0 ? (
-            commodity_list.map((code) => <Tag key={code}>{code}</Tag>)
-          ) : (
-            <p>{String.EMPTY_FIELD}</p>
-          )}
-        </div> */}
-
         <table className="minePopUpText" style={{ width: "100%" }}>
           <tr>
-            <td className="field-title">Mine No.</td>
+            <td className="leftMapPopUpCol field-title">Mine No.</td>
             <td>{this.props.basicMineInfo.mine_no}</td>
-            <td style={{ textAlign: "right" }}>
-              <StaticRouter context={this.context} basename={process.env.BASE_PATH}>
-                <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-                  <Button type="primary">View Mine</Button>
-                </Link>
-              </StaticRouter>
-            </td>
           </tr>
 
           <tr>
-            <td className="field-title">Permit No.</td>
+            <td className="leftMapPopUpCol field-title">Permit No.</td>
             <td>
-              {open_permit_arrray.length > 0
-                ? open_permit_arrray.map((permit) => <Tag key={permit}>{permit}</Tag>)
-                : String.EMPTY_FIELD}
+              {permits}
+              <br />
+              {permit_list_length > max_number_displayed
+                ? `showing ${max_number_displayed} of ${permit_list_length}`
+                : null}
             </td>
-            <td />
           </tr>
           <tr>
-            <td className="field-title">Commodities</td>
+            <td className="leftMapPopUpCol field-title">Commodities</td>
             <td>
-              {commodity_list.length > 0
-                ? commodity_list.map((code) => <Tag key={code}>{code}</Tag>)
-                : String.EMPTY_FIELD}
+              {commodity}
+              <br />
+              {commodity_list_length > max_number_displayed
+                ? `showing ${max_number_displayed} of ${commodity_list_length}`
+                : null}
             </td>
-            <td />
           </tr>
-          {/* <tr>
-            <td className="field-title">Permit No.</td>
-            <td>{permits}</td>
-            <td>7 of 10 results shown</td>
-          </tr>
-          <tr>
-          <tr>
-            <td style={{ fontWeight: "bold" }}>Commodity</td>
-            <td>{commodity_string}</td>
-            <td>7 of 10 results shown</td>
-          </tr> */}
         </table>
+        <StaticRouter context={this.context} basename={process.env.BASE_PATH}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
+            <Button type="primary" className="mineMapPopUpButton">
+              View Mine
+            </Button>
+          </Link>
+        </StaticRouter>
       </div>
     );
   }
