@@ -428,7 +428,6 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
 
 // mine subscription
 export const subscribe = (mineGuid) => (dispatch) => {
-  console.log(mineGuid);
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
   return axios
