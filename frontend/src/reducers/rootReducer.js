@@ -61,6 +61,10 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_COMPLIANCE_CODES
   ),
+  [reducerTypes.ADD_DOCUMENT_TO_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.ADD_DOCUMENT_TO_VARIANCE
+  ),
   [reducerTypes.CREATE_MINE_VARIANCE]: createReducer(
     networkReducer,
     reducerTypes.CREATE_MINE_VARIANCE

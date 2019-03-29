@@ -27,6 +27,7 @@ export class AddVarianceForm extends Component {
 
   // WIP
   onFileLoad = (fileName, document_manager_guid) => {
+    console.log("made it inside onFileUpload");
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
     change("uploadedFiles", this.state.uploadedFiles);
   };

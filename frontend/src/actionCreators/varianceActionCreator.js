@@ -49,3 +49,28 @@ export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
       dispatch(hideLoading());
     });
 };
+
+export const addDocumentToVariance = (varianceGuid, payload) => (dispatch) => {
+  console.log(payload);
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
+  return axios
+    .put(
+      ENVIRONMENT.apiUrl + API.VARIANCE_REGISTER_DOCUMENT_UPLOAD(varianceGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
+      dispatch(hideLoading());
+    });
+};
