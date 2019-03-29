@@ -261,33 +261,28 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
 
         data = self.parser.parse_args()
+
         lat = data.get('latitude')
         lon = data.get('longitude')
-        status = data.get('mine_status')
-        major_mine_ind = data.get('major_mine_ind', False)
-        mine_region = data.get('mine_region')
+        if (lat and not lon) or (not lat and lon):
+            raise BadRequest('latitude and longitude must both be empty, or both provided')
 
-        if not data.get('mine_name'):
-            raise BadRequest("mine_name not provided")
+        # query the mine tables and check if that mine name exists
+        self._throw_error_if_mine_exists(data.get('mine_name'))
+        mine = Mine(
+            mine_no=generate_mine_no(),
+            mine_name=data.get('mine_name'),
+            mine_note=data.get('mine_note'),
+            major_mine_ind=data.get('major_mine_ind'),
+            mine_region=data.get('mine_region'))
 
-        try:
-            # query the mine tables and check if that mine name exists
-            self._throw_error_if_mine_exists(data['mine_name'])
-            mine = Mine(
-                mine_no=generate_mine_no(),
-                mine_name=data.get('mine_name'),
-                mine_note=data.get('mine_note'),
-                major_mine_ind=major_mine_ind,
-                mine_region=mine_region)
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
         db.session.add(mine)
 
         if lat and lon:
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
             cache.delete(MINE_MAP_CACHE)
 
-        mine_status = self.mine_status_processor(status, mine)
+        mine_status = self.mine_status_processor(data.get('mine_status'), mine)
         db.session.commit()
 
         return {
@@ -299,7 +294,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             'latitude': str(mine.mine_location.latitude) if mine.mine_location else None,
             'longitude': str(mine.mine_location.longitude) if mine.mine_location else None,
             'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine.mine_region if mine_region else None,
+            'mine_region': mine.mine_region if mine.mine_region else None,
         }
 
     @api.expect(parser)
