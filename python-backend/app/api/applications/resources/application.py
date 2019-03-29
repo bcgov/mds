@@ -86,7 +86,7 @@ class ApplicationListResource(Resource, UserMixin):
         try:
             application = Application.create(mine.mine_guid, data['application_no'],
                                              data['application_status_code'], data['received_date'],
-                                             data.get('description'), self.get_create_update_dict())
+                                             data.get('description'))
             application.save()
         except Exception as e:
             raise InternalServerError('Error: {}'.format(e))
