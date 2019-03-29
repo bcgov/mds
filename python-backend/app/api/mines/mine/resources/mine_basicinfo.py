@@ -23,11 +23,7 @@ class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
     def post(self, mine_no_or_guid=None):
 
         data = self.parser.parse_args()
-        result = []
-        if not data.get('mine_guids'):
-            return []
+        mines = data.get('mine_guids', [])
 
-        for mine_guid in data.get('mine_guids'):
-            mine = Mine.find_by_mine_guid(mine_guid)
-            result.append(mine.json_for_list())
-        return result
+        mine_list = Mine.query.filter(Mine.mine_guid.in_((mines))).all()
+        return [x.json_for_list() for x in mine_list]
