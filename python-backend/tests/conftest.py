@@ -33,7 +33,6 @@ from app.api.documents.required.models.required_document_due_date_type import Re
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.applications.models.application_status_code import ApplicationStatusCode
@@ -41,6 +40,7 @@ from app.api.applications.models.application_status_code import ApplicationStatu
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 from app import auth
+from app.api.utils.include.user_info import User
 
 auth.apply_security = False
 
@@ -100,6 +100,8 @@ def test_client():
     ctx = app.app_context()
     ctx.push()
     setup_data(db.session)
+
+    User._test_mode = True
 
     yield client
 
@@ -388,13 +390,6 @@ def setup_data(session):
         exp_document_status_code=expected_document_status1.exp_document_status_code,
         **DUMMY_USER_KWARGS)
     expected_document1.save()
-
-    mine_tsf1 = MineTailingsStorageFacility(
-        mine_tailings_storage_facility_guid=TEST_TAILINGS_STORAGE_FACILITY_GUID1,
-        mine_guid=TEST_MINE_GUID,
-        mine_tailings_storage_facility_name=TEST_TAILINGS_STORAGE_FACILITY_NAME1,
-        **DUMMY_USER_KWARGS)
-    mine_tsf1.save()
 
     mpat1 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,

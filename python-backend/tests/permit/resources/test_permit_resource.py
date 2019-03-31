@@ -17,7 +17,7 @@ def setup_info(test_client):
     mine_1.save()
     mine_2.save()
 
-    permit = Permit.create(mine_2.mine_guid, test_permit_no, 'O', DUMMY_USER_KWARGS)
+    permit = Permit.create(mine_2.mine_guid, test_permit_no, 'O')
     permit.save()
 
     MINE_1_GUID = str(mine_1.mine_guid)
@@ -46,7 +46,7 @@ def test_get_permit_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
         '/permits/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'error': {'status': 404, 'message': 'Permit not found'}}
+    assert 'not found' in get_data['message']
     assert get_resp.status_code == 404
 
 
