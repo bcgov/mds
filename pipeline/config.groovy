@@ -353,6 +353,7 @@ app {
                             'NAME':"mds-logstash",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'ENVIRONMENT_NAME':"test",
                             'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
@@ -434,7 +435,7 @@ environments {
                 }
                 logstash {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_limit = "500m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                 }
@@ -553,9 +554,9 @@ environments {
                 }
                 logstash {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "1.5Gi"
+                    cpu_limit = "250m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {
@@ -662,8 +663,8 @@ environments {
                     memory_limit = "4Gi"
                 }
                 logstash {
-                    cpu_request = "100m"
-                    cpu_limit = "250m"
+                    cpu_request = "200m"
+                    cpu_limit = "400m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
