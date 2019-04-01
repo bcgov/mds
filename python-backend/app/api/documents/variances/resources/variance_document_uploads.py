@@ -23,21 +23,30 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    # TODO: I don't think I want these
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
     parser.add_argument('mine_guid', type=str)
+    parser.add_argument('mine_no', type=str)
 
     @api.doc(
         params={
-            'variance_id':
-            'Required: The id of the variance to which this document will be associated.'
+            'mine_guid':
+            'Required: The guid of the mine to which the variance will be associated.'
         })
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, variance_id=None):
-        if not variance_id:
-            return self.create_error_payload(400, 'Missing variance_id'), 400
+    def post(self):
+        data = self.parser.parse_args()
+        mine_guid = data.get('mine_guid')
+        mine_no = data.get('mine_no')
+
+        if not mine_guid:
+            # TODO: Replace every create_error_payload?? I think we're moving away from these
+            return self.create_error_payload(400, 'Missing mine_guid'), 400
+
+        if not mine_no:
+            # TODO: Replace every create_error_payload?? I think we're moving away from these
+            return self.create_error_payload(400, 'Missing mine_no'), 400
 
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -46,11 +55,12 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         # Save file
         filename = metadata.get('filename')
-        folder = f'variances/{variance_id}'
+        folder = f'variances/{mine_guid}'
+        pretty_folder = f'variances/{mine_no}'
 
         data = {
             'folder': folder,
-            'pretty_folder': folder,
+            'pretty_folder': pretty_folder,
             'filename': filename
         }
         document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'

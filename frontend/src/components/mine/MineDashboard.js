@@ -21,7 +21,11 @@ import {
   fetchMineComplianceCodes,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
-import { createVariance, fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
+import {
+  createVariance,
+  fetchVariancesByMine,
+  addDocumentToVariance,
+} from "@/actionCreators/varianceActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
@@ -207,6 +211,7 @@ export class MineDashboard extends Component {
                       <MineVariance
                         mine={mine}
                         createVariance={this.props.createVariance}
+                        addDocumentToVariance={this.props.addDocumentToVariance}
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
                         fetchVariancesByMine={this.props.fetchVariancesByMine}
@@ -277,6 +282,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceInfo,
       fetchApplications,
       createVariance,
+      addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
     },

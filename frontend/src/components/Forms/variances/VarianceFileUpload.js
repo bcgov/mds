@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "antd";
-import { VARIANCE_UPLOAD_FILEPOND } from "@/constants/API";
+import { VARIANCE_UPLOAD } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
@@ -10,6 +10,7 @@ const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  mineNo: PropTypes.string.isRequired,
 };
 
 export const VarianceFileUpload = (props) => (
@@ -18,7 +19,7 @@ export const VarianceFileUpload = (props) => (
       id="fileUpload"
       name="fileUpload"
       component={FileUpload}
-      uploadUrl={VARIANCE_UPLOAD_FILEPOND(props.mineGuid)}
+      uploadUrl={`${VARIANCE_UPLOAD}?mine_guid=${props.mineGuid}&mine_no=${props.mineNo}`}
       acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}

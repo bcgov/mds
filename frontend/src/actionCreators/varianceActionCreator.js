@@ -50,15 +50,11 @@ export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
     });
 };
 
-export const addDocumentToVariance = (varianceGuid, payload) => (dispatch) => {
+export const addDocumentToVariance = (varianceId, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return axios
-    .put(
-      ENVIRONMENT.apiUrl + API.VARIANCE_REGISTER_DOCUMENT_UPLOAD(varianceGuid),
-      payload,
-      createRequestHeader()
-    )
+    .put(ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(varianceId), payload, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
       dispatch(hideLoading());

@@ -28,5 +28,6 @@ api.add_resource(MineDocumentResource, '/mines/<string:mine_guid>')
 api.add_resource(VarianceDocumentResource, '/variances/<string:variance_id>', '/variances/<string:variance_id>/document/<string:mine_document_guid>')
 
 api.add_resource(VarianceDocumentUploadResource,
+                 '/variances',
                  '/variances/<string:variance_id>/document',
                  '/variances/<string:variance_id>/document/<string:mine_document_guid>')

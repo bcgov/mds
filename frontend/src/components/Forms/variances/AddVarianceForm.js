@@ -12,9 +12,11 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  mineNo: PropTypes.string.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -23,23 +25,34 @@ const defaultProps = {};
 export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
+    filenameGuidMap: {},
   };
 
   // WIP
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.setState(({ filenameGuidMap }) => ({
+      filenameGuidMap: {
+        [document_manager_guid]: fileName,
+        ...filenameGuidMap,
+      },
+    }));
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
-  // WIP
+  // TODO: Support deletion on backend
   onRemoveFile = (fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    // TODO: Update state of filenameGuidMap
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form
+        layout="vertical"
+        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.filenameGuidMap))}
+      >
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
@@ -93,11 +106,12 @@ export class AddVarianceForm extends Component {
           <Col md={12} sm={24}>
             <Form.Item label="Upload files*">
               <Field
-                id="PermitDocumentFileUpload"
-                name="PermitDocumentFileUpload"
+                id="VarianceDocumentFileUpload"
+                name="VarianceDocumentFileUpload"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
                 mineGuid={this.props.mineGuid}
+                mineNo={this.props.mineNo}
                 component={VarianceFileUpload}
               />
             </Form.Item>
