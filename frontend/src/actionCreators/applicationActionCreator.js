@@ -53,7 +53,7 @@ export const updateApplication = (application_guid, payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_APPLICATION));
@@ -74,7 +74,7 @@ export const createApplication = (payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.CREATE_APPLICAION));

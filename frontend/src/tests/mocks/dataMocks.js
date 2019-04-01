@@ -982,27 +982,6 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
   { application_status_code: "APR", description: "Approved" },
 ];
 
-export const APPLICATION_LIST = [
-  {
-    application_id: 1,
-    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
-    application_guid: "ad3eaab6-6248-414c-9c15-8fe4880f0a61",
-    application_no: "TA-09876",
-    application_status_code: "RIP",
-    description: "Test.",
-    received_date: "2019-03-06",
-  },
-  {
-    application_id: 3,
-    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
-    application_guid: "a54c5c76-53a4-4967-8686-4ca15cc1863a",
-    application_no: "TA-93475",
-    application_status_code: "RIP",
-    description: null,
-    received_date: "2019-02-25",
-  },
-];
-
 export const VARIANCES = {
   records: [
     {
@@ -1072,4 +1051,23 @@ export const DROPDOWN_HSRCM_CODES = [
 export const HSRCM_HASH = {
   305: "2.3.7 - Spills",
   306: "2.3.8 - Flammable Waste Storage",
+};
+
+export const APPLICATION_LIST = {
+  applications: [
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd14",
+      application_no: "TA-09876",
+      application_status_code: "RIP",
+      description: "Test.",
+      received_date: "2019-03-06",
+    },
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd11",
+      application_no: "TA-93475",
+      application_status_code: "RIP",
+      description: null,
+      received_date: "2019-02-25",
+    },
+  ],
 };
