@@ -221,10 +221,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if not mine_status:
             return mine.mine_status
 
-        existing_status = mine.mine_status[0]
-        current_app.logger.info(
-            f'updating mine no={mine.mine_no} from mine_status={existing_status.create_mine_status_values_list()} to new_status={mine_status}'
-        )
+        current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
         try:
             mine_status_xref = MineStatusXref.find_by_codes(
                 self.mine_operation_code_processor(mine_status, 0),
@@ -234,6 +231,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 raise BadRequest(
                     'Invalid status_code, reason_code, and sub_reason_code combination.')
 
+            existing_status = mine.mine_status[0] if mine.mine_status else None
             if existing_status:
                 if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
                     return existing_status
