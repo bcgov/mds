@@ -17,6 +17,10 @@ const defaultProps = {
 
 // FIXME: For some reason, this component requires this.context, preventing it
 // from being refactored into a pure function
+// Aditional note: The content from this is being passed to the arcgis pure javascript component as static HTML content.
+// this.context is being used to generate a pure HTML link due to either constraint or complexity in having arcgis trigger
+// a route event.
+
 // eslint-disable-next-line react/prefer-stateless-function
 export class MapPopup extends Component {
   render() {
