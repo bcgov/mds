@@ -1,6 +1,8 @@
 from app.extensions import db, sched, cache
 from app.api.utils.apm import register_apm
 from app.api.constants import ETL, TIMEOUT_24_HOURS
+from random import randint
+from time import sleep
 
 
 #the schedule of these jobs is set using server time (UTC)
@@ -10,6 +12,8 @@ def _schedule_ETL_jobs(app):
 
 @register_apm
 def _run_ETL():
+    #try to desynchronize the two pods.
+    sleep(randint(10, 10000))
     with sched.app.app_context():
         job_running = cache.get(ETL)
         if not job_running:
