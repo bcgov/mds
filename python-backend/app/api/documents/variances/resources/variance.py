@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_restplus import Resource, reqparse
 from sqlalchemy.exc import DBAPIError
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import VarianceDocument
 from app.extensions import api
@@ -19,7 +20,7 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     def get(self, variance_id=None, mine_document_guid=None):
         if not variance_id:
-            return self.create_error_payload(422, 'Missing variance_id'), 422
+            raise BadRequest('Missing variance_id')
 
         # Find single document
         if mine_document_guid:
@@ -28,7 +29,7 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
                     mine_document_guid,
                     variance_id)
             except DBAPIError:
-                return self.create_error_payload(422, 'Invalid mine_document_guid'), 422
+                raise BadRequest('Invalid mine_document_guid')
             if document != None:
                 return document.json()
 
@@ -36,8 +37,8 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
         try:
             documents = VarianceDocument.find_by_variance_id(variance_id)
         except DBAPIError:
-            return self.create_error_payload(422, 'Invalid variance_id'), 422
+            raise BadRequest('Invalid variance_id')
         if documents != None:
             return { 'records': [x.json() for x in documents] }
         else:
-            return self.create_error_payload(404, 'Unable to fetch variances'), 404
+            raise NotFound('Unable to fetch variances')

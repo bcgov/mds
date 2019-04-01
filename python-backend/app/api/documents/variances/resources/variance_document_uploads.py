@@ -2,6 +2,7 @@ import base64
 import logging
 import requests
 import json
+from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
 from flask_restplus import Resource, reqparse
@@ -35,17 +36,14 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         mine_no = data.get('mine_no')
 
         if not mine_guid:
-            # TODO: Replace every create_error_payload?? I think we're moving away from these
-            return self.create_error_payload(400, 'Missing mine_guid'), 400
+            raise BadRequest('Missing mine_guid')
 
         if not mine_no:
-            # TODO: Replace every create_error_payload?? I think we're moving away from these
-            return self.create_error_payload(400, 'Missing mine_no'), 400
+            raise BadRequest('Missing mine_no')
 
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
-            return self.create_error_payload(400,
-                                             'Filename not found in request metadata header'), 400
+            raise BadRequest('Filename not found in request metadata header')
 
         # Save file
         filename = metadata.get('filename')
@@ -74,7 +72,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, variance_id=None):
         if not variance_id:
-            return self.create_error_payload(400, 'Missing variance_id'), 400
+            raise BadRequest('Missing variance_id')
 
         data = self.parser.parse_args()
         document_manager_guid = data.get('document_manager_guid')
@@ -82,7 +80,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         mine_guid = data.get('mine_guid')
 
         if not document_manager_guid:
-            return self.create_error_payload(422, 'Must provide document_manager_guid'), 422
+            raise BadRequest('Must provide document_manager_guid')
 
         # Register new file upload
         mine_doc = MineDocument(
@@ -91,7 +89,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             document_name=filename)
 
         if not mine_doc:
-            return self.create_error_payload(400, 'Unable to register uploaded file as document'), 400
+            raise BadRequest('Unable to register uploaded file as document')
 
         mine_doc.save()
 
@@ -99,7 +97,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         document = VarianceDocument.create(mine_doc.mine_document_guid, variance_id)
 
         if not document:
-            return self.create_error_payload(400, 'Unable to assign document to variance'), 400
+            BadRequest('Unable to assign document to variance')
 
         document.save()
         return document.json()
@@ -108,20 +106,17 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, variance_id=None, mine_document_guid=None):
         if not variance_id or not mine_document_guid:
-            return self.create_error_payload(
-                400, 'Must provide a variance_id and mine_document_guid'), 400
+            raise BadRequest('Must provide a variance_id and mine_document_guid')
 
         try:
             doc_xref_record = VarianceDocument.find_by_mine_document_guid_and_variance_id(
                 mine_document_guid,
                 variance_id)
         except DataError:
-            return self.create_error_payload(
-                422, 'One or more invalid parameters provided'), 422
+            raise BadRequest('One or more invalid parameters provided')
 
         if not doc_xref_record:
-            return self.create_error_payload(
-                404, 'Document not found'), 404
+            raise NotFound('Document not found')
 
         db.session.delete(doc_xref_record)
         db.session.commit()
