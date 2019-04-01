@@ -23,7 +23,7 @@ export const createParty = (payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.CREATE_PARTY));
@@ -48,7 +48,7 @@ export const updateParty = (payload, partyGuid) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_PARTY));

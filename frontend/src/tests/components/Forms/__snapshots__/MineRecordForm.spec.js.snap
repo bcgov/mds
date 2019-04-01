@@ -259,9 +259,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="name"
+                id="mine_name"
                 label="Mine Name *"
-                name="name"
+                name="mine_name"
                 validate={
                   Array [
                     [Function],
@@ -500,9 +500,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="note"
+                id="mine_note"
                 label="Notes"
-                name="note"
+                name="mine_note"
                 validate={
                   Array [
                     [Function],
@@ -600,9 +600,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="name"
+                id="mine_name"
                 label="Mine Name *"
-                name="name"
+                name="mine_name"
                 validate={
                   Array [
                     [Function],
@@ -628,9 +628,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="name"
+                id="mine_name"
                 label="Mine Name *"
-                name="name"
+                name="mine_name"
                 validate={
                   Array [
                     [Function],
@@ -649,9 +649,9 @@ ShallowWrapper {
             "props": Object {
               "children": <Field
                 component={[Function]}
-                id="name"
+                id="mine_name"
                 label="Mine Name *"
-                name="name"
+                name="mine_name"
                 validate={
                   Array [
                     [Function],
@@ -671,9 +671,9 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "component": [Function],
-                "id": "name",
+                "id": "mine_name",
                 "label": "Mine Name *",
-                "name": "name",
+                "name": "mine_name",
                 "validate": Array [
                   [Function],
                   [Function],
@@ -1552,9 +1552,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="note"
+                id="mine_note"
                 label="Notes"
-                name="note"
+                name="mine_note"
                 validate={
                   Array [
                     [Function],
@@ -1578,9 +1578,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="note"
+                id="mine_note"
                 label="Notes"
-                name="note"
+                name="mine_note"
                 validate={
                   Array [
                     [Function],
@@ -1597,9 +1597,9 @@ ShallowWrapper {
             "props": Object {
               "children": <Field
                 component={[Function]}
-                id="note"
+                id="mine_note"
                 label="Notes"
-                name="note"
+                name="mine_note"
                 validate={
                   Array [
                     [Function],
@@ -1617,9 +1617,9 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "component": [Function],
-                "id": "note",
+                "id": "mine_note",
                 "label": "Notes",
-                "name": "note",
+                "name": "mine_note",
                 "validate": Array [
                   [Function],
                 ],
@@ -1873,9 +1873,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="name"
+                  id="mine_name"
                   label="Mine Name *"
-                  name="name"
+                  name="mine_name"
                   validate={
                     Array [
                       [Function],
@@ -2114,9 +2114,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="note"
+                  id="mine_note"
                   label="Notes"
-                  name="note"
+                  name="mine_note"
                   validate={
                     Array [
                       [Function],
@@ -2214,9 +2214,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="name"
+                  id="mine_name"
                   label="Mine Name *"
-                  name="name"
+                  name="mine_name"
                   validate={
                     Array [
                       [Function],
@@ -2242,9 +2242,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="name"
+                  id="mine_name"
                   label="Mine Name *"
-                  name="name"
+                  name="mine_name"
                   validate={
                     Array [
                       [Function],
@@ -2263,9 +2263,9 @@ ShallowWrapper {
               "props": Object {
                 "children": <Field
                   component={[Function]}
-                  id="name"
+                  id="mine_name"
                   label="Mine Name *"
-                  name="name"
+                  name="mine_name"
                   validate={
                     Array [
                       [Function],
@@ -2285,9 +2285,9 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "component": [Function],
-                  "id": "name",
+                  "id": "mine_name",
                   "label": "Mine Name *",
-                  "name": "name",
+                  "name": "mine_name",
                   "validate": Array [
                     [Function],
                     [Function],
@@ -3166,9 +3166,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="note"
+                  id="mine_note"
                   label="Notes"
-                  name="note"
+                  name="mine_note"
                   validate={
                     Array [
                       [Function],
@@ -3192,9 +3192,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="note"
+                  id="mine_note"
                   label="Notes"
-                  name="note"
+                  name="mine_note"
                   validate={
                     Array [
                       [Function],
@@ -3211,9 +3211,9 @@ ShallowWrapper {
               "props": Object {
                 "children": <Field
                   component={[Function]}
-                  id="note"
+                  id="mine_note"
                   label="Notes"
-                  name="note"
+                  name="mine_note"
                   validate={
                     Array [
                       [Function],
@@ -3231,9 +3231,9 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "component": [Function],
-                  "id": "note",
+                  "id": "mine_note",
                   "label": "Notes",
-                  "name": "note",
+                  "name": "mine_note",
                   "validate": Array [
                     [Function],
                   ],
