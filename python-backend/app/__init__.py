@@ -104,7 +104,14 @@ def register_routes(app):
     def default_error_handler(error):
         if getattr(error, 'code', 500) == 500:
             current_app.logger.error(str(error))
+
         return {
             'status': getattr(error, 'code', 500),
-            'message': str(error)
+            'message': str(error),
+            #FE is mixed on expecing error in obj, or wrapped 'error' key.
+            # this is temporary until we remove create_error_payload and raise_error.
+            'error': {
+                'status': getattr(error, 'code', 500),
+                'message': str(error)
+            }
         }, getattr(error, 'code', 500)

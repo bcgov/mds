@@ -9,7 +9,7 @@ def test_get_person_not_found(test_client, auth_headers):
     get_resp = test_client.get(
         '/parties/' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'error': {'status': 404, 'message': 'Party not found'}}
+    assert 'not found' in get_data['message']
     assert get_resp.status_code == 404
 
 
@@ -27,7 +27,7 @@ def test_post_person_invalid_url(test_client, auth_headers):
     post_resp = test_client.post(
         '/parties/some_id', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_data == {'error': {'status': 400, 'message': 'Error: Unexpected party id in Url.'}}
+    assert 'Unexpected party id' in post_data['message']
     assert post_resp.status_code == 400
 
 
@@ -152,7 +152,7 @@ def test_put_person_not_found(test_client, auth_headers):
         data=test_person_data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_data == {'error': {'status': 404, 'message': 'Party not found'}}
+    assert 'not found' in put_data['message']
     assert put_resp.status_code == 404
 
 
