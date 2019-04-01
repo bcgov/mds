@@ -104,7 +104,7 @@ ShallowWrapper {
             Object {
               "compliance_article_id": "N/A",
               "expiry_date": "Mar 30 2019",
-              "isOverdue": false,
+              "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": 1249,
               "note": "notesss",
@@ -193,7 +193,7 @@ ShallowWrapper {
           Object {
             "compliance_article_id": "N/A",
             "expiry_date": "Mar 30 2019",
-            "isOverdue": false,
+            "isOverdue": true,
             "issue_date": "Mar 01 2019",
             "key": 1249,
             "note": "notesss",
@@ -288,7 +288,7 @@ ShallowWrapper {
               Object {
                 "compliance_article_id": "N/A",
                 "expiry_date": "Mar 30 2019",
-                "isOverdue": false,
+                "isOverdue": true,
                 "issue_date": "Mar 01 2019",
                 "key": 1249,
                 "note": "notesss",
@@ -377,7 +377,7 @@ ShallowWrapper {
             Object {
               "compliance_article_id": "N/A",
               "expiry_date": "Mar 30 2019",
-              "isOverdue": false,
+              "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": 1249,
               "note": "notesss",

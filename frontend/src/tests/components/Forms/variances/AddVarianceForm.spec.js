@@ -8,11 +8,13 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
   props.mineGuid = "48593";
+  props.mineNo = "B03124";
   props.submitting = false;
   props.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
 };

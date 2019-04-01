@@ -17,8 +17,26 @@ ShallowWrapper {
         },
       ]
     }
-    handleSubmit={[MockFunction]}
+    handleSubmit={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            undefined,
+          ],
+        ],
+      }
+    }
     mineGuid="48593"
+    mineNo="B03124"
+    onSubmit={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+        ],
+      }
+    }
     submitting={false}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -156,9 +174,10 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="PermitDocumentFileUpload"
+                id="VarianceDocumentFileUpload"
                 mineGuid="48593"
-                name="PermitDocumentFileUpload"
+                mineNo="B03124"
+                name="VarianceDocumentFileUpload"
                 onFileLoad={[Function]}
                 onRemoveFile={[Function]}
               />
@@ -212,7 +231,7 @@ ShallowWrapper {
       ],
       "hideRequiredMark": false,
       "layout": "vertical",
-      "onSubmit": [MockFunction],
+      "onSubmit": [Function],
       "prefixCls": "ant-form",
     },
     "ref": null,
@@ -341,9 +360,10 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="PermitDocumentFileUpload"
+                  id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  name="PermitDocumentFileUpload"
+                  mineNo="B03124"
+                  name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
                 />
@@ -711,9 +731,10 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="PermitDocumentFileUpload"
+                  id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  name="PermitDocumentFileUpload"
+                  mineNo="B03124"
+                  name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
                 />
@@ -729,9 +750,10 @@ ShallowWrapper {
               "props": Object {
                 "children": <Field
                   component={[Function]}
-                  id="PermitDocumentFileUpload"
+                  id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  name="PermitDocumentFileUpload"
+                  mineNo="B03124"
+                  name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
                 />,
@@ -747,9 +769,10 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "component": [Function],
-                  "id": "PermitDocumentFileUpload",
+                  "id": "VarianceDocumentFileUpload",
                   "mineGuid": "48593",
-                  "name": "PermitDocumentFileUpload",
+                  "mineNo": "B03124",
+                  "name": "VarianceDocumentFileUpload",
                   "onFileLoad": [Function],
                   "onRemoveFile": [Function],
                 },
@@ -1017,9 +1040,10 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="PermitDocumentFileUpload"
+                  id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  name="PermitDocumentFileUpload"
+                  mineNo="B03124"
+                  name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
                 />
@@ -1073,7 +1097,7 @@ ShallowWrapper {
         ],
         "hideRequiredMark": false,
         "layout": "vertical",
-        "onSubmit": [MockFunction],
+        "onSubmit": [Function],
         "prefixCls": "ant-form",
       },
       "ref": null,
@@ -1202,9 +1226,10 @@ ShallowWrapper {
                 >
                   <Field
                     component={[Function]}
-                    id="PermitDocumentFileUpload"
+                    id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    name="PermitDocumentFileUpload"
+                    mineNo="B03124"
+                    name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
                   />
@@ -1572,9 +1597,10 @@ ShallowWrapper {
                 >
                   <Field
                     component={[Function]}
-                    id="PermitDocumentFileUpload"
+                    id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    name="PermitDocumentFileUpload"
+                    mineNo="B03124"
+                    name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
                   />
@@ -1590,9 +1616,10 @@ ShallowWrapper {
                 "props": Object {
                   "children": <Field
                     component={[Function]}
-                    id="PermitDocumentFileUpload"
+                    id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    name="PermitDocumentFileUpload"
+                    mineNo="B03124"
+                    name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
                   />,
@@ -1608,9 +1635,10 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "component": [Function],
-                    "id": "PermitDocumentFileUpload",
+                    "id": "VarianceDocumentFileUpload",
                     "mineGuid": "48593",
-                    "name": "PermitDocumentFileUpload",
+                    "mineNo": "B03124",
+                    "name": "VarianceDocumentFileUpload",
                     "onFileLoad": [Function],
                     "onRemoveFile": [Function],
                   },
