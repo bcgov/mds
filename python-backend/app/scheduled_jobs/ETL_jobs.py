@@ -13,7 +13,7 @@ def _schedule_ETL_jobs(app):
 @register_apm
 def _run_ETL():
     #try to desynchronize the two pods.
-    sleep(randint(10, 10000))
+    sleep(randint(0.01, 10))
     with sched.app.app_context():
         job_running = cache.get(ETL)
         if not job_running:
