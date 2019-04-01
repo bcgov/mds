@@ -10,24 +10,12 @@ class MineTypeDetail(AuditMixin, Base):
     __tablename__ = 'mine_type_detail_xref'
     mine_type_detail_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_type_guid = db.Column(
-        UUID(as_uuid=True),
-        db.ForeignKey('mine_type.mine_type_guid'),
-        nullable=False
-    )
+        UUID(as_uuid=True), db.ForeignKey('mine_type.mine_type_guid'), nullable=False)
     mine_disturbance_code = db.Column(
-        db.String(3),
-        db.ForeignKey('mine_disturbance_code.mine_disturbance_code')
-    )
+        db.String(3), db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
     mine_commodity_code = db.Column(
-        db.String(2),
-        db.ForeignKey('mine_commodity_code.mine_commodity_code')
-    )
-    active_ind = db.Column(
-        db.Boolean,
-        nullable=False,
-        default=True
-    )
-
+        db.String(2), db.ForeignKey('mine_commodity_code.mine_commodity_code'))
+    active_ind = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         return '<MineTypeDetail %r>' % self.mine_type_detail_xref_guid
@@ -40,22 +28,17 @@ class MineTypeDetail(AuditMixin, Base):
             'mine_commodity_code': self.mine_commodity_code
         }
 
-
     @classmethod
-    def create_mine_type_detail(
-            cls,
-            mine_type_guid,
-            mine_disturbance_code,
-            mine_commodity_code,
-            user_kwargs,
-            save=True
-    ):
+    def create_mine_type_detail(cls,
+                                mine_type_guid,
+                                mine_disturbance_code,
+                                mine_commodity_code,
+                                save=True):
         mine_type_detail = cls(
             mine_type_detail_xref_guid=uuid.uuid4(),
             mine_disturbance_code=mine_disturbance_code,
             mine_commodity_code=mine_commodity_code,
             mine_type_guid=mine_type_guid,
-            **user_kwargs
         )
         if save:
             mine_type_detail.save(commit=False)
@@ -68,5 +51,5 @@ class MineTypeDetail(AuditMixin, Base):
 
     @classmethod
     def expire_record(cls, record):
-        record.active_ind=False
+        record.active_ind = False
         record.save()

@@ -87,7 +87,7 @@ class MineExpectedDocument(AuditMixin, Base):
 
     def set_due_date(self):
         self.due_date = self._get_due_date_for_expected_document(
-            datetime.now(), self.required_document.req_document_due_date_type,
+            datetime.utcnow(), self.required_document.req_document_due_date_type,
             self.required_document.req_document_due_date_period_months)
 
     def _get_due_date_for_expected_document(self, current_date, due_date_type, period_in_months):

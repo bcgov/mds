@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 
 from app.extensions import db
+from .include.user_info import User
 
 
 class UserBoundQuery(db.Query):
@@ -56,7 +57,12 @@ class Base(db.Model):
 
 
 class AuditMixin(object):
-    create_user = db.Column(db.String(60), nullable=False)
+    create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
     create_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    update_user = db.Column(db.String(60), nullable=False)
-    update_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    update_user = db.Column(
+        db.String(60),
+        nullable=False,
+        default=User().get_user_username,
+        onupdate=User().get_user_username)
+    update_timestamp = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
