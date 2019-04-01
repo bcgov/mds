@@ -59,7 +59,7 @@ class Variance(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter(str(mine_guid) == str(mine_guid)).all()
+        return cls.query.filter_by(mine_guid=mine_guid).all()
 
     @classmethod
     def find_by_variance_id(cls, variance_id):

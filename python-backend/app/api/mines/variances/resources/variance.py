@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_restplus import Resource, reqparse
 from sqlalchemy.exc import DBAPIError
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import Variance
 from app.extensions import api
@@ -31,23 +32,23 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     def get(self, mine_guid=None):
         if not mine_guid:
-            return self.create_error_payload(422, 'Missing mine_guid'), 422
+            raise BadRequest('Missing mine_guid')
 
         try:
             variances = Variance.find_by_mine_guid(mine_guid)
         except DBAPIError:
-            return self.create_error_payload(422, 'Invalid mine_guid'), 422
+            raise BadRequest('Invalid mine_guid')
         if variances != None:
             return { 'records': [x.json() for x in variances] }
         else:
-            return self.create_error_payload(404, 'Unable to fetch variances'), 404
+            raise BadRequest('Unable to fetch variances')
 
 
     @api.expect(parser)
     @requires_role_mine_create
     def post(self, mine_guid=None):
         if not mine_guid:
-            return self.create_error_payload(422, 'Missing mine_guid'), 422
+            raise BadRequest('Missing mine_guid')
 
         data = VarianceResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
