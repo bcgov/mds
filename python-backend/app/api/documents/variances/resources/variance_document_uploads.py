@@ -1,19 +1,13 @@
-# import decimal
-# import uuid
 import base64
 import logging
 import requests
 import json
 
-# from datetime import datetime
 from flask import request, current_app, Response
 from flask_restplus import Resource, reqparse
-# from werkzeug.datastructures import FileStorage
-# from werkzeug import exceptions
-# from sqlalchemy.exc import DBAPIError
+from sqlalchemy.exc import DataError
 
 from ..models.variance import VarianceDocument
-# from ...expected.models.mine_expected_document_xref import VarianceDocumentXref
 from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db
@@ -109,6 +103,30 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         document.save()
         return document.json()
+
+
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    def delete(self, variance_id=None, mine_document_guid=None):
+        if not variance_id or not mine_document_guid:
+            return self.create_error_payload(
+                400, 'Must provide a variance_id and mine_document_guid'), 400
+
+        try:
+            doc_xref_record = VarianceDocument.find_by_mine_document_guid_and_variance_id(
+                mine_document_guid,
+                variance_id)
+        except DataError:
+            return self.create_error_payload(
+                422, 'One or more invalid parameters provided'), 422
+
+        if not doc_xref_record:
+            return self.create_error_payload(
+                404, 'Document not found'), 404
+
+        db.session.delete(doc_xref_record)
+        db.session.commit()
+
+        return {'status': 200, 'message': 'The document was removed succesfully'}
 
 
     def _parse_request_metadata(self):

@@ -37,8 +37,11 @@ class VarianceDocument(Base):
         return document
 
     @classmethod
-    def find_by_mine_document_guid(cls, mine_document_guid):
-        return cls.query.filter(str(mine_document_guid) == str(mine_document_guid)).first()
+    def find_by_mine_document_guid_and_variance_id(cls, mine_document_guid, variance_id):
+        return cls.query \
+            .filter_by(mine_document_guid=mine_document_guid) \
+            .filter_by(variance_id=variance_id) \
+            .first()
 
     @classmethod
     def find_by_variance_id(cls, variance_id):

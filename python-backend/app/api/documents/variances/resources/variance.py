@@ -24,7 +24,9 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
         # Find single document
         if mine_document_guid:
             try:
-                document = VarianceDocument.find_by_mine_document_guid(mine_document_guid)
+                document = VarianceDocument.find_by_mine_document_guid_and_variance_id(
+                    mine_document_guid,
+                    variance_id)
             except DBAPIError:
                 return self.create_error_payload(422, 'Invalid mine_document_guid'), 422
             if document != None:
