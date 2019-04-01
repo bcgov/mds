@@ -117,7 +117,7 @@ class ApplicationResource(Resource, UserMixin):
         if not application:
             raise NotFound('Application not found')
 
-        return [application]
+        return application
 
     @api.expect(parser)
     @api.doc(
@@ -140,13 +140,10 @@ class ApplicationResource(Resource, UserMixin):
             raise NotFound('Application not found')
 
         data = self.parser.parse_args()
-        if 'application_status_code' in data:
-            application.application_status_code = data.get('application_status_code')
-        if 'description' in data:
-            application.description = data.get('description')
 
-        try:
-            application.save()
-        except Exception as e:
-            raise InternalServerError('Error: {}'.format(e))
+        for key, value in data.items():
+            setattr(application, key, value)
+
+        application.save()
+
         return application
