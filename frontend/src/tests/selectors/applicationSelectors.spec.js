@@ -12,12 +12,12 @@ const mockState = {
 describe("applicationSelectors", () => {
   const { applications } = mockState;
 
-  it("`getMineComplianceInfo` calls `complianceReducer.getMineComplianceInfo`", () => {
+  it("`getApplications` calls `applicationReducer.getApplications`", () => {
     const storeAction = storeApplications(mockResponse);
     const storeState = applicationReducer({}, storeAction);
     const localMockState = {
       [APPLICATIONS]: storeState,
     };
-    expect(getApplications(localMockState)).toEqual(applications);
+    expect(getApplications(localMockState)).toEqual(applications.applications);
   });
 });
