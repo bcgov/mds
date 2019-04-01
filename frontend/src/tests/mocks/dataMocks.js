@@ -991,21 +991,24 @@ export const VARIANCES = {
       issue_date: "2019-03-01",
       note: "notesss",
       received_date: "2019-03-01",
-    },
-    {
-      variance_id: 59285,
-      compliance_article_id: 1,
-      expiry_date: "2028-03-25",
-      issue_date: "2019-03-06",
-      note: "this is a variance",
-      received_date: "2019-03-10",
-    },
-    {
-      compliance_article_id: 1,
-      variance_id: 5545486,
-      expiry_date: "2019-03-04",
-      issue_date: "2016-03-06",
-      received_date: "2015-03-03",
+      documents: [
+        {
+          records: [
+            {
+              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
+              variance_id: 1249,
+              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+              details: {
+                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
+                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
+                document_name: "just_a_pdf.PDF",
+                active_ind: "True",
+              },
+            },
+          ],
+        },
+      ],
     },
   ],
 };
