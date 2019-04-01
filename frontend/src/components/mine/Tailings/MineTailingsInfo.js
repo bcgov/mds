@@ -77,7 +77,7 @@ export class MineTailingsInfo extends Component {
       ({ exp_document_status_code }) => exp_document_status_code === value.tsf_report_status
     );
     return this.props
-      .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
+      .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
       .then(() => {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
