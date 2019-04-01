@@ -20,7 +20,6 @@ const defaultProps = {
 // eslint-disable-next-line react/prefer-stateless-function
 export class MapPopup extends Component {
   render() {
-    const id = this.props.basicMineInfo.guid;
     const permit_array = this.props.basicMineInfo.mine_permit;
     const mine_types = this.props.basicMineInfo.mine_type;
     const commoditySet = new Set();
@@ -87,10 +86,10 @@ export class MapPopup extends Component {
           </tr>
         </table>
         <StaticRouter context={this.context} basename={process.env.BASE_PATH}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(id)}>
-            <Button type="primary" className="mineMapPopUpButton">
-              View Mine
-            </Button>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(this.props.basicMineInfo.guid)}>
+            <div className="mineMapPopUpButton">
+              <Button type="primary">View Mine</Button>
+            </div>
           </Link>
         </StaticRouter>
       </div>

@@ -116,7 +116,6 @@ export class MinePin extends Component {
             .then(() =>
               renderToString(
                 <MapPopup
-                  id="{mineId}"
                   basicMineInfo={this.props.mineBasicInfoList[0]}
                   mineCommodityHash={this.props.mineCommodityOptionsHash}
                 />

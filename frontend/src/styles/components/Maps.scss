@@ -17,5 +17,6 @@ path[path="M25,0 C60,0, 60,50, 25,50 C-10,50, -10,0, 25,0"] {
 }
 
 .mineMapPopUpButton {
-  float: right;
+  display: flex;
+  justify-content: flex-end;
 }
