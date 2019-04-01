@@ -292,8 +292,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="name"
-                name="name"
+                id="mine_name"
+                name="mine_name"
                 label="Mine Name *"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(60), minLength(3)]}
@@ -361,8 +361,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="note"
-                name="note"
+                id="mine_note"
+                name="mine_note"
                 label="Notes"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[maxLength(300)]}
