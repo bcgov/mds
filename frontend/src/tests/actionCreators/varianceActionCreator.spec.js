@@ -52,8 +52,6 @@ describe("`fetchVariancesByMine` action creator", () => {
   const varianceId = 1249;
   const url = ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid);
   const documentUrl = ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(varianceId);
-  console.log("url", url);
-  console.log("documentUrl", documentUrl);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = {
       success: true,
