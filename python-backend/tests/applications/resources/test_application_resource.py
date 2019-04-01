@@ -52,8 +52,7 @@ def test_get_application(test_client, setup_info, auth_headers):
         '/applications/' + setup_info.get('mine_1_application_guid'),
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['applications'][0]['application_guid'] == setup_info.get(
-        'mine_1_application_guid')
+    assert get_data['applications']['application_guid'] == setup_info.get('mine_1_application_guid')
     assert get_resp.status_code == 200
 
 
