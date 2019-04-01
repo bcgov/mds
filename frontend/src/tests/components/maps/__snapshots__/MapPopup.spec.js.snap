@@ -256,16 +256,19 @@ ShallowWrapper {
             replace={false}
             to="/dashboard/undefined/summary"
           >
-            <Button
-              block={false}
+            <div
               className="mineMapPopUpButton"
-              ghost={false}
-              loading={false}
-              prefixCls="ant-btn"
-              type="primary"
             >
-              View Mine
-            </Button>
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>
           </Link>
         </StaticRouter>,
       ],
@@ -493,16 +496,19 @@ ShallowWrapper {
             replace={false}
             to="/dashboard/undefined/summary"
           >
-            <Button
-              block={false}
+            <div
               className="mineMapPopUpButton"
-              ghost={false}
-              loading={false}
-              prefixCls="ant-btn"
-              type="primary"
             >
-              View Mine
-            </Button>
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>
           </Link>,
           "context": Object {},
           "location": "/",
@@ -513,16 +519,19 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <Button
-              block={false}
+            "children": <div
               className="mineMapPopUpButton"
-              ghost={false}
-              loading={false}
-              prefixCls="ant-btn"
-              type="primary"
             >
-              View Mine
-            </Button>,
+              <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>,
             "replace": false,
             "to": "/dashboard/undefined/summary",
           },
@@ -530,19 +539,37 @@ ShallowWrapper {
           "rendered": Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "class",
+            "nodeType": "host",
             "props": Object {
-              "block": false,
-              "children": "View Mine",
+              "children": <Button
+                block={false}
+                ghost={false}
+                loading={false}
+                prefixCls="ant-btn"
+                type="primary"
+              >
+                View Mine
+              </Button>,
               "className": "mineMapPopUpButton",
-              "ghost": false,
-              "loading": false,
-              "prefixCls": "ant-btn",
-              "type": "primary",
             },
             "ref": null,
-            "rendered": "View Mine",
-            "type": [Function],
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "block": false,
+                "children": "View Mine",
+                "ghost": false,
+                "loading": false,
+                "prefixCls": "ant-btn",
+                "type": "primary",
+              },
+              "ref": null,
+              "rendered": "View Mine",
+              "type": [Function],
+            },
+            "type": "div",
           },
           "type": [Function],
         },
@@ -606,16 +633,19 @@ ShallowWrapper {
               replace={false}
               to="/dashboard/undefined/summary"
             >
-              <Button
-                block={false}
+              <div
                 className="mineMapPopUpButton"
-                ghost={false}
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
               >
-                View Mine
-              </Button>
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>
             </Link>
           </StaticRouter>,
         ],
@@ -843,16 +873,19 @@ ShallowWrapper {
               replace={false}
               to="/dashboard/undefined/summary"
             >
-              <Button
-                block={false}
+              <div
                 className="mineMapPopUpButton"
-                ghost={false}
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
               >
-                View Mine
-              </Button>
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>
             </Link>,
             "context": Object {},
             "location": "/",
@@ -863,16 +896,19 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <Button
-                block={false}
+              "children": <div
                 className="mineMapPopUpButton"
-                ghost={false}
-                loading={false}
-                prefixCls="ant-btn"
-                type="primary"
               >
-                View Mine
-              </Button>,
+                <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>,
               "replace": false,
               "to": "/dashboard/undefined/summary",
             },
@@ -880,19 +916,37 @@ ShallowWrapper {
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "class",
+              "nodeType": "host",
               "props": Object {
-                "block": false,
-                "children": "View Mine",
+                "children": <Button
+                  block={false}
+                  ghost={false}
+                  loading={false}
+                  prefixCls="ant-btn"
+                  type="primary"
+                >
+                  View Mine
+                </Button>,
                 "className": "mineMapPopUpButton",
-                "ghost": false,
-                "loading": false,
-                "prefixCls": "ant-btn",
-                "type": "primary",
               },
               "ref": null,
-              "rendered": "View Mine",
-              "type": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "View Mine",
+                  "ghost": false,
+                  "loading": false,
+                  "prefixCls": "ant-btn",
+                  "type": "primary",
+                },
+                "ref": null,
+                "rendered": "View Mine",
+                "type": [Function],
+              },
+              "type": "div",
             },
             "type": [Function],
           },
