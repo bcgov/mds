@@ -43,7 +43,7 @@ def test_get_application_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
         '/applications/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'message': '404 Not Found: Application not found', 'status': 404}
+    assert 'Not Found' in get_data['message']
     assert get_resp.status_code == 404
 
 
