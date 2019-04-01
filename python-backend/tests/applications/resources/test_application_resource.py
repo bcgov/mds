@@ -43,8 +43,8 @@ def test_get_application_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
         '/applications/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'message': '404 Not Found: Application not found', 'status': 404}
     assert get_resp.status_code == 404
+    assert 'Not Found' in get_data['message']
 
 
 def test_get_application(test_client, setup_info, auth_headers):
@@ -52,9 +52,8 @@ def test_get_application(test_client, setup_info, auth_headers):
         '/applications/' + setup_info.get('mine_1_application_guid'),
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['applications'][0]['application_guid'] == setup_info.get(
-        'mine_1_application_guid')
     assert get_resp.status_code == 200
+    assert get_data['applications']['application_guid'] == setup_info.get('mine_1_application_guid')
 
 
 def test_get_applications_on_a_mine(test_client, setup_info, auth_headers):

@@ -355,7 +355,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 mine.mine_location.longitude = data['longitude']
             mine.mine_location.save()
 
-        elif data['latitude'] and data['longitude'] and not mine.mine_location:
+        elif data.get('latitude') and data.get('longitude') and not mine.mine_location:
             mine.mine_location = MineLocation(
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
