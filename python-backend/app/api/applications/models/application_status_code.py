@@ -19,12 +19,6 @@ class ApplicationStatusCode(AuditMixin, Base):
     def __repr__(self):
         return '<ApplicationStatusCode %r>' % self.application_status_code
 
-    def json(self):
-        return {
-            'application_status_code': self.application_status_code,
-            'description': self.description,
-        }
-
     @classmethod
     def find_by_application_status_code(cls, code):
         return cls.query.filter_by(application_status_code=code).first()

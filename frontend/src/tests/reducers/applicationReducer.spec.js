@@ -19,7 +19,7 @@ describe("applicationReducer", () => {
 
   it("receives STORE_APPLICATIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.applications = MOCK.APPLICATION_LIST;
+    expectedValue.applications = MOCK.APPLICATION_LIST.applications;
 
     const result = applicationReducer(undefined, storeApplications(MOCK.APPLICATION_LIST));
     expect(result).toEqual(expectedValue);
