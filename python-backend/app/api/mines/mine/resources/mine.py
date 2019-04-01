@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 import json
 
-from flask import request, make_response
+from flask import request, make_response, current_app
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
@@ -220,6 +220,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     def mine_status_processor(self, mine_status, mine):
         if not mine_status:
             return mine.mine_status
+
+        current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
         try:
             mine_status_xref = MineStatusXref.find_by_codes(
                 self.mine_operation_code_processor(mine_status, 0),
@@ -229,7 +231,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 raise BadRequest(
                     'Invalid status_code, reason_code, and sub_reason_code combination.')
 
-            existing_status = mine.mine_status
+            existing_status = mine.mine_status[0] if mine.mine_status else None
             if existing_status:
                 if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
                     return existing_status
@@ -237,8 +239,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 existing_status.expiry_date = datetime.today()
                 existing_status.active_ind = False
                 existing_status.save()
+
             new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
             mine.mine_status.append(new_status)
+            new_status.save()
 
         except AssertionError as e:
             self.raise_error(400, 'Error: {}'.format(e))
@@ -307,7 +311,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
 
         tenure = data.get('tenure_number_id')
-        status = data.get('mine_status')
 
         lat = data.get('latitude')
         lon = data.get('longitude')
@@ -359,7 +362,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             cache.delete(MINE_MAP_CACHE)
 
         # Status validation
-        self.mine_status_processor(status, mine)
+        self.mine_status_processor(data.get('mine_status'), mine)
         return mine.json()
 
 
