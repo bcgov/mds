@@ -41,13 +41,6 @@ export class MapPopup extends Component {
         ? commodity_list.slice(0, max_number_displayed).map((code) => <Tag key={code}>{code}</Tag>)
         : String.EMPTY_FIELD;
 
-    // if (commodity_list_length > 0) {
-    //   commodity = commodity_list
-    //     .slice(0, max_number_displayed)
-    //     .map((code) => <Tag key={code}>{code}</Tag>);
-    // }
-
-    // console.log("Two called: ", commodity);
     const permit_set = new Set();
     if (permit_array) {
       permit_array.forEach((permit) => {
