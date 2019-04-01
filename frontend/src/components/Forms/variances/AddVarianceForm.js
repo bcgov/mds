@@ -28,7 +28,6 @@ export class AddVarianceForm extends Component {
     filenameGuidMap: {},
   };
 
-  // WIP
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
     this.setState(({ filenameGuidMap }) => ({
@@ -40,10 +39,8 @@ export class AddVarianceForm extends Component {
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
-  // TODO: Support deletion on backend
   onRemoveFile = (fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    // TODO: Update state of filenameGuidMap
     change("uploadedFiles", this.state.uploadedFiles);
   };
 

@@ -70,6 +70,10 @@ export const reducerObject = {
     reducerTypes.CREATE_MINE_VARIANCE
   ),
   [reducerTypes.GET_MINE_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_MINE_VARIANCES),
+  [reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);

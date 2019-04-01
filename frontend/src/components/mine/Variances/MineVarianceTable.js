@@ -5,6 +5,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 
@@ -33,6 +34,7 @@ export class MineVarianceTable extends Component {
       note: variance.note,
       received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
       isOverdue: Date.parse(variance.expiry_date) < new Date(),
+      documents: variance.documents,
     }));
 
   render() {
@@ -91,8 +93,34 @@ export class MineVarianceTable extends Component {
         title: "Documents",
         dataIndex: "documents",
         render: (text, record) => (
-          <div title="Documents" style={this.errorStyle(record.isOverdue)}>
-            {text}
+          <div title="Documents">
+            {record.documents
+              ? record.documents.map((file) => (
+                  <div key={file.variance_document_xref_guid}>
+                    <a
+                      role="link"
+                      key={file.variance_document_xref_guid}
+                      onClick={() =>
+                        downloadFileFromDocumentManager(
+                          file.details.document_manager_guid,
+                          file.details.document_name
+                        )
+                      }
+                      // Accessibility: Event listener
+                      onKeyPress={() =>
+                        downloadFileFromDocumentManager(
+                          file.details.document_manager_guid,
+                          file.details.document_name
+                        )
+                      }
+                      // Accessibility: Focusable element
+                      tabIndex="0"
+                    >
+                      {file.details.document_name}
+                    </a>
+                  </div>
+                ))
+              : "-"}
           </div>
         ),
       },
