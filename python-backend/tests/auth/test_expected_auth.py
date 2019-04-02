@@ -8,7 +8,10 @@ from app.api.documents.expected.resources.expected_document_uploads import Expec
 from app.api.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
 from app.api.documents.mines.resources.mine_document_resource import MineDocumentResource
 from app.api.documents.required.resources.required_documents import RequiredDocumentResource
+from app.api.documents.variances.resources.variance import VarianceDocumentResource
+from app.api.documents.variances.resources.variance_document_uploads import VarianceDocumentUploadResource
 from app.api.mines.compliance.resources.compliance import MineComplianceResource
+from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.location.resources.location import MineLocationResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
@@ -16,6 +19,7 @@ from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCod
 from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch
+from app.api.mines.variances.resources.variance import VarianceResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
@@ -44,6 +48,11 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (ExpectedDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
      (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
+     (VarianceDocumentResource, "get", [MINE_VIEW]),
+     (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (ComplianceArticleResource, "get", [MINE_VIEW]),
      (MineCommodityCodeResource, "get", [MINE_VIEW]), (MineComplianceResource, "get", [MINE_VIEW]),
      (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
      (MineDocumentResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
@@ -51,7 +60,9 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineLocationResource, "get", [MINE_VIEW]), (MinePartyApptResource, "get", [MINE_VIEW]),
      (MinePartyApptResource, "post", [MINE_CREATE]), (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
-     (MinePartyApptTypeResource, "get", [MINE_VIEW]), (MineRegionResource, "get", [MINE_VIEW]),
+     (MinePartyApptTypeResource, "get", [MINE_VIEW]),(MineRegionResource, "get", [MINE_VIEW]),
+     (VarianceResource, "get", [MINE_VIEW]),
+     (VarianceResource, "post", [MINE_CREATE]),
      (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (MineResource, "post", [MINE_CREATE]),
      (MineResource, "put", [MINE_CREATE]), (MineStatusResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
