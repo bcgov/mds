@@ -181,3 +181,20 @@ export const fetchProvinceCodes = () => (dispatch) => {
       dispatch(error(reducerTypes.GET_PROVINCE_CODES));
     });
 };
+
+export const fetchMineComplianceCodes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_COMPLIANCE_CODES));
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.COMPLIANCE_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_COMPLIANCE_CODES));
+      dispatch(staticContentActions.storeComplianceCodes(response.data));
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_COMPLIANCE_CODES));
+    });
+};
