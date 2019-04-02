@@ -55,7 +55,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
-import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -147,7 +147,7 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const isDev = detectDevelopmentEnvironment();
+    const isDevOrTest = !detectProdEnvironment();
     if (!mine) {
       return <Loading />;
     }
@@ -205,7 +205,7 @@ export class MineDashboard extends Component {
                   </div>
                 </TabPane>
                 {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isDev && (
+                {isDevOrTest && (
                   <TabPane tab="Variance" key="variance">
                     <div className="tab__content">
                       <MineVariance
