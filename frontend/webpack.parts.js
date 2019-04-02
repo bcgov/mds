@@ -49,11 +49,10 @@ exports.loadJS = ({ include, exclude } = {}) => ({
             loader: "thread-loader",
             options: {
               workers: 1,
-              workerParallelJobs: 50,
-              workerNodeArgs: ["--max-old-space-size=1024"],
+              workerParallelJobs: 25,
             },
           },
-          "babel-loader?cacheDirectory",
+          "babel-loader",
         ],
       },
     ],

@@ -117,8 +117,8 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
   },
-  parts.clean(PATHS.build),
-  parts.hardSourceWebPackPlugin(),
+  //parts.clean(PATHS.build),
+  //parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
