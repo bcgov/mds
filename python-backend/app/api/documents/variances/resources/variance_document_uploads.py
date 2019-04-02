@@ -97,7 +97,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         document = VarianceDocument.create(mine_doc.mine_document_guid, variance_id)
 
         if not document:
-            BadRequest('Unable to assign document to variance')
+            raise BadRequest('Unable to assign document to variance')
 
         document.save()
         return document.json()
