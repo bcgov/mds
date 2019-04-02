@@ -47,10 +47,6 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         loader: [
           {
             loader: "thread-loader",
-            options: {
-              workers: 1,
-              workerParallelJobs: 25,
-            },
           },
           "babel-loader",
         ],
