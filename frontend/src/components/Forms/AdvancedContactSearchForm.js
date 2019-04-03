@@ -38,11 +38,7 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleContactTypeChange = (chars, value) => {
-    if (value === "PER") {
-      this.setState({ contactType: value });
-    } else {
-      this.setState({ contactType: value });
-    }
+    this.setState({ contactType: value });
     // Set the first,last, and party names to null
     this.props.handleContactTypeChange();
   };
