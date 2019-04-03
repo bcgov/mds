@@ -20,6 +20,7 @@ class VarianceDocument(Base):
     def __repr__(self):
         return '<VarianceDocument %r>' % self.variance_document_xref_guid
 
+
     @classmethod
     def create(cls,
                mine_document_guid,
