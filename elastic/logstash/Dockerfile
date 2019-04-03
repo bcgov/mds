@@ -25,6 +25,7 @@ ENV PATH=/app/logstash/bin:$PATH
 COPY dictionaries /app/logstash/dictionaries
 COPY pipeline/ /app/logstash/pipeline/
 COPY config/ /app/logstash/config/
+COPY templates /usr/share/logstash/templates
 
 # Ensure Logstash gets a UTF-8 locale by default.
 ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
@@ -36,6 +37,6 @@ RUN chmod 0755 /usr/local/bin/docker-entrypoint
 RUN chmod 0755 /usr/local/bin/env2yaml
 
 # Expose default runtime port
-EXPOSE 9600 5044
+EXPOSE 9600
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
