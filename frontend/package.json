@@ -114,6 +114,9 @@
     "format:write": "prettier --config .prettierrc.json --write",
     "format:write-all": "prettier --config .prettierrc.json src/*.js --write && prettier --config .prettierrc.json src/**/*.js --write && prettier --config .prettierrc.json src/**/**/*.js --write",
     "test": "jest --env=jsdom --runInBand",
+    "test:conditional": "ls && npm run test:conditional-unix || npm run test:conditional-windows",
+    "test:conditional-unix": "git status -sb | sed 's/## //' | sed 's/\\?\\? .*//g' | sed 's/.*\\(\\.\\.\\.origin\\/\\).*/y/' | head -1 | xargs -I {} bash -c 'if [ {} != \"y\" ]; then npm test; else exit 0; fi' || git branch | grep -o '* .*' | sed 's/\\* //' | xargs -I{} git diff --name-only origin/{} | sed 's/.*\\(frontend\\).*/y/g' | xargs -I {} bash -c 'if [ {} == \"y\" ]; then npm test; else exit 0 ; fi'",
+    "test:conditional-windows": "npm test",
     "test:coverage": "npm test src -- --testResultsProcessor=jest-junit",
     "test:updateAll": "npm test -- -u",
     "test:watch": "npm test -- --watch"
@@ -154,7 +157,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-push": "npm test",
+      "pre-push": "npm run test:conditional",
       "pre-commit": "lint-staged"
     }
   },
