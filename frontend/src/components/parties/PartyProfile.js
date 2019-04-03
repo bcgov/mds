@@ -166,20 +166,22 @@ export class PartyProfile extends Component {
             <div className="inline-flex between">
               <h1>{formatedName}</h1>
               <div>
-                <AuthorizationWrapper permission={Permission.ADMIN}>
-                  <Popconfirm
-                    placement="bottom"
-                    title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
+                <AuthorizationWrapper inTesting>
+                  <AuthorizationWrapper permission={Permission.ADMIN}>
+                    <Popconfirm
+                      placement="bottom"
+                      title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
                      remove the party and all associated roles.`}
-                    onConfirm={this.deleteParty}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button type="danger">
-                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
-                      Delete Party
-                    </Button>
-                  </Popconfirm>
+                      onConfirm={this.deleteParty}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="danger">
+                        <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                        Delete Party
+                      </Button>
+                    </Popconfirm>
+                  </AuthorizationWrapper>
                 </AuthorizationWrapper>
                 <AuthorizationWrapper permission={Permission.CREATE}>
                   <Button
