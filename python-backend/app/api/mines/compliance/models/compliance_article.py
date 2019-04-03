@@ -18,31 +18,3 @@ class ComplianceArticle(AuditMixin, Base):
 
     def __repr__(self):
         return '<ComplianceArticle %r>' % self.compliance_article_id
-
-
-    @classmethod
-    def all_options(cls):
-        return list(map(
-            lambda x: {
-                'compliance_article_id': x[0],
-                'article_act_code': x[1],
-                'section': x[2],
-                'sub_section': x[3],
-                'paragraph': x[4],
-                'sub_paragraph': x[5],
-                'description': x[6],
-                'effective_date': x[7].isoformat(),
-                'expiry_date': x[8].isoformat()
-            },
-            cls.query
-               .with_entities(cls.compliance_article_id,
-                              cls.article_act_code,
-                              cls.section,
-                              cls.sub_section,
-                              cls.paragraph,
-                              cls.sub_paragraph,
-                              cls.description,
-                              cls.effective_date,
-                              cls.expiry_date)
-               .all()
-        ))
