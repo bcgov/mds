@@ -8,10 +8,13 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
     rm /tmp/sonar-scanner-cli.zip && \
     chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
 
+RUN yum groupinstall "Development tools"
+RUN yum install openldap-devel python-devel
+
 
 # Install project dependencies
 COPY requirements.txt ${APP_ROOT}/src
 RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
-       pip install -U pip==18.1 setuptools wheel && \
+    pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
