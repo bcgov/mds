@@ -9,7 +9,7 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
     chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
 
 USER 0
-RUN yum groupinstall "Development tools"
+RUN yum groupinstall  -y "Development tools"
 RUN yum install -y openldap-devel python-devel
 USER 1001
 
