@@ -145,7 +145,7 @@ export class ContactHomePage extends Component {
     );
   };
 
-  handleContactTypeChange = () => {
+  handleNameFieldReset = () => {
     this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `party_name`, null);
     this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `first_name`, null);
     this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `last_name`, null);
@@ -193,7 +193,7 @@ export class ContactHomePage extends Component {
         </div>
         <div className="landing-page__content">
           <ContactSearch
-            handleContactTypeChange={this.handleContactTypeChange}
+            handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}

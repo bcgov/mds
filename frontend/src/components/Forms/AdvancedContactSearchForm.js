@@ -11,7 +11,7 @@ import * as Strings from "@/constants/strings";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
-  handleContactTypeChange: PropTypes.func.isRequired,
+  handleNameFieldReset: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   partyTypeOptions: CustomPropTypes.options.isRequired,
@@ -41,7 +41,7 @@ export class AdvancedContactSearchForm extends Component {
   handleContactTypeChange = (chars, value) => {
     this.setState({ contactType: value });
     // Set the first,last, and party names to null
-    this.props.handleContactTypeChange();
+    this.props.handleNameFieldReset();
   };
 
   render() {
