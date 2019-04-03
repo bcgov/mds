@@ -48,10 +48,6 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (ExpectedDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
      (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
-     (VarianceDocumentResource, "get", [MINE_VIEW]),
-     (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ComplianceArticleResource, "get", [MINE_VIEW]),
      (MineCommodityCodeResource, "get", [MINE_VIEW]), (MineComplianceResource, "get", [MINE_VIEW]),
      (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
@@ -61,8 +57,6 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MinePartyApptResource, "post", [MINE_CREATE]), (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
      (MinePartyApptTypeResource, "get", [MINE_VIEW]),(MineRegionResource, "get", [MINE_VIEW]),
-     (VarianceResource, "get", [MINE_VIEW]),
-     (VarianceResource, "post", [MINE_CREATE]),
      (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (MineResource, "post", [MINE_CREATE]),
      (MineResource, "put", [MINE_CREATE]), (MineStatusResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
@@ -84,7 +78,15 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (RequiredDocumentResource, "get", [MINE_VIEW]), (MinespaceUserResource, 'get', [MINE_ADMIN]),
      (MinespaceUserResource, 'post', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
-     (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
+     (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
+     (VarianceDocumentResource, "get", [MINE_VIEW]),
+     (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceResource, "get", [MINE_VIEW]),
+     (VarianceResource, "post", [MINE_CREATE])
+    ]
+)
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
