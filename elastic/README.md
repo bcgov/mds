@@ -8,10 +8,13 @@ Elastic Images
 
 | Name        | Description        |
 | ----------- | ------------------ |
-| ES_VERSION  | Elastic Version    |
 | ES_HOST     | elastic cloud host |
 | ES_USER     | elastic user       |
 | ES_PASSWORD | elastic password   |
+| ENVIRONMENT_SUFFIX | MDS Environment |
+| JDBC_CONNECTION_STRING | Connection string to mds postgres db |
+| JDBC_USER | Name of the user |
+| JDBC_PASSWORD | Jdbc password |
 
 ## Openshift Configuration
 
