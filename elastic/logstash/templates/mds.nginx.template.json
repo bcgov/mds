@@ -187,10 +187,6 @@
                             "type": {
                                 "type": "keyword",
                                 "ignore_above": 1024
-                            },
-                            "environment": {
-                                "type": "keyword",
-                                "ignore_above": 1024
                             }
                         }
                     },
