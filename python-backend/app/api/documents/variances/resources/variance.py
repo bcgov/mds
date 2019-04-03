@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, fields
 from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -9,36 +9,72 @@ from ....utils.access_decorators import requires_role_mine_view, requires_role_m
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_documents_svc_url
 
+mine_document_model = api.model('MineDocument', {
+    'mine_document_guid': fields.String,
+    'mine_guid': fields.String,
+    'document_manager_guid': fields.String,
+    'document_name': fields.String,
+    'active_ind': fields.Boolean
+})
 
-class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
+variance_document_model = api.model('VarianceDocument', {
+    'variance_document_xref_guid': fields.String,
+    'variance_id': fields.Integer,
+    'mine_document_guid': fields.String,
+    'details': fields.Nested(mine_document_model)
+
+})
+
+class VarianceDocumentListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
+        description=
+        'This endpoint returns a list of all mine documents associated with the variance.',
         params={
             'variance_id': 'ID of variance from which to fetch documents',
-            'mine_document_guid': 'guid representing the document to fetch'
         }
     )
     @requires_role_mine_view
-    def get(self, variance_id=None, mine_document_guid=None):
+    @api.marshal_with(variance_document_model, code=200, envelope='records')
+    def get(self, variance_id=None):
         if not variance_id:
             raise BadRequest('Missing variance_id')
 
-        # Find single document
-        if mine_document_guid:
-            try:
-                document = VarianceDocument.find_by_mine_document_guid_and_variance_id(
-                    mine_document_guid,
-                    variance_id)
-            except DBAPIError:
-                raise BadRequest('Invalid mine_document_guid')
-            if document != None:
-                return document.json()
-
-        # Find all documents for the variance
         try:
-            documents = VarianceDocument.find_by_variance_id(variance_id)
+            records = VarianceDocument.find_by_variance_id(variance_id)
         except DBAPIError:
             raise BadRequest('Invalid variance_id')
-        if documents != None:
-            return { 'records': [x.json() for x in documents] }
-        else:
-            raise NotFound('Unable to fetch variances')
+
+        if records is None:
+            records = []
+
+        return records
+
+
+class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
+    @api.doc(
+        description=
+        'This endpoint returns a requested mine document.',
+        params={
+            'variance_id': 'ID of variance from which to fetch documents',
+            'mine_document_guid': 'guid for the document to fetch'
+        }
+    )
+    @requires_role_mine_view
+    @api.marshal_with(variance_document_model, code=200)
+    def get(self, variance_id=None, mine_document_guid=None):
+        if not variance_id:
+            raise BadRequest('Missing variance_id')
+        if not mine_document_guid:
+            raise BadRequest('Missing mine_document_guid')
+
+        try:
+            document = VarianceDocument.find_by_mine_document_guid_and_variance_id(
+                mine_document_guid,
+                variance_id)
+        except DBAPIError:
+            raise BadRequest('Invalid mine_document_guid')
+
+        if document is None:
+            raise NotFound('Document not found')
+
+        return document

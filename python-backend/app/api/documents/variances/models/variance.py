@@ -20,15 +20,6 @@ class VarianceDocument(Base):
     def __repr__(self):
         return '<VarianceDocument %r>' % self.variance_document_xref_guid
 
-    def json(self):
-        mine_document = MineDocument.find_by_mine_document_guid(self.mine_document_guid)
-        return {
-            'variance_document_xref_guid': str(self.variance_document_xref_guid),
-            'variance_id': self.variance_id,
-            'mine_document_guid': str(self.mine_document_guid),
-            'details': mine_document.json() if mine_document else None
-        }
-
     @classmethod
     def create(cls,
                mine_document_guid,
