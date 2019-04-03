@@ -38,7 +38,6 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('filename', type=str)
-    parser.add_argument('mine_guid', type=str)
 
 
     @api.doc(
@@ -46,9 +45,9 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         'Request a document_manager_guid for uploading a document'
     )
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, variance_id=None):
-        if not variance_id:
-            raise BadRequest('Missing variance_id')
+    def post(self, mine_guid=None, variance_id=None):
+        if not mine_guid or not variance_id:
+            raise BadRequest('Must provide mine_guid and variance_id')
 
         data = self.parser.parse_args()
         metadata = self._parse_request_metadata()
@@ -56,8 +55,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Filename not found in request metadata header')
 
         # Save file
-        variance = Variance.find_by_variance_id(variance_id)
-        mine = Mine.find_by_mine_guid(variance.mine_guid)
+        mine = Mine.find_by_mine_guid(mine_guid)
         filename = metadata.get('filename')
         data = {
             'folder': f'mines/{mine.mine_guid}/variances',
@@ -88,9 +86,9 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
     )
     @api.marshal_with(variance_document_model, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def put(self, variance_id=None, document_manager_guid=None):
-        if not variance_id or not mine_document_guid:
-            raise BadRequest('Must provide a variance_id and a mine_document_guid')
+    def put(self, mine_guid=None, variance_id=None, document_manager_guid=None):
+        if not mine_guid or not variance_id or not mine_document_guid:
+            raise BadRequest('Must provide mine_guid, variance_id, and mine_document_guid')
 
         data = self.parser.parse_args()
         filename = data.get('filename')
@@ -99,9 +97,8 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Must provide document_manager_guid')
 
         # Register new file upload
-        variance = Variance.find_by_variance_id(variance_id)
         mine_doc = MineDocument(
-            mine_guid=variance.mine_guid,
+            mine_guid=mine_guid,
             document_manager_guid=document_manager_guid,
             document_name=filename)
 
@@ -125,7 +122,7 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
         'Delete a document from a variance.'
     )
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, variance_id=None, mine_document_guid=None):
+    def delete(self, mine_guid=None, variance_id=None, mine_document_guid=None):
         if not variance_id or not mine_document_guid:
             raise BadRequest('Must provide a variance_id and mine_document_guid')
 

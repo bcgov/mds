@@ -38,6 +38,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                         help='The date on which the variance expires.')
 
     variance_model = api.model('Variance', {
+        'variance_id': fields.Integer,
         'compliance_article_id': fields.Integer,
         'note': fields.String,
         'issue_date': fields.Date,
@@ -81,13 +82,13 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(variance_model, code=200)
     def post(self, mine_guid=None):
         if not mine_guid:
-            raise BadRequest('Missing mine_guid')
+            raise BadRequest('Must provide mine_guid')
 
         data = VarianceResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
 
         if not compliance_article_id:
-            raise BadRequest('Error: Missing compliance_article_id')
+            raise BadRequest('Must provide compliance_article_id')
 
         variance = Variance.create(
             compliance_article_id,

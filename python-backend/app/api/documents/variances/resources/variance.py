@@ -28,16 +28,13 @@ variance_document_model = api.model('VarianceDocument', {
 class VarianceDocumentListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description=
-        'This endpoint returns a list of all mine documents associated with the variance.',
-        params={
-            'variance_id': 'ID of variance from which to fetch documents',
-        }
+        'This endpoint returns a list of all mine documents associated with the variance.'
     )
     @requires_role_mine_view
     @api.marshal_with(variance_document_model, code=200, envelope='records')
-    def get(self, variance_id=None):
+    def get(self, mine_guid=None, variance_id=None):
         if not variance_id:
-            raise BadRequest('Missing variance_id')
+            raise BadRequest('Must provide variance_id')
 
         try:
             records = VarianceDocument.find_by_variance_id(variance_id)
@@ -61,7 +58,7 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
     )
     @requires_role_mine_view
     @api.marshal_with(variance_document_model, code=200)
-    def get(self, variance_id=None, mine_document_guid=None):
+    def get(self, mine_guid=None, variance_id=None, mine_document_guid=None):
         if not variance_id:
             raise BadRequest('Missing variance_id')
         if not mine_document_guid:

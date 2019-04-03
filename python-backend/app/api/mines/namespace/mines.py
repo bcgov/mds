@@ -15,6 +15,9 @@ from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from ..variances.resources.variance import VarianceResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
+# Documents will be moved to the /mines namespace
+from app.api.documents.variances.resources.variance_document_uploads import VarianceDocumentUploadResource, VarianceDocumentUploadedResource
+from app.api.documents.variances.resources.variance import VarianceDocumentListResource, VarianceDocumentResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -36,4 +39,15 @@ api.add_resource(MineTypeDetailResource, '/mine-types/details',
 api.add_resource(MineBasicInfoResource, '/basicinfo')
 api.add_resource(MineVerifiedStatusResource, '/verified-status',
                  '/<string:mine_guid>/verified-status')
+
 api.add_resource(VarianceResource, '/<string:mine_guid>/variances')
+api.add_resource(VarianceDocumentListResource, '/<string:mine_guid>/variances/<string:variance_id>')
+api.add_resource(
+    VarianceDocumentResource,
+    '/<string:mine_guid>/variances/<string:variance_id>/documents/<string:mine_document_guid>')
+api.add_resource(
+    VarianceDocumentUploadResource,
+    '/<string:mine_guid>/variances/<string:variance_id>')
+api.add_resource(
+    VarianceDocumentUploadedResource,
+    '/<string:mine_guid>/variances/<string:variance_id>/documents/<string:mine_document_guid>')
