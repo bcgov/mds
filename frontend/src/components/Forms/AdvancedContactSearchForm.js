@@ -35,6 +35,7 @@ export class AdvancedContactSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
     this.props.handleSearch({ page: Strings.DEFAULT_PAGE, per_page: Strings.DEFAULT_PER_PAGE });
+    this.setState({ contactType: "PER" });
   };
 
   handleContactTypeChange = (chars, value) => {
