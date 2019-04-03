@@ -63,6 +63,7 @@ class MineExpectedDocument(AuditMixin, Base):
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
             'received_date': str(self.received_date) if self.received_date else None,
+            'exp_document_status_code': self.exp_document_status_code,
             'exp_document_status': self.expected_document_status.json(),
             'hsrc_code': self.hsrc_code,
             'related_documents': [x.json() for x in self.mine_documents]
