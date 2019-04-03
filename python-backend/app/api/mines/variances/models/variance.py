@@ -25,17 +25,6 @@ class Variance(AuditMixin, Base):
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
 
-    def json(self):
-        return {
-            'variance_id': self.variance_id,
-            'compliance_article_id': self.compliance_article_id,
-            'mine_guid': str(self.mine_guid),
-            'note': self.note,
-            'issue_date': self.issue_date.isoformat(),
-            'received_date': self.received_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat()
-        }
-
     @classmethod
     def create(cls,
                compliance_article_id,

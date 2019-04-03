@@ -17,13 +17,12 @@ class ComplianceArticleResource(Resource, UserMixin, ErrorMixin):
         'expiry_date': fields.Date
     })
 
-    @api.marshal_with(compliance_article_model, code=200, envelope='records')
     @api.doc(
         description=
         'This endpoint returns a list of all possible compliance codes and thier descriptions.'
     )
-
     @requires_role_mine_view
+    @api.marshal_with(compliance_article_model, code=200, envelope='records')
     def get(self):
         records = ComplianceArticle.query.all()
         if records is None:
