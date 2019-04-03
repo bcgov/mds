@@ -14,6 +14,8 @@ ShallowWrapper {
         "url": "",
       }
     }
+    mineBasicInfoList={Array []}
+    mineCommodityOptionsHash={Object {}}
     mineIds={
       Array [
         "18133c75-49ad-4101-85f3-a43e35ae989a",

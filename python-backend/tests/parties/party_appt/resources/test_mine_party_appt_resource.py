@@ -154,7 +154,7 @@ def test_delete_mine_party_appt_success(test_client, auth_headers, setup_info):
     del_resp = test_client.delete(
         '/parties/mines/' + str(setup_info["mine_party_appointment"].mine_party_appt_guid),
         headers=auth_headers['full_auth_header'])
-    assert del_resp.status_code == 200
+    assert del_resp.status_code == 204
 
 
 def test_delete_mine_party_appt_invalid_guid(test_client, auth_headers):
