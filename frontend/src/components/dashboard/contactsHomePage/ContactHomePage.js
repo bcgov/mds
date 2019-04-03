@@ -146,9 +146,9 @@ export class ContactHomePage extends Component {
   };
 
   handleNameFieldReset = () => {
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `party_name`, null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `first_name`, null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `last_name`, null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", null);
   };
 
   openAddContactModal(event, fetchData, title, provinceOptions) {
