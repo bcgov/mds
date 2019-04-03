@@ -12,13 +12,13 @@ import utils.DataCleanup
         DataCleanup.class,
         DataInit.class,
         LoginPageSpec.class,
-        // DashboardSpec.class,
-        // SummarySpec.class,
-        // PermitSpec.class,
-        // ContactInfoSpec.class,
-        // // Tenure.class, TODO: Enable when re-enabling Tenure tab
-        // Tailings.class,
-        // DataCleanup.class
+        DashboardSpec.class,
+        SummarySpec.class,
+        PermitSpec.class,
+        ContactInfoSpec.class,
+        // Tenure.class, TODO: Enable when re-enabling Tenure tab
+        Tailings.class,
+        DataCleanup.class
 ])
 
 class CustomJUnitSpecRunner {
