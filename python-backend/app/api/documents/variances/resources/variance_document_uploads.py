@@ -47,8 +47,8 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         # Save file
         filename = metadata.get('filename')
-        folder = f'variances/{mine_guid}'
-        pretty_folder = f'variances/{mine_no}'
+        folder = f'mines/{mine_guid}/variances'
+        pretty_folder = f'mines/{mine_no}/variances'
 
         data = {
             'folder': folder,
@@ -121,7 +121,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         db.session.delete(doc_xref_record)
         db.session.commit()
 
-        return {'status': 200, 'message': 'The document was removed succesfully'}
+        return {'status': 204, 'message': 'The document was removed succesfully'}
 
 
     def _parse_request_metadata(self):
