@@ -89,17 +89,14 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         if not compliance_article_id:
             raise BadRequest('Error: Missing compliance_article_id')
 
-        try:
-            variance = Variance.create(
-                compliance_article_id,
-                mine_guid,
-                # Optional fields
-                note=data.get('note'),
-                issue_date=data.get('issue_date'),
-                received_date=data.get('received_date'),
-                expiry_date=data.get('expiry_date'))
-        except AssertionError as e:
-            raise BadRequest('Error: {}'.format(e))
+        variance = Variance.create(
+            compliance_article_id,
+            mine_guid,
+            # Optional fields
+            note=data.get('note'),
+            issue_date=data.get('issue_date'),
+            received_date=data.get('received_date'),
+            expiry_date=data.get('expiry_date'))
 
         if not variance:
             raise BadRequest('Error: Failed to create variance')
