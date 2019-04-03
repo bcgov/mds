@@ -22,7 +22,6 @@ variance_document_model = api.model('VarianceDocument', {
     'variance_id': fields.Integer,
     'mine_document_guid': fields.String,
     'details': fields.Nested(mine_document_model)
-
 })
 
 class VarianceDocumentListResource(Resource, UserMixin, ErrorMixin):

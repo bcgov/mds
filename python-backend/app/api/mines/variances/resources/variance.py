@@ -8,6 +8,30 @@ from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
+mine_document_model = api.model('MineDocument', {
+    'mine_document_guid': fields.String,
+    'mine_guid': fields.String,
+    'document_manager_guid': fields.String,
+    'document_name': fields.String, # TODO: update references to filename to be document_name
+    'active_ind': fields.Boolean
+})
+
+variance_document_model = api.model('VarianceDocument', {
+    'variance_document_xref_guid': fields.String,
+    'variance_id': fields.Integer,
+    'mine_document_guid': fields.String,
+    'details': fields.Nested(mine_document_model)
+})
+
+variance_model = api.model('Variance', {
+    'variance_id': fields.Integer,
+    'compliance_article_id': fields.Integer,
+    'note': fields.String,
+    'issue_date': fields.Date,
+    'received_date': fields.Date,
+    'expiry_date': fields.Date,
+    'related_documents': fields.List(fields.Nested(variance_document_model))
+})
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
@@ -37,14 +61,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
                         help='The date on which the variance expires.')
 
-    variance_model = api.model('Variance', {
-        'variance_id': fields.Integer,
-        'compliance_article_id': fields.Integer,
-        'note': fields.String,
-        'issue_date': fields.Date,
-        'received_date': fields.Date,
-        'expiry_date': fields.Date
-    })
 
     @api.doc(
         description=

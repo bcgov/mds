@@ -14,8 +14,8 @@ class VarianceDocument(Base):
     mine_document_guid = db.Column(UUID(as_uuid=True),
                                    db.ForeignKey('mine_document.mine_document_guid'))
     variance_id = db.Column(db.Integer,
+                            db.ForeignKey('variance.variance_id'),
                             server_default=FetchedValue())
-
 
     def __repr__(self):
         return '<VarianceDocument %r>' % self.variance_document_xref_guid

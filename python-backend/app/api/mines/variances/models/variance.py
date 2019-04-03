@@ -21,6 +21,12 @@ class Variance(AuditMixin, Base):
                             nullable=False,
                             default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
+    related_documents = db.relationship(
+        'VarianceDocument',
+        backref="variance",
+        uselist=False,
+        lazy='joined')
+
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
