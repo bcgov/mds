@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { change } from "redux-form";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -10,6 +11,7 @@ import {
   createParty,
   fetchPartyRelationshipTypes,
 } from "@/actionCreators/partiesActionCreator";
+import * as FORM from "@/constants/forms";
 import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
@@ -39,6 +41,7 @@ const propTypes = {
   fetchProvinceCodes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
@@ -142,6 +145,12 @@ export class ContactHomePage extends Component {
     );
   };
 
+  handleContactTypeChange = () => {
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `party_name`, null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `first_name`, null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, `last_name`, null);
+  };
+
   openAddContactModal(event, fetchData, title, provinceOptions) {
     event.preventDefault();
     this.props.openModal({
@@ -184,6 +193,7 @@ export class ContactHomePage extends Component {
         </div>
         <div className="landing-page__content">
           <ContactSearch
+            handleContactTypeChange={this.handleContactTypeChange}
             initialValues={this.state.params}
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
@@ -231,6 +241,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationshipTypes,
       openModal,
       closeModal,
+      change,
     },
     dispatch
   );
