@@ -277,7 +277,7 @@ ShallowWrapper {
                 ],
               }
             }
-            handleContactTypeChange={[Function]}
+            handleNameFieldReset={[Function]}
             handleSearch={[Function]}
             initialValues={Object {}}
             partyRelationshipTypesList={
@@ -555,7 +555,7 @@ ShallowWrapper {
                   ],
                 }
               }
-              handleContactTypeChange={[Function]}
+              handleNameFieldReset={[Function]}
               handleSearch={[Function]}
               initialValues={Object {}}
               partyRelationshipTypesList={
@@ -699,7 +699,7 @@ ShallowWrapper {
                   ],
                 ],
               },
-              "handleContactTypeChange": [Function],
+              "handleNameFieldReset": [Function],
               "handleSearch": [Function],
               "initialValues": Object {},
               "partyRelationshipTypesList": Array [
@@ -887,7 +887,7 @@ ShallowWrapper {
                   ],
                 }
               }
-              handleContactTypeChange={[Function]}
+              handleNameFieldReset={[Function]}
               handleSearch={[Function]}
               initialValues={Object {}}
               partyRelationshipTypesList={
@@ -1165,7 +1165,7 @@ ShallowWrapper {
                     ],
                   }
                 }
-                handleContactTypeChange={[Function]}
+                handleNameFieldReset={[Function]}
                 handleSearch={[Function]}
                 initialValues={Object {}}
                 partyRelationshipTypesList={
@@ -1309,7 +1309,7 @@ ShallowWrapper {
                     ],
                   ],
                 },
-                "handleContactTypeChange": [Function],
+                "handleNameFieldReset": [Function],
                 "handleSearch": [Function],
                 "initialValues": Object {},
                 "partyRelationshipTypesList": Array [
