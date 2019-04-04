@@ -41,7 +41,7 @@ class CoreUserListResource(Resource, UserMixin):
     @api.doc(
         description='This endpoint returns a list of all core users.',
         params={'?idir_username': 'An IDIR username to return users for.'})
-    #@requires_role_mine_view
+    @requires_role_mine_view
     def get(self):
         idir_username = request.args.get('idir_username', None, type=str)
 
@@ -65,7 +65,7 @@ class CoreUserResource(Resource, UserMixin):
     @api.doc(
         description='This endpoint returns a single Core user based on its user guid.',
         params={
-            'core_user_guid': 'Core user guid to find a specific user.',
+            'core_user_guid': 'Core user guid for a specific user.',
         })
     #@requires_role_mine_view
     def get(self, core_user_guid=None):
@@ -76,5 +76,39 @@ class CoreUserResource(Resource, UserMixin):
 
         if not core_user:
             raise NotFound('Core user not found.')
+
+        return core_user
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('email', type=str, help='Users email address.', store_missing=False)
+    parser.add_argument('phone_no', type=str, help='Users phone number.', store_missing=False)
+    parser.add_argument(
+        'phone_ext', type=str, help='Users phone number extension code.', store_missing=False)
+
+    @api.expect(parser)
+    @api.doc(
+        description='This endpoint updates a Core user.',
+        responses={
+            400: 'Resource not found.',
+            404: 'Bad request.',
+        },
+        params={'core_user_guid': 'An application guid.'})
+    @api.marshal_with(core_user_model, code=200)
+    #@requires_role_mine_create
+    def put(self, core_user_guid=None):
+        if not core_user_guid:
+            raise BadRequest('A Core user guid must be provided.')
+
+        core_user = CoreUser.find_by_core_user_guid(core_user_guid)
+
+        if not core_user:
+            raise NotFound('Core user not found.')
+
+        data = self.parser.parse_args()
+
+        for key, value in data.items():
+            setattr(core_user, key, value)
+
+        core_user.save()
 
         return core_user
