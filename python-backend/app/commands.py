@@ -59,8 +59,9 @@ def register_commands(app):
 
     @app.cli.command()
     def ldap_test():
-        from app.api.services.idir_service import IdirService
-        IdirService.test()
+        auth.apply_security = False
+        from app.api.services.idir_service import import_empr_users
+        import_empr_users()
 
     @app.cli.command()
     @click.argument('num')

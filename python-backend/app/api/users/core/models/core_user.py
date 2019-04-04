@@ -21,9 +21,9 @@ class CoreUser(AuditMixin, Base):
     email = db.Column(db.String(254))
     phone_no = db.Column(db.String(12))
     phone_ext = db.Column(db.String(4))
-    idir_user_detail = db.relationship('IdirUserDetail', lazy='joined')
+    idir_user_detail = db.relationship('IdirUserDetail', lazy='joined', backref="core_user")
     idir_membership = db.relationship(
-        'IdirMembership', secondary='idir_membership_xref', lazy='select')
+        'IdirMembership', secondary='idir_membership_xref', lazy='select', backref="core_user")
     last_logon = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
