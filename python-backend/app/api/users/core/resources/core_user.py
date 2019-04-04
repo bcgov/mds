@@ -8,10 +8,6 @@ from ..models.core_user import CoreUser
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
-idir_membership_model = api.model('idir_membership', {
-    'idir_membership_name': fields.String,
-})
-
 idir_user_detail_model = api.model(
     'idir_user_detail', {
         'bcgov_guid': fields.String,
@@ -26,9 +22,7 @@ core_user_model = api.model(
         'core_user_guid': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
-        'phone_ext': fields.String,
         'idir_user_detail': fields.Nested(idir_user_detail_model),
-        'idir_membership': fields.List(fields.Nested(idir_membership_model)),
         'last_logon': fields.DateTime,
     })
 
@@ -41,7 +35,7 @@ class CoreUserListResource(Resource, UserMixin):
     @api.doc(
         description='This endpoint returns a list of all core users.',
         params={'?idir_username': 'An IDIR username to return users for.'})
-    @requires_role_mine_view
+    #@requires_role_mine_view
     def get(self):
         idir_username = request.args.get('idir_username', None, type=str)
 
