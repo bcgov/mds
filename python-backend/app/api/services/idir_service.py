@@ -59,7 +59,9 @@ def get_empr_users_from_idir():
         for group in idir_user["memberOf"]:
             if group in idir_group_dns.values():
                 user["memberOf"].append(group)
-        empr_users.append(user)
+        if user["memberOf"]:
+            #only want users that belong to at least one of the specified groups
+            empr_users.append(user)
     #current_app.logger.info(empr_users)
     return empr_users
 
@@ -85,11 +87,24 @@ def import_empr_users():
                     raise Exception(f"FK Error: membership group={group} doesn't exist in db")
                 new_cu.idir_membership.append(membership_group)
             new_cu.save()
-            current_app.logger.info(
-                f'New User imported from idir >> {new_cu.idir_user_detail.username}, {new_cu.email}'
-            )
             new_count += 1
+
         if iud:
+            #update CoreUser
+            iud.core_user.email = user["email"]
+            iud.core_user.phone_no = user["phone_no"]
+            #update IdirUserDetail
+            iud.username = user["username"]
+            iud.title = user["title"]
+            iud.city = user["city"]
+            iud.department = user['department']
+            #update Memberships
+            iud.core_user.idir_membership = []
+            for group in user["memberOf"]:
+                membership_group = IdirMembership.find_by_membership_name(group)
+                if not membership_group:
+                    raise Exception(f"FK Error: membership group={group} doesn't exist in db")
+                iud.core_user.idir_membership.append(membership_group)
             existing_count += 1
             #update existing user
             pass
