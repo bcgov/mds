@@ -39,6 +39,18 @@ class CoreUser(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_by_idir_username(cls, idir_username):
+        try:
+            idir_user_detail = IdirUserDetail.find_by_idir_username(idir_username)
+
+            if not idir_user_detail:
+                return None
+
+            return cls.query.filter_by(core_user_id=idir_user_detail.core_user_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
     def create(cls, core_user_guid, email, phone_no, phone_ext, save=True):
         core_user = cls(
             core_user_guid=core_user_guid, email=email, phone_no=phone_no, phone_ext=phone_ext)

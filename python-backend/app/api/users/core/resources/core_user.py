@@ -30,8 +30,30 @@ core_user_model = api.model(
         'idir_user_detail': fields.Nested(idir_user_detail_model),
         'idir_membership': fields.List(fields.Nested(idir_membership_model)),
         'last_logon': fields.DateTime,
-        'active_ind': fields.Boolean,
     })
+
+
+class CoreUserListResource(Resource, UserMixin):
+    parser = reqparse.RequestParser()
+    parser.add_argument('idir_username', type=str, help='IDIR username.')
+
+    @api.marshal_with(core_user_model, envelope='results', code=200, as_list=True)
+    @api.doc(
+        description='This endpoint returns a list of all core users.',
+        params={'?idir_username': 'An IDIR username to return users for.'})
+    #@requires_role_mine_view
+    def get(self):
+        idir_username = request.args.get('idir_username', None, type=str)
+
+        if idir_username:
+            core_users = CoreUser.find_by_idir_username(idir_username)
+        else:
+            core_users = CoreUser.query.filter_by(active_ind=True).all()
+
+        if not core_users:
+            raise NotFound('No users found.')
+
+        return core_users
 
 
 class CoreUserResource(Resource, UserMixin):
@@ -39,7 +61,7 @@ class CoreUserResource(Resource, UserMixin):
     parser.add_argument(
         'core_user_guid', type=str, help='GUID of the Core user.', store_missing=False)
 
-    @api.marshal_with(core_user_model, envelope='data', code=200)
+    @api.marshal_with(core_user_model, code=200)
     @api.doc(
         description='This endpoint returns a single Core user based on its user guid.',
         params={

@@ -36,6 +36,13 @@ class IdirUserDetail(AuditMixin, Base):
             idir_user_detail.save(commit=False)
         return idir_user_detail
 
+    @classmethod
+    def find_by_idir_username(cls, idir_username):
+        try:
+            return cls.query.filter_by(username=idir_username).first()
+        except ValueError:
+            return None
+
     @validates('bcgov_guid')
     def validate_status_code(self, key, bcgov_guid):
         if not bcgov_guid:
