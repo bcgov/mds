@@ -8,8 +8,8 @@ from app.api.documents.expected.resources.expected_document_uploads import Expec
 from app.api.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
 from app.api.documents.mines.resources.mine_document_resource import MineDocumentResource
 from app.api.documents.required.resources.required_documents import RequiredDocumentResource
-from app.api.documents.variances.resources.variance import VarianceDocumentResource
-from app.api.documents.variances.resources.variance_document_uploads import VarianceDocumentUploadResource
+from app.api.documents.variances.resources.variance import VarianceDocumentListResource, VarianceDocumentResource
+from app.api.documents.variances.resources.variance_document_uploads import VarianceDocumentUploadResource, VarianceUploadedDocumentsResource
 from app.api.mines.compliance.resources.compliance import MineComplianceResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.location.resources.location import MineLocationResource
@@ -19,7 +19,7 @@ from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCod
 from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch
-from app.api.mines.variances.resources.variance import VarianceResource
+from app.api.mines.variances.resources.variance import VarianceListResource, VarianceResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
@@ -79,12 +79,14 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MinespaceUserResource, 'post', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
+     (VarianceDocumentListResource, "get", [MINE_VIEW]),
      (VarianceDocumentResource, "get", [MINE_VIEW]),
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceResource, "get", [MINE_VIEW]),
-     (VarianceResource, "post", [MINE_CREATE])
+     (VarianceUploadedDocumentsResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (VarianceListResource, "get", [MINE_VIEW]),
+     (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceResource, "get", [MINE_VIEW])
     ]
 )
 def test_endpoint_auth(resource, method, expected_roles):
