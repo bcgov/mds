@@ -1,7 +1,6 @@
-from datetime import datetime
 from flask_restplus import Resource, reqparse, fields
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest
 
 from ..models.variance import Variance
 from app.extensions import api

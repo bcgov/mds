@@ -1,7 +1,5 @@
 import base64
-import logging
 import requests
-import json
 from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
@@ -10,7 +8,6 @@ from sqlalchemy.exc import DataError
 
 from ..models.variance import VarianceDocument
 from ....mines.mine.models.mine import Mine
-from ....mines.variances.models.variance import Variance
 from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db

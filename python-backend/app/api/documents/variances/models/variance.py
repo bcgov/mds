@@ -1,7 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
-from ...mines.models.mine_document import MineDocument
 from ....utils.models_mixins import Base
 from app.extensions import db
 

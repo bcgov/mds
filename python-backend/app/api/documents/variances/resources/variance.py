@@ -1,13 +1,11 @@
-from datetime import datetime
 from flask_restplus import Resource, fields
 from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import VarianceDocument
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....utils.url import get_documents_svc_url
 
 mine_document_model = api.model('MineDocument', {
     'mine_document_guid': fields.String,
