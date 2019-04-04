@@ -18,7 +18,8 @@ COMMENT ON TABLE core_user IS 'A core user and some user details. Should not inc
 
 CREATE TABLE IF NOT EXISTS idir_user_detail
 (
-	core_user_id 			int4										,
+    idir_user_detail_id		serial 										PRIMARY KEY,
+	core_user_id 			int4										NOT NULL,
     bcgov_guid 				uuid										NOT NULL,
 	username 				character varying(128)						NOT NULL,
 	title 					character varying(254)						,
@@ -56,7 +57,8 @@ CREATE TABLE IF NOT EXISTS idir_membership_xref
 	idir_membership_id 		int4										NOT NULL,
 	
     FOREIGN KEY (core_user_id) REFERENCES core_user(core_user_id) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (idir_membership_id) REFERENCES idir_membership(idir_membership_id) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (idir_membership_id) REFERENCES idir_membership(idir_membership_id) DEFERRABLE INITIALLY DEFERRED,
+    PRIMARY KEY(core_user_id, idir_membership_id)
 );
 ALTER TABLE idir_membership_xref OWNER TO mds;
 COMMENT ON TABLE idir_membership_xref IS 'Records which core users relate to which IDIR memberships we are importing users from.';
