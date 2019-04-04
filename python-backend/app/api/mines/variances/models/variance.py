@@ -24,7 +24,6 @@ class Variance(AuditMixin, Base):
     related_documents = db.relationship(
         'VarianceDocument',
         backref="variance",
-        uselist=False,
         lazy='joined')
 
 
