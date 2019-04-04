@@ -8,19 +8,6 @@ from app.api.users.core.models.idir_membership import IdirMembership
 IDIR_URL = 'plywood.idir.bcgov'
 EMPR_DN = "OU=Users,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
 
-idir_group_dns = {
-    "EMPR MMRD Compliance and Enforcement <MMRDCOEN@Victoria1.gov.bc.ca>":
-    "CN=EMPR MMRD Compliance and Enforcement,OU=Distribution Lists,OU=Exchange Objects,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV",
-    "EMPR MMRD Excluded Managers <MMRDEXMG@Victoria1.gov.bc.ca>":
-    "CN=EMPR MMRD Excluded Managers,OU=Distribution Lists,OU=Exchange Objects,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV",
-    "EMPR MMRD Health Safety and Permitting Branch <MMRDHSV@Victoria1.gov.bc.ca>":
-    "CN=EMPR MMRD Health Safety and Permitting Branch,OU=Distribution Lists,OU=Exchange Objects,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV",
-    "EMPR MCAD Policy <MMRDPLCY@Victoria1.gov.bc.ca>":
-    "CN=EMPR MCAD Policy,OU=Distribution Lists,OU=Exchange Objects,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV",
-    "EMPR MMRD Supervisors <MMRDSUP@Victoria1.gov.bc.ca>":
-    "CN=EMPR MMRD Supervisors,OU=Distribution Lists,OU=Exchange Objects,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
-}
-
 idir_field_map = {
     "bcgov_guid": "bcgovGUID",
     "username": "msDS-PrincipalName",
@@ -48,6 +35,8 @@ class IdirService():
 
 def get_empr_users_from_idir():
     search_results = IdirService.search_for_users(EMPR_DN)
+
+    idir_membership_groups = [x.idir_membership_name for x in IdirMembership.query.all()]
     empr_users = []
     for idir_user in search_results:
         user = {}
@@ -57,7 +46,7 @@ def get_empr_users_from_idir():
 
         user["memberOf"] = []
         for group in idir_user["memberOf"]:
-            if group in idir_group_dns.values():
+            if group in idir_membership_groups:
                 user["memberOf"].append(group)
         if user["memberOf"]:
             #only want users that belong to at least one of the specified groups
