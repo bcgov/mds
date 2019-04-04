@@ -58,6 +58,11 @@ def register_commands(app):
     # in terminal you can run $flask <cmd> <arg>
 
     @app.cli.command()
+    def ldap_test():
+        from app.api.services.idir_service import IdirService
+        IdirService.test()
+
+    @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
@@ -84,7 +89,7 @@ def register_commands(app):
                 batches = [batch_size] * full_batches
                 if 0 < num % batch_size:
                     batches.append(num % batch_size)
-                
+
                 task_list = []
                 for batch in batches:
                     task_list.append(executor.submit(_create_data, batch))
