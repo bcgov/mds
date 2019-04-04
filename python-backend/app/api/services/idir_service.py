@@ -1,10 +1,11 @@
 from ldap3 import Server, Connection, ObjectDef, Reader, ALL, NTLM
 from flask import current_app
 
+from app.api.users.core.models.core_user import CoreUser
 from app.api.users.core.models.idir_user_detail import IdirUserDetail
+from app.api.users.core.models.idir_membership import IdirMembership
 
 IDIR_URL = 'plywood.idir.bcgov'
-
 EMPR_DN = "OU=Users,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
 
 idir_group_dns = {
@@ -53,33 +54,43 @@ def get_empr_users_from_idir():
         for core_field, idir_field in idir_field_map.items():
             #everything returned in ldap is a list
             user[core_field] = idir_user[idir_field][0] if idir_user[idir_field] else None
-            #deal with phone number
-            if idir_field == idir_field_map["phone_no"]:
-                user["phone_ext"] = None
-                phone = idir_user[idir_field]
-                if not phone:
-                    continue
-                phone = phone[0].split(', Ext. ')
-                user["phone_no"] = phone[0]
-                if len(phone) > 1:
-                    user["phone_ext"] = phone[1]
 
+        user["memberOf"] = []
         for group in idir_user["memberOf"]:
-            user["memberOf"] = []
             if group in idir_group_dns.values():
                 user["memberOf"].append(group)
         empr_users.append(user)
-    current_app.logger.info(empr_users)
+    #current_app.logger.info(empr_users)
     return empr_users
 
 
 def import_empr_users():
     users = get_empr_users_from_idir()
+    existing_count, new_count = 0, 0
     for user in users:
         iud = IdirUserDetail.find_by_bcgov_guid(user["bcgov_guid"])
         if not iud:
-            #create a new user
-            pass
+            new_cu = CoreUser.create(email=user["email"], phone_no=user["phone_no"], save=False)
+            new_iud = IdirUserDetail.create(
+                new_cu,
+                bcgov_guid=user["bcgov_guid"],
+                username=user["username"],
+                title=user["title"],
+                city=user["city"],
+                department=user["department"],
+                save=False)
+            for group in user["memberOf"]:
+                membership_group = IdirMembership.find_by_membership_name(group)
+                if not membership_group:
+                    raise Exception(f"FK Error: membership group={group} doesn't exist in db")
+                new_cu.idir_membership.append(membership_group)
+            new_cu.save()
+            current_app.logger.info(
+                f'New User imported from idir >> {new_cu.idir_user_detail.username}, {new_cu.email}'
+            )
+            new_count += 1
         if iud:
+            existing_count += 1
             #update existing user
             pass
+    current_app.logger.info(f'New User Count={new_count}, Updated User Count={existing_count}')

@@ -60,6 +60,7 @@ def register_commands(app):
     @app.cli.command()
     def ldap_test():
         auth.apply_security = False
+        User._test_mode = True
         from app.api.services.idir_service import import_empr_users
         import_empr_users()
 
@@ -77,7 +78,7 @@ def register_commands(app):
         :param threading: use threading or not
         :return: None
         """
-        User.test_mode = True
+        User._test_mode = True
 
         if threading:
             with ThreadPoolExecutor() as executor:
