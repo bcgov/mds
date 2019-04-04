@@ -35,7 +35,7 @@ class CoreUserListResource(Resource, UserMixin):
     @api.doc(
         description='This endpoint returns a list of all core users.',
         params={'?idir_username': 'An IDIR username to return users for.'})
-    #@requires_role_mine_view
+    @requires_role_mine_view
     def get(self):
         idir_username = request.args.get('idir_username', None, type=str)
 
@@ -61,7 +61,7 @@ class CoreUserResource(Resource, UserMixin):
         params={
             'core_user_guid': 'Core user guid for a specific user.',
         })
-    #@requires_role_mine_view
+    @requires_role_mine_view
     def get(self, core_user_guid=None):
         if not core_user_guid:
             raise BadRequest('A Core user guid must be provided.')
@@ -88,7 +88,7 @@ class CoreUserResource(Resource, UserMixin):
         },
         params={'core_user_guid': 'An application guid.'})
     @api.marshal_with(core_user_model, code=200)
-    #@requires_role_mine_create
+    @requires_role_mine_create
     def put(self, core_user_guid=None):
         if not core_user_guid:
             raise BadRequest('A Core user guid must be provided.')
