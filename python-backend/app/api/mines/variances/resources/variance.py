@@ -12,7 +12,7 @@ mine_document_model = api.model('MineDocument', {
     'mine_document_guid': fields.String,
     'mine_guid': fields.String,
     'document_manager_guid': fields.String,
-    'document_name': fields.String, # TODO: update references to filename to be document_name
+    'document_name': fields.String,
     'active_ind': fields.Boolean
 })
 

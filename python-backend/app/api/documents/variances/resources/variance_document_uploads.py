@@ -37,7 +37,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
-    parser.add_argument('filename', type=str)
+    parser.add_argument('document_name', type=str)
 
 
     @api.doc(
@@ -56,11 +56,11 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         # Save file
         mine = Mine.find_by_mine_guid(mine_guid)
-        filename = metadata.get('filename')
+        document_name = metadata.get('filename')
         data = {
             'folder': f'mines/{mine.mine_guid}/variances',
             'pretty_folder': f'mines/{mine.mine_no}/variances',
-            'filename': filename
+            'filename': document_name
         }
         document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
 
@@ -81,7 +81,7 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
         description=
         'Update an uploaded variance document.',
         params={
-            'filename': 'The new name for the file'
+            'document_name': 'The new name for the file'
         }
     )
     @api.marshal_with(variance_document_model, code=200)
@@ -91,7 +91,7 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Must provide mine_guid, variance_id, and mine_document_guid')
 
         data = self.parser.parse_args()
-        filename = data.get('filename')
+        document_name = data.get('document_name')
 
         if not document_manager_guid:
             raise BadRequest('Must provide document_manager_guid')
@@ -100,7 +100,7 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
         mine_doc = MineDocument(
             mine_guid=mine_guid,
             document_manager_guid=document_manager_guid,
-            document_name=filename)
+            document_name=document_name)
 
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
