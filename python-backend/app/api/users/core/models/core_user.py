@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_restplus import fields
 
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, backref
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db, api
 
@@ -19,11 +19,11 @@ class CoreUser(AuditMixin, Base):
     core_user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     core_user_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     email = db.Column(db.String(254))
-    phone_no = db.Column(db.String(12))
-    phone_ext = db.Column(db.String(4))
-    idir_user_detail = db.relationship('IdirUserDetail', lazy='joined', backref="core_user")
+    phone_no = db.Column(db.String)
+    idir_user_detail = db.relationship(
+        'IdirUserDetail', lazy='joined', backref=backref("core_user", uselist=False), uselist=False)
     idir_membership = db.relationship(
-        'IdirMembership', secondary='idir_membership_xref', lazy='select', backref="core_user")
+        'IdirMembership', secondary='idir_membership_xref', lazy='select', backref="core_users")
     last_logon = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
@@ -42,18 +42,15 @@ class CoreUser(AuditMixin, Base):
     def find_by_idir_username(cls, idir_username):
         try:
             idir_user_detail = IdirUserDetail.find_by_idir_username(idir_username)
-
             if not idir_user_detail:
                 return None
-
-            return cls.query.filter_by(core_user_id=idir_user_detail.core_user_id).first()
+            return idir_user_detail.core_user
         except ValueError:
             return None
 
     @classmethod
-    def create(cls, core_user_guid, email, phone_no, phone_ext, save=True):
-        core_user = cls(
-            core_user_guid=core_user_guid, email=email, phone_no=phone_no, phone_ext=phone_ext)
+    def create(cls, email, phone_no, save=True):
+        core_user = cls(email=email, phone_no=phone_no)
         if save:
             core_user.save(commit=False)
         return core_user
@@ -66,12 +63,7 @@ class CoreUser(AuditMixin, Base):
 
     @validates('phone_no')
     def validate_application_no(self, key, phone_no):
-        if len(phone_no) > 12:
-            raise AssertionError('Phone number must not exceed 12 characters.')
+        if phone_no:
+            if len(phone_no) > 64:
+                raise AssertionError('Phone number must not exceed 12 characters.')
         return phone_no
-
-    @validates('phone_ext')
-    def validate_application_no(self, key, phone_ext):
-        if len(phone_ext) > 4:
-            raise AssertionError('Phone extension must not exceed 4 characters.')
-        return phone_ext

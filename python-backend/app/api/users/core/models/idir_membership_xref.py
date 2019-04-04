@@ -10,7 +10,7 @@ from app.extensions import db, api
 from ....utils.models_mixins import AuditMixin, Base
 
 
-class IdirMembershipXref(AuditMixin, Base):
+class IdirMembershipXref(Base):
     __tablename__ = 'idir_membership_xref'
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'), primary_key=True)
     idir_membership_id = db.Column(

@@ -20,6 +20,10 @@ class IdirMembership(AuditMixin, Base):
         return '<IdirMembership %r>' % self.idir_membership_name
 
     @classmethod
+    def find_by_membership_name(cls, membership_name):
+        return cls.query.filter_by(idir_membership_name=membership_name).first()
+
+    @classmethod
     def create(cls, idir_membership_name, import_users_ind, save=True):
         idir_membership = cls(
             idir_membership_name=idir_membership_name, import_users_ind=import_users_ind)

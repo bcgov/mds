@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS core_user
     core_user_id 			serial 										PRIMARY KEY,
 	core_user_guid			uuid DEFAULT gen_random_uuid()				NOT NULL,
     email 					character varying(254)						,
-	phone_no  				character varying(12)						,
-    phone_ext 				character varying(4)						,
+	phone_no  				character varying(64)						,
 	last_logon 				timestamp with time zone					,
 	active_ind 				boolean DEFAULT TRUE						NOT NULL,
     create_user           	character varying(60)						NOT NULL,
@@ -62,4 +61,3 @@ CREATE TABLE IF NOT EXISTS idir_membership_xref
 );
 ALTER TABLE idir_membership_xref OWNER TO mds;
 COMMENT ON TABLE idir_membership_xref IS 'Records which core users relate to which IDIR memberships we are importing users from.';
-
