@@ -33,10 +33,9 @@ class IdirService():
         return [x.entry_attributes_as_dict for x in r]
 
 
-def get_empr_users_from_idir():
+def get_empr_users_from_idir(membership_groups=[]):
     search_results = IdirService.search_for_users(EMPR_DN)
 
-    idir_membership_groups = [x.idir_membership_name for x in IdirMembership.query.all()]
     empr_users = []
     for idir_user in search_results:
         user = {}
@@ -45,18 +44,21 @@ def get_empr_users_from_idir():
             user[core_field] = idir_user[idir_field][0] if idir_user[idir_field] else None
 
         user["memberOf"] = []
-        for group in idir_user["memberOf"]:
-            if group in idir_membership_groups:
-                user["memberOf"].append(group)
-        if user["memberOf"]:
-            #only want users that belong to at least one of the specified groups
+        list_intersect = [group for group in idir_user["memberOf"] if group in membership_groups]
+
+        for group in list_intersect:
+            user["memberOf"].append(group)
+
+        if (list_intersect and membership_groups) or not membership_groups:
             empr_users.append(user)
+
     #current_app.logger.info(empr_users)
     return empr_users
 
 
 def import_empr_users():
-    users = get_empr_users_from_idir()
+    idir_membership_groups = [x.idir_membership_name for x in IdirMembership.query.all()]
+    users = get_empr_users_from_idir(idir_membership_groups)
     existing_count, new_count = 0, 0
     for user in users:
         iud = IdirUserDetail.find_by_bcgov_guid(user["bcgov_guid"])
