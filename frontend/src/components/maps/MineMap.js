@@ -4,6 +4,7 @@ import { WebMap, Map, loadModules } from "react-arcgis";
 import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
 import MinePin from "./MinePin";
+import MinePinSimple from "./MinePinSimple";
 import LocationPin from "./LocationPin";
 import * as String from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -207,10 +208,12 @@ class MineMap extends Component {
 
   render() {
     if (this.props.mine) {
+      console.log("************RENDER THE MAP WAS CALLED*************");
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
         <Map
+          // style={{ width: "99%", height: "99%" }}
           style={{ width: "100%", height: "100%" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
@@ -227,7 +230,8 @@ class MineMap extends Component {
           }}
           onLoad={this.handleLoadMap}
         >
-          <MinePin />
+          <MinePinSimple />
+          {/* <MinePin /> */}
         </Map>
       );
     }
