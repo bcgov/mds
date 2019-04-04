@@ -33,7 +33,7 @@ variance_model = api.model('Variance', {
     'related_documents': fields.List(fields.Nested(variance_document_model))
 })
 
-class VarianceResource(Resource, UserMixin, ErrorMixin):
+class VarianceListResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('compliance_article_id',
                         type=int,
@@ -64,7 +64,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         description=
-        'This endpoint returns a list of all variances for a given mine.',
+        'Get a list of all variances for a given mine.',
         params={
             'mine_guid': 'guid of the mine for which to fetch variances'
         }
@@ -72,9 +72,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     @api.marshal_with(variance_model, code=200, envelope='records')
     def get(self, mine_guid=None):
-        if not mine_guid:
-            raise BadRequest('Missing mine_guid')
-
         try:
             variances = Variance.find_by_mine_guid(mine_guid)
         except DBAPIError:
@@ -88,7 +85,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         description=
-        'This endpoint creates a new variance for a given mine.',
+        'Create a new variance for a given mine.',
         params={
             'mine_guid': 'guid of the mine with which to associate the variances'
         }
@@ -97,9 +94,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     @api.marshal_with(variance_model, code=200)
     def post(self, mine_guid=None):
-        if not mine_guid:
-            raise BadRequest('Must provide mine_guid')
-
         data = VarianceResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
 
@@ -119,4 +113,27 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Error: Failed to create variance')
 
         variance.save()
+        return variance
+
+
+class VarianceResource(Resource, UserMixin, ErrorMixin):
+    @api.doc(
+        description=
+        'Get a single variance.',
+        params={
+            'mine_guid': 'guid of the mine to which the variance is associated',
+            'variance_id': 'ID of the variance to fetch'
+        }
+    )
+    @requires_role_mine_view
+    @api.marshal_with(variance_model, code=200)
+    def get(self, mine_guid=None, variance_id=None):
+        try:
+            variance = Variance.find_by_variance_id(variance_id)
+        except DBAPIError:
+            raise BadRequest('Invalid variance_id')
+
+        if variance is None:
+            raise BadRequest('Unable to fetch variance')
+
         return variance

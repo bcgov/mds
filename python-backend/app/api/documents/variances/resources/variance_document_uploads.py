@@ -30,7 +30,6 @@ variance_document_model = api.model('VarianceDocument', {
     'variance_id': fields.Integer,
     'mine_document_guid': fields.String,
     'details': fields.Nested(mine_document_model)
-
 })
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
@@ -76,7 +75,20 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         return response
 
 
-class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
+    def _parse_request_metadata(self):
+        request_metadata = request.headers.get("Upload-Metadata")
+        metadata = {}
+        if not request_metadata:
+            return metadata
+
+        for key_value in request_metadata.split(","):
+            (key, value) = key_value.split(" ")
+            metadata[key] = base64.b64decode(value).decode("utf-8")
+
+        return metadata
+
+
+class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description=
         'Update an uploaded variance document.',
@@ -141,16 +153,3 @@ class VarianceDocumentUploadedResource(Resource, UserMixin, ErrorMixin):
 
         # FIXME: This response is inconsistent with the others
         return {'status': 204, 'message': 'The document was removed succesfully'}
-
-
-    def _parse_request_metadata(self):
-        request_metadata = request.headers.get("Upload-Metadata")
-        metadata = {}
-        if not request_metadata:
-            return metadata
-
-        for key_value in request_metadata.split(","):
-            (key, value) = key_value.split(" ")
-            metadata[key] = base64.b64decode(value).decode("utf-8")
-
-        return metadata
