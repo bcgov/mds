@@ -58,18 +58,15 @@ def register_commands(app):
     # in terminal you can run $flask <cmd> <arg>
 
     @app.cli.command()
-    def ldap_test():
-        auth.apply_security = False
-        User._test_mode = True
-        from app.api.services.idir_service import import_empr_users
-        import_empr_users()
+    def import_idir():
+        from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
+        _import_empr_idir_users()
 
     @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
         from . import auth
-        auth.apply_security = False
         """
         Creates dummy data in the database. If threading=True
         Use Threading and multiprocessing to create records in chunks of 100.
