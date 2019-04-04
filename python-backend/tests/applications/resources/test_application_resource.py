@@ -43,8 +43,8 @@ def test_get_application_not_found(test_client, setup_info, auth_headers):
     get_resp = test_client.get(
         '/applications/' + setup_info.get('bad_guid'), headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data == {'error': {'status': 404, 'message': 'Application not found'}}
     assert get_resp.status_code == 404
+    assert 'Not Found' in get_data['message']
 
 
 def test_get_application(test_client, setup_info, auth_headers):
@@ -52,8 +52,8 @@ def test_get_application(test_client, setup_info, auth_headers):
         '/applications/' + setup_info.get('mine_1_application_guid'),
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['application_guid'] == setup_info.get('mine_1_application_guid')
     assert get_resp.status_code == 200
+    assert get_data['applications']['application_guid'] == setup_info.get('mine_1_application_guid')
 
 
 def test_get_applications_on_a_mine(test_client, setup_info, auth_headers):
@@ -79,7 +79,7 @@ def test_post_application(test_client, setup_info, auth_headers):
         '/applications', headers=auth_headers['full_auth_header'], data=data)
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 200
+    assert post_resp.status_code == 201
     assert len(
         [key for key, value in post_data.items() if key not in data or value != data[key]]) == 2
 
@@ -89,22 +89,6 @@ def test_post_application_bad_mine_guid(test_client, setup_info, auth_headers):
     post_resp = test_client.post(
         '/applications', headers=auth_headers['full_auth_header'], data=data)
 
-    assert post_resp.status_code == 404
-
-
-def test_post_with_permit_guid(test_client, setup_info, auth_headers):
-    APP_NO = 'TX-54321'
-    data = {
-        'mine_guid': setup_info.get('mine_2_guid'),
-        'application_no': APP_NO,
-        'application_status_code': 'RIP',
-        'description': 'This is a test.',
-        'received_date': '1999-12-12',
-    }
-    post_resp = test_client.post(
-        '/applications/' + setup_info.get('mine_1_application_guid'),
-        headers=auth_headers['full_auth_header'],
-        data=data)
     assert post_resp.status_code == 400
 
 

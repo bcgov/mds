@@ -62,7 +62,7 @@ export class MineInfo extends Component {
         expDoc.received_date = null;
       }
 
-      this.props.updateExpectedDocument(expDoc.exp_document_guid, { document: expDoc }).then(() => {
+      this.props.updateExpectedDocument(expDoc.exp_document_guid, expDoc).then(() => {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.guid);
       });

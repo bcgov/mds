@@ -9,7 +9,7 @@ class Form_CreateMine extends Module {
         warning (wait: true) {$("div", 0, class:"ant-form-explain").find("span").text()}
 
         //mine profile input
-        mineNameBox (wait:true) {$("input", id:"name")}
+        mineNameBox (wait:true) {$("input", id:"mine_name")}
         statusLabel (wait:true) {$("span.ant-cascader-picker-label")}
         status_level1 (wait:true) {$("ul.ant-cascader-menu",0).find("li",1)}//Closed option
         status_level2 (wait:true) {$("ul.ant-cascader-menu",1).find("li",2)}//Orphaned
@@ -20,7 +20,7 @@ class Form_CreateMine extends Module {
 
         latBox (wait:true) {$("input", id:"latitude")}
         longBox (wait:true) {$("input", id:"longitude")}
-        notesBox (wait:true) {$("textarea", id:"note")}
+        notesBox (wait:true) {$("textarea", id:"mine_note")}
 
         //button
         createMineButton (wait: true) {$("form.ant-form").find("div.center-mobile").find("button").has("span", text:"Create Mine Record")}

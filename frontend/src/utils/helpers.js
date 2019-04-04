@@ -49,6 +49,13 @@ export const formatDate = (dateString) =>
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
+// Function to format an API date string to human readable
+export const formatFullDateTime = (dateString) =>
+  dateString &&
+  dateString !== "9999-12-31" &&
+  dateString !== "None" &&
+  moment(dateString).format("MMM DD YYYY");
+
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
