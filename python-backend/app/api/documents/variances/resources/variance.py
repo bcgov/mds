@@ -31,10 +31,7 @@ class VarianceDocumentListResource(Resource, UserMixin, ErrorMixin):
     )
     @requires_role_mine_view
     @api.marshal_with(variance_document_model, code=200, envelope='records')
-    def get(self, mine_guid=None, variance_id=None):
-        if not variance_id:
-            raise BadRequest('Must provide variance_id')
-
+    def get(self, mine_guid, variance_id):
         try:
             records = VarianceDocument.find_by_variance_id(variance_id)
         except DBAPIError:
@@ -57,12 +54,7 @@ class VarianceDocumentResource(Resource, UserMixin, ErrorMixin):
     )
     @requires_role_mine_view
     @api.marshal_with(variance_document_model, code=200)
-    def get(self, mine_guid=None, variance_id=None, mine_document_guid=None):
-        if not variance_id:
-            raise BadRequest('Missing variance_id')
-        if not mine_document_guid:
-            raise BadRequest('Missing mine_document_guid')
-
+    def get(self, mine_guid, variance_id, mine_document_guid):
         try:
             document = VarianceDocument.find_by_mine_document_guid_and_variance_id(
                 mine_document_guid,

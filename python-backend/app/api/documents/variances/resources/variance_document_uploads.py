@@ -44,10 +44,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         'Request a document_manager_guid for uploading a document'
     )
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, mine_guid=None, variance_id=None):
-        if not mine_guid or not variance_id:
-            raise BadRequest('Must provide mine_guid and variance_id')
-
+    def post(self, mine_guid, variance_id):
         data = self.parser.parse_args()
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -98,15 +95,9 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     )
     @api.marshal_with(variance_document_model, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def put(self, mine_guid=None, variance_id=None, document_manager_guid=None):
-        if not mine_guid or not variance_id or not mine_document_guid:
-            raise BadRequest('Must provide mine_guid, variance_id, and mine_document_guid')
-
+    def put(self, mine_guid, variance_id, document_manager_guid):
         data = self.parser.parse_args()
         document_name = data.get('document_name')
-
-        if not document_manager_guid:
-            raise BadRequest('Must provide document_manager_guid')
 
         # Register new file upload
         mine_doc = MineDocument(
@@ -134,10 +125,7 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
         'Delete a document from a variance.'
     )
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, mine_guid=None, variance_id=None, mine_document_guid=None):
-        if not variance_id or not mine_document_guid:
-            raise BadRequest('Must provide a variance_id and mine_document_guid')
-
+    def delete(self, mine_guid, variance_id, mine_document_guid):
         try:
             doc_xref_record = VarianceDocument.find_by_mine_document_guid_and_variance_id(
                 mine_document_guid,

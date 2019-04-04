@@ -48,17 +48,14 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('issue_date',
                         store_missing=False,
                         trim=True,
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
                         help='The date on which the variance was issued.')
     parser.add_argument('received_date',
                         store_missing=False,
                         trim=True,
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
                         help='The date on which the variance was received.')
     parser.add_argument('expiry_date',
                         store_missing=False,
                         trim=True,
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
                         help='The date on which the variance expires.')
 
 
@@ -71,7 +68,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     )
     @requires_role_mine_view
     @api.marshal_with(variance_model, code=200, envelope='records')
-    def get(self, mine_guid=None):
+    def get(self, mine_guid):
         try:
             variances = Variance.find_by_mine_guid(mine_guid)
         except DBAPIError:
@@ -93,7 +90,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @requires_role_mine_create
     @api.marshal_with(variance_model, code=200)
-    def post(self, mine_guid=None):
+    def post(self, mine_guid):
         data = VarianceResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
 
@@ -127,7 +124,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     )
     @requires_role_mine_view
     @api.marshal_with(variance_model, code=200)
-    def get(self, mine_guid=None, variance_id=None):
+    def get(self, mine_guid, variance_id):
         try:
             variance = Variance.find_by_variance_id(variance_id)
         except DBAPIError:
