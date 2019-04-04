@@ -31,6 +31,10 @@ class CoreUser(AuditMixin, Base):
         return '<CoreUser %r>' % self.core_user_guid
 
     @classmethod
+    def get_all(cls):
+        return cls.query.filter_by(active_ind=True).all()
+
+    @classmethod
     def find_by_core_user_guid(cls, core_user_guid):
         try:
             uuid.UUID(core_user_guid, version=4)

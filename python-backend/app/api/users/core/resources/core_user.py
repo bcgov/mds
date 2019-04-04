@@ -8,10 +8,6 @@ from ..models.core_user import CoreUser
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
-idir_membership_model = api.model('idir_membership', {
-    'idir_membership_name': fields.String,
-})
-
 idir_user_detail_model = api.model(
     'idir_user_detail', {
         'bcgov_guid': fields.String,
@@ -26,9 +22,7 @@ core_user_model = api.model(
         'core_user_guid': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
-        'phone_ext': fields.String,
         'idir_user_detail': fields.Nested(idir_user_detail_model),
-        'idir_membership': fields.List(fields.Nested(idir_membership_model)),
         'last_logon': fields.DateTime,
     })
 
@@ -67,7 +61,7 @@ class CoreUserResource(Resource, UserMixin):
         params={
             'core_user_guid': 'Core user guid for a specific user.',
         })
-    #@requires_role_mine_view
+    @requires_role_mine_view
     def get(self, core_user_guid=None):
         if not core_user_guid:
             raise BadRequest('A Core user guid must be provided.')
@@ -94,7 +88,7 @@ class CoreUserResource(Resource, UserMixin):
         },
         params={'core_user_guid': 'An application guid.'})
     @api.marshal_with(core_user_model, code=200)
-    #@requires_role_mine_create
+    @requires_role_mine_create
     def put(self, core_user_guid=None):
         if not core_user_guid:
             raise BadRequest('A Core user guid must be provided.')
