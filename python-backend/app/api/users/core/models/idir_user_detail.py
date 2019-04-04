@@ -24,6 +24,14 @@ class IdirUserDetail(AuditMixin, Base):
         return '<IdirUserDetail %r>' % self.bcgov_guid
 
     @classmethod
+    def find_by_bcgov_guid(cls, bcgov_guid):
+        try:
+            uuid.UUID(bcgov_guid, version=4)
+            return cls.query.filter_by(bcgov_guid=bcgov_guid).first()
+        except ValueError:
+            return None
+
+    @classmethod
     def create(cls, core_user_id, bcgov_guid, username, title, city, department, save=True):
         idir_user_detail = cls(
             core_user_id=core_user_id,
