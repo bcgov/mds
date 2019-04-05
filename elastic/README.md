@@ -8,9 +8,9 @@ Elastic Images
 
 | Name        | Description        |
 | ----------- | ------------------ |
-| ES_HOST     | elastic cloud host |
-| ES_USER     | elastic user       |
-| ES_PASSWORD | elastic password   |
+| ELASTIC_HOST     | elastic cloud host |
+| ELASTIC_USER     | elastic user       |
+| ELASTIC_PASSWORD | elastic password   |
 | ENVIRONMENT_SUFFIX | MDS Environment |
 | JDBC_CONNECTION_STRING | Connection string to mds postgres db |
 | JDBC_USER | Name of the user |
@@ -25,13 +25,7 @@ cd mds/elastic/logstash
 docker build -t mds_logstash
 ```
 
-Set up your deployment environemt with the following Environment Variables
-
-| Name        | Description        |
-| ----------- | ------------------ |
-| ES_HOST     | elastic cloud host |
-| ES_USER     | elastic user       |
-| ES_PASSWORD | elastic password   |
+Set up your deployment environemt with the existing Environment Variables
 
 Mount a pvc at the following path in the container:
 

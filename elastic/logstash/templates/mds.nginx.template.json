@@ -211,7 +211,7 @@
                                 "type": "keyword",
                                 "ignore_above": 1024
                             },
-                            "numero": {
+                            "number": {
                                 "type": "keyword",
                                 "ignore_above": 1024
                             },
