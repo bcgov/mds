@@ -86,7 +86,7 @@ mine_type = api.model('MineType', {
 mine_verified = api.model('MineVerifiedStatus', {
     'mine_guid': fields.String,
     'mine_name': fields.String,
-    'healthy': fields.Boolean,
+    'healthy_ind': fields.Boolean,
     'verifying_user': fields.String,
     'verifying_timestamp': fields.Date,
 })

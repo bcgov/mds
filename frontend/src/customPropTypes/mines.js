@@ -51,7 +51,7 @@ export const mineComplianceInfo = shape({
 export const mineVerificationStatus = shape({
   mine_guid: PropTypes.string.isRequired,
   mine_name: PropTypes.string.isRequired,
-  healthy: PropTypes.bool.isRequired,
+  healthy_ind: PropTypes.bool.isRequired,
   verifying_user: PropTypes.string.isRequired,
   verifying_timestamp: PropTypes.string.isRequired,
 });

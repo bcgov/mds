@@ -143,7 +143,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     tsf: mines[id].mine_tailings_storage_facilities
       ? mines[id].mine_tailings_storage_facilities.length
       : Strings.EMPTY_FIELD,
-    verified: mines[id].verified_status ? mines[id].verified_status.healthy : null,
+    verified: mines[id].verified_status ? mines[id].verified_status.healthy_ind : null,
   }));
 
 export const MineList = (props) => (
