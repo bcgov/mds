@@ -199,7 +199,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Unable to register uploaded file as document')
 
         variance.documents.append(mine_doc)
-        db.session.commit()
+        variance.save()
         return variance
 
 
