@@ -139,36 +139,41 @@ mine_list_model = api.model(
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, required=True)
+        'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='form')
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
-        store_missing=False)
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
-        store_missing=False)
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
-        store_missing=False)
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'mine_status',
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
-        required=True)
+        required=True,
+        location='form')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
-        store_missing=False)
+        store_missing=False,
+        location='form')
     parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, required=True)
+        'mine_region', type=str, help='Region for the mine.', trim=True, required=True, location='form')
 
     @api.doc(
         params={
@@ -316,50 +321,47 @@ class MineListResource(Resource, UserMixin):
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False)
+        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False, location='form')
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
         'tenure_number_id',
         type=int,
         help='Tenure number for the mine.',
         trim=True,
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
         'mine_status',
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
-        store_missing=False)
+        store_missing=False, location='form')
     parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False)
+        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False, location='form')
 
-    @api.doc(description='This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error', 
-    params={'mine_no_or_guid': 'Mine number or guid of the mine to be returned.'})
+    @api.doc(description='This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error')
     @api.marshal_with(mine, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
-    def get(self, mine_no_or_guid=None):
-        if not mine_no_or_guid:
-            raise BadRequest('A mine number or guid must be provided.')
+    def get(self, mine_no_or_guid):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
@@ -371,12 +373,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(mine, code=200)
     @api.doc(
         description=
-        'This endpoint updates a mine using the form-data passed.',
-        params={'mine_no_or_guid': 'A mine guid or mine number for the mine to update.'})
+        'This endpoint updates a mine using the form-data passed.')
     @requires_role_mine_create
-    def put(self, mine_no_or_guid=None):
-        if not mine_no_or_guid:
-            raise BadRequest('A mine number or guid must be provided.')
+    def put(self, mine_no_or_guid):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
