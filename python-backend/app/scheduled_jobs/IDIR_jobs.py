@@ -17,7 +17,7 @@ def _schedule_IDIR_jobs(app):
         trigger='cron',
         id='get_empr_users_from_idir',
         hour=20,
-        minute=10)
+        minute=20)
 
 
 @register_apm
