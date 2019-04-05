@@ -4,7 +4,6 @@ import { WebMap, Map, loadModules } from "react-arcgis";
 import { ENVIRONMENT } from "@/constants/environment";
 import PropTypes from "prop-types";
 import MinePin from "./MinePin";
-import MinePinSimple from "./MinePinSimple";
 import LocationPin from "./LocationPin";
 import * as String from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -208,21 +207,21 @@ class MineMap extends Component {
 
   render() {
     if (this.props.mine) {
-      console.log("************RENDER THE MAP WAS CALLED*************");
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
+        // The 5 that is added to the center lat and long prevents the pin from dissapearing on the
+        // mine page map.  No obvious reason why this happens or why adding five fixes it
         <Map
-          // style={{ width: "99%", height: "99%" }}
           style={{ width: "100%", height: "100%" }}
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [
               this.props.mine.mine_location
-                ? this.props.mine.mine_location.longitude + 0.1
+                ? this.props.mine.mine_location.longitude + 5
                 : String.DEFAULT_LONG,
               this.props.mine.mine_location
-                ? this.props.mine.mine_location.latitude + 0.1
+                ? this.props.mine.mine_location.latitude + 5
                 : String.DEFAULT_LAT,
             ],
             zoom: this.props.mine.mine_location ? 8 : 5,
@@ -230,8 +229,7 @@ class MineMap extends Component {
           }}
           onLoad={this.handleLoadMap}
         >
-          <MinePinSimple />
-          {/* <MinePin /> */}
+          <MinePin />
         </Map>
       );
     }
