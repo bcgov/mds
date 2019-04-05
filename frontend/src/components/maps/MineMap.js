@@ -219,10 +219,10 @@ class MineMap extends Component {
           viewProperties={{
             center: [
               this.props.mine.mine_location
-                ? this.props.mine.mine_location.longitude
+                ? this.props.mine.mine_location.longitude + 0.1
                 : String.DEFAULT_LONG,
               this.props.mine.mine_location
-                ? this.props.mine.mine_location.latitude
+                ? this.props.mine.mine_location.latitude + 0.1
                 : String.DEFAULT_LAT,
             ],
             zoom: this.props.mine.mine_location ? 8 : 5,
