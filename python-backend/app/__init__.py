@@ -19,8 +19,10 @@ from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
+
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
+from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
 
 
 def create_app(test_config=None):
@@ -125,7 +127,7 @@ def register_routes(app):
 def register_scheduled_jobs(app):
     sched.start()
     _schedule_IDIR_jobs(app)
-    
+
     # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
     #     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
     #         sched.start()
