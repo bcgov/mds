@@ -18,14 +18,16 @@ idir_field_map = {
 class IdirService():
     def search_for_users(basedn):
         server = Server(IDIR_URL, get_info=ALL)
-        conn = Connection(
-            server, user="IDIR\\CSI_MMPO", password="CPqp1115", authentication=NTLM, auto_bind=True)
-
         #objectClass
+        conn = Connection(
+            server,
+            user=current_app.config["LDAP_IDIR_USERNAME"],
+            password=current_app.config["LDAP_IDIR_PASSWORD"],
+            authentication=NTLM,
+            auto_bind=True)
         obj_user = ObjectDef('user', conn)
         r = Reader(conn, obj_user, basedn)
         r.search()
-
         return [x.entry_attributes_as_dict for x in r]
 
     def get_empr_users_from_idir(membership_groups=[]):

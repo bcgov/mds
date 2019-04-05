@@ -7,7 +7,7 @@ from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS
-from app.api.services.nris_services import NRIS_service
+from app.api.services import NRIS_service
 from app.extensions import cache
 
 
