@@ -16,8 +16,8 @@ def _schedule_IDIR_jobs(app):
         func=_import_empr_idir_users,
         trigger='cron',
         id='get_empr_users_from_idir',
-        hour=17,
-        minute=20)
+        hour=10,
+        minute=00)
 
 
 @register_apm

@@ -125,13 +125,11 @@ def register_routes(app):
 
 
 def register_scheduled_jobs(app):
-    sched.start()
-    _schedule_IDIR_jobs(app)
-
-    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-    #     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-    #         sched.start()
-    #         _schedule_NRIS_jobs(app)
-    #         # This is here to prevent this from running in production until we are confident in the permit data.
-    #         if app.config.get('ENVIRONMENT_NAME') == 'test':
-    #             _schedule_ETL_jobs(app)
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
+            _schedule_IDIR_jobs(app)
+            _schedule_NRIS_jobs(app)
+            # This is here to prevent this from running in production until we are confident in the permit data.
+            if app.config.get('ENVIRONMENT_NAME') == 'test':
+                _schedule_ETL_jobs(app)
