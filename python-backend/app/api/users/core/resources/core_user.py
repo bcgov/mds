@@ -34,7 +34,7 @@ class CoreUserListResource(Resource, UserMixin):
     @api.marshal_with(core_user_model, envelope='results', code=200, as_list=True)
     @api.doc(
         description='Returns a list of all core users.',
-        params={'?idir_username': 'An IDIR username to return users for.'})
+        params={'idir_username': 'An IDIR username to return users for.'})
     @requires_role_mine_view
     def get(self):
         idir_username = request.args.get('idir_username', None, type=str)
@@ -53,31 +53,24 @@ class CoreUserListResource(Resource, UserMixin):
 class CoreUserResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'core_user_guid', type=str, help='GUID of the Core user.', store_missing=False)
+        'email', type=str, help='Users email address.', store_missing=False, location="form")
+    parser.add_argument(
+        'phone_no', type=str, help='Users phone number.', store_missing=False, location="form")
+    parser.add_argument(
+        'phone_ext',
+        type=str,
+        help='Users phone number extension code.',
+        store_missing=False,
+        location="form")
 
     @api.marshal_with(core_user_model, code=200)
-    @api.doc(
-        description='Returns a single Core user based on its user guid.',
-        params={
-            'core_user_guid': 'Core user guid for a specific user.',
-        })
+    @api.doc(description='Returns a single Core user based on its user guid.')
     @requires_role_mine_view
-    def get(self, core_user_guid=None):
-        if not core_user_guid:
-            raise BadRequest('A Core user guid must be provided.')
-
+    def get(self, core_user_guid):
         core_user = CoreUser.find_by_core_user_guid(core_user_guid)
-
         if not core_user:
             raise NotFound('Core user not found.')
-
         return core_user
-
-    parser = reqparse.RequestParser()
-    parser.add_argument('email', type=str, help='Users email address.', store_missing=False)
-    parser.add_argument('phone_no', type=str, help='Users phone number.', store_missing=False)
-    parser.add_argument(
-        'phone_ext', type=str, help='Users phone number extension code.', store_missing=False)
 
     @api.expect(parser)
     @api.doc(
@@ -85,14 +78,10 @@ class CoreUserResource(Resource, UserMixin):
         responses={
             400: 'Resource not found.',
             404: 'Bad request.',
-        },
-        params={'core_user_guid': 'An application guid.'})
+        })
     @api.marshal_with(core_user_model, code=200)
     @requires_role_mine_create
-    def put(self, core_user_guid=None):
-        if not core_user_guid:
-            raise BadRequest('A Core user guid must be provided.')
-
+    def put(self, core_user_guid):
         core_user = CoreUser.find_by_core_user_guid(core_user_guid)
 
         if not core_user:
