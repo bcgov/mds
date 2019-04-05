@@ -1,4 +1,3 @@
-import axios from "axios";
 import queryString from "query-string";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
@@ -9,11 +8,12 @@ import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import CustomAxios from "@/customAxios";
 
 export const fetchApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATIONS));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios(String.ERROR)
     .get(
       `${ENVIRONMENT.apiUrl + API.APPLICATIONS}?${queryString.stringify(params)}`,
       createRequestHeader()
@@ -21,22 +21,15 @@ export const fetchApplications = (params = {}) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_APPLICATIONS));
       dispatch(applicationActions.storeApplications(response.data));
-      dispatch(hideLoading("modal"));
     })
-    .catch(() => {
-      notification.error({
-        message: String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_APPLICATIONS));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_APPLICATIONS)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateApplication = (application_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_APPLICATION));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl + API.APPLICATIONS}/${application_guid}`,
       payload,
@@ -48,36 +41,22 @@ export const updateApplication = (application_guid, payload) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_APPLICATION));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.UPDATE_APPLICATION));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.UPDATE_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const createApplication = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_APPLICAION));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully created a new application", duration: 10 });
       dispatch(success(reducerTypes.CREATE_APPLICAION));
-      dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.CREATE_APPLICAION));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICAION)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
