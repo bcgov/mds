@@ -123,17 +123,11 @@ export const fetchProvinceCodes = () => (dispatch) => {
 
 export const fetchMineComplianceCodes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_COMPLIANCE_CODES));
-  return axios
+  return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.COMPLIANCE_CODES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_COMPLIANCE_CODES));
       dispatch(staticContentActions.storeComplianceCodes(response.data));
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_COMPLIANCE_CODES));
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_COMPLIANCE_CODES)));
 };
