@@ -234,5 +234,4 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
         variance.documents.remove(mine_document)
         variance.save()
 
-        # FIXME: This response is inconsistent with the others
-        return {'status': 204, 'message': 'The document was removed succesfully'}
+        return ('', 204)

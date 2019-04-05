@@ -18,7 +18,7 @@ class Variance(AuditMixin, Base):
                                       nullable=False,
                                       server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
-    note = db.Column(db.String(300), nullable=False, server_default=FetchedValue())
+    note = db.Column(db.String, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime,
