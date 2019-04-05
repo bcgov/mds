@@ -18,7 +18,7 @@ class CoreUser(AuditMixin, Base):
     __tablename__ = 'core_user'
     core_user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     core_user_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
-    email = db.Column(db.String(254))
+    email = db.Column(db.String)
     phone_no = db.Column(db.String)
     idir_user_detail = db.relationship(
         'IdirUserDetail', lazy='joined', backref=backref("core_user", uselist=False), uselist=False)
