@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 
 from flask import request, make_response, current_app
-from flask_restplus import Resource, reqparse, inputs
+from flask_restplus import Resource, reqparse, inputs, fields
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
@@ -28,21 +28,122 @@ from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 # for search performance until search can be refactored
 from ....permits.permit.models.permit import Permit
 
+mine_location = api.model('MineLocation', {
+    'mine_location_guid': fields.String,
+    'mine_guid': fields.String,
+    'latitude': fields.String,
+    'longitude': fields.String,
+})
 
-class MineResource(Resource, UserMixin, ErrorMixin):
+mine_document = api.model('MineDocument', {
+    'mine_document_guid': fields.String,
+    'mine_guid': fields.String,
+    'document_manager_guid': fields.String,
+    'document_name': fields.String,
+    'active_ind': fields.Boolean,
+}) 
+
+permit = api.model('MinePermit', {
+    'permit_guid': fields.String,
+    'permit_no': fields.String,
+})
+
+expected_document_status = api.model('ExpectedDocumentStatus', {
+    'exp_document_status_code': fields.String,
+    'description': fields.String,
+}) 
+
+status = api.model('MineStatus', {
+    'mine_status_guid': fields.String,
+    'mine_guid': fields.String,
+    'mine_status_xref_guid': fields.String,
+    'status_values': fields.List(fields.String()),
+    'status_labels':fields.List(fields.String),
+    'effective_date': fields.Date,
+    'expiry_date': fields.Date,
+})
+
+mine_tsf = api.model('MineTailingsStorageFacility', {
+    'mine_tailings_storage_facility_guid': fields.String,
+    'mine_guid': fields.String,
+    'mine_tailings_storage_facility_name': fields.String,
+})
+
+mine_type_detail = api.model('MineTypeDetail', {
+    'mine_type_detail_xref_guid': fields.String,
+    'mine_type_guid': fields.String,
+    'mine_disturbance_code': fields.String,
+    'mine_commodity_code': fields.String,
+})
+
+mine_type = api.model('MineType', {
+    'mine_type_guid': fields.String,
+    'mine_guid': fields.String,
+    'mine_tenure_type_code': fields.String,
+    'mine_type_detail': fields.List(fields.Nested(mine_type_detail)),
+})
+
+mine_verified = api.model('MineVerifiedStatus', {
+    'mine_guid': fields.String,
+    'mine_name': fields.String,
+    'healthy': fields.Boolean,
+    'verifying_user': fields.String,
+    'verifying_timestamp': fields.Date,
+})
+
+mine_expected_document = api.model('MineExpectedDocument', {
+    'exp_document_guid': fields.String,
+    'req_document_guid': fields.String,
+    'mine_guid': fields.String,
+    'exp_document_name': fields.String,
+    'exp_document_description': fields.String,
+    'due_date': fields.Date,
+    'received_date': fields.Date,
+    'exp_document_status_code': fields.String,
+    'expected_document_status': fields.Nested(expected_document_status),
+    'hsrc_code': fields.String,
+    'related_documents': fields.List(fields.Nested(mine_document)),
+})
+
+mines = api.model(
+    'Mines', {
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'mine_no': fields.String,
+        'mine_note': fields.String,
+        'major_mine_ind': fields.Boolean,
+        'mine_region': fields.String,
+        'mine_permit': fields.List(fields.Nested(permit)),
+        'mine_status': fields.List(fields.Nested(status)),
+        'mine_tailings_storage_facilities': fields.List(fields.Nested(mine_tsf)),
+        'mine_type': fields.List(fields.Nested(mine_type)),
+        'verified_status': fields.Nested(mine_verified)
+    })
+
+mine = api.inherit('Mine', mines, {
+    'mine_location': fields.Nested(mine_location),
+    'mine_expected_documents': fields.List(fields.Nested(mine_expected_document)),
+
+})
+
+mine_list_model = api.model(
+    'MineList', {
+        'mines': fields.List(fields.Nested(mines)),
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+
+class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False)
+        'mine_name', type=str, help='Name of the mine.', trim=True, required=True)
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
-        trim=True,
-        store_missing=False)
-    parser.add_argument(
-        'tenure_number_id',
-        type=int,
-        help='Tenure number for the mine.',
         trim=True,
         store_missing=False)
     parser.add_argument(
@@ -60,77 +161,77 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
-        store_missing=False)
+        required=True)
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False)
     parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False)
+        'mine_region', type=str, help='Region for the mine.', trim=True, required=True)
 
     @api.doc(
         params={
-            'mine_no_or_guid':
-            'Mine number or guid. If not provided a paginated list of mines will be returned.'
-        })
+            '?per_page': 'The number of results to be returned per page.',
+            '?page': 'the current page number to be displayed.',
+            '?search': 'The search term.',
+            '?commodity': 'A commodity to filter the mine list by.',
+            '?status': 'A mine status to filter the mine list by.',
+            '?tenure': 'A mine tenure type to filter the mine list by.',
+            '?region': 'A mine region to filter the mine list by.',
+            '?major': 'True or false, filters the mine list by major mines or regional mines.',
+            '?tsf': 'True or false, filter the mine list by mines with or without a TSF.',
+        },
+        description=
+        'This endpoint returns a list of all mines filtered on the search paramaters provided.')
+    @api.marshal_with(mine_list_model, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
-    def get(self, mine_no_or_guid=None):
-        if mine_no_or_guid:
-            mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
-            if mine:
-                return mine.json()
-            return self.create_error_payload(404, 'Mine not found'), 404
-        else:
-            # Handle MapView request
-            _map = request.args.get('map', None, type=str)
-            if _map and _map.lower() == 'true':
+    def get(self):
 
-                # Below caches the mine map response object in redis with a timeout.
-                # Generating and jsonifying the map data takes 4-7 seconds with 50,000 points,
-                # so caching seems justified.
-                #
-                # TODO: Use some custom representation of this data vs JSON. The
-                # json string is massive (with 50,000 points: 16mb uncompressed, 2.5mb compressed).
-                # A quick test using delimented data brings this down to ~1mb compressed.
-                map_result = cache.get(MINE_MAP_CACHE)
-                last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
-                if not map_result:
-                    records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None)
-                    last_modified = datetime.utcnow()
+        paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
+        mines = paginated_mine_query.all()
+        return {
+            'mines': mines,
+            'current_page': pagination_details.page_number,
+            'total_pages': pagination_details.num_pages,
+            'items_per_page': pagination_details.page_size,
+            'total': pagination_details.total_results,
+        }
+    
+    @api.expect(parser)
+    @api.doc(
+        description=
+        'This endpoint creates a new mine with the information provided and returns it. If an error occurs the appropriate response is returned.',
+        responses={})
+    @api.marshal_with(mine, code=201)
+    @requires_role_mine_create
+    def post(self):
+        data = self.parser.parse_args()
 
-                    # jsonify then store in cache
-                    map_result = json.dumps(
-                        {
-                            'mines': list((map(lambda x: x.json_for_map(), records)))
-                        },
-                        separators=(',', ':'))
-                    cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
-                    cache.set(
-                        MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
+        lat = data.get('latitude')
+        lon = data.get('longitude')
+        if (lat and not lon) or (not lat and lon):
+            raise BadRequest('latitude and longitude must both be empty, or both provided')
 
-                # It's more efficient to store the json to avoid re-initializing all of the objects
-                # and jsonifying on every request, so a flask response is returned to prevent
-                # flask_restplus from jsonifying the data again, which would mangle the json.
-                response = make_response(map_result)
-                response.headers['content-type'] = 'application/json'
+        # query the mine tables and check if that mine name exists
+        _throw_error_if_mine_exists(data.get('mine_name'))
+        mine = Mine(
+            mine_no=generate_mine_no(),
+            mine_name=data.get('mine_name'),
+            mine_note=data.get('mine_note'),
+            major_mine_ind=data.get('major_mine_ind'),
+            mine_region=data.get('mine_region'))
 
-                # While we're at it, let's set a last modified date and have flask return not modified
-                # if it hasn't so the client doesn't download it again unless needed.
-                response.last_modified = last_modified
-                response.make_conditional(request)
+        db.session.add(mine)
 
-                return response
+        if lat and lon:
+            mine.mine_location = MineLocation(latitude=lat, longitude=lon)
+            cache.delete(MINE_MAP_CACHE)
 
-            paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
-            mines = paginated_mine_query.all()
-            return {
-                'mines': list(map(lambda x: x.json_for_list(), mines)),
-                'current_page': pagination_details.page_number,
-                'total_pages': pagination_details.num_pages,
-                'items_per_page': pagination_details.page_size,
-                'total': pagination_details.total_results,
-            }
+        mine_status = _mine_status_processor(data.get('mine_status'), mine)
+        db.session.commit()
+
+        return mine
 
     def apply_filter_and_search(self, args):
         # Handle ListView request
@@ -211,99 +312,72 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         mines_query = apply_sort(mines_query, sort_criteria)
         return apply_pagination(mines_query, page, items_per_page)
 
-    def mine_operation_code_processor(self, mine_status, index):
-        try:
-            return mine_status[index].strip()
-        except IndexError:
-            return None
 
-    def mine_status_processor(self, mine_status, mine):
-        if not mine_status:
-            return mine.mine_status
+class MineResource(Resource, UserMixin, ErrorMixin):
+    parser = reqparse.RequestParser()
+    parser.add_argument(
+        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False)
+    parser.add_argument(
+        'mine_note',
+        type=str,
+        help='Any additional notes to be added to the mine.',
+        trim=True,
+        store_missing=False)
+    parser.add_argument(
+        'tenure_number_id',
+        type=int,
+        help='Tenure number for the mine.',
+        trim=True,
+        store_missing=False)
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        store_missing=False)
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        store_missing=False)
+    parser.add_argument(
+        'mine_status',
+        action='split',
+        help=
+        'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
+        store_missing=False)
+    parser.add_argument(
+        'major_mine_ind',
+        type=inputs.boolean,
+        help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
+        store_missing=False)
+    parser.add_argument(
+        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False)
 
-        current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
-        try:
-            mine_status_xref = MineStatusXref.find_by_codes(
-                self.mine_operation_code_processor(mine_status, 0),
-                self.mine_operation_code_processor(mine_status, 1),
-                self.mine_operation_code_processor(mine_status, 2))
-            if not mine_status_xref:
-                raise BadRequest(
-                    'Invalid status_code, reason_code, and sub_reason_code combination.')
+    @api.doc(description='This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error', 
+    params={'mine_no_or_guid': 'Mine number or guid of the mine to be returned.'})
+    @api.marshal_with(mine, code=200)
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    def get(self, mine_no_or_guid=None):
+        if not mine_no_or_guid:
+            raise BadRequest('A mine number or guid must be provided.')
 
-            existing_status = mine.mine_status[0] if mine.mine_status else None
-            if existing_status:
-                if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
-                    return existing_status
+        mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
+        if not mine:
+            raise NotFound('Mine not found')
 
-                existing_status.expiry_date = datetime.today()
-                existing_status.active_ind = False
-                existing_status.save()
-
-            new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
-            mine.mine_status.append(new_status)
-            new_status.save()
-
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
-        mine.save(commit=False)
-        return new_status
-
-    def _throw_error_if_mine_exists(self, mine_name):
-        # query the mine tables and check if that mine name exists
-        if mine_name:
-            name_filter = Mine.mine_name.ilike(mine_name.strip())
-            mines_name_query = Mine.query.filter(name_filter)
-            mines_with_name = mines_name_query.all()
-            if len(mines_with_name) > 0:
-                raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
-
-    @api.expect(parser)
-    @requires_role_mine_create
-    def post(self, mine_no_or_guid=None):
-        if mine_no_or_guid:
-            self.raise_error(400, 'Error: Unexpected mine number in Url.'), 400
-
-        data = self.parser.parse_args()
-
-        lat = data.get('latitude')
-        lon = data.get('longitude')
-        if (lat and not lon) or (not lat and lon):
-            raise BadRequest('latitude and longitude must both be empty, or both provided')
-
-        # query the mine tables and check if that mine name exists
-        self._throw_error_if_mine_exists(data.get('mine_name'))
-        mine = Mine(
-            mine_no=generate_mine_no(),
-            mine_name=data.get('mine_name'),
-            mine_note=data.get('mine_note'),
-            major_mine_ind=data.get('major_mine_ind'),
-            mine_region=data.get('mine_region'))
-
-        db.session.add(mine)
-
-        if lat and lon:
-            mine.mine_location = MineLocation(latitude=lat, longitude=lon)
-            cache.delete(MINE_MAP_CACHE)
-
-        mine_status = self.mine_status_processor(data.get('mine_status'), mine)
-        db.session.commit()
-
-        return {
-            'mine_guid': str(mine.mine_guid),
-            'mine_no': mine.mine_no,
-            'mine_name': mine.mine_name,
-            'mine_note': mine.mine_note,
-            'major_mine_ind': mine.major_mine_ind,
-            'latitude': str(mine.mine_location.latitude) if mine.mine_location else None,
-            'longitude': str(mine.mine_location.longitude) if mine.mine_location else None,
-            'mine_status': mine_status.json() if mine_status else None,
-            'mine_region': mine.mine_region if mine.mine_region else None,
-        }
+        return mine
 
     @api.expect(parser)
+    @api.marshal_with(mine, code=200)
+    @api.doc(
+        description=
+        'This endpoint updates a mine using the form-data passed.',
+        params={'mine_no_or_guid': 'A mine guid or mine number for the mine to update.'})
     @requires_role_mine_create
-    def put(self, mine_no_or_guid):
+    def put(self, mine_no_or_guid=None):
+        if not mine_no_or_guid:
+            raise BadRequest('A mine number or guid must be provided.')
+
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             raise NotFound("Mine not found")
@@ -317,13 +391,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if (lat and not lon) or (not lat and lon):
             raise BadRequest('latitude and longitude must both be empty, or both provided')
 
-        # if (not tenure and not (lat and lon) and not mine_name and not mine_note and not status
-        #         and not region and major_mine_ind is None):
-        #     self.raise_error(400, 'Error: No fields filled.')
-
         # Mine Detail
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
-            self._throw_error_if_mine_exists(data['mine_name'])
+            _throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
@@ -362,8 +432,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             cache.delete(MINE_MAP_CACHE)
 
         # Status validation
-        self.mine_status_processor(data.get('mine_status'), mine)
-        return mine.json()
+        _mine_status_processor(data.get('mine_status'), mine)
+        return mine
 
 
 class MineListSearch(Resource):
@@ -382,3 +452,50 @@ class MineListSearch(Resource):
             mines = Mine.find_by_mine_name(name_search)
         result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
         return {'mines': result}
+
+
+# Functions shared by the MineListResource and the MineResource
+def _mine_operation_code_processor( mine_status, index):
+        try:
+            return mine_status[index].strip()
+        except IndexError:
+            return None
+
+def _mine_status_processor( mine_status, mine):
+    if not mine_status:
+        return mine.mine_status
+
+    current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
+    
+    mine_status_xref = MineStatusXref.find_by_codes(
+        _mine_operation_code_processor(mine_status, 0),
+        _mine_operation_code_processor(mine_status, 1),
+        _mine_operation_code_processor(mine_status, 2))
+    if not mine_status_xref:
+        raise BadRequest(
+            'Invalid status_code, reason_code, and sub_reason_code combination.')
+
+    existing_status = mine.mine_status[0] if mine.mine_status else None
+    if existing_status:
+        if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
+            return existing_status
+
+        existing_status.expiry_date = datetime.today()
+        existing_status.active_ind = False
+        existing_status.save()
+
+    new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
+    mine.mine_status.append(new_status)
+    new_status.save()
+        
+    mine.save(commit=False)
+    return new_status
+
+def _throw_error_if_mine_exists( mine_name):
+    # query the mine tables and check if that mine name exists
+    if mine_name:
+        name_filter = Mine.mine_name.ilike(mine_name.strip())
+        mines_name_query = Mine.query.filter(name_filter)
+        mines_with_name = mines_name_query.all()
+        if len(mines_with_name) > 0:
+            raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')

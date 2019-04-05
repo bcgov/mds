@@ -14,7 +14,7 @@ export const MINE_RESPONSE = {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [],
       mineral_tenure_xref: [
         {
@@ -56,7 +56,7 @@ export const MINE_RESPONSE = {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [
         {
           authorization_end_date: "9999-12-31",
@@ -168,7 +168,7 @@ export const MINES = {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [],
       mineral_tenure_xref: [
         {
@@ -210,7 +210,7 @@ export const MINES = {
       guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [
         {
           authorization_end_date: "9999-12-31",

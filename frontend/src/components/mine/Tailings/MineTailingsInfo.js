@@ -61,10 +61,10 @@ export class MineTailingsInfo extends Component {
       req_document_guid: requiredReport.req_document_guid,
     };
     return this.props
-      .createMineExpectedDocument(this.props.mine.guid, newRequiredReport)
+      .createMineExpectedDocument(this.props.mine.mine_guid, newRequiredReport)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
@@ -73,21 +73,21 @@ export class MineTailingsInfo extends Component {
     updatedDocument.exp_document_name = value.tsf_report_name;
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
-    updatedDocument.exp_document_status = this.props.expectedDocumentStatusOptions.find(
+    updatedDocument.expected_document_status = this.props.expectedDocumentStatusOptions.find(
       ({ exp_document_status_code }) => exp_document_status_code === value.tsf_report_status
     );
     return this.props
       .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
   removeReport = (event, exp_doc_guid) => {
     event.preventDefault();
     this.props.removeExpectedDocument(exp_doc_guid).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
     });
   };
 
@@ -115,7 +115,7 @@ export class MineTailingsInfo extends Component {
         tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
         tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
         tsf_report_received_date: doc.received_date,
-        tsf_report_status: doc.exp_document_status.exp_document_status_code,
+        tsf_report_status: doc.expected_document_status.exp_document_status_code,
       };
       const statusOptions = createDropDownList(
         this.props.expectedDocumentStatusOptions,
@@ -132,7 +132,7 @@ export class MineTailingsInfo extends Component {
   render() {
     return (
       <div>
-        {this.props.mine.mine_tailings_storage_facility.map((facility) => (
+        {this.props.mine.mine_tailings_storage_facilities.map((facility) => (
           <Row
             key={facility.mine_tailings_storage_facility_guid}
             gutter={16}

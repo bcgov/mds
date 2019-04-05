@@ -221,6 +221,27 @@ export const fetchMineRecords = (params) => (dispatch) => {
     });
 };
 
+export const fetchMineRecordsForMap = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_RECORDS));
+  dispatch(showLoading());
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_MAP_LIST, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_RECORDS));
+      dispatch(mineActions.storeMineList(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_MINE_RECORD));
+      dispatch(hideLoading());
+    });
+};
+
 export const fetchMineRecordById = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORD));

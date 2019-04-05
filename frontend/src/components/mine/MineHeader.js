@@ -53,13 +53,13 @@ export class MineHeader extends Component {
     const mineStatus = value.mine_status.join(",");
     return this.props
       .updateMineRecord(
-        this.props.mine.guid,
+        this.props.mine.mine_guid,
         { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
         value.mine_name
       )
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
@@ -69,7 +69,7 @@ export class MineHeader extends Component {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
         this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
-          this.props.fetchMineRecordById(this.props.mine.guid);
+          this.props.fetchMineRecordById(this.props.mine.mine_guid);
         });
       }
     });
@@ -79,25 +79,25 @@ export class MineHeader extends Component {
     this.props
       .createTailingsStorageFacility({
         ...value,
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
       })
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
 
   handleVerifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: true }).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+    this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: true }).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
   };
 
   handleUnverifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: false }).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+    this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: false }).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
   };
@@ -118,7 +118,7 @@ export class MineHeader extends Component {
       longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
-      mine_region: mine.region_code,
+      mine_region: mine.mine_region,
       mine_note: mine.mine_note,
     };
 
@@ -265,8 +265,8 @@ export class MineHeader extends Component {
             <div className="inline-flex padding-small">
               <p className="field-title">TSF</p>
               <p>
-                {this.props.mine.mine_tailings_storage_facility.length > 0
-                  ? this.props.mine.mine_tailings_storage_facility.length
+                {this.props.mine.mine_tailings_storage_facilities.length > 0
+                  ? this.props.mine.mine_tailings_storage_facilities.length
                   : String.EMPTY_FIELD}
               </p>
             </div>
@@ -377,8 +377,8 @@ export class MineHeader extends Component {
             </div>
             <p className="p-white">
               Region:{" "}
-              {this.props.mine.region_code
-                ? this.props.mineRegionHash[this.props.mine.region_code]
+              {this.props.mine.mine_region
+                ? this.props.mineRegionHash[this.props.mine.mine_region]
                 : String.EMPTY_FIELD}
             </p>
           </div>

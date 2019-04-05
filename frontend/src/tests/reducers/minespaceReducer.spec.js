@@ -51,7 +51,7 @@ describe("mineReducer", () => {
         mine_status: [],
         mine_tailings_storage_facility: [],
         mine_type: [],
-        region_code: "SW",
+        mine_region: "SW",
       },
     ];
     const result = minespaceReducer(
@@ -67,7 +67,7 @@ describe("mineReducer", () => {
           mine_status: [],
           mine_tailings_storage_facility: [],
           mine_type: [],
-          region_code: "SW",
+          mine_region: "SW",
         },
       ])
     );

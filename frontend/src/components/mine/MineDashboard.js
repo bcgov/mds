@@ -4,6 +4,7 @@ import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@/actions/modalActions";
+import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -54,6 +55,7 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
@@ -123,7 +125,8 @@ export class MineDashboard extends Component {
 
   loadMineData(id) {
     this.props.fetchMineRecordById(id).then(() => {
-      this.props.fetchApplications({ mine_guid: this.props.mines[id].guid });
+      this.props.fetchApplications({ mine_guid: this.props.mines[id].mine_guid });
+      this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
         this.setState({ complianceInfoLoading: false });
@@ -200,7 +203,7 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
-                {mine.mine_tailings_storage_facility.length > 0 && (
+                {mine.mine_tailings_storage_facilities.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">
                       <MineTailingsInfo mine={mine} {...this.props} />
@@ -248,6 +251,7 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
+      fetchPermits,
     },
     dispatch
   );
