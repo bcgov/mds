@@ -51,5 +51,4 @@ class IdirService():
             if (list_intersect and membership_groups) or not membership_groups:
                 empr_users.append(user)
 
-        #current_app.logger.info(empr_users)
         return empr_users
