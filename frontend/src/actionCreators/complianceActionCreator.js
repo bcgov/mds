@@ -1,13 +1,11 @@
-import axios from "axios";
-import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error, clear } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as complianceActions from "@/actions/complianceActions";
-import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import CustomAxios from "@/customAxios";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -16,22 +14,15 @@ export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) =>
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
   dispatch(complianceActions.storeMineComplianceInfo({}));
 
-  return axios
+  return CustomAxios(silent ? "" : undefined)
     .get(`${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_COMPLIANCE_INFO));
       dispatch(complianceActions.storeMineComplianceInfo(response.data));
-      dispatch(hideLoading());
     })
-    .catch((err) => {
-      if (!silent) {
-        notification.error({
-          message: err.response ? err.response.data.error.message : String.ERROR,
-          duration: 10,
-        });
-      }
+    .catch(() => {
       dispatch(error(reducerTypes.GET_MINE_COMPLIANCE_INFO));
       dispatch(clear(reducerTypes.GET_MINE_COMPLIANCE_INFO));
-      dispatch(hideLoading());
-    });
+    })
+    .finally(() => dispatch(hideLoading()));
 };
