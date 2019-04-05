@@ -1,10 +1,12 @@
+import uuid
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
-from app.extensions import db
+from ....documents.variances.models.variance import VarianceDocument
 
 
 class Variance(AuditMixin, Base):
@@ -21,10 +23,10 @@ class Variance(AuditMixin, Base):
                             nullable=False,
                             default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
-    related_documents = db.relationship(
-        'VarianceDocument',
-        backref="variance",
-        lazy='joined')
+    documents = db.relationship(
+        'MineDocument',
+        lazy='joined',
+        secondary='variance_document_xref')
 
 
     def __repr__(self):
@@ -53,7 +55,11 @@ class Variance(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).all()
+        try:
+            uuid.UUID(mine_guid)
+            return cls.query.filter_by(mine_guid=mine_guid).all()
+        except ValueError:
+            return None
 
     @classmethod
     def find_by_variance_id(cls, variance_id):
