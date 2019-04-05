@@ -13,7 +13,7 @@ from ....utils.models_mixins import AuditMixin, Base
 class IdirMembership(AuditMixin, Base):
     __tablename__ = 'idir_membership'
     idir_membership_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    idir_membership_name = db.Column(db.String(254))
+    idir_membership_name = db.Column(db.String)
     import_users_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     def __repr__(self):

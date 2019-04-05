@@ -15,10 +15,10 @@ class IdirUserDetail(AuditMixin, Base):
     idir_user_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'), nullable=False)
     bcgov_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    username = db.Column(db.String(128))
-    title = db.Column(db.String(254))
-    city = db.Column(db.String(128))
-    department = db.Column(db.String(254))
+    username = db.Column(db.String)
+    title = db.Column(db.String)
+    city = db.Column(db.String)
+    department = db.Column(db.String)
 
     def __repr__(self):
         return '<IdirUserDetail %r>' % self.bcgov_guid
