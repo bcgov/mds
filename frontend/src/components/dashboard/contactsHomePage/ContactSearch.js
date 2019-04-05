@@ -9,6 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
+  handleNameFieldReset: PropTypes.func.isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string),
 };
@@ -35,6 +36,7 @@ export class ContactSearch extends Component {
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
               <AdvancedContactSearchForm
+                handleNameFieldReset={this.props.handleNameFieldReset}
                 onSubmit={this.props.handleSearch}
                 handleSearch={this.props.handleSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
