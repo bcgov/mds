@@ -14,10 +14,10 @@ class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     compliance_article_id = db.Column(db.Integer,
-                                      nullable=False,
                                       db.ForeignKey('compliance_article.compliance_article_id'),
+                                      nullable=False,
                                       server_default=FetchedValue())
-    mine_guid = db.Column(UUID(as_uuid=True), nullable=False, db.ForeignKey('mine.mine_guid'))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     note = db.Column(db.String(300), nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

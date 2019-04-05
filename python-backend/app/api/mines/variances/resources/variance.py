@@ -171,10 +171,10 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         description=
-        'Update an uploaded variance document.',
+        'Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
-            'variance_id': 'ID for the variance with which the document should be associated'
+            'variance_id': 'ID for the variance to which the document should be associated'
         }
     )
     @api.marshal_with(variance_model, code=200)
