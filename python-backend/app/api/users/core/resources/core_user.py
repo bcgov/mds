@@ -33,7 +33,7 @@ class CoreUserListResource(Resource, UserMixin):
 
     @api.marshal_with(core_user_model, envelope='results', code=200, as_list=True)
     @api.doc(
-        description='This endpoint returns a list of all core users.',
+        description='Returns a list of all core users.',
         params={'?idir_username': 'An IDIR username to return users for.'})
     @requires_role_mine_view
     def get(self):
@@ -57,7 +57,7 @@ class CoreUserResource(Resource, UserMixin):
 
     @api.marshal_with(core_user_model, code=200)
     @api.doc(
-        description='This endpoint returns a single Core user based on its user guid.',
+        description='Returns a single Core user based on its user guid.',
         params={
             'core_user_guid': 'Core user guid for a specific user.',
         })
@@ -81,7 +81,7 @@ class CoreUserResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(
-        description='This endpoint updates a Core user.',
+        description='Updates a Core user.',
         responses={
             400: 'Resource not found.',
             404: 'Bad request.',
