@@ -10,7 +10,7 @@ const applicationReducer = (state = initialState, action) => {
     case actionTypes.STORE_APPLICATIONS:
       return {
         ...state,
-        applications: action.payload,
+        applications: action.payload.applications,
       };
     default:
       return state;
