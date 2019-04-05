@@ -3,6 +3,7 @@ from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
@@ -13,10 +14,11 @@ class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     compliance_article_id = db.Column(db.Integer,
+                                      nullable=False,
                                       db.ForeignKey('compliance_article.compliance_article_id'),
                                       server_default=FetchedValue())
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    note = db.Column(db.String(300), server_default=FetchedValue())
+    mine_guid = db.Column(UUID(as_uuid=True), nullable=False, db.ForeignKey('mine.mine_guid'))
+    note = db.Column(db.String(300), nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime,
@@ -64,3 +66,14 @@ class Variance(AuditMixin, Base):
     @classmethod
     def find_by_variance_id(cls, variance_id):
         return cls.query.filter_by(variance_id=variance_id).first()
+
+
+    @validates('mine_guid')
+    def validate_mine_guid(self, key, mine_guid):
+        if not mine_guid:
+            raise AssertionError('Missing mine_guid')
+        try:
+            uuid.UUID(mine_guid)
+        except ValueError:
+            raise AssertionError('Invalid mine_guid')
+        return mine_guid

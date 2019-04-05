@@ -94,12 +94,6 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         if not compliance_article_id:
             raise BadRequest('Must provide compliance_article_id')
 
-        # TODO: Can this be in a validates method and bubble up to global assertion error handling
-        try:
-            uuid.UUID(mine_guid)
-        except ValueError:
-            raise BadRequest('Invalid mine_guid')
-
         variance = Variance.create(
             compliance_article_id,
             mine_guid,
