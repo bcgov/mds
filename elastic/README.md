@@ -8,9 +8,9 @@ Elastic Images
 
 | Name        | Description        |
 | ----------- | ------------------ |
-| ELASTIC_HOST     | elastic cloud host |
-| ELASTIC_USER     | elastic user       |
-| ELASTIC_PASSWORD | elastic password   |
+| ELASTIC_HOST | elastic cloud host |
+| ELASTIC_USERNAME | elastic user |
+| ELASTIC_PASSWORD | elastic password |
 | ENVIRONMENT_SUFFIX | MDS Environment |
 | JDBC_CONNECTION_STRING | Connection string to mds postgres db |
 | JDBC_USER | Name of the user |
