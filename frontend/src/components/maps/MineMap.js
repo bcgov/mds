@@ -211,7 +211,8 @@ class MineMap extends Component {
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         // default to the center of BC and change zoom level if mine location does not exist.
         // The 5 that is added to the center lat and long prevents the pin from dissapearing on the
-        // mine page map.  No obvious reason why this happens or why adding five fixes it
+        // mine page map.  it string concatinates added precision to the string eg (-113.0830000
+        // becomes -113.08300005)
         <Map
           style={{ width: "100%", height: "100%" }}
           mapProperties={{ basemap: "topo" }}
