@@ -17,7 +17,7 @@ export const AuthorizationGuard = (permission) => (WrappedComponent) => {
       return <WrappedComponent {...props} />;
     }
     if (
-      (permission === "inDevelopment" && detectDevelopmentEnvironment()) ||
+      (permission === "inDevelopment11" && detectDevelopmentEnvironment()) ||
       (permission === "inTesting" && !detectProdEnvironment())
     ) {
       return <WrappedComponent {...props} />;
