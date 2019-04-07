@@ -154,7 +154,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-push": "lint-staged",
+      "pre-push": "npm test",
       "pre-commit": "lint-staged"
     }
   },
@@ -165,8 +165,10 @@
     ],
     "*.js": [
       "eslint --fix",
-      "git add",
-      "npm test"
+      "git add"
+    ],
+    "src/*.js": [
+      "npm run test"
     ]
   }
 }
