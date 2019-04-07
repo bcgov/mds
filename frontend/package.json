@@ -154,7 +154,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-push": "npm test",
+      "pre-push": "lint-staged",
       "pre-commit": "lint-staged"
     }
   },
