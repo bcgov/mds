@@ -23,19 +23,21 @@ const propTypes = {
 export class MineVariance extends Component {
   handleAddVariances = (files) => (values) =>
     this.props
-      .createVariance(values, this.props.mine.guid)
+      .createVariance({ mineGuid: this.props.mine.guid }, values)
       .then(async ({ data: { variance_id, mine_guid } }) => {
         await Promise.all(
-          Object.entries(files).map(([document_manager_guid, filename]) =>
-            this.props.addDocumentToVariance(variance_id, {
-              document_manager_guid,
-              filename,
-              mine_guid,
-            })
+          Object.entries(files).map(([document_manager_guid, document_name]) =>
+            this.props.addDocumentToVariance(
+              { mineGuid: mine_guid, varianceId: variance_id },
+              {
+                document_manager_guid,
+                document_name,
+              }
+            )
           )
         );
         this.props.closeModal();
-        this.props.fetchVariancesByMine(this.props.mine.guid);
+        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.guid });
       });
 
   openVarianceModal(event) {

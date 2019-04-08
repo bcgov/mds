@@ -57,10 +57,10 @@ export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
 export const APPLICATIONS = "/applications";
 
 // variances
-export const VARIANCE = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
-export const VARIANCE_UPLOAD = `/documents/variances`;
-export const VARIANCE_DOCUMENT = (varianceId) => `/documents/variances/${varianceId}/document`;
-export const VARIANCE_DOCUMENTS = (varianceId) => `/documents/variances/${varianceId}`;
-export const VARIANCE_DOCUMENT_RECORD = (varianceId, mineDocumentGuid) =>
-  `/documents/variances/${varianceId}/document${mineDocumentGuid}`;
+export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const VARIANCE = (mineGuid, varianceId) => `/mines/${mineGuid}/variances/${varianceId}`;
+export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
+  `/mines/${mineGuid}/variances/${varianceId}/documents`;
+export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
+  `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;
