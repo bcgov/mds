@@ -176,7 +176,6 @@ ShallowWrapper {
                 component={[Function]}
                 id="VarianceDocumentFileUpload"
                 mineGuid="48593"
-                mineNo="B03124"
                 name="VarianceDocumentFileUpload"
                 onFileLoad={[Function]}
                 onRemoveFile={[Function]}
@@ -362,7 +361,6 @@ ShallowWrapper {
                   component={[Function]}
                   id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  mineNo="B03124"
                   name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
@@ -733,7 +731,6 @@ ShallowWrapper {
                   component={[Function]}
                   id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  mineNo="B03124"
                   name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
@@ -752,7 +749,6 @@ ShallowWrapper {
                   component={[Function]}
                   id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  mineNo="B03124"
                   name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
@@ -771,7 +767,6 @@ ShallowWrapper {
                   "component": [Function],
                   "id": "VarianceDocumentFileUpload",
                   "mineGuid": "48593",
-                  "mineNo": "B03124",
                   "name": "VarianceDocumentFileUpload",
                   "onFileLoad": [Function],
                   "onRemoveFile": [Function],
@@ -1042,7 +1037,6 @@ ShallowWrapper {
                   component={[Function]}
                   id="VarianceDocumentFileUpload"
                   mineGuid="48593"
-                  mineNo="B03124"
                   name="VarianceDocumentFileUpload"
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
@@ -1228,7 +1222,6 @@ ShallowWrapper {
                     component={[Function]}
                     id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    mineNo="B03124"
                     name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
@@ -1599,7 +1592,6 @@ ShallowWrapper {
                     component={[Function]}
                     id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    mineNo="B03124"
                     name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
@@ -1618,7 +1610,6 @@ ShallowWrapper {
                     component={[Function]}
                     id="VarianceDocumentFileUpload"
                     mineGuid="48593"
-                    mineNo="B03124"
                     name="VarianceDocumentFileUpload"
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
@@ -1637,7 +1628,6 @@ ShallowWrapper {
                     "component": [Function],
                     "id": "VarianceDocumentFileUpload",
                     "mineGuid": "48593",
-                    "mineNo": "B03124",
                     "name": "VarianceDocumentFileUpload",
                     "onFileLoad": [Function],
                     "onRemoveFile": [Function],
