@@ -33,6 +33,6 @@ Mount a pvc at the following path in the container:
 /app/logstash/monitor
 ```
 
-folder `app/logstash/data` should also be mounted to a persitant drive.
+folder `app/logstash/data` should also be mounted to a persistent drive.
 
 NGINX access.log written to this volume will be monitored by logstash.
