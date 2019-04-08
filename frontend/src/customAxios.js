@@ -10,7 +10,7 @@ const CustomAxios = (errorToastMessage) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      const { status } = error.response;
+      const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         window.location.reload(false);
       } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
