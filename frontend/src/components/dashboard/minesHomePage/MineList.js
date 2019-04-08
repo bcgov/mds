@@ -31,7 +31,7 @@ const columns = [
         {text}
         {record.verified && (
           <img
-            alt="a more direct change"
+            alt="checkmark"
             className="padding-small"
             src={SUCCESS_CHECKMARK}
             width="25"
@@ -48,7 +48,7 @@ const columns = [
     render: (text) => <div title="Mine Number">{text}</div>,
   },
   {
-    title: "Operational Status!! :D",
+    title: "Operational Status",
     width: 150,
     dataIndex: "operationalStatus",
     render: (text) => <div title="Operational Status">{text}</div>,
