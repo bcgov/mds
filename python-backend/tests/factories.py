@@ -16,7 +16,6 @@ from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
-from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 
 # from app.api.parties.party.models.party import Party
@@ -75,23 +74,13 @@ class MineLocationFactory(BaseFactory):
     expiry_date = factory.LazyFunction(datetime.now)
 
 
-class MineStatusXrefFactory(BaseFactory):
-    class Meta:
-        model = MineStatusXref
-
-    mine_status_xref_guid = factory.LazyFunction(uuid.uuid4)
-    mine_operation_status = factory.LazyFunction(RandomMineOperationStatus)
-    mine_operation_status_reason = factory.LazyFunction(RandomMineOperationStatusReason)
-    mine_operation_status_sub_reason = factory.LazyFunction(RandomMineOperationStatusSubReason)
-
-
 class MineStatusFactory(BaseFactory):
     class Meta:
         model = MineStatus
 
     mine_status_guid = factory.LazyFunction(uuid.uuid4)
     effective_date = factory.LazyFunction(datetime.now)
-    mine_status_xref = factory.SubFactory(MineStatusXrefFactory)
+    mine_status_xref = factory.LazyFunction(RandomMineStatusXref)
 
 
 class MineTypeDetailFactory(BaseFactory):

@@ -9,9 +9,8 @@ from app.api.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
-from app.api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
-from app.api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
-from app.api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from app.api.mines.status.models.mine_status_xref import MineStatusXref
+
 
 
 def RandomExpectedDocumentStatusCode():
@@ -50,13 +49,5 @@ def SampleMineDisturbanceCodes(mine_tenure_type, num):
     ], num)
 
 
-def RandomMineOperationStatus():
-    return random.choice(db.session.query(MineOperationStatusCode).all())
-
-
-def RandomMineOperationStatusReason():
-    return None  #TODO when status is refactored
-
-
-def RandomMineOperationStatusSubReason():
-    return None  #TODO when status is refactored
+def RandomMineStatusXref():
+    return random.choice(db.session.query(MineStatusXref).all())
