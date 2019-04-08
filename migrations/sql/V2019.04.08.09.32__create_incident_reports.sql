@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS mine_incident_reports
     create_user                 character varying(60)                    NOT NULL,
     create_timestamp            timestamp with time zone DEFAULT now()   NOT NULL,
     update_user                 character varying(60)                    NOT NULL,
-    update_timestamp            timestamp with time zone DEFAULT now()   NOT NULL
+    update_timestamp            timestamp with time zone DEFAULT now()   NOT NULL,
 
 
-    CONSTRAINT mine_incident_report_guid_unique UNIQUE (mine_incident_report_guid) 
-    CONSTRAINT mine_incident_report_number UNIQUE (mine_incident_report_number) 
+    CONSTRAINT mine_incident_report_guid_unique UNIQUE (mine_incident_report_guid) ,
+    CONSTRAINT mine_incident_report_number UNIQUE (mine_incident_report_number) ,
 
-    CONSTRAINT mine_guid_fkey FOREIGN KEY (mine) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED;
+    CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED
 );
