@@ -140,7 +140,7 @@ export class MineDashboard extends Component {
     return (
       <div>
         {this.state.isLoaded && (
-          <div className="dashboard">
+          <div className="dashboard_name">
             <div>
               <MineHeader mine={mine} {...this.props} />
             </div>
