@@ -10,80 +10,66 @@ from app.extensions import api, db
 from ..models.variance import Variance
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
-from ....utils.access_decorators import (requires_any_of,
-                                         MINE_VIEW,
-                                         MINE_CREATE,
+from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
-mine_document_model = api.model('MineDocument', {
-    'mine_document_guid': fields.String,
-    'mine_guid': fields.String,
-    'document_manager_guid': fields.String,
-    'document_name': fields.String
-})
+mine_document_model = api.model(
+    'MineDocument', {
+        'mine_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String
+    })
 
-variance_model = api.model('Variance', {
-    'variance_id': fields.Integer,
-    'compliance_article_id': fields.Integer,
-    'note': fields.String,
-    'issue_date': fields.Date,
-    'received_date': fields.Date,
-    'expiry_date': fields.Date,
-    'documents': fields.Nested(mine_document_model)
-})
+variance_model = api.model(
+    'Variance', {
+        'variance_id': fields.Integer,
+        'compliance_article_id': fields.Integer,
+        'note': fields.String,
+        'issue_date': fields.Date,
+        'received_date': fields.Date,
+        'expiry_date': fields.Date,
+        'documents': fields.Nested(mine_document_model)
+    })
+
 
 class VarianceListResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('compliance_article_id',
-                        type=int,
-                        store_missing=False,
-                        trim=True,
-                        help='ID representing the MA or HSRCM code to which this variance relates.')
-    parser.add_argument('note',
-                        type=str,
-                        store_missing=False,
-                        trim=True,
-                        help='A note to include on the variance. Limited to 300 characters.')
-    parser.add_argument('issue_date',
-                        store_missing=False,
-                        trim=True,
-                        help='The date on which the variance was issued.')
-    parser.add_argument('received_date',
-                        store_missing=False,
-                        trim=True,
-                        help='The date on which the variance was received.')
-    parser.add_argument('expiry_date',
-                        store_missing=False,
-                        trim=True,
-                        help='The date on which the variance expires.')
-
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser.add_argument(
+        'compliance_article_id',
+        type=int,
+        store_missing=False,
+        help='ID representing the MA or HSRCM code to which this variance relates.')
+    parser.add_argument(
+        'note',
+        type=str,
+        store_missing=False,
+        help='A note to include on the variance. Limited to 300 characters.')
+    parser.add_argument(
+        'issue_date', store_missing=False, help='The date on which the variance was issued.')
+    parser.add_argument(
+        'received_date', store_missing=False, help='The date on which the variance was received.')
+    parser.add_argument(
+        'expiry_date', store_missing=False, help='The date on which the variance expires.')
 
     @api.doc(
-        description=
-        'Get a list of all variances for a given mine.',
-        params={
-            'mine_guid': 'guid of the mine for which to fetch variances'
-        }
-    )
+        description='Get a list of all variances for a given mine.',
+        params={'mine_guid': 'guid of the mine for which to fetch variances'})
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(variance_model, code=200, envelope='records')
     def get(self, mine_guid):
         variances = Variance.find_by_mine_guid(mine_guid)
 
         if variances is None:
-            raise BadRequest('Unable to fetch variances. Confirm you\'ve provided a valid mine_guid')
+            raise BadRequest(
+                'Unable to fetch variances. Confirm you\'ve provided a valid mine_guid')
 
         return variances
 
-
     @api.doc(
-        description=
-        'Create a new variance for a given mine.',
-        params={
-            'mine_guid': 'guid of the mine with which to associate the variances'
-        }
-    )
+        description='Create a new variance for a given mine.',
+        params={'mine_guid': 'guid of the mine with which to associate the variances'})
     @api.expect(parser)
     @requires_any_of([MINE_CREATE])
     @api.marshal_with(variance_model, code=200)
@@ -112,13 +98,11 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
-        description=
-        'Get a single variance.',
+        description='Get a single variance.',
         params={
             'mine_guid': 'guid of the mine to which the variance is associated',
             'variance_id': 'ID of the variance to fetch'
-        }
-    )
+        })
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(variance_model, code=200)
     def get(self, mine_guid, variance_id):
@@ -131,16 +115,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('document_name', type=str)
 
-
-    @api.doc(
-        description=
-        'Request a document_manager_guid for uploading a document'
-    )
+    @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_id):
         data = self.parser.parse_args()
@@ -170,13 +150,11 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         return response
 
     @api.doc(
-        description=
-        'Associate an uploaded file with a variance.',
+        description='Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
             'variance_id': 'ID for the variance to which the document should be associated'
-        }
-    )
+        })
     @api.marshal_with(variance_model, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_id):
@@ -202,7 +180,6 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         variance.save()
         return variance
 
-
     def _parse_request_metadata(self):
         request_metadata = request.headers.get("Upload-Metadata")
         metadata = {}
@@ -217,10 +194,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
-    @api.doc(
-        description=
-        'Delete a document from a variance.'
-    )
+    @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_id, mine_document_guid):
         variance = Variance.find_by_variance_id(variance_id)

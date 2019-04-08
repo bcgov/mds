@@ -16,14 +16,10 @@ from ....documents.namespace.documents import api as doc_api
 
 
 class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
     parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
     parser.add_argument(
-        'tsf_name',
-        type=str,
-        trim=True,
-        help='Name of the tailings storage facility.',
-        store_missing=False)
+        'tsf_name', type=str, help='Name of the tailings storage facility.', store_missing=False)
 
     @api.doc(
         params={

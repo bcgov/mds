@@ -28,7 +28,7 @@ mine_incident_model = api.model(
 
 
 class MineIncidentListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
     #required
     parser.add_argument(
         'incident_timestamp',
@@ -96,7 +96,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
 
 class MineIncidentResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
     parser.add_argument(
         'incident_timestamp',
         help='Datetime of when the incident occured ',

@@ -14,7 +14,7 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 class PermitResource(Resource, UserMixin, ErrorMixin):
 
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument('mine_guid', type=str, help='guid of the mine.', location='json')

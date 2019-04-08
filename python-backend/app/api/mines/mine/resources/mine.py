@@ -30,21 +30,15 @@ from ....permits.permit.models.permit import Permit
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False)
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser.add_argument('mine_name', type=str, help='Name of the mine.', store_missing=False)
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
-        trim=True,
         store_missing=False)
     parser.add_argument(
-        'tenure_number_id',
-        type=int,
-        help='Tenure number for the mine.',
-        trim=True,
-        store_missing=False)
+        'tenure_number_id', type=int, help='Tenure number for the mine.', store_missing=False)
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
@@ -66,8 +60,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False)
-    parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False)
+    parser.add_argument('mine_region', type=str, help='Region for the mine.', store_missing=False)
 
     @api.doc(
         params={

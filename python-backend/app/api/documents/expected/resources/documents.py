@@ -14,14 +14,14 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
 
-    parser.add_argument('exp_document_name', type=str, trim=True, store_missing=False)
-    parser.add_argument('exp_document_description', type=str, trim=True, store_missing=False)
-    parser.add_argument('due_date', type=str, trim=True, store_missing=False)
-    parser.add_argument('received_date', type=str, trim=True, store_missing=False)
-    parser.add_argument('exp_document_status_code', type=str, trim=True, store_missing=False)
-    parser.add_argument('hsrc_code', type=str, trim=True, store_missing=False)
+    parser.add_argument('exp_document_name', type=str, store_missing=False)
+    parser.add_argument('exp_document_description', type=str, store_missing=False)
+    parser.add_argument('due_date', type=str, store_missing=False)
+    parser.add_argument('received_date', type=str, store_missing=False)
+    parser.add_argument('exp_document_status_code', type=str, store_missing=False)
+    parser.add_argument('hsrc_code', type=str, store_missing=False)
 
     @api.doc(
         params={

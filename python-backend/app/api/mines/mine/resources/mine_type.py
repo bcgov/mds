@@ -9,7 +9,7 @@ from ..models.mine_type import MineType
 
 
 class MineTypeResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
     parser.add_argument(
         'mine_guid',
         type=str,
