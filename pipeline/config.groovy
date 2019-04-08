@@ -353,7 +353,7 @@ app {
                             'NAME':"mds-logstash",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"test",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
@@ -435,10 +435,10 @@ environments {
                     memory_limit = "64Mi"
                 }
                 logstash {
-                    cpu_request = "100m"
-                    cpu_limit = "350m"
-                    memory_request = "512Mi"
-                    memory_limit = "768Mi"
+                    cpu_request = "1m"
+                    cpu_limit = "5m"
+                    memory_request = "32Mi"
+                    memory_limit = "64Mi"
                 }
             }
             deployment {
