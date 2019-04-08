@@ -56,28 +56,28 @@ class MineIncident(AuditMixin, Base):
         return reported_by
 
     @validates('reported_by_role')
-    def validate_reported_by(self, key, reported_by_role):
+    def validate_reported_by_role(self, key, reported_by_role):
         if reported_by_role:
             if len(reported_by_role) > 100:
                 raise AssertionError('reported_by_role must not exceed 100 characters.')
         return reported_by_role
 
     @validates('followup_inspection_number')
-    def validate_reported_by(self, key, followup_inspection_number):
+    def validate_followup_inspection_number(self, key, followup_inspection_number):
         if followup_inspection_number:
             if len(followup_inspection_number) > 20:
                 raise AssertionError('followup_inspection_number must not exceed 100 characters.')
         return followup_inspection_number
 
     @validates('incident_timestamp')
-    def validate_reported_by(self, key, incident_timestamp):
+    def validate_incident_timestamp(self, key, incident_timestamp):
         if incident_timestamp:
             if incident_timestamp > datetime.datetime.now():
                 raise AssertionError('incident_timestamp must not be in the future')
         return incident_timestamp
 
     @validates('reported_timestamp')
-    def validate_reported_by(self, key, reported_timestamp):
+    def validate_reported_timestamp(self, key, reported_timestamp):
         if reported_timestamp:
             if reported_timestamp > datetime.datetime.now():
                 raise AssertionError('reported_timestamp must not be in the future')
