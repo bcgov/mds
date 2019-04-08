@@ -166,15 +166,8 @@
     ],
     "*.js": [
       "eslint --fix",
-      "git add"
+      "git add",
+      "npm test --findRelatedTests"
     ]
-  },
-  "lint-prepush": {
-    "base": "develop",
-    "tasks": {
-      "*.js": [
-        "npm test src"
-      ]
-    }
   }
 }
