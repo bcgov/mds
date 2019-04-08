@@ -162,6 +162,28 @@
                         "key": "logstash-password"
                       }
                     }
+                  },
+                  {
+                    "name": "JDBC_CONNECTION_STRING",
+                    "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
+                  },
+                  {
+                    "name": "JDBC_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "JDBC_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
                   }
                 ],
                 "resources": {
@@ -241,6 +263,12 @@
     {
       "name": "ELASTIC_SECRET_NAME",
       "value": "template.mds-elastic-secret"
+    },
+    {
+      "name": "DB_CONFIG_NAME",
+      "displayName": "Database Config Name",
+      "description": "Configuration name for the database",
+      "required": true
     }
   ]
 }
