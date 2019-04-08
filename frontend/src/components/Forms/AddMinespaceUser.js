@@ -9,8 +9,6 @@ import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
-// TODO: Remove me. This is just a change. It has no other purpose
-
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   mines: CustomPropTypes.options.isRequired,
