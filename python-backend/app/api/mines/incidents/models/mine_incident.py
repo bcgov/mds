@@ -24,6 +24,14 @@ class MineIncident(AuditMixin, Base):
     incident_final_report_summary = db.Column(db.String)
 
     @classmethod
+    def find_by_mine_incident_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_incident_guid=_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
     def create(cls,
                mine,
                incident_timestamp,
