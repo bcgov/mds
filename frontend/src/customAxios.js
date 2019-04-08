@@ -10,10 +10,14 @@ const CustomAxios = (errorToastMessage) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      const { status } = error.response;
-      if (status === UNAUTHORIZED || status === MAINTENANCE) {
-        window.location.reload(false);
-      } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
+      if (error.response) {
+        const { status } = error.response;
+        if (status === UNAUTHORIZED || status === MAINTENANCE) {
+          window.location.reload(false);
+        }
+      }
+
+      if (errorToastMessage === "default" || errorToastMessage === undefined) {
         notification.error({
           message: error.response ? error.response.data.error.message : String.ERROR,
           duration: 10,
