@@ -1,15 +1,13 @@
 import uuid
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 import factory
 import factory.fuzzy
 
 from app.extensions import db
-from .constants import *
+from tests.status_code_gen import *
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
-# from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -17,15 +15,12 @@ from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-
 # from app.api.parties.party.models.party import Party
 # from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 # from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-
-from tests.status_code_gen import *
 
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
