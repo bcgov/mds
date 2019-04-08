@@ -27,5 +27,6 @@ class Const{
                         DB_PASS = dotenv['DB_PASS'] ? dotenv['DB_PASS'] : systemEnv['DB_PASS'],
                         TEST_FILE_CONTENT =  "The quality of mercy is not strained.",
                         TEST_FILE_NAME = "test.odt",
-                        DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage"
+                        DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage",
+                        MINESPACE_URL = dotenv['MINESPACE_URL'] ? dotenv['MINESPACE_URL'] : systemEnv['MINESPACE_URL']
 }
