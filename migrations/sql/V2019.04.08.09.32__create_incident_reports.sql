@@ -2,8 +2,7 @@ CREATE TABLE IF NOT EXISTS mine_incident_reports
 (
     mine_incident_report_id         serial                      PRIMARY KEY,
     mine_incident_report_guid       uuid                        NOT NULL,
-    mine_incident_report_num        integer                     NOT NULL,
-    mine_incident_report_id         integer                     NOT NULL, 
+    mine_incident_report_no         character varying(20)       NOT NULL,
     mine_guid                       uuid                        NOT NULL,
     incident_timestamp              timestamp with time zone    NOT NULL, 
     incident_description            text, 

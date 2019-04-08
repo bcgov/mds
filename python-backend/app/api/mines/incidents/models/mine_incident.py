@@ -11,7 +11,7 @@ class MineIncident(AuditMixin, Base):
     mine_incident_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_incident_report_guid = db.Column(
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
-    mine_incident_report_number = db.Column(db.String, nullable=False)
+    mine_incident_report_no = db.Column(db.String, nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     incident_timestamp = db.Column(db.DateTime, nullable=False)
     incident_description = db.Column(db.String)

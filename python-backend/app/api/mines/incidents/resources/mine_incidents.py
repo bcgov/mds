@@ -13,7 +13,7 @@ from ..models.mine_incident import MineIncident
 mine_incident_model = api.model(
     'Mine Incident', {
         'mine_incident_report_guid': fields.String,
-        'mine_incident_report_number': fields.String,
+        'mine_incident_report_no': fields.String,
         'mine_guid': fields.String,
         'incident_timestamp': fields.DateTime,
         'incident_description': fields.String,
