@@ -173,7 +173,7 @@
     "base": "develop",
     "tasks": {
       "*.js": [
-        "npm run test"
+        "npm test src"
       ]
     }
   }

@@ -4,9 +4,9 @@ import { request, success, error } from "@/actions/genericActions";
 import * as ReducerTypes from "@/constants/reducerTypes";
 import * as ActionTypes from "@/constants/actionTypes";
 
-/* 
+/*
 Testing against action `createMineRecord` arbitrarily.
-The genericActions includes: request, success, and error. 
+The genericActions includes: request, success, and error.
 They are used in every network action.
 */
 
@@ -44,6 +44,7 @@ describe("genericActions", () => {
 
       store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
       store.dispatch(success(ReducerTypes.CREATE_MINE_RECORD, mockData));
+      expect(true).toEqual(false);
       expect(store.getActions()).toEqual(expectedActions);
     });
 
