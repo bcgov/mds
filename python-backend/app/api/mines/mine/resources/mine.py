@@ -23,117 +23,11 @@ from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
 from ....permits.permit.models.permit import Permit
-
-mine_location = api.model('MineLocation', {
-    'mine_location_guid': fields.String,
-    'mine_guid': fields.String,
-    'latitude': fields.String,
-    'longitude': fields.String,
-})
-
-mine_document = api.model('MineDocument', {
-    'mine_document_guid': fields.String,
-    'mine_guid': fields.String,
-    'document_manager_guid': fields.String,
-    'document_name': fields.String,
-    'active_ind': fields.Boolean,
-}) 
-
-permit = api.model('MinePermit', {
-    'permit_guid': fields.String,
-    'permit_no': fields.String,
-})
-
-expected_document_status = api.model('ExpectedDocumentStatus', {
-    'exp_document_status_code': fields.String,
-    'description': fields.String,
-}) 
-
-status = api.model('MineStatus', {
-    'mine_status_guid': fields.String,
-    'mine_guid': fields.String,
-    'mine_status_xref_guid': fields.String,
-    'status_values': fields.List(fields.String()),
-    'status_labels':fields.List(fields.String),
-    'effective_date': fields.Date,
-    'expiry_date': fields.Date,
-})
-
-mine_tsf = api.model('MineTailingsStorageFacility', {
-    'mine_tailings_storage_facility_guid': fields.String,
-    'mine_guid': fields.String,
-    'mine_tailings_storage_facility_name': fields.String,
-})
-
-mine_type_detail = api.model('MineTypeDetail', {
-    'mine_type_detail_xref_guid': fields.String,
-    'mine_type_guid': fields.String,
-    'mine_disturbance_code': fields.String,
-    'mine_commodity_code': fields.String,
-})
-
-mine_type = api.model('MineType', {
-    'mine_type_guid': fields.String,
-    'mine_guid': fields.String,
-    'mine_tenure_type_code': fields.String,
-    'mine_type_detail': fields.List(fields.Nested(mine_type_detail)),
-})
-
-mine_verified = api.model('MineVerifiedStatus', {
-    'mine_guid': fields.String,
-    'mine_name': fields.String,
-    'healthy_ind': fields.Boolean,
-    'verifying_user': fields.String,
-    'verifying_timestamp': fields.Date,
-})
-
-mine_expected_document = api.model('MineExpectedDocument', {
-    'exp_document_guid': fields.String,
-    'req_document_guid': fields.String,
-    'mine_guid': fields.String,
-    'exp_document_name': fields.String,
-    'exp_document_description': fields.String,
-    'due_date': fields.Date,
-    'received_date': fields.Date,
-    'exp_document_status_code': fields.String,
-    'expected_document_status': fields.Nested(expected_document_status),
-    'hsrc_code': fields.String,
-    'related_documents': fields.List(fields.Nested(mine_document)),
-})
-
-mines = api.model(
-    'Mines', {
-        'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'mine_no': fields.String,
-        'mine_note': fields.String,
-        'major_mine_ind': fields.Boolean,
-        'mine_region': fields.String,
-        'mine_permit': fields.List(fields.Nested(permit)),
-        'mine_status': fields.List(fields.Nested(status)),
-        'mine_tailings_storage_facilities': fields.List(fields.Nested(mine_tsf)),
-        'mine_type': fields.List(fields.Nested(mine_type)),
-        'verified_status': fields.Nested(mine_verified)
-    })
-
-mine = api.inherit('Mine', mines, {
-    'mine_location': fields.Nested(mine_location),
-    'mine_expected_documents': fields.List(fields.Nested(mine_expected_document)),
-
-})
-
-mine_list_model = api.model(
-    'MineList', {
-        'mines': fields.List(fields.Nested(mines)),
-        'current_page': fields.Integer,
-        'total_pages': fields.Integer,
-        'items_per_page': fields.Integer,
-        'total': fields.Integer,
-    })
 
 
 class MineListResource(Resource, UserMixin):
@@ -173,23 +67,28 @@ class MineListResource(Resource, UserMixin):
         store_missing=False,
         location='form')
     parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, required=True, location='form')
+        'mine_region',
+        type=str,
+        help='Region for the mine.',
+        trim=True,
+        required=True,
+        location='form')
 
     @api.doc(
         params={
-            '?per_page': 'The number of results to be returned per page.',
-            '?page': 'the current page number to be displayed.',
-            '?search': 'The search term.',
-            '?commodity': 'A commodity to filter the mine list by.',
-            '?status': 'A mine status to filter the mine list by.',
-            '?tenure': 'A mine tenure type to filter the mine list by.',
-            '?region': 'A mine region to filter the mine list by.',
-            '?major': 'True or false, filters the mine list by major mines or regional mines.',
-            '?tsf': 'True or false, filter the mine list by mines with or without a TSF.',
+            'per_page': 'The number of results to be returned per page.',
+            'page': 'the current page number to be displayed.',
+            'search': 'The search term.',
+            'commodity': 'A commodity to filter the mine list by.',
+            'status': 'A mine status to filter the mine list by.',
+            'tenure': 'A mine tenure type to filter the mine list by.',
+            'region': 'A mine region to filter the mine list by.',
+            'major': 'True or false, filters the mine list by major mines or regional mines.',
+            'tsf': 'True or false, filter the mine list by mines with or without a TSF.',
         },
         description=
         'This endpoint returns a list of all mines filtered on the search paramaters provided.')
-    @api.marshal_with(mine_list_model, code=200)
+    @api.marshal_with(MINE_LIST_MODEL, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
 
@@ -202,13 +101,13 @@ class MineListResource(Resource, UserMixin):
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
-    
+
     @api.expect(parser)
     @api.doc(
         description=
-        'This endpoint creates a new mine with the information provided and returns it. If an error occurs the appropriate response is returned.',
-        responses={})
-    @api.marshal_with(mine, code=201)
+        'This endpoint creates a new mine with the information provided and returns it. If an error occurs the appropriate response is returned.'
+    )
+    @api.marshal_with(MINE, code=201)
     @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
@@ -321,45 +220,64 @@ class MineListResource(Resource, UserMixin):
 class MineResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, store_missing=False, location='form')
+        'mine_name',
+        type=str,
+        help='Name of the mine.',
+        trim=True,
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'tenure_number_id',
         type=int,
         help='Tenure number for the mine.',
         trim=True,
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'mine_status',
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
-        store_missing=False, location='form')
+        store_missing=False,
+        location='form')
     parser.add_argument(
-        'mine_region', type=str, help='Region for the mine.', trim=True, store_missing=False, location='form')
+        'mine_region',
+        type=str,
+        help='Region for the mine.',
+        trim=True,
+        store_missing=False,
+        location='form')
 
-    @api.doc(description='This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error')
-    @api.marshal_with(mine, code=200)
+    @api.doc(
+        description=
+        'This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error'
+    )
+    @api.marshal_with(MINE, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
 
@@ -370,10 +288,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return mine
 
     @api.expect(parser)
-    @api.marshal_with(mine, code=200)
-    @api.doc(
-        description=
-        'This endpoint updates a mine using the form-data passed.')
+    @api.marshal_with(MINE, code=200)
+    @api.doc(description='This endpoint updates a mine using the form-data passed.')
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
 
@@ -454,25 +370,25 @@ class MineListSearch(Resource):
 
 
 # Functions shared by the MineListResource and the MineResource
-def _mine_operation_code_processor( mine_status, index):
-        try:
-            return mine_status[index].strip()
-        except IndexError:
-            return None
+def _mine_operation_code_processor(mine_status, index):
+    try:
+        return mine_status[index].strip()
+    except IndexError:
+        return None
 
-def _mine_status_processor( mine_status, mine):
+
+def _mine_status_processor(mine_status, mine):
     if not mine_status:
         return mine.mine_status
 
     current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
-    
+
     mine_status_xref = MineStatusXref.find_by_codes(
         _mine_operation_code_processor(mine_status, 0),
         _mine_operation_code_processor(mine_status, 1),
         _mine_operation_code_processor(mine_status, 2))
     if not mine_status_xref:
-        raise BadRequest(
-            'Invalid status_code, reason_code, and sub_reason_code combination.')
+        raise BadRequest('Invalid status_code, reason_code, and sub_reason_code combination.')
 
     existing_status = mine.mine_status[0] if mine.mine_status else None
     if existing_status:
@@ -486,11 +402,12 @@ def _mine_status_processor( mine_status, mine):
     new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
     mine.mine_status.append(new_status)
     new_status.save()
-        
+
     mine.save(commit=False)
     return new_status
 
-def _throw_error_if_mine_exists( mine_name):
+
+def _throw_error_if_mine_exists(mine_name):
     # query the mine tables and check if that mine name exists
     if mine_name:
         name_filter = Mine.mine_name.ilike(mine_name.strip())
