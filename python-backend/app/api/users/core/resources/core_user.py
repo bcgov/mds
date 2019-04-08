@@ -28,9 +28,6 @@ core_user_model = api.model(
 
 
 class CoreUserListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('idir_username', type=str, help='IDIR username.')
-
     @api.marshal_with(core_user_model, envelope='results', code=200, as_list=True)
     @api.doc(
         description='Returns a list of all core users.',
