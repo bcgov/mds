@@ -43,7 +43,7 @@ def test_put_core_user_update_email(test_client, auth_headers, setup_info):
     put_resp = test_client.put(
         '/users/core/' + str(setup_info['test_core_user_guid']),
         headers=auth_headers['full_auth_header'],
-        json=data)
+        data=data)
 
     assert put_resp.status_code == 200, put_resp.response
 
