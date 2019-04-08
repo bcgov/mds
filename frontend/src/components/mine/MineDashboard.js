@@ -74,7 +74,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  permittees: [],
+  permittees: ["hah"],
   permitteesIds: [],
   mineTenureHash: {},
   mineComplianceInfo: {},
