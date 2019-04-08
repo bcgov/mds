@@ -34,35 +34,35 @@ class MineIncidentListResource(Resource, UserMixin):
         'incident_timestamp',
         help='Datetime of when the incident occured ',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='form',
+        location='json',
         required=True)
     parser.add_argument(
         'incident_description',
         help='reported details of the incident',
         type=str,
-        location='form',
+        location='json',
         required=True)
     #optional
     parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='form')
+        location='json')
     parser.add_argument(
-        'reported_by', help='Name of party who reported the incident', type=str, location='form')
+        'reported_by', help='Name of party who reported the incident', type=str, location='json')
     parser.add_argument(
-        'reported_by_role', help='Job title of incident reporter', type=str, location='form')
+        'reported_by_role', help='Job title of incident reporter', type=str, location='json')
     #nullable
     parser.add_argument(
         'dangerous_occurance_ind',
         help='Mark incident as a dangerous occurance',
         type=inputs.boolean,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'followup_inspection_ind',
         help='Mark incident to have a follow up inspection',
-        location='form',
+        location='json',
         type=inputs.boolean,
         store_missing=False)
 
@@ -101,54 +101,54 @@ class MineIncidentResource(Resource, UserMixin):
         'incident_timestamp',
         help='Datetime of when the incident occured ',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'incident_description',
         help='reported details of the incident',
         type=str,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'reported_by',
         help='Name of party who reported the incident',
         type=str,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'reported_by_role',
         help='Job title of incident reporter',
         type=str,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'dangerous_occurance_ind',
         help='Mark incident as a dangerous occurance',
         type=inputs.boolean,
-        location='form',
+        location='json',
         store_missing=False)
     parser.add_argument(
         'followup_inspection_ind',
         help='Mark incident to have a follow up inspection',
-        location='form',
+        location='json',
         type=inputs.boolean,
         store_missing=False)
     parser.add_argument(
         'followup_inspection_number',
         help='NRIS inspection related to this incident',
-        location='form',
+        location='json',
         type=str,
         store_missing=False)
     parser.add_argument(
         'incident_final_report_summary',
         help='Report from mine in reaction to the incident',
-        location='form',
+        location='json',
         type=str,
         store_missing=False)
 
