@@ -7,7 +7,7 @@ from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS
-from app.api.nris_services import NRIS_service
+from app.api.services import NRIS_service
 from app.extensions import cache
 
 
@@ -29,6 +29,6 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
                 ), errhttp.response.status_code
             except TypeError as e:
                 return self.create_error_payload(500, str(e)), 500
-            
+
             result = NRIS_service._process_NRIS_data(response_data, mine_no)
         return result
