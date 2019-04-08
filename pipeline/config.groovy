@@ -354,6 +354,7 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
