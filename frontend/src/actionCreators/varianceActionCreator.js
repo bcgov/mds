@@ -1,4 +1,3 @@
-import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
@@ -8,11 +7,12 @@ import * as varianceActions from "@/actions/varianceActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import CustomAxios from "@/customAxios";
 
 export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading());
@@ -20,41 +20,28 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.CREATE_MINE_VARIANCE));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_VARIANCE)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
-  // TODO: Update to use CustomAxios()
-  return axios
+  return CustomAxios(String.ERROR)
     .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VARIANCES));
       dispatch(varianceActions.storeVariances(response.data));
       dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_VARIANCES));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_VARIANCES)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
-  return axios
+  return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceId),
       payload,
@@ -65,14 +52,8 @@ export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dis
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const removeDocumentFromVariance = ({ mineGuid, varianceId, mineDocumentGuid }) => (
@@ -80,7 +61,7 @@ export const removeDocumentFromVariance = ({ mineGuid, varianceId, mineDocumentG
 ) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
-  return axios
+  return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceId, mineDocumentGuid),
       createRequestHeader()
@@ -90,12 +71,6 @@ export const removeDocumentFromVariance = ({ mineGuid, varianceId, mineDocumentG
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE)))
+    .finally(() => dispatch(hideLoading()));
 };

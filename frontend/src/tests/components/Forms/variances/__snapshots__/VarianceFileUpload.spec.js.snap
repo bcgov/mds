@@ -45,7 +45,7 @@ ShallowWrapper {
         name="fileUpload"
         onFileLoad={[MockFunction]}
         onRemoveFile={[MockFunction]}
-        uploadUrl="/documents/variances?mine_guid=48593&mine_no=B01034"
+        uploadUrl="/mines/48593/variances/2/documents"
       />,
       "colon": true,
       "hasFeedback": false,
@@ -77,7 +77,7 @@ ShallowWrapper {
         "name": "fileUpload",
         "onFileLoad": [MockFunction],
         "onRemoveFile": [MockFunction],
-        "uploadUrl": "/documents/variances?mine_guid=48593&mine_no=B01034",
+        "uploadUrl": "/mines/48593/variances/2/documents",
       },
       "ref": null,
       "rendered": null,
@@ -114,7 +114,7 @@ ShallowWrapper {
           name="fileUpload"
           onFileLoad={[MockFunction]}
           onRemoveFile={[MockFunction]}
-          uploadUrl="/documents/variances?mine_guid=48593&mine_no=B01034"
+          uploadUrl="/mines/48593/variances/2/documents"
         />,
         "colon": true,
         "hasFeedback": false,
@@ -146,7 +146,7 @@ ShallowWrapper {
           "name": "fileUpload",
           "onFileLoad": [MockFunction],
           "onRemoveFile": [MockFunction],
-          "uploadUrl": "/documents/variances?mine_guid=48593&mine_no=B01034",
+          "uploadUrl": "/mines/48593/variances/2/documents",
         },
         "ref": null,
         "rendered": null,
