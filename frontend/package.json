@@ -76,6 +76,7 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^1.3.1",
     "image-webpack-loader": "3.6.0",
+    "lint-prepush": "^0.3.1",
     "lint-staged": "^8.1.5",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.9.0",
@@ -154,7 +155,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-push": "lint-staged",
+      "pre-push": "lint-prepush",
       "pre-commit": "lint-staged"
     }
   },
@@ -165,8 +166,15 @@
     ],
     "*.js": [
       "eslint --fix",
-      "git add",
-      "npm run test"
+      "git add"
     ]
+  },
+  "lint-prepush": {
+    "base": "develop",
+    "tasks": {
+      "*.js": [
+        "npm run test"
+      ]
+    }
   }
 }
