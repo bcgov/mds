@@ -38,7 +38,7 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VARIANCES));
-      dispatch(varianceActions.storeVariances(response));
+      dispatch(varianceActions.storeVariances(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {

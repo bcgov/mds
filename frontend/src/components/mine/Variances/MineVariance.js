@@ -24,11 +24,11 @@ export class MineVariance extends Component {
   handleAddVariances = (files) => (values) =>
     this.props
       .createVariance({ mineGuid: this.props.mine.guid }, values)
-      .then(async ({ data: { variance_id, mine_guid } }) => {
+      .then(async ({ data: { variance_id } }) => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
             this.props.addDocumentToVariance(
-              { mineGuid: mine_guid, varianceId: variance_id },
+              { mineGuid: this.props.mine.guid, varianceId: variance_id },
               {
                 document_manager_guid,
                 document_name,
@@ -47,7 +47,6 @@ export class MineVariance extends Component {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.guid,
-        mineNo: this.props.mine.mine_no,
         complianceCodes: this.props.complianceCodes,
       },
       widthSize: "75vw",

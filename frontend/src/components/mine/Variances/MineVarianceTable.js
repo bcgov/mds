@@ -96,27 +96,27 @@ export class MineVarianceTable extends Component {
           <div title="Documents">
             {record.documents
               ? record.documents.map((file) => (
-                  <div key={file.variance_document_xref_guid}>
+                  <div key={file.mine_document_guid}>
                     <a
                       role="link"
-                      key={file.variance_document_xref_guid}
+                      key={file.mine_document_guid}
                       onClick={() =>
                         downloadFileFromDocumentManager(
-                          file.details.document_manager_guid,
-                          file.details.document_name
+                          file.document_manager_guid,
+                          file.document_name
                         )
                       }
                       // Accessibility: Event listener
                       onKeyPress={() =>
                         downloadFileFromDocumentManager(
-                          file.details.document_manager_guid,
-                          file.details.document_name
+                          file.document_manager_guid,
+                          file.document_name
                         )
                       }
                       // Accessibility: Focusable element
                       tabIndex="0"
                     >
-                      {file.details.document_name}
+                      {file.document_name}
                     </a>
                   </div>
                 ))
