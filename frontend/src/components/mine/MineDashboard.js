@@ -106,9 +106,9 @@ export class MineDashboard extends Component {
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineComplianceCodes();
       this.props.setOptionsLoaded();
     }
+    this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
 
     if (activeTab) {
