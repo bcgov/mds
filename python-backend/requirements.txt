@@ -18,6 +18,7 @@ GeoAlchemy2==0.5.0
 itsdangerous==0.24
 Jinja2==2.10
 jsonschema==2.6.0
+ldap3==2.6.0
 Mako==1.0.7
 MarkupSafe==1.0
 more-itertools==4.2.0
@@ -40,4 +41,3 @@ sqlalchemy-filters==0.8.0
 uwsgi==2.0.17.1
 uwsgitop==0.10
 Werkzeug==0.14.1
-ldap3==2.6.0
