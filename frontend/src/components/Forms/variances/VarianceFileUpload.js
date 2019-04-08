@@ -18,7 +18,7 @@ export const VarianceFileUpload = (props) => (
       id="fileUpload"
       name="fileUpload"
       component={FileUpload}
-      uploadUrl={VARIANCE_DOCUMENTS(props.mineGuid, 2)} // TODO: Chat with UX about creating a variance first
+      uploadUrl={VARIANCE_DOCUMENTS(props.mineGuid)}
       acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}

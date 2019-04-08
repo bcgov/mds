@@ -16,24 +16,21 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  mineNo: PropTypes.string.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
-
-const defaultProps = {};
 
 export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
-    filenameGuidMap: {},
+    documentNameGuidMap: {},
   };
 
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.setState(({ filenameGuidMap }) => ({
-      filenameGuidMap: {
-        [document_manager_guid]: fileName,
-        ...filenameGuidMap,
+  onFileLoad = (documentName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ documentName, document_manager_guid });
+    this.setState(({ documentNameGuidMap }) => ({
+      documentNameGuidMap: {
+        [document_manager_guid]: documentName,
+        ...documentNameGuidMap,
       },
     }));
     change("uploadedFiles", this.state.uploadedFiles);
@@ -48,7 +45,7 @@ export class AddVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.filenameGuidMap))}
+        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
@@ -108,7 +105,6 @@ export class AddVarianceForm extends Component {
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
                 mineGuid={this.props.mineGuid}
-                mineNo={this.props.mineNo}
                 component={VarianceFileUpload}
               />
             </Form.Item>
@@ -141,7 +137,6 @@ export class AddVarianceForm extends Component {
 }
 
 AddVarianceForm.propTypes = propTypes;
-AddVarianceForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_VARIANCE,
