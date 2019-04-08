@@ -44,7 +44,6 @@ describe("genericActions", () => {
 
       store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
       store.dispatch(success(ReducerTypes.CREATE_MINE_RECORD, mockData));
-      expect(true).toEqual(false);
       expect(store.getActions()).toEqual(expectedActions);
     });
 
