@@ -6,6 +6,7 @@ The project uses a [Node.js (v8)](https://nodejs.org/en/) runtime environment an
 
 The application requires a whole suite of npm modules for building/testing/running the application. All the required modules can be found under package.json file.
 
+
 ### Building
 
 - [webpack](https://webpack.js.org/) : Project building and asset compilation.
