@@ -2,7 +2,7 @@ from flask_restplus import Namespace
 
 from app.api.mines.mine.resources.mine_map import MineMapResource
 from ..mine.resources.mine import MineResource, MineListSearch, MineListResource
-from ..mine.resources.mine_type import MineTypeResource
+from ..mine.resources.mine_type import MineTypeResource, MineTypeListResource
 from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
@@ -15,8 +15,7 @@ from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
-from ..variances.resources.variance import (VarianceListResource,
-                                            VarianceResource,
+from ..variances.resources.variance import (VarianceListResource, VarianceResource,
                                             VarianceDocumentUploadResource,
                                             VarianceUploadedDocumentsResource)
 
@@ -37,7 +36,9 @@ api.add_resource(MineTailingsStorageFacilityResource, '/tailings',
                  '/tailings/<string:mine_tailings_storage_facility_guid>')
 api.add_resource(MineComplianceResource, '/compliance', '/compliance/<string:mine_no>')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')
-api.add_resource(MineTypeResource, '/mine-types', '/mine-types/<string:mine_type_guid>')
+
+api.add_resource(MineTypeResource, '/mine-types/<string:mine_type_guid>')
+api.add_resource(MineTypeListResource, '/mine-types')
 api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
@@ -45,12 +46,9 @@ api.add_resource(MineVerifiedStatusResource, '/verified-status',
                  '/<string:mine_guid>/verified-status')
 
 api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(
-    VarianceResource,
-    '/<string:mine_guid>/variances/<string:variance_id>')
-api.add_resource(
-    VarianceDocumentUploadResource,
-    '/<string:mine_guid>/variances/<string:variance_id>/documents')
+api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_id>')
+api.add_resource(VarianceDocumentUploadResource,
+                 '/<string:mine_guid>/variances/<string:variance_id>/documents')
 api.add_resource(
     VarianceUploadedDocumentsResource,
     '/<string:mine_guid>/variances/<string:variance_id>/documents/<string:mine_document_guid>')
