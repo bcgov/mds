@@ -22,6 +22,9 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
+GUID = factory.LazyFunction(uuid.uuid4)
+TODAY = factory.LazyFunction(datetime.now)
+
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
@@ -34,10 +37,10 @@ class DocumentManagerFactory(BaseFactory):
         model = DocumentManager
 
     document_manager_id = factory.Sequence(lambda n: n)
-    document_guid = factory.LazyFunction(uuid.uuid4)
+    document_guid = GUID
     full_storage_path = factory.LazyAttribute(lambda o: f'mine_no/category/{o.file_display_name}')
-    upload_started_date = factory.LazyFunction(datetime.now)
-    upload_completed_date = factory.LazyFunction(datetime.now)
+    upload_started_date = TODAY
+    upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
     path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
 
@@ -46,13 +49,13 @@ class MineExpectedDocumentFactory(BaseFactory):
     class Meta:
         model = MineExpectedDocument
 
-    exp_document_guid = factory.LazyFunction(uuid.uuid4)
+    exp_document_guid = GUID
     required_document = factory.LazyFunction(RandomRequiredDocument)
     exp_document_status_code = factory.LazyFunction(RandomExpectedDocumentStatusCode)
     exp_document_name = factory.LazyAttribute(lambda o: o.required_document.req_document_name)
     exp_document_description = factory.LazyAttribute(lambda o: o.required_document.description)
-    due_date = factory.LazyFunction(datetime.now)
-    received_date = factory.LazyFunction(datetime.now)
+    due_date = TODAY
+    received_date = TODAY
     hsrc_code = factory.LazyAttribute(lambda o: o.required_document.hsrc_code)
 
 
@@ -60,21 +63,21 @@ class MineLocationFactory(BaseFactory):
     class Meta:
         model = MineLocation
 
-    mine_location_guid = factory.LazyFunction(uuid.uuid4)
+    mine_location_guid = GUID
     latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for inside BC
     longitude = factory.Faker(
         'longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for inside BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
-    effective_date = factory.LazyFunction(datetime.now)
-    expiry_date = factory.LazyFunction(datetime.now)
+    effective_date = TODAY
+    expiry_date = TODAY
 
 
 class MineStatusFactory(BaseFactory):
     class Meta:
         model = MineStatus
 
-    mine_status_guid = factory.LazyFunction(uuid.uuid4)
-    effective_date = factory.LazyFunction(datetime.now)
+    mine_status_guid = GUID
+    effective_date = TODAY
     mine_status_xref = factory.LazyFunction(RandomMineStatusXref)
 
 
@@ -97,7 +100,7 @@ class MineTypeFactory(BaseFactory):
     class Meta:
         model = MineType
 
-    mine_type_guid = factory.LazyFunction(uuid.uuid4)
+    mine_type_guid = GUID
     mine_tenure_type_code = factory.LazyFunction(RandomTenureTypeCode)
     mine_type_detail = []
 
@@ -133,7 +136,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     class Meta:
         model = MineTailingsStorageFacility
 
-    mine_tailings_storage_facility_guid = factory.LazyFunction(uuid.uuid4)
+    mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
 
 
@@ -142,7 +145,7 @@ class PermitFactory(BaseFactory):
         model = Permit
 
     permit_id = factory.Sequence(lambda n: n)
-    permit_guid = factory.LazyFunction(uuid.uuid4)
+    permit_guid = GUID
     permit_no = factory.Sequence(lambda n: f'QQ{n}')
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
@@ -157,11 +160,7 @@ class PermitFactory(BaseFactory):
 
         for n in range(extracted):
             if n == 0:
-                PermitAmendmentFactory(
-                    permit_id=obj.permit_id,
-                    description='Initial permit issued.',
-                    permit_amendment_type_code='OGP',
-                    **kwargs)
+                PermitAmendmentFactory(permit_id=obj.permit_id, initial_permit=True, **kwargs)
             else:
                 PermitAmendmentFactory(permit_id=obj.permit_id, **kwargs)
 
@@ -170,11 +169,17 @@ class PermitAmendmentFactory(BaseFactory):
     class Meta:
         model = PermitAmendment
 
+    class Params:
+        initial_permit = factory.Trait(
+            description='Initial permit issued.',
+            permit_amendment_type_code='OGP',
+        )
+
     permit_amendment_id = factory.Sequence(lambda n: n)
-    permit_amendment_guid = factory.LazyFunction(uuid.uuid4)
-    received_date = factory.LazyFunction(datetime.now)
-    issue_date = factory.LazyFunction(datetime.now)
-    authorization_end_date = factory.LazyFunction(datetime.now)
+    permit_amendment_guid = GUID
+    received_date = TODAY
+    issue_date = TODAY
+    authorization_end_date = TODAY
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -188,16 +193,16 @@ class MineVerifiedStatusFactory(BaseFactory):
     mine_verified_status_id = factory.Sequence(lambda n: n)
     healthy_ind = factory.Faker('boolean', chance_of_getting_true=50)
     verifying_user = factory.Faker('name')
-    verifying_timestamp = factory.LazyFunction(datetime.now)
+    verifying_timestamp = TODAY
     update_user = factory.Faker('name')
-    update_timestamp = factory.LazyFunction(datetime.now)
+    update_timestamp = TODAY
 
 
 class MineFactory(BaseFactory):
     class Meta:
         model = Mine
 
-    mine_guid = factory.LazyFunction(uuid.uuid4)
+    mine_guid = GUID
     mine_no = factory.Sequence(lambda n: f'MINENO{n}')
     mine_name = factory.Sequence(lambda n: f'mine name {n}')
     mine_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
