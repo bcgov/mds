@@ -146,7 +146,7 @@ class MineIncidentResource(Resource, UserMixin):
 
     @api.marshal_with(mine_incident_model, code=200)
     @requires_role_mine_view
-    def get(self, mine_guid, mine_incident_guid):
+    def get(self, mine_incident_guid, mine_guid=None):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident:
             raise NotFound("Mine Incident not found")
@@ -155,7 +155,7 @@ class MineIncidentResource(Resource, UserMixin):
     @api.expect(parser)
     @api.marshal_with(mine_incident_model, code=200)
     @requires_role_mine_create
-    def put(self, mine_guid, mine_incident_guid):
+    def put(self, mine_incident_guid, mine_guid=None):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident:
             raise NotFound("Mine Incident not found")
