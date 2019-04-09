@@ -33,18 +33,15 @@ Follow the `.env-example` template to create an `.env` file under `/functional-t
 
 ## Run tests with Gradle
 
-The following commands will launch the tests with the individual browsers:
+The following commands will launch the tests with the individual browsers.
+The public-frontend tests are run by replacing CustomJUnitSpecRunner with CustomJUnitPublicSpecRunner
+All tests are run by replacing CustomJUnitSpecRunner with CustomJUnitMasterSpecRunner
 
 The core frontend tests here will be run with the following commands
 ./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
 ./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner //Will run in pipeline as well, download tsf test will fail
 ./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitSpecRunner
 ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner //Will run in pipeline as well
-The public-frontend tests are run with the command:
-./gradlew chromeTest -DchromeTest.single=CustomJUnitPublicSpecRunner
-./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitPublicSpecRunner //Will run in pipeline as well
-./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitPublicSpecRunner
-./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner //Will run in pipeline as well
 
 - Replace `./gradlew` with `gradlew.bat` in the above examples if you're on Windows.
 
