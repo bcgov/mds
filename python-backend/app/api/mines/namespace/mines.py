@@ -50,4 +50,5 @@ api.add_resource(
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
 
-api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
+api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>',
+                 '/incidents/<string:mine_incident_guid>')

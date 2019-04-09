@@ -12,18 +12,18 @@ from ..models.mine_incident import MineIncident
 
 mine_incident_model = api.model(
     'Mine Incident', {
-        'mine_incident_report_guid': fields.String,
+        'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
+        'mine_incident_id_year': fields.Integer,
         'mine_guid': fields.String,
         'incident_timestamp': fields.DateTime,
         'incident_description': fields.String,
         'reported_timestamp': fields.DateTime,
         'reported_by': fields.String,
         'reported_by_role': fields.String,
-        'dangerous_occurance_ind': fields.Boolean,
-        'followup_inspection_ind': fields.Boolean,
-        'followup_inspection_number': fields.String,
-        'incident_final_report_summary': fields.String
+        'followup_type_code': fields.String,
+        'followup_inspection_no': fields.String,
+        'closing_report_summary': fields.String
     })
 
 
@@ -54,17 +54,15 @@ class MineIncidentListResource(Resource, UserMixin):
         'reported_by_role', help='Job title of incident reporter', type=str, location='json')
     #nullable
     parser.add_argument(
-        'dangerous_occurance_ind',
+        'followup_type_code',
         help='Mark incident as a dangerous occurance',
-        type=inputs.boolean,
-        location='json',
-        store_missing=False)
+        type=str,
+        location='json')
     parser.add_argument(
-        'followup_inspection_ind',
+        'followup_inspection_no',
         help='Mark incident to have a follow up inspection',
-        location='json',
-        type=inputs.boolean,
-        store_missing=False)
+        type=str,
+        location='json')
 
     @api.marshal_with(mine_incident_model, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -128,25 +126,19 @@ class MineIncidentResource(Resource, UserMixin):
         location='json',
         store_missing=False)
     parser.add_argument(
-        'dangerous_occurance_ind',
-        help='Mark incident as a dangerous occurance',
-        type=inputs.boolean,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'followup_inspection_ind',
+        'followup_type_code',
         help='Mark incident to have a follow up inspection',
         location='json',
-        type=inputs.boolean,
+        type=str,
         store_missing=False)
     parser.add_argument(
-        'followup_inspection_number',
+        'followup_inspection_no',
         help='NRIS inspection related to this incident',
         location='json',
         type=str,
         store_missing=False)
     parser.add_argument(
-        'incident_final_report_summary',
+        'closing_report_summary',
         help='Report from mine in reaction to the incident',
         location='json',
         type=str,

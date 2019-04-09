@@ -1,5 +1,6 @@
 import uuid, datetime
 
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -8,20 +9,32 @@ from ....utils.models_mixins import AuditMixin, Base
 
 
 class MineIncident(AuditMixin, Base):
-    mine_incident_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_incident_report_guid = db.Column(
+    __tablename__ = 'mine_incident_report'
+
+    mine_incident_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    mine_incident_id_year = db.Column(
+        db.Integer, nullable=False, default=datetime.datetime.now().year)
+    mine_incident_guid = db.Column(
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
-    mine_incident_report_no = db.Column(db.String, nullable=False)
+
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+
     incident_timestamp = db.Column(db.DateTime, nullable=False)
-    incident_description = db.Column(db.String)
+    incident_description = db.Column(db.String, nullable=False)
+
     reported_timestamp = db.Column(db.DateTime)
     reported_by = db.Column(db.String)
     reported_by_role = db.Column(db.String)
-    dangerous_occurance_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    followup_inspection_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    followup_inspection_number = db.Column(db.String)
-    incident_final_report_summary = db.Column(db.String)
+
+    followup_type_code = db.Column(
+        db.String, db.ForeignKey('mine_incident_followup_type.mine_incident_followup_type_code'))
+    followup_inspection_no = db.Column(db.String)
+
+    closing_report_summary = db.Column(db.String)
+
+    @hybrid_property
+    def mine_incident_report_no(self):
+        return str(self.mine_incident_id) + '-' + str(self.mine_incident_id_year)
 
     @classmethod
     def find_by_mine_incident_guid(cls, _id):
