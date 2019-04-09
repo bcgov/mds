@@ -39,3 +39,23 @@ export const loadedOptions = (payload) => ({
   type: ActionTypes.OPTIONS_LOADED,
   payload,
 });
+
+export const storeProvinceCodes = (payload) => ({
+  type: ActionTypes.STORE_PROVINCE_OPTIONS,
+  payload,
+});
+
+export const storePermitStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_PERMIT_STATUS_OPTIONS,
+  payload,
+});
+
+export const storeApplicationStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_APPLICATION_STATUS_OPTIONS,
+  payload,
+});
+
+export const storeComplianceCodes = (payload) => ({
+  type: ActionTypes.STORE_COMPLIANCE_CODES,
+  payload,
+});

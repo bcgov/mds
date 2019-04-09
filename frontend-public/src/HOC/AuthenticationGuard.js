@@ -15,7 +15,9 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     componentDidMount() {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
-        this.props.getUserInfoFromToken(token);
+        this.props.getUserInfoFromToken(token).catch(() => {
+          // Silently fail
+        });
       }
     }
 

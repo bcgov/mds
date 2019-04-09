@@ -1,24 +1,29 @@
 from app.extensions import jwt
 from jose import jwt as jwt_jose
 
-VALID_REALM = [
-    'idir'
-]
+VALID_REALM = ['idir']
+
+DUMMY_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "typ": "Bearer",
+    "username": "mds",
+    "preferred_username": "mds",
+    "email": "test-email",
+    "given_name": "test-given-name",
+    "realm_access": {
+        "roles": []
+    }
+}
 
 
 class User:
+    _test_mode = False
+
     def get_user_raw_info(self):
+        if self._test_mode:
+            return DUMMY_AUTH_CLAIMS
         token = jwt.get_token_auth_header()
-        jwks = jwt.get_jwks()
-        unverified_header = jwt_jose.get_unverified_header(token)
-        rsa_key = jwt.get_rsa_key(jwks, unverified_header["kid"])
-        return jwt_jose.decode(
-            token,
-            rsa_key,
-            algorithms=jwt.algorithms,
-            audience=jwt.audience,
-            issuer=jwt.issuer
-        )
+        return jwt_jose.get_unverified_claims(token)
 
     def get_user_email(self):
         raw_info = self.get_user_raw_info()
@@ -31,4 +36,5 @@ class User:
     def get_user_username(self):
         raw_info = self.get_user_raw_info()
         realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
-        return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info['preferred_username']
+        return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
+            'preferred_username']

@@ -8,6 +8,7 @@ import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import CustomAxios from "@/customAxios";
 
 const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
   const create = (codeType) =>
@@ -62,32 +63,25 @@ const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
     .then(createMineTypeRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
-        message: `Successfully created: ${payload.name}`,
+        message: `Successfully created: ${payload.mine_name}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
-      dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.CREATE_MINE_RECORD));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
     .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD))
     .then((response) => {
@@ -96,23 +90,16 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
-      dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .delete(`${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`, createRequestHeader())
     .then(() => {
       notification.success({
@@ -120,22 +107,15 @@ export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
-      dispatch(hideLoading("modal"));
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.REMOVE_MINE_TYPE)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const createTailingsStorageFacility = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
     .then((response) => {
       notification.success({
@@ -143,23 +123,16 @@ export const createTailingsStorageFacility = (payload) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_TSF));
-      dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.CREATE_TSF));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.CREATE_TSF)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const createMineExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return axios
+  return CustomAxios(String.ERROR)
     .post(
       `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT}/${id}`,
       { documents: [payload] },
@@ -168,20 +141,16 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
     .then((response) => {
       notification.success({ message: "Successfully added the report", duration: 10 });
       dispatch(success(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
-      dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return axios
+  return CustomAxios(String.ERROR)
     .delete(
       `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT}/${exp_doc_guid}`,
       createRequestHeader()
@@ -189,82 +158,57 @@ export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
     .then((response) => {
       notification.success({ message: "Successfully removed the report", duration: 10 });
       dispatch(success(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
       return response;
     })
-    .catch(() => {
-      notification.error({ message: String.ERROR, duration: 10 });
-      dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_RECORD));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineRecordById = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORD));
-  return axios
+  return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineNo}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
       dispatch(mineActions.storeMine(response.data, mineNo));
-      dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_RECORD));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineNameList = (params = {}) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
-  return axios
+  return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(mineActions.storeMineNameList(response.data));
-      dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_NAME_LIST));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_NAME_LIST)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const updateExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
   dispatch(showLoading("modal"));
-  return axios
+  return CustomAxios()
     .put(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/${id}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
@@ -272,37 +216,23 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading("modal"));
-    });
+    .catch(() => dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
-  return axios
+  return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST, { mine_guids }, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_BASIC_INFO_LIST));
       dispatch(mineActions.storeMineBasicInfoList(response.data));
-      dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_BASIC_INFO_LIST));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_BASIC_INFO_LIST)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expectedDocumentGuid) => (
@@ -310,7 +240,7 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
 ) => {
   dispatch(request(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
         API.REMOVE_MINE_EXPECTED_DOCUMENT(expectedDocumentGuid, mineDocumentGuid),
@@ -322,23 +252,16 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
         duration: 10,
       });
       dispatch(success(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
-  return axios
+  return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expectedDocumentGuid),
       payload,
@@ -346,36 +269,55 @@ export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => 
     )
     .then((response) => {
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
       dispatch(mineActions.storeMineDocuments(response.data));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_DOCUMENTS));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_DOCUMENTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+// MineVerifcationStatus
+export const fetchMineVerifiedStatuses = (user_id) => (dispatch) => {
+  const params = user_id ? { user_id } : null;
+  dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
+      if (params) {
+        dispatch(mineActions.storeCurrentUserMineVerifiedStatuses(response.data));
+      }
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_VERIFIED_STATUS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.SET_MINE_VERIFIED_STATUS));
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUS(mine_guid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.SET_MINE_VERIFIED_STATUS));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS)));
 };

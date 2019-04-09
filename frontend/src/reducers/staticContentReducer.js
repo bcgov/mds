@@ -14,7 +14,11 @@ const initialState = {
   mineCommodityOptions: [],
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
+  provinceOptions: [],
   optionsLoaded: false,
+  permitStatusCodes: [],
+  applicationStatusCodes: [],
+  complianceCodes: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -54,10 +58,30 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineTSFRequiredReports: action.payload.required_documents,
       };
+    case actionTypes.STORE_PROVINCE_OPTIONS:
+      return {
+        ...state,
+        provinceOptions: action.payload.options,
+      };
     case actionTypes.OPTIONS_LOADED:
       return {
         ...state,
         optionsLoaded: action.payload,
+      };
+    case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
+      return {
+        ...state,
+        permitStatusCodes: action.payload,
+      };
+    case actionTypes.STORE_APPLICATION_STATUS_OPTIONS:
+      return {
+        ...state,
+        applicationStatusCodes: action.payload,
+      };
+    case actionTypes.STORE_COMPLIANCE_CODES:
+      return {
+        ...state,
+        complianceCodes: action.payload.records,
       };
     default:
       return state;
@@ -72,6 +96,10 @@ export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineComm
 export const getExpectedDocumentStatusOptions = (state) =>
   state[STATIC_CONTENT].expectedDocumentStatusOptions;
 export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;
+export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getOptionsLoaded = (state) => state[STATIC_CONTENT].optionsLoaded;
+export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
+export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
+export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 
 export default staticContentReducer;

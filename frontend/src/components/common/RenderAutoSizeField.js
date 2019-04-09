@@ -7,28 +7,28 @@ import { Form, Input } from "antd";
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  input: PropTypes.any,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const { TextArea } = Input;
-const RenderAutoSizeField = ({
-  id,
-  input,
-  label,
-  placeholder,
-  meta: { touched, error, warning },
-}) => (
+const RenderAutoSizeField = (props) => (
   <Form.Item
-    label={label}
-    placeholder={placeholder}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    placeholder={props.placeholder}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
-    <TextArea id={id} {...input} autosize />
+    <TextArea id={props.id} {...props.input} autosize />
   </Form.Item>
 );
 

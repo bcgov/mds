@@ -1,6 +1,6 @@
 import json, uuid, pytest
 from datetime import date, timedelta
-from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1, TEST_TAILINGS_STORAGE_FACILITY_GUID1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db
 
@@ -17,8 +17,7 @@ def setup_info(test_client):
         mine_party_appt_type_code='MMG',
         start_date=INIT_START_DATE,
         end_date=INIT_END_DATE,
-        processed_by=DUMMY_USER_KWARGS.get('update_user'),
-        **DUMMY_USER_KWARGS)
+        processed_by='update_user')
     mine_manager_1.save()
 
     mine_manager_2 = MinePartyAppointment(
@@ -27,8 +26,7 @@ def setup_info(test_client):
         mine_party_appt_type_code='MMG',
         start_date=INIT_START_DATE + timedelta(days=500),
         end_date=INIT_END_DATE + timedelta(days=500),
-        processed_by=DUMMY_USER_KWARGS.get('update_user'),
-        **DUMMY_USER_KWARGS)
+        processed_by='update_user')
     mine_manager_2.save()
 
     yield dict(mine_manager_1=mine_manager_1, mine_manager_2=mine_manager_2)
@@ -87,7 +85,7 @@ def test_post_mine_manager_overlap_one_day_start(test_client, auth_headers, setu
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500, post_resp.response
+    assert post_resp.status_code == 400, post_resp.response
 
 
 def test_post_mine_manager_overlap_one_day_end(test_client, auth_headers, setup_info):
@@ -101,7 +99,7 @@ def test_post_mine_manager_overlap_one_day_end(test_client, auth_headers, setup_
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500, post_resp.response
+    assert post_resp.status_code == 400, post_resp.response
 
 
 #PUT
@@ -141,7 +139,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, auth_headers, setup
         data=test_data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 500, put_resp.response
+    assert put_resp.status_code == 400, put_resp.response
 
 
 def test_put_mine_manager_overlap_one_day_end(test_client, auth_headers, setup_info):
@@ -154,4 +152,4 @@ def test_put_mine_manager_overlap_one_day_end(test_client, auth_headers, setup_i
         data=test_data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 500, put_resp.response
+    assert put_resp.status_code == 400, put_resp.response

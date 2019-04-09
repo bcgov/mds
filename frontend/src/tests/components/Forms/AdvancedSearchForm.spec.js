@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AdvancedSearchForm } from "@/components/Forms/AdvancedSearchForm";
+import { AdvancedMineSearchForm } from "@/components/Forms/AdvancedMineSearchForm";
 
 const dispatchProps = {};
 
@@ -12,9 +12,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("AdvancedSearchForm", () => {
+describe("AdvancedMineSearchForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AdvancedSearchForm {...dispatchProps} />);
+    const component = shallow(<AdvancedMineSearchForm {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

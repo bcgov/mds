@@ -7,6 +7,9 @@ import {
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
+  storeProvinceCodes,
+  storeApplicationStatusOptions,
+  storeComplianceCodes,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -18,6 +21,10 @@ const baseExpectedValue = {
   mineTSFRequiredReports: [],
   mineTenureTypes: [],
   mineCommodityOptions: [],
+  provinceOptions: [],
+  permitStatusCodes: [],
+  applicationStatusCodes: [],
+  complianceCodes: [],
   optionsLoaded: false,
 };
 
@@ -87,6 +94,30 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineCommodityOptions = MOCK.COMMODITY_OPTIONS.options;
     const result = staticContentReducer(undefined, storeCommodityOptions(MOCK.COMMODITY_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_PROVINCE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.provinceOptions = MOCK.PROVINCE_OPTIONS.options;
+    const result = staticContentReducer(undefined, storeProvinceCodes(MOCK.PROVINCE_OPTIONS));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_APPLICATION_STATUS_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.applicationStatusCodes = MOCK.APPLICATION_STATUS_CODE_OPTIONS;
+    const result = staticContentReducer(
+      undefined,
+      storeApplicationStatusOptions(MOCK.APPLICATION_STATUS_CODE_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_COMPLIANCE_CODES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.complianceCodes = MOCK.COMPLIANCE_CODES.records;
+    const result = staticContentReducer(undefined, storeComplianceCodes(MOCK.COMPLIANCE_CODES));
     expect(result).toEqual(expectedValue);
   });
 });

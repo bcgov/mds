@@ -15,28 +15,35 @@ from app.api.mines.status.models.mine_operation_status_sub_reason_code import Mi
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_type_code import PartyTypeCode
+from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.permits.permit_amendment.models.permit_amendment_status_code import PermitAmendmentStatusCode
+from app.api.permits.permit_amendment.models.permit_amendment_type_code import PermitAmendmentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.documents.required.models.required_document_categories import RequiredDocumentCategory
+from app.api.documents.required.models.required_document_sub_categories import RequiredDocumentSubCategory
 from app.api.documents.required.models.required_document_due_date_type import RequiredDocumentDueDateType
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.applications.models.application_status_code import ApplicationStatusCode
 
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 from app import auth
+from app.api.utils.include.user_info import User
 
 auth.apply_security = False
+
 
 @pytest.fixture(scope="session")
 def app(request):
@@ -93,6 +100,8 @@ def test_client():
     ctx = app.app_context()
     ctx.push()
     setup_data(db.session)
+
+    User._test_mode = True
 
     yield client
 
@@ -185,6 +194,12 @@ def setup_data(session):
         party_code.save()
     session.commit()
 
+    # Test Party Region Codes
+    for code, description in zip(TEST_SUB_DIVISION_CODES, TEST_SUB_DIVISION_CODE_DESCRIPTIONS):
+        sub_division_code = SubDivisionCode(
+            sub_division_code=code, description=description, **DUMMY_USER_KWARGS)
+        sub_division_code.save()
+
     # Test Operation Codes
     for k, v in MINE_OPERATION_STATUS.items():
         mine_operation_status_code = MineOperationStatusCode(
@@ -272,10 +287,32 @@ def setup_data(session):
         mine_guid=TEST_MINE_GUID,
         permit_no=TEST_PERMIT_NO_1,
         permit_status_code=TEST_PERMIT_STATUS_CODE_1,
-        received_date=datetime.today(),
-        issue_date=datetime.today(),
         **DUMMY_USER_KWARGS)
     permit.save()
+
+    permit_amendment_status_code = PermitAmendmentStatusCode(
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE,
+        description=TEST_PERMIT_AMENDMENT_STATUS_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_status_code.save()
+
+    permit_amendment_status_code2 = PermitAmendmentStatusCode(
+        permit_amendment_status_code=TEST_PERMIT_AMENDMENT_STATUS_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_STATUS_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_status_code2.save()
+
+    permit_amendment_type_code = PermitAmendmentTypeCode(
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE,
+        description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_type_code.save()
+
+    permit_amendment_type_code2 = PermitAmendmentTypeCode(
+        permit_amendment_type_code=TEST_PERMIT_AMENDMENT_TYPE_CODE_2,
+        description=TEST_PERMIT_AMENDMENT_TYPE_CODE_NAME,
+        **DUMMY_USER_KWARGS)
+    permit_amendment_type_code2.save()
 
     required_document_due_date_type1 = RequiredDocumentDueDateType(
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
@@ -290,28 +327,31 @@ def setup_data(session):
     required_document_due_date_type2.save()
 
     required_document_category1 = RequiredDocumentCategory(
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
         req_document_category=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS)
     required_document_category1.save()
 
-    required_document_category2 = RequiredDocumentCategory(
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
-        req_document_category=TEST_REQUIRED_REPORT_CATEGORY_OTHER)
+    required_document_category2 = RequiredDocumentCategory(req_document_category='OTH')
     required_document_category2.save()
 
     required_document1 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID1),
         req_document_name=TEST_REQUIRED_REPORT_NAME1,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category=required_document_category1.req_document_category,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
     required_document1.save()
 
+    required_document_sub_category = RequiredDocumentSubCategory(
+        req_document_sub_category_code=TEST_REQUIRED_REPORT_SUB_CATEGORY_1)
+    required_document_sub_category.save()
+
     required_document2 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID2),
         req_document_name=TEST_REQUIRED_REPORT_NAME2,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_TAILINGS_GUID,
+        req_document_category=required_document_category1.req_document_category,
+        req_document_sub_category_code=required_document_sub_category.
+        req_document_sub_category_code,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[0],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
@@ -320,7 +360,7 @@ def setup_data(session):
     required_document3 = RequiredDocument(
         req_document_guid=uuid.UUID(TEST_REQUIRED_REPORT_GUID3),
         req_document_name=TEST_REQUIRED_REPORT_NAME3,
-        req_document_category_guid=TEST_REQUIRED_REPORT_CATEGORY_OTHER_GUID,
+        req_document_category=required_document_category2.req_document_category,
         req_document_due_date_type=TEST_REQUIRED_REPORT_DUE_DATE_TYPE[1],
         req_document_due_date_period_months=12,
         **DUMMY_USER_KWARGS)
@@ -350,13 +390,6 @@ def setup_data(session):
         exp_document_status_code=expected_document_status1.exp_document_status_code,
         **DUMMY_USER_KWARGS)
     expected_document1.save()
-
-    mine_tsf1 = MineTailingsStorageFacility(
-        mine_tailings_storage_facility_guid=TEST_TAILINGS_STORAGE_FACILITY_GUID1,
-        mine_guid=TEST_MINE_GUID,
-        mine_tailings_storage_facility_name=TEST_TAILINGS_STORAGE_FACILITY_NAME1,
-        **DUMMY_USER_KWARGS)
-    mine_tsf1.save()
 
     mpat1 = MinePartyAppointmentType(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
@@ -393,16 +426,6 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mpat5.save()
 
-    # Test Permittee Data
-    permittee = MinePartyAppointment(
-        mine_party_appt_guid=uuid.UUID(TEST_PERMITTEE_GUID),
-        mine_party_appt_type_code='PMT',
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1),
-        **DUMMY_USER_KWARGS)
-    permittee.save()
-
     mine_doc1 = MineDocument(
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         document_name=TEST_MINE_DOCUMENT_NAME1,
@@ -410,6 +433,20 @@ def setup_data(session):
         **DUMMY_USER_KWARGS)
     mine_doc1.mine_expected_document.append(expected_document1)
     mine_doc1.save()
+
+    application_status_code_1 = ApplicationStatusCode(
+        application_status_code='RIP',
+        description='In Review',
+        display_order=10,
+        **DUMMY_USER_KWARGS)
+    application_status_code_1.save()
+
+    application_status_code_2 = ApplicationStatusCode(
+        application_status_code='APR',
+        description='Approved',
+        display_order=20,
+        **DUMMY_USER_KWARGS)
+    application_status_code_2.save()
 
 
 def clear_data(session):

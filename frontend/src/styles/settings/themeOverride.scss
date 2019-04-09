@@ -33,7 +33,6 @@
 }
 .custom-large-divider {
   border: 2px solid $h-divider-color;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 // BUTTON
@@ -47,6 +46,33 @@
   &:hover {
     color: $secondary-btn-color-hover;
     border: 1px solid $secondary-btn-border-color-hover;
+  }
+}
+
+.ant-btn-danger {
+  color: $danger-btn-color;
+  background-color: white;
+  border: 1px solid $danger-btn-color;
+  &:hover {
+    background-color: white;
+    border: 1px solid $danger-btn-color-hover;
+    color: $danger-btn-color-hover;
+  }
+}
+.btn-danger--icon {
+  &:hover {
+    color: $danger-btn-color-hover;
+  }
+}
+
+.ant-btn-tertiary {
+  font-weight: $light;
+  color: $pure-white;
+  border: 1px solid $tertiary-btn-color;
+  background-color: $tertiary-btn-color;
+  &:hover {
+    color: $pure-white;
+    background-color: $tertiary-btn-color-hover;
   }
 }
 
@@ -148,6 +174,10 @@
 
 .ant-form-item {
   margin-bottom: 10px;
+}
+
+.ant-form-item-label label:after {
+  content: none;
 }
 
 // DATE PICKER

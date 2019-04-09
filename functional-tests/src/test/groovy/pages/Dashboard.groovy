@@ -5,7 +5,7 @@ import modules.*
 
 class Dashboard extends Page {
     static at = { waitFor() {!loadingScreen.displayed}}
-    static url = "dashboard"
+    static url = "dashboard/mines"
     static content = {
         //general
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}

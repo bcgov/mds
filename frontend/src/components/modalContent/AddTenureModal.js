@@ -4,7 +4,7 @@ import AddTenureNumberForm from "@/components/Forms/AddTenureNumberForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 const defaultProps = {

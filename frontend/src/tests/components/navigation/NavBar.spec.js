@@ -1,20 +1,31 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { NavBar } from '@/components/navigation/NavBar';
+import React from "react";
+import { shallow } from "enzyme";
+import { NavBar } from "@/components/navigation/NavBar";
 
-const reducerProps = {}
+const props = {};
+const dispatchProps = {};
 
-const setupReducerProps = () => {
-  reducerProps.userInfo = {}
+const setupDispatchProps = () => {
+  dispatchProps.logoutUser = jest.fn();
+  dispatchProps.toggleHamburgerMenu = jest.fn();
+  dispatchProps.fetchMineVerifiedStatuses = jest.fn();
+};
+
+const setupProps = () => {
+  props.userInfo = {};
+  props.activeButton = "";
+  props.isMenuOpen = false;
+  props.keycloak = {};
 };
 
 beforeEach(() => {
-  setupReducerProps();
+  setupProps();
+  setupDispatchProps();
 });
 
-describe('NavBar', () => {
-  it('renders properly', () => {
-    const component = shallow(<NavBar {...reducerProps} />);
+describe("NavBar", () => {
+  it("renders properly", () => {
+    const component = shallow(<NavBar {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

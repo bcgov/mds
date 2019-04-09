@@ -64,6 +64,11 @@
       "value": "template.mds-nris-secret"
     },
     {
+      "name": "MDS_IDIR_SECRET",
+      "required": false,
+      "value": "template.mds-idir-secret"
+    },
+    {
       "name": "REDIS_CONFIG_NAME",
       "required": false,
       "value": "template.mds-redis-secret"
@@ -345,6 +350,24 @@
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_API_SECRET}",
                         "key": "inspection-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "LDAP_IDIR_USERNAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_IDIR_SECRET}",
+                        "key": "username"
+                      }
+                    }
+                  },
+                  {
+                    "name": "LDAP_IDIR_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_IDIR_SECRET}",
+                        "key": "password"
                       }
                     }
                   },

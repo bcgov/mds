@@ -4,9 +4,12 @@ import queryString from "query-string";
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
+export const PARTIES_LIST_QUERY = (params = {}) =>
+  "type" in params
+    ? `/parties/search?${queryString.stringify(params)}`
+    : `/parties?${queryString.stringify(params)}`;
 export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
-export const PARTIES = (search) => (search ? `/parties?search=${search}` : "/parties");
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
 export const PERMITTEE = "/permits/permittees";
@@ -24,7 +27,7 @@ export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document`;
 export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_DOCUMENTS = "/documents/mines";
-export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=MINE_TAILINGS";
+export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=TSF";
 export const EXPECTED_DOCUMENT = "/documents/expected";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
@@ -35,3 +38,29 @@ export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocument
 export const MINE_MANAGER_HISTORY = (mineNo) =>
   `/parties/mines/manager-history/csv?mine_no=${mineNo}`;
 export const MINESPACE_USER = "/users/minespace";
+export const PROVINCE_CODES = "/parties/sub-division-codes";
+
+export const MINE_VERIFIED_STATUSES = (params = {}) =>
+  `/mines/verified-status?${queryString.stringify(params)}`;
+export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
+// permits
+export const PERMIT = (params) =>
+  params ? `/permits?${queryString.stringify(params)}` : "/permits";
+export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT()}/${permitGuid}/amendments`;
+export const PERMITAMENDMENT = (permitAmendmentGuid) =>
+  `${PERMIT()}/amendments/${permitAmendmentGuid}`;
+export const PERMITAMENDMENTDOCUMENT = (permitAmendmentGuid, DocumentGuid) =>
+  `${PERMITAMENDMENT(permitAmendmentGuid)}/documents/${DocumentGuid}`;
+export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
+  `${PERMIT()}/amendments/${permitAmendmentGuid}/documents`;
+
+export const APPLICATIONS = "/applications";
+
+// variances
+export const COMPLIANCE_CODES = "/mines/compliance/codes";
+export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const VARIANCE = (mineGuid, varianceId) => `/mines/${mineGuid}/variances/${varianceId}`;
+export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
+  `/mines/${mineGuid}/variances/${varianceId}/documents`;
+export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
+  `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;

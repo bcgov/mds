@@ -5,6 +5,15 @@ Runs at the end of each migration.
 NOTE: If you add a new entry here, don't forget to update the flask delete_data command
 ***/
 
+INSERT INTO mine_required_document_category
+    (
+    req_document_category,
+    description
+    )
+VALUES
+    ('TSF', 'Code required documents for mines with Tailings Storage Factilies'),
+    ('OTH', 'Other...')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_status_code
     (
@@ -15,8 +24,21 @@ INSERT INTO permit_status_code
     update_user
     )
 VALUES
-    ('O', 'Open permit', 10, 'system-mds', 'system-mds'),
-    ('C', 'Closed Permit', 20, 'system-mds', 'system-mds')
+    ('O', 'Open', 10, 'system-mds', 'system-mds'),
+    ('C', 'Closed', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO application_status_code
+    (
+    application_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('RIP', 'In Review', 10, 'system-mds', 'system-mds'),
+    ('APR', 'Approved', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO party_type_code
@@ -113,7 +135,7 @@ VALUES
     ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
     ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
     ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected / Waiting On Update', 50,  'system-mds', 'system-mds')
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -324,4 +346,31 @@ VALUES
     ('ZE', 'Zeolite', TRUE, 'system-mds', 'system-mds'),
     ('ZN', 'Zinc', TRUE, 'system-mds', 'system-mds'),
     ('ZR', 'Zirconium', TRUE, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_type_code
+    (
+    permit_amendment_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('OGP', 'Original Permit', 10, 'system-mds', 'system-mds'),
+    ('AMD', 'Permit Amendment', 20, 'system-mds', 'system-mds'),
+    ('ALG', 'Amalgamated Permit', 30, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_amendment_status_code
+    (
+    permit_amendment_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('ACT', 'Active', 10, 'system-mds', 'system-mds'),
+    ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

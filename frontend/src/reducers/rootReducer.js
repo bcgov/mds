@@ -11,6 +11,9 @@ import authenticationReducer from "@/reducers/authenticationReducer";
 import { createReducer } from "@/utils/helpers";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
+import permitReducer from "@/reducers/permitReducer";
+import applicationReducer from "@/reducers/applicationReducer";
+import varianceReducer from "@/reducers/varianceReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -18,11 +21,15 @@ export const reducerObject = {
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
+  [reducerTypes.PERMITS]: permitReducer,
+  [reducerTypes.APPLICATIONS]: applicationReducer,
   [reducerTypes.MODAL]: modalReducer,
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
+  [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
+  [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
   [reducerTypes.GET_PARTY]: createReducer(networkReducer, reducerTypes.GET_PARTY),
   [reducerTypes.CREATE_MINE_RECORD]: createReducer(networkReducer, reducerTypes.CREATE_MINE_RECORD),
@@ -49,6 +56,24 @@ export const reducerObject = {
     reducerTypes.GET_MINE_COMPLIANCE_INFO
   ),
   [reducerTypes.REMOVE_MINE_TYPE]: createReducer(networkReducer, reducerTypes.REMOVE_MINE_TYPE),
+  [reducerTypes.GET_PROVINCE_CODES]: createReducer(networkReducer, reducerTypes.GET_PROVINCE_CODES),
+  [reducerTypes.GET_COMPLIANCE_CODES]: createReducer(
+    networkReducer,
+    reducerTypes.GET_COMPLIANCE_CODES
+  ),
+  [reducerTypes.ADD_DOCUMENT_TO_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.ADD_DOCUMENT_TO_VARIANCE
+  ),
+  [reducerTypes.CREATE_MINE_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.CREATE_MINE_VARIANCE
+  ),
+  [reducerTypes.GET_MINE_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_MINE_VARIANCES),
+  [reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);

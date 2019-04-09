@@ -7,6 +7,7 @@ import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import { formatTitleString, formatDate } from "@/utils/helpers";
 import { Link } from "react-router-dom";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -16,7 +17,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  otherDetails: PropTypes.object,
+  otherDetails: PropTypes.objectOf(PropTypes.any).isRequired,
   isEditable: PropTypes.bool.isRequired,
   compact: PropTypes.bool.isRequired,
 };
@@ -60,9 +61,13 @@ export const DefaultContact = (props) => (
       </h4>
       <br />
       <h6>Email Address</h6>
-      <a href={`mailto:${props.partyRelationship.party.email}`}>
-        {props.partyRelationship.party.email}
-      </a>
+      {props.partyRelationship.party.email && props.partyRelationship.party.email !== "Unknown" ? (
+        <a href={`mailto:${props.partyRelationship.party.email}`}>
+          {props.partyRelationship.party.email}
+        </a>
+      ) : (
+        <span>{Strings.EMPTY_FIELD}</span>
+      )}
       <br />
       <br />
       <h6>Phone Number</h6>
@@ -72,11 +77,7 @@ export const DefaultContact = (props) => (
         <br />,
         <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
-        <span>
-          {props.partyRelationship.start_date
-            ? formatDate(props.partyRelationship.start_date)
-            : "Unknown"}
-        </span>,
+        <span>{formatDate(props.partyRelationship.start_date) || "Unknown"}</span>,
       ]}
     </div>
     {props.otherDetails}

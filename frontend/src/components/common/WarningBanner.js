@@ -4,7 +4,7 @@ import { Alert } from "antd";
 import { WARNING } from "@/constants/assets";
 
 const propTypes = {
-  type: PropTypes.oneOf(["IE", "test"]).isRequired,
+  type: PropTypes.oneOf(["IE", "test", "mobile"]).isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
@@ -51,6 +51,16 @@ const renderTestBanner = () => (
   </div>
 );
 
+const renderMobileWarningBanner = () => (
+  <div className="inline-flex flex-center">
+    <img src={WARNING} alt="warning" className="padding-large--right" />
+    <div>
+      <h2>You are currently using a mobile device to access this content.</h2>
+      <p> Be aware that the system may not work as expected in a mobile environment.</p>
+    </div>
+  </div>
+);
+
 const WarningBanner = (props) => (
   <div>
     {props.type === "IE" && (
@@ -64,6 +74,15 @@ const WarningBanner = (props) => (
     )}
     {props.type === "test" && (
       <Alert style={{ backgroundColor: "#F3CD65" }} message={renderTestBanner()} type="warning" />
+    )}
+    {props.type === "mobile" && (
+      <Alert
+        style={{ backgroundColor: "#F3CD65" }}
+        message={renderMobileWarningBanner()}
+        type="warning"
+        closable
+        onClose={props.onClose}
+      />
     )}
   </div>
 );

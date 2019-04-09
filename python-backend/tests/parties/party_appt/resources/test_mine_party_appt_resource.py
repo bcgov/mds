@@ -1,6 +1,7 @@
 import json, uuid, pytest
-from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1, TEST_TAILINGS_STORAGE_FACILITY_GUID1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.extensions import db
 
 
@@ -10,11 +11,17 @@ def setup_info(test_client):
         mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
         mine_guid=uuid.UUID(TEST_MINE_GUID),
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1,
-        **DUMMY_USER_KWARGS)
+        mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE1)
     mpa.save()
-    yield dict(mine_party_appointment=mpa)
-    db.session.delete(mpa)
+
+    mine_tsf1 = MineTailingsStorageFacility.create(
+        mine_guid=TEST_MINE_GUID, tailings_facility_name='Tailings Facility 1')
+    mine_tsf1.save()
+
+    yield dict(mine_party_appointment=mpa, tsf1=mine_tsf1)
+
+    db.session.query(MinePartyAppointment).delete()
+    db.session.delete(mine_tsf1)
     db.session.commit()
 
 
@@ -43,8 +50,7 @@ def test_get_mine_party_appt_by_type(test_client, auth_headers):
     new_mpa = MinePartyAppointment(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        **DUMMY_USER_KWARGS)
+        mine_guid=uuid.UUID(TEST_MINE_GUID))
     new_mpa.save()
 
     get_resp = test_client.get(
@@ -60,8 +66,7 @@ def test_get_mine_party_appt_by_multiple_types(test_client, auth_headers):
     new_mpa = MinePartyAppointment(
         mine_party_appt_type_code=TEST_MINE_PARTY_APPT_TYPE_CODE2,
         party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        **DUMMY_USER_KWARGS)
+        mine_guid=uuid.UUID(TEST_MINE_GUID))
     new_mpa.save()
 
     get_resp = test_client.get(
@@ -73,12 +78,12 @@ def test_get_mine_party_appt_by_multiple_types(test_client, auth_headers):
     assert len(get_data) == 2
 
 
-def test_post_mine_party_appt_EOR_success(test_client, auth_headers):
+def test_post_mine_party_appt_EOR_success(test_client, auth_headers, setup_info):
     test_data = {
         'mine_guid': TEST_MINE_GUID,
         'party_guid': TEST_PARTY_PER_GUID_1,
         'mine_party_appt_type_code': 'EOR',
-        'related_guid': TEST_TAILINGS_STORAGE_FACILITY_GUID1
+        'related_guid': str(setup_info['tsf1'].mine_tailings_storage_facility_guid)
     }
 
     post_resp = test_client.post(
@@ -149,7 +154,7 @@ def test_delete_mine_party_appt_success(test_client, auth_headers, setup_info):
     del_resp = test_client.delete(
         '/parties/mines/' + str(setup_info["mine_party_appointment"].mine_party_appt_guid),
         headers=auth_headers['full_auth_header'])
-    assert del_resp.status_code == 200
+    assert del_resp.status_code == 204
 
 
 def test_delete_mine_party_appt_invalid_guid(test_client, auth_headers):

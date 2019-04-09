@@ -1,6 +1,6 @@
 import pytest
 import json, uuid, requests
-from tests.constants import TEST_MINE_GUID, TEST_TAILINGS_STORAGE_FACILITY_NAME2, TEST_TAILINGS_STORAGE_FACILITY_NAME1, DUMMY_USER_KWARGS
+from tests.constants import TEST_MINE_GUID, DUMMY_USER_KWARGS
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.extensions import db

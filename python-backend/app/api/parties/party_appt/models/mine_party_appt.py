@@ -55,7 +55,7 @@ class MinePartyAppointment(AuditMixin, Base):
         return
 
     # json
-    def json(self):
+    def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
             'mine_guid': str(self.mine_guid),
@@ -63,8 +63,9 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
             'end_date': str(self.end_date) if self.end_date else None,
-            'party': self.party.json(show_mgr=False) if self.party else str({})
         }
+        if 'party' in relationships:
+            result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
@@ -79,6 +80,14 @@ class MinePartyAppointment(AuditMixin, Base):
         try:
             return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
                 deleted_ind=False).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_all_by_mine_party_appt_guid(cls, _id):
+        try:
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
+                deleted_ind=False)
         except ValueError:
             return None
 
@@ -159,16 +168,15 @@ class MinePartyAppointment(AuditMixin, Base):
         return '\n'.join(rows)
 
     @classmethod
-    def create_mine_party_appt(cls,
-                               mine_guid,
-                               party_guid,
-                               mine_party_appt_type_code,
-                               user_kwargs,
-                               start_date=None,
-                               end_date=None,
-                               processed_by=processed_by,
-                               permit_guid=None,
-                               save=True):
+    def create(cls,
+               mine_guid,
+               party_guid,
+               mine_party_appt_type_code,
+               start_date=None,
+               end_date=None,
+               processed_by=processed_by,
+               permit_guid=None,
+               save=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
@@ -176,8 +184,7 @@ class MinePartyAppointment(AuditMixin, Base):
             mine_party_appt_type_code="PMT",
             start_date=start_date,
             end_date=end_date,
-            processed_by=processed_by,
-            **user_kwargs)
+            processed_by=processed_by)
         if save:
             mpa.save(commit=False)
         return mpa

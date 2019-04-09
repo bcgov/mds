@@ -5,7 +5,7 @@
   width: 100%;
   justify-content: space-between;
   background-color: $nav-color;
-  border-bottom: 1px solid $nav-border-color;
+  border-bottom: 8px solid $nav-border-color;
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
   &__img {
@@ -13,6 +13,75 @@
   }
 
   &__btn {
+    padding: $default-padding-sm;
     color: $pure-white;
+
+    &--link {
+      color: $pure-white;
+      background-color: transparent;
+      height: 100%;
+      margin: 0;
+      border: none;
+
+      &:hover {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: none;
+        border-radius: 0;
+      }
+    }
   }
+}
+
+.menu--hamburger {
+  position: fixed;
+  z-index: 100;
+  padding-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  @include animation(fadein, 0.5s);
+  background-color: $nav-color;
+
+  &__btn {
+    padding: $default-padding-sm;
+    color: $pure-white;
+
+    &--link {
+      color: $pure-white;
+      background-color: transparent;
+      width: 100%;
+      text-align: left;
+      padding-left: 30px;
+      height: 100px;
+      margin: 0;
+      border: none;
+
+      &:hover {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: none;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &--footer {
+    color: gray;
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+#active-mine-btn,
+#active-contact-btn,
+#active-admin-btn,
+#active-mine-btn--mobile,
+#active-contact-btn--mobile,
+#active-admin-btn--mobile {
+  color: $pure-white;
+  background-color: $primary-btn-color;
+  border: none;
+  border-radius: 0;
 }

@@ -7,9 +7,7 @@ class Validator {
 
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
 
-  USA_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-
-  EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+  EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 
   PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
 
@@ -39,6 +37,10 @@ class Validator {
 
   checkEmail(email) {
     return this.EMAIL_REGEX.test(email);
+  }
+
+  checkPostalCode(code) {
+    return this.CAN_POSTAL_CODE_REGEX.test(code);
   }
 }
 
@@ -72,6 +74,9 @@ export const lon = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
+export const postalCode = (value) =>
+  value && !Validate.checkPostalCode(value) ? "Invalid postal code e.g. X1X1X1" : undefined;
+
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
 
@@ -83,3 +88,6 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
     ? "New manager's start date cannot be on or before the previous manager's start date."
     : undefined
 );
+
+export const dateNotInFuture = (value) =>
+  value && new Date(value) >= new Date() ? "Date can not be in the future" : undefined;

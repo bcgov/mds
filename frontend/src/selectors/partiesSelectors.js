@@ -9,6 +9,7 @@ export const {
   getPartyRelationshipTypes,
   getPartyRelationshipTypesList,
   getPartyRelationships,
+  getPartyPageData,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(

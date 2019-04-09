@@ -2,12 +2,15 @@ import sys
 import json
 import os
 
-from flask import Flask
+from flask import Flask, current_app
 from flask_cors import CORS
-from flask_restplus import Resource
+from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 
+from flask_jwt_oidc.exceptions import AuthError
+
 from app.api.parties.namespace.parties import api as parties_api
+from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
 from app.api.permits.namespace.permits import api as permits_api
 from app.api.documents.namespace.documents import api as document_api
@@ -16,7 +19,10 @@ from app.api.users.namespace.users import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
+
 from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
+from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
+from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
 
 
 def create_app(test_config=None):
@@ -33,6 +39,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+    register_scheduled_jobs(app)
 
     return app
 
@@ -40,22 +47,31 @@ def create_app(test_config=None):
 def register_extensions(app):
 
     api.app = app
+    # Overriding swaggerUI base path to serve content under a prefix
+    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
+
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
     apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+    sched.init_app(app)
 
     CORS(app)
     Compress(app)
 
-    if app.config.get('ENVIRONMENT_NAME') == 'prod':
-        sched.init_app(app)
+    return None
+
+
+def register_scheduled_jobs(app):
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
+            _schedule_IDIR_jobs(app)
             _schedule_NRIS_jobs(app)
-
-    return None
+            # This is here to prevent this from running in production until we are confident in the permit data.
+            if app.config.get('ENVIRONMENT_NAME') == 'test':
+                _schedule_ETL_jobs(app)
 
 
 def register_routes(app):
@@ -68,6 +84,7 @@ def register_routes(app):
     api.add_namespace(document_api)
     api.add_namespace(document_manager_api)
     api.add_namespace(users_api)
+    api.add_namespace(applications_api)
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -75,8 +92,44 @@ def register_routes(app):
         def get(self):
             return {'success': 'true'}
 
-    # Default error handler to propagate lower level errors up to the API level
-    @api.errorhandler
+    @api.errorhandler(AuthError)
+    def jwt_oidc_auth_error_handler(error):
+        return {
+            'status': getattr(error, 'status_code', 401),
+            'message': str(error),
+            #FE is mixed on expecing error in obj, or wrapped 'error' key.
+            # this is temporary until we remove create_error_payload and raise_error.
+            'error': {
+                'status': getattr(error, 'code', 500),
+                'message': str(error)
+            }
+        }, getattr(error, 'status_code', 401)
+
+    @api.errorhandler(AssertionError)
+    def assertion_error_handler(error):
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error),
+            #FE is mixed on expecing error in obj, or wrapped 'error' key.
+            # this is temporary until we remove create_error_payload and raise_error.
+            'error': {
+                'status': getattr(error, 'code', 500),
+                'message': str(error)
+            }
+        }, getattr(error, 'code', 400)
+
+    @api.errorhandler(Exception)
     def default_error_handler(error):
-        _, value, traceback = sys.exc_info()
-        return json.loads({"error": str(traceback)})
+        if getattr(error, 'code', 500) == 500:
+            current_app.logger.error(str(error))
+
+        return {
+            'status': getattr(error, 'code', 500),
+            'message': str(error),
+            #FE is mixed on expecing error in obj, or wrapped 'error' key.
+            # this is temporary until we remove create_error_payload and raise_error.
+            'error': {
+                'status': getattr(error, 'code', 500),
+                'message': str(error)
+            }
+        }, getattr(error, 'code', 500)

@@ -1,10 +1,16 @@
-import { getParties, getPartyIds } from "@/selectors/partiesSelectors";
+import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
 import partiesReducer from "@/reducers/partiesReducer";
 import { storeParties } from "@/actions/partyActions";
 import { PARTIES } from "@/constants/reducerTypes";
 
 describe("partiesSelectors", () => {
-  const listInput = { parties: [{ party_guid: "test123" }, { party_guid: "test456" }] };
+  const listInput = {
+    current_page: 1,
+    items_per_page: 25,
+    total: 11326,
+    total_pages: 454,
+    parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+  };
   const listProcessed = { test123: { party_guid: "test123" }, test456: { party_guid: "test456" } };
 
   it("`getParties` calls `partiesReducer.getParties`", () => {
@@ -25,5 +31,21 @@ describe("partiesSelectors", () => {
     };
 
     expect(getPartyIds(mockState)).toEqual(["test123", "test456"]);
+  });
+
+  it("`getPartyPageData` calls `partiesReducer.getPartyPageData`", () => {
+    const storeAction = storeParties(listInput);
+    const storeState = partiesReducer({}, storeAction);
+    const mockState = {
+      [PARTIES]: storeState,
+    };
+
+    expect(getPartyPageData(mockState)).toEqual({
+      current_page: 1,
+      items_per_page: 25,
+      total: 11326,
+      total_pages: 454,
+      parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+    });
   });
 });

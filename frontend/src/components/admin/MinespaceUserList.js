@@ -62,7 +62,7 @@ const lookupMineName = (mine_guids, mines) =>
 
 const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   minespaceUsers.map((user) => ({
-    key: user.id,
+    key: user.user_id,
     emptyField: Strings.EMPTY_FIELD,
     email: user.email,
     mineNames: lookupMineName(user.mines, mines),

@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Menu, Icon, Popconfirm, Divider, Dropdown, Button } from "antd";
+import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -13,6 +13,7 @@ import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationship
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import { uniq, uniqBy } from "lodash";
+import AddButton from "@/components/common/AddButton";
 
 import {
   addPartyRelationship,
@@ -31,8 +32,6 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
-  fetchParties: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
@@ -51,20 +50,16 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-const groupPermits = (permits) =>
-  permits.reduce((acc, permit) => {
-    acc[permit.permit_no] = acc[permit.permit_no] || [];
-    acc[permit.permit_no].push(permit);
-    return acc;
-  }, {});
-
 export class ViewPartyRelationships extends Component {
   constructor(props) {
     super(props);
     this.TSFConfirmation = React.createRef();
   }
 
-  state = { selectedPartyRelationshipType: {}, selectedPartyRelationship: {} };
+  state = {
+    selectedPartyRelationshipType: {},
+    selectedPartyRelationship: {},
+  };
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
@@ -77,15 +72,11 @@ export class ViewPartyRelationships extends Component {
     };
 
     return this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
-    });
-  };
-
-  onPartySubmit = (values, type) => {
-    const payload = { type, ...values };
-    return this.props.createParty(payload).then(() => {
-      this.props.fetchParties();
     });
   };
 
@@ -108,6 +99,7 @@ export class ViewPartyRelationships extends Component {
         partyRelationshipType: value,
         mine,
       },
+      widthSize: "75vw",
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
     });
@@ -153,7 +145,10 @@ export class ViewPartyRelationships extends Component {
     payload.related_guid = values.related_guid || payload.related_guid;
 
     return this.props.updatePartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
       this.props.closeModal();
     });
   };
@@ -161,7 +156,10 @@ export class ViewPartyRelationships extends Component {
   removePartyRelationship = (event, mine_party_appt_guid) => {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
-      this.props.fetchPartyRelationships({ mine_guid: this.props.mine.guid });
+      this.props.fetchPartyRelationships({
+        mine_guid: this.props.mine.guid,
+        relationships: "party",
+      });
     });
   };
 
@@ -288,21 +286,38 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
-    const groupedPermits = Object.values(groupPermits(this.props.mine.mine_permit));
-    const filteredPartyRelationships = partyRelationships.filter(
-      (partyRelationship) =>
-        partyRelationship.mine_party_appt_type_code !== "PMT" ||
-        groupedPermits
-          .map((permits) => permits[0].permit_guid)
-          .includes(partyRelationship.related_guid)
-    );
-
+    const filteredPartyRelationships = partyRelationships
+      .filter(
+        (x) =>
+          (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+          (!x.start_date || Date.parse(x.start_date) <= new Date())
+      )
+      .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
+      .concat(
+        this.props.mine.mine_permit
+          .map(
+            (permit) =>
+              partyRelationships
+                .filter(
+                  (x) =>
+                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.start_date || Date.parse(x.start_date) <= new Date())
+                )
+                .filter(
+                  (partyRelationship) =>
+                    partyRelationship.mine_party_appt_type_code === "PMT" &&
+                    permit.permit_guid === partyRelationship.related_guid
+                )
+                .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0]
+          )
+          .filter((x) => x)
+      );
     const partyRelationshipTypesInGroup = this.props.partyRelationshipTypes.filter(
       (x) => x.grouping_level === group
     );
     const partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
       partyRelationshipTypesInGroup.some(
-        (y) => y.mine_party_appt_type_code == x.mine_party_appt_type_code
+        (y) => y.mine_party_appt_type_code === x.mine_party_appt_type_code
       )
     );
 
@@ -316,13 +331,9 @@ export class ViewPartyRelationships extends Component {
         </Row>,
 
         <Row gutter={16}>
-          {partyRelationshipsInGroup
-            .filter(
-              (x) =>
-                (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
-                (!x.start_date || Date.parse(x.start_date) <= new Date())
-            )
-            .map((partyRelationship) => this.renderPartyRelationship(partyRelationship))}
+          {partyRelationshipsInGroup.map((partyRelationship) =>
+            this.renderPartyRelationship(partyRelationship)
+          )}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}
         </Row>,
         <div>
@@ -373,12 +384,9 @@ export class ViewPartyRelationships extends Component {
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}
                 placement="bottomLeft"
               >
-                <Button type="primary">
-                  <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
-                    <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                    &nbsp; Add New Contact
-                  </div>
-                </Button>
+                <div>
+                  <AddButton>Add New Contact</AddButton>
+                </div>
               </Dropdown>
             </AuthorizationWrapper>
           </div>

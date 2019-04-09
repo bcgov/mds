@@ -7,6 +7,9 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineTailingsRequiredDocuments,
   fetchMineCommodityOptions,
+  fetchProvinceCodes,
+  fetchApplicationStatusOptions,
+  fetchMineComplianceCodes,
 } from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -35,7 +38,7 @@ describe("`fetchMineTenureTypes` action creator", () => {
     return fetchMineTenureTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -44,7 +47,7 @@ describe("`fetchMineTenureTypes` action creator", () => {
     return fetchMineTenureTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -57,7 +60,7 @@ describe("`fetchStatusOptions` action creator", () => {
     return fetchStatusOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -66,7 +69,7 @@ describe("`fetchStatusOptions` action creator", () => {
     return fetchStatusOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -79,7 +82,7 @@ describe("`fetchRegionOptions` action creator", () => {
     return fetchRegionOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -88,7 +91,7 @@ describe("`fetchRegionOptions` action creator", () => {
     return fetchRegionOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -101,7 +104,7 @@ describe("`fetchMineDisturbanceOption` action creator", () => {
     return fetchMineDisturbanceOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -110,7 +113,7 @@ describe("`fetchMineDisturbanceOption` action creator", () => {
     return fetchMineDisturbanceOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -123,7 +126,7 @@ describe("`fetchMineCommodityOptions` action creator", () => {
     return fetchMineCommodityOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -132,7 +135,7 @@ describe("`fetchMineCommodityOptions` action creator", () => {
     return fetchMineCommodityOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -145,7 +148,7 @@ describe("`fetchMineTailingsRequiredDocuments` action creator", () => {
     return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(3);
     });
   });
   it("Request failure, dispatches `error` with correct response", () => {
@@ -153,7 +156,70 @@ describe("`fetchMineTailingsRequiredDocuments` action creator", () => {
     return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchProvinceCodes` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.PROVINCE_CODES;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchProvinceCodes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchProvinceCodes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchApplicationStatusOptions` action creator", () => {
+  const url = `${ENVIRONMENT.apiUrl + API.APPLICATIONS}/status-codes`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchApplicationStatusOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchApplicationStatusOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchMineComplianceCodes` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.COMPLIANCE_CODES;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineComplianceCodes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchMineComplianceCodes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });

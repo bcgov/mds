@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { loadModules } from "react-arcgis";
 import PropTypes from "prop-types";
 
@@ -7,14 +7,12 @@ import PropTypes from "prop-types";
  *
  */
 const propTypes = {
-  center: PropTypes.array.isRequired,
-  view: PropTypes.object.isRequired,
-  map: PropTypes.object.isRequired,
+  center: PropTypes.arrayOf(PropTypes.any).isRequired,
+  view: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   view: {},
-  map: {},
 };
 
 export class LocationPin extends Component {
@@ -35,12 +33,7 @@ export class LocationPin extends Component {
   }
 
   renderGraphic = (props) => {
-    loadModules([
-      "esri/Graphic",
-      "esri/symbols/SimpleMarkerSymbol",
-      "esri/symbols/SimpleLineSymbol",
-      "dojo/_base/Color",
-    ]).then(([Graphic, Color]) => {
+    loadModules(["esri/Graphic", "dojo/_base/Color"]).then(([Graphic, Color]) => {
       const symbol = {
         type: "simple-marker",
         // if a new symbol path is created, then the path in styles/components/Maps.css must be modified to match

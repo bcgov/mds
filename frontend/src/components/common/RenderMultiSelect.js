@@ -9,7 +9,7 @@ import { caseInsensitiveLabelFilter } from "@/utils/helpers";
  */
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.any,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
   label: PropTypes.string,
   meta: CustomPropTypes.formMeta,

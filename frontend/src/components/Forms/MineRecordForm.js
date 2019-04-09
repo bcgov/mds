@@ -7,6 +7,7 @@ import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag }
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
+import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -218,7 +219,7 @@ export class MineRecordForm extends Component {
               </Collapse.Panel>
             ))}
           {fields.map((type, index) => (
-            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
+            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={type}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
@@ -277,7 +278,7 @@ export class MineRecordForm extends Component {
           ))}
         </Collapse>
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
-          <Icon type="plus" style={{ color: "#5e46a1" }} />
+          <Icon type="plus" style={{ color: Styles.COLOR.violet }} />
           {fields.length === 0 && !this.props.currentMineTypes
             ? "Add Mine Type"
             : "Add Another Mine Type"}
@@ -291,8 +292,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="name"
-                name="name"
+                id="mine_name"
+                name="mine_name"
                 label="Mine Name *"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(60), minLength(3)]}
@@ -360,8 +361,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="note"
-                name="note"
+                id="mine_note"
+                name="mine_note"
                 label="Notes"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[maxLength(300)]}

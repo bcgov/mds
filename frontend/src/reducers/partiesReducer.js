@@ -13,6 +13,7 @@ const initialState = {
   partyIds: [],
   partyRelationshipTypes: [],
   partyRelationships: [],
+  partyPageData: {},
 };
 
 const partiesReducer = (state = initialState, action) => {
@@ -23,6 +24,7 @@ const partiesReducer = (state = initialState, action) => {
         rawParties: action.payload.parties,
         parties: createItemMap(action.payload.parties, "party_guid"),
         partyIds: createItemIdsArray(action.payload.parties, "party_guid"),
+        partyPageData: action.payload,
       };
     case actionTypes.STORE_PARTY:
       return {
@@ -57,5 +59,6 @@ export const getPartyRelationshipTypesList = (state) =>
     "mine_party_appt_type_code"
   );
 export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
+export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 
 export default partiesReducer;

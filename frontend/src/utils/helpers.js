@@ -43,7 +43,20 @@ export const createLabelHash = (obj) =>
   obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
 
 // Function to format an API date string to human readable
-export const formatDate = (dateString) => moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+export const formatDate = (dateString) =>
+  dateString &&
+  dateString !== "9999-12-31" &&
+  dateString !== "None" &&
+  moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+
+// Function to format an API date string to human readable
+export const formatFullDateTime = (dateString) =>
+  dateString &&
+  dateString !== "9999-12-31" &&
+  dateString !== "None" &&
+  moment(dateString).format("MMM DD YYYY");
+
+export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -51,3 +64,30 @@ export const formatTitleString = (input) =>
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
   option.props.children.toLowerCase().includes(input.toLowerCase());
+
+// function taken directly from redux-forms (https://redux-form.com/6.0.0-rc.1/examples/normalizing)
+// automatically adds dashes to phone number
+export const normalizePhone = (value, previousValue) => {
+  if (!value) {
+    return value;
+  }
+  const onlyNums = value.replace(/[^\d]/g, "");
+  if (!previousValue || value.length > previousValue.length) {
+    // typing forward
+    if (onlyNums.length === 3) {
+      return `${onlyNums}-`;
+    }
+    if (onlyNums.length === 6) {
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}-`;
+    }
+  }
+  if (onlyNums.length <= 3) {
+    return onlyNums;
+  }
+  if (onlyNums.length <= 6) {
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+  }
+  return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
+};
+
+export const upperCase = (value) => value && value.toUpperCase();

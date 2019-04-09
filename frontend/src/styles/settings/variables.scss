@@ -8,6 +8,7 @@ $darkest-grey: #3c3636;
 $medium-grey: #6b6363;
 $violet: #5e46a1;
 $hover-blue: #3d6de7;
+$btn-red: #bc2929;
 
 // Accent Colours
 $lime-green: #adfc4a;
@@ -43,11 +44,11 @@ $secondary-btn-color: $darkest-grey;
 $secondary-btn-color-hover: darken($secondary-btn-color, 20%);
 $secondary-btn-border-color-hover: $secondary-btn-color-hover;
 
-$tertiary-btn-color: $pure-white;
-$tertiary-btn-color-hover: $tertiary-btn-color;
-$tertiary-btn-border-color: $violet;
-$tertiary-btn-border-color-hover: darken($tertiary-btn-border-color, 20%);
+$tertiary-btn-color: $medium-grey;
+$tertiary-btn-color-hover: darken($tertiary-btn-color, 20%);
 
+$danger-btn-color: $btn-red;
+$danger-btn-color-hover: darken($danger-btn-color, 20%);
 // Nav
 $nav-color: $darkest-grey;
 $nav-border-color: $medium-grey;

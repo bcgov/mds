@@ -32,3 +32,11 @@ export const partyRelationshipType = shape({
   organization: PropTypes.bool.isRequired,
   person: PropTypes.bool.isRequired,
 });
+
+export const partyPageData = shape({
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  parties: PropTypes.arrayOf(party),
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
+});

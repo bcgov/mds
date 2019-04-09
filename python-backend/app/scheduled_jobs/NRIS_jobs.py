@@ -1,12 +1,12 @@
 import requests
 from app.extensions import cache, sched
-from app.api.nris_services import NRIS_service
+from app.api.services import NRIS_service
 from app.api.mines.mine.models.mine import Mine
 from app.api.constants import NRIS_JOB_PREFIX, NRIS_MMLIST_JOB, NRIS_MAJOR_MINE_LIST, TIMEOUT_24_HOURS, TIMEOUT_60_MINUTES
 from app.api.utils.apm import register_apm
 
 
-#the schedule of these jobs is set using server time (UTC)
+# the schedule of these jobs is set using server time (UTC)
 def _schedule_NRIS_jobs(app):
     app.apscheduler.add_job(
         func=_cache_major_mines_list, trigger='cron', id='get_major_mine_list', hour=9, minute=0)
@@ -23,14 +23,16 @@ def _schedule_NRIS_jobs(app):
 @register_apm
 def _cache_major_mines_list():
     with sched.app.app_context():
-        cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
-        major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
-        major_mine_list = []
-        for mine in major_mines:
-            major_mine_list.append(mine.mine_no)
-            cache.set(NRIS_JOB_PREFIX + mine.mine_no, 'False', timeout=TIMEOUT_60_MINUTES)
-        cache.set(
-            NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST, major_mine_list, timeout=TIMEOUT_60_MINUTES)
+        job_running = cache.get(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB)
+        if job_running is None:
+            cache.set(NRIS_JOB_PREFIX + NRIS_MMLIST_JOB, 'True', timeout=TIMEOUT_24_HOURS)
+            major_mines = Mine.query.unbound_unsafe().filter_by(major_mine_ind=True).all()
+            major_mine_list = []
+            for mine in major_mines:
+                major_mine_list.append(mine.mine_no)
+                cache.set(NRIS_JOB_PREFIX + mine.mine_no, 'False', timeout=TIMEOUT_60_MINUTES)
+            cache.set(
+                NRIS_JOB_PREFIX + NRIS_MAJOR_MINE_LIST, major_mine_list, timeout=TIMEOUT_60_MINUTES)
 
 
 # Using the cached list of major mines procees them if they are not already set to true.
@@ -49,10 +51,10 @@ def _cache_all_NRIS_major_mines_data():
                 except requests.exceptions.Timeout:
                     pass
                 except requests.exceptions.HTTPError as errhttp:
-                    #log error
+                    # log error
                     pass
                 except TypeError as e:
-                    #log error
+                    # log error
                     pass
 
                 if data is not None and len(data) > 0:

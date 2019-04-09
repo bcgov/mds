@@ -327,6 +327,18 @@ export const PARTY = {
       name: "mock Two",
     },
   },
+  partiesWithAppointments: {
+    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      name: "mock name",
+      mine_party_appt: [],
+    },
+    "18145c75-49ad-0101-85f3-a43e45ae989a": {
+      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      name: "mock Two",
+      mine_party_appt: [],
+    },
+  },
 };
 
 export const MINE_NAME_LIST = [
@@ -561,19 +573,19 @@ export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",
       req_document_description: "10.4.4a",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "ca3f5a58-d7ea-4620-a064-507450f082de",
       req_document_name: "Annual DSI",
       req_document_description: "10.4.4b",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
     {
       req_document_guid: "faa99067-3639-4d9c-a3e5-5401df15ad4b",
       req_document_name: "5 year DSR",
       req_document_description: "10.5.4",
-      req_document_category: "MINE_TAILINGS",
+      req_document_category: "TSF",
     },
   ],
 };
@@ -674,6 +686,24 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   },
 ];
 
+export const DROPDOWN_PROVINCE_OPTIONS = [
+  {
+    value: "BC",
+    label: "BC",
+  },
+  {
+    value: "AB",
+    label: "AB",
+  },
+];
+
+export const PROVINCE_OPTIONS = {
+  options: [
+    { description: "British Columbia", display_order: 10, sub_division_code: "BC" },
+    { description: "Alberta", display_order: 10, sub_division_code: "AB" },
+  ],
+};
+
 export const CONDITIONAL_COMMODITY_OPTIONS = {
   BCL: [{ label: "Construction Aggregate", value: "CG", exclusive: false }],
   COL: [
@@ -708,7 +738,7 @@ export const CONDITIONAL_DISTURBANCE_OPTIONS = {
 
 export const COMPLIANCE = {
   last_inspection: "2018-12-12 00:00",
-  inspector: "test",
+  last_inspector: "test",
   num_open_orders: 5,
   num_overdue_orders: 5,
   advisories: 5,
@@ -918,4 +948,129 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
   SHB: "Shift Boss",
   SVR: "Supervisor",
   TQP: "TSF Qualified Person",
+};
+
+export const OPEN_ORDERS = [
+  {
+    overdue: true,
+    due_date: "2019-01-31",
+    order_no: "2",
+    violation: "Mine isn't good enough",
+    report_no: "report3",
+    inspector: "George",
+  },
+  {
+    overdue: false,
+    due_date: "2019-02-28",
+    order_no: "1",
+    violation: "Wearing purple hats",
+    report_no: "report2",
+    inspector: "Paul",
+  },
+  {
+    overdue: true,
+    due_date: "2019-02-02",
+    order_no: "7",
+    violation: "Looks dangerous",
+    report_no: "report1",
+    inspector: "Paul",
+  },
+];
+
+export const APPLICATION_STATUS_CODE_OPTIONS = [
+  { application_status_code: "RIP", description: "In Review" },
+  { application_status_code: "APR", description: "Approved" },
+];
+
+export const VARIANCES = {
+  records: [
+    {
+      variance_id: 1249,
+      compliance_article_id: 1,
+      expiry_date: "2019-03-30",
+      issue_date: "2019-03-01",
+      note: "notesss",
+      received_date: "2019-03-01",
+      documents: [
+        {
+          records: [
+            {
+              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
+              variance_id: 1249,
+              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+              details: {
+                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
+                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
+                document_name: "just_a_pdf.PDF",
+                active_ind: "True",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const COMPLIANCE_CODES = {
+  records: [
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 305,
+      description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "7",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 306,
+      description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "8",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+  ],
+};
+
+export const DROPDOWN_HSRCM_CODES = [
+  {
+    value: 305,
+    label: "2.3.7 - Spills",
+  },
+  {
+    value: 306,
+    label: "2.3.8 - Flammable Waste Storage",
+  },
+];
+
+export const HSRCM_HASH = {
+  305: "2.3.7 - Spills",
+  306: "2.3.8 - Flammable Waste Storage",
+};
+
+export const APPLICATION_LIST = {
+  applications: [
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd14",
+      application_no: "TA-09876",
+      application_status_code: "RIP",
+      description: "Test.",
+      received_date: "2019-03-06",
+    },
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd11",
+      application_no: "TA-93475",
+      application_status_code: "RIP",
+      description: null,
+      received_date: "2019-02-25",
+    },
+  ],
 };

@@ -7,32 +7,31 @@ import { Form, Cascader } from "antd";
  */
 
 const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  input: PropTypes.any,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object,
-  options: PropTypes.array.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  placeholder: PropTypes.string.isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  options: PropTypes.array.isRequired.isRequired,
 };
 
-const RenderCascader = ({
-  id,
-  input,
-  placeholder,
-  options,
-  label,
-  meta: { touched, error, warning },
-}) => (
+const RenderCascader = (props) => (
   <Form.Item
-    label={label}
-    validateStatus={touched ? (error && "error") || (warning && "warning") : ""}
-    help={touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    label={props.label}
+    validateStatus={
+      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+    }
+    help={
+      props.meta.touched &&
+      ((props.meta.error && <span>{props.meta.error}</span>) ||
+        (props.meta.warning && <span>{props.meta.warning}</span>))
+    }
   >
     <Cascader
       expandTrigger="hover"
-      id={id}
-      placeholder={placeholder}
-      options={options}
-      {...input}
+      id={props.id}
+      placeholder={props.placeholder}
+      options={props.options}
+      {...props.input}
     />
   </Form.Item>
 );

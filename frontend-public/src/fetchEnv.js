@@ -16,6 +16,7 @@ export default function fetchEnv() {
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
       KEYCLOAK.clientId = env.keycloak_clientId;
+      KEYCLOAK.idpHint = env.keycloak_idpHint;
       KEYCLOAK.resource = env.keycloak_resource;
       KEYCLOAK.siteMinderLogoutURL = `${env.siteminder_url}/clp-cgi/logoff.cgi?returl=`;
       KEYCLOAK.loginURL = `${

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Icon, Input, AutoComplete } from "antd";
+import * as Styles from "@/constants/styles";
 
 /**
  * @constant RenderAutoComplete - Ant Design `AutoComplete` component for redux-form.
@@ -12,10 +13,12 @@ const propTypes = {
   handleSelect: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
+  iconColor: PropTypes.string,
 };
 
 const defaultProps = {
   placeholder: "",
+  iconColor: Styles.COLOR.violet,
 };
 
 const RenderAutoComplete = (props) => (
@@ -37,7 +40,7 @@ const RenderAutoComplete = (props) => (
     <Input
       autoComplete="off"
       id="search"
-      suffix={<Icon type="search" style={{ color: "#5e46a1", fontSize: 20 }} />}
+      suffix={<Icon type="search" className="icon-sm" style={{ color: props.iconColor }} />}
     />
   </AutoComplete>
 );

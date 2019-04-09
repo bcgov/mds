@@ -18,7 +18,7 @@ from ....permits.permit.models.permit import Permit
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
-    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
@@ -31,15 +31,15 @@ class Mine(AuditMixin, Base):
     mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
-
-    #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.issue_date)', lazy='selectin')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
-        lazy='selectin')
+        lazy='joined')
+
+    #Almost always used, but faster to use selectin to load related data
+    mine_permit = db.relationship(
+        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
         'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
 
@@ -74,12 +74,14 @@ class Mine(AuditMixin, Base):
             'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
             'mine_location':
             self.mine_location.json() if self.mine_location else None,
-            'mine_permit': [item.json() for item in self.mine_permit],
+            #Exploration permits must, always, and exclusively have an X as the second character, and we would like this to be returned last:
+            'mine_permit': [item.json() for item in self.mine_permit if item.permit_no.lower()[1] != 'x'] + [item.json() for item in self.mine_permit if item.permit_no.lower()[1] == 'x'],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None, 
         }
 
     def json_for_list(self):
@@ -96,11 +98,12 @@ class Mine(AuditMixin, Base):
             self.major_mine_ind,
             'region_code':
             self.mine_region,
-            'mine_permit': [item.json() for item in self.mine_permit],
+            'mine_permit': [item.json_for_list() for item in self.mine_permit],
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None, 
         }
 
     def json_for_map(self):
@@ -153,7 +156,7 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_name(cls, term = None):
+    def find_by_mine_name(cls, term=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
@@ -164,7 +167,7 @@ class Mine(AuditMixin, Base):
         return mines
 
     @classmethod
-    def find_by_name_no_permit(cls, term = None):
+    def find_by_name_no_permit(cls, term=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
@@ -223,3 +226,11 @@ class Mine(AuditMixin, Base):
         if mine_no and len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no
+
+    @validates('mine_region')
+    def validate_mine_region(self, key, mine_region):
+        if not mine_region:
+            raise AssertionError('No mine region code provided.')
+        if len(mine_region) > 2:
+            raise AssertionError('Invalid region code')
+        return mine_region

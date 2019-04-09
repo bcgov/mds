@@ -1,0 +1,624 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineSearch renders properly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MineSearch
+    fetchMineNameList={[MockFunction]}
+    handleCoordinateSearch={[MockFunction]}
+    handleMineSearch={[MockFunction]}
+    initialValues={Object {}}
+    isMapView={false}
+    mineNameList={
+      Array [
+        Object {
+          "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+          "latitude": "51.4961750",
+          "longitude": "-119.6963833",
+          "mine_name": "New Mine",
+          "mine_no": "BLAH6194",
+        },
+        Object {
+          "guid": "89a65274-581d-4862-8630-99f5f7687089",
+          "latitude": "51.4961750",
+          "longitude": "-119.6963833",
+          "mine_name": "Mine Two",
+          "mine_no": "BLAH0502",
+        },
+        Object {
+          "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+          "latitude": "51.4961750",
+          "longitude": "-119.6963833",
+          "mine_name": "Legit Mine",
+          "mine_no": "BLAH6734",
+        },
+      ]
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <Row
+        gutter={0}
+      >
+        <Col
+          md={
+            Object {
+              "offset": 6,
+              "span": 12,
+            }
+          }
+          xs={
+            Object {
+              "offset": 2,
+              "span": 20,
+            }
+          }
+        >
+          <span
+            className="advanced-search__container"
+          >
+            <ReduxForm
+              fetchMineNameList={[MockFunction]}
+              handleCoordinateSearch={[MockFunction]}
+              handleMineSearch={[MockFunction]}
+              handleSearch={[Function]}
+              initialValues={Object {}}
+              isAdvanceSearch={false}
+              isMapView={false}
+              mineNameList={
+                Array [
+                  Object {
+                    "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "New Mine",
+                    "mine_no": "BLAH6194",
+                  },
+                  Object {
+                    "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Mine Two",
+                    "mine_no": "BLAH0502",
+                  },
+                  Object {
+                    "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Legit Mine",
+                    "mine_no": "BLAH6734",
+                  },
+                ]
+              }
+              onSubmit={[Function]}
+              toggleAdvancedSearch={[Function]}
+            />
+          </span>
+        </Col>
+      </Row>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <Col
+          md={
+            Object {
+              "offset": 6,
+              "span": 12,
+            }
+          }
+          xs={
+            Object {
+              "offset": 2,
+              "span": 20,
+            }
+          }
+        >
+          <span
+            className="advanced-search__container"
+          >
+            <ReduxForm
+              fetchMineNameList={[MockFunction]}
+              handleCoordinateSearch={[MockFunction]}
+              handleMineSearch={[MockFunction]}
+              handleSearch={[Function]}
+              initialValues={Object {}}
+              isAdvanceSearch={false}
+              isMapView={false}
+              mineNameList={
+                Array [
+                  Object {
+                    "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "New Mine",
+                    "mine_no": "BLAH6194",
+                  },
+                  Object {
+                    "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Mine Two",
+                    "mine_no": "BLAH0502",
+                  },
+                  Object {
+                    "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Legit Mine",
+                    "mine_no": "BLAH6734",
+                  },
+                ]
+              }
+              onSubmit={[Function]}
+              toggleAdvancedSearch={[Function]}
+            />
+          </span>
+        </Col>,
+        "gutter": 0,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <span
+            className="advanced-search__container"
+          >
+            <ReduxForm
+              fetchMineNameList={[MockFunction]}
+              handleCoordinateSearch={[MockFunction]}
+              handleMineSearch={[MockFunction]}
+              handleSearch={[Function]}
+              initialValues={Object {}}
+              isAdvanceSearch={false}
+              isMapView={false}
+              mineNameList={
+                Array [
+                  Object {
+                    "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "New Mine",
+                    "mine_no": "BLAH6194",
+                  },
+                  Object {
+                    "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Mine Two",
+                    "mine_no": "BLAH0502",
+                  },
+                  Object {
+                    "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Legit Mine",
+                    "mine_no": "BLAH6734",
+                  },
+                ]
+              }
+              onSubmit={[Function]}
+              toggleAdvancedSearch={[Function]}
+            />
+          </span>,
+          "md": Object {
+            "offset": 6,
+            "span": 12,
+          },
+          "xs": Object {
+            "offset": 2,
+            "span": 20,
+          },
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <ReduxForm
+              fetchMineNameList={[MockFunction]}
+              handleCoordinateSearch={[MockFunction]}
+              handleMineSearch={[MockFunction]}
+              handleSearch={[Function]}
+              initialValues={Object {}}
+              isAdvanceSearch={false}
+              isMapView={false}
+              mineNameList={
+                Array [
+                  Object {
+                    "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "New Mine",
+                    "mine_no": "BLAH6194",
+                  },
+                  Object {
+                    "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Mine Two",
+                    "mine_no": "BLAH0502",
+                  },
+                  Object {
+                    "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Legit Mine",
+                    "mine_no": "BLAH6734",
+                  },
+                ]
+              }
+              onSubmit={[Function]}
+              toggleAdvancedSearch={[Function]}
+            />,
+            "className": "advanced-search__container",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "fetchMineNameList": [MockFunction],
+              "handleCoordinateSearch": [MockFunction],
+              "handleMineSearch": [MockFunction],
+              "handleSearch": [Function],
+              "initialValues": Object {},
+              "isAdvanceSearch": false,
+              "isMapView": false,
+              "mineNameList": Array [
+                Object {
+                  "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                  "latitude": "51.4961750",
+                  "longitude": "-119.6963833",
+                  "mine_name": "New Mine",
+                  "mine_no": "BLAH6194",
+                },
+                Object {
+                  "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                  "latitude": "51.4961750",
+                  "longitude": "-119.6963833",
+                  "mine_name": "Mine Two",
+                  "mine_no": "BLAH0502",
+                },
+                Object {
+                  "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                  "latitude": "51.4961750",
+                  "longitude": "-119.6963833",
+                  "mine_name": "Legit Mine",
+                  "mine_no": "BLAH6734",
+                },
+              ],
+              "onSubmit": [Function],
+              "toggleAdvancedSearch": [Function],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "span",
+        },
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <Row
+          gutter={0}
+        >
+          <Col
+            md={
+              Object {
+                "offset": 6,
+                "span": 12,
+              }
+            }
+            xs={
+              Object {
+                "offset": 2,
+                "span": 20,
+              }
+            }
+          >
+            <span
+              className="advanced-search__container"
+            >
+              <ReduxForm
+                fetchMineNameList={[MockFunction]}
+                handleCoordinateSearch={[MockFunction]}
+                handleMineSearch={[MockFunction]}
+                handleSearch={[Function]}
+                initialValues={Object {}}
+                isAdvanceSearch={false}
+                isMapView={false}
+                mineNameList={
+                  Array [
+                    Object {
+                      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "New Mine",
+                      "mine_no": "BLAH6194",
+                    },
+                    Object {
+                      "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Mine Two",
+                      "mine_no": "BLAH0502",
+                    },
+                    Object {
+                      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Legit Mine",
+                      "mine_no": "BLAH6734",
+                    },
+                  ]
+                }
+                onSubmit={[Function]}
+                toggleAdvancedSearch={[Function]}
+              />
+            </span>
+          </Col>
+        </Row>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Col
+            md={
+              Object {
+                "offset": 6,
+                "span": 12,
+              }
+            }
+            xs={
+              Object {
+                "offset": 2,
+                "span": 20,
+              }
+            }
+          >
+            <span
+              className="advanced-search__container"
+            >
+              <ReduxForm
+                fetchMineNameList={[MockFunction]}
+                handleCoordinateSearch={[MockFunction]}
+                handleMineSearch={[MockFunction]}
+                handleSearch={[Function]}
+                initialValues={Object {}}
+                isAdvanceSearch={false}
+                isMapView={false}
+                mineNameList={
+                  Array [
+                    Object {
+                      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "New Mine",
+                      "mine_no": "BLAH6194",
+                    },
+                    Object {
+                      "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Mine Two",
+                      "mine_no": "BLAH0502",
+                    },
+                    Object {
+                      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Legit Mine",
+                      "mine_no": "BLAH6734",
+                    },
+                  ]
+                }
+                onSubmit={[Function]}
+                toggleAdvancedSearch={[Function]}
+              />
+            </span>
+          </Col>,
+          "gutter": 0,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <span
+              className="advanced-search__container"
+            >
+              <ReduxForm
+                fetchMineNameList={[MockFunction]}
+                handleCoordinateSearch={[MockFunction]}
+                handleMineSearch={[MockFunction]}
+                handleSearch={[Function]}
+                initialValues={Object {}}
+                isAdvanceSearch={false}
+                isMapView={false}
+                mineNameList={
+                  Array [
+                    Object {
+                      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "New Mine",
+                      "mine_no": "BLAH6194",
+                    },
+                    Object {
+                      "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Mine Two",
+                      "mine_no": "BLAH0502",
+                    },
+                    Object {
+                      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Legit Mine",
+                      "mine_no": "BLAH6734",
+                    },
+                  ]
+                }
+                onSubmit={[Function]}
+                toggleAdvancedSearch={[Function]}
+              />
+            </span>,
+            "md": Object {
+              "offset": 6,
+              "span": 12,
+            },
+            "xs": Object {
+              "offset": 2,
+              "span": 20,
+            },
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <ReduxForm
+                fetchMineNameList={[MockFunction]}
+                handleCoordinateSearch={[MockFunction]}
+                handleMineSearch={[MockFunction]}
+                handleSearch={[Function]}
+                initialValues={Object {}}
+                isAdvanceSearch={false}
+                isMapView={false}
+                mineNameList={
+                  Array [
+                    Object {
+                      "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "New Mine",
+                      "mine_no": "BLAH6194",
+                    },
+                    Object {
+                      "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Mine Two",
+                      "mine_no": "BLAH0502",
+                    },
+                    Object {
+                      "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                      "latitude": "51.4961750",
+                      "longitude": "-119.6963833",
+                      "mine_name": "Legit Mine",
+                      "mine_no": "BLAH6734",
+                    },
+                  ]
+                }
+                onSubmit={[Function]}
+                toggleAdvancedSearch={[Function]}
+              />,
+              "className": "advanced-search__container",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "fetchMineNameList": [MockFunction],
+                "handleCoordinateSearch": [MockFunction],
+                "handleMineSearch": [MockFunction],
+                "handleSearch": [Function],
+                "initialValues": Object {},
+                "isAdvanceSearch": false,
+                "isMapView": false,
+                "mineNameList": Array [
+                  Object {
+                    "guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "New Mine",
+                    "mine_no": "BLAH6194",
+                  },
+                  Object {
+                    "guid": "89a65274-581d-4862-8630-99f5f7687089",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Mine Two",
+                    "mine_no": "BLAH0502",
+                  },
+                  Object {
+                    "guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                    "latitude": "51.4961750",
+                    "longitude": "-119.6963833",
+                    "mine_name": "Legit Mine",
+                    "mine_no": "BLAH6734",
+                  },
+                ],
+                "onSubmit": [Function],
+                "toggleAdvancedSearch": [Function],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "span",
+          },
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

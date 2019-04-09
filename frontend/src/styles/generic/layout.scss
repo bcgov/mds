@@ -46,6 +46,10 @@ body {
   height: inherit !important;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .inline-flex {
   @include flex;
 
@@ -61,6 +65,10 @@ body {
 
 .flex-center {
   justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
 }
 
 .block-mobile {
@@ -124,6 +132,12 @@ body {
   }
 }
 
+.btn--middle {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 .card-buttons {
   flex-direction: column;
 }
@@ -139,10 +153,17 @@ body {
   &--right {
     padding-right: $default-padding-lg;
   }
+  &--left {
+    padding-left: 25px;
+  }
 }
 
 .margin-small {
   margin: $default-margin-sm;
+}
+
+.margin-large {
+  margin: $default-margin-lg;
 }
 
 .lightest-grey-bg {
@@ -153,4 +174,52 @@ body {
   font-size: $default-h2;
   font-weight: $semi-bold;
   color: $h4-color;
+}
+
+// reusable icon classes
+// using important to override any existing styling from ant design.
+.icon-sm {
+  font-size: 20px !important;
+}
+
+.img-lg {
+  height: 30px;
+}
+
+.vertical-align {
+  &-sm {
+    vertical-align: -0.125em;
+  }
+}
+
+// used on larger modals as a divider.
+.border {
+  &--right {
+    &--violet {
+      border-right: 1px solid $violet;
+      @include tablet {
+        border-right: 0;
+      }
+    }
+    &--layout {
+      border-right: 1px solid $layout-grey;
+      @include tablet {
+        border-right: 0;
+      }
+    }
+  }
+  &--left {
+    &--violet {
+      border-left: 1px solid $violet;
+      @include tablet {
+        border-left: 0;
+      }
+    }
+    &--layout {
+      border-left: 1px solid $layout-grey;
+      @include tablet {
+        border-left: 0;
+      }
+    }
+  }
 }
