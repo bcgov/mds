@@ -33,46 +33,46 @@ from ....permits.permit.models.permit import Permit
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='form')
+        'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='json')
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         required=True,
-        location='form')
+        location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_region',
         type=str,
         help='Region for the mine.',
         trim=True,
         required=True,
-        location='form')
+        location='json')
 
     @api.doc(
         params={
@@ -225,53 +225,53 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         help='Name of the mine.',
         trim=True,
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'tenure_number_id',
         type=int,
         help='Tenure number for the mine.',
         trim=True,
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_region',
         type=str,
         help='Region for the mine.',
         trim=True,
         store_missing=False,
-        location='form')
+        location='json')
 
     @api.doc(
         description=
@@ -317,14 +317,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if 'mine_region' in data:
             mine.mine_region = data['mine_region']
         mine.save()
-
+        current_app.logger.error(f'made it here {tenure}')
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
+            current_app.logger.error(f'made it here {tenure} and {tenure_exists}')
             if tenure_exists:
                 if tenure_exists.mine_guid == mine.mine_guid:
                     raise BadRequest('Error: Field tenure_id already exists for this mine.')
-
             tenure = MineralTenureXref(
                 mineral_tenure_xref_guid=uuid.uuid4(),
                 mine_guid=mine.mine_guid,
@@ -365,7 +365,15 @@ class MineListSearch(Resource):
             mines = Mine.find_by_name_no_permit(search_term)
         else:
             mines = Mine.find_by_mine_name(name_search)
-        result = list(map(lambda x: {**x.json_by_name(), **x.json_by_location()}, mines))
+        result = list(
+            map(
+                lambda x: {
+                    'mine_guid': str(x.mine_guid),
+                    'mine_name': x.mine_name,
+                    'mine_no': x.mine_no,
+                    'latitude': str(x.mine_location.latitude) if x.mine_location else '',
+                    'longitude': str(x.mine_location.longitude) if x.mine_location else '', },
+                mines))
         return {'mines': result}
 
 

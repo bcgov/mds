@@ -11,7 +11,7 @@ export const ERROR = { error: { message: "Errors", status: 400 } };
 export const MINE_RESPONSE = {
   mines: [
     {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
       mine_region: "NE",
@@ -50,7 +50,7 @@ export const MINE_RESPONSE = {
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
     {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
       mine_region: "NE",
@@ -159,7 +159,7 @@ export const MINES = {
   mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
       mine_region: "NE",
@@ -198,7 +198,7 @@ export const MINES = {
       },
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
       mine_region: "NE",
@@ -319,21 +319,21 @@ export const PARTY = {
 
 export const USER_MINE_INFO = [
   {
-    guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+    mine_guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
     mine_name: "New Mine",
     mine_no: "BLAH6194",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "89a65274-581d-4862-8630-99f5f7687089",
+    mine_guid: "89a65274-581d-4862-8630-99f5f7687089",
     mine_name: "Mine Two",
     mine_no: "BLAH0502",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+    mine_guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
     mine_name: "Legit Mine",
     mine_no: "BLAH6734",
     longitude: "-119.6963833",

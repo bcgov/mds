@@ -1,4 +1,3 @@
-from decimal import Decimal
 import uuid
 from datetime import datetime
 import json
@@ -8,7 +7,7 @@ from flask_restplus import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 
@@ -36,6 +35,7 @@ class MineMapResource(Resource, UserMixin):
         200,
         'Returns a list of mines with less information to be displayed on the map.',
         model=mine_map_list)
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         # Below caches the mine map response object in redis with a timeout.
         # Generating and jsonifying the map data takes 4-7 seconds with 50,000 points,

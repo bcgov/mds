@@ -5,8 +5,8 @@ MINE_LOCATION = api.model(
     'MineLocation', {
         'mine_location_guid': fields.String,
         'mine_guid': fields.String,
-        'latitude': fields.String,
-        'longitude': fields.String,
+        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
     })
 
 MINE_DOCUMENT = api.model(
@@ -109,15 +109,6 @@ MINE = api.inherit(
 
 MINE_LIST_MODEL = api.model(
     'MineList', {
-        'mines': fields.List(fields.Nested(MINES)),
-        'current_page': fields.Integer,
-        'total_pages': fields.Integer,
-        'items_per_page': fields.Integer,
-        'total': fields.Integer,
-    })
-
-MINE_SEARCH_LIST = api.model(
-    'MineSearch', {
         'mines': fields.List(fields.Nested(MINES)),
         'current_page': fields.Integer,
         'total_pages': fields.Integer,

@@ -38,7 +38,7 @@ const handleError = (dispatch, reducer) => (err) => {
 };
 
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
-  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
+  const mineId = response.data.mine_guid;
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
       type.mine_tenure_type_code.length >= 1
@@ -182,7 +182,7 @@ export const fetchMineRecords = (params) => (dispatch) => {
 export const fetchMineRecordsForMap = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_MAP_LIST, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
@@ -190,14 +190,8 @@ export const fetchMineRecordsForMap = () => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_MINE_RECORD));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineRecordById = (mineNo) => (dispatch) => {

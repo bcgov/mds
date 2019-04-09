@@ -28,7 +28,9 @@ const columns = [
     width: 300,
     dataIndex: "mineNames",
     render: (text) => (
-      <div>{text && text.map(({ guid, mine_name }) => <div key={guid}>{mine_name}</div>)}</div>
+      <div>
+        {text && text.map(({ mine_guid, mine_name }) => <div key={mine_guid}>{mine_name}</div>)}
+      </div>
     ),
   },
   {
