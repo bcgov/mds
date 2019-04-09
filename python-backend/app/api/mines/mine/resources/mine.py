@@ -39,19 +39,16 @@ class MineListResource(Resource, UserMixin):
         type=str,
         help='Any additional notes to be added to the mine.',
         trim=True,
-        store_missing=False,
         location='json')
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
-        store_missing=False,
         location='json')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
-        store_missing=False,
         location='json')
     parser.add_argument(
         'mine_status',
@@ -64,7 +61,6 @@ class MineListResource(Resource, UserMixin):
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
-        store_missing=False,
         location='json')
     parser.add_argument(
         'mine_region',
@@ -77,17 +73,16 @@ class MineListResource(Resource, UserMixin):
     @api.doc(
         params={
             'per_page': 'The number of results to be returned per page.',
-            'page': 'the current page number to be displayed.',
+            'page': 'The current page number to be displayed.',
             'search': 'The search term.',
-            'commodity': 'A commodity to filter the mine list by.',
-            'status': 'A mine status to filter the mine list by.',
-            'tenure': 'A mine tenure type to filter the mine list by.',
-            'region': 'A mine region to filter the mine list by.',
-            'major': 'True or false, filters the mine list by major mines or regional mines.',
-            'tsf': 'True or false, filter the mine list by mines with or without a TSF.',
+            'commodity': 'A specific commodity to filter the mine list on.',
+            'status': 'A specific mine status to filter the mine list on.',
+            'tenure': 'A specific mine tenure type to filter the mine list on.',
+            'region': 'A specific mine region to filter the mine list on.',
+            'major': 'Filters the mine list by major mines or regional mines.',
+            'tsf': 'Filters the mine list by mines with or without a TSF.',
         },
-        description=
-        'This endpoint returns a list of all mines filtered on the search paramaters provided.')
+        description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
@@ -103,10 +98,7 @@ class MineListResource(Resource, UserMixin):
         }
 
     @api.expect(parser)
-    @api.doc(
-        description=
-        'This endpoint creates a new mine with the information provided and returns it. If an error occurs the appropriate response is returned.'
-    )
+    @api.doc(description='Creates a new mine.')
     @api.marshal_with(MINE, code=201)
     @requires_role_mine_create
     def post(self):
@@ -273,10 +265,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         location='json')
 
-    @api.doc(
-        description=
-        'This endpoint returns the mine associated with the provided mine number or mine guid. If not found returns the appropriate error'
-    )
+    @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
@@ -289,7 +278,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE, code=200)
-    @api.doc(description='This endpoint updates a mine using the form-data passed.')
+    @api.doc(description='Updates the specified mine.')
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
 
@@ -317,11 +306,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if 'mine_region' in data:
             mine.mine_region = data['mine_region']
         mine.save()
-        current_app.logger.error(f'made it here {tenure}')
+
         # Tenure validation
         if tenure:
             tenure_exists = MineralTenureXref.find_by_tenure(tenure)
-            current_app.logger.error(f'made it here {tenure} and {tenure_exists}')
             if tenure_exists:
                 if tenure_exists.mine_guid == mine.mine_guid:
                     raise BadRequest('Error: Field tenure_id already exists for this mine.')

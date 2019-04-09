@@ -26,31 +26,31 @@ class ApplicationListResource(Resource, UserMixin):
         type=str,
         required=True,
         help='Number of the application being added.',
-        location='form')
+        location='json')
     parser.add_argument(
         'mine_guid',
         type=str,
         required=True,
         help='guid of the mine the application is being added to.',
-        location='form')
+        location='json')
     parser.add_argument(
         'application_status_code',
         required=True,
         type=str,
         help='Status of the application being added.',
-        location='form')
+        location='json')
     parser.add_argument(
         'received_date',
         required=True,
         help='The date the application was received.',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='form')
+        location='json')
     parser.add_argument(
         'description',
         type=str,
         help='Application description',
         store_missing=False,
-        location='form')
+        location='json')
 
     @api.marshal_with(application_model, envelope='applications', code=200, as_list=True)
     @api.doc(
@@ -108,13 +108,13 @@ class ApplicationResource(Resource, UserMixin):
         type=str,
         help='Status of the application being added.',
         store_missing=False,
-        location='form')
+        location='json')
     parser.add_argument(
         'description',
         type=str,
         help='Application description',
         store_missing=False,
-        location='form')
+        location='json')
 
     @api.marshal_with(application_model, envelope='applications', code=200)
     @api.doc(
