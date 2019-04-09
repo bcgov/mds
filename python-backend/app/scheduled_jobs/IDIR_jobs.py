@@ -13,7 +13,11 @@ from app.api.users.core.models.idir_membership import IdirMembership
 
 def _schedule_IDIR_jobs(app):
     app.apscheduler.add_job(
-        func=_import_empr_idir_users, trigger='cron', id='get_empr_users_from_idir', minute=40)
+        func=_import_empr_idir_users,
+        trigger='cron',
+        id='get_empr_users_from_idir',
+        hour=10,
+        minute=0)
 
 
 @register_apm
