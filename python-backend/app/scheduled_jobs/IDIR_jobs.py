@@ -1,4 +1,4 @@
-from app.extensions import sched
+from app.extensions import sched, db
 from app.api.services.idir_service import IdirService
 
 from app.api.utils.apm import register_apm
@@ -16,14 +16,16 @@ def _schedule_IDIR_jobs(app):
         func=_import_empr_idir_users,
         trigger='cron',
         id='get_empr_users_from_idir',
-        hour=10,
-        minute=0)
+        hour=17,
+        minute=5)
 
 
 @register_apm
 def _import_empr_idir_users():
     User._test_mode = True
-    idir_membership_groups = [x.idir_membership_name for x in IdirMembership.query.all()]
+    idir_membership_groups = [
+        x.idir_membership_name for x in db.session.query(IdirMembership).all()
+    ]
     users = IdirService.get_empr_users_from_idir(idir_membership_groups)
     existing_count, new_count = 0, 0
     for user in users:
