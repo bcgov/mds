@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
@@ -162,11 +162,19 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
+    // TODO: Centralize all of this param logic
+    const {
+      major,
+      tsf,
+      search,
+      status,
+      region,
+      tenure,
+      commodity,
+      ...remainingParams
+    } = this.state.params;
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
-        page,
-        per_page,
         major,
         tsf,
         search,
@@ -174,6 +182,10 @@ export class Dashboard extends Component {
         region: region && region.join(","),
         tenure: tenure && tenure.join(","),
         commodity: commodity && commodity.join(","),
+        ...remainingParams,
+        // Overwrite current page/per_page with values provided
+        page,
+        per_page,
       })
     );
   };
@@ -234,13 +246,51 @@ export class Dashboard extends Component {
     }
   };
 
-  handleMineSearch = (searchParams) => {
-    const per_page = this.state.params.per_page
-      ? this.state.params.per_page
-      : String.DEFAULT_PER_PAGE;
-    // reset page when a search is initiated
+  handleMineSearch = (searchParams, clear) => {
+    console.log("state", this.state);
+    const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
+    const {
+      commodity: commoditySearch = [],
+      region: regionSearch = [],
+      status: statusSearch = [],
+      tenure: tenureSearch = [],
+      ...remainingSearchParams
+    } = searchParams;
+    const formattedSearchParams = {
+      ...joinOrRemove(commoditySearch, "commodity"),
+      ...joinOrRemove(regionSearch, "region"),
+      ...joinOrRemove(statusSearch, "status"),
+      ...joinOrRemove(tenureSearch, "tenure"),
+      ...remainingSearchParams,
+    };
+
+    const {
+      commodity: commodityPrev,
+      region: regionPrev,
+      status: statusPrev,
+      tenure: tenurePrev,
+      ...remainingPrevParams
+    } = this.state.params;
+    const persistedParams = clear
+      ? {}
+      : {
+          ...joinOrRemove(commodityPrev, "commodity"),
+          ...joinOrRemove(regionPrev, "region"),
+          ...joinOrRemove(statusPrev, "status"),
+          ...joinOrRemove(tenurePrev, "tenure"),
+          ...remainingPrevParams,
+        };
     this.props.history.push(
-      router.MINE_HOME_PAGE.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
+      router.MINE_HOME_PAGE.dynamicRoute({
+        // Start from existing state
+        ...persistedParams,
+        // Overwrite prev params with any newly provided search params
+        ...formattedSearchParams,
+        // Reset page number
+        page: String.DEFAULT_PAGE,
+        // Retain per_page if present
+        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+      })
     );
   };
 
@@ -294,7 +344,7 @@ export class Dashboard extends Component {
                   handleMineSearch={this.handleMineSearch}
                   sortField={this.state.params.sort_field}
                   sortDir={this.state.params.sort_dir}
-                  {...this.props}
+                  {...this.props} // TODO: Remove this
                 />
               </div>
               <div className="center">
