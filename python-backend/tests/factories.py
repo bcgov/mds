@@ -15,9 +15,7 @@ from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-# from app.api.parties.party.models.party import Party
-# from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-# from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.parties.party.models.party import Party
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
@@ -64,9 +62,8 @@ class MineLocationFactory(BaseFactory):
         model = MineLocation
 
     mine_location_guid = GUID
-    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for inside BC
-    longitude = factory.Faker(
-        'longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for inside BC
+    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     effective_date = TODAY
     expiry_date = TODAY
@@ -87,13 +84,16 @@ class MineTypeDetailFactory(BaseFactory):
 
     class Params:
         tenure = 'MIN'
-        commodity = True
+        commodity = factory.Trait(
+            mine_commodity_code=factory.LazyAttribute(lambda o: SampleMineCommodityCodes(
+                o.tenure, 1)[0]))
+        disturbance = factory.Trait(
+            mine_disturbance_code=factory.LazyAttribute(lambda o: SampleMineDisturbanceCodes(
+                o.tenure, 1)[0]))
 
-    mine_type_detail_xref_guid = factory.LazyFunction(uuid.uuid4)
-    mine_commodity_code = factory.LazyAttribute(lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]
-                                                if o.commodity else None)
-    mine_disturbance_code = factory.LazyAttribute(lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[
-        0] if not o.commodity else None)
+    mine_type_detail_xref_guid = GUID
+    mine_commodity_code = None
+    mine_disturbance_code = None
 
 
 class MineTypeFactory(BaseFactory):
@@ -127,7 +127,6 @@ class MineTypeFactory(BaseFactory):
             MineTypeDetailFactory(
                 mine_type_guid=obj.mine_type_guid,
                 tenure=obj.mine_tenure_type_code,
-                commodity=False,
                 mine_disturbance_code=disturbance,
                 **kwargs)
 
@@ -159,10 +158,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            if n == 0:
-                PermitAmendmentFactory(permit_id=obj.permit_id, initial_permit=True, **kwargs)
-            else:
-                PermitAmendmentFactory(permit_id=obj.permit_id, **kwargs)
+            PermitAmendmentFactory(permit_id=obj.permit_id, initial_permit=(n == 0), **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -179,7 +175,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_guid = GUID
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = TODAY
+    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -198,6 +194,43 @@ class MineVerifiedStatusFactory(BaseFactory):
     update_timestamp = TODAY
 
 
+class PartyFactory(BaseFactory):
+    class Meta:
+        model = Party
+
+    class Params:
+        person = factory.Trait(
+            first_name=factory.Faker('first_name'),
+            party_name=factory.Faker('last_name'),
+            email=factory.LazyAttribute(lambda o: f'{o.first_name}.{o.party_name}@example.com'),
+            party_type_code='PER',
+        )
+
+        company = factory.Trait(
+            party_name=factory.Faker('company'),
+            email=factory.Faker('company_email'),
+            party_type_code='ORG',
+        )
+
+    party_guid = factory.LazyFunction(uuid.uuid4)
+    first_name = None
+    party_name = None
+    phone_no = factory.Faker('numerify', text='###-###-####')
+    phone_ext = factory.Iterator([None, '123'])
+    email = None
+    effective_date = TODAY
+    expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
+    party_type_code = None
+    address_line_1 = factory.Faker('street_address')
+    suite_no = factory.Iterator([None, None, '123', '123'])
+    address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
+    city = factory.Faker('city')
+    sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+    mine_party_appt = []
+
+
 class MineFactory(BaseFactory):
     class Meta:
         model = Mine
@@ -212,7 +245,6 @@ class MineFactory(BaseFactory):
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
-    # mine_party_appt =
     mine_tailings_storage_facilities = []
     mine_permit = []
     mine_expected_documents = []
