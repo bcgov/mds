@@ -69,6 +69,21 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
+const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
+const formatParams = ({
+  commodity = [],
+  region = [],
+  status = [],
+  tenure = [],
+  ...remainingParams
+}) => ({
+  ...joinOrRemove(commodity, "commodity"),
+  ...joinOrRemove(region, "region"),
+  ...joinOrRemove(status, "status"),
+  ...joinOrRemove(tenure, "tenure"),
+  ...remainingParams,
+});
+
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -162,27 +177,9 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    // TODO: Centralize all of this param logic
-    const {
-      major,
-      tsf,
-      search,
-      status,
-      region,
-      tenure,
-      commodity,
-      ...remainingParams
-    } = this.state.params;
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
-        major,
-        tsf,
-        search,
-        status: status && status.join(","),
-        region: region && region.join(","),
-        tenure: tenure && tenure.join(","),
-        commodity: commodity && commodity.join(","),
-        ...remainingParams,
+        ...formatParams(this.state.params),
         // Overwrite current page/per_page with values provided
         page,
         per_page,
@@ -247,38 +244,9 @@ export class Dashboard extends Component {
   };
 
   handleMineSearch = (searchParams, clear = false) => {
-    const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
-    const {
-      commodity: commoditySearch = [],
-      region: regionSearch = [],
-      status: statusSearch = [],
-      tenure: tenureSearch = [],
-      ...remainingSearchParams
-    } = searchParams;
-    const formattedSearchParams = {
-      ...joinOrRemove(commoditySearch, "commodity"),
-      ...joinOrRemove(regionSearch, "region"),
-      ...joinOrRemove(statusSearch, "status"),
-      ...joinOrRemove(tenureSearch, "tenure"),
-      ...remainingSearchParams,
-    };
+    const formattedSearchParams = formatParams(searchParams);
+    const persistedParams = clear ? {} : formatParams(this.state.params);
 
-    const {
-      commodity: commodityPrev,
-      region: regionPrev,
-      status: statusPrev,
-      tenure: tenurePrev,
-      ...remainingPrevParams
-    } = this.state.params;
-    const persistedParams = clear
-      ? {}
-      : {
-          ...joinOrRemove(commodityPrev, "commodity"),
-          ...joinOrRemove(regionPrev, "region"),
-          ...joinOrRemove(statusPrev, "status"),
-          ...joinOrRemove(tenurePrev, "tenure"),
-          ...remainingPrevParams,
-        };
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
         // Start from existing state
