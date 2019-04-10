@@ -129,8 +129,8 @@ describe("`createTailingsStorageFacility` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createTailingsStorageFacility(mine_guid)(dispatch).then(() => {
+    mockAxios.onPost(url, mine_guid, mockPayload).reply(400, MOCK.ERROR);
+    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
