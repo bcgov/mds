@@ -69,12 +69,7 @@ const columns = [
     width: 160,
     dataIndex: "operationalStatus",
     sortField: "mine_operation_status_code",
-    render: (text, record) => (
-      <div title="Operational Status">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Operational Status">{text}</div>,
     sorter: true,
   },
   {
