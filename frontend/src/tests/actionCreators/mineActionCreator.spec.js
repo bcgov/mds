@@ -120,7 +120,7 @@ describe("`createTailingsStorageFacility` action creator", () => {
   const mockPayload = { mine_tailings_storage_facility_name };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, mine_guid, mockPayload).reply(200, mockResponse);
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
     return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -129,7 +129,7 @@ describe("`createTailingsStorageFacility` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, mine_guid, mockPayload).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url, mockPayload).reply(400, MOCK.ERROR);
     return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
