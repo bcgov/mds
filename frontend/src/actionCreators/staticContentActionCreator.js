@@ -120,3 +120,14 @@ export const fetchProvinceCodes = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_PROVINCE_CODES)));
 };
+
+export const fetchMineComplianceCodes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_COMPLIANCE_CODES));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.COMPLIANCE_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_COMPLIANCE_CODES));
+      dispatch(staticContentActions.storeComplianceCodes(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_COMPLIANCE_CODES)));
+};

@@ -15,6 +15,7 @@ const propTypes = {
     "manager-small",
     "tenure",
     "permit",
+    "variance",
     "no-results",
     "compliance",
     "unauthorized",
@@ -70,16 +71,16 @@ const NullScreen = (props) => (
         <h3>{String.NO_PERMIT}</h3>
       </div>
     )}
-    {props.type === "no-open-orders" && (
-      <div>
-        <img alt="mine_img" src={PERMIT} />
-        <h3>{String.NO_OPEN_ORDERS}</h3>
-      </div>
-    )}
     {props.type === "compliance" && (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_NRIS_INSPECTIONS}</h3>
+      </div>
+    )}
+    {props.type === "variance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_VARIANCE}</h3>
       </div>
     )}
     {props.type === "applications" && (

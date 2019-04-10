@@ -58,11 +58,15 @@ def register_commands(app):
     # in terminal you can run $flask <cmd> <arg>
 
     @app.cli.command()
+    def import_idir():
+        from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
+        _import_empr_idir_users()
+
+    @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
         from . import auth
-        auth.apply_security = False
         """
         Creates dummy data in the database. If threading=True
         Use Threading and multiprocessing to create records in chunks of 100.
@@ -71,7 +75,7 @@ def register_commands(app):
         :param threading: use threading or not
         :return: None
         """
-        User.test_mode = True
+        User._test_mode = True
 
         if threading:
             with ThreadPoolExecutor() as executor:
@@ -84,7 +88,7 @@ def register_commands(app):
                 batches = [batch_size] * full_batches
                 if 0 < num % batch_size:
                     batches.append(num % batch_size)
-                
+
                 task_list = []
                 for batch in batches:
                     task_list.append(executor.submit(_create_data, batch))

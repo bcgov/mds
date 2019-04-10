@@ -71,6 +71,10 @@ body {
   justify-content: center;
 }
 
+.flex-end {
+  justify-content: flex-end;
+}
+
 .block-mobile {
   @include mobile {
     display: block;

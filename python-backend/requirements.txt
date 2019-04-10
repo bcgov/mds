@@ -5,6 +5,7 @@ attrs==18.1.0
 cached_property==1.5.1
 click==6.7
 elastic-apm[flask]==4.0.3
+factory-boy==2.11.1
 Flask==1.0.2
 Flask-APScheduler==1.11.0
 Flask-Caching==1.4.0
@@ -18,6 +19,7 @@ GeoAlchemy2==0.5.0
 itsdangerous==0.24
 Jinja2==2.10
 jsonschema==2.6.0
+ldap3==2.6.0
 Mako==1.0.7
 MarkupSafe==1.0
 more-itertools==4.2.0
