@@ -340,10 +340,14 @@ export class Dashboard extends Component {
               />
               <div className="tab__content ">
                 <MineList
+                  mines={this.props.mines}
+                  mineIds={this.props.mineIds}
+                  mineRegionHash={this.props.mineRegionHash}
+                  mineTenureHash={this.props.mineTenureHash}
+                  mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
                   handleMineSearch={this.handleMineSearch}
                   sortField={this.state.params.sort_field}
                   sortDir={this.state.params.sort_dir}
-                  {...this.props} // TODO: Remove this
                 />
               </div>
               <div className="center">
