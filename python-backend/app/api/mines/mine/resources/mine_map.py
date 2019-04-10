@@ -7,6 +7,7 @@ from flask_restplus import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db
+from app.api.mines.mine_api_models import BASIC_MINE_LIST
 from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
@@ -15,26 +16,10 @@ from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
 
-mine_location = api.model('MineMapLocation', {
-    'latitude': fields.String,
-    'longitude': fields.String,
-})
-
-mine_map_list = api.model(
-    'MineMap', {
-        'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'mine_no': fields.String,
-        'mine_location': fields.Nested(mine_location)
-    })
-
 
 class MineMapResource(Resource, UserMixin):
-    @api.doc(description='This endpoint returns a list of all mines to be displayed on the map.')
-    @api.response(
-        200,
-        'Returns a list of mines with less information to be displayed on the map.',
-        model=mine_map_list)
+    @api.doc(description='Returns a list of mines with reduced information.')
+    @api.response(200, model=BASIC_MINE_LIST)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
         # Below caches the mine map response object in redis with a timeout.

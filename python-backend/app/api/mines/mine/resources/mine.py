@@ -23,7 +23,7 @@ from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
-from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE
+from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
