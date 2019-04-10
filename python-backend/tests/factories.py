@@ -13,6 +13,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
@@ -201,7 +202,6 @@ class MineIncidentFactory(BaseFactory):
     mine_incident_id = factory.Sequence(lambda n: n)
     mine_incident_id_year = lambda: TODAY().year
     mine_incident_guid = GUID
-    mine_guid  #FK GUID
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
