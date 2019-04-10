@@ -2,7 +2,7 @@ import React from "react";
 import { func, objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
-import { uniqBy } from "lodash";
+import { uniqBy, isEmpty } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -172,8 +172,17 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     verified: mines[id].verified_status ? mines[id].verified_status.healthy : null,
   }));
 
-const handleTableChange = (updateMineList) => (pagination, filters, { column, order }) => {
-  updateMineList({ sort_field: column.sortField, sort_dir: order.replace("end", "") });
+const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateMineList(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
