@@ -51,11 +51,9 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <FormItem
-        colon={true}
         hasFeedback={false}
         help={false}
         label=""
-        prefixCls="ant-form"
         validateStatus=""
       >
         <Select
@@ -67,7 +65,6 @@ ShallowWrapper {
           mode="multiple"
           onSearch={[Function]}
           placeholder=""
-          prefixCls="ant-select"
           showSearch={false}
           transitionName="slide-up"
         >
@@ -91,18 +88,15 @@ ShallowWrapper {
           mode="multiple"
           onSearch={[Function]}
           placeholder=""
-          prefixCls="ant-select"
           showSearch={false}
           transitionName="slide-up"
         >
           <Option />
           <Option />
         </Select>,
-        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
-        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -123,7 +117,6 @@ ShallowWrapper {
           "mode": "multiple",
           "onSearch": [Function],
           "placeholder": "",
-          "prefixCls": "ant-select",
           "showSearch": false,
           "transitionName": "slide-up",
         },
@@ -165,11 +158,9 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <FormItem
-          colon={true}
           hasFeedback={false}
           help={false}
           label=""
-          prefixCls="ant-form"
           validateStatus=""
         >
           <Select
@@ -181,7 +172,6 @@ ShallowWrapper {
             mode="multiple"
             onSearch={[Function]}
             placeholder=""
-            prefixCls="ant-select"
             showSearch={false}
             transitionName="slide-up"
           >
@@ -205,18 +195,15 @@ ShallowWrapper {
             mode="multiple"
             onSearch={[Function]}
             placeholder=""
-            prefixCls="ant-select"
             showSearch={false}
             transitionName="slide-up"
           >
             <Option />
             <Option />
           </Select>,
-          "colon": true,
           "hasFeedback": false,
           "help": false,
           "label": "",
-          "prefixCls": "ant-form",
           "validateStatus": "",
         },
         "ref": null,
@@ -237,7 +224,6 @@ ShallowWrapper {
             "mode": "multiple",
             "onSearch": [Function],
             "placeholder": "",
-            "prefixCls": "ant-select",
             "showSearch": false,
             "transitionName": "slide-up",
           },
