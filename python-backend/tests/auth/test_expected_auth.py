@@ -23,7 +23,7 @@ from app.api.mines.variances.resources.variance import (VarianceListResource,
                                                         VarianceUploadedDocumentsResource)
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusResource
-from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource, MineTailingsStorageFacilityListResource
+from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
@@ -67,7 +67,6 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
      (MineResource, "put", [MINE_CREATE]),
      (MineStatusResource, "get", [MINE_VIEW]),
-     (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityListResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_CREATE]),
      (MineTenureTypeCodeResource, "get", [MINE_VIEW]),
