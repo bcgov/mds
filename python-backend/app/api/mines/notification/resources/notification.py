@@ -29,6 +29,8 @@ class MineNotificationResource(Resource, UserMixin, ErrorMixin):
     # subscriptions_model = api.model('Notification', {
     #     'mines': list(map(lambda x: x.json_for_list(), mines)),
     # })
+
+    # todo delete bellow when done
     MINE_TSF = api.model(
         'MineTailingsStorageFacility', {
             'mine_tailings_storage_facility_guid': fields.String,
@@ -87,14 +89,19 @@ class MineNotificationResource(Resource, UserMixin, ErrorMixin):
             'mine_type': fields.List(fields.Nested(MINE_TYPE)),
             'verified_status': fields.Nested(MINE_VERIFIED)
         })
+    # todo delete above when done
 
+    MINE_GUID = api.model(
+        'mine_guid', {
+            'mine_guid': fields.String,
+        })
 
     @api.doc(
         description=
         'Get a list of all mines subscribed to by a user.'
     )
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(MINES, code=200, envelope='records')
+    @api.marshal_with(MINE_GUID, code=200, envelope='records')
     def get(self):
         user_name = User().get_user_username()
         mine_query = Mine.query.filter_by( deleted_ind=False ).join(Notification).filter_by(idir=user_name)
@@ -107,20 +114,23 @@ class MineNotificationResource(Resource, UserMixin, ErrorMixin):
 #
 #
 # # TODO: must bring in line with new standards
-#     @api.doc(params={'mine_guid': 'Mine guid.'})
-#     @requires_role_mine_view
-#     def post(self, mine_guid=None):
-#         if not mine_guid:
-#             return self.create_error_payload(400, 'Mine guid expected'), 400
-#
-#         try:
-#             mine_subscription = Notification.create_subscription(mine_guid)
-#             return {
-#                 'mine_guid': str(mine_subscription.mine_guid),
-#             }
-#         except Exception:
-#             return self.create_error_payload(422, 'Invalid Mine guid'), 422
-#
+    @api.doc(
+        description='Adds a mine to the subcriptions of the user that sends the request',
+        params={'mine_guid': 'Mine guid.'})
+    @requires_any_of([MINE_VIEW])
+    # @api.marshal_with(MINES, code=200, envelope='records')
+    def post(self, mine_guid=None):
+        if not mine_guid:
+            return self.create_error_payload(400, 'Mine guid expected'), 400
+
+        try:
+            mine_subscription = Notification.create_subscription(mine_guid)
+            return {
+                'mine_guid': str(mine_subscription.mine_guid),
+            }
+        except Exception:
+            return self.create_error_payload(422, 'Invalid Mine guid'), 422
+
 #     @api.doc(params={'mine_guid': 'Mine guid.'})
 #     @requires_role_mine_view
 #     def delete(self, mine_guid=None):
