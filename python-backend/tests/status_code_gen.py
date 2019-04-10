@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
-
+from app.api.parties.party.models.sub_division_code import SubDivisionCode
 
 
 def RandomExpectedDocumentStatusCode():
@@ -51,3 +51,7 @@ def SampleMineDisturbanceCodes(mine_tenure_type, num):
 
 def RandomMineStatusXref():
     return random.choice(db.session.query(MineStatusXref).all())
+
+
+def RandomSubDivisionCode():
+    return random.choice([x.sub_division_code for x in db.session.query(SubDivisionCode).all()])
