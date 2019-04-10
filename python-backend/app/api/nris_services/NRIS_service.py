@@ -3,6 +3,7 @@ import uuid
 import requests
 import json
 import functools
+import logging
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -92,11 +93,11 @@ def _get_EMPR_data_from_NRIS(mine_no):
 
 
 def _process_NRIS_data(data, mine_no):
+    logging.warning(data)
     data = sorted(
         data,
         key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
         reverse=True)
-
     advisories = 0
     warnings = 0
     num_open_orders = 0

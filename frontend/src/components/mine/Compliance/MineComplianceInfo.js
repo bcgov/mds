@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
 import { connect } from "react-redux";
-
-import * as String from "@/constants/strings";
+import { Divider } from "antd";
+import { OVERDUEDOC, DOC } from "@/constants/assets";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { formatDate } from "@/utils/helpers";
 import OpenOrdersTable from "@/components/mine/Compliance/OpenOrdersTable";
+import MineComplianceCards from "@/components/mine/Compliance/MineComplianceCards";
 
 /**
- * @class  MineTenureInfo - all tenure information related to the mine.
+ * @class  MineComplianceInfo - all compliance information related to the mine.
  */
 
 const propTypes = {
@@ -38,77 +38,62 @@ export class MineComplianceInfo extends Component {
   render() {
     return (
       <div>
-        {this.props.isLoading && <Loading />}
-        {!this.props.isLoading && (
+        {this.props.isLoading ? (
+          <Loading />
+        ) : (
           <div>
-            {this.props.mineComplianceInfo && (
+            {/* if this is falsy, than NRIS has no data, checking against mineComplianceInfo will always return true */}
+            {this.props.mineComplianceInfo.last_inspection && (
               <div>
-                <Row gutter={16} justify="center" align="top">
-                  <Col span={2} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">
-                        {formatDate(this.props.mineComplianceInfo.last_inspection) ||
-                          String.NO_NRIS_INSPECTIONS}
-                      </p>
-                      <p className="info-display-label">LAST INSPECTION DATE</p>
-                    </div>
-                  </Col>
-                  <Col span={4} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">
-                        {this.props.mineComplianceInfo.num_overdue_orders}
-                      </p>
-                      <p className="info-display-label">OVERDUE ORDERS</p>
-                    </div>
-                  </Col>
-                  <Col span={4} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">
-                        {this.props.mineComplianceInfo.num_open_orders}
-                      </p>
-                      <p className="info-display-label">OPEN ORDERS</p>
-                    </div>
-                  </Col>
-                  <Col span={2} />
-                </Row>
-                <br />
-                <br />
-                <Row gutter={16} justify="center" align="top">
-                  <Col span={2} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">{this.props.mineComplianceInfo.warnings}</p>
-                      <p className="info-display-label">WARNINGS ISSUED IN THE PAST YEAR</p>
-                    </div>
-                  </Col>
-                  <Col span={4} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">{this.props.mineComplianceInfo.advisories}</p>
-                      <p className="info-display-label">ADVISORIES ISSUED IN THE PAST YEAR</p>
-                    </div>
-                  </Col>
-                  <Col span={4} />
-                  <Col span={4}>
-                    <div className="center">
-                      <p className="info-display">
-                        {this.props.mineComplianceInfo.section_35_orders} - Section 35
-                      </p>
-                      <p className="info-display-label">TOTAL</p>
-                    </div>
-                  </Col>
-                  <Col span={2} />
-                </Row>
-
-                <br />
-                <br />
+                <h4>COMPLIANCE OVERVIEW</h4>
+                <Divider />
+                <div className="compliance--container">
+                  <div className="compliance--content">
+                    <MineComplianceCards
+                      title="Count of inspections (Past 12 months)"
+                      content="200"
+                    />
+                    <MineComplianceCards
+                      title="Count of inspections (Since april 1, 2018)"
+                      content="0"
+                    />
+                    <MineComplianceCards
+                      title="Last Inspection Date"
+                      content={formatDate(this.props.mineComplianceInfo.last_inspection)}
+                    />
+                    <MineComplianceCards
+                      title="idir of last inspector to inspect site"
+                      content={this.props.mineComplianceInfo.last_inspector}
+                    />
+                    <MineComplianceCards
+                      title="open orders"
+                      icon={DOC}
+                      content={this.props.mineComplianceInfo.num_open_orders}
+                    />
+                    <MineComplianceCards
+                      title="overdue orders"
+                      icon={OVERDUEDOC}
+                      content={this.props.mineComplianceInfo.num_overdue_orders}
+                    />
+                    <MineComplianceCards
+                      title="Warnings issued in the past 12 months"
+                      content={this.props.mineComplianceInfo.warnings}
+                    />
+                    <MineComplianceCards
+                      title="advisories issued in the past 12 months"
+                      content={this.props.mineComplianceInfo.advisories}
+                    />
+                  </div>
+                </div>
                 {this.props.mineComplianceInfo.open_orders.length > 0 && (
                   <div>
-                    <h2>Open Orders</h2>
                     <br />
+                    <h4>INSPECTION ORDERS</h4>
+                    <Divider />
+                    {/* <div className="compliance-filter--content">
+                      <h4>Filter By</h4>
+                      <MineComplianceFilterForm />
+                    </div> */}
                     <OpenOrdersTable
                       openOrders={this.props.mineComplianceInfo.open_orders}
                       handlePageChange={this.handlePageChange}
@@ -119,7 +104,7 @@ export class MineComplianceInfo extends Component {
                 )}
               </div>
             )}
-            {!this.props.mineComplianceInfo && <NullScreen type="generic" />}
+            {!this.props.mineComplianceInfo.last_inspection && <NullScreen type="compliance" />}
           </div>
         )}
       </div>

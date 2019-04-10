@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Pagination } from "antd";
@@ -5,6 +6,8 @@ import { Table, Pagination } from "antd";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import NullScreen from "@/components/common/NullScreen";
+import MineComplianceFilterForm from "@/components/Forms/MineComplianceFilterForm";
 
 const propTypes = {
   handlePageChange: PropTypes.func.isRequired,
@@ -34,6 +37,10 @@ const byDateOrOrderNo = (order1, order2) => {
   const date1 = Date.parse(order1.due_date) || 0;
   const date2 = Date.parse(order2.due_date) || 0;
   return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
+};
+
+const filterOrders = (values) => {
+  console.log(values);
 };
 
 const columns = [
@@ -108,13 +115,17 @@ const transformRowData = (orders, minOrderList, maxOrderList) =>
 
 const OpenOrdersTable = (props) => (
   <div>
+    <div className="compliance-filter--content">
+      <h4>Filter By</h4>
+      <MineComplianceFilterForm onSubmit={filterOrders} />
+    </div>
     <Table
       align="left"
       pagination={false}
       columns={columns}
       dataSource={transformRowData(props.openOrders, props.minOrderList, props.maxOrderList)}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
     />
-
     <Pagination
       defaultCurrent={1}
       defaultPageSize={10}

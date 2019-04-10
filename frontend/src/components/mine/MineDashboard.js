@@ -81,7 +81,11 @@ const defaultProps = {
 };
 
 export class MineDashboard extends Component {
-  state = { activeTab: "summary", isLoaded: false, complianceInfoLoading: true };
+  state = {
+    activeTab: "summary",
+    isLoaded: false,
+    complianceInfoLoading: true,
+  };
 
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
