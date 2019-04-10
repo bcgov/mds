@@ -9,6 +9,9 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
   dispatchProps.updateMineRecord = jest.fn();
+  dispatchProps.createVariance = jest.fn();
+  dispatchProps.fetchMineComplianceCodes = jest.fn();
+  dispatchProps.fetchVariancesByMine = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.fetchMineDisturbanceOptions = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
@@ -27,8 +30,9 @@ const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
-  reducerProps.permittees = {};
-  reducerProps.permitteeIds = [];
+  reducerProps.variances = MOCK.VARIANCES.records;
+  reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
+  reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
