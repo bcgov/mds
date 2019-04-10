@@ -12,24 +12,23 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.url import get_documents_svc_url
 
 from ..models.tailings import MineTailingsStorageFacility
-from ....documents.namespace.documents import api as doc_api
+from app.api.mines.mine.models.mine import Mine
+
 from app.api.mines.mine_api_models import MINE_TSF_MODEL
 
 
-class MineTailingsStorageFacilityListResource(Resource, UserMixin, ErrorMixin):
+class MineTailingsStorageFacilityListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'tailings_facility_name',
+        'mine_tailings_storage_facility_name',
         type=str,
         trim=True,
         help='Name of the tailings storage facility.',
         required=True)
 
-    @api.doc(
-        params={'mine_guid', 'used to get all tsf\'s for a mine'},
-        description='Returns a list of tailing storage facilities')
+    @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(
-        MINE_TSF_MODEL, envelope='mine_storage_tailings_facilities', as_list=True, code=200)
+        MINE_TSF_MODEL, envelope='mine_tailings_storage_facilities', as_list=True, code=200)
     @requires_role_mine_view
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -49,8 +48,9 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin, ErrorMixin):
         mine_tsf_list = mine.mine_tailings_storage_facilities
         is_mine_first_tsf = len(mine_tsf_list) == 0
 
+        data = self.parser.parse_args()
         mine_tsf = MineTailingsStorageFacility.create(
-            tailings_facility_name=data['tailings_facility_name'])
+            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
         if is_mine_first_tsf:
@@ -95,11 +95,3 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin, ErrorMixin):
                 raise InternalServerError(str(e) + ", tsf not created")
         mine.save()
         return mine_tsf
-
-
-class MineTailingsStorageFacilityResource(Resource, UserMixin):
-    def get(self, mine_tailings_storage_facility_guid):
-        tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
-        if not tsf:
-            raise NotFound('tsf not found')
-        return tsf

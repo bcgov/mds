@@ -1,13 +1,16 @@
 import uuid, pytest
 from tests.constants import TEST_MINE_GUID
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.extensions import db
 
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
+    mine = Mine.find_by_mine_guid(TEST_MINE_GUID)
+
     mine_tsf1 = MineTailingsStorageFacility.create(
-        mine_guid=TEST_MINE_GUID, tailings_facility_name='Tailings Facility 1')
+        mine=mine, mine_tailings_storage_facility_name='Tailings Facility 1')
     mine_tsf1.save()
 
     yield dict(tsf1=mine_tsf1)

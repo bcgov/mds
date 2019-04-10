@@ -41,8 +41,10 @@ class MockResponse:
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
+    mine = Mine.find_by_mine_guid(TEST_MINE_GUID)
+
     mine_tsf1 = MineTailingsStorageFacility.create(
-        mine_guid=TEST_MINE_GUID, tailings_facility_name='Tailings Facility 1')
+        mine=mine, mine_tailings_storage_facility_name='Tailings Facility 1')
     mine_tsf1.save()
 
     yield dict(tsf1=mine_tsf1)
@@ -53,33 +55,22 @@ def setup_info(test_client):
 # GET
 def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers, setup_info):
     get_resp = test_client.get(
-        '/mines/tailings?mine_guid=' + str(setup_info['tsf1'].mine_guid),
+        f'/mines/{str(setup_info["tsf1"].mine_guid)}/tailings',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert len(get_data['mine_storage_tailings_facilities']) == 1
+    assert get_resp.status_code == 200, get_resp.respons
+    assert len(get_data['mine_tailings_storage_facilities']) == 1
 
 
 def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, auth_headers, setup_info):
-    get_resp = test_client.get(
-        '/mines/tailings?mine_guid=' + str(setup_info['tsf1'].mine_guid),
-        headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    org_mine_tsf_list_len = len(get_data['mine_storage_tailings_facilities'])
-
     post_resp = test_client.post(
-        '/mines/tailings',
-        data={
-            'mine_guid': str(setup_info['tsf1'].mine_guid),
-            'tsf_name': TEST_TAILINGS_STORAGE_FACILITY_NAME2
-        },
+        f'/mines/{str(setup_info["tsf1"].mine_guid)}/tailings',
+        data={'mine_tailings_storage_facility_name': TEST_TAILINGS_STORAGE_FACILITY_NAME2},
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 200
-    assert len(post_data['mine_tailings_storage_facilities']) == (org_mine_tsf_list_len + 1)
-    assert all(
-        tsf['mine_guid'] == TEST_MINE_GUID for tsf in post_data['mine_tailings_storage_facilities'])
+    assert post_resp.status_code == 200, post_resp.response
+    assert post_data['mine_tailings_storage_facility_name'] == TEST_TAILINGS_STORAGE_FACILITY_NAME2
+    assert post_data['mine_guid'] == TEST_MINE_GUID
 
 
 ### using pytest to hit endpoints that make other web requests doesn't not play well with Wurkzerg (WSGI mock)

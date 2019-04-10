@@ -9,7 +9,7 @@ from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
 from ..status.resources.status import MineStatusResource
 from ..region.resources.region import MineRegionResource
-from ..tailings.resources.tailings import MineTailingsStorageFacilityResource, MineTailingsStorageListFacilityResource
+from ..tailings.resources.tailings import MineTailingsStorageFacilityResource, MineTailingsStorageFacilityListResource
 from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource

@@ -1,12 +1,15 @@
 import json, uuid, pytest
 from tests.constants import TEST_MINE_PARTY_APPT_GUID, TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_MINE_PARTY_APPT_TYPE_CODE2, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1, TEST_MINE_PARTY_APPT_TYPE_CODE1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.extensions import db
 
 
 @pytest.fixture(scope="function")
 def setup_info(test_client):
+    mine = Mine.find_by_mine_guid(TEST_MINE_GUID)
+
     mpa = MinePartyAppointment(
         mine_party_appt_guid=TEST_MINE_PARTY_APPT_GUID,
         mine_guid=uuid.UUID(TEST_MINE_GUID),
@@ -15,7 +18,7 @@ def setup_info(test_client):
     mpa.save()
 
     mine_tsf1 = MineTailingsStorageFacility.create(
-        mine_guid=TEST_MINE_GUID, tailings_facility_name='Tailings Facility 1')
+        mine=mine, mine_tailings_storage_facility_name='Tailings Facility 1')
     mine_tsf1.save()
 
     yield dict(mine_party_appointment=mpa, tsf1=mine_tsf1)
