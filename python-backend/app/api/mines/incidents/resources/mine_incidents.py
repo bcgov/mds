@@ -42,7 +42,18 @@ class MineIncidentListResource(Resource, UserMixin):
         type=str,
         location='json',
         required=True)
-    #optional
+    #optional and defaulted
+    parser.add_argument(
+        'followup_type_code',
+        help='Mark incident as a dangerous occurance',
+        type=str,
+        location='json')
+    #nullable
+    parser.add_argument(
+        'followup_inspection_no',
+        help='Mark incident to have a follow up inspection',
+        type=str,
+        location='json')
     parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
@@ -52,17 +63,6 @@ class MineIncidentListResource(Resource, UserMixin):
         'reported_by', help='Name of party who reported the incident', type=str, location='json')
     parser.add_argument(
         'reported_by_role', help='Job title of incident reporter', type=str, location='json')
-    #nullable
-    parser.add_argument(
-        'followup_type_code',
-        help='Mark incident as a dangerous occurance',
-        type=str,
-        location='json')
-    parser.add_argument(
-        'followup_inspection_no',
-        help='Mark incident to have a follow up inspection',
-        type=str,
-        location='json')
 
     @api.marshal_with(mine_incident_model, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -83,11 +83,16 @@ class MineIncidentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-        incident = MineIncident.create(mine, data['incident_timestamp'],
-                                       data['incident_description'], data['reported_timestamp'],
-                                       data['reported_by'], data['reported_by_role'],
-                                       data.get('dangerous_occurance_ind'),
-                                       date.get('followup_inspection_ind'))
+        incident = MineIncident.create(
+            mine,
+            data['incident_timestamp'],
+            data['incident_description'],
+            followup_type_code=data['followup_type_code'] or 'UND',
+            followup_inspection_no=date['followup_inspection_no'],
+            reported_timestamp=data['reported_timestamp'],
+            reported_by=data['reported_by'],
+            reported_by_role=data['reported_by_role'],
+        )
         incident.save()
 
         return incident, 201

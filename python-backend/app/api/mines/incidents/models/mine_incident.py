@@ -49,11 +49,11 @@ class MineIncident(AuditMixin, Base):
                mine,
                incident_timestamp,
                incident_description,
-               reported_timestamp,
-               reported_by,
-               reported_by_role,
-               dangerous_occurance_ind,
-               followup_inspection_ind,
+               followup_type_code='UND',
+               followup_inspection_no=None,
+               reported_timestamp=None,
+               reported_by=None,
+               reported_by_role=None,
                save=True):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
