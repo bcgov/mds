@@ -246,8 +246,7 @@ export class Dashboard extends Component {
     }
   };
 
-  handleMineSearch = (searchParams, clear) => {
-    console.log("state", this.state);
+  handleMineSearch = (searchParams, clear = false) => {
     const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
     const {
       commodity: commoditySearch = [],
