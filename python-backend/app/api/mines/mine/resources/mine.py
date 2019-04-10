@@ -99,7 +99,7 @@ class MineListResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description='Creates a new mine.')
-    @api.marshal_with(MINE, code=201)
+    @api.marshal_with(MINE_MODEL, code=201)
     @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
@@ -266,7 +266,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         location='json')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
-    @api.marshal_with(MINE, code=200)
+    @api.marshal_with(MINE_MODEL, code=200)
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
 
@@ -277,7 +277,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         return mine
 
     @api.expect(parser)
-    @api.marshal_with(MINE, code=200)
+    @api.marshal_with(MINE_MODEL, code=200)
     @api.doc(description='Updates the specified mine.')
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
