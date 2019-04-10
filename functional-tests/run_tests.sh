@@ -6,7 +6,8 @@ set -exv -o pipefail
 #./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
 # ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
 ###Run both Core and MineSpace tests 
-./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitMasterSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
 
 # Config needed for firefoxHeadlessTest
 # For more info: https://github.com/BCDevOps/BDDStack/wiki/Running-firefoxHeadlessTest-in-CentOS
