@@ -56,12 +56,7 @@ const columns = [
     width: 120,
     dataIndex: "mineNo",
     sortField: "mine_no",
-    render: (text, record) => (
-      <div title="Mine Number">
-        {text}
-        {!text && <div>{record.emptyField}</div>}
-      </div>
-    ),
+    render: (text) => <div title="Mine Number">{text}</div>,
     sorter: true,
   },
   {
