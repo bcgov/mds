@@ -21,10 +21,17 @@ RUN mv /app/logstash-6.7.0 /app/logstash
 ENV ELASTIC_CONTAINER false
 ENV PATH=/app/logstash/bin:$PATH
 
+# Add Postgres JDBC Driver
+RUN mkdir /app/logstash/jdbc
+WORKDIR /app/logstash/jdbc
+RUN wget -q https://jdbc.postgresql.org/download/postgresql-42.2.5.jar
+WORKDIR /app
+
 # Add logstash config files
 COPY dictionaries /app/logstash/dictionaries
 COPY pipeline/ /app/logstash/pipeline/
 COPY config/ /app/logstash/config/
+COPY templates /app/logstash/templates
 
 # Ensure Logstash gets a UTF-8 locale by default.
 ENV LANG='en_US.UTF-8' LC_ALL='en_US.UTF-8'
@@ -36,6 +43,6 @@ RUN chmod 0755 /usr/local/bin/docker-entrypoint
 RUN chmod 0755 /usr/local/bin/env2yaml
 
 # Expose default runtime port
-EXPOSE 9600 5044
+EXPOSE 9600
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]

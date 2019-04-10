@@ -1,7 +1,7 @@
 import { PropTypes, shape, arrayOf, objectOf, oneOfType } from "prop-types";
 
 export const dropdownListItem = shape({
-  value: PropTypes.string.isRequired,
+  value: oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
 });
 

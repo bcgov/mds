@@ -4,9 +4,9 @@ import { request, success, error } from "@/actions/genericActions";
 import * as ReducerTypes from "@/constants/reducerTypes";
 import * as ActionTypes from "@/constants/actionTypes";
 
-/* 
+/*
 Testing against action `createMineRecord` arbitrarily.
-The genericActions includes: request, success, and error. 
+The genericActions includes: request, success, and error.
 They are used in every network action.
 */
 

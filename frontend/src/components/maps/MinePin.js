@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { renderToString } from "react-dom/server";
 import MapPopup from "@/components/maps/MapPopup";
-import CustomPropTypes from "@/customPropTypes";
 import { getMines, getMineIds, getMineBasicInfoList } from "@/selectors/mineSelectors";
 import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
 import { getCommodityOptionHash } from "@/selectors/staticContentSelectors";
@@ -18,7 +17,7 @@ import { getCommodityOptionHash } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   fetchMineBasicInfoList: PropTypes.func.isRequired,
-  mines: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.objectOf(PropTypes.any).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string),
   mineBasicInfoList: PropTypes.arrayOf(PropTypes.any),
   view: PropTypes.objectOf(PropTypes.any).isRequired,
