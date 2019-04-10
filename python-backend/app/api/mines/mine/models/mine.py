@@ -59,7 +59,7 @@ class Mine(AuditMixin, Base):
 
     def json(self):
         return {
-            'guid':
+            'mine_guid':
             str(self.mine_guid),
             'mine_name':
             self.mine_name,

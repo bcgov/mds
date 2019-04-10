@@ -80,7 +80,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             if not mine_doc:
                 return self.create_error_payload(404, 'Mine Document not found'), 404
 
-            expected_document.mine_documents.append(mine_doc)
+            expected_document.related_documents.append(mine_doc)
             db.session.commit()
         elif data.get('document_manager_guid'):
             # Register and associate a new file upload
@@ -94,7 +94,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                 document_manager_guid=data.get('document_manager_guid'),
                 document_name=filename)
 
-            expected_document.mine_documents.append(mine_doc)
+            expected_document.related_documents.append(mine_doc)
             db.session.commit()
         else:
             return self.create_error_payload(
@@ -115,7 +115,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 404, 'Either the Expected Document or the Mine Document was not found'), 404
 
-        expected_document.mine_documents.remove(mine_document)
+        expected_document.related_documents.remove(mine_document)
         expected_document.save()
 
         return {'status': 200, 'message': 'The document was removed succesfully'}
