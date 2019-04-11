@@ -240,7 +240,11 @@ export class MineDashboard extends Component {
                 )}
                 <TabPane tab="Incidents" key="incidents">
                   <div className="tab__content">
-                    <MineIncidents mineGuid={mine.mine_guid} />
+                    <MineIncidents
+                      mine={mine}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                    />
                   </div>
                 </TabPane>
               </Tabs>
