@@ -239,21 +239,21 @@ export const PARTY = {
 
 export const MINE_NAME_LIST = [
   {
-    guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+    mine_guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
     mine_name: "New Mine",
     mine_no: "BLAH6194",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "89a65274-581d-4862-8630-99f5f7687089",
+    mine_guid: "89a65274-581d-4862-8630-99f5f7687089",
     mine_name: "Mine Two",
     mine_no: "BLAH0502",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+    mine_guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
     mine_name: "Legit Mine",
     mine_no: "BLAH6734",
     longitude: "-119.6963833",
@@ -907,6 +907,80 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
   { application_status_code: "RIP", description: "In Review" },
   { application_status_code: "APR", description: "Approved" },
 ];
+
+export const VARIANCES = {
+  records: [
+    {
+      variance_id: 1249,
+      compliance_article_id: 1,
+      expiry_date: "2019-03-30",
+      issue_date: "2019-03-01",
+      note: "notesss",
+      received_date: "2019-03-01",
+      documents: [
+        {
+          records: [
+            {
+              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
+              variance_id: 1249,
+              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+              details: {
+                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
+                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
+                document_name: "just_a_pdf.PDF",
+                active_ind: "True",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const COMPLIANCE_CODES = {
+  records: [
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 305,
+      description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "7",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 306,
+      description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "8",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+  ],
+};
+
+export const DROPDOWN_HSRCM_CODES = [
+  {
+    value: 305,
+    label: "2.3.7 - Spills",
+  },
+  {
+    value: 306,
+    label: "2.3.8 - Flammable Waste Storage",
+  },
+];
+
+export const HSRCM_HASH = {
+  305: "2.3.7 - Spills",
+  306: "2.3.8 - Flammable Waste Storage",
+};
 
 export const APPLICATION_LIST = {
   applications: [

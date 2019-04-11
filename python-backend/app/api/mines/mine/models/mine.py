@@ -41,7 +41,9 @@ class Mine(AuditMixin, Base):
     mine_permit = db.relationship(
         'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', 
+        primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
+        lazy='selectin')
 
     #Not always desired, set to lazy load using select
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')

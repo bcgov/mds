@@ -19,27 +19,36 @@ import {
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
+  fetchMineComplianceCodes,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
+import {
+  createVariance,
+  fetchVariancesByMine,
+  addDocumentToVariance,
+} from "@/actionCreators/varianceActionCreator";
 import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
+  getDropdownHSRCMComplianceCodes,
+  getHSRCMComplianceCodesHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
+import { getMineVariances } from "@/selectors/varianceSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
-
 import CustomPropTypes from "@/customPropTypes";
 import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
+import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -47,6 +56,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -57,17 +67,20 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
+  fetchMineComplianceCodes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  permittees: PropTypes.objectOf(CustomPropTypes.permittee),
-  permitteesIds: PropTypes.arrayOf(PropTypes.string),
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
+  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+  complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
@@ -76,8 +89,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  permittees: [],
-  permitteesIds: [],
   mineTenureHash: {},
   mineComplianceInfo: {},
 };
@@ -99,6 +110,7 @@ export class MineDashboard extends Component {
       this.props.fetchApplicationStatusOptions();
       this.props.setOptionsLoaded();
     }
+    this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
 
     if (activeTab) {
@@ -127,6 +139,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchApplications({ mine_guid: this.props.mines[id].mine_guid });
       this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
+      this.props.fetchVariancesByMine({ mineGuid: id });
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
         this.setState({ complianceInfoLoading: false });
@@ -137,6 +150,7 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    const isDevOrTest = !detectProdEnvironment();
     if (!mine) {
       return <Loading />;
     }
@@ -159,8 +173,6 @@ export class MineDashboard extends Component {
                   <div className="tab__content">
                     <MineSummary
                       mine={mine}
-                      permittees={this.props.permittees}
-                      permitteeIds={this.props.permitteeIds}
                       mineComplianceInfo={this.props.mineComplianceInfo}
                       complianceInfoLoading={this.state.complianceInfoLoading}
                     />
@@ -195,6 +207,24 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
+                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
+                {isDevOrTest && (
+                  <TabPane tab="Variance" key="variance">
+                    <div className="tab__content">
+                      <MineVariance
+                        mine={mine}
+                        createVariance={this.props.createVariance}
+                        addDocumentToVariance={this.props.addDocumentToVariance}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                        fetchVariancesByMine={this.props.fetchVariancesByMine}
+                        variances={this.props.variances}
+                        complianceCodes={this.props.complianceCodes}
+                        complianceCodesHash={this.props.complianceCodesHash}
+                      />
+                    </div>
+                  </TabPane>
+                )}
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">
@@ -228,6 +258,9 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
+  variances: getMineVariances(state),
+  complianceCodes: getDropdownHSRCMComplianceCodes(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -252,6 +285,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceInfo,
       fetchApplications,
       fetchPermits,
+      createVariance,
+      addDocumentToVariance,
+      fetchVariancesByMine,
+      fetchMineComplianceCodes,
     },
     dispatch
   );
