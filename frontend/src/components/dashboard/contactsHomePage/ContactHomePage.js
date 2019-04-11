@@ -130,11 +130,11 @@ export class ContactHomePage extends Component {
       });
   };
 
-  handleSearch = (searchParams = {}, clear) => {
+  handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
     const updatedParams = {
       // Default per_page -- overwrite if provided
-      per_page: String.DEFAULT_PER_PAGE,
+      per_page: Strings.DEFAULT_PER_PAGE,
       // Start from existing state
       ...persistedParams,
       // Overwrite prev params with any newly provided search params
