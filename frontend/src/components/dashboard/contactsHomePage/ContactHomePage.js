@@ -4,6 +4,7 @@ import { change } from "redux-form";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import * as Strings from "@/constants/strings";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -56,7 +57,12 @@ export class ContactHomePage extends Component {
 
   state = {
     isLoaded: false,
-    params: { type: "PER", ...this.params },
+    params: {
+      page: Strings.DEFAULT_PAGE,
+      per_page: Strings.DEFAULT_PER_PAGE,
+      type: "PER",
+      ...this.params,
+    },
   };
 
   componentWillMount() {
@@ -124,11 +130,23 @@ export class ContactHomePage extends Component {
       });
   };
 
-  handleSearch = (searchParams = {}) => {
-    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(searchParams));
+  handleSearch = (searchParams = {}, clear) => {
+    const persistedParams = clear ? {} : this.state.params;
+    const updatedParams = {
+      // Default per_page -- overwrite if provided
+      per_page: String.DEFAULT_PER_PAGE,
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...searchParams,
+      // Reset page number
+      page: Strings.DEFAULT_PAGE,
+    };
+
+    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(updatedParams));
     this.setState(
       {
-        params: searchParams,
+        params: updatedParams,
       },
       // Fetch parties once state has been updated
       () => this.renderDataFromURL()
@@ -205,6 +223,9 @@ export class ContactHomePage extends Component {
                 <ContactList
                   parties={this.props.parties}
                   relationshipTypeHash={this.props.relationshipTypeHash}
+                  handleSearch={this.handleSearch}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
                 />
               </div>
               <div className="center">
