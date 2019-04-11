@@ -7,15 +7,21 @@ from flask import request
 from app.api.utils.include.user_info import User
 
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.mine_api_models import MINE_VERIFIED_MODEL
 
 
-class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
+class MineVerifiedStatusResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('healthy', type=inputs.boolean)
 
     @requires_role_mine_view
+    @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
+    @api.doc(
+        params={'user_id': 'A user_id to search'},
+        description=
+        'Returns all verified statuses for mines or for a specific user if a user_id was provided.')
     def get(self):
         user_id = request.args.get('user_id')
         if user_id:
