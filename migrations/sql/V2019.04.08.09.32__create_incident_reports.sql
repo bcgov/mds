@@ -2,16 +2,16 @@ CREATE TABLE IF NOT EXISTS mine_incident_followup_type
 (
     mine_incident_followup_type_code                character varying(3) PRIMARY KEY,
     description                                     character varying(100),
+    display_order                                   integer NOT NULL,
     active_ind                                      boolean,
 
     create_user                                     character varying(60)                    NOT NULL,
     create_timestamp                                timestamp with time zone DEFAULT now()   NOT NULL,
     update_user                                     character varying(60)                    NOT NULL,
-    update_timestamp                                timestamp with time zone DEFAULT now()   NOT NULL,
-
+    update_timestamp                                timestamp with time zone DEFAULT now()   NOT NULL
 );
-ALTER TABLE mine_incident_followup_empr_action OWNER TO mds;
-COMMENT ON TABLE mine_incident_followup_empr_action IS 'lookup table for the types of EMPR reactions to a given mine_incident.';
+ALTER TABLE mine_incident_followup_type OWNER TO mds;
+COMMENT ON TABLE mine_incident_followup_type IS 'lookup table for the types of EMPR reactions to a given mine_incident.';
 
 CREATE TABLE IF NOT EXISTS mine_incident
 (
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS mine_incident
     update_timestamp                timestamp with time zone DEFAULT now()   NOT NULL,
 
     CONSTRAINT mine_incident_guid_unique UNIQUE (mine_incident_guid),
-    CONSTRAINT mine_incident_year_no_unique UNIQUE (mine_incident_year, mine_incident_no),
+    CONSTRAINT mine_incident_year_no_unique UNIQUE (mine_incident_id_year, mine_incident_id), 
 
     CONSTRAINT mine_guid_fkey FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT mine_incident_followup_fkey FOREIGN KEY (followup_type_code) REFERENCES mine_incident_followup_type(mine_incident_followup_type_code) DEFERRABLE INITIALLY DEFERRED

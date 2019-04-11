@@ -376,9 +376,9 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
-INSERT INTO mine_incident_followup_empr_action
+INSERT INTO mine_incident_followup_type
 (
-    mine_incident_followup_empr_action_type_code ,
+    mine_incident_followup_type_code ,
     description             ,
     display_order           ,
     create_user             ,

@@ -6,10 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from ....utils.models_mixins import AuditMixin, Base
+from .mine_incident_followup_type import MineIncidentFollowupType
 
 
 class MineIncident(AuditMixin, Base):
-    __tablename__ = 'mine_incident_report'
+    __tablename__ = 'mine_incident'
 
     mine_incident_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_incident_id_year = db.Column(
@@ -31,6 +32,9 @@ class MineIncident(AuditMixin, Base):
     followup_inspection_no = db.Column(db.String)
 
     closing_report_summary = db.Column(db.String)
+
+    followup_type = db.relationship(
+        'MineIncidentFollowupType', backref='mine_incident', lazy='joined')
 
     @hybrid_property
     def mine_incident_report_no(self):
